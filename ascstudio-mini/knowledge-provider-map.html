@@ -1039,6 +1039,32 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .map-path.future{stroke-dasharray:7 8;marker-end:url(#entry-arrow-future)}
 .map-node-dot{fill:#e76f4e;stroke:#e9ebee;stroke-width:2}
 .map-node-dot.future{fill:#e9ebee;stroke:#d96f4e;stroke-width:2}
+.map-fill{stroke:none;opacity:.96}
+.map-fill.source{fill:#dce9f6}
+.map-fill.knowledge{fill:#e8def3}
+.map-fill.knowledge-inner{fill:#f0e9f6;opacity:.98}
+.map-fill.api{fill:#dfeaf6}
+.map-fill.agent{fill:#dcebe1}
+.map-fill.task-path{fill:#dfeaf4}
+.map-fill.task-diagram{fill:#e9e0f4}
+.map-fill.task-recommend{fill:#dfecdf}
+.map-fill.task-event{fill:#f3e1d7}
+.map-fill.validation{fill:#e1ebe1}
+.map-node-dot.source{fill:#7e9dbc;stroke:#f5f8fb}
+.map-node-dot.knowledge{fill:#927fb5;stroke:#f7f4fa}
+.map-node-dot.api{fill:#7b9dc2;stroke:#f5f8fb}
+.map-node-dot.agent{fill:#7fa38b;stroke:#f4f8f4}
+.map-node-dot.task-path{fill:#7897b8;stroke:#f5f8fb}
+.map-node-dot.task-diagram{fill:#9881b7;stroke:#f7f4fa}
+.map-node-dot.task-recommend{fill:#7d9c83;stroke:#f5f8f4}
+.map-node-dot.task-event{fill:#ce8b6d;stroke:#fbf5f1}
+.map-node-dot.validation{fill:#819783;stroke:#f4f7f4}
+.map-node-dot.future.agent{fill:#e4efe7;stroke:#7fa38b}
+.map-core.knowledge{fill:#eee9f5;stroke:#927fb5}
+.map-road-dot.source{fill:#7e9dbc}
+.map-road-dot.api{fill:#7b9dc2}
+.map-road-dot.agent{fill:#7fa38b}
+.map-road-dot.validation{fill:#819783}
 .map-node-title{fill:#232831;font-size:18px;font-weight:720;text-anchor:middle}
 .feasibility-map .text-start{text-anchor:start!important}.feasibility-map .text-end{text-anchor:end!important}
 .map-node-note{fill:#626c78;font-size:15px;text-anchor:middle}
@@ -1192,6 +1218,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
         <marker id="entry-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#d96f4e"/></marker>
         <marker id="entry-arrow-future" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#d96f4e"/></marker>
       </defs>
+      <ellipse class="map-fill api" cx="430" cy="118" rx="215" ry="46"/><ellipse class="map-fill agent" cx="970" cy="118" rx="215" ry="46"/>
+      <ellipse class="map-fill knowledge" cx="700" cy="302" rx="450" ry="88"/><ellipse class="map-fill knowledge-inner" cx="700" cy="302" rx="235" ry="43"/>
+      <ellipse class="map-fill api" cx="430" cy="475" rx="225" ry="51"/><ellipse class="map-fill agent" cx="970" cy="475" rx="225" ry="51"/>
       <path class="map-axis" d="M700 12V556"/>
       <path class="map-stage-rule" d="M20 190H1380 M20 402H1380 M20 540H1380"/>
 
@@ -1199,23 +1228,23 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <ellipse class="map-orbit" cx="700" cy="118" rx="470" ry="58"/>
       <path class="map-path" d="M430 142C475 177 558 193 644 232"/>
       <path class="map-path future" d="M970 142C925 177 842 193 756 232"/>
-      <text class="map-node-title" x="430" y="85">社区 Web · P1</text><text class="map-node-note" x="430" y="111">目标 · 主题 · 已学节点</text><circle class="map-node-dot" cx="430" cy="137" r="8"/>
-      <text class="map-node-title" x="970" y="85">项目客户端 · P2</text><text class="map-node-note" x="970" y="111">项目 · 版本 · 选定日志</text><circle class="map-node-dot future" cx="970" cy="137" r="8"/>
+      <text class="map-node-title" x="430" y="85">社区 Web · P1</text><text class="map-node-note" x="430" y="111">目标 · 主题 · 已学节点</text><circle class="map-node-dot api" cx="430" cy="137" r="8"/>
+      <text class="map-node-title" x="970" y="85">项目客户端 · P2</text><text class="map-node-note" x="970" y="111">项目 · 版本 · 选定日志</text><circle class="map-node-dot future agent" cx="970" cy="137" r="8"/>
 
       <text class="map-stage-name" x="28" y="282">KNOWLEDGE CORE</text><text class="map-stage-sub" x="28" y="307">共享知识服务</text><text class="map-step-code" x="1370" y="282" text-anchor="end">STEP 02</text>
       <ellipse class="map-orbit" cx="700" cy="302" rx="450" ry="88"/><ellipse class="map-orbit dash" cx="700" cy="302" rx="340" ry="66"/><ellipse class="map-orbit dot" cx="700" cy="302" rx="235" ry="43"/>
-      <circle class="map-node-dot" cx="700" cy="220" r="6"/><text class="map-node-label text-start" x="720" y="225">可信资源目录</text>
-      <circle class="map-node-dot" cx="400" cy="302" r="6"/><text class="map-node-label" x="400" y="278">知识关系 · 前置知识</text>
-      <circle class="map-node-dot" cx="1000" cy="302" r="6"/><text class="map-node-label" x="1000" y="278">版本 · 芯片 · 适用范围</text>
-      <circle class="map-core" cx="700" cy="302" r="57"/><text class="map-core-title" x="700" y="298">知识服务</text><text class="map-core-note" x="700" y="319">全文 / 语义 · API</text>
+      <circle class="map-node-dot knowledge" cx="700" cy="220" r="6"/><text class="map-node-label text-start" x="720" y="225">可信资源目录</text>
+      <circle class="map-node-dot knowledge" cx="400" cy="302" r="6"/><text class="map-node-label" x="400" y="278">知识关系 · 前置知识</text>
+      <circle class="map-node-dot knowledge" cx="1000" cy="302" r="6"/><text class="map-node-label" x="1000" y="278">版本 · 芯片 · 适用范围</text>
+      <circle class="map-core knowledge" cx="700" cy="302" r="57"/><text class="map-core-title" x="700" y="298">知识服务</text><text class="map-core-note" x="700" y="319">全文 / 语义 · API</text>
 
       <text class="map-stage-name" x="28" y="466">SCENARIOS</text><text class="map-stage-sub" x="28" y="491">开发者任务</text><text class="map-step-code" x="1370" y="466" text-anchor="end">STEP 03</text>
       <path class="map-path" d="M656 352C610 389 530 416 445 431"/><path class="map-path" d="M744 352C790 389 870 416 955 431"/>
       <ellipse class="map-orbit dash" cx="430" cy="475" rx="225" ry="51"/><ellipse class="map-orbit dash" cx="970" cy="475" rx="225" ry="51"/>
-      <circle class="map-node-dot" cx="430" cy="438" r="7"/><text class="map-node-title" x="430" y="464">学习发现</text><text class="map-node-note" x="430" y="492">路径 · 课程 · 认证 · 活动</text>
-      <circle class="map-node-dot" cx="970" cy="438" r="7"/><text class="map-node-title" x="970" y="464">项目任务</text><text class="map-node-note" x="970" y="492">技术图解 · 问题分析 · 下一步实践</text>
+      <circle class="map-node-dot api" cx="430" cy="438" r="7"/><text class="map-node-title" x="430" y="464">学习发现</text><text class="map-node-note" x="430" y="492">路径 · 课程 · 认证 · 活动</text>
+      <circle class="map-node-dot agent" cx="970" cy="438" r="7"/><text class="map-node-title" x="970" y="464">项目任务</text><text class="map-node-note" x="970" y="492">技术图解 · 问题分析 · 下一步实践</text>
 
-      <path class="map-road" d="M350 580H1050"/><circle class="map-road-dot" cx="350" cy="580" r="6"/><circle class="map-road-dot" cx="700" cy="580" r="7"/><circle class="map-road-dot" cx="1050" cy="580" r="6"/>
+      <path class="map-road" d="M350 580H1050"/><circle class="map-road-dot source" cx="350" cy="580" r="6"/><circle class="map-road-dot api" cx="700" cy="580" r="7"/><circle class="map-road-dot agent" cx="1050" cy="580" r="6"/>
       <text class="map-road-title" x="350" y="565">P0 · 静态 Demo</text><text class="map-road-note" x="350" y="605">验证入口与内容结构</text>
       <text class="map-road-title" x="700" y="565">P1 · 社区 Web</text><text class="map-road-note" x="700" y="605">目录 · 搜索 · 活动数据</text>
       <text class="map-road-title" x="1050" y="565">P2 · 项目客户端</text><text class="map-road-note" x="1050" y="605">授权接入本地工程上下文</text>
@@ -1234,6 +1263,11 @@ body.overview #panel,body.overview #toggle{display:none!important}
         <marker id="cap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#d96f4e"/></marker>
         <marker id="cap-arrow-future" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#d96f4e"/></marker>
       </defs>
+      <ellipse class="map-fill source" cx="330" cy="120" rx="250" ry="62"/>
+      <ellipse class="map-fill knowledge" cx="700" cy="290" rx="445" ry="68"/><ellipse class="map-fill knowledge-inner" cx="700" cy="290" rx="330" ry="48"/>
+      <ellipse class="map-fill api" cx="255" cy="390" rx="220" ry="43"/><ellipse class="map-fill api" cx="700" cy="390" rx="220" ry="43"/><ellipse class="map-fill agent" cx="1130" cy="402" rx="230" ry="36"/>
+      <ellipse class="map-fill task-path" cx="300" cy="533" rx="125" ry="42"/><ellipse class="map-fill task-diagram" cx="570" cy="533" rx="125" ry="42"/><ellipse class="map-fill task-recommend" cx="840" cy="533" rx="125" ry="42"/><ellipse class="map-fill task-event" cx="1110" cy="533" rx="125" ry="42"/>
+      <ellipse class="map-fill validation" cx="700" cy="610" rx="500" ry="33"/>
       <path class="map-axis" d="M700 12V603"/><path class="map-stage-rule" d="M20 200H1380 M20 438H1380 M20 580H1380"/>
       <path class="map-path" d="M590 120H624 M1010 120H1130"/>
       <path class="map-path" d="M700 164V211"/>
@@ -1245,43 +1279,43 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
       <text class="map-stage-name" x="28" y="66">SUPPLY</text><text class="map-stage-sub" x="28" y="91">内容治理</text><text class="map-step-code" x="28" y="116">01</text><text class="map-step-code" x="1370" y="66" text-anchor="end">STEP 01</text>
       <ellipse class="map-orbit dash" cx="330" cy="120" rx="250" ry="62"/>
-      <circle class="map-node-dot" cx="137" cy="92" r="5"/><text class="map-node-label text-start" x="157" y="98">文档 · API · 样例</text>
-      <circle class="map-node-dot" cx="366" cy="92" r="5"/><text class="map-node-label text-start" x="386" y="98">课程 · 路径 · 认证</text>
-      <circle class="map-node-dot" cx="137" cy="145" r="5"/><text class="map-node-label text-start" x="157" y="151">案例 · 错误 · Issue</text>
-      <circle class="map-node-dot" cx="366" cy="145" r="5"/><text class="map-node-label text-start" x="386" y="151">活动 · Meetup · 赛事</text>
+      <circle class="map-node-dot source" cx="137" cy="92" r="5"/><text class="map-node-label text-start" x="157" y="98">文档 · API · 样例</text>
+      <circle class="map-node-dot source" cx="366" cy="92" r="5"/><text class="map-node-label text-start" x="386" y="98">课程 · 路径 · 认证</text>
+      <circle class="map-node-dot source" cx="137" cy="145" r="5"/><text class="map-node-label text-start" x="157" y="151">案例 · 错误 · Issue</text>
+      <circle class="map-node-dot source" cx="366" cy="145" r="5"/><text class="map-node-label text-start" x="386" y="151">活动 · Meetup · 赛事</text>
       <text class="map-node-note" x="330" y="187">文档站 · CMS · 代码仓 · 活动日历</text>
 
-      <path class="map-orbit" d="M625 120H1010"/><circle class="map-node-dot" cx="635" cy="120" r="6"/><circle class="map-node-dot" cx="800" cy="120" r="6"/><circle class="map-node-dot" cx="965" cy="120" r="6"/>
+      <path class="map-orbit" d="M625 120H1010"/><circle class="map-node-dot source" cx="635" cy="120" r="6"/><circle class="map-node-dot source" cx="800" cy="120" r="6"/><circle class="map-node-dot source" cx="965" cy="120" r="6"/>
       <text class="map-node-title" x="635" y="88">解析</text><text class="map-node-note" x="635" y="151">正文 · 代码</text>
       <text class="map-node-title" x="800" y="88">归一</text><text class="map-node-note" x="800" y="151">切分 · 去重 · 分类</text>
       <text class="map-node-title" x="965" y="88">核验与发布</text><text class="map-node-note" x="965" y="151">版本 · 许可 · Owner</text><text class="map-node-note" x="965" y="173">失效检测 · 增量更新</text>
-      <circle class="map-core" cx="1180" cy="120" r="35"/><text class="map-core-title" x="1180" y="126">KU</text>
+      <circle class="map-core knowledge" cx="1180" cy="120" r="35"/><text class="map-core-title" x="1180" y="126">KU</text>
       <text class="map-node-title" x="1180" y="73">可信知识单元</text><text class="map-node-note" x="1180" y="166">原文 · 范围 · 版本 · 许可 · Owner</text><text class="map-node-note" x="1180" y="184">能力目标 · 难度 · 时长 · 状态</text>
 
       <text class="map-stage-name" x="28" y="252">KNOWLEDGE</text><text class="map-stage-sub" x="28" y="277">统一知识底座</text><text class="map-step-code" x="28" y="302">02</text><text class="map-step-code" x="1370" y="252" text-anchor="end">STEP 02</text>
       <ellipse class="map-orbit" cx="700" cy="290" rx="445" ry="68"/><ellipse class="map-orbit dot" cx="700" cy="290" rx="330" ry="48"/>
-      <circle class="map-node-dot" cx="700" cy="215" r="6"/><text class="map-node-label text-start" x="742" y="222">CANN · 芯片 · OS · 框架范围</text>
-      <circle class="map-node-dot" cx="365" cy="290" r="6"/><text class="map-node-label" x="365" y="267">前置 · 解决 · 适用关系</text>
-      <circle class="map-node-dot" cx="1035" cy="290" r="6"/><text class="map-node-label" x="1035" y="267">来源 · 原文引用 · 许可</text>
-      <circle class="map-core" cx="700" cy="290" r="47"/><text class="map-core-title" x="700" y="286">知识底座</text><text class="map-core-note" x="700" y="307">关系图 · 全文 / 语义索引</text>
-      <circle class="map-node-dot" cx="255" cy="362" r="6"/><text class="map-node-title" x="255" y="385">公开发现文件</text><text class="map-node-note" x="255" y="407">robots · sitemap · Schema.org · llms.txt</text>
-      <circle class="map-node-dot" cx="700" cy="362" r="6"/><text class="map-node-title" x="700" y="385">Web / 客户端 OpenAPI</text><text class="map-node-note" x="700" y="407">搜索 · 资源 · 路径 · 活动 · 兼容 · 反馈</text>
-      <circle class="map-node-dot" cx="1130" cy="362" r="6"/><text class="map-node-title" x="1130" y="385">Agent Host</text><text class="map-node-note agent-note" x="1130" y="402">上下文 · 模型 · 权限 · 工具路由</text><text class="map-node-note agent-note" x="1130" y="416">Skill：路径 / 图解 / 排障 · MCP：资源 / 前置 / 兼容 / 活动</text><text class="map-node-note agent-note" x="1130" y="430">授权上下文：项目类型 · 版本 · 选定日志</text>
+      <circle class="map-node-dot knowledge" cx="700" cy="215" r="6"/><text class="map-node-label text-start" x="742" y="222">CANN · 芯片 · OS · 框架范围</text>
+      <circle class="map-node-dot knowledge" cx="365" cy="290" r="6"/><text class="map-node-label" x="365" y="267">前置 · 解决 · 适用关系</text>
+      <circle class="map-node-dot knowledge" cx="1035" cy="290" r="6"/><text class="map-node-label" x="1035" y="267">来源 · 原文引用 · 许可</text>
+      <circle class="map-core knowledge" cx="700" cy="290" r="47"/><text class="map-core-title" x="700" y="286">知识底座</text><text class="map-core-note" x="700" y="307">关系图 · 全文 / 语义索引</text>
+      <circle class="map-node-dot api" cx="255" cy="362" r="6"/><text class="map-node-title" x="255" y="385">公开发现文件</text><text class="map-node-note" x="255" y="407">robots · sitemap · Schema.org · llms.txt</text>
+      <circle class="map-node-dot api" cx="700" cy="362" r="6"/><text class="map-node-title" x="700" y="385">Web / 客户端 OpenAPI</text><text class="map-node-note" x="700" y="407">搜索 · 资源 · 路径 · 活动 · 兼容 · 反馈</text>
+      <circle class="map-node-dot agent" cx="1130" cy="362" r="6"/><text class="map-node-title" x="1130" y="385">Agent Host</text><text class="map-node-note agent-note" x="1130" y="402">上下文 · 模型 · 权限 · 工具路由</text><text class="map-node-note agent-note" x="1130" y="416">Skill：路径 / 图解 / 排障 · MCP：资源 / 前置 / 兼容 / 活动</text><text class="map-node-note agent-note" x="1130" y="430">授权上下文：项目类型 · 版本 · 选定日志</text>
 
       <text class="map-stage-name" x="28" y="454">TASK ENGINE</text><text class="map-stage-sub" x="28" y="480">生成与校验</text><text class="map-step-code" x="28" y="504">03</text><text class="map-step-code" x="1370" y="454" text-anchor="end">STEP 03</text>
-      <path class="map-orbit" d="M220 474H1180"/><circle class="map-node-dot" cx="300" cy="474" r="5"/><circle class="map-node-dot" cx="700" cy="474" r="6"/><circle class="map-node-dot" cx="1100" cy="474" r="5"/>
+      <path class="map-orbit" d="M220 474H1180"/><circle class="map-node-dot task-path" cx="300" cy="474" r="5"/><circle class="map-node-dot knowledge" cx="700" cy="474" r="6"/><circle class="map-node-dot task-event" cx="1100" cy="474" r="5"/>
       <text class="map-node-title text-end" x="674" y="454">目标 + 授权上下文</text><text class="map-node-title text-start" x="726" y="454">意图结构化 → 关系检索 → 版本过滤</text>
       <ellipse class="map-orbit dash" cx="300" cy="533" rx="125" ry="42"/><ellipse class="map-orbit dash" cx="570" cy="533" rx="125" ry="42"/><ellipse class="map-orbit dash" cx="840" cy="533" rx="125" ry="42"/><ellipse class="map-orbit dash" cx="1110" cy="533" rx="125" ry="42"/>
-      <circle class="map-node-dot" cx="300" cy="495" r="5"/><text class="map-node-title" x="300" y="518">学习路径规划</text><text class="map-node-note" x="300" y="540">前置关系 → 依赖排序 → 版本校验</text><text class="map-node-note" x="300" y="559">阶段 · 课程 · 练习 · 推荐理由</text>
-      <circle class="map-node-dot" cx="570" cy="495" r="5"/><text class="map-node-title" x="570" y="518">技术图解生成</text><text class="map-node-note" x="570" y="540">原文事实 → 节点 / 连线结构</text><text class="map-node-note" x="570" y="559">SVG / HTML · 来源可回查</text>
-      <circle class="map-node-dot" cx="840" cy="495" r="5"/><text class="map-node-title" x="840" y="518">资源推荐排序</text><text class="map-node-note" x="840" y="540">硬条件 → 目标 / 难度 / 新鲜度</text><text class="map-node-note" x="840" y="559">课程 · 认证 · 知识点及理由</text>
-      <circle class="map-node-dot" cx="1110" cy="495" r="5"/><text class="map-node-title" x="1110" y="518">活动与上新</text><text class="map-node-note" x="1110" y="540">日历 / CMS → 日期 · 状态核验</text><text class="map-node-note" x="1110" y="559">LLM 可摘要 · 时间以来源为准</text>
+      <circle class="map-node-dot task-path" cx="300" cy="495" r="5"/><text class="map-node-title" x="300" y="518">学习路径规划</text><text class="map-node-note" x="300" y="540">前置关系 → 依赖排序 → 版本校验</text><text class="map-node-note" x="300" y="559">阶段 · 课程 · 练习 · 推荐理由</text>
+      <circle class="map-node-dot task-diagram" cx="570" cy="495" r="5"/><text class="map-node-title" x="570" y="518">技术图解生成</text><text class="map-node-note" x="570" y="540">原文事实 → 节点 / 连线结构</text><text class="map-node-note" x="570" y="559">SVG / HTML · 来源可回查</text>
+      <circle class="map-node-dot task-recommend" cx="840" cy="495" r="5"/><text class="map-node-title" x="840" y="518">资源推荐排序</text><text class="map-node-note" x="840" y="540">硬条件 → 目标 / 难度 / 新鲜度</text><text class="map-node-note" x="840" y="559">课程 · 认证 · 知识点及理由</text>
+      <circle class="map-node-dot task-event" cx="1110" cy="495" r="5"/><text class="map-node-title" x="1110" y="518">活动与上新</text><text class="map-node-note" x="1110" y="540">日历 / CMS → 日期 · 状态核验</text><text class="map-node-note" x="1110" y="559">LLM 可摘要 · 时间以来源为准</text>
 
-      <path class="map-road" d="M290 610H1110"/><circle class="map-road-dot" cx="360" cy="610" r="6"/><circle class="map-road-dot" cx="700" cy="610" r="6"/><circle class="map-road-dot" cx="1040" cy="610" r="6"/>
+      <path class="map-road" d="M290 610H1110"/><circle class="map-road-dot validation" cx="360" cy="610" r="6"/><circle class="map-road-dot validation" cx="700" cy="610" r="6"/><circle class="map-road-dot validation" cx="1040" cy="610" r="6"/>
       <text class="map-road-title" x="360" y="594">结果校验</text><text class="map-road-note" x="360" y="635">来源 · 版本 · 依赖 · 关系 · 权限</text>
       <text class="map-road-title" x="700" y="594">运营评测</text><text class="map-road-note" x="700" y="635">任务集 · 专家复核 · 可执行性 · 证据覆盖</text>
       <text class="map-road-title" x="1040" y="594">授权反馈回流</text><text class="map-road-note" x="1040" y="635">完成 / 收藏 / 纠错 → Owner 复核 → 更新索引</text>
-      <path class="map-road" d="M230 672H1170"/><circle class="map-road-dot" cx="230" cy="672" r="5"/><circle class="map-road-dot" cx="540" cy="672" r="5"/><circle class="map-road-dot" cx="850" cy="672" r="5"/><circle class="map-road-dot" cx="1170" cy="672" r="5"/>
+      <path class="map-road" d="M230 672H1170"/><circle class="map-road-dot source" cx="230" cy="672" r="5"/><circle class="map-road-dot api" cx="540" cy="672" r="5"/><circle class="map-road-dot agent" cx="850" cy="672" r="5"/><circle class="map-road-dot validation" cx="1170" cy="672" r="5"/>
       <text class="map-road-note" x="230" y="655">P0 · 目录与元数据</text><text class="map-road-note" x="540" y="655">P1 · 检索 / API / 生成器</text><text class="map-road-note" x="850" y="655">P2 · Host / Skill / MCP / 本地项目</text><text class="map-road-note" x="1170" y="655">P3 · 评测与内容运营</text>
     </svg>
   </div></div>
