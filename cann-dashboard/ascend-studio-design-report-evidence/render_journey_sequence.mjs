@@ -14,7 +14,7 @@ let librarySource = readFileSync(libraryPath, 'utf8');
 // tune spacing and label size in a generated copy while leaving the installed package untouched.
 const layoutTuning = [
   ['actorGap: 140,', 'actorGap: 94,'],
-  ['messageRowHeight: 40,', 'messageRowHeight: 90,'],
+  ['messageRowHeight: 40,', 'messageRowHeight: 140,'],
   ['edgeLabel: 11,', 'edgeLabel: 26,'],
 ];
 for (const [from, to] of layoutTuning) {
@@ -39,24 +39,6 @@ const svg = renderMermaidSVG(source, {
 });
 writeFileSync(resolve(here, 'journey-sequence.svg'), svg);
 
-const scenes = JSON.parse(readFileSync(resolve(here, 'journey-scenes.json'), 'utf8'));
-const sceneAccents = ['#6563b7', '#7a68bd', '#6563b7', '#45958e', '#648e72'];
-for (const [index, scene] of scenes.entries()) {
-  const sceneSvg = renderMermaidSVG(scene.source, {
-    bg: '#ffffff',
-    fg: '#354052',
-    line: '#8794a8',
-    accent: sceneAccents[index] || '#6563b7',
-    muted: '#657184',
-    surface: '#f7f8fb',
-    border: '#d9dee7',
-    font: 'Arial',
-    transparent: true,
-    padding: 18,
-  });
-  writeFileSync(resolve(here, `journey-scene-${scene.id}.svg`), sceneSvg);
-}
-
 const avatar = (seed, clothingColor) => createAvatar(personas, {
   seed,
   backgroundColor: ['e8edf7'],
@@ -70,4 +52,4 @@ const avatar = (seed, clothingColor) => createAvatar(personas, {
 writeFileSync(resolve(here, 'persona-task.svg'), avatar('ascend-task-developer', '4c82bd'));
 writeFileSync(resolve(here, 'persona-learning.svg'), avatar('ascend-learning-developer', '8872bd'));
 
-console.log(`Rendered one role sequence and ${scenes.length} stage flows from beautiful-mermaid.`);
+console.log('Rendered the unified role sequence and two developer avatars.');

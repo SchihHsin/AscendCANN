@@ -580,7 +580,7 @@ function openWeeklySettings() {
   const topics = WEEKLY_TOPICS.map(topic => `<button class="topic-option ${state.weeklyTopics.includes(topic) ? "is-active" : ""}" data-action="toggle-weekly-topic" data-topic="${esc(topic)}" aria-pressed="${state.weeklyTopics.includes(topic)}">${state.weeklyTopics.includes(topic) ? icon("check") : ""}${esc(topic)}</button>`).join("");
   const days = WEEKLY_DAY_OPTIONS.map(day => `<button class="schedule-option ${state.weeklyDay === day ? "is-active" : ""}" data-action="set-weekly-day" data-day="${day}" aria-pressed="${state.weeklyDay === day}">${day}</button>`).join("");
   const times = ["09:00", "19:00"].map(time => `<button class="schedule-option ${state.weeklyTime === time ? "is-active" : ""}" data-action="set-weekly-time" data-time="${time}" aria-pressed="${state.weeklyTime === time}">${time === "09:00" ? "早上" : "晚上"} ${time}</button>`).join("");
-  openOverlay("设置每周开发速览", `<p class="sheet-hint settings-intro">每周一条重点资讯，再按你标记的兴趣或疑问补两张短知识卡。</p><span class="field-label">想看哪些主题</span><div class="topic-options">${topics}</div><span class="field-label">每周什么时候</span><div class="schedule-options">${days}</div><div class="schedule-options">${times}</div><div class="authorization-preview"><span>${icon("pocket")}微信订阅消息</span><p>下一步会模拟微信授权。允许后，回到微信会话列表查看新到的服务通知。</p></div><p class="platform-note">真实周期推送需小程序类目符合要求，并有可用的长期订阅模板。</p><button class="primary-button" data-action="accept-weekly">${state.weeklySubscribed ? "保存设置并模拟新消息" : "允许并模拟收到消息"}${icon("arrow")}</button>${state.weeklySubscribed ? '<button class="text-button settings-cancel" data-action="cancel-weekly">关闭演示订阅</button>' : '<button class="text-button settings-cancel" data-action="reject-weekly">暂不订阅</button>'}`);
+  openOverlay("设置每周开发速览", `<p class="sheet-hint settings-intro">每周一条重点资讯，再按你标记的兴趣或疑问补两张短知识卡。</p><span class="field-label">想看哪些主题</span><div class="topic-options">${topics}</div><span class="field-label">每周什么时候</span><div class="schedule-options">${days}</div><div class="schedule-options">${times}</div><div class="authorization-preview"><span>${icon("pocket")}微信订阅消息</span><p>下一步会模拟微信授权。允许后，回到微信会话列表查看新到的服务通知。</p></div><p class="platform-note">真实周期推送需小程序类目符合要求，并有可用的长期订阅模板。</p><button class="primary-button" data-action="accept-weekly">${state.weeklySubscribed ? "保存设置" : "允许并模拟收到消息"}${icon("arrow")}</button>${state.weeklySubscribed ? '<button class="text-button settings-cancel" data-action="cancel-weekly">关闭演示订阅</button>' : '<button class="text-button settings-cancel" data-action="reject-weekly">暂不订阅</button>'}`);
   weeklySettingsOpen = true;
   updateReviewPanel(currentRoute);
 }
@@ -754,8 +754,8 @@ window.addEventListener("storage", event => {
 window.addEventListener("message", event => {
   if (event.origin !== location.origin || event.source !== $("#desktop-demo-frame")?.contentWindow) return;
   if (event.data?.type === "ascstudio-pocket-delivery") {
-    if (currentRoute === "review-pending") render();
-    toast("电脑端已送达，右侧微信列表已更新");
+    go("review-instant");
+    toast("已送达，手机微信列表已打开");
   } else if (event.data?.type === "ascstudio-pocket-scheduled") {
     openWeeklySettingsOnNextRender = true;
     setReviewLocation(4);

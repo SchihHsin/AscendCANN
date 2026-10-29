@@ -1,5 +1,6 @@
 import { ICON_SIZE } from "./icon-system.js";
 import { useState } from "react";
+import { LOG_DIAGNOSTIC_TASK } from "./prototype-data.js";
 import {
   IconAlertCircle,
   IconArrowDown,
@@ -12,6 +13,7 @@ import {
 } from "@tabler/icons-react";
 
 export function getCommunityDraftTopic(draft) {
+  if (draft?.taskId === LOG_DIAGNOSTIC_TASK) return LOG_DIAGNOSTIC_TASK;
   const problem = String(draft?.problem || "");
   if (/AddCustom|precision mismatch/i.test(problem)) return "AddCustom 精度异常";
   if (/图像|NCHW|NHWC|HWC|CHW/i.test(problem)) return "图像输入形状";
@@ -20,9 +22,10 @@ export function getCommunityDraftTopic(draft) {
 
 function buildTikTokSlides(draft) {
   const topic = getCommunityDraftTopic(draft);
-  const isAddCustom = topic === "AddCustom 精度异常";
+  const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
+  const coverTitle = topic === LOG_DIAGNOSTIC_TASK ? "Add 算子异常\n从日志到验证" : isAddCustom ? "AddCustom\n精度异常" : `${topic}怎么核对？`;
   return [
-    { eyebrow: "先看现象", title: isAddCustom ? "AddCustom 精度异常" : `${topic}怎么核对？`, note: "先固定异常范围，再整理已有证据", visual: "cover", footer: "问题排查路径 · 01 / 04" },
+    { eyebrow: "先看现象", title: coverTitle, note: "先固定异常范围，再整理已有证据", visual: "cover", footer: "问题排查路径 · 01 / 04" },
     { eyebrow: "01 · 复现边界", title: isAddCustom ? "两组输入，结果不同" : "输入与目标约定", note: isAddCustom ? "报错位置：custom_op.cpp:128" : "固定输入条件与目标形状", visual: "compare", footer: "先固定现象，不急着改结论" },
     { eyebrow: isAddCustom ? "02 · 核对候选线索" : "02 · 核对处理步骤", title: isAddCustom ? "尾块边界候选" : "轴顺序与 batch 维度", note: isAddCustom ? "逐项核对循环边界与有效元素数；这是一条待验证线索" : "对照模型输入约定；实际推理结果仍需核对", visual: "blocks", footer: isAddCustom ? "线索不等于根因" : "形状记录 · 真实推理待验证" },
     { eyebrow: "03 · 补证据再判断", title: "验证前要补齐的记录", note: isAddCustom ? "版本与环境 · 两组运行条件 · 逐元素误差" : "模型签名 · 预处理参数 · 实际推理结果", visual: "evidence", footer: "当前没有真实 NPU 验证结论" },
@@ -110,11 +113,14 @@ function TikTokVisual({ slide, slides, index, onPrevious, onNext, isAddCustom })
 function TikTokDraft({ draft, generated, published, onGenerate, onPublish }) {
   const [slideIndex, setSlideIndex] = useState(0);
   const topic = getCommunityDraftTopic(draft);
-  const isAddCustom = topic === "AddCustom 精度异常";
+  const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
+  const isLogDiagnostic = topic === LOG_DIAGNOSTIC_TASK;
   const slides = buildTikTokSlides(draft);
-  const defaultCaption = isAddCustom
-    ? "AddCustom 精度异常别急着改参数，先把输入边界、报错位置和尾块有效元素逐项对齐。尾块只是待验证线索，补齐运行条件与逐元素误差后，再判断根因。"
-    : "图像输入形状核对先对齐输入、轴顺序与目标约定，再补充模型签名和实际运行结果。当前页面只展示形状变化，不能替代真实模型验证。";
+  const defaultCaption = isLogDiagnostic
+    ? "从 AddCustom 运行日志开始，对照输入差异和错误位置，再用范围图解理解尾块。示例核对不等于真实精度或 NPU 验证，根因仍待确认。"
+    : isAddCustom
+      ? "AddCustom 精度异常别急着改参数，先把输入边界、报错位置和尾块有效元素逐项对齐。尾块只是待验证线索，补齐运行条件与逐元素误差后，再判断根因。"
+      : "图像输入形状核对先对齐输入、轴顺序与目标约定，再补充模型签名和实际运行结果。当前页面只展示形状变化，不能替代真实模型验证。";
   const [caption, setCaption] = useState(defaultCaption);
   const slide = slides[slideIndex];
   const previous = () => setSlideIndex(current => (current - 1 + slides.length) % slides.length);
@@ -125,9 +131,9 @@ function TikTokDraft({ draft, generated, published, onGenerate, onPublish }) {
       <div className="channel-draft-tiktok-layout">
         <TikTokVisual slide={slide} slides={slides} index={slideIndex} onPrevious={previous} onNext={next} isAddCustom={isAddCustom} />
         <section className="channel-draft-copy">
-          <div className="channel-draft-kicker"><IconSparkles size={ICON_SIZE.control} />{generated ? "AI 已生成图文草稿" : "知识图文预览"}</div>
+          <div className="channel-draft-kicker"><IconSparkles size={ICON_SIZE.control} />{generated ? isLogDiagnostic ? "本地排查步骤已整理" : "AI 已生成图文草稿" : "知识图文预览"}</div>
           <h3>{generated ? "核对图文内容后再发布" : `把${topic}整理成深色知识图文`}</h3>
-          <p>{isAddCustom ? "将本次任务中的现象、尾块候选线索和待补证据拆成 4 张图；尾块仅作为待验证线索，不会写成根因。" : "将本次任务中的现象、处理步骤和待补证据拆成 4 张图，区分形状记录与真实设备验证。"}</p>
+          <p>{isLogDiagnostic ? "将日志现象、尾块范围图解和示例核对拆成 4 张图；根因与真实设备结果仍待确认。" : isAddCustom ? "将本次任务中的现象、尾块候选线索和待补证据拆成 4 张图；尾块仅作为待验证线索，不会写成根因。" : "将本次任务中的现象、处理步骤和待补证据拆成 4 张图，区分形状记录与真实设备验证。"}</p>
           {generated ? <>
             <label className="channel-draft-field-label" htmlFor="tiktok-caption">配文</label>
             <textarea id="tiktok-caption" value={caption} onChange={event => setCaption(event.target.value)} rows={5} />
@@ -150,11 +156,14 @@ function TikTokDraft({ draft, generated, published, onGenerate, onPublish }) {
 export function TikTokPublishedPost({ draft }) {
   const [slideIndex, setSlideIndex] = useState(0);
   const topic = getCommunityDraftTopic(draft);
-  const isAddCustom = topic === "AddCustom 精度异常";
+  const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
+  const isLogDiagnostic = topic === LOG_DIAGNOSTIC_TASK;
   const slides = buildTikTokSlides(draft);
-  const caption = isAddCustom
-    ? "AddCustom 精度异常别急着改参数，先把输入边界、报错位置和尾块有效元素逐项对齐。尾块只是待验证线索，补齐运行条件与逐元素误差后，再判断根因。"
-    : "图像输入形状核对先对齐输入、轴顺序与目标约定，再补充模型签名和实际运行结果。当前页面只展示形状变化，不能替代真实模型验证。";
+  const caption = isLogDiagnostic
+    ? "从 AddCustom 运行日志开始，对照输入差异和错误位置，再用范围图解理解尾块。示例核对不等于真实精度或 NPU 验证，根因仍待确认。"
+    : isAddCustom
+      ? "AddCustom 精度异常别急着改参数，先把输入边界、报错位置和尾块有效元素逐项对齐。尾块只是待验证线索，补齐运行条件与逐元素误差后，再判断根因。"
+      : "图像输入形状核对先对齐输入、轴顺序与目标约定，再补充模型签名和实际运行结果。当前页面只展示形状变化，不能替代真实模型验证。";
 
   return <article className="douyin-published-post">
     <div className="douyin-published-account"><span className="douyin-published-avatar">昇</span><div><strong>昇腾开发笔记</strong><small>刚刚发布 · 知识图文</small></div><button type="button">关注</button></div>
@@ -179,7 +188,7 @@ export function TikTokPublishedPost({ draft }) {
 
 function GitCodeDraft({ draft, generated, published, onGenerate, onPublish }) {
   const topic = getCommunityDraftTopic(draft);
-  const isAddCustom = topic === "AddCustom 精度异常";
+  const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
   return <div className="channel-draft-main">
     <div className="channel-draft-scroll">
       <section className="channel-markdown-preview">

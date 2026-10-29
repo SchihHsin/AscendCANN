@@ -1,11 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
+import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply, LOG_DIAGNOSTIC_TASK } from "./prototype-data";
 import { readSession, writeSession } from "./session-storage";
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 import { resolveTaskUrlValue } from "./task-url";
+import { IMAGE_TASK } from "./useImageInference";
 
 export const MAIN_TASK = "AddCustom 精度异常";
+export const TASK_LAUNCH_ALIASES = Object.freeze({ learning: LEARNING_TASK, development: IMAGE_TASK });
 export const evidenceDetails = [
   { title: "[16,32] 通过", body: "已知的通过样本。仍需补充输入内容、数据类型和环境版本，才能作完整对照。", log: "input_shape: [16,32]\nprecision_check: PASS\n环境与容差记录：待补充" },
   { title: "[17,33] 失败", body: "已知的失败样本。非整块输入与失败同时出现，仅能作为核查线索。", log: "input_shape: [17,33]\nprecision_check: FAIL\n逐元素误差：待补充" },
@@ -68,10 +70,20 @@ function restoreWorkbench() {
     if (inferenceGroup) inferenceGroup.tasks = [...inferenceGroup.tasks, taskName];
     else groups.push({ id: "inference", name: "模型推理", tasks: [taskName] });
   }
+  for (const taskName of [MAIN_TASK, LOG_DIAGNOSTIC_TASK]) {
+    if (groups.some(group => group.tasks.includes(taskName))) continue;
+    const operatorGroup = groups.find(group => group.id === "operator");
+    if (operatorGroup) operatorGroup.tasks = [...operatorGroup.tasks, taskName];
+    else groups.unshift({ id: "operator", name: "CANN 自定义算子", tasks: [MAIN_TASK, LOG_DIAGNOSTIC_TASK] });
+  }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
-  const requestedTask = resolveTaskUrlValue(new URLSearchParams(window.location.search).get("task"), taskNames);
-  const selectedTask = requestedTask || (taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK);
-  const selectedTaskGroup = requestedTask ? groups.find(group => group.tasks.includes(requestedTask))?.id : null;
+  const launchParams = new URLSearchParams(window.location.search);
+  const requestedTask = resolveTaskUrlValue(launchParams.get("task"), taskNames);
+  // Embedded knowledge-pocket reviews should open the chosen existing task even when this browser has another saved selection.
+  const pocketDemoTask = launchParams.get("pocket-demo") === "1" ? launchParams.get("pocket-task") : null;
+  const urlTask = taskNames.has(pocketDemoTask) ? pocketDemoTask : requestedTask;
+  const selectedTask = urlTask || (taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK);
+  const selectedTaskGroup = urlTask ? groups.find(group => group.tasks.includes(urlTask))?.id : null;
   const savedOpenedGroups = Array.isArray(value.openedGroups) ? value.openedGroups.filter(id => groups.some(group => group.id === id)) : ["operator", "inference"];
   const openedGroups = selectedTaskGroup && !savedOpenedGroups.includes(selectedTaskGroup) ? [...savedOpenedGroups, selectedTaskGroup] : savedOpenedGroups;
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
@@ -113,8 +125,8 @@ function restoreWorkbench() {
   if (meta["图像推理调试"]) meta["图像推理调试"] = { ...meta["图像推理调试"], ...taskDetails["图像推理调试"] };
   return {
     groups, meta, sessions,
-    query: requestedTask ? "" : typeof value.query === "string" ? value.query : "",
-    filterScope: requestedTask ? "all" : ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
+    query: urlTask ? "" : typeof value.query === "string" ? value.query : "",
+    filterScope: urlTask ? "all" : ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
     openedGroups,
     selectedTask,
     rationaleOpen: Boolean(value.rationaleOpen),

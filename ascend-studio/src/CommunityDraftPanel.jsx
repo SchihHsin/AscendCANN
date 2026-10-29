@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import "./community-draft.css";
 import { ChannelDraftContent, getCommunityDraftTopic } from "./ChannelDraftContent.jsx";
+import { LOG_DIAGNOSTIC_TASK } from "./prototype-data.js";
 import "./channel-draft.css";
 import { PublishedChannelPreview } from "./PublishedChannelPreview.jsx";
 import ascendCommunityMark from "./assets/channel-marks/ascend-community.svg";
@@ -39,7 +40,7 @@ const CHANNELS = [
   { id: "community", name: "昇腾社区", reward: "审核通过后 +20 积分（以社区规则为准）", rewardShort: "审核后 +20 积分", button: "审阅并提交" },
   { id: "gitcode", name: "GitCode", reward: "投稿被采纳后 +50 积分（以活动规则为准）", rewardShort: "采纳后 +50 积分", button: "审阅并发布" },
   { id: "csdn", name: "CSDN", reward: "原创内容 +10 积分（以平台规则为准）", rewardShort: "+10 积分", button: "审阅并发布" },
-  { id: "tiktok", name: "抖音", reward: "按播放表现可能获得创作收益", rewardShort: "播放表现激励", button: "预览并发布" },
+  { id: "tiktok", name: "抖音", reward: "按播放表现可能获得创作收益", rewardShort: "根据播放表现进行激励", button: "预览并发布" },
 ];
 const CHANNEL_BY_ID = Object.fromEntries(CHANNELS.map(channel => [channel.id, channel]));
 const CHANNEL_MARKS = {
@@ -81,7 +82,7 @@ function ChannelMark({ channel }) {
 
 function ChannelCardPreview({ channelId, draft }) {
   const topic = getCommunityDraftTopic(draft);
-  const isAddCustom = topic === "AddCustom 精度异常";
+  const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
   const previewLines = isAddCustom
     ? ["input = [17, 33]", "precision mismatch", "custom_op.cpp:128"]
     : ["img = img.transpose(2, 0, 1)", "img = img[None, ...]", "shape = [1, 3, 224, 224]"];

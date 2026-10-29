@@ -1,47 +1,40 @@
 sequenceDiagram
-    participant K as 社区
-    participant E as 环境
-    participant A as Agent
-    participant S as Studio
-    actor L as 学习者
-    actor T as 任务者
+    participant K as 知识与社区
+    participant E as 开发环境
+    participant A as 智能体
+    participant S as Ascend Studio
+    actor L as 学习开发者
+    actor T as 任务开发者
 
-    rect 01 目标与现场
-      T->>S: 任务
-      L->>S: 目标
-      S->>A: 整理
-      S-->>L: 补充
-      T-->>S: 环境
+    rect 01 认知起步
+      T->>S: 任务现场
+      L->>S: 学习目标
+      S-->>T: 主动建议
     end
 
-    rect 02 搜索与取回
-      A->>K: 检索
-      K-->>A: 版本
-      A-->>S: 依据
-      S-->>T: 范围
-      T->>S: 补充
+    rect 02 找线索
+      A->>K: 检索资料
+      K-->>A: 版本范围
+      A-->>S: 返回依据
     end
 
-    rect 03 生成可行动起点
-      S-->>T: 推荐
-      T->>S: 连线
-      S-->>L: 生成
-      L->>S: 调整
-      L-->>S: 节点
+    rect 03 形成方向
+      T->>S: 连线Prompt
+      S-->>L: 生成路径
+      L->>S: 自定义节点
     end
 
-    rect 04 判断与理解
-      T->>E: 运行
-      L->>E: 练习
-      E-->>A: 日志
-      A-->>S: 图解
-      S-->>L: 说明
+    rect 04 实践与理解
+      T->>E: 运行代码
+      L->>E: 路径练习
+      E->>A: 错误日志
+      A-->>S: 错误图解
+      T->>E: 复测修正
     end
 
-    rect 05 执行与留存
-      T->>E: 复测
-      E-->>S: 证据
-      S-->>T: 草稿
-      T->>K: 分享
-      L->>S: 卡片
+    rect 05 经验沉淀
+      E-->>S: 验证证据
+      S-->>T: 社区草稿
+      L->>S: 认知卡片
+      T->>K: 分享复用
     end

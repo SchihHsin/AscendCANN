@@ -2100,3 +2100,31 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 ### 2026-10-29 · 画布视觉强度 B 方案试用
 
 用户选择 B 作为本轮试验：画布节点标题与关系线加深；当前选中 / 活跃节点用近黑色承托标题；小地图视野框加深。普通卡片主体维持浅色，类别标记和状态色继续按各自语义显示。该样式落在共享画布层，覆盖 AddCustom 与学习画布；本轮先作为试用方案，后续按用户反馈迭代。
+
+### 2026-10-29 · Add 算子异常：从日志到验证任务原型
+
+- 保留原 AddCustom 任务记录及内部 ID，列表显示名为「Add 算子精度差异排查」；新增独立任务「Add 算子异常：从日志到验证」，放在同一 CANN 自定义算子项目。
+- 新任务展示四步闭环：预置日志提取输入差异与错误位置 → 浅色尾块范围图解 → 隔离示例副本修改和有效范围核对 → 将排查经过整理成可编辑社区经验草稿。以 Format Lab 浅色模式作为方向，使用白色 / 浅灰工作区、低饱和蓝与琥珀图解、黑色主要操作。
+- Token 性价比：本轮预置日志解析、范围运算与界面步骤由本地确定性规则完成，显式标注「本地规则 · 0 tokens」，没有接真实模型 API；不为固定示例重复调用模型。社区草稿来自本地演示数据，不自动发布。
+- 证据边界：`[16,32]` 通过、`[17,33]` 失败和 `custom_op.cpp:128` 是预置日志；17×33 / 32 的算例用于解释范围，不能确认真实根因、真实项目修改、C++ 编译、精度或 NPU 验证。草稿要求补充真实环境和验证证据。
+- 修改 `src/App.jsx`、`prototype-data.js`、`useWorkbenchState.js`、`workspace-materials.js`、`TaskWorkspace.jsx`、`community-draft-data.js`、`ChannelDraftContent.jsx`、`CommunityDraftPanel.jsx`，新增 `LogTriageWorkspace.jsx` 与 `log-triage-workspace.css`，同步 `../ascstudio/` Pages 构建产物。未更改报告页序、路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 本地 1280×720 浏览器已走通四步、核对范围结果、打开并编辑社区草稿；回流消息已修正为 Add 范围核对，未再串入图像输入文案。切回旧任务确认原名称和既有 AddCustom 内容仍在。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。
+- 实现提交 `9c3fcd97` 已推送到 `origin/main`；Pages workflow `40748397022` 成功。线上 `/AscendCANN/ascstudio/`、`index-FtOVT1nn.js` 与 `index-BLPeqaaM.css` 均 HTTP 200；JS 已回读新旧任务名、0-token 标签和 Add 任务回流文案。尚未真实接入 AI、社区服务或 NPU。
+
+### 2026-10-29 · 知识口袋评审默认打开图像推理任务
+
+- 小程序评审 iframe 使用 `pocket-task=图像推理调试`，从现有开发任务的 Agent 回答开始演示知识收纳；避免从尚在共创中的学习路径草案开始。该查询仅在 `pocket-demo=1` 时生效，并且不会向普通任务列表新增任务。
+- 现有回答和 HWC / NCHW 示意是策划的交互样例，不构成真实模型签名或 NPU 验证。
+
+### 2026-10-29 · 范围图解使用原站 Format Lab 浅色版
+
+- 用户要求把 `compute-graph-viewer/format lab` 浅色版原样放进右侧。现将「范围图解」中的自绘尾块示意替换成该页面 iframe，并通过 `?theme=light` 指定浅色；iframe 在离开该步后继续挂载，保留图内选择与播放状态。
+- 为完整容纳原站三栏交互，桌面端进入该步骤时扩展工作区、临时隐藏项目侧栏和对话区；离开后依赖 `:not([hidden])` 条件恢复既有工作台布局。步骤导航及示例核对 / 经验回流内容保留。
+- 用户提供的在线 Format Lab 是原样内容来源（H）；本地浏览器无障碍树确认 iframe、矩阵、Inspector 和 light-theme URL 已加载（M）。固定本地流程不调用模型，仍为 0 tokens；示例格式图不能作为真实 Add 算子根因、编译或 NPU 证据。
+- `LogTriageWorkspace.jsx`、`log-triage-workspace.css`、全局 `styles.css` 与 Pages 产物有改动。构建和推送详情由仓库根目录 `AGENTS.md` 记录；未改变页面路由、序列和 API / Host / Application 边界。
+
+### 2026-10-29 · 日志排查对话持续显示
+
+- Add 日志排查入口应作为对话末尾的持续提示卡；启动排查、查看范围图解或返回任务时，对话都不自动收起，提示卡也不因首次点击而消失。
+- 桌面端进入范围图解时保留左侧对话并扩展右侧 Format Lab；小屏在排查工作区打开时保留可滚动的对话浮层。提示卡按当前步骤提供继续入口。
+- 固定流程仍由本地规则运行并标注 `本地规则 · 0 tokens`；Format Lab 是解释性示例，不表示已验证真实 Add 算子根因或 NPU 结果。

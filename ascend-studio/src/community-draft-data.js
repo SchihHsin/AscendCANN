@@ -5,6 +5,7 @@ const UNKNOWN_ENVIRONMENT = [
   "设备型号与固件版本：未提供",
   "其他相关依赖信息：未提供",
 ].join("\n");
+const LOG_DIAGNOSTIC_TASK = "Add 算子异常：从日志到验证";
 
 export function createCommunityDraft({ taskId, task, session, completion }) {
   let problem = String(task.question || task.goal || "请补充本次任务中遇到的问题。").trim();
@@ -20,8 +21,8 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
     problem = "在图像推理测试过程中，示例模型要求输入张量为 NCHW [1,3,224,224]，但当前预处理输出的图像张量为 NHWC [1,224,224,3]，两者通道顺序不一致。需要理解这种差异，以及如何在不修改原文件的情况下调整。";
     const axes = completion.snapshot?.axes || [2, 0, 1];
     const dimensions = completion.dimensions?.join(", ") || "1, 3, 224, 224";
-    approach = `在隔离的浏览器示例副本中，将 HWC 轴按 transpose(${axes.join(",")}) 调整为 CHW，并加入 batch 维度；示例输出为 NCHW [${dimensions}]。原项目文件保持只读。`;
-    verification = `本次开发任务的示例形状检查通过，记录输出为 [${dimensions}]。这只验证浏览器副本中的预设形状规则，没有写回项目文件，也没有运行真实 Python、模型或 NPU；真实模型签名、dtype、颜色顺序、归一化和推理结果仍需在对应环境核对。`;
+    approach = `在隔离的浏览器示例副本中，将 HWC 轴按 transpose(${axes.join(",")}) 调整为 CHW，并加入 batch 维度；当前输出为 NCHW [${dimensions}]。原项目文件保持只读。`;
+    verification = `当前输出轴与 batch 设置得到 [${dimensions}]，符合本 Demo 的 NCHW 形状约定。这只核对浏览器副本中的维度规则，没有写回项目文件，也没有运行真实 Python、模型或 NPU；真实模型签名、dtype、颜色顺序、归一化和推理结果仍需在对应环境核对。`;
   } else if (taskId === "图像推理调试") {
     problem = "在图像推理测试过程中，示例模型要求输入张量为 NCHW [1,3,224,224]，但当前预处理输出的图像张量为 NHWC [1,224,224,3]，两者通道顺序不一致。需要理解这种差异，以及如何在不修改原文件的情况下调整。";
     approach = "先对照图像与示例约定：图像以 HWC 读入，示例模型约定为 NCHW。可以在隔离的浏览器示例副本中调整轴顺序与 batch，观察形状变化；原项目文件保持只读。";
@@ -37,6 +38,10 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
       approach = `开发者确认问题已在目标环境解决并复测通过。本次提交的逐元素对照包含 ${count} 项，${precision.failed ?? 0} 项超出所设容差（atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}）。当前对话与工作区没有记录实际修改点或根因，草稿不会推断修复方法；请在发布前从代码变更或任务记录中补全。`;
       verification = `开发者确认目标环境复测通过；本次逐元素数据 ${count} 项、${precision.failed ?? 0} 项超差。容差：atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}。Demo 未独立连接 NPU，也未核验数据来源；CANN、芯片、驱动与固件版本尚未提供。`;
     }
+  } else if (taskId === LOG_DIAGNOSTIC_TASK && completion?.kind === "addcustom-log-diagnostic-resolution") {
+    problem = "预置 AddCustom 日志显示输入 [16,32] 通过、[17,33] 出现 precision mismatch，位置在 custom_op.cpp:128。日志与形状差异提示优先核对尾块访问；根因尚未确认。";
+    approach = "先从日志提取两组输入状态和错误位置，再用 17×33=561 的范围图解理解每块 32 个元素时的尾块。随后在浏览器示例副本中采用按有效元素数访问的候选写法，并完成范围算例。示例没有关联真实项目代码变更。";
+    verification = "浏览器范围算例记录为 18 块、末块 17 个有效元素，按示例有效范围检查得到 0 个范围外索引。该结果只核对本地算例，不等同于 C++ 编译、算子精度验证或 NPU 复测；真实实现、两次运行条件、逐元素误差和环境版本仍待补充。";
   } else if (taskId === "AddCustom 精度异常") {
     problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时失败，报错为 precision mismatch，位置在 custom_op.cpp:128。修改编译参数后，错误仍出现在同一位置。需要继续核对失败条件与误差证据，目前不能确认根因。";
     approach = "现有对话将尾块边界列为优先核查线索，并建议只读检查对应循环的索引范围和有效元素数；若未发现边界异常，再补充两次运行条件与逐元素误差。当前没有修改真实项目文件，也没有据此认定根因。";
@@ -47,12 +52,13 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
   }
 
   const followUp = (session.messages || []).filter(message => message.role === "user").map(message => message.text).filter(Boolean);
-  if (followUp.length && taskId !== "图像推理调试" && taskId !== "AddCustom 精度异常") {
+  if (followUp.length && taskId !== "图像推理调试" && taskId !== "AddCustom 精度异常" && taskId !== LOG_DIAGNOSTIC_TASK) {
     problem = `${problem}\n\n补充对话：${followUp.slice(-2).join("；")}`;
   }
 
   return {
     id: crypto.randomUUID(),
+    taskId,
     ...(completion?.id ? { completionId: completion.id } : {}),
     status: "review",
     open: true,
