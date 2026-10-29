@@ -1,11 +1,11 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-addcustom-journey-stages";
+const ROUTE_REV = "20261030-active-suggestion-learning";
 const chapters = [
   {
     id: "development", title: "解决问题后把经验留下", cover: "从错误现象到社区经验", summary: "从新建任务中的建议开始，经过回答、知识点、图解和动手修改，再把处理经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
-      { id: "connect", title: "从建议卡开始一个任务", note: "新建任务页主动呈现相关建议卡，开发者选择合适的线索作为任务起点。", emphasis: "选择合适的线索", description: "新建任务页主动呈现相关建议卡，开发者选择合适的线索作为任务起点。", entry: "新建任务首页 · 主动建议 · 开发模式", home: "classic", mode: "开发" },
+      { id: "connect", title: "从建议卡开始一个任务", note: "新建任务页在学习模式下主动呈现建议卡，用户可以从已有线索开始学习。", emphasis: "从已有线索开始学习", description: "新建任务页在学习模式下主动呈现建议卡，用户可以从已有线索开始学习。", entry: "新建任务首页 · 主动建议 · 学习模式", home: "classic", mode: "学习" },
       { id: "answer", title: "回答问题时补充相关知识", note: "先回应开发者的问题，再在回答旁补充知识点，帮助理解判断依据。", emphasis: "补充知识点", description: "先回应开发者的问题，再在回答旁补充知识点，帮助理解判断依据。", entry: "任务对话 · 展开回答中的知识卡", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "knowledge" },
       { id: "diagram", title: "打开图解看懂判断依据", note: "从回答中的知识点进入关联图解，直观看清线索与处理思路。", emphasis: "关联图解", description: "从回答中的知识点进入关联图解，直观看清线索与处理思路。", entry: "任务对话 · 知识卡中的图解入口", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
