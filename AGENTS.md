@@ -8164,3 +8164,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。保留最下层知识底座、三层架构、能力内容和页面序列；未改变 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确纠正（H）；服务关系仍为建设示意（M）。
 - 验证：`git diff --check` 通过；本地 CUA 1280×720 桌面视口复核椭圆覆盖节点组、四列等距、连线与文字无重叠；未运行自动化测试。GitHub Pages workflow `40974861574` 的 build / deploy / report-build-status 均成功；线上回读确认椭圆和四列坐标。
 - 页面提交 `c5e3f4dd` 已推送至 `origin/main`；交接记录由随后文档提交推送。
+
+### 2026-10-30 · 学习主动建议点直达路径共创任务
+
+- 用户明确指定，「从主动建议卡开始学习」这一设计点应定位到「图像输入预处理路径共创」任务。该点现与下一点「生成路径后一起调整」打开同一任务；第一点讲任务推荐与采用决策，第二点讲路径草案的共创调整。入口说明同步为「图像输入预处理路径共创任务 · 主动建议」。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html` 缓存版本。其余学习点、章节序列和 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 依据：用户明确指定任务落点（H）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认推荐点和路径调整点均路由到指定任务、入口文案及缓存版本一致。
+- 实现提交 `6703d277` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
