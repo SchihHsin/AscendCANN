@@ -8156,3 +8156,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。保留最下层知识底座、其内独立检索服务、内容治理链、页面序列和既定 API / Protocol、Host / Harness、Application / Task 边界。依据为用户截图与明确反馈（H）；图以节点、关系和区域承载逻辑，符合 Report PPT Skill 图表规则。
 - 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，确认中层不再有空椭圆，任务节点上移且分组关系清楚。未运行自动化测试。GitHub Pages workflow `40972846351` 的 build / deploy / report-build-status 均成功，线上源码已读回无中层大椭圆且任务总线上移。
 - 页面提交 `996a88ec` 已推送至 `origin/main`；本条交接记录随后的文档提交推送。
+
+
+### 2026-10-30 · 保留并收紧 Agent 椭圆、统一节点间距
+
+- 用户纠正前一轮方向：不要直接删除中层紫色椭圆，而应调整椭圆尺寸与节点间距。恢复椭圆底色与轮廓，收紧至 `cx=720, cy=378, rx=410, ry=128`；OpenAPI、Agent Host、Skill、MCP 与四类并行任务按 `x=420/620/820/1020` 对齐，列间距统一为 200。结果校验节点留在椭圆外，作为并行任务之后的汇入点。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。保留最下层知识底座、三层架构、能力内容和页面序列；未改变 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确纠正（H）；服务关系仍为建设示意（M）。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 桌面视口复核椭圆覆盖节点组、四列等距、连线与文字无重叠；未运行自动化测试。GitHub Pages workflow `40974861574` 的 build / deploy / report-build-status 均成功；线上回读确认椭圆和四列坐标。
+- 页面提交 `c5e3f4dd` 已推送至 `origin/main`；交接记录由随后文档提交推送。
