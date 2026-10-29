@@ -7676,3 +7676,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `beautiful-mermaid` 原阶段区间、消息时间点被重映射到等宽阶段范围，缩小阶段留白；恢复并保留 5 张阶段插画、2 类开发者头像、6 个协作角色与 18 张图标交接卡。更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、生成报告 HTML、`qa.md` 和本交接记录。
 - 验证：16 页，5 个等宽阶段、10 个行为节点、5 个断点、5 个机会点、6 类角色与 18 张交接卡；`python3 -m py_compile`、报告构建、`node --check`、`git diff --check` 均通过。CUA 本地 1280×720 视口检查通过。无用户研究新证据；本页仍是设计推演，不改变产品原型或 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 推送：报告 HTML、构建脚本、QA 与本交接记录按文件范围隔离，从最新 `origin/main` 创建提交并推送；其余暂存、未暂存及未跟踪内容未纳入。
+
+
+### 2026-10-29 · Ascend Studio 桌面章节演示与 Task 直达
+
+- 新增 `ascstudio-pc/` 桌面评审入口：五个章节封面，章节内含多个设计点；Studio Demo 充满视口，当前设计点讲解浮在左下角，可收起 / 展开并切换章节与设计点。小程序章节仍从现有 `ascstudio-mini/` 页面进入，未改其视觉样式。
+- 章节起点对应现有工作区：路径共创设计点直达「图像输入预处理路径共创」草案；开发中的图解与经验回流直达「图像推理调试」；学习练习 / 认知卡直达「学会图像输入预处理」。学习意图设计点仍以学习首页为起点。
+- Studio 源码 `ascend-studio/src/App.jsx` 现在接受 `?task=<现有任务名>`，并保留 `?task=learning` / `?task=development` 别名；`ascstudio/` Pages 包和 `ascstudio-pc/studio/` 均使用此构建。任务选择在 Application / Task 页面层，不涉及 API / Protocol、Host / Harness，也没有改汇报页序。
+- 设计点和任务状态沿用策划的本地演示数据；不代表真实用户个性化判断、模型调用或 NPU 验证。用户旅程设计点为方案展示，不是新增研究证据。
+- 验证：`npm run build:pages -- --emptyOutDir` 成功（沿用既有 JS bundle >500 kB 提示）；`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过。CUA 本地 1440×900 核对了 `?task=development`、任务名直达、章节路径共创起点与社区经验回流起点；未运行自动化测试套件。
+- `f269ead6`（`feat: add Ascend Studio task deep links and PC showcase`）已推送至 `origin/main`。Pages 工作流 `40791569433` 在本条记录时仍运行中；发布完成后补充线上状态。
