@@ -7865,3 +7865,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`；资源缓存版本为 `20261029-note-selective-emphasis`。不改章节 / 设计点顺序、卡片拖动与导航、任务起点映射、小程序入口或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户明确的排版要求与截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本检查 16 条强调词均包含在对应句子中；CUA 本地预览确认普通字重与「可编辑的 Prompt」局部强调（M）。线上 HTML、JS、CSS 均 HTTP 200；JS 有 16 条强调标记，CSS 包含正文 400 / 强调 680 字重。
 - 实现提交 `7ec1fe30` 已推送至 `origin/main`；GitHub Pages workflow `40844206713` build / deploy 成功。无未决事项。
+### 2026-10-29 · 开发方式对照页采用 Before / After 现有界面
+
+- 按用户提供的并排参考图调整报告第 2 页；使用 `learning-canvas-story/index.html#5` 中现有 Codex 工作区截图，保留其原始界面并在周围加入两条示例提问气泡；左侧继续呈现昇腾社区和 IDE 的透视场景。结论依据为用户明确素材指向（H），CSS 透视与气泡排布为设计表达（M）。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html`，记录于 `cann-dashboard/ascend-studio-design-report-evidence/qa.md`。页面保持 17 页，入口 #2、用户旅程 #3；不影响用户旅程内容或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：报告构建、Python 编译、内联脚本 `node --check`、`git diff --check` 通过；CUA 本地 1280×720 预览确认来源图和气泡加载、左右场景可见。提交 / 推送待记录。

@@ -280,19 +280,23 @@ body.overview.ctrl #deck{width:auto}
 .r-workmode-slide .head-l{flex:1;min-width:0}
 .r-workmode-slide .head-l .ttl{font-size:clamp(25px,2vw,36px);line-height:1.2;white-space:nowrap}
 .r-workmode-slide .subttl{font-size:var(--fs-body)}
-.r-workmode-body{display:grid;grid-template-columns:1fr 1fr;gap:1.1vw;align-items:stretch;flex:1;min-height:0}
-.r-workmode-panel{display:flex;flex-direction:column;min-width:0;min-height:0;padding:1.2vh .95vw 1.1vh;border:1px solid rgba(255,255,255,.92);border-radius:14px;background:rgba(255,255,255,.62);box-shadow:none}
-.r-workmode-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:.7vw;min-height:8vh}
+.r-workmode-body{display:grid;grid-template-columns:1fr 1fr;gap:1.6vw;align-items:center;flex:1;min-height:0}
+.r-workmode-panel{display:flex;flex-direction:column;min-width:0;min-height:0;padding:0;background:transparent}
+.r-workmode-heading{display:flex;align-items:center;justify-content:flex-start;gap:.75vw;min-height:5.4vh;margin:0 0 1vh}
 .r-workmode-kicker{display:inline-flex;width:fit-content;align-items:center;padding:.35vh .58vw;border-radius:999px;background:#eceef3;color:#596171;font-size:var(--fs-xs);font-weight:750;letter-spacing:.02em}
 .r-workmode-kicker.agent{background:#ecebfa;color:#5750a6}
-.r-workmode-heading h2{margin-top:.5vh;font-size:var(--fs-h2);line-height:1.22;color:#242a35}
-.r-workmode-heading p{margin-top:.32vh;font-size:var(--fs-sm);line-height:1.35;color:#737c8b}
-.r-workmode-visual{display:grid;place-items:center;flex:1 1 auto;min-width:0;min-height:0;margin:.35vh 0 0;overflow:hidden}
+.r-workmode-heading h2{font-size:clamp(18px,1.42vw,25px);line-height:1.25;color:#242a35;font-weight:680}
+.r-workmode-visual{position:relative;display:grid;place-items:center;flex:0 0 46vh;height:46vh;min-width:0;min-height:0;margin:0;overflow:hidden;border-radius:13px;background:#e9edf2}
 .r-workmode-visual img{display:block;width:100%;height:100%;object-fit:contain;border-radius:9px}
+.r-workmode-panel.after .r-workmode-visual{background:linear-gradient(132deg,#365fcf 0%,#514cd5 53%,#6753df 100%)}
+.r-workmode-panel.after .r-workmode-visual img{width:96%;height:92%;transform:perspective(1500px) rotateY(-5deg) rotateX(1.2deg);transform-origin:center}
+.r-workmode-bubble{position:absolute;z-index:2;display:inline-flex;align-items:center;max-width:62%;padding:.62em .9em;border:1px solid rgba(61,71,101,.2);border-radius:999px;background:rgba(255,255,255,.94);color:#242a35;font-size:var(--fs-body);font-weight:620;line-height:1.25;backdrop-filter:blur(10px)}
+.r-workmode-bubble.first{left:1.2%;bottom:19%}
+.r-workmode-bubble.second{right:1.2%;bottom:3%;max-width:54%}
 .r-workmode-caption{display:flex;align-items:center;justify-content:space-between;gap:.5vw;margin-top:.65vh;color:#8a909c;font-size:var(--fs-xs);line-height:1.25}
 .r-workmode-caption span:last-child{text-align:right}
 @media(max-width:1100px){.r-workmode-body{grid-template-columns:1fr 1fr}}
-@media(max-height:720px){.r-workmode-heading{min-height:6.5vh}.r-workmode-panel{padding-top:.8vh}}
+@media(max-height:720px){.r-workmode-heading{min-height:4.8vh}.r-workmode-visual{height:44vh;flex-basis:44vh}.r-workmode-bubble{font-size:var(--fs-sm)}}
 .report button:focus-visible,.report a:focus-visible{outline:3px solid #b3a3ff;outline-offset:4px}
 @media(max-width:1100px){.r-journey-user-ribbon{gap:.5vw;padding:.45vh .65vw}.r-journey-breakpoints{width:94vw;grid-template-columns:repeat(5,minmax(0,1fr))}.r-journey-breakpoints>span,.r-journey-breakpoints small{display:none}.r-journey-breakpoints button{font-size:var(--fs-xs)}}
 @media(max-height:720px){.r-design .points{gap:1.5vh}.r-design .body{margin-bottom:2vh}.r-bp-dialog>header{padding:1.8vh 2vw}.r-bp-panels{padding:1.6vh 2vw 2vh}}
@@ -761,22 +765,24 @@ slides.append(f'''<section class="slide s-cover r-cover" data-title="让任务�
 workmode = f'''<section class="slide s-gray r-workmode-slide" data-title="从查资料到交任务：Agent 带来另一种开发入口">
   <header class="head"><div class="head-l"><div class="brand"><h1 class="ttl">从查资料到交任务：Agent 带来另一种开发入口</h1></div><div class="subttl">不是两种固定人群，而是同一开发者可切换的两种协作方式</div></div>{tabs("用户旅程")}</header>
   <main class="body-area r-workmode-body">
-    <article class="r-workmode-panel">
-      <header class="r-workmode-heading"><div><span class="r-workmode-kicker">传统开发 · 资料驱动</span><h2>工程与资料分在不同窗口</h2><p>开发者在 IDE、官方文档与社区之间切换，自行判断和拼接信息</p></div></header>
+    <article class="r-workmode-panel before">
+      <header class="r-workmode-heading"><span class="r-workmode-kicker">Before</span><h2>IDE 开发 + 社区找资料</h2></header>
       <figure class="r-workmode-visual" aria-label="传统开发：IDE 与昇腾社区官网两个独立窗口的透视示意">
         <img src="{asset('entry-traditional-ui-composite.jpg')}" alt="IDE 与昇腾社区开发者主页的透视场景；官网页面采用 1440 像素桌面截图">
       </figure>
-      <div class="r-workmode-caption"><span>两个独立窗口 · 上下文由开发者带着走</span><span>官网屏幕来自现有页面截图</span></div>
+      <div class="r-workmode-caption"><span>在代码与分散资料间切换，自己拼出解决路径</span><span>昇腾社区界面风格取自现有页面</span></div>
     </article>
-    <article class="r-workmode-panel">
-      <header class="r-workmode-heading"><div><span class="r-workmode-kicker agent">Agent 开发 · 任务驱动</span><h2>目标、过程与结果留在同一工作区</h2><p>先描述任务与验收条件，再查看 Agent 的行动、改动和验证状态</p></div></header>
-      <figure class="r-workmode-visual" aria-label="Codex 单一工作区界面的透视示意">
-        <img src="{asset('entry-agent-workspace-composite.jpg')}" alt="Codex 工作区透视示意；任务简报与 Context 面板沿用项目内既有截图">
+    <article class="r-workmode-panel after">
+      <header class="r-workmode-heading"><span class="r-workmode-kicker agent">After</span><h2>AI 工作台提需求</h2></header>
+      <figure class="r-workmode-visual" aria-label="复用 learning-canvas-story 第 5 页的 Codex 工作区界面，并在周围呈现示例任务提问">
+        <img src="ploy-interaction-lab/learning-canvas-story/images/codex-workspace-user.png" alt="learning-canvas-story 第 5 页已有的 Codex 工作区界面截图">
+        <span class="r-workmode-bubble first">“帮我实现一个图像推理任务”</span>
+        <span class="r-workmode-bubble second">“解释这处报错，告诉我怎么修”</span>
       </figure>
-      <div class="r-workmode-caption"><span>一个工作区 · 任务、执行状态和结果集中呈现</span><span>Codex 主体界面沿用现有截图</span></div>
+      <div class="r-workmode-caption"><span>用户描述目标，Agent 在同一现场协作推进</span><span>界面复用现有截图 · 提问为场景示例</span></div>
     </article>
   </main>
-  <footer class="r-foot"><span>下一页回到共同旅程：两种协作方式都从用户目标出发，之后在任务中出现不同断点。</span><span>透视场景合成 · 官网页面与 Codex 主体沿用现有截图</span></footer>
+  <footer class="r-foot"><span>下一页回到共同旅程：任务交付与目标学习，都会在推进中遇到不同断点。</span><span>左：社区透视场景 · 右：复用现有 Codex 工作区</span></footer>
 </section>'''
 slides.append(workmode)
 slides.append(journey)
@@ -866,7 +872,7 @@ evals=[
 evaluation='<p class="r-summary">让用户更容易开始，在实践中理解，<br>把收获带入下一次任务。</p><table class="r-eval"><thead><tr><th>旅程阶段</th><th>需要验证的体验</th><th>观察信号</th></tr></thead><tbody>'+''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a,b,c in evals)+'</tbody></table>'
 slides.append(gray("设计价值回到旅程，用用户能做什么来验证", "验证方向 · 不以功能数量或内容浏览量替代体验成效",evaluation,note="以上为建议的后续验证问题与观察信号；当前没有对应的效果统计。"))
 
-sources='''<div class="r-source-grid"><article class="card"><h2>材料从哪里来</h2><p><a href="https://www.hiascend.com/zh/developer" target="_blank" rel="noopener">昇腾社区开发者主页 ↗</a><br>第 2 页传统侧使用 1440×900 官网桌面截图；IDE 窗口是透视场景素材，呈现 IDE 与社区分窗检索。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener">电脑端 Ascend Studio ↗</a><br>主动建议、线索串联、开发图解、社区草稿与学习路径共创。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/" target="_blank" rel="noopener">口袋新知小程序 Demo ↗</a><br>本轮界面来自本地 5217：服务通知、每周速览、知识卡与明确兴趣信号。</p><p><a href="ai-development-behavior-system-report-concise.html#5" target="_blank" rel="noopener">既有 AI 协作开发者旅程 #5 ↗</a><br>直接复制其 HTML 结构与样式并保持可编辑；两种开发者起点和角色时序在同页展开。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/knowledge-provider-map.html" target="_blank" rel="noopener">知识供给侧服务蓝图 ↗</a><br>参考其资源身份、适用范围、来源许可、核验状态与多入口服务关系，压缩为两页。</p></article><article class="card"><h2>如何理解这份设计提案</h2><ul><li>旅程、人群与问题是基于现有材料和本轮讨论的设计组织，尚非新一轮用户研究定稿。</li><li>第 2 页的透视构图由 ImageGen 合成；官网页面使用本轮桌面截图，Codex 中部任务简报与 Context 面板使用项目内既有截图，外侧导航参考该截图布局；IDE 为情景示意。图片用于表达工作方式，不表示实时产品状态或真实执行。</li><li>个人认知画布、知识供给图和角色时序是设计示意；其他界面截图来自现有原型。</li><li>图解、推荐、AI 草稿和消息送达使用演示状态；不代表真实 AI、微信后台或 NPU 已接入。</li><li>未宣称任务完成率、学习收益或社区回流效果已被验证。</li></ul><p><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html" target="_blank" rel="noopener">知识例证：NumPy transpose ↗</a> · <a href="https://cloud.tencent.cn/document/product/1301/103770" target="_blank" rel="noopener">订阅消息接入参考 ↗</a></p></article></div>'''
+sources='''<div class="r-source-grid"><article class="card"><h2>材料从哪里来</h2><p><a href="https://www.hiascend.com/zh/developer" target="_blank" rel="noopener">昇腾社区开发者主页 ↗</a><br>第 2 页传统侧使用 1440×900 官网桌面截图；IDE 窗口是透视场景素材，呈现 IDE 与社区分窗检索。</p><p><a href="https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#5" target="_blank" rel="noopener">Learning Canvas Story · 第 5 页 ↗</a><br>第 2 页右侧复用此页中的 Codex 工作区界面，并叠加两条场景提问。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener">电脑端 Ascend Studio ↗</a><br>主动建议、线索串联、开发图解、社区草稿与学习路径共创。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/" target="_blank" rel="noopener">口袋新知小程序 Demo ↗</a><br>本轮界面来自本地 5217：服务通知、每周速览、知识卡与明确兴趣信号。</p><p><a href="ai-development-behavior-system-report-concise.html#5" target="_blank" rel="noopener">既有 AI 协作开发者旅程 #5 ↗</a><br>直接复制其 HTML 结构与样式并保持可编辑；两种开发者起点和角色时序在同页展开。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/knowledge-provider-map.html" target="_blank" rel="noopener">知识供给侧服务蓝图 ↗</a><br>参考其资源身份、适用范围、来源许可、核验状态与多入口服务关系，压缩为两页。</p></article><article class="card"><h2>如何理解这份设计提案</h2><ul><li>旅程、人群与问题是基于现有材料和本轮讨论的设计组织，尚非新一轮用户研究定稿。</li><li>第 2 页左侧为参考昇腾开发者主页风格的透视情景图；右侧直接复用 Learning Canvas Story 第 5 页的 Codex 工作区截图，配轻微 CSS 透视和示例提问气泡。提问是场景文案，不表示实时产品状态或真实执行。</li><li>个人认知画布、知识供给图和角色时序是设计示意；其他界面截图来自现有原型。</li><li>图解、推荐、AI 草稿和消息送达使用演示状态；不代表真实 AI、微信后台或 NPU 已接入。</li><li>未宣称任务完成率、学习收益或社区回流效果已被验证。</li></ul><p><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html" target="_blank" rel="noopener">知识例证：NumPy transpose ↗</a> · <a href="https://cloud.tencent.cn/document/product/1301/103770" target="_blank" rel="noopener">订阅消息接入参考 ↗</a></p></article></div>'''
 slides.append(gray("设计推演与现有原型，各有清楚的依据和边界", "来源与演示范围 · 支撑材料",sources,active="知识供给",note="2026.10.29 · 页面截图与状态记录见 ascend-studio-design-report-evidence/。"))
 
 # Copy the whole template, replace only deck content; preserve controls and runtime.

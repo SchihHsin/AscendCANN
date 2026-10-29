@@ -123,3 +123,10 @@
 - 保留两张 ImageGen 透视构图作为场景外壳；把官网首屏与现有 `12-codex-task-brief.png` 屏幕区域做透视贴合，构成 `entry-traditional-ui-composite.jpg` 与 `entry-agent-workspace-composite.jpg`。官网导航 / 主视觉 / 公告 / 资源卡直接来自网页截图；Codex 中部任务简报与 Context 面板来自项目内截图，外侧会话导航参考截图布局并由 ImageGen 合成；IDE 仍是通用情景素材。
 - `compose_entry_perspective.py` 可重复生成两张合成图；报告构建改为读取合成图。透视图是场景合成，不作为当前实时执行的证据。用户旅程、页面序列和机制层边界不变。
 - 验证：截图尺寸与 1440×900 视口元数据复核；两张合成图逐一目视检查；报告重建为 17 页、8,584,034 bytes；Chrome 1440×900 预览 `#2` 确认两图加载且页标题 / 图注 / 页脚完整；2 段内联脚本 `node --check`、2 个 Python 文件编译与 `git diff --check` 均通过。截图见 `workmode-slide-final.png`。
+
+### 开发方式对照页改为 Before / After 场景 · 2026-10-29
+
+- 用户给出 Before / After 并排参考图，并指定右侧使用 `learning-canvas-story/index.html#5` 中的画面（H）。第 2 页现将阶段标签改为 `Before · IDE 开发 + 社区找资料` 与 `After · AI 工作台提需求`；左侧保留昇腾社区 + IDE 透视合成，右侧直接加载该页面的 `images/codex-workspace-user.png`，加轻微 CSS 透视和两条开发者提问气泡。右侧界面不再由 ImageGen 重绘，屏幕内容保持源截图；气泡文案是示例任务。
+- 页面顺序仍为 17 页，用户旅程仍在第 3 页。没有改旅程或产品原型，也不影响 API / Protocol、Host / Harness、Application / Task 层边界。
+- 验证：`python3 -m py_compile cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、报告构建（17 页）、内联脚本 `node --check`、`git diff --check` 通过；CUA 在 1280×720 桌面本地预览确认两侧画面、Before / After 标签、Codex 截图与两条气泡完整可见。来源 PNG 成功加载。自动化测试未运行。
+- 当前本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#2`。提交与推送状态待记录。
