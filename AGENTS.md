@@ -7974,3 +7974,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 桌面开发点统一映射到 Studio 现有任务键 `AddCustom 精度异常`，界面显示名为「Add 算子精度差异排查」，项目为「CANN 自定义算子」。学习点沿用 Demo 已有的「图像输入预处理」学习路径与相关图像推理任务，避免把图像学习材料误写为 Add 课程。学习建议点放在学习章节，保持 `mode: "学习"`。
 - 同一嵌入 Demo 路由下切换设计点时复用已加载页面，不重新载入，以保留任务状态；任务目标变化时仍重新载入。更新 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，脚本版本为 `20261029-role-journeys`。未改卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户确认的角色与支线结构（H）；Add 任务显示别名、学习任务名和项目来自桌面 Demo 已有资源（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对确认 3 章 / 17 个唯一点、重点加粗匹配、Add 任务路由和学习模式映射有效。本地 8765 返回的 HTML、JS、CSS 与工作区文件一致。实现提交 `f513ba64` 已 rebase 并推送至 `origin/main`，保留并行提交 `e01d3197`；GitHub Pages workflow `40882929625` build / deploy 成功，线上 HTML 引用新脚本版本，JS 含三章、Add 任务路由和学习模式映射。
+
+### 2026-10-29 · 知识供给图去橙色主导并按语义着色
+
+- 用户指出第 03「入口演进」与第 04「技术实现」两页虽已有能力分色，通用连接线、椭圆边界、阶段标题、编号和箭头仍以橙色为主。按截图反馈将通用骨架改为冷灰；来源 / Web / 学习发现用浅蓝，知识底座用浅紫，Agent / 校验回流用浅绿，四类任务继续分别使用浅蓝、浅紫、浅绿、柔和玫瑰色。仅以色彩标识能力和对应流向，橙色不再承担通用强调。
+- 修改 `ascstudio-mini/knowledge-provider-map.html` 的图示色值与语义类名；保留原有节点、连线关系、布局、能力内容、页面序列与 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户截图与明确反馈（H），具体冷灰 / 语义色分配为设计表达（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 预览复核第 03、04 页，通用结构线为灰色，蓝紫绿与玫瑰色仅对应语义区域 / 路径，页面文字和节点关系可读。未运行自动化测试。
+- 实现提交 `e4a4aa54` 已推送至 `origin/main`；GitHub Pages workflow `40884051501` build / deploy 成功。无未决事项。
