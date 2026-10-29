@@ -8086,3 +8086,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 缓存版本；不改变其他设计点路由或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户明确反馈（H）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 和路由 / 文案静态断言通过。GitHub Pages workflow `40908526700` 成功；线上入口与脚本 HTTP 200，脚本 SHA-256 与本地一致，并回读确认新标题和讲解句。
 - 实现提交 `ff54701d` 已推送到 `origin/main`；本条交接记录由后续文档提交同步推送。
+
+### 2026-10-30 · 技术实现关系图选择方案 1 并明确回流
+
+- 用户选择方案 1：保留原有浅灰底、椭圆分区、中心知识服务与连线结构，在此基础上补足能力细节；三层表示开发者体验、Agent 服务、内容治理架构，不表示步骤。四类任务能力并行产出并汇入结果校验。
+- 调整 `ascstudio-mini/knowledge-provider-map.html`：知识索引到 MCP 改为外侧曲线路由，避免形成矩形框线；校验结果回到共同体验层，授权完成 / 纠错仍沿独立虚线回 Owner。补充 SVG 描述与视觉关系一致。未改变页面序列，也未改变 API / Protocol、Host / Harness、Application / Task 职责边界。
+- 依据：用户选择方案 1（H）；服务流程内容依据此前确认的建设方案（M），是概念示意，不代表服务已经接入。
+- 验证：`git diff --check` 通过；本地 CUA 1400×800 桌面视口打开第 06 页，检查上中下三层、知识服务、四类并行能力、MCP 供给和两类回流连线，无文字与节点重叠。未运行自动化测试。
+- 页面提交 `e8986304` 已推送至 `origin/main`；本交接记录将由下一文档提交同步推送。无未决事项。
