@@ -3,8 +3,10 @@ import { initialGroups, taskDetails, capabilities, initialAutomations, modelOpti
 import { readSession, writeSession } from "./session-storage";
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
+import { IMAGE_TASK } from "./useImageInference";
 
 export const MAIN_TASK = "AddCustom 精度异常";
+export const TASK_LAUNCH_ALIASES = Object.freeze({ learning: LEARNING_TASK, development: IMAGE_TASK });
 export const evidenceDetails = [
   { title: "[16,32] 通过", body: "已知的通过样本。仍需补充输入内容、数据类型和环境版本，才能作完整对照。", log: "input_shape: [16,32]\nprecision_check: PASS\n环境与容差记录：待补充" },
   { title: "[17,33] 失败", body: "已知的失败样本。非整块输入与失败同时出现，仅能作为核查线索。", log: "input_shape: [17,33]\nprecision_check: FAIL\n逐元素误差：待补充" },
@@ -75,6 +77,8 @@ function restoreWorkbench() {
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const launchParams = new URLSearchParams(window.location.search);
+  const requestedTask = launchParams.get("task");
+  const launchTask = taskNames.has(requestedTask) ? requestedTask : TASK_LAUNCH_ALIASES[requestedTask];
   // Embedded knowledge-pocket reviews should open the chosen existing task even when this browser has another saved selection.
   const pocketDemoTask = launchParams.get("pocket-demo") === "1" ? launchParams.get("pocket-task") : null;
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
@@ -119,7 +123,7 @@ function restoreWorkbench() {
     query: typeof value.query === "string" ? value.query : "",
     filterScope: ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
     openedGroups: Array.isArray(value.openedGroups) ? value.openedGroups.filter(id => groups.some(group => group.id === id)) : ["operator", "inference"],
-    selectedTask: taskNames.has(pocketDemoTask) ? pocketDemoTask : taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK,
+    selectedTask: taskNames.has(pocketDemoTask) ? pocketDemoTask : taskNames.has(launchTask) ? launchTask : taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK,
     rationaleOpen: Boolean(value.rationaleOpen),
     selectedModel: modelOptions.some(model => model.id === value.selectedModel) ? value.selectedModel : "general",
     automations: Array.isArray(value.automations) ? objects(value.automations).map(entry => ({ ...entry, running: false })) : initialAutomations,

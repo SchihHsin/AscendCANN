@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
-import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
+import { useWorkbenchState, MAIN_TASK, TASK_LAUNCH_ALIASES } from "./useWorkbenchState";
 import { capabilities, modelOptions, LOG_DIAGNOSTIC_TASK, displayTaskName } from "./prototype-data";
 import { WorkbenchDialogs } from "./WorkbenchDialogs";
 import { ActionWorkspace } from "./ActionWorkspace";
@@ -136,8 +136,6 @@ function findLearningPathMove(text, path) {
   return { ...source, targetId: target.stepId, targetTitle: target.title, direction: /前/.test(match[3]) ? "before" : "after" };
 }
 
-const TASK_LAUNCH_ALIASES = { learning: LEARNING_TASK, development: IMAGE_TASK };
-
 function resolveTaskLaunch(value, groups) {
   if (TASK_LAUNCH_ALIASES[value]) return TASK_LAUNCH_ALIASES[value];
   return groups.flatMap(group => group.tasks).find(name => name === value) || null;
@@ -218,8 +216,11 @@ function App() {
     try { localStorage.setItem("ascend-studio-theme", visualTheme); } catch { /* Keep the in-session choice when storage is unavailable. */ }
   }, [visualTheme]);
   const [mainView, setMainView] = useState(() => {
-    const launchTask = new URLSearchParams(window.location.search).get("task");
+    const launchParams = new URLSearchParams(window.location.search);
+    const launchTask = launchParams.get("task");
+    const launchHome = launchParams.get("home");
     if (resolveTaskLaunch(launchTask, wb.groups)) return "task";
+    if (launchParams.has("showcaseRev") && ["classic", "explore", "combine"].includes(launchHome)) return "home";
     const savedView = readSession("main-view", null);
     if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "task"].includes(savedView)) return savedView;
     // A home-variant query may remain in the URL after navigating into a task.
@@ -229,6 +230,12 @@ function App() {
     // while a fresh visit to the app still opens the new-task home.
     return readSession("workbench", null)?.selectedTask === LEARNING_PATH_GENERATION_TASK ? "task" : "home";
   });
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("showcaseRev")) return;
+    ["showcaseRev", "task", "home"].forEach(key => url.searchParams.delete(key));
+    window.history.replaceState(window.history.state, "", url);
+  }, []);
   useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
   const [knowledgePocket, setKnowledgePocket] = useState(readKnowledgePocket);
   const [selectedPocketId, setSelectedPocketId] = useState("");

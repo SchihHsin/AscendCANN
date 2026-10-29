@@ -1,5 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
+const ROUTE_REV = "20261029-task-routing";
 const chapters = [
   {
     id: "expression", title: "先把目标说清", cover: "用户不是从空白开始", summary: "从任务现场或学习意图出发，让可讨论的线索先出现，再由用户组织并确认自己的 Prompt。",
@@ -181,6 +182,7 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
     frame.src = target.href;
   } else {
     const target = new URL(APP_URL, location.href);
+    target.searchParams.set("showcaseRev", ROUTE_REV);
     if (activePoint.task) target.searchParams.set("task", activePoint.taskRoute || activePoint.task);
     else target.searchParams.set("home", activePoint.home || "classic");
     target.hash = "";
