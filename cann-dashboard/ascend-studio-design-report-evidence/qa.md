@@ -180,3 +180,5 @@
 - 本地浏览器回读计算样式确认文字 `#f5f7fa`、字号约 9.5px、色点 6px、图例无横向溢出；预览复核 5 个阶段、痛点 / 机会点位置与 Doing / Feeling 行仍正常。
 - 学习用户保持一个角色画像；模糊兴趣和明确目标是两种进入学习旅程的起点。痛点与感受曲线仍是定性设计推演，不是新研究结果。
 - 本次只做本地静态检查与桌面视觉核对，未运行自动化测试；报告仍为 17 页，页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 留存桌面单页截图 `journey-page3-1352-viewport.png` 与元数据 `journey-page3-1352-viewport-meta.json`。截图为 1352×778，文档无水平溢出、无 Cookie 覆盖；桌面预览中的阶段、触点、Thinking、Doing、Feeling、痛点和机会点列均为 5 列同宽且 x 坐标一致，包含 16 个时序事件、5 张痛点卡和 5 张机会点卡。
+- 发布：报告提交 `393b85d7` 推送至 `origin/main`；GitHub Pages workflow `40967886194` 成功。线上报告返回 HTTP 200，Range 回读确认新的 Feeling 图例文字色规则已部署。

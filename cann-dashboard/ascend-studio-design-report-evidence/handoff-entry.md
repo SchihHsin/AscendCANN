@@ -25,5 +25,5 @@
 - 用户再次提供用户旅程结构参考图，并指出旧预览仍像复杂时序图。第 3 页现以阶段为列，依次呈现现有触点、Thinking、Doing、Feeling、设计痛点和机会点；Doing 中保留参与角色的时序交接。修正了角色头像与行标题冲突、痛点文本拥挤的问题。
 - Thinking 行每阶段放任务用户 / 学习用户各一条判断，以颜色对应顶部画像；不新增重复的任务 / 学习起点行。模糊兴趣和明确学习目标仍属于同一学习用户类型。痛点仍然每阶段多条，机会点按列对应后续设计方向。
 - 修订 `build_report.py`、生成的网页 PPT、`narrative.md`、QA 与本交接记录；页面仍为 17 页，不影响页面 hash 或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户提供的旅程参考（H）；痛点与把握感曲线为设计推演（L）。
-- 验证：构建报告、`python3 -m py_compile .../build_report.py`、`git diff --check`；本地桌面 Chrome #3 核对五阶段和每行对齐、Thinking 双轨、Doing 角色时序、痛点 / 机会点卡片无重叠。自动化测试未运行。提交和 Pages 发布结果待推送后补记。
+- 验证：构建报告、`python3 -m py_compile .../build_report.py`、`git diff --check`；本地桌面 Chrome #3 核对五阶段和每行对齐、Thinking 双轨、Doing 角色时序、痛点 / 机会点卡片无重叠。自动化测试未运行。报告提交 `393b85d7` 已推送到 `origin/main`；Pages workflow `40967886194` 成功，线上报告 HTTP 200，按 Range 回读确认图例样式已发布。
 - 续修图例：桌面核对发现 Feeling 行图例文字被通用样式覆盖为深灰，和灰底对比不足；现改为浅色文字与更亮的蓝 / 紫色点，并放大色点。学习用户的模糊兴趣与明确能力目标仍呈现在同一画像下，作为不同起点。

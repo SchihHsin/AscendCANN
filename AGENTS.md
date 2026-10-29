@@ -8110,3 +8110,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确纠正底座层级（H）；接口、索引和任务关系为建设示意（M），不表示服务已经接入。
 - 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，确认检索服务位于最下方知识底座区域，内容治理仍在其下方同一底座内，反馈标注与检索节点分开。未运行自动化测试。
 - 页面提交 `6c8b64de` 已推送至 `origin/main`；GitHub Pages workflow `40965922472` 成功，线上页面返回 HTTP 200，并已读回新标题、KNOWLEDGE BASE 标签和“检索服务”节点。
+
+### 2026-10-30 · Ascend Studio 用户旅程矩阵续修与发布
+
+- 第 3 页沿用户提供的经典旅程结构整理为五阶段横向矩阵：现有触点、Thinking、Doing 角色时序、Feeling 定性曲线、每阶段多条设计痛点、逐列对应的机会点。删除重复的任务 / 学习导向行；学习用户仍是一类人，模糊兴趣和明确能力目标作为两种起点呈现。
+- 修复 Feeling 图例深灰字落在灰底行标题上对比不足的问题：文字改为浅色，蓝紫色点提高亮度并扩大至 6px。行列与主时序、阶段插画、头像和痛点 / 机会点保持可读。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`journey-sequence.mmd` / `.svg`、`narrative.md`、`qa.md`、`handoff-entry.md`、生成报告 `cann-dashboard/ascend-studio-design-report.html`，并保存桌面截图及元数据 `journey-page3-1352-viewport.png` / `journey-page3-1352-viewport-meta.json`。
+- 用户提供的旅程结构和角色讨论为 H；1352×778 桌面截图及浏览器计算布局为 M；痛点与把握感变化为定性设计推演（L），不是新研究或测量结论。汇报仍为 17 页；页面序列和 API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 验证：`npm run render:journey-sequence`、报告构建、`python3 -m py_compile .../build_report.py`、两段内联 JS 与 Mermaid 渲染脚本 `node --check`、`git diff --check`。桌面预览确认 5 列、16 个时序事件、每阶段两条痛点、5 个机会点；图例无溢出，页面无水平溢出。未运行自动化测试套件。
+- 报告提交 `393b85d7` 已推送至 `origin/main`。Pages workflow `40967886194` 成功；线上 URL 返回 HTTP 200，Range 回读确认新图例样式已发布。此次交接与截图证据随后续文档提交一并推送。
