@@ -7740,6 +7740,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 只改 `ascstudio-pc/styles.css`、`ascstudio-pc/index.html` 和本交接记录；章节、起点任务、Demo 与小程序未变，不涉及 API / Protocol、Host / Harness 或 Application / Task 边界。
 - 代码提交 `27b584ce` 已推送到 `origin/main`；Pages workflow `40803820250` build / deploy 均成功。线上 HTML 已引用 `20261029-translucent-note-26`，入口与 CSS 均 HTTP 200，样式响应确认 26% 黑底且无背景模糊。交接记录随后单独提交并推送。
 
+### 2026-10-29 · 讲解卡调整为 60% 透明并加背景模糊
+
+- 按用户所说“60%透明度”解释为 60% 透光 / 黑底不透明度 40%，给展开卡片和收起提示条增加 4px 背景模糊；样式版本更新为 `20261029-translucent-note-60-blur-4`。
+- 来源为用户明确指定的透明度与背景模糊（H）。本地预览截图中输入栏仍可从卡片下方辨认；DOM 计算样式为 `rgba(0, 0, 0, 0.4)` 和 `blur(4px)`。验证 `git diff --check`；静态 CSS 无需构建，未运行自动化测试。
+- 仅影响 `ascstudio-pc/styles.css`、`ascstudio-pc/index.html` 和本交接记录；章节、设计点、起点映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
+- 提交与 Pages 部署结果在本轮推送后补记。
+
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
 - 用户指出进入范围图解后对话不应收起，且日志排查入口应留在对话中。原因是宽幅图解 CSS 同时隐藏了 `.conversation-panel`，入口卡也曾在首次点击后自动折叠，并且只渲染在初始对话里。
