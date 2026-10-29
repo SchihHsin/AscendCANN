@@ -7996,3 +7996,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py` 并重新生成 `cann-dashboard/ascend-studio-design-report.html` 与 `page-map.json`；同步更新本地 5219 预览副本。页数、交互原型与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 依据为用户明确反馈（H）。验证：生成脚本 `py_compile` 与构建通过；17 页 `page-map.json` 保持；`git diff --check`、5219 HTTP 文案回读通过；CUA 第 3 页无障碍树确认 Agent 角色与旅程说明。
 - 提交 / 推送：构建脚本、生成汇报、page-map 与本交接记录组成独立提交；推送至 `origin/main`。
+
+### 2026-10-29 · 用户旅程补充维度待讨论
+
+- 用户指出“丰富旅程”应先判断是否新增分析行，而不是继续给现有阶段增加描述。本轮只讨论结构，未改汇报页面。
+- 第 3 页已有阶段、用户行为、角色协作时序、设计痛点、机会点。时序已承载主要触点；建议优先讨论一条定性「情绪 / 把握感」轨迹，分别呈现任务目标与学习目标，再落到痛点；替代选项是关键判断问题行或触点图标行。用户选择前不实施。
+- 无访谈或行为证据支撑情绪数值；若采用曲线，应标为体验推演、不加数值刻度，并保留两类目标的差异。页面序列与 API / Host / Application 边界不变。
+- 依据为当前旅程页面结构与用户本轮反馈；无新增用户研究证据。验证：只读核对 `build_report.py` 现有行结构；本轮未修改页面、未运行构建或测试。
+- 提交 / 推送：本轮仅同步本交接记录至 `origin/main`；无页面改动。
