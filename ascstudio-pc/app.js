@@ -1,11 +1,11 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261029-task-routing";
+const ROUTE_REV = "20261030-new-task-card-start";
 const chapters = [
   {
     id: "development", title: "解决问题后把经验留下", cover: "从错误现象到社区经验", summary: "从整理当前任务、理解问题、核对结果，到整理可分享的经验，串起完整的开发过程。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
-      { id: "connect", title: "从当前任务开始提问", note: "将任务目标与相关材料整理成可编辑的 Prompt，确认后再发送。", emphasis: "可编辑的 Prompt", description: "将任务目标与相关材料整理成可编辑的 Prompt，确认后再发送。", entry: "Add 算子精度差异排查 · 任务对话与 Prompt", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
+      { id: "connect", title: "从任务建议卡开始", note: "在新建任务页用建议卡片提供可选起点，用户选择后再继续。", emphasis: "建议卡片", description: "在新建任务页用建议卡片提供可选起点，用户选择后再继续。", entry: "新建任务首页 · 主动建议卡片", home: "classic", mode: "学习" },
       { id: "micro", title: "把眼前内容带入提问", note: "选取内容、指向页面或调整输入区时，都能把当前上下文带入提问。", emphasis: "把当前上下文带入提问", description: "选取内容、指向页面或调整输入区时，都能把当前上下文带入提问。", entry: "Add 算子精度差异排查 · 对话内容与输入区", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
       { id: "error-visual", title: "在问题发生处看懂原因", note: "把当前内容和解释图示放在一起，帮助用户理解原因和处理方式。", emphasis: "理解原因和处理方式", description: "把当前内容和解释图示放在一起，帮助用户理解原因和处理方式。", entry: "Add 算子精度差异排查 · 差异日志与图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
       { id: "verify", title: "确认处理结果再继续", note: "对照处理前后的结果，确认问题是否解决，再决定下一步。", emphasis: "确认问题是否解决", description: "对照处理前后的结果，确认问题是否解决，再决定下一步。", entry: "Add 算子精度差异排查 · 结果核验", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
