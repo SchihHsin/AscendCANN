@@ -2,13 +2,16 @@ import { useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { getMaterialMeta } from "./workspace-materials";
 import { LEARNING_PATH_GENERATION_TASK } from "./learning-data";
+import { LOG_DIAGNOSTIC_TASK } from "./prototype-data";
 
 const ADD_CUSTOM_TASK_ID = "AddCustom 精度异常";
 const ADD_CUSTOM_CANVAS_VERSION = 5;
+const LOG_DIAGNOSTIC_WORKSPACE_VERSION = 1;
 
 function initialState(isMainTask, taskId, initialMaterialId) {
-  const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief")), unread: false };
+  const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : taskId === LOG_DIAGNOSTIC_TASK ? "log-diagnosis" : isMainTask ? "explanation" : "task-brief")), unread: false };
   const addCustom = taskId === ADD_CUSTOM_TASK_ID;
+  const logDiagnostic = taskId === LOG_DIAGNOSTIC_TASK;
   const canvas = { ...getMaterialMeta("canvas"), title: "任务内容画布", unread: false };
   return {
     tabs: addCustom ? [initial, canvas] : [initial],
@@ -25,7 +28,7 @@ function initialState(isMainTask, taskId, initialMaterialId) {
     canvasMode: addCustom ? "focus" : "overview",
     overview: { query: "", category: "all", collapsedGroups: [], compactIds: [], mapLevel: 2, mapInitialized: false, ...(addCustom ? { focusId: initial.id } : {}) },
     snapshots: [],
-    collapsed: addCustom,
+    collapsed: addCustom || logDiagnostic,
     returnPoint: null,
     positions: {},
     ...(addCustom ? { addCustomCanvasVersion: ADD_CUSTOM_CANVAS_VERSION } : {}),
@@ -132,6 +135,22 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId, def
       collapsed: true,
       returnPoint: null,
       addCustomCanvasVersion: ADD_CUSTOM_CANVAS_VERSION,
+    });
+    persist();
+  }
+  // The log-triage task starts in the conversation; reveal its work area only after the user opens the cue.
+  if (taskId === LOG_DIAGNOSTIC_TASK && tasks.current.get(taskId).logDiagnosticWorkspaceVersion !== LOG_DIAGNOSTIC_WORKSPACE_VERSION) {
+    const previous = tasks.current.get(taskId);
+    const initial = initialState(isMainTask, taskId, initialMaterialId);
+    tasks.current.set(taskId, {
+      ...initial,
+      ...previous,
+      tabs: previous.tabs?.length ? previous.tabs : initial.tabs,
+      visitedTabs: previous.visitedTabs?.length ? previous.visitedTabs : initial.visitedTabs,
+      activeId: previous.activeId || initial.activeId,
+      lastContentId: previous.lastContentId || initial.lastContentId,
+      collapsed: true,
+      logDiagnosticWorkspaceVersion: LOG_DIAGNOSTIC_WORKSPACE_VERSION,
     });
     persist();
   }

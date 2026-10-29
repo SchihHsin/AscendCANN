@@ -7726,3 +7726,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户指出的实际错误（H）；任务名称和各点配置来自桌面评审数据及现有 Studio 任务定义（H）。
 - 验证：`npm run build:pages`、`node --check ascstudio-pc/app.js`、生成 JS 语法检查和 `git diff --check`；本地 8765 浏览器逐点确认路径共创、学习练习、学习意图 / Prompt 探索和社区经验各自进入对应任务或首页，并确认任务参数覆盖此前保存的选择。未运行自动化测试套件。
 - 提交 `54e904b8` 已推送至 `origin/main`；Pages workflow `40800776047` 的 build / deploy 成功。线上桌面入口加载带版本参数的脚本，内嵌 Studio HTML 指向新 JS / CSS，资源均 HTTP 200。本交接验证记录随本记录提交并推送。
+
+### 2026-10-29 · 日志排查时保留对话与持续入口
+
+- 用户指出进入范围图解后对话不应收起，且日志排查入口应留在对话中。原因是宽幅图解 CSS 同时隐藏了 `.conversation-panel`，入口卡也曾在首次点击后自动折叠，并且只渲染在初始对话里。
+- 现改为：桌面范围图解加宽右侧工作区、隐藏项目栏，但持续显示左侧对话；小屏在日志排查工作区打开期间将对话固定为可滚动浮层。排查入口卡固定追加在对话末尾，点击后仍保留，按当前步骤显示「查看日志线索 / 继续当前排查 / 回到当前步骤」。
+- 用户反馈为交互要求（H）；本地 CUA 验证了初始入口、进入范围图解后的对话共存与 0-token 标记（M）。示例仍由本地规则驱动，没有新增模型调用；页面顺序与 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css`、`ascend-studio/src/useContentWorkspace.js`、`ascend-studio/src/LogTriageWorkspace.jsx` 与 `ascstudio/` Pages 产物有改动。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1440×900 与默认 491×664 均确认对话可见，入口在展开工作区后仍可操作。未运行自动化测试。
+- 提交、推送及 Pages 发布回执将在发布后补记。

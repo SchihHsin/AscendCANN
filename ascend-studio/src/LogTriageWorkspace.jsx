@@ -37,7 +37,7 @@ function StepButton({ index, active, done, disabled, onClick }) {
 
 export const INITIAL_LOG_TRIAGE_STATE = Object.freeze({ step: 0, exampleApplied: false, verified: false, experienceReady: false });
 
-export function LogTriageWorkspace({ state = INITIAL_LOG_TRIAGE_STATE, onStateChange = () => {}, onCommunityExperienceReady, communityReady = false }) {
+export function LogTriageWorkspace({ state = INITIAL_LOG_TRIAGE_STATE, onStateChange = () => {}, onFormatLabFocusChange = () => {}, onCommunityExperienceReady, communityReady = false }) {
   const { step, exampleApplied, verified, experienceReady } = { ...INITIAL_LOG_TRIAGE_STATE, ...state };
   const contentRef = useRef(null);
   const [formatLabMounted, setFormatLabMounted] = useState(step === 1);
@@ -48,6 +48,7 @@ export function LogTriageWorkspace({ state = INITIAL_LOG_TRIAGE_STATE, onStateCh
   const updateState = patch => onStateChange(previous => ({ ...INITIAL_LOG_TRIAGE_STATE, ...previous, ...patch }));
   const setStage = (next) => {
     if (next === 1) setFormatLabMounted(true);
+    onFormatLabFocusChange(next === 1);
     updateState({ step: next });
     contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
