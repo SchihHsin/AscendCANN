@@ -8042,3 +8042,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/styles.css` 并更新 `index.html` 的 CSS / JS 缓存版本。未改变插图、章节内容、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户对尺寸的明确选择（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 打开第三章放大预览，确认标题、摘要、章节导航和插图仍存在。未运行自动化测试。
 - 提交 / 推送：实现提交 `82bd8b2f` 已推送至 `origin/main`；线上 HTML 与 CSS 已更新，CSS 回读确认插图宽度为所在栏 130%、上限 680px。无其他未决事项。
+
+### 2026-10-29 · 技术实现页按参考结构取消卡片式呈现
+
+- 用户指出第 06 页又变回卡片式，希望沿用提供的结构化参考图，用区域、节点、连线和轨道本身阐释关系。将第 06 页改为一张连续 SVG 关系图：顶层开发者入口围绕目标汇合，中层 Agent Host、OpenAPI、Skill、MCP 与四类任务能力按调用和数据关系展开，底层内容治理围绕来源接入、解析归一、版本 / 许可 / Owner、可信 Knowledge Unit、关系图与索引组织；知识向上供给，授权完成 / 纠错沿独立回路回到 Owner。删除原卡片墙和 P0–P3 时间轴；三个架构层不再标成 STEP。
+- 保留关键建设信息：来源和连接器、版本与适用范围、原文锚点和前置 / 兼容关系、全文 / 语义索引、robots / sitemap / Schema.org / llms.txt、查询 API、Agent Host 上下文与权限检查、Skill 流程、MCP 知识和受限工具、路径 / 图解 / 推荐 / 活动产物、结果校验与反馈回流。页面序列与 API / Protocol、Host / Harness、Application / Task 职责边界未变；能力架构仍是建设示意，不表示服务已经接入。
+- 依据为用户提供的结构图参考（H）；技术内容为此前确认的建设方案（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 第 06 页复核节点、分层、上行供给与反馈关系，截图未见节点文字重叠。GitHub Pages 部署 workflow `40899785914` 成功，线上 URL 返回 HTTP 200，回读到新版标题与 `arch-orbit` 结构、旧 `cap-box` 卡片标记已移除；线上 CUA 截图导航超时，视觉验收以本地预览为准。
+- 页面实现提交 `adf86329` 已推送至 `origin/main`；本交接记录将在文档提交中同步推送。
