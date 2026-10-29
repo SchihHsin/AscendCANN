@@ -7752,7 +7752,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确指定黑色不透明度 80%、背景模糊 2px；同步调整展开讲解卡和收起提示条，并更新样式版本为 `20261029-note-opacity-80-blur-2`。
 - 来源为用户明确要求（H）。静态 CSS 无需构建；`git diff --check` 与本地 HTTP 样式资源检查通过，确认新缓存参数、80% 黑底和 2px 模糊。自动化测试未运行。
 - 仅影响 `ascstudio-pc/styles.css`、`ascstudio-pc/index.html` 和本交接记录；章节、设计点、起点映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
-- 提交与 Pages 部署结果在本轮推送后补记。
+- 提交 `4b593740` 已推送到 `origin/main`；Pages workflow `40807503291` 的 build / deploy 均成功。线上 HTML 与 CSS 均 HTTP 200，HTML 引用新版本号，CSS 确认 80% 黑底和 2px 模糊。本交接记录随后单独提交并推送。
 
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
