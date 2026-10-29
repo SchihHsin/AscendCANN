@@ -7766,7 +7766,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求允许移动左下角讲解卡：顶部章节栏作为拖动把手，拖动范围限制在视口内，收起按钮仍保留点击操作；当前位置在当前页面会话中跨设计点切换保留，刷新后回到默认位置。样式与脚本缓存版本更新为 `20261029-note-draggable`。
 - 来源为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地预览实际拖动后卡片从左下移至页面中部，边界内显示正常（M）。未运行自动化测试。
 - 仅影响 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css` 和本交接记录；章节、设计点内容、起点映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
-- 提交与 Pages 部署结果在本轮推送后补记。
+- 提交 `d83314fe` 已推送到 `origin/main`；Pages workflow `40811153962` 的 build / deploy 均成功。线上 HTML、JS、CSS 均 HTTP 200，HTML 引用拖动版缓存参数，JS 含指针拖动处理。
 
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
