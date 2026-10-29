@@ -7761,3 +7761,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈为交互要求（H）；本地 CUA 验证了初始入口、进入范围图解后的对话共存与 0-token 标记（M）。示例仍由本地规则驱动，没有新增模型调用；页面顺序与 API / Protocol、Host / Harness、Application / Task 边界均未改变。
 - `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css`、`ascend-studio/src/useContentWorkspace.js`、`ascend-studio/src/LogTriageWorkspace.jsx` 与 `ascstudio/` Pages 产物有改动。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1440×900 与默认 491×664 均确认对话可见，入口在展开工作区后仍可操作。未运行自动化测试。
 - 提交 `f884c6b3` 已推送至 `origin/main`；GitHub Pages workflow `40801769228` 的 build / deploy 均成功。线上 `/ascstudio/` 已引用 `index-vbiP_AMg.js` 与 `index-DzNzaxmV.css`，两个资源均 HTTP 200，JS 已回读到范围图解聚焦样式、排查入口和返回当前步骤提示；CUA 本地 1440×900 与 491×664 交互检查通过。交接记录更新随后单独提交并推送。
+
+### 2026-10-29 · 调整抖音奖励提示文案
+
+- 将多渠道发布中的抖音短提示从「播放表现激励」改为「根据播放表现进行激励」；完整奖励说明保持原样。
+- 依据：用户明确指定文案（H）。仅修改显示文案，不改变渠道选择、奖励规则、页面顺序 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`cd ascend-studio && npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；线上 `/AscendCANN/ascstudio/` 与 `index-DR6LR4f8.js` 均 HTTP 200，线上 JS 确认含新文案。未运行自动化测试。
+- 实现提交 `697bc217` 已推送到 `origin/main`；Pages workflow `40808644053` build / deploy 成功。无未决事项。
