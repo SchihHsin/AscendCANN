@@ -8134,3 +8134,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，同步更新路由与资源缓存版本。依据为用户明确纠正（H）；未改变章节和设计点顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认第一点的模式、入口及讲解均指向学习场景，缓存版本同步。
 - 实现提交 `31467f64` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
+
+### 2026-10-30 · 学习旅程统一从主动建议卡开始
+
+- 用户要求整体只保留一个学习开场，即从主页主动建议卡进入学习。移除开发篇重复的建议卡起点，使开发篇从开发问题回答与知识点开始；移除学习篇“从模糊想法开始学习”的并列起点，保留主动建议卡后直接进入学习路径共创。学习卡片明确为根据已有学习记录主动呈现下一步建议，由学习者决定是否采用。
+- 更新 `ascstudio-pc/app.js`、`ascstudio-pc/index.html` 缓存版本。开发摘要改为从开发问题开始，学习章节封面和摘要改为从主动建议卡开始。设计点数量现为开发 6、学习 6、移动端 5；顺序之外的其余点及任务路由未变。未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确要求只保留主动卡片学习开场（H）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认删除开发篇重复 `connect` 和学习篇替代入口 `intent`，保留学习模式主动建议卡，章节点数及缓存版本匹配。
+- 实现提交 `d62f3ca1` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
