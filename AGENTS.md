@@ -7733,4 +7733,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 现改为：桌面范围图解加宽右侧工作区、隐藏项目栏，但持续显示左侧对话；小屏在日志排查工作区打开期间将对话固定为可滚动浮层。排查入口卡固定追加在对话末尾，点击后仍保留，按当前步骤显示「查看日志线索 / 继续当前排查 / 回到当前步骤」。
 - 用户反馈为交互要求（H）；本地 CUA 验证了初始入口、进入范围图解后的对话共存与 0-token 标记（M）。示例仍由本地规则驱动，没有新增模型调用；页面顺序与 API / Protocol、Host / Harness、Application / Task 边界均未改变。
 - `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css`、`ascend-studio/src/useContentWorkspace.js`、`ascend-studio/src/LogTriageWorkspace.jsx` 与 `ascstudio/` Pages 产物有改动。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1440×900 与默认 491×664 均确认对话可见，入口在展开工作区后仍可操作。未运行自动化测试。
-- 提交、推送及 Pages 发布回执将在发布后补记。
+- 提交 `f884c6b3` 已推送至 `origin/main`；GitHub Pages workflow `40801769228` 的 build / deploy 均成功。线上 `/ascstudio/` 已引用 `index-vbiP_AMg.js` 与 `index-DzNzaxmV.css`，两个资源均 HTTP 200，JS 已回读到范围图解聚焦样式、排查入口和返回当前步骤提示；CUA 本地 1440×900 与 491×664 交互检查通过。交接记录更新随后单独提交并推送。
