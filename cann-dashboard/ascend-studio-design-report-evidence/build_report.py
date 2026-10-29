@@ -165,7 +165,8 @@ body.overview.ctrl #deck{width:auto}
 .r-copy-journey .cb-painpoint-rail{grid-row:4}
 .r-journey-painpoint{appearance:none;width:100%;text-align:left;position:relative;padding:.48vh .58vw!important;display:flex;flex-direction:column;justify-content:center;gap:.25vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;color:#4f4346!important;box-shadow:none!important;cursor:default}
 .r-journey-painpoint small{font-size:var(--fs-xs);font-weight:780;color:#9b5260;letter-spacing:.02em}
-.r-journey-painpoint .r-painpoint-issue{display:block;font-size:var(--cb-copy-size);line-height:1.12;color:#5d5256}
+.r-journey-painpoint .r-painpoint-issue{display:flex;align-items:flex-start;gap:.25vw;font-size:var(--cb-copy-size);line-height:1.12;color:#5d5256}
+.r-journey-painpoint .r-painpoint-issue i{width:5px;height:5px;margin-top:.34em;flex:0 0 auto;border-radius:50%;background:#c86161}
 .r-journey-painpoint .r-painpoint-issue b{font-weight:780;color:#a34f5d}
 .r-sequence-role-label{grid-column:1;grid-row:3;position:relative;min-width:0;min-height:0;border-right:1px solid #dfe3eb}
 .r-sequence-plot{grid-column:2;grid-row:3;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(180deg,#fffdfd 0%,#fff 100%);border:1px solid #e1e5ec}
@@ -288,75 +289,116 @@ body.overview.ctrl #deck{width:auto}
 """
 
 CSS += r"""
-/* Journey matrix: stages, thinking, doing/touchpoints, feeling, pain points and opportunities. */
-.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5vh 6.4vh 43.8vh 6vh 8.3vh 6.5vh;gap:.4vh .45vw}
-.r-copy-journey .cb-axis{grid-column:1;grid-row:1}
-.r-copy-journey .cb-stage-rail{grid-row:1;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}
-.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(36px,3.1vw,46px);gap:.35vw;padding:.38vh .5vw;background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:9px;box-shadow:none}
-.r-copy-journey .cb-stage-copy{gap:.13vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.035em;color:color-mix(in srgb,var(--phase) 78%,#34415b)}
-.r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
-.r-copy-journey .cb-stage span{margin-top:.05vh;font-size:var(--fs-xs);line-height:1.08;color:#718096;white-space:normal}
-.r-copy-journey .cb-stage-visual{display:grid;width:clamp(36px,3.1vw,46px);height:clamp(36px,4.7vh,44px)}
-.r-copy-journey .r-key-judgment-label{grid-column:1;grid-row:2;display:flex;flex-direction:column;justify-content:center;gap:.12vh}
-.r-copy-journey .r-key-judgment-label .r-journey-legend,.r-copy-journey .r-emotion-label .r-journey-legend{display:flex;align-items:center;gap:.45vw;color:#697587;font-size:var(--fs-xs);line-height:1.05}
+/* Reference-led journey: persona/scenario → stage columns → touchpoints → thinking → doing → feeling → pain/opportunity. */
+.r-copy-journey .collab-blueprint{width:100%;height:80vh;grid-template-columns:12.4vw minmax(0,1fr);grid-template-rows:7.2vh 5.4vh 5.4vh 7.4vh 30vh 6.8vh 7.4vh 6.2vh;gap:.16vh .42vw}
+.r-copy-journey .r-journey-persona{grid-column:1/-1;grid-row:1;min-width:0;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1.55fr);align-items:center;gap:.8vw;padding:.2vh .45vw;border-bottom:1px solid #e2e6ec}
+.r-copy-journey .r-persona-profiles{min-width:0;display:flex;align-items:center;gap:.65vw}
+.r-copy-journey .r-persona-profile{min-width:0;flex:1;display:flex;align-items:center;gap:.34vw;padding:0;border:0;border-radius:0;background:transparent}
+.r-copy-journey .r-persona-profile img{width:clamp(31px,2.8vw,40px);height:clamp(31px,2.8vw,40px);flex:0 0 auto;border-radius:50%;object-fit:cover}
+.r-copy-journey .r-persona-profile span{min-width:0;display:flex;flex-direction:column;gap:.14vh}
+.r-copy-journey .r-persona-profile b{font-size:var(--fs-xs);line-height:1.1;color:#384453;white-space:nowrap}
+.r-copy-journey .r-persona-profile small{font-size:var(--fs-xs);line-height:1.12;color:#778293;white-space:normal}
+.r-copy-journey .r-persona-scenario{min-width:0;padding-left:.8vw;border-left:1px solid #e2e6ec}
+.r-copy-journey .r-persona-scenario small{display:block;margin-bottom:.22vh;font:760 var(--fs-xs)/1.05 'JetBrains Mono';letter-spacing:.045em;color:#828c9a}
+.r-copy-journey .r-persona-scenario p{margin:0;font-size:var(--fs-sm);line-height:1.22;color:#526074}
+.r-copy-journey .cb-axis{grid-column:1;grid-row:2}
+.r-copy-journey .cb-axis,.r-copy-journey .cb-row-label{align-items:center;text-align:center;justify-content:center;padding:.45vh .45vw;background:#858b94;border:0;border-radius:2px}
+.r-copy-journey .cb-axis small,.r-copy-journey .cb-row-label small{font-size:var(--fs-xs);line-height:1.08;color:#e9edf2;letter-spacing:.045em}
+.r-copy-journey .cb-axis b,.r-copy-journey .cb-row-label b{margin:.22vh 0 0;font-size:var(--fs-sm);line-height:1.15;color:#fff;font-weight:760}
+.r-copy-journey .cb-stage-rail{grid-row:2;grid-template-columns:repeat(5,minmax(0,1fr));gap:.32vw}
+.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(31px,2.8vw,41px);gap:.25vw;padding:.3vh .48vw;background:#858b94;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-stage:first-child{clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%)}
+.r-copy-journey .cb-stage:not(:first-child){clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%,9px 50%);padding-left:.75vw}
+.r-copy-journey .cb-stage-copy{gap:.06vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.05 'JetBrains Mono';letter-spacing:.035em;color:#e3e7ec}
+.r-copy-journey .cb-stage b{font-size:var(--fs-sm);line-height:1.08;color:#fff;white-space:normal}
+.r-copy-journey .cb-stage span{display:none}
+.r-copy-journey .cb-stage-visual{display:grid;width:clamp(29px,2.75vw,38px);height:clamp(29px,4.2vh,36px)}
+.r-copy-journey .r-touchpoint-label{grid-column:1;grid-row:3;display:flex;flex-direction:column;justify-content:center;gap:.14vh}
+.r-copy-journey .r-touchpoint-label small{font-size:var(--fs-xs);letter-spacing:.04em;color:#e9edf2}
+.r-copy-journey .r-touchpoint-label b{font-size:var(--fs-sm);line-height:1.08;color:#fff}
+.r-copy-journey .r-touchpoint-rail{grid-column:2;grid-row:3;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.32vw}
+.r-copy-journey .r-touchpoint-cell{min-width:0;min-height:0;display:flex;align-items:center;gap:.08vh;padding:.12vh .34vw;border-bottom:1px solid #e9ecf0}
+.r-copy-journey .r-touchpoint-line{min-width:0;display:flex;align-items:center;gap:.34vw;color:#536174}
+.r-copy-journey .r-touchpoint-line i{width:14px;height:14px;flex:0 0 auto;color:#718096}
+.r-copy-journey .r-touchpoint-line i svg{display:block;width:100%;height:100%;stroke-width:1.8}
+.r-copy-journey .r-touchpoint-line span{min-width:0;font-size:var(--fs-sm);line-height:1.15;color:#505e70}
+.r-copy-journey .r-key-judgment-label{grid-column:1;grid-row:4;display:flex;flex-direction:column;justify-content:center;gap:.12vh}
+.r-copy-journey .r-key-judgment-label .r-journey-legend,.r-copy-journey .r-emotion-label .r-journey-legend{display:flex;align-items:center;gap:.45vw;color:#f0f2f5;font-size:var(--fs-xs);line-height:1.05}
 .r-copy-journey .r-journey-legend span{display:inline-flex;align-items:center;gap:.18vw;white-space:nowrap}
 .r-copy-journey .r-journey-legend i{display:inline-block;width:.38em;height:.38em;border-radius:50%;background:var(--legend-tone);flex:0 0 auto}
-.r-copy-journey .r-journey-legend .task{--legend-tone:#4c82bd}.r-copy-journey .r-journey-legend .learn{--legend-tone:#8770bf}
-.r-copy-journey .r-key-judgment-rail{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
-.r-key-judgment-cell{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));align-items:center;min-width:0;min-height:0;gap:.1vh}
-.r-key-question{display:flex;align-items:center;min-width:0;gap:.32vw;color:#414e62;font-size:var(--fs-sm);font-weight:570;line-height:1.08;white-space:nowrap}
+.r-copy-journey .r-journey-legend .task{--legend-tone:#8fc1f3}.r-copy-journey .r-journey-legend .learn{--legend-tone:#c7b8ff}
+.r-copy-journey .r-emotion-label .r-journey-legend{gap:.24vw;font-size:clamp(9px,.7vw,10px);color:#f5f7fa}
+.r-copy-journey .r-emotion-label .r-journey-legend span{gap:.24em;color:#f5f7fa}
+.r-copy-journey .r-emotion-label .r-journey-legend i{width:6px;height:6px}
+.r-copy-journey .r-emotion-label .r-journey-legend .task{--legend-tone:#9dcaff}.r-copy-journey .r-emotion-label .r-journey-legend .learn{--legend-tone:#d0c4ff}
+.r-copy-journey .r-key-judgment-rail{grid-column:2;grid-row:4;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.32vw}
+.r-key-judgment-cell{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));align-items:center;min-width:0;min-height:0;gap:.12vh;padding:.1vh .42vw;border-bottom:1px solid #e9ecf0}
+.r-key-question{display:flex;align-items:center;min-width:0;gap:.42vw;color:#414e62;font-size:var(--fs-sm);font-weight:570;line-height:1.22;white-space:normal}
 .r-key-question i{display:block;width:5px;height:5px;border-radius:50%;background:var(--question-tone);flex:0 0 auto}
 .r-key-question.task{--question-tone:#4c82bd}.r-key-question.learn{--question-tone:#8770bf}
 .r-key-question span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
 .r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
-.r-copy-journey .r-sequence-role-label{grid-row:3}
-.r-copy-journey .r-sequence-row-heading{position:absolute;top:-.95vh;left:.18vw;display:flex;align-items:baseline;gap:.35vw;white-space:nowrap}
-.r-copy-journey .r-sequence-row-heading small{font-size:var(--fs-xs);font-weight:760;letter-spacing:.05em;color:#788293}
-.r-copy-journey .r-sequence-row-heading b{font-size:var(--fs-sm);font-weight:760;color:#384453}
-.r-copy-journey .r-sequence-plot{grid-row:3}
-.r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:none;color:#354052}
-.r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
+.r-copy-journey .r-sequence-role-label{grid-row:5;background:#858b94;border-radius:2px}
+.r-copy-journey .r-sequence-row-heading{position:absolute;z-index:3;top:.1vh;left:.18vw;display:flex;align-items:baseline;gap:.35vw;white-space:nowrap}
+.r-copy-journey .r-sequence-row-heading small{font-size:var(--fs-xs);font-weight:760;letter-spacing:.05em;color:#e9edf2}
+.r-copy-journey .r-sequence-row-heading b{font-size:var(--fs-sm);font-weight:760;color:#fff}
+.r-copy-journey .r-sequence-plot{grid-row:5}
+.r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(96px,7.8vw,116px);min-height:2.8vh;display:flex;align-items:center;gap:.2vw;padding:.08vh .1vw;border:0;border-radius:0;background:transparent;box-shadow:none;color:#354052}
+.r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(20px,1.65vw,24px);height:clamp(20px,1.65vw,24px);border:1px solid color-mix(in srgb,var(--event-tone) 22%,#fff);border-radius:50%;background:#fff;color:var(--event-tone)}
 .r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
-.r-sequence-event b{display:block;min-width:0;font-size:clamp(9px,.72vw,12px);font-weight:730;line-height:1.18;white-space:normal}
+.r-sequence-event b{display:block;min-width:0;font-size:clamp(12px,.88vw,14px);font-weight:730;line-height:1.15;white-space:normal}
 .r-sequence-event.tone-blue{--event-tone:#4c82bd}.r-sequence-event.tone-violet{--event-tone:#7770c5}.r-sequence-event.tone-teal{--event-tone:#32958e}.r-sequence-event.tone-red{--event-tone:#c86161}.r-sequence-event.tone-green{--event-tone:#45876a}
-.r-copy-journey .r-sequence-role[data-role="task"],.r-copy-journey .r-sequence-role[data-role="learn"]{border:1px solid color-mix(in srgb,var(--role-tone) 16%,#fff);background:color-mix(in srgb,var(--role-tone) 5%,#fff)}
+.r-copy-journey .r-sequence-role[data-role="task"],.r-copy-journey .r-sequence-role[data-role="learn"]{border:0;background:transparent}
 .r-copy-journey .r-sequence-role[data-role="studio"],.r-copy-journey .r-sequence-role[data-role="agent"],.r-copy-journey .r-sequence-role[data-role="environment"],.r-copy-journey .r-sequence-role[data-role="community"]{border:0;background:transparent;box-shadow:none}
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
-.r-copy-journey .r-emotion-label{grid-column:1;grid-row:4;display:flex;flex-direction:column;justify-content:center;gap:.08vh}
-.r-copy-journey .r-emotion-label b{font-size:var(--fs-sm);line-height:1.05}
-.r-copy-journey .r-emotion-label small{font-size:var(--fs-xs);line-height:1.02}
-.r-copy-journey .r-emotion-rail{grid-column:2;grid-row:4;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
+.r-copy-journey .r-sequence-role img.role-mark{width:clamp(24px,1.9vw,28px);height:clamp(24px,1.9vw,28px);max-width:28px;max-height:28px;border:1px solid #ffffff88;background:#fff}
+.r-copy-journey .r-sequence-role .role-mark{color:#fff}
+.r-copy-journey .r-sequence-role b{font-size:var(--fs-xs);color:#fff}
+.r-copy-journey .r-sequence-role small{font-size:var(--fs-xs);color:#e9edf2}
+.r-copy-journey .r-emotion-label{grid-column:1;grid-row:6;display:flex;flex-direction:column;justify-content:center;gap:.08vh}
+.r-copy-journey .r-key-judgment-label small,.r-copy-journey .r-emotion-label small{font-size:var(--fs-xs);line-height:1.02;color:#e9edf2}
+.r-copy-journey .r-key-judgment-label b,.r-copy-journey .r-emotion-label b{font-size:var(--fs-sm);line-height:1.05;color:#fff}
+.r-copy-journey .r-emotion-rail{grid-column:2;grid-row:6;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.32vw}
 .r-emotion-cell{min-width:0;min-height:0;display:grid;place-items:center;overflow:hidden}
 .r-emotion-cell svg{display:block;width:100%;height:100%;overflow:visible}
 .r-emotion-track{fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .r-emotion-track.task{stroke:#4c82bd}.r-emotion-track.learn{stroke:#8770bf;stroke-dasharray:6 3}
 .r-emotion-point{stroke:#fff;stroke-width:1.4;vector-effect:non-scaling-stroke}
 .r-emotion-point.task{fill:#4c82bd}.r-emotion-point.learn{fill:#8770bf}
-.r-copy-journey .cb-painpoint-label{grid-row:5}.r-copy-journey .cb-painpoint-rail{grid-row:5;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-painpoint-label{grid-row:7}.r-copy-journey .cb-painpoint-rail{grid-row:7;grid-template-columns:repeat(5,minmax(0,1fr));gap:.32vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
-.r-copy-journey .cb-opportunity-label{grid-row:6}
-.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:6;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-opportunity-label{grid-row:8}
+.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:8;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.32vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-opportunity{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25vh;padding:.4vh .52vw;border:0;border-radius:9px;background:#eaf5ed;color:#476956}
 .r-copy-journey .cb-opportunity small{font-size:var(--fs-xs);font-weight:760;line-height:1.1;color:#397453}
 .r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
+.r-copy-journey .cb-axis{grid-row:2}
+.r-copy-journey .cb-painpoint-label,.r-copy-journey .cb-opportunity-label{align-items:center}
+.r-copy-journey .r-sequence-plot{background:repeating-linear-gradient(90deg,#fbfcfd 0%,#fbfcfd 19.8%,#e7ebf0 19.8%,#e7ebf0 20%,#fff 20%,#fff 39.8%,#e7ebf0 39.8%,#e7ebf0 40%,#fbfcfd 40%,#fbfcfd 59.8%,#e7ebf0 59.8%,#e7ebf0 60%,#fff 60%,#fff 79.8%,#e7ebf0 79.8%,#e7ebf0 80%,#fbfcfd 80%,#fbfcfd 100%)}
+.r-copy-journey .r-emotion-cell{border-bottom:1px solid #e9ecf0}
+.r-copy-journey .cb-painpoint-rail,.r-copy-journey .cb-opportunity-rail{gap:.32vw}
+.r-copy-journey .cb-painpoint-node,.r-copy-journey .cb-opportunity{padding:.35vh .42vw}
+.r-copy-journey .cb-painpoint-node small,.r-copy-journey .cb-opportunity small{font-size:var(--fs-xs)}
+.r-copy-journey .cb-painpoint-node .r-breakpoint-issue,.r-copy-journey .cb-opportunity span{font-size:clamp(12px,.84vw,14px);line-height:1.16}
+.r-copy-journey .r-touchpoint-rail,.r-copy-journey .r-key-judgment-rail,.r-copy-journey .r-emotion-rail,.r-copy-journey .cb-painpoint-rail,.r-copy-journey .cb-opportunity-rail{background:#fff}
 """
 
 journey_pain_points = [
-    {"label":"表达目标", "issues":[("任务","目标难提炼"),("学习","兴趣难落到起点")], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达"},
-    {"label":"学习起步", "issues":[("任务","Prompt 需补上下文"),("学习","资料版本难核对")], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点"},
-    {"label":"边做边懂", "issues":[("任务","依据难看懂"),("学习","路径未必适合自己")], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动"},
-    {"label":"经验回流", "issues":[("任务","修好仍不懂原因"),("学习","练习之后难迁移")], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用"},
-    {"label":"移动续学", "issues":[("任务","经验留在私聊"),("学习","笔记跨端难接续")], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践"},
+    {"label":"表达目标", "issues":["目标难从现象中提炼", "兴趣难转成学习起点"], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达"},
+    {"label":"查找与核对", "issues":["资料缺少版本与环境前提", "内容不一定匹配已有基础"], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点"},
+    {"label":"形成方向", "issues":["还要手动补工程上下文", "预设顺序未必匹配目标"], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动"},
+    {"label":"实践验证", "issues":["建议、日志和资料分散", "跟做成功仍不一定懂原理"], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用"},
+    {"label":"经验沉淀", "issues":["修复经验留在私人对话", "个人笔记难带入下次任务"], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践"},
 ]
-JOURNEY_KEY_QUESTIONS = [
-    ("我该先解决什么？", "我该从哪里开始学？"),
-    ("资料适配当前环境吗？", "内容适合我的基础吗？"),
-    ("还缺哪些现场信息？", "路径顺序适合我吗？"),
-    ("为什么这样改才有效？", "我能独立做出来吗？"),
-    ("哪些经验值得留下？", "下次遇到能用上吗？"),
+JOURNEY_THOUGHTS = [
+    ("这个问题要达到什么结果？", "我想先学会什么？"),
+    ("资料和当前环境版本匹配吗？", "从哪段内容开始最适合我？"),
+    ("还缺哪些工程信息？", "先学原理还是跟例子练？"),
+    ("改动是否解决问题？怎么验证？", "为什么成功？换个例子还会吗？"),
+    ("怎样复用这次修复？", "怎样把笔记带到下次实践？"),
 ]
 # Relative SVG y-positions only: these qualitative traces are design hypotheses,
 # not measured scores. Higher positions mean greater perceived confidence.
@@ -377,24 +419,23 @@ SEQUENCE_ROLES = [
 SEQUENCE_EVENT_CARDS = {
     "描述开发问题": ("clipboard-list", "描述开发问题", "tone-blue"),
     "表达学习目标": ("graduation-cap", "表达学习目标", "tone-violet"),
-    "搜索文档与社区": ("search", "搜索文档与社区", "tone-teal"),
+    "搜索文档社区": ("search", "搜索文档社区", "tone-teal"),
     "查找教程示例": ("book-open", "查找教程示例", "tone-teal"),
-    "核对版本与环境": ("badge-check", "核对版本与环境", "tone-green"),
-    "补充项目上下文": ("file-text", "补充项目上下文", "tone-blue"),
-    "返回代码与步骤": ("code-xml", "返回代码与步骤", "tone-violet"),
-    "自行安排学习顺序": ("list-ordered", "自行安排学习顺序", "tone-violet"),
-    "应用建议并运行": ("play", "应用建议并运行", "tone-teal"),
+    "核对版本环境": ("badge-check", "核对版本环境", "tone-green"),
+    "补充工程现场": ("file-text", "补充工程现场", "tone-blue"),
+    "返回代码步骤": ("code-xml", "返回代码步骤", "tone-violet"),
+    "选定学习顺序": ("list-ordered", "选定学习顺序", "tone-violet"),
+    "运行并核验": ("play", "运行并核验", "tone-teal"),
     "跟随示例练习": ("code-xml", "跟随示例练习", "tone-teal"),
-    "返回日志与报错": ("triangle-alert", "返回日志与报错", "tone-red"),
-    "贴日志继续追问": ("message-square", "贴日志继续追问", "tone-red"),
+    "返回日志报错": ("triangle-alert", "返回日志报错", "tone-red"),
+    "带日志再追问": ("message-square", "带日志再追问", "tone-red"),
     "对照资料核验": ("search-check", "对照资料核验", "tone-green"),
     "检查运行结果": ("circle-check", "检查运行结果", "tone-green"),
-    "修复记录留在本地": ("file-text", "修复记录留在本地", "tone-violet"),
-    "学习笔记留在个人处": ("notebook-pen", "学习笔记留在个人处", "tone-violet"),
+    "记录修复经验": ("file-text", "记录修复经验", "tone-violet"),
+    "留下学习笔记": ("notebook-pen", "留下学习笔记", "tone-violet"),
 }
 
 def sequence_diagram_markup():
-    global SEQUENCE_STAGE_RAIL_STYLE
     source = HERE / "journey-sequence.mmd"
     raw_path = HERE / "journey-sequence.svg"
     renderer = HERE / "render_journey_sequence.mjs"
@@ -429,7 +470,7 @@ def sequence_diagram_markup():
     # large empty band above the first lane. Crop the rotated diagram around
     # the actual actor centers, with enough room for the lane labels/cards.
     actor_lane_positions = [width - center for _top, center in actor_positions.values()]
-    lane_padding = 64
+    lane_padding = 150
     sequence_y_min = max(0, min(actor_lane_positions) - lane_padding)
     sequence_y_max = min(width, max(actor_lane_positions) + lane_padding)
     sequence_y_span = max(1, sequence_y_max - sequence_y_min)
@@ -502,16 +543,15 @@ def sequence_diagram_markup():
                     parent.remove(child)
     if phase_ranges:
         phase_ranges.sort()
-        left_space = max(0, phase_ranges[0][0] - old_viewbox[1])
-        right_space = max(0, old_viewbox[1] + height - phase_ranges[-1][1])
-        # The source renderer sizes each phase by its message count and leaves
-        # a generous gap between rect blocks. Warp only the time axis so the
-        # five journey stages, sequence bands, user actions, pain points and
-        # opportunities share equal columns with a restrained 0.55% gutter.
-        stage_gap = height * 0.0055
-        stage_width = max(1, (height - left_space - right_space - stage_gap * (len(phase_ranges) - 1)) / len(phase_ranges))
+        left_space = 0
+        right_space = 0
+        # Match the CSS gutter between stage columns. The source margins were
+        # previously copied as padding onto every journey rail, making those
+        # rows drift away from their stage headers.
+        stage_gap = height * (0.32 / (100 - 12.4 - 0.42))
+        stage_width = max(1, (height - stage_gap * (len(phase_ranges) - 1)) / len(phase_ranges))
         target_ranges = []
-        target_cursor = left_space
+        target_cursor = 0
         for _ in phase_ranges:
             target_ranges.append((target_cursor, target_cursor + stage_width))
             target_cursor += stage_width + stage_gap
@@ -561,11 +601,6 @@ def sequence_diagram_markup():
         # Keep the sequence canvas clear of irregular Mermaid phase rectangles.
         geometry = [node for node in geometry if node.get("class") != "block"]
 
-        SEQUENCE_STAGE_RAIL_STYLE = (
-            "grid-template-columns:repeat(5,minmax(0,1fr));"
-            + "column-gap:.45vw;"
-            + f"padding-left:{left_space / height * 100:.4f}%;padding-right:{right_space / height * 100:.4f}%"
-        )
 
     event_records = []
     event_strokes = {
@@ -632,7 +667,7 @@ def sequence_diagram_markup():
         }, key=lambda candidate: (abs(candidate - record["base_top"]), candidate))
     overlap_edges = {
         index: {other for other in range(len(event_records)) if other != index and
-                abs(event_records[index]["left"] - event_records[other]["left"]) < 9.5}
+                abs(event_records[index]["left"] - event_records[other]["left"]) < 12.5}
         for index in range(len(event_records))
     }
     remaining = set(range(len(event_records)))
@@ -723,8 +758,10 @@ def sequence_diagram_markup():
     avatars = {"T": svg_data("persona-task.svg"), "L": svg_data("persona-learning.svg")}
     for actor_id, role, name, desc, icon in SEQUENCE_ROLES:
         lane_pct = max(0, min(100, actor_lane_percent(actor_id)))
-        mark = (f'<img class="role-mark" src="{avatars[actor_id]}" alt="">' if actor_id in avatars else
-                f'<span class="role-mark">{lucide_svg(icon)}</span>')
+        mark = (
+            f'<img class="role-mark" src="{avatars[actor_id]}" alt="">'
+            if actor_id in avatars else f'<span class="role-mark">{lucide_svg(icon)}</span>'
+        )
         role_rows.append(
             f'<div class="r-sequence-role" data-role="{role}" style="--lane-y:{lane_pct:.4f}%" '
             f'aria-label="{esc(name)}：{esc(desc)}">{mark}<span><b>{esc(name)}</b><small>{esc(desc)}</small></span></div>'
@@ -747,16 +784,56 @@ JOURNEY_STAGES = [
     ("05 · 经验沉淀", "带入下一次", "个人记录 / 结果复用", "evidence", "execute.png"),
 ]
 
+JOURNEY_TOUCHPOINTS = [
+    ("code-xml", "IDE · 项目仓库 · 搜索入口"),
+    ("book-open", "官方文档 · 社区 · 教程"),
+    ("messages-square", "Agent 对话 · 学习目录"),
+    ("terminal", "代码 · 终端 · 实践环境"),
+    ("file-clock", "本地记录 · 私人对话"),
+]
+
+def journey_persona_markup():
+    profiles = [
+        ("persona-task.svg", "task", "任务导向开发者", "带着交付目标来"),
+        ("persona-learning.svg", "learn", "学习导向开发者", "从兴趣或明确目标来"),
+    ]
+    profile_html = "".join(
+        f'<article class="r-persona-profile {kind}"><img src="{svg_data(avatar)}" alt="">'
+        f'<span><b>{esc(name)}</b><small>{esc(desc)}</small></span></article>'
+        for avatar, kind, name, desc in profiles
+    )
+    return (
+        '<div class="r-journey-persona" aria-label="用户画像与共同场景">'
+        f'<div class="r-persona-profiles">{profile_html}</div>'
+        '<div class="r-persona-scenario"><small>SCENARIO · 使用 Ascend Studio 之前</small>'
+        '<p>两类人按当前目标区分：一类要在既有项目中完成任务，一类想获得或提升某项能力；他们会在 IDE / Agent、官方资料与社区、个人记录之间自己拼接路径。</p>'
+        '</div></div>'
+    )
+
+def journey_touchpoint_markup():
+    cells = []
+    for index, (icon, label) in enumerate(JOURNEY_TOUCHPOINTS, start=1):
+        cells.append(
+            f'<article class="r-touchpoint-cell" aria-label="第 {index} 阶段的现有触点">'
+            + f'<div class="r-touchpoint-line"><i>{lucide_svg(icon)}</i><span>{esc(label)}</span></div>'
+            + '</article>'
+        )
+    return (
+        '<div class="cb-row-label r-touchpoint-label"><small>TOUCHPOINTS</small><b>现有触点</b></div>'
+        '<div class="r-touchpoint-rail" aria-label="任务与学习旅程中的现有开发和学习触点">'
+        + "".join(cells) + '</div>'
+    )
+
 def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
         '<div class="collab-blueprint" role="group" aria-label="五阶段旅程矩阵：阶段、Thinking、Doing、Feeling、设计痛点和机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
-        '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
+        journey_persona_markup() + '<div class="cb-axis"><small>STAGES</small><b>阶段</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="Ascend Studio 之前的任务与学习旅程"', 1)
     section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">Ascend Studio 之前，任务与学习都要自己串联</div>', 1)
-    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '按当前目标分两条旅程；模糊兴趣与明确学习目标都属于学习导向', 1)
+    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '交付任务与能力学习：目标不同，资料、实践和经验仍要自己衔接', 1)
     section = section.replace('<div class="section-tabs"></div>',
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
@@ -782,34 +859,31 @@ def build_journey():
         start, end = div_bounds(section, class_name)
         section = section[:start] + section[end:]
 
-    judgment_label = (
-        '<div class="cb-row-label r-key-judgment-label"><small>THINKING</small><b>用户在想什么</b>'
-        '<div class="r-journey-legend"><span class="task"><i></i>任务</span><span class="learn"><i></i>学习</span></div></div>'
-    )
+    judgment_label = '<div class="cb-row-label r-key-judgment-label"><small>THINKING</small><b>用户在想什么</b></div>'
     judgment_cells = "".join(
         f'<article class="r-key-judgment-cell" aria-label="第 {index + 1} 阶段的关键判断">'
-        f'<div class="r-key-question task"><i aria-hidden="true"></i><span>{esc(task_question)}</span></div>'
-        f'<div class="r-key-question learn"><i aria-hidden="true"></i><span>{esc(learn_question)}</span></div>'
+        f'<div class="r-key-question task"><i aria-hidden="true"></i><span>{esc(thought[0])}</span></div>'
+        f'<div class="r-key-question learn"><i aria-hidden="true"></i><span>{esc(thought[1])}</span></div>'
         '</article>'
-        for index, (task_question, learn_question) in enumerate(JOURNEY_KEY_QUESTIONS)
+        for index, thought in enumerate(JOURNEY_THOUGHTS)
     )
-    judgment_rail = '<div class="r-key-judgment-rail" aria-label="任务用户与学习用户的阶段性关键判断">' + judgment_cells + '</div>'
+    judgment_rail = '<div class="r-key-judgment-rail" aria-label="两类开发者在五个阶段中的关键判断">' + judgment_cells + '</div>'
     handoff_marker = '<div class="cb-row-label cb-handoff-label">'
     handoff_index = section.index(handoff_marker)
-    section = section[:handoff_index] + judgment_label + judgment_rail + section[handoff_index:]
+    section = section[:handoff_index] + journey_touchpoint_markup() + judgment_label + judgment_rail + section[handoff_index:]
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN PAIN POINTS</small><b>设计痛点</b></div>', 1)
     painpoint_nodes = "".join(
         f'<article class="cb-painpoint-node r-journey-painpoint" aria-label="设计痛点 {i+1}：{esc(item["label"])}">'
         f'<small>{i+1:02} · {esc(item["label"])}</small>'
-        + "".join(f'<span class="r-painpoint-issue"><b>{esc(role)}</b> · {esc(issue)}</span>' for role, issue in item["issues"])
+        + "".join(f'<span class="r-painpoint-issue"><i aria-hidden="true"></i>{esc(issue)}</span>' for issue in item["issues"])
         + '</article>'
         for i, item in enumerate(journey_pain_points)
     )
     section = replace_div_content(section, "cb-painpoint-rail", painpoint_nodes)
     section = re.sub(r'aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组[^\"]*"',
-        'aria-label="五个旅程阶段对应的设计痛点，分别呈现任务导向与学习导向的问题"', section, count=1)
+        'aria-label="五个旅程阶段的设计痛点，每阶段保留多条具体问题"', section, count=1)
 
     opportunity_label = '<div class="cb-row-label cb-opportunity-label"><small>OPPORTUNITY</small><b>机会点</b></div>'
     opportunity_cards = "".join(
@@ -852,22 +926,15 @@ def build_journey():
         for index in range(len(JOURNEY_STAGES))
     )
     emotion_label = (
-        '<div class="cb-row-label r-emotion-label"><small>体验推演</small><b>把握感变化</b>'
+        '<div class="cb-row-label r-emotion-label"><small>FEELING · 定性推演</small><b>把握感变化</b>'
         '<div class="r-journey-legend"><span class="task"><i></i>任务</span>'
-        '<span class="learn"><i></i>学习</span><span class="r-confidence-up">↑更有把握 · 定性推演</span></div></div>'
+        '<span class="learn"><i></i>学习</span><span class="r-confidence-up">↑更有把握</span></div></div>'
     )
     emotion_rail = '<div class="r-emotion-rail" aria-label="定性把握感曲线，无数值评分；两条轨迹分别对应任务与学习目标">' + emotion_cells + '</div>'
     painpoint_marker = '<div class="cb-row-label cb-painpoint-label">'
     painpoint_index = section.index(painpoint_marker)
     section = section[:painpoint_index] + emotion_label + emotion_rail + section[painpoint_index:]
 
-    for rail_class in ("cb-stage-rail", "r-key-judgment-rail", "r-emotion-rail", "cb-painpoint-rail", "cb-opportunity-rail"):
-        section = re.sub(
-            rf'(<div class="[^"]*\b{rail_class}\b[^"]*"[^>]*)(>)',
-            lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),
-            section,
-            count=1,
-        )
     section = re.sub(r"(?m)^[ \t]+$", "", section)
     return section
 
@@ -988,7 +1055,7 @@ evaluation='<p class="r-summary">让用户更容易开始，在实践中理解�
 slides.append(gray("设计价值回到旅程，用用户能做什么来验证", "验证方向 · 不以功能数量或内容浏览量替代体验成效",evaluation,note="以上为建议的后续验证问题与观察信号；当前没有对应的效果统计。"))
 
 sources='''<div class="r-source-grid"><article class="card"><h2>材料从哪里来</h2><p><a href="https://www.hiascend.com/zh/developer" target="_blank" rel="noopener">昇腾社区开发者主页 ↗</a><br>第 2 页传统侧使用 1440×900 官网桌面截图；IDE 窗口是透视场景素材，呈现 IDE 与社区分窗检索。</p><p><a href="https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#5" target="_blank" rel="noopener">Learning Canvas Story · 第 5 页 ↗</a><br>第 2 页右侧复用此页中的 Codex 工作区界面，并叠加两条场景提问。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener">电脑端 Ascend Studio ↗</a><br>主动建议、线索串联、开发图解、社区草稿与学习路径共创。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/" target="_blank" rel="noopener">口袋新知小程序 Demo ↗</a><br>本轮界面来自本地 5217：服务通知、每周速览、知识卡与明确兴趣信号。</p><p><a href="ai-development-behavior-system-report-concise.html#5" target="_blank" rel="noopener">既有 AI 协作开发者旅程 #5 ↗</a><br>直接复制其 HTML 结构与样式并保持可编辑；两种开发者起点和角色时序在同页展开。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/knowledge-provider-map.html" target="_blank" rel="noopener">知识供给侧服务蓝图 ↗</a><br>参考其资源身份、适用范围、来源许可、核验状态与多入口服务关系，压缩为两页。</p></article><article class="card"><h2>如何理解这份设计提案</h2><ul><li>旅程、人群与问题是基于现有材料和本轮讨论的设计组织，尚非新一轮用户研究定稿。</li><li>第 2 页左侧为参考昇腾开发者主页风格的透视情景图；右侧直接复用 Learning Canvas Story 第 5 页的 Codex 工作区截图，配轻微 CSS 透视和示例提问气泡。提问是场景文案，不表示实时产品状态或真实执行。</li><li>个人认知画布、知识供给图和角色时序是设计示意；其他界面截图来自现有原型。</li><li>图解、推荐、AI 草稿和消息送达使用演示状态；不代表真实 AI、微信后台或 NPU 已接入。</li><li>未宣称任务完成率、学习收益或社区回流效果已被验证。</li></ul><p><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html" target="_blank" rel="noopener">知识例证：NumPy transpose ↗</a> · <a href="https://cloud.tencent.cn/document/product/1301/103770" target="_blank" rel="noopener">订阅消息接入参考 ↗</a></p></article></div>'''
-slides.append(gray("设计推演与现有原型，各有清楚的依据和边界", "来源与演示范围 · 支撑材料",sources,active="知识供给",note="2026.10.29 · 页面截图与状态记录见 ascend-studio-design-report-evidence/。"))
+slides.append(gray("设计推演与现有原型，各有清楚的依据和边界", "来源与演示范围 · 支撑材料",sources,active="知识供给",note="2026.10.30 · 页面截图与状态记录见 ascend-studio-design-report-evidence/。"))
 
 # Copy the whole template, replace only deck content; preserve controls and runtime.
 head = TEMPLATE[:TEMPLATE.index("<body>")]
