@@ -57,14 +57,14 @@ button:focus-visible { outline: 2px solid #5366c8; outline-offset: 3px; }
 .journey-rail span.is-current { background: #6979ce; }
 .cover-footer { display: flex; justify-content: space-between; gap: 20px; color: #90929a; font-size: 11px; letter-spacing: .02em; }
 
-.design-note { position: absolute; z-index: 4; left: max(22px, env(safe-area-inset-left)); bottom: max(22px, env(safe-area-inset-bottom)); width: min(368px, calc(100vw - 44px)); overflow: hidden; border: 1px solid rgba(255,255,255,.22); border-radius: 13px; background: rgba(0,0,0,.48); color: #fff; box-shadow: 0 12px 36px rgba(0,0,0,.24); backdrop-filter: blur(2px); transition: opacity .18s ease, transform .18s ease; }
-.note-topline { display: flex; align-items: center; justify-content: space-between; min-height: 39px; padding: 0 11px 0 16px; border-bottom: 1px solid rgba(255,255,255,.13); color: rgba(255,255,255,.64); font-size: 10px; font-weight: 680; letter-spacing: .045em; }
+.design-note { position: absolute; z-index: 4; left: max(22px, env(safe-area-inset-left)); bottom: max(22px, env(safe-area-inset-bottom)); width: min(368px, calc(100vw - 44px)); overflow: hidden; border: 1px solid rgba(255,255,255,.28); border-radius: 13px; background: rgba(0,0,0,.26); color: #fff; box-shadow: 0 12px 36px rgba(0,0,0,.16); backdrop-filter: none; transition: opacity .18s ease, transform .18s ease; }
+.note-topline { display: flex; align-items: center; justify-content: space-between; min-height: 39px; padding: 0 11px 0 16px; border-bottom: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.78); font-size: 10px; font-weight: 680; letter-spacing: .045em; text-shadow: 0 1px 3px rgba(0,0,0,.86); }
 .icon-button { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 6px; background: transparent; color: #737680; font-size: 19px; line-height: 1; }
 .icon-button:hover { background: #f2f2f3; color: var(--ink); }
-.note-body { padding: 12px 16px 11px; }
+.note-body { padding: 12px 16px 11px; text-shadow: 0 1px 3px rgba(0,0,0,.86); }
 .note-body h2 { margin: 0; color: #fff; font: 590 17px/1.38 var(--serif); letter-spacing: -.01em; }
-.note-body p { margin: 6px 0 0; color: rgba(255,255,255,.82); font-size: 12px; line-height: 1.58; }
-.note-entry { display: flex; gap: 8px; align-items: baseline; margin-top: 9px; color: rgba(255,255,255,.62); font-size: 10px; }
+.note-body p { margin: 6px 0 0; color: rgba(255,255,255,.92); font-size: 12px; line-height: 1.58; }
+.note-entry { display: flex; gap: 8px; align-items: baseline; margin-top: 9px; color: rgba(255,255,255,.8); font-size: 10px; }
 .note-entry strong { color: rgba(255,255,255,.86); font-size: 10px; font-weight: 570; }
 .note-controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 0 10px 10px; }
 .quiet-button { min-height: 31px; padding: 0 7px; border-radius: 7px; background: rgba(255,255,255,.12); color: rgba(255,255,255,.88); font-size: 10px; white-space: nowrap; }
@@ -75,8 +75,8 @@ button:focus-visible { outline: 2px solid #5366c8; outline-offset: 3px; }
 .design-note .icon-button:hover { background: rgba(255,255,255,.12); color: #fff; }
 .design-note .note-next { background: #fff; color: #191a1b; }
 .design-note .note-next:hover { background: #e9e9eb; color: #191a1b; }
-.note-dock { position: absolute; z-index: 4; left: max(22px, env(safe-area-inset-left)); bottom: max(22px, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 9px; max-width: min(360px, calc(100vw - 44px)); min-height: 43px; padding: 0 13px; border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(0,0,0,.48); box-shadow: 0 8px 26px rgba(0,0,0,.24); color: rgba(255,255,255,.92); cursor: pointer; font-size: 12px; backdrop-filter: blur(2px); }
-.note-dock:hover { background: rgba(0,0,0,.60); }
+.note-dock { position: absolute; z-index: 4; left: max(22px, env(safe-area-inset-left)); bottom: max(22px, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 9px; max-width: min(360px, calc(100vw - 44px)); min-height: 43px; padding: 0 13px; border: 1px solid rgba(255,255,255,.28); border-radius: 12px; background: rgba(0,0,0,.26); box-shadow: 0 8px 26px rgba(0,0,0,.16); color: rgba(255,255,255,.95); cursor: pointer; font-size: 12px; backdrop-filter: none; text-shadow: 0 1px 3px rgba(0,0,0,.86); }
+.note-dock:hover { background: rgba(0,0,0,.36); }
 .dock-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #6979ce; }
 .note-dock span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .note-dock span:last-child { color: rgba(255,255,255,.64); }
