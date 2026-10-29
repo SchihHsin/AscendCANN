@@ -8025,5 +8025,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户比较两种样张后选择二维线描拼贴。按此风格为 Add 精度排查、学习路径与手机续学分别生成同系列封面插画，移除封面右侧设计点清单，直接在既有浅色背景上展示透明插画；普通章节导航与点列表仍保留在目录中。
 - 更新 `ascstudio-pc/index.html`、`app.js`、`styles.css`，新增 `ascstudio-pc/assets/cover-development.png`、`cover-learning.png`、`cover-mobile.png`。三张图片来自 Image Gen；RGBA 四角 alpha 均为 0，透明底核验通过。
 - 依据为用户明确选择的风格（H）；三张插画是章节含义的概念表达，不代表真实系统界面。未改变页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 分别打开三章封面，辅助功能树显示对应标题与插画 alt；结构检查确认封面不再渲染设计点清单。未运行自动化测试。
-- 提交 / 推送结果：待本次提交后补充；无其他未决事项。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 分别打开三章封面，辅助功能树显示对应标题与插画 alt；结构检查确认封面不再渲染设计点清单。线上封面、脚本与三张图片均 HTTP 200，线上脚本含三章插画映射。未运行自动化测试。
+- 提交 / 推送：实现提交 `48d2e736` 已推送至 `origin/main`。无其他未决事项。
