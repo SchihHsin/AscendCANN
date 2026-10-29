@@ -8,7 +8,7 @@
   <title>Ascend Studio · 桌面端设计点</title>
   <link rel="icon" type="image/svg+xml" href="../ascstudio-mini/mark.svg">
   <link rel="stylesheet" href="./styles.css?rev=20261029-cover-ascend-logo">
-  <script type="module" src="./app.js?rev=20261029-learning-mode"></script>
+  <script type="module" src="./app.js?rev=20261029-card-opens-directory"></script>
 </head>
 <body>
   <main class="showcase" id="showcase" data-view="cover">
@@ -37,14 +37,13 @@
     </section>
 
     <aside class="design-note" id="design-note" aria-live="polite" aria-label="当前设计点讲解">
-      <div class="note-card">
-        <div class="note-drag-handle" id="note-drag-handle" title="拖动移动讲解卡">
+      <div class="note-card" id="note-card" role="button" tabindex="0" aria-labelledby="note-text" aria-description="点击打开章节与设计点目录，拖动移动讲解卡。" title="点击打开目录，拖动移动讲解卡">
+        <div class="note-drag-handle">
           <p id="note-text"></p>
         </div>
       </div>
       <div class="note-controls" role="group" aria-label="设计点导航">
         <button class="icon-button" id="note-prev" type="button" aria-label="上一个设计点" title="上一个设计点"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
-        <button class="icon-button" id="note-index" type="button" aria-label="打开章节与设计点目录" title="章节与设计点"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
         <button class="icon-button" id="note-next" type="button" aria-label="下一个设计点" title="下一个设计点"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
     </aside>

@@ -7932,3 +7932,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 只调整 `ascstudio-mini/knowledge-provider-map.html` 第 03 页的图结构与样式；第 04 页能力架构和原有页面不变。关系仍为方案示意，不表示对应服务已接入；不改变 API / Protocol、Host / Harness、Application / Task 定义。
 - 验证：`git diff --check` 通过；Chrome 无头截图核对 1440×900、1280×720 的第 5 页，双泳道、共享服务分流、建设时间线均完整；线上页面 HTTP 200，回读确认新版流程文字与 DOM。未运行自动化测试。
 - 页面提交 `c095d169` 已 rebase 并推送至 `origin/main`；并行主线提交 `fe34ea39` 的 GitHub Pages workflow `40854710406` build / deploy 成功并包含本次页面内容。交接记录随后单独推送。
+
+### 2026-10-29 · 点击讲解卡打开目录，保留拖动操作
+
+- 按用户要求，把桌面设计点讲解卡的点击行为改为打开章节与设计点目录；拖动仍移动卡片。轻微点击打开目录，拖动达到移动阈值则只移动、不打开菜单；键盘 Enter / Space 也可打开目录。
+- 移除讲解卡右侧重复的目录 IconButton，上一点 / 下一点按钮保留；卡片整体可点击并作为拖动区域，目录可用原有关闭按钮或 Escape 收起。更新脚本缓存版本为 `20261029-card-opens-directory`。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`。不改变章节 / 设计点内容、任务起点、卡片视觉基调或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确指定的交互（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对覆盖点击 / 键盘打开目录、拖动独立工作、移除目录按钮并保留前后导航。本地 8765 页面返回的 HTML、JS、CSS 与工作区文件一致。并行主线 `d645fa3f` 的交接内容保留；推送结果随后补记。
