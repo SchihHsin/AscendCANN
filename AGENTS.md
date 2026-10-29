@@ -8057,3 +8057,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`journey-sequence.mmd` / `.svg`、叙事与页面映射 / QA / handoff 文件及生成的 `cann-dashboard/ascend-studio-design-report.html`。报告仍为 17 页；未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户对 A/B 的选择和对截图空带的反馈（H）；把握感曲线是定性体验推演（M），需后续研究验证，未赋予数值评分。验证：`python3 -m py_compile`、报告构建、`node --check cann-dashboard/ascend-studio-design-report-evidence/render_journey_sequence.mjs`、`git diff --check`；本地 1352×778 桌面视口复核关键判断、协作角色、泳道与曲线连续呈现。未运行自动化测试。
 - 提交 `e8e460652984fbd9247ca2b1557623d6df315c62` 已包含于 `origin/main`；GitHub Pages workflow `40897671179` 成功。线上报告 HTTP 200，回读确认关键判断行和两条曲线已发布。
+
+### 2026-10-29 · Ascend Studio 旅程按参考矩阵呈现
+
+- 用户要求参考其提供的旅程图结构：以阶段为列，按 Thinking、Doing、Feeling、设计痛点和机会点分行表达；两类开发者与 Agent / 环境 / 官方资料社区的交接需要在同页可读。第 3 页已将旅程重排为此矩阵，保留两条用户判断、角色时序、定性把握感曲线和逐阶段痛点 / 机会点，移除重复的行为摘要行。
+- 学习用户不按“专业 / 小白”划成固定人群；模糊兴趣和明确学习目标是同一学习旅程的两种起点，呈现在 Thinking 行。仍描述使用 Ascend Studio 之前的过程，不把 Studio 功能混入旅程。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`narrative.md`、`qa.md` 和生成页 `cann-dashboard/ascend-studio-design-report.html`。依据为用户提供的结构参考与明确反馈（H）；体验曲线是定性推演，不是测量结果。未改变汇报页序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：报告构建、`python3 -m py_compile`、Mermaid 渲染脚本与页面运行脚本语法检查、`git diff --check`；CUA 本地 1352×778 桌面预览第 3 页，核对 5 阶段、Thinking / Doing / Feeling、16 个时序事件、痛点与机会点的对齐，无独立重复行为行。
+- 提交 / 推送与 Pages 发布状态：本记录待实现提交后补齐。

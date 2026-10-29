@@ -155,12 +155,11 @@ body.overview.ctrl #deck{width:auto}
 .r-journey-head-controls{display:flex;align-items:center;gap:.6vw;flex:0 0 auto}
 .r-copy-journey .body-area{flex:1;min-height:0;margin:0;display:flex;flex-direction:column;justify-content:center;align-items:stretch;padding:0}
 .r-copy-journey .collab-blueprint{height:71vh;grid-template-columns:12.6vw minmax(0,1fr);grid-template-rows:6vh 8.5vh 44vh 10vh;gap:.8vh .36vw}
-.r-copy-journey .cb-row-label{padding-left:.18vw}.r-copy-journey .cb-human-label b{font-size:var(--fs-xs)}
+.r-copy-journey .cb-row-label{padding-left:.18vw}
 .r-persona-row{display:grid;grid-template-columns:5.2vw minmax(0,1fr);gap:.28vw;align-items:start;padding:.18vh 0}
 .r-persona-row+.r-persona-row{border-top:1px solid #dfe4ec;margin-top:.35vh;padding-top:.35vh}
 .r-persona-row b{font-size:var(--fs-xs);line-height:1.12;color:#4e5e78;white-space:nowrap}
 .r-persona-row span{font-size:var(--cb-copy-size);line-height:1.2;color:#536174}
-.r-copy-journey .cb-human-label{grid-row:2}.r-copy-journey .cb-human-lane{grid-row:2}
 .r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-label small{font-size:var(--fs-xs)}
 .r-copy-journey .cb-painpoint-rail{gap:.36vw}
 .r-copy-journey .cb-painpoint-rail{grid-row:4}
@@ -289,9 +288,8 @@ body.overview.ctrl #deck{width:auto}
 """
 
 CSS += r"""
-/* Standard journey grid: stages, user action, key judgment, shared sequence,
-   qualitative confidence trace, pain points and opportunities. */
-.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5vh 5vh 6.4vh 38.4vh 6vh 8.3vh 6.5vh;gap:.4vh .45vw}
+/* Journey matrix: stages, thinking, doing/touchpoints, feeling, pain points and opportunities. */
+.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5vh 6.4vh 43.8vh 6vh 8.3vh 6.5vh;gap:.4vh .45vw}
 .r-copy-journey .cb-axis{grid-column:1;grid-row:1}
 .r-copy-journey .cb-stage-rail{grid-row:1;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}
 .r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(36px,3.1vw,46px);gap:.35vw;padding:.38vh .5vw;background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:9px;box-shadow:none}
@@ -299,17 +297,12 @@ CSS += r"""
 .r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
 .r-copy-journey .cb-stage span{margin-top:.05vh;font-size:var(--fs-xs);line-height:1.08;color:#718096;white-space:normal}
 .r-copy-journey .cb-stage-visual{display:grid;width:clamp(36px,3.1vw,46px);height:clamp(36px,4.7vh,44px)}
-.r-copy-journey .r-user-action-label{grid-column:1;grid-row:2}
-.r-copy-journey .cb-human-lane{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:minmax(0,1fr);align-items:stretch;gap:.36vh .45vw}
-.r-copy-journey .r-user-action{min-width:0;min-height:0;padding:.25vh .52vw;display:flex;align-items:center;justify-content:center;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#4d5b70;font-size:var(--fs-sm);font-weight:600;line-height:1.24;text-align:center}
-.r-copy-journey .r-user-action::before,.r-copy-journey .r-user-action::after{content:none!important}
-.r-copy-journey .r-user-action span{min-width:0}
-.r-copy-journey .r-key-judgment-label{grid-column:1;grid-row:3;display:flex;flex-direction:column;justify-content:center;gap:.12vh}
+.r-copy-journey .r-key-judgment-label{grid-column:1;grid-row:2;display:flex;flex-direction:column;justify-content:center;gap:.12vh}
 .r-copy-journey .r-key-judgment-label .r-journey-legend,.r-copy-journey .r-emotion-label .r-journey-legend{display:flex;align-items:center;gap:.45vw;color:#697587;font-size:var(--fs-xs);line-height:1.05}
 .r-copy-journey .r-journey-legend span{display:inline-flex;align-items:center;gap:.18vw;white-space:nowrap}
 .r-copy-journey .r-journey-legend i{display:inline-block;width:.38em;height:.38em;border-radius:50%;background:var(--legend-tone);flex:0 0 auto}
 .r-copy-journey .r-journey-legend .task{--legend-tone:#4c82bd}.r-copy-journey .r-journey-legend .learn{--legend-tone:#8770bf}
-.r-copy-journey .r-key-judgment-rail{grid-column:2;grid-row:3;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
+.r-copy-journey .r-key-judgment-rail{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
 .r-key-judgment-cell{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));align-items:center;min-width:0;min-height:0;gap:.1vh}
 .r-key-question{display:flex;align-items:center;min-width:0;gap:.32vw;color:#414e62;font-size:var(--fs-sm);font-weight:570;line-height:1.08;white-space:nowrap}
 .r-key-question i{display:block;width:5px;height:5px;border-radius:50%;background:var(--question-tone);flex:0 0 auto}
@@ -317,9 +310,11 @@ CSS += r"""
 .r-key-question span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
 .r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
-.r-copy-journey .r-sequence-role-label{grid-row:4}
-.r-copy-journey .r-sequence-role-label::before{content:"协作角色";position:absolute;top:-.95vh;left:.18vw;font-size:var(--fs-xs);font-weight:700;color:#788293}
-.r-copy-journey .r-sequence-plot{grid-row:4}
+.r-copy-journey .r-sequence-role-label{grid-row:3}
+.r-copy-journey .r-sequence-row-heading{position:absolute;top:-.95vh;left:.18vw;display:flex;align-items:baseline;gap:.35vw;white-space:nowrap}
+.r-copy-journey .r-sequence-row-heading small{font-size:var(--fs-xs);font-weight:760;letter-spacing:.05em;color:#788293}
+.r-copy-journey .r-sequence-row-heading b{font-size:var(--fs-sm);font-weight:760;color:#384453}
+.r-copy-journey .r-sequence-plot{grid-row:3}
 .r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:none;color:#354052}
 .r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
 .r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
@@ -329,21 +324,21 @@ CSS += r"""
 .r-copy-journey .r-sequence-role[data-role="studio"],.r-copy-journey .r-sequence-role[data-role="agent"],.r-copy-journey .r-sequence-role[data-role="environment"],.r-copy-journey .r-sequence-role[data-role="community"]{border:0;background:transparent;box-shadow:none}
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
-.r-copy-journey .r-emotion-label{grid-column:1;grid-row:5;display:flex;flex-direction:column;justify-content:center;gap:.08vh}
+.r-copy-journey .r-emotion-label{grid-column:1;grid-row:4;display:flex;flex-direction:column;justify-content:center;gap:.08vh}
 .r-copy-journey .r-emotion-label b{font-size:var(--fs-sm);line-height:1.05}
 .r-copy-journey .r-emotion-label small{font-size:var(--fs-xs);line-height:1.02}
-.r-copy-journey .r-emotion-rail{grid-column:2;grid-row:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
+.r-copy-journey .r-emotion-rail{grid-column:2;grid-row:4;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
 .r-emotion-cell{min-width:0;min-height:0;display:grid;place-items:center;overflow:hidden}
 .r-emotion-cell svg{display:block;width:100%;height:100%;overflow:visible}
 .r-emotion-track{fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .r-emotion-track.task{stroke:#4c82bd}.r-emotion-track.learn{stroke:#8770bf;stroke-dasharray:6 3}
 .r-emotion-point{stroke:#fff;stroke-width:1.4;vector-effect:non-scaling-stroke}
 .r-emotion-point.task{fill:#4c82bd}.r-emotion-point.learn{fill:#8770bf}
-.r-copy-journey .cb-painpoint-label{grid-row:6}.r-copy-journey .cb-painpoint-rail{grid-row:6;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-painpoint-label{grid-row:5}.r-copy-journey .cb-painpoint-rail{grid-row:5;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
-.r-copy-journey .cb-opportunity-label{grid-row:7}
-.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:7;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-opportunity-label{grid-row:6}
+.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:6;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-opportunity{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25vh;padding:.4vh .52vw;border:0;border-radius:9px;background:#eaf5ed;color:#476956}
 .r-copy-journey .cb-opportunity small{font-size:var(--fs-xs);font-weight:760;line-height:1.1;color:#397453}
 .r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
@@ -736,7 +731,9 @@ def sequence_diagram_markup():
         )
 
     return (
-        '<div class="r-sequence-role-label" aria-label="时序图参与角色">' + "".join(role_rows) + '</div>'
+        '<div class="r-sequence-role-label" aria-label="时序图参与角色">'
+        '<div class="r-sequence-row-heading"><small>DOING</small><b>行动与触点</b></div>'
+        + "".join(role_rows) + '</div>'
         '<div class="r-sequence-plot" aria-label="角色交接与阶段推进；时间从左向右">'
         + diagram + "".join(event_cards)
         + '</div>'
@@ -754,7 +751,7 @@ def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="五阶段用户行为、关键判断、任务与学习把握感推演、协作时序、设计痛点和机会点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="五阶段旅程矩阵：阶段、Thinking、Doing、Feeling、设计痛点和机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
         '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="Ascend Studio 之前的任务与学习旅程"', 1)
@@ -764,7 +761,7 @@ def build_journey():
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
     section = re.sub(r'(<div class="body-area r-journey-body" aria-label=")[^"]*(")',
-        r'\1五阶段行为、关键判断、把握感推演、协作时序、痛点与机会点\2', section, count=1)
+        r'\1五阶段旅程矩阵：Thinking、Doing、Feeling、设计痛点与机会点\2', section, count=1)
 
     stage_html = []
     for kicker, title, desc, phase, illustration in JOURNEY_STAGES:
@@ -779,25 +776,14 @@ def build_journey():
         'aria-label="五个旅程阶段：认知起步、寻源与推荐、明确方向、边做边懂、带入下一次"', 1)
     section = replace_div_content(section, "cb-stage-rail", "".join(stage_html))
 
-    section = section.replace('<div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>',
-        '<div class="cb-row-label r-user-action-label"><small>USER ACTION</small><b>用户行为</b></div>', 1)
-    human_actions = [
-        "明确本次要解决的问题，或想掌握的能力",
-        "自行查资料，核对版本与适用范围",
-        "补齐 Prompt 上下文，或安排学习顺序",
-        "运行代码或练习，依据结果迭代",
-        "结果和经验主要留在个人项目与记录中",
-    ]
-    human_lanes = "".join(
-        f'<article class="cb-lane-cell cb-human-step r-user-action is-{stage[3]}">'
-        f'<span>{esc(text)}</span></article>'
-        for text, stage in zip(human_actions, JOURNEY_STAGES)
-    )
-    section = replace_div_content(section, "cb-human-lane", human_lanes)
-    section = section.replace('aria-label="开发者泳道"', 'aria-label="用户行为：五阶段主要行动"', 1)
+    # The role sequence already carries stage-by-stage actions and touchpoints.
+    # Keep the journey matrix focused: stage → thinking → doing → feeling.
+    for class_name in ("cb-human-label", "cb-human-lane"):
+        start, end = div_bounds(section, class_name)
+        section = section[:start] + section[end:]
 
     judgment_label = (
-        '<div class="cb-row-label r-key-judgment-label"><small>KEY QUESTIONS</small><b>关键判断</b>'
+        '<div class="cb-row-label r-key-judgment-label"><small>THINKING</small><b>用户在想什么</b>'
         '<div class="r-journey-legend"><span class="task"><i></i>任务</span><span class="learn"><i></i>学习</span></div></div>'
     )
     judgment_cells = "".join(
@@ -875,13 +861,14 @@ def build_journey():
     painpoint_index = section.index(painpoint_marker)
     section = section[:painpoint_index] + emotion_label + emotion_rail + section[painpoint_index:]
 
-    for rail_class in ("cb-stage-rail", "cb-human-lane", "r-key-judgment-rail", "r-emotion-rail", "cb-painpoint-rail", "cb-opportunity-rail"):
+    for rail_class in ("cb-stage-rail", "r-key-judgment-rail", "r-emotion-rail", "cb-painpoint-rail", "cb-opportunity-rail"):
         section = re.sub(
             rf'(<div class="[^"]*\b{rail_class}\b[^"]*"[^>]*)(>)',
             lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),
             section,
             count=1,
         )
+    section = re.sub(r"(?m)^[ \t]+$", "", section)
     return section
 
 journey = build_journey()

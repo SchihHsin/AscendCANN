@@ -156,3 +156,11 @@
 - 本页仍描述使用 Ascend Studio 之前的 Agent 开发和学习过程：不包含主动推荐、连线 Prompt、共创路径或认知卡等 Studio 设计。
 - 修复用户圈出的时序图上方空带：beautiful-mermaid 参与者默认占用画布宽度的一部分，旋转后产生多余的顶部视口。现在 SVG 视窗按真实角色泳道裁剪并保留两端空间，角色标签与事件卡使用同一归一化坐标；「协作角色」标题上移避开头像卡片。
 - 验证：报告重建为 17 页；5 个关键判断单元、5 个曲线阶段单元（每阶段两条线）、5 个角色标签和全部事件卡均存在。Chrome 无头 2048×1179 桌面截图检查第 3 页，原顶部空带已由时序泳道填满，标题与痛点 / 机会点仍完整可见。截图：`journey-page3-final.png`。`py_compile`、构建、`node --check render_journey_sequence.mjs` 与 `git diff --check` 通过；未运行自动化测试套件。
+
+
+## 旅程矩阵结构修订 · 2026-10-29
+
+- 依据用户提供的旅程结构参考，将第 3 页整理为阶段横向列、Thinking（用户判断）、Doing（参与角色与协作触点）、Feeling（定性把握感曲线）四层主矩阵；设计痛点与机会点继续按阶段对齐在下方。
+- 删除独立的用户行为摘要行，避免与 16 个时序事件重复；任务用户、学习用户、Agent、开发环境、官方资料与社区角色，以及两类用户的关键判断和两条曲线均保留。未把 Ascend Studio 功能倒灌进“使用前”旅程。
+- 本地 CUA 在 1352×778 桌面视口复核：5 阶段列、5 组关键判断、5 个情绪单元、16 个时序事件；Thinking / Doing / Feeling / 痛点 / 机会点各行边界对齐，页面主体未溢出。
+- 叙事与代码检查：`python3 -m py_compile cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、构建脚本与 `git diff --check` 通过。未运行自动化测试。
