@@ -62,10 +62,11 @@ button:focus-visible { outline: 2px solid #5366c8; outline-offset: 3px; }
 .design-note.is-dragging .note-topline { cursor: grabbing; }
 .icon-button { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 6px; background: transparent; color: #737680; font-size: 19px; line-height: 1; }
 .icon-button:hover { background: #f2f2f3; color: var(--ink); }
-.note-body { padding: 12px 16px 11px; text-shadow: 0 1px 3px rgba(0,0,0,.86); }
+.note-content { display: grid; grid-template-columns: minmax(0, 1fr) 24px; gap: 6px; align-items: center; padding: 10px 8px 10px 12px; }
+.note-body { min-width: 0; padding: 0; text-shadow: 0 1px 3px rgba(0,0,0,.86); }
 .note-body h2 { margin: 0; color: #fff; font: 590 17px/1.38 var(--serif); letter-spacing: -.01em; }
 .note-body p { margin: 6px 0 0; color: rgba(255,255,255,.92); font-size: 12px; line-height: 1.58; }
-.note-controls { display: flex; align-items: center; justify-content: flex-end; gap: 4px; padding: 0 10px 5px; }
+.note-controls { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
 .note-controls .icon-button { width: 24px; height: 24px; color: rgba(255,255,255,.82); }
 .note-controls .icon-button:hover { background: rgba(255,255,255,.14); color: #fff; }
 .note-controls .icon-button:disabled { cursor: default; opacity: .36; }
