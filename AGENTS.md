@@ -7953,3 +7953,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户询问时序图右下角“连线布局：beautiful-mermaid · MIT / 图标：Lucide · ISC”的用途。该行是实现依赖来源注记，不属于评审叙事；已从 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py` 和生成页 `cann-dashboard/ascend-studio-design-report.html` 中移除。时序图、五阶段旅程、角色和设计痛点布局保持不变。
 - 验证：报告 17 页；生成 HTML 的来源注记命中数为 0；`py_compile`、报告构建、两段内联脚本 `node --check`、`git diff --check` 及 CUA 本地 1280×720 视觉复核通过。未改变产品原型、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 推送：实现提交 `95fdc3c4` 已推送到 `origin/main`；本交接记录随后的文档提交同步入仓。
+
+### 2026-10-29 · 知识供给可行性两页改用参考图式关系图
+
+- 按用户提供的参考图（H）重画第 03「入口演进」与第 04「技术实现」两页：浅灰画布、橙色节点与连接线、虚线阶段分隔、中央关系轴及椭圆区域；让入口阶段、内容流向、能力分支和结果回流由图形关系表达。
+- 第 03 页展示社区 Web / 后续项目客户端共用知识服务，再服务学习发现与项目任务，并保留 P0–P2 建设顺序。第 04 页保留内容来源与连接器、加工治理、Knowledge Unit 元数据、关系图与检索索引、公开发现 / OpenAPI / Agent Host（Skill、MCP、本地授权上下文）、四类任务引擎、结果校验、评测、反馈回流与 P0–P3 顺序；通过重排连线避开节点文字并拉开底部校验区。
+- 依据为用户提供的视觉参考和此前确认的技术建设内容。页面仍为方案示意，不表示服务已接入；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 的职责边界。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 复核第 5、6 页。未运行自动化测试。实现提交 `c473a0b9` 已推送至 `origin/main`；对应 GitHub Pages workflow `40863877943` 在本条记录写入时仍处于构建中，线上需待其完成后复核。
