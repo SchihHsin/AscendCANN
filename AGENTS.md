@@ -7759,7 +7759,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求从卡片中移除“起点页”整行，删除对应渲染节点、JS 文本赋值和已无用样式，使讲解卡整体变矮；缓存版本更新为 `20261029-note-no-entry-row`。
 - 来源为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过，本地 HTML / CSS 资源返回新版版本参数。未运行自动化测试。
 - 仅影响 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css` 和本交接记录；章节、设计点内容、起点任务映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
-- 提交与 Pages 部署结果在本轮推送后补记。
+- 提交 `b6483f7c` 已推送到 `origin/main`；Pages workflow `40809500420` 的 build / deploy 均成功。线上入口、JS、CSS 均 HTTP 200，HTML 引用新版参数，三个资源均不再包含 `note-entry`。
 
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
