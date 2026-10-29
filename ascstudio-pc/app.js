@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-single-learning-entry";
+const ROUTE_REV = "20261030-learning-recommend-task";
 const chapters = [
   {
     id: "development", title: "解决问题后把经验留下", cover: "从错误现象到社区经验", summary: "从开发者提出问题开始，在回答中补充知识和图解，支持动手修改，再把处理经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
@@ -16,7 +16,7 @@ const chapters = [
   {
     id: "learning", title: "让学习目标一步步变成实践", cover: "从一张建议卡开始", summary: "选择主动呈现的学习建议后，共同生成学习路径、动手练习并整理理解，逐步迈向实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过学习路径和练习，整理成个人知识卡片的二维线描插画",
     points: [
-      { id: "recommend", title: "从主动建议卡开始学习", note: "根据已有学习记录主动呈现下一步建议并说明理由，由学习者决定是否采用。", emphasis: "主动呈现下一步建议", description: "根据已有学习记录主动呈现下一步建议并说明理由，由学习者决定是否采用。", entry: "新建任务首页 · 学习模式建议卡", mode: "学习" },
+      { id: "recommend", title: "从主动建议卡开始学习", note: "根据已有学习记录主动呈现下一步建议并说明理由，由学习者决定是否采用。", emphasis: "主动呈现下一步建议", description: "根据已有学习记录主动呈现下一步建议并说明理由，由学习者决定是否采用。", entry: "图像输入预处理路径共创任务 · 主动建议", task: "图像输入预处理路径共创", group: "模型推理" },
       { id: "path", title: "生成路径后一起调整", note: "先生成学习路径草案，再根据已有基础和关注重点共同调整。", emphasis: "共同调整", description: "先生成学习路径草案，再根据已有基础和关注重点共同调整。", entry: "学习路径共创任务 · 未确认草案", task: "图像输入预处理路径共创", group: "模型推理" },
       { id: "custom-node", title: "在路径里加入个人安排", note: "添加自己的学习节点并调整顺序，让路径符合当前需要。", emphasis: "添加自己的学习节点并调整顺序", description: "添加自己的学习节点并调整顺序，让路径符合当前需要。", entry: "学习路径画布 · 选中一个可编辑节点", task: "图像输入预处理路径共创", group: "模型推理" },
       { id: "path-practice", title: "边练习边确认理解", note: "改变练习条件并观察结果，用变化确认自己是否理解。", emphasis: "确认自己是否理解", description: "改变练习条件并观察结果，用变化确认自己是否理解。", entry: "学习任务工作区 · 当前练习节点", task: "学会图像输入预处理", group: "模型推理" },
