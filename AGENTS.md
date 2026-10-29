@@ -7988,3 +7988,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`；不改图中层级内容、节点关系、颜色、布局、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户截图与语义纠正（H）。`git diff --check` 通过；CUA 本地第 5 页预览确认右侧三个标签显示为 LAYER；未运行自动化测试。
 - 页面提交 `27e714c6` 已推送到 `origin/main`；GitHub Pages workflow `40885264158` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · Ascend Studio 汇报统一使用 Agent 模式
+
+- 用户要求开发入口明确称为「Agent 模式」，避免「助手」引发 Copilot 联想。第 2 页标题改为「Agent 模式带来另一种开发入口」，右侧工作方式改为「Agent 模式下达目标」；旅程时序角色标为「Agent」，用简短动作描述其读取上下文、调用工具并回传结果。
+- 第 2 页说明对照的是资料驱动与 Agent 模式；第 3 页按当前目标呈现任务交付与目标学习，并说明不按专业程度分级。模糊兴趣和明确学习目标仍属于同一学习旅程的不同起点。此分组用于设计叙事，不是新一轮用户研究结论。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py` 并重新生成 `cann-dashboard/ascend-studio-design-report.html` 与 `page-map.json`；同步更新本地 5219 预览副本。页数、交互原型与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确反馈（H）。验证：生成脚本 `py_compile` 与构建通过；17 页 `page-map.json` 保持；`git diff --check`、5219 HTTP 文案回读通过；CUA 第 3 页无障碍树确认 Agent 角色与旅程说明。
+- 提交 / 推送：构建脚本、生成汇报、page-map 与本交接记录组成独立提交；推送至 `origin/main`。

@@ -340,7 +340,7 @@ SEQUENCE_ROLES = [
     ("T", "task", "任务导向开发者", "带任务推进交付", None),
     ("L", "learn", "学习导向开发者", "从兴趣或目标起步", None),
     ("S", "studio", "Ascend Studio", "承接任务与学习上下文", "layout-dashboard"),
-    ("A", "agent", "智能体", "检索、解释并行动", "bot"),
+    ("A", "agent", "Agent", "读上下文 · 调工具 · 回结果", "bot"),
     ("E", "environment", "开发环境", "运行并返回结果", "terminal"),
     ("K", "community", "知识与社区", "提供依据、接收经验", "book-open"),
 ]
@@ -631,7 +631,7 @@ def build_journey():
         '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
     section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">同一服务，承接任务与学习两条旅程</div>', 1)
-    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '按进入目标区分旅程；模糊兴趣与明确学习目标，都属于学习导向', 1)
+    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '按当前目标区分旅程，不按专业程度分级；模糊兴趣与明确学习目标都属于学习导向', 1)
     section = section.replace('<div class="section-tabs"></div>',
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
@@ -710,8 +710,8 @@ slides=[]
 logo="data:image/svg+xml;base64,"+base64.b64encode((ROOT/"ascstudio/assets/ascend-logo.svg").read_bytes()).decode()
 slides.append(f'''<section class="slide s-cover r-cover" data-title="让任务推进，也让能力成长"><img class="r-cover-image" src="{asset('04-connected-prompt.jpg')}" alt=""><div class="r-cover-content"><img class="r-cover-logo" src="{logo}" alt="Ascend"><div class="r-cover-kicker">ASCEND STUDIO · EXPERIENCE DESIGN</div><h1>让任务推进<br><span>也让能力成长</span></h1><p class="r-cover-lead">从一次表达，到理解、实践与经验回流<br>电脑端 · 小程序 · 知识供给</p></div><div class="r-cover-bottom"><span>基于现有交互原型的设计提案</span><span>2026.10</span></div></section>''')
 
-workmode = f'''<section class="slide s-gray r-workmode-slide" data-title="从查资料到交任务：Agent 带来另一种开发入口">
-  <header class="head"><div class="head-l"><div class="brand"><h1 class="ttl">从查资料到交任务：Agent 带来另一种开发入口</h1></div><div class="subttl">不是两种固定人群，而是同一开发者可切换的两种协作方式</div></div>{tabs("用户旅程")}</header>
+workmode = f'''<section class="slide s-gray r-workmode-slide" data-title="从查资料到交任务：Agent 模式带来另一种开发入口">
+  <header class="head"><div class="head-l"><div class="brand"><h1 class="ttl">从查资料到交任务：Agent 模式带来另一种开发入口</h1></div><div class="subttl">前页对照资料驱动与 Agent 模式；旅程按任务交付与目标学习展开</div></div>{tabs("用户旅程")}</header>
   <main class="body-area r-workmode-body">
     <article class="r-workmode-panel before">
       <header class="r-workmode-heading"><span class="r-workmode-kicker">Before</span><h2>IDE 开发 + 社区找资料</h2></header>
@@ -721,7 +721,7 @@ workmode = f'''<section class="slide s-gray r-workmode-slide" data-title="从查
       <div class="r-workmode-caption"><span>在代码与分散资料间切换，自己拼出解决路径</span><span>昇腾社区界面风格取自现有页面</span></div>
     </article>
     <article class="r-workmode-panel after">
-      <header class="r-workmode-heading"><span class="r-workmode-kicker agent">After</span><h2>AI 工作台提需求</h2></header>
+      <header class="r-workmode-heading"><span class="r-workmode-kicker agent">After</span><h2>Agent 模式下达目标</h2></header>
       <figure class="r-workmode-visual" aria-label="复用 learning-canvas-story 第 5 页的 Codex 工作区界面，并在周围呈现示例任务提问">
         <img src="ploy-interaction-lab/learning-canvas-story/images/codex-workspace-user.png" alt="learning-canvas-story 第 5 页已有的 Codex 工作区界面截图">
         <span class="r-workmode-bubble first">“帮我实现一个图像推理任务”</span>
