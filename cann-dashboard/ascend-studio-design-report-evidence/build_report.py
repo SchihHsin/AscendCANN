@@ -290,8 +290,8 @@ body.overview.ctrl #deck{width:auto}
 """
 
 CSS += r"""
-/* Standard journey grid: equal stages, two behavior lanes, shared interaction sequence. */
-.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5.7vh 5.7vh 5.7vh 41.3vh 9.3vh 7.5vh;gap:.5vh .45vw}
+/* Standard journey grid: equal stages, one user-action row, shared interaction sequence. */
+.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5.7vh 7.2vh 46.3vh 9.3vh 7.5vh;gap:.5vh .45vw}
 .r-copy-journey .cb-axis{grid-column:1;grid-row:1}
 .r-copy-journey .cb-stage-rail{grid-row:1;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}
 .r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(36px,3.1vw,46px);gap:.35vw;padding:.38vh .5vw;background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:9px;box-shadow:none}
@@ -299,20 +299,16 @@ CSS += r"""
 .r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
 .r-copy-journey .cb-stage span{margin-top:.05vh;font-size:var(--fs-xs);line-height:1.08;color:#718096;white-space:normal}
 .r-copy-journey .cb-stage-visual{display:grid;width:clamp(36px,3.1vw,46px);height:clamp(36px,4.7vh,44px)}
-.r-copy-journey .r-persona-lane-label{grid-column:1;min-width:0;min-height:0;display:grid;grid-template-columns:clamp(26px,2.5vw,34px) minmax(0,1fr);align-items:center;gap:.48vw;padding:.25vh .38vw;border-radius:8px;background:#fff}
-.r-copy-journey .r-task-lane-label{grid-row:2}.r-copy-journey .r-learn-lane-label{grid-row:3}
-.r-copy-journey .r-persona-lane-label img{display:block;width:clamp(26px,2.5vw,34px);height:clamp(26px,2.5vw,34px);object-fit:cover;border-radius:50%}
-.r-copy-journey .r-persona-lane-label b{display:block;font-size:var(--fs-sm);line-height:1.15;color:#354052;white-space:nowrap}
-.r-copy-journey .r-persona-lane-label small{display:block;margin-top:.2vh;font-size:var(--fs-xs);line-height:1.12;color:#788293}
-.r-copy-journey .cb-human-lane{grid-column:2;grid-row:2/span 2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));align-items:stretch;gap:.36vh .45vw}
-.r-copy-journey .r-user-action{min-width:0;min-height:0;padding:.32vh .52vw;display:flex;align-items:center;justify-content:flex-start;border:0;border-radius:7px;background:color-mix(in srgb,var(--phase) 5%,#fff);color:#4d5b70;font-size:var(--fs-sm);font-weight:600;line-height:1.2}
+.r-copy-journey .r-user-action-label{grid-column:1;grid-row:2}
+.r-copy-journey .cb-human-lane{grid-column:2;grid-row:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:minmax(0,1fr);align-items:stretch;gap:.36vh .45vw}
+.r-copy-journey .r-user-action{min-width:0;min-height:0;padding:.25vh .52vw;display:flex;align-items:center;justify-content:center;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#4d5b70;font-size:var(--fs-sm);font-weight:600;line-height:1.24;text-align:center}
 .r-copy-journey .r-user-action::before,.r-copy-journey .r-user-action::after{content:none!important}
 .r-copy-journey .r-user-action span{min-width:0}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
 .r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
-.r-copy-journey .r-sequence-role-label{grid-row:4}
+.r-copy-journey .r-sequence-role-label{grid-row:3}
 .r-copy-journey .r-sequence-role-label::before{content:"协作角色";position:absolute;top:.12vh;left:.18vw;font-size:var(--fs-xs);font-weight:700;color:#788293}
-.r-copy-journey .r-sequence-plot{grid-row:4}
+.r-copy-journey .r-sequence-plot{grid-row:3}
 .r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:none;color:#354052}
 .r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
 .r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
@@ -323,11 +319,11 @@ CSS += r"""
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
 .r-copy-journey .r-sequence-credit{position:absolute;right:.28vw;bottom:.18vh;z-index:3;font-size:var(--fs-xs);color:#8992a0}
-.r-copy-journey .cb-painpoint-label{grid-row:5}.r-copy-journey .cb-painpoint-rail{grid-row:5;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-rail{grid-row:4;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
-.r-copy-journey .cb-opportunity-label{grid-row:6}
-.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:6;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-opportunity-label{grid-row:5}
+.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-opportunity{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25vh;padding:.4vh .52vw;border:0;border-radius:9px;background:#eaf5ed;color:#476956}
 .r-copy-journey .cb-opportunity small{font-size:var(--fs-xs);font-weight:760;line-height:1.1;color:#397453}
 .r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
@@ -522,6 +518,10 @@ def sequence_diagram_markup():
                         points.append(f"{float(values[offset]):g},{map_time(float(values[offset + 1])):g}")
                     polyline.set("points", " ".join(points))
 
+        # Stage ownership is already shown by the aligned journey headers.
+        # Keep the sequence canvas clear of irregular Mermaid phase rectangles.
+        geometry = [node for node in geometry if node.get("class") != "block"]
+
         SEQUENCE_STAGE_RAIL_STYLE = (
             "grid-template-columns:repeat(5,minmax(0,1fr));"
             + "column-gap:.45vw;"
@@ -628,7 +628,7 @@ def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向两条并列用户旅程，共享同一组协作角色；五阶段下方逐列对应设计痛点与机会点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="五阶段用户行为概要与共用人机协作时序；下方逐列对应设计痛点与机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
         '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
@@ -638,7 +638,7 @@ def build_journey():
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
     section = re.sub(r'(<div class="body-area r-journey-body" aria-label=")[^"]*(")',
-            r'\1两条用户行为泳道、共用人机协作时序，五阶段下方分别对应设计痛点与机会点\2', section, count=1)
+        r'\1五阶段用户行为概要、共用人机协作时序及对应的设计痛点与机会点\2', section, count=1)
 
     stage_html = []
     for kicker, title, desc, phase, illustration in JOURNEY_STAGES:
@@ -653,36 +653,22 @@ def build_journey():
         'aria-label="五个旅程阶段：认知起步、寻源与推荐、明确方向、边做边懂、带入下一次"', 1)
     section = replace_div_content(section, "cb-stage-rail", "".join(stage_html))
 
-    task_avatar = svg_data("persona-task.svg")
-    learn_avatar = svg_data("persona-learning.svg")
     section = section.replace('<div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>',
-        f'<div class="r-persona-lane-label r-task-lane-label"><img src="{task_avatar}" alt=""><span><b>任务导向</b><small>带着问题推进交付</small></span></div>'
-        f'<div class="r-persona-lane-label r-learn-lane-label"><img src="{learn_avatar}" alt=""><span><b>学习导向</b><small>从兴趣或目标出发</small></span></div>', 1)
-    human_actions = {
-        "task": [
-            "明确现场问题与交付目标",
-            "查找资料，核对版本与环境",
-            "组织上下文，发起 Prompt",
-            "运行代码，定位并修正错误",
-            "整理验证结果，复用开发经验",
-        ],
-        "learn": [
-            "因兴趣或能力目标开始",
-            "寻找适合当前基础的内容",
-            "生成、调整自己的学习路径",
-            "边学边练，检查是否理解",
-            "记录认知，继续下一段学习",
-        ],
-    }
-    human_lanes = []
-    for role, actions in human_actions.items():
-        for text, stage in zip(actions, JOURNEY_STAGES):
-            human_lanes.append(
-                f'<article class="cb-lane-cell cb-human-step r-user-action is-{stage[3]}" data-journey="{role}">'
-                f'<span>{esc(text)}</span></article>'
-            )
-    section = replace_div_content(section, "cb-human-lane", "".join(human_lanes))
-    section = section.replace('aria-label="开发者泳道"', 'aria-label="用户行为：任务导向与学习导向的并列旅程"', 1)
+        '<div class="cb-row-label r-user-action-label"><small>USER ACTION</small><b>用户行为</b></div>', 1)
+    human_actions = [
+        "明确本次要解决的问题，或想掌握的能力",
+        "补充现场信息，寻找适用线索",
+        "把线索整理成 Prompt 或学习路径",
+        "运行或练习，核对结果并理解原因",
+        "留下可复用的结果、笔记或经验",
+    ]
+    human_lanes = "".join(
+        f'<article class="cb-lane-cell cb-human-step r-user-action is-{stage[3]}">'
+        f'<span>{esc(text)}</span></article>'
+        for text, stage in zip(human_actions, JOURNEY_STAGES)
+    )
+    section = replace_div_content(section, "cb-human-lane", human_lanes)
+    section = section.replace('aria-label="开发者泳道"', 'aria-label="用户行为：五阶段主要行动"', 1)
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN PAIN POINTS</small><b>设计痛点</b></div>', 1)
