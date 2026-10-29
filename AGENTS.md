@@ -7685,7 +7685,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Studio 源码 `ascend-studio/src/App.jsx` 现在接受 `?task=<现有任务名>`，并保留 `?task=learning` / `?task=development` 别名；`ascstudio/` Pages 包和 `ascstudio-pc/studio/` 均使用此构建。任务选择在 Application / Task 页面层，不涉及 API / Protocol、Host / Harness，也没有改汇报页序。
 - 设计点和任务状态沿用策划的本地演示数据；不代表真实用户个性化判断、模型调用或 NPU 验证。用户旅程设计点为方案展示，不是新增研究证据。
 - 验证：`npm run build:pages -- --emptyOutDir` 成功（沿用既有 JS bundle >500 kB 提示）；`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过。CUA 本地 1440×900 核对了 `?task=development`、任务名直达、章节路径共创起点与社区经验回流起点；未运行自动化测试套件。
-- `f269ead6`（`feat: add Ascend Studio task deep links and PC showcase`）已推送至 `origin/main`。Pages 工作流 `40791569433` 在本条记录时仍运行中；发布完成后补充线上状态。
+- 功能提交 `f269ead6` 与交接提交 `5009d397` 已推送至 `origin/main`。Pages 工作流 `40791636175` 的 build / deploy 均成功；线上桌面入口及嵌套、根目录 Studio JS 资源均 HTTP 200。线上 CUA DOM 回放超时，交互证据采用本地 1440×900 回放，不把 HTTP 状态当作线上交互验证。
 
 ### 2026-10-29 · Ascend Studio 开发入口页改为界面草图
 
