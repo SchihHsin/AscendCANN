@@ -8119,3 +8119,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户提供的旅程结构和角色讨论为 H；1352×778 桌面截图及浏览器计算布局为 M；痛点与把握感变化为定性设计推演（L），不是新研究或测量结论。汇报仍为 17 页；页面序列和 API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 验证：`npm run render:journey-sequence`、报告构建、`python3 -m py_compile .../build_report.py`、两段内联 JS 与 Mermaid 渲染脚本 `node --check`、`git diff --check`。桌面预览确认 5 列、16 个时序事件、每阶段两条痛点、5 个机会点；图例无溢出，页面无水平溢出。未运行自动化测试套件。
 - 报告提交 `393b85d7` 已推送至 `origin/main`。Pages workflow `40967886194` 成功；线上 URL 返回 HTTP 200，Range 回读确认新图例样式已发布。此次交接与截图证据随后续文档提交一并推送。
+
+### 2026-10-30 · 开发场景串联到社区经验回流
+
+- 按用户确认的开发者旅程，第一章围绕一个端到端任务拆为 7 个设计点：新建任务页主动呈现建议卡 → 回答旁补充知识点 → 从知识卡查看图解 → 在示例副本中修改 → 完成后邀请回流经验 → 整理社区草稿 → 预览 GitCode、CSDN、抖音等渠道。用户要求各设计点定位到相应页面状态；当前路由分别指向建议卡首页、任务回答知识卡、关联图解、示例副本编辑器、完成邀请、社区草稿审阅和多渠道预览，不再把多个点都落到同一个任务页。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，更新第一章设计点内容、逐点路由及资源缓存版本。章节名称和设计点保持通用表述，AddCustom 只作为演示任务。未改章节顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确描述的端到端串联（H）；任务内容是原型中的演示材料，不代表真实任务记录或社区发布。未向 GitCode、CSDN、抖音等外部平台发布内容。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8766 逐点核对第一章 7 个页面起始状态。浏览器预览过程中本地 Demo 的 AddCustom 任务被标记为已解决并生成社区草稿，最后停在多渠道预览；这些仅是本地演示状态，无外部发布。
+- 实现提交 `d263aabb` 已推送到 `origin/main`。本条交接记录随后的文档提交推送。无未决事项。
