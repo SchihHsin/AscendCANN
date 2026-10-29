@@ -7947,3 +7947,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 移除讲解卡右侧重复的目录 IconButton，上一点 / 下一点按钮保留；卡片整体可点击并作为拖动区域，目录可用原有关闭按钮或 Escape 收起。更新脚本缓存版本为 `20261029-card-opens-directory`。
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`。不改变章节 / 设计点内容、任务起点、卡片视觉基调或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户明确指定的交互（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对覆盖点击 / 键盘打开目录、拖动独立工作、移除目录按钮并保留前后导航。本地 8765 页面返回的 HTML、JS、CSS 与工作区文件一致。实现提交 `20404654` 已 rebase 并推送至 `origin/main`，保留并行提交 `d645fa3f`。
+
+### 2026-10-29 · Ascend Studio 旅程时序图移除实现来源小字
+
+- 用户询问时序图右下角“连线布局：beautiful-mermaid · MIT / 图标：Lucide · ISC”的用途。该行是实现依赖来源注记，不属于评审叙事；已从 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py` 和生成页 `cann-dashboard/ascend-studio-design-report.html` 中移除。时序图、五阶段旅程、角色和设计痛点布局保持不变。
+- 验证：报告 17 页；生成 HTML 的来源注记命中数为 0；`py_compile`、报告构建、两段内联脚本 `node --check`、`git diff --check` 及 CUA 本地 1280×720 视觉复核通过。未改变产品原型、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 推送：实现提交 `95fdc3c4` 已推送到 `origin/main`；本交接记录随后的文档提交同步入仓。
