@@ -7818,3 +7818,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/index.html`、`styles.css`，缓存版本更新为 `20261029-note-icons-vertical`。章节与设计点的内容、起点映射、小程序样式及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 依据：用户明确澄清（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地预览确认文字左、控件右侧纵排，目录打开、下一点与上一点切换正常；线上 HTML、CSS、JS 已回读到新版本。
 - 提交 `87a63f33` 已推送至 `origin/main`；GitHub Pages workflow `40836171438` 的 build / deploy 均成功。无未决事项。
+
+
+### 2026-10-29 · 设计点讲解卡点击收起、拖动移动
+
+- 按用户澄清，将卡片文字区设为点击收起入口，收起后的浮条点击展开；文字区也作为拖动区域，移动超过 5px 才开始拖动，并抑制拖动结束后的误点击。保留右侧上一点 / 目录 / 下一点 IconButton；移除卡片顶部章节与设计点计数、减号控件。
+- 修改 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`，缓存版本为 `20261029-note-card-toggle`。卡片仍为黑色 80% 不透明度、2px 背景模糊。章节、设计点内容与起点任务映射不变；小程序和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确的交互要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地预览验证收起、展开、拖动后不误收起及设计点导航（M）。未运行自动化测试。
+- 实现提交 `96634fe5` 已推送到 `origin/main`。本轮核对时线上 HTML 仍引用旧的 `20261029-note-icons-vertical` 资源版本，GitHub Actions API 返回 403 且本机无 `gh` CLI，因此 Pages 部署结果待确认；不据此宣称线上已更新。
