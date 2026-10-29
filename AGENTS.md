@@ -7878,3 +7878,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`，资源缓存版本为 `20261029-note-always-visible`。小程序设计点仍使用原来的移动端页面，不显示桌面讲解卡；章节、内容、任务起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 依据为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地确认讲解卡以普通容器常驻显示、收起提示条不存在，单句与局部加粗正常（M）。线上 HTML、JS、CSS 均 HTTP 200；HTML / JS 不含旧收起控件与处理函数，拖动把手和 pointer 事件保留。
 - 实现提交 `659f43ed` 已推送至 `origin/main`，rebase 时保留并行提交 `6f67f4e1`。GitHub Pages workflow `40847387679` build / deploy 成功。无未决事项。
+
+
+### 2026-10-29 · 章节封面使用真实昇腾 Logo
+
+- 按用户截图要求，将章节封面左上角自绘的黑底字母 A 标记替换为 Demo 顶栏使用的真实 Ascend Logo `ascstudio-pc/studio/assets/ascend-logo.svg`，后接 “Studio” 字样，并保留分隔线与 “DESIGN JOURNEY”。五个章节封面共用这一页头。
+- 修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`，缓存版本为 `20261029-cover-ascend-logo`。复用随 Demo 发布的现有 SVG，不复制素材；章节 / 设计点内容、起点映射、页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确要求和截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地章节 03 封面确认标志显示为与 Demo 一致的红色 Ascend Logo + Studio（M）。线上 HTML 与 Logo SVG 均 HTTP 200，HTML 使用新版本并引用 `./studio/assets/ascend-logo.svg`。
+- 实现提交 `bd8e7154` 已推送至 `origin/main`；GitHub Pages workflow `40848367698` build / deploy 成功。无未决事项。
