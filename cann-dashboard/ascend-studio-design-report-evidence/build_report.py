@@ -164,14 +164,10 @@ body.overview.ctrl #deck{width:auto}
 .r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-label small{font-size:var(--fs-xs)}
 .r-copy-journey .cb-painpoint-rail{gap:.36vw}
 .r-copy-journey .cb-painpoint-rail{grid-row:4}
-.r-journey-breakpoint{appearance:none;width:100%;text-align:left;cursor:pointer;position:relative;padding:.48vh .58vw!important;display:flex;flex-direction:column;justify-content:center;gap:.25vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;color:#4f4346!important;box-shadow:none!important}
-.r-journey-breakpoint:hover{border:0!important;transform:none;background:#ffe7e9!important;box-shadow:none!important}
-.r-journey-breakpoint small{padding-right:1.1vw;font-size:var(--fs-xs);font-weight:780;color:#9b5260;letter-spacing:.02em}
-.r-journey-breakpoint .r-breakpoint-issue{display:block;font-size:var(--cb-copy-size);line-height:1.12;color:#5d5256}
-.r-journey-breakpoint .r-breakpoint-issue b{font-weight:780;color:#a34f5d}
-.r-journey-breakpoint i{position:absolute;right:.48vw;top:.34vh;font-style:normal;font-size:var(--fs-sm);color:#a66b76}
-.r-journey-breakpoint:focus-visible{outline:2px solid #b85a68!important;outline-offset:2px}
-.r-copy-journey [hidden]{display:none!important}
+.r-journey-painpoint{appearance:none;width:100%;text-align:left;position:relative;padding:.48vh .58vw!important;display:flex;flex-direction:column;justify-content:center;gap:.25vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;color:#4f4346!important;box-shadow:none!important;cursor:default}
+.r-journey-painpoint small{font-size:var(--fs-xs);font-weight:780;color:#9b5260;letter-spacing:.02em}
+.r-journey-painpoint .r-painpoint-issue{display:block;font-size:var(--cb-copy-size);line-height:1.12;color:#5d5256}
+.r-journey-painpoint .r-painpoint-issue b{font-weight:780;color:#a34f5d}
 .r-sequence-role-label{grid-column:1;grid-row:3;position:relative;min-width:0;min-height:0;border-right:1px solid #dfe3eb}
 .r-sequence-plot{grid-column:2;grid-row:3;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(180deg,#fffdfd 0%,#fff 100%);border:1px solid #e1e5ec}
 .r-sequence-plot svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;overflow:visible}
@@ -183,18 +179,8 @@ body.overview.ctrl #deck{width:auto}
 .r-sequence-role b{display:block;font-size:var(--fs-xs);line-height:1.1;color:#384453;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r-sequence-role small{display:block;margin-top:.16vh;font-size:var(--fs-xs);line-height:1.08;color:#798493;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r-sequence-credit{position:absolute;right:.55vw;bottom:.35vh;font-size:8.5px;line-height:1;color:#a2a8b2}
-.r-bp-dialog,.r-live-demo{border:1px solid #ffffff;border-radius:18px;background:#f5f5f8;color:#242631;box-shadow:0 30px 100px #0005}
-.r-bp-dialog{width:min(720px,88vw);max-width:none;max-height:84vh;margin:auto;padding:0;overflow:auto}
-.r-bp-dialog::backdrop,.r-live-demo::backdrop{background:#080a13d9;backdrop-filter:blur(5px)}
-.r-bp-dialog>header{display:flex;justify-content:space-between;align-items:center;gap:2vw;padding:2.4vh 2.2vw;border-bottom:1px solid #e0e1e8}
-.r-bp-dialog>header small,.r-bp-index{font-size:var(--fs-sm);color:#777b89}.r-bp-dialog>header h1{margin-top:.5vh;font-size:var(--fs-h2);line-height:1.3}
-.r-bp-close{border:1px solid #d7d8e0;border-radius:999px;background:#fff;padding:.55em 1em;color:#373a48;cursor:pointer}
-.r-bp-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;padding:1.4vh 2.2vw 0}
-.r-bp-tabs button{min-height:38px;border:1px solid #e0e1e9;border-radius:8px;background:#fff;color:#606574;font-size:var(--fs-sm);cursor:pointer}
-.r-bp-tabs button.active{background:#4c48ad;color:white;border-color:#4c48ad}
-.r-bp-panels{padding:2.2vh 2.2vw 2.8vh}.r-bp-panel h2{font-size:var(--fs-h1);line-height:1.35;margin:.8vh 0 1.1vh}.r-bp-panel>p{font-size:var(--fs-body);line-height:1.75;color:#5d6371}
-.r-bp-response{display:grid;gap:.5vh;margin-top:2vh;padding:1.5vh 1.2vw;border:1px solid #e5e3f7;border-radius:10px;background:#eeedfa}.r-bp-response small{font-size:var(--fs-sm);color:#706aa8}.r-bp-response strong{font-size:var(--fs-body);line-height:1.55;font-weight:600}
-.r-bp-panel nav{display:flex;gap:.8vw;flex-wrap:wrap;margin-top:1.6vh}.r-bp-panel nav a{display:inline-flex;padding:.65em .9em;border:1px solid #d8d7ed;border-radius:999px;color:#4946a5;text-decoration:none;font-size:var(--fs-sm)}
+.r-live-demo{border:1px solid #ffffff;border-radius:18px;background:#f5f5f8;color:#242631;box-shadow:0 30px 100px #0005}
+.r-live-demo::backdrop{background:#080a13d9;backdrop-filter:blur(5px)}
 .r-demo-launch{display:inline-flex;align-items:center;gap:.5em;border:1px solid #ffffff42;border-radius:999px;background:#171820;color:#fff;padding:.65em 1em;font-size:var(--fs-body);cursor:pointer;white-space:nowrap;box-shadow:0 8px 24px #0003}
 .r-demo-launch:hover{background:#5149a2}.r-demo-launch span{color:#c3bbff}
 .r-design .r-demo-launch{position:absolute;right:0;bottom:1vh;z-index:8}
@@ -299,7 +285,7 @@ body.overview.ctrl #deck{width:auto}
 @media(max-height:720px){.r-workmode-heading{min-height:4.8vh}.r-workmode-visual{height:44vh;flex-basis:44vh}.r-workmode-bubble{font-size:var(--fs-sm)}}
 .report button:focus-visible,.report a:focus-visible{outline:3px solid #b3a3ff;outline-offset:4px}
 @media(max-width:1100px){.r-journey-user-ribbon{gap:.5vw;padding:.45vh .65vw}.r-journey-breakpoints{width:94vw;grid-template-columns:repeat(5,minmax(0,1fr))}.r-journey-breakpoints>span,.r-journey-breakpoints small{display:none}.r-journey-breakpoints button{font-size:var(--fs-xs)}}
-@media(max-height:720px){.r-design .points{gap:1.5vh}.r-design .body{margin-bottom:2vh}.r-bp-dialog>header{padding:1.8vh 2vw}.r-bp-panels{padding:1.6vh 2vw 2vh}}
+@media(max-height:720px){.r-design .points{gap:1.5vh}.r-design .body{margin-bottom:2vh}}
 @media print{html,body{height:auto;overflow:visible;background:#fff}#deck{width:100%}.slide{height:210mm;width:297mm;break-after:page;page-break-after:always}#controls,#navDots,#toggle,#panel,.r-enlarge{display:none!important}@page{size:A4 landscape;margin:0}}
 """
 
@@ -347,18 +333,13 @@ CSS += r"""
 .r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
 """
 
-breakpoints = [
-    {"label":"表达目标", "issues":[("任务","现场问题难提炼为可执行目标"),("学习","有兴趣，却不清楚从哪里开始")], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达", "title":"先发现问题、再组织 Prompt，本身就是一道门槛", "body":"任务导向用户要从现场提炼目标；学习导向用户可能先有兴趣或疑问。两者都可能是新手或有经验者，专业程度决定引导深度。", "response":"把推荐理由和相关线索摆出来，让用户从可判断的起点开始。", "targets":[("主动建议",3),("线索串联",4)]},
-    {"label":"学习起步", "issues":[("任务","Prompt 依赖用户主动组织上下文"),("学习","资料分散，版本与适用条件难核对")], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点", "title":"学习目标可以模糊，也可以明确", "body":"“我想系统入门昇腾”与“我想掌握某项能力”都是学习诉求：前者需要先探索方向，后者可以直接组织路径。它们是同一类学习用户的不同状态。", "response":"按意图生成路径，并允许用户补充目标、调整顺序和自定义节点。", "targets":[("意图路径",7),("共创调整",8)]},
-    {"label":"边做边懂", "issues":[("任务","方案依据难看懂，也不易追问调整"),("学习","目标、基础与路径不一定匹配")], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动", "title":"任务完成，不等于开发者已经理解", "body":"用户可能照着建议修好代码，却仍不清楚参数为什么要这样变化；如果解释离开当前错误，理解也难迁移到相似问题。", "response":"让错误现场、图解、参数和代码联动，再用操作后的结果检查理解。", "targets":[("开发中图解",5)]},
-    {"label":"经验回流", "issues":[("任务","修复完成，仍可能不理解原因"),("学习","解释与练习脱节，难迁移到相似问题")], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用", "title":"答案留在私人对话，社区难以复用", "body":"问题、尝试和修复过程随 AI 对话结束而分散。学习者自己的解释也可能只留在笔记里，难以再次找回。", "response":"调试后形成可审阅的社区草稿；个人笔记、图解和代码则整理为认知卡。", "targets":[("经验回流",6),("个人认知卡",9)]},
-    {"label":"移动续学", "issues":[("任务","问题与修复留在私聊，社区难以复用"),("学习","个人笔记零散，跨端后难接续实践")], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践", "title":"离开电脑后，疑问和学习线索容易中断", "body":"开发现场产生的关注和疑问未必能在电脑旁继续处理；零散资讯也难接回正在做的事。", "response":"以轻量通知和知识卡承接兴趣与存疑，并把学习小结带回电脑继续实践。", "targets":[("小程序续学",11),("兴趣与疑问信号",12)]},
+journey_pain_points = [
+    {"label":"表达目标", "issues":[("任务","现场问题难提炼为可执行目标"),("学习","有兴趣，却不清楚从哪里开始")], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达"},
+    {"label":"学习起步", "issues":[("任务","Prompt 依赖用户主动组织上下文"),("学习","资料分散，版本与适用条件难核对")], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点"},
+    {"label":"边做边懂", "issues":[("任务","方案依据难看懂，也不易追问调整"),("学习","目标、基础与路径不一定匹配")], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动"},
+    {"label":"经验回流", "issues":[("任务","修复完成，仍可能不理解原因"),("学习","解释与练习脱节，难迁移到相似问题")], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用"},
+    {"label":"移动续学", "issues":[("任务","问题与修复留在私聊，社区难以复用"),("学习","个人笔记零散，跨端后难接续实践")], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践"},
 ]
-bp_buttons = "".join(
-    f'<button type="button" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}">'
-    f'<span>{i+1:02}</span>{esc(item["label"])}</button>'
-    for i,item in enumerate(breakpoints)
-)
 source_journey, SOURCE_JOURNEY_CSS = copy_editable_journey_markup_and_css()
 
 SEQUENCE_ROLES = [
@@ -443,13 +424,17 @@ def sequence_diagram_markup():
         "var(--_text-muted)": "#455267",
         "var(--_text-sec)": "#657184",
         "var(--bg)": "#ffffff",
-        "var(--_line)": "#d3dae4",
+            "var(--_line)": "#d3dae4",
     }
     for node in root.iter():
         for attr in ("fill", "stroke"):
             value = node.get(attr)
             if value in color_vars:
                 node.set(attr, color_vars[value])
+        if "lifeline" in (node.get("class") or "").split():
+            node.set("stroke", "#7b8797")
+            node.set("stroke-width", "2.2")
+            node.set("stroke-dasharray", "7 5")
     for style in style_nodes:
         style.text = re.sub(r"@import[^;]+;\s*", "", style.text or "")
         style.text = re.sub(
@@ -458,6 +443,7 @@ def sequence_diagram_markup():
             style.text,
             count=1,
         )
+        style.text = (style.text or "") + "\n.lifeline { stroke: #7b8797 !important; stroke-width: 2.2px !important; stroke-dasharray: 7 5 !important; opacity: 1 !important; }\n"
 
     phase_fills = ["#f0f6ff", "#f5f2ff", "#f4f3ff", "#eff8fa", "#f0f7f1"]
     phase_blocks = [node for node in geometry if node.get("class") == "block" and node.get("data-type") == "rect"]
@@ -642,7 +628,7 @@ def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向两条并列用户旅程，共享同一组协作角色；五阶段下方逐列对应断点与机会点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向两条并列用户旅程，共享同一组协作角色；五阶段下方逐列对应设计痛点与机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
         '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
@@ -652,7 +638,7 @@ def build_journey():
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
     section = re.sub(r'(<div class="body-area r-journey-body" aria-label=")[^"]*(")',
-        r'\1两条用户行为泳道、共用人机协作时序，五阶段下方分别对应设计断点与机会点\2', section, count=1)
+            r'\1两条用户行为泳道、共用人机协作时序，五阶段下方分别对应设计痛点与机会点\2', section, count=1)
 
     stage_html = []
     for kicker, title, desc, phase, illustration in JOURNEY_STAGES:
@@ -699,23 +685,23 @@ def build_journey():
     section = section.replace('aria-label="开发者泳道"', 'aria-label="用户行为：任务导向与学习导向的并列旅程"', 1)
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
-        '<div class="cb-row-label cb-painpoint-label"><small>DESIGN BREAKS</small><b>设计断点</b></div>', 1)
-    breakpoint_nodes = "".join(
-        f'<button type="button" class="cb-painpoint-node r-journey-breakpoint" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}；包含任务与学习两类用户痛点">'
+        '<div class="cb-row-label cb-painpoint-label"><small>DESIGN PAIN POINTS</small><b>设计痛点</b></div>', 1)
+    painpoint_nodes = "".join(
+        f'<article class="cb-painpoint-node r-journey-painpoint" aria-label="设计痛点 {i+1}：{esc(item["label"])}">'
         f'<small>{i+1:02} · {esc(item["label"])}</small>'
-        + "".join(f'<span class="r-breakpoint-issue"><b>{esc(role)}</b> · {esc(issue)}</span>' for role, issue in item["issues"])
-        + '<i aria-hidden="true">↗</i></button>'
-        for i, item in enumerate(breakpoints)
+        + "".join(f'<span class="r-painpoint-issue"><b>{esc(role)}</b> · {esc(issue)}</span>' for role, issue in item["issues"])
+        + '</article>'
+        for i, item in enumerate(journey_pain_points)
     )
-    section = replace_div_content(section, "cb-painpoint-rail", breakpoint_nodes)
+    section = replace_div_content(section, "cb-painpoint-rail", painpoint_nodes)
     section = re.sub(r'aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组[^\"]*"',
-        'aria-label="五个旅程断点，可点击查看问题与对应设计响应"', section, count=1)
+        'aria-label="五个旅程阶段对应的设计痛点，分别呈现任务导向与学习导向的问题"', section, count=1)
 
     opportunity_label = '<div class="cb-row-label cb-opportunity-label"><small>OPPORTUNITY</small><b>机会点</b></div>'
     opportunity_cards = "".join(
         f'<article class="cb-opportunity"><small>{esc(item["opportunity_title"])}</small>'
         f'<span>{esc(item["opportunity_body"])}</span></article>'
-        for item in breakpoints
+        for item in journey_pain_points
     )
     opportunity_rail = '<div class="cb-opportunity-rail" aria-label="与后续五组设计点对应的机会点">' + opportunity_cards + '</div>'
     _painpoint_start, painpoint_end = div_bounds(section, "cb-painpoint-rail")
@@ -735,28 +721,6 @@ def build_journey():
     return section
 
 journey = build_journey()
-
-def bp_target_links(targets):
-    return "".join(f'<a href="#{page}">{esc(label)} ↗</a>' for label,page in targets)
-
-bp_sections = "".join(
-    f'<section class="r-bp-panel" data-bp-panel="{i}" {"" if i == 0 else "hidden"}>'
-    f'<span class="r-bp-index">断点 {i+1:02} / 05 · {esc(item["label"])}</span>'
-    f'<h2>{esc(item["title"])}</h2><p>{esc(item["body"])}</p>'
-    f'<div class="r-bp-response"><small>设计回应</small><strong>{esc(item["response"])}</strong></div>'
-    f'<nav aria-label="查看相关设计">{bp_target_links(item["targets"])}</nav>'
-    f'</section>'
-    for i,item in enumerate(breakpoints)
-)
-bp_tabs = "".join(
-    f'<button type="button" data-bp-tab="{i}" class="{"active" if i == 0 else ""}">{i+1:02} {esc(item["label"])}</button>'
-    for i,item in enumerate(breakpoints)
-)
-breakpoint_dialog = f'''<dialog class="r-bp-dialog" aria-labelledby="r-bp-dialog-title">
-  <header><div><small>用户旅程 · 问题到设计回应</small><h1 id="r-bp-dialog-title">同一条旅程上的五个断点</h1></div><button type="button" class="r-bp-close" aria-label="关闭断点详情">关闭</button></header>
-  <nav class="r-bp-tabs" aria-label="选择旅程断点">{bp_tabs}</nav>
-  <div class="r-bp-panels">{bp_sections}</div>
-</dialog>'''
 
 slides=[]
 logo="data:image/svg+xml;base64,"+base64.b64encode((ROOT/"ascstudio/assets/ascend-logo.svg").read_bytes()).decode()
@@ -901,7 +865,7 @@ addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);i
 document.fonts.ready.then(()=>{balanceHeads();reanchor();});""")
 # Avoid deck keyboard navigation while editing notes, dialogs, and screenshots.
 doc=doc.replace("if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;", "if(e.target.closest('input,textarea,select,[contenteditable=true]')||document.querySelector('.r-modal.open,dialog[open]'))return;")
-extra=breakpoint_dialog+r'''
+extra=r'''
 <div class="r-modal" role="dialog" aria-modal="true" aria-label="界面截图放大" aria-hidden="true"><button>关闭 · Esc</button><img alt="放大的界面截图"></div>
 <dialog class="r-live-demo" aria-labelledby="r-live-demo-title">
   <header><h1 id="r-live-demo-title">Ascend Studio Demo</h1><div class="r-live-demo-actions"><a id="r-demo-new-window" target="_blank" rel="noopener">新窗口打开 ↗</a><a id="r-demo-fallback" target="_blank" rel="noopener" hidden>打开本地版 · 5217 ↗</a><button type="button" class="r-demo-close">关闭 · Esc</button></div></header>
@@ -909,7 +873,6 @@ extra=breakpoint_dialog+r'''
 </dialog>
 <script>
 const rModal=document.querySelector('.r-modal');
-const bpDialog=document.querySelector('.r-bp-dialog');
 const liveDialog=document.querySelector('.r-live-demo');
 const liveFrame=liveDialog.querySelector('iframe');
 let rFocus=null;
@@ -933,15 +896,6 @@ document.querySelectorAll('.r-enlarge').forEach(b=>b.addEventListener('click',()
 rModal.querySelector('button').addEventListener('click',closeFigure);
 rModal.addEventListener('click',e=>{if(e.target===rModal)closeFigure();});
 document.addEventListener('keydown',e=>{if(rModal.classList.contains('open')&&e.key==='Escape')closeFigure();if(rModal.classList.contains('open')&&e.key==='Tab'){e.preventDefault();rModal.querySelector('button').focus();}});
-function selectBreakpoint(index){
-  bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>{tab.classList.toggle('active',i===index);tab.setAttribute('aria-selected',String(i===index));});
-  bpDialog.querySelectorAll('[data-bp-panel]').forEach((panel,i)=>{panel.hidden=i!==index;});
-}
-document.querySelectorAll('[data-bp-open]').forEach(button=>button.addEventListener('click',()=>{selectBreakpoint(Number(button.dataset.bpOpen));bpDialog.showModal();}));
-bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>tab.addEventListener('click',()=>selectBreakpoint(i)));
-bpDialog.querySelector('.r-bp-close').addEventListener('click',()=>bpDialog.close());
-bpDialog.querySelectorAll('.r-bp-panel a').forEach(a=>a.addEventListener('click',()=>bpDialog.close()));
-bpDialog.addEventListener('click',e=>{if(e.target===bpDialog)bpDialog.close();});
 const phoneImage=document.querySelector('.r-phone-stage>img');
 const phoneCaption=document.querySelector('.r-phone-caption');
 const phoneSources=[...document.querySelectorAll('[data-phone-source]')];
