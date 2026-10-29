@@ -208,6 +208,43 @@ function previousPoint() {
   else if (currentChapter > 0) showChapterCover(currentChapter - 1);
 }
 
+const designNote = $("#design-note");
+const noteDragHandle = designNote.querySelector(".note-topline");
+let noteDrag = null;
+
+noteDragHandle.addEventListener("pointerdown", event => {
+  if (event.button !== 0 || event.target.closest("button") || designNote.hidden || showcase.classList.contains("is-mobile")) return;
+  const rect = designNote.getBoundingClientRect();
+  noteDrag = { pointerId: event.pointerId, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top };
+  designNote.style.left = `${rect.left}px`;
+  designNote.style.top = `${rect.top}px`;
+  designNote.style.right = "auto";
+  designNote.style.bottom = "auto";
+  designNote.classList.add("is-dragging");
+  noteDragHandle.setPointerCapture(event.pointerId);
+  event.preventDefault();
+});
+
+noteDragHandle.addEventListener("pointermove", event => {
+  if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
+  const rect = designNote.getBoundingClientRect();
+  const left = Math.min(Math.max(0, event.clientX - noteDrag.offsetX), Math.max(0, window.innerWidth - rect.width));
+  const top = Math.min(Math.max(0, event.clientY - noteDrag.offsetY), Math.max(0, window.innerHeight - rect.height));
+  designNote.style.left = `${left}px`;
+  designNote.style.top = `${top}px`;
+});
+
+function finishNoteDrag(event) {
+  if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
+  noteDrag = null;
+  designNote.classList.remove("is-dragging");
+  if (noteDragHandle.hasPointerCapture(event.pointerId)) noteDragHandle.releasePointerCapture(event.pointerId);
+}
+
+noteDragHandle.addEventListener("pointerup", finishNoteDrag);
+noteDragHandle.addEventListener("pointercancel", finishNoteDrag);
+noteDragHandle.addEventListener("lostpointercapture", finishNoteDrag);
+
 $("#cover-enter").addEventListener("click", () => loadPoint(currentChapter, 0));
 $("#cover-index").addEventListener("click", () => { menuOpen = true; renderPointMenu(); });
 $("#note-next").addEventListener("click", nextPoint);

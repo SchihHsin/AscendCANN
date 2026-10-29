@@ -7761,6 +7761,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅影响 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css` 和本交接记录；章节、设计点内容、起点任务映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
 - 提交 `b6483f7c` 已推送到 `origin/main`；Pages workflow `40809500420` 的 build / deploy 均成功。线上入口、JS、CSS 均 HTTP 200，HTML 引用新版参数，三个资源均不再包含 `note-entry`。
 
+### 2026-10-29 · 桌面设计点讲解卡支持拖动
+
+- 按用户要求允许移动左下角讲解卡：顶部章节栏作为拖动把手，拖动范围限制在视口内，收起按钮仍保留点击操作；当前位置在当前页面会话中跨设计点切换保留，刷新后回到默认位置。样式与脚本缓存版本更新为 `20261029-note-draggable`。
+- 来源为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地预览实际拖动后卡片从左下移至页面中部，边界内显示正常（M）。未运行自动化测试。
+- 仅影响 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css` 和本交接记录；章节、设计点内容、起点映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
+- 提交与 Pages 部署结果在本轮推送后补记。
+
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
 - 用户指出进入范围图解后对话不应收起，且日志排查入口应留在对话中。原因是宽幅图解 CSS 同时隐藏了 `.conversation-panel`，入口卡也曾在首次点击后自动折叠，并且只渲染在初始对话里。
