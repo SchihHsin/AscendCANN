@@ -7857,3 +7857,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将卡片与按钮组纳入同一个可移动容器，拖动卡片文字会连同按钮一起移动；收起时按钮组随整个容器隐藏。修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`，缓存版本更新为 `20261029-note-controls-outside`。章节、设计点、任务起点映射和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 用户确认设计方向（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地确认下一点导航有效、收起时按钮组隐藏、拖动时卡片与按钮组同步移动（M）。线上 HTML、CSS、JS 均 HTTP 200，HTML 引用新版本，DOM 为卡片与导航同级；未运行自动化测试。
 - 实现提交 `7e20581a` 已推送至 `origin/main`；GitHub Pages workflow `40842186838` build / deploy 成功。无未决事项。
+
+
+### 2026-10-29 · 讲解句仅强调核心短语
+
+- 按用户要求避免整句加粗，将全部 16 条设计点讲解恢复为常规字重，并为每条标记一个核心短语显示为粗体；句子内容和单句结构不变。通过 DOM 文本节点加 `strong` 渲染，避免将讲解文本作为 HTML 注入。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`；资源缓存版本为 `20261029-note-selective-emphasis`。不改章节 / 设计点顺序、卡片拖动与导航、任务起点映射、小程序入口或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确的排版要求与截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本检查 16 条强调词均包含在对应句子中；CUA 本地预览确认普通字重与「可编辑的 Prompt」局部强调（M）。线上 HTML、JS、CSS 均 HTTP 200；JS 有 16 条强调标记，CSS 包含正文 400 / 强调 680 字重。
+- 实现提交 `7ec1fe30` 已推送至 `origin/main`；GitHub Pages workflow `40844206713` build / deploy 成功。无未决事项。
