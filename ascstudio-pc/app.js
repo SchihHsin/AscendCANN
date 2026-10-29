@@ -3,7 +3,7 @@ const MINI_URL = "../ascstudio-mini/";
 const ROUTE_REV = "20261029-task-routing";
 const chapters = [
   {
-    id: "development", title: "开发场景：Add 算子精度排查", cover: "从错误现象到社区经验", summary: "从 Add 算子精度差异开始，带着代码和日志理解问题、核对处理结果，并把排查过程整理成社区经验。",
+    id: "development", title: "开发场景：Add 算子精度排查", cover: "从错误现象到社区经验", summary: "从 Add 算子精度差异开始，带着代码和日志理解问题、核对处理结果，并把排查过程整理成社区经验。", art: "./assets/cover-development.png", artAlt: "开发者通过代码、结果对比和放大镜排查 Add 算子精度差异的二维线描插画",
     points: [
       { id: "connect", title: "从任务线索整理提问", note: "从 Add 算子精度差异排查任务中选出目标、代码和日志，整理成可编辑的 Prompt，确认后再发送。", emphasis: "可编辑的 Prompt", description: "从当前任务里的目标、代码与日志出发，形成可调整并由开发者确认的提问。", entry: "Add 算子精度差异排查 · 任务对话与 Prompt", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
       { id: "micro", title: "从当前内容取上下文", note: "划选内容、指向页面或调整输入框时，都能顺手把当前内容带入提问。", emphasis: "把当前内容带入提问", description: "划词、指向工作区和调整输入区位置，都从用户眼前的内容开始；微交互跟随任务发生。", entry: "Add 算子精度差异排查 · 对话内容与输入区", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
@@ -13,7 +13,7 @@ const chapters = [
     ],
   },
   {
-    id: "learning", title: "学习场景：从目标到实践", cover: "先说想学什么，再一步步尝试", summary: "从学习记录和能力目标出发，生成可调整的学习路径，通过练习理解内容、整理个人知识，再带着收获回到相关任务。",
+    id: "learning", title: "学习场景：从目标到实践", cover: "先说想学什么，再一步步尝试", summary: "从学习记录和能力目标出发，生成可调整的学习路径，通过练习理解内容、整理个人知识，再带着收获回到相关任务。", art: "./assets/cover-learning.png", artAlt: "从学习目标出发，经过学习路径和练习，整理成个人知识卡片的二维线描插画",
     points: [
       { id: "recommend", title: "主动建议先摆出依据", note: "根据近期学习记录推荐下一步，并说明理由，是否采用由学习者决定。", emphasis: "推荐下一步，并说明理由", description: "结合已有学习记录给出可判断的下一步建议；是否继续由学习者决定。", entry: "新建任务首页 · 学习模式建议卡", mode: "学习" },
       { id: "intent", title: "模糊意图也能开始", note: "说出想提升的能力并补充已有基础，就能生成学习方向。", emphasis: "生成学习方向", description: "从“想学会图像输入预处理，但不知道从哪里开始”进入，补充目标与已有基础后生成学习方向。", entry: "新建任务首页 · 学习模式与目标输入", mode: "学习" },
@@ -25,7 +25,7 @@ const chapters = [
     ],
   },
   {
-    id: "mobile", title: "支线：在手机上继续学习", cover: "把学习延伸到日常间隙", summary: "从学习路径和认知卡出发，打开小程序看每周速览、标记兴趣与疑问，并调整接收偏好。",
+    id: "mobile", title: "支线：在手机上继续学习", cover: "把学习延伸到日常间隙", summary: "从学习路径和认知卡出发，打开小程序看每周速览、标记兴趣与疑问，并调整接收偏好。", art: "./assets/cover-mobile.png", artAlt: "手机上查看每周学习速览、知识卡片并保存后续学习线索的二维线描插画",
     points: [
       { id: "handoff", title: "新知先出现在微信里", note: "让每周开发速览出现在微信通知里，点开就能继续阅读。", emphasis: "点开就能继续阅读", description: "一条未读服务通知，让每周开发速览主动来到用户熟悉的消息列表。", entry: "小程序 · 微信消息列表", route: "wechat", mobile: true },
       { id: "notification", title: "先看懂这条通知", note: "通知先展示本周重点和内容摘要，再进入完整速览。", emphasis: "本周重点和内容摘要", description: "通知先交代本周重点和内容形态，再把用户带入完整速览。", entry: "小程序 · 服务通知摘要", route: "wechat-notification", mobile: true },
@@ -47,6 +47,12 @@ function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
 }
 
+function updateCoverArt(chapter) {
+  const image = $("#cover-art");
+  image.src = chapter.art;
+  image.alt = chapter.artAlt;
+}
+
 function updateAddress(view) {
   const url = new URL(location.href);
   url.searchParams.set("chapter", String(currentChapter + 1));
@@ -61,9 +67,7 @@ function buildCover() {
   $("#cover-number").textContent = String(currentChapter + 1).padStart(2, "0");
   $("#cover-title").textContent = chapter.title;
   $("#cover-description").textContent = chapter.summary;
-  $("#cover-point-count").textContent = `${String(chapter.points.length).padStart(2, "0")} 个设计点`;
-  $("#cover-points").innerHTML = chapter.points.map((point, index) => `<li><span>${String(index + 1).padStart(2, "0")}</span><span>${escapeHTML(point.title)}</span></li>`).join("");
-  $("#journey-rail").innerHTML = chapters.map((_, index) => `<span class="${index === currentChapter ? "is-current" : ""}"></span>`).join("");
+  updateCoverArt(chapter);
   $("#cover-enter").textContent = currentChapter === chapters.length - 1 ? "进入小程序演示" : "进入本章";
   showcase.dataset.view = "cover";
   showcase.classList.remove("is-mobile");
