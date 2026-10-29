@@ -7916,3 +7916,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户明确要求，将设计点 1.1（`recommend`）的 `mode` 从「开发」改为「学习」，起点说明同步改为「新建任务首页 · 学习模式建议卡」。其他设计点文案、任务映射和页面路由不变。
 - 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，脚本缓存版本更新为 `20261029-learning-mode`；不改变章节顺序、卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户明确指定的模式（H）。`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；静态核对确认 1.1 配置为 `mode: "学习"`，并且不再包含开发模式入口。脚本缓存版本为 `20261029-learning-mode`。实现提交 `dfb5e605` 与缓存更新 `893539f3` 均已推送至 `origin/main`。
+
+### 2026-10-29 · 用户旅程统一行为行与白底时序
+
+- 按用户要求先提供无新增插画的版本：保留阶段标题已有的 5 张插画，阶段下方改为一行共同行为概述，不再重复显示任务导向 / 学习导向两条行为泳道。五列表达目标、找线索、整理下一步、实践核验和带走经验；角色差异仍在时序图中呈现。
+- 移除 `beautiful-mermaid` 生成的不规则彩色阶段背景矩形。阶段关系由上方五列标题及下方行为、设计痛点、机会点的列对齐表达；角色生命线、消息卡片、阶段标题插画和五组痛点 / 机会点内容保留。没有改变页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`qa.md` 与生成报告 `cann-dashboard/ascend-studio-design-report.html`。依据为用户本轮明确要求（H）；行为行的通用短句与背景简化为设计组织（M）。
+- 验证：报告仍为 17 页；结构核对确认 5 个行为单元、行为行内无图片、无重复角色行、阶段背景矩形为 0；保留 6 条生命线、18 个交接消息、5 张痛点卡和 5 张机会点卡。`py_compile`、两段内联 JS `node --check`、`git diff --check` 通过；CUA 在 1280×720 本地 5219 预览第 3 页核对列对齐与时序可读性。未运行自动化测试。
+- 实现提交 `5ac98e7c` 已推送至 `origin/main`。本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#3`。
