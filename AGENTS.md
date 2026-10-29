@@ -8142,3 +8142,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求只保留主动卡片学习开场（H）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认删除开发篇重复 `connect` 和学习篇替代入口 `intent`，保留学习模式主动建议卡，章节点数及缓存版本匹配。
 - 实现提交 `d62f3ca1` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
+
+### 2026-10-30 · 重排能力架构图的知识底座与连线
+
+- 用户指出第 06 页视觉效果丑。复核截图后确认：检索服务双环压到知识底座边界并穿过标签，Agent 区域与底座距离过近，客户端上下文线穿过 Skill 标题。将检索服务改为底座内部的独立胶囊节点；扩展底座空间并让内容治理五步链在下方成行；缩短 Agent 区域高度，留出层间间隙；将客户端上下文线沿体验层下方绕行，避开 Skill 标题后进入 Agent Host。授权反馈文字与回流线保持分开。
+- 修改 `ascstudio-mini/knowledge-provider-map.html` 的 SVG 结构、节点样式与路径描述。保留三层架构、能力信息、页面序列和既定 API / Protocol、Host / Harness、Application / Task 边界。依据：用户截图与明确反馈（H）；关系图排版参照 Report PPT Skill 的“节点、连线和区域承载逻辑”规范。
+- 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，核对检索节点完整落在知识底座、治理链在其下方、客户端路径不穿过 Skill 标题。未运行自动化测试。GitHub Pages workflow `40971774367` 的 build / deploy / status jobs 均成功，线上已读回新服务节点与路径。
+- 页面提交 `5efae4d2` 已推送至 `origin/main`；本条记录将由随后文档提交推送。
