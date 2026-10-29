@@ -8149,3 +8149,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html` 的 SVG 结构、节点样式与路径描述。保留三层架构、能力信息、页面序列和既定 API / Protocol、Host / Harness、Application / Task 边界。依据：用户截图与明确反馈（H）；关系图排版参照 Report PPT Skill 的“节点、连线和区域承载逻辑”规范。
 - 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，核对检索节点完整落在知识底座、治理链在其下方、客户端路径不穿过 Skill 标题。未运行自动化测试。GitHub Pages workflow `40971774367` 的 build / deploy / status jobs 均成功，线上已读回新服务节点与路径。
 - 页面提交 `5efae4d2` 已推送至 `origin/main`；本条记录将由随后文档提交推送。
+
+### 2026-10-30 · 移除 Agent 区域过大的空椭圆
+
+- 用户指出中间紫色区域过大且留有明显空洞。原因是移除中心知识服务节点后，仍保留原来包围它的 Agent 大椭圆。已移除该椭圆底色与外圈，改用页面已有的水平分区线、组件连线和任务总线表达 Agent 层；四类任务能力整体上移，缩短节点间空档，Skill 到并行任务总线的关系仍明确。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。保留最下层知识底座、其内独立检索服务、内容治理链、页面序列和既定 API / Protocol、Host / Harness、Application / Task 边界。依据为用户截图与明确反馈（H）；图以节点、关系和区域承载逻辑，符合 Report PPT Skill 图表规则。
+- 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，确认中层不再有空椭圆，任务节点上移且分组关系清楚。未运行自动化测试。GitHub Pages workflow `40972846351` 的 build / deploy / report-build-status 均成功，线上源码已读回无中层大椭圆且任务总线上移。
+- 页面提交 `996a88ec` 已推送至 `origin/main`；本条交接记录随后的文档提交推送。
