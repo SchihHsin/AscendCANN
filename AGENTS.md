@@ -7789,3 +7789,18 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 邀请与草稿文案改为描述“当前输出形状符合 Demo 预设”，不再声称执行过复核、Python、模型或 NPU；入口仍需用户点「生成草稿」后打开可编辑草稿。依据为用户明确要求在选好输出轴后出现入口（H）。不改变页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`cd ascend-studio && npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；线上 `/AscendCANN/ascstudio/` 与 `index-B7YhAokH.js` HTTP 200，线上 JS 含轴对齐提示和社区邀请入口。未运行自动化测试或真实模型 / NPU 验证。
 - 实现提交 `9c91e818` 已推送到 `origin/main`；Pages workflow `40810566854` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · Ascend Studio 开发入口视觉复核
+
+- 用户要求昇腾社区与 Codex 画面必须沿用现有产品视觉，不能随意发挥。第 2 页透视图再次校准：昇腾侧参照本轮 Chrome 中核对的官方开发者主页，保留红色品牌导航、浅蓝首页主视觉、白色文章 / 资源卡，并保留独立 IDE 后窗；Codex 侧参照证据目录中的 `12-codex-task-brief.png`，保留左侧会话导航、中心任务简报和右侧 Context 面板。ImageGen 用于透视构图，具体文字和内容仍属场景示意。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/entry-traditional-ui.png`、`entry-agent-workspace.png`、重建 `cann-dashboard/ascend-studio-design-report.html`，补充 `qa.md` 与 `narrative.md` 来源 / 置信度记录。仍为 17 页，入口 #2、旅程 #3；不改变原型、旅程结论或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Python 编译与报告构建通过；17 页和内嵌 PNG 检查通过；两段内联 JS `node --check`、`git diff --check` 通过；Chrome 本地桌面预览确认画面和页脚完整。
+
+
+### 2026-10-29 · 用现有界面截图校准入口透视图
+
+- 用户要求昇腾社区与 Codex 的界面风格沿用现有样式，不再自由重画（H）。本次重新核对发现纯 ImageGen 会连屏幕细节一起重生成，因此官网与 Codex 主界面改用原始截图；ImageGen 只保留透视场景、IDE 外观和 Codex 外侧导航的参考构图。
+- 官网参考截图来自 `https://www.hiascend.com/zh/developer`，桌面视口为 1440×900，页面无横向溢出、无 cookie 遮挡；Codex 主体任务简报 / Context 区域来自证据目录的 `12-codex-task-brief.png`。两侧界面风格事实来自对应截图（H）；IDE 与透视环境为设计示意（M）。
+- 变更 `cann-dashboard/ascend-studio-design-report-evidence/compose_entry_perspective.py`、两张透视合成 JPG、截图与元数据、`build_report.py`、`narrative.md`、`qa.md`、放映截图及 `cann-dashboard/ascend-studio-design-report.html`。
+- 页面顺序仍为 17 页，开发入口第 2 页、用户旅程第 3 页；不改变设计判断与 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：报告构建 17 页 / 8,584,034 bytes；Chrome 1440×900 打开 `#2`，两张图均加载；2 个 Python 文件编译、2 段内联 JavaScript `node --check`、`git diff --check` 通过。截图与来源元数据保留在 `cann-dashboard/ascend-studio-design-report-evidence/`。提交 / 推送结果将在下方交付记录补齐。
