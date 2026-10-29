@@ -7745,7 +7745,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户所说“60%透明度”解释为 60% 透光 / 黑底不透明度 40%，给展开卡片和收起提示条增加 4px 背景模糊；样式版本更新为 `20261029-translucent-note-60-blur-4`。
 - 来源为用户明确指定的透明度与背景模糊（H）。本地预览截图中输入栏仍可从卡片下方辨认；DOM 计算样式为 `rgba(0, 0, 0, 0.4)` 和 `blur(4px)`。验证 `git diff --check`；静态 CSS 无需构建，未运行自动化测试。
 - 仅影响 `ascstudio-pc/styles.css`、`ascstudio-pc/index.html` 和本交接记录；章节、设计点、起点映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
-- 提交与 Pages 部署结果在本轮推送后补记。
+- 提交 `b74ffe30` 已推送到 `origin/main`；Pages workflow `40806203283` 的 build / deploy 均成功。线上入口已引用新版缓存参数，HTML 与 CSS 均 HTTP 200，CSS 确认 40% 黑底和 4px 模糊。本交接记录随后单独提交并推送。
 
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
