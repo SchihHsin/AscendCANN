@@ -7803,4 +7803,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 官网参考截图来自 `https://www.hiascend.com/zh/developer`，桌面视口为 1440×900，页面无横向溢出、无 cookie 遮挡；Codex 主体任务简报 / Context 区域来自证据目录的 `12-codex-task-brief.png`。两侧界面风格事实来自对应截图（H）；IDE 与透视环境为设计示意（M）。
 - 变更 `cann-dashboard/ascend-studio-design-report-evidence/compose_entry_perspective.py`、两张透视合成 JPG、截图与元数据、`build_report.py`、`narrative.md`、`qa.md`、放映截图及 `cann-dashboard/ascend-studio-design-report.html`。
 - 页面顺序仍为 17 页，开发入口第 2 页、用户旅程第 3 页；不改变设计判断与 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：报告构建 17 页 / 8,584,034 bytes；Chrome 1440×900 打开 `#2`，两张图均加载；2 个 Python 文件编译、2 段内联 JavaScript `node --check`、`git diff --check` 通过。截图与来源元数据保留在 `cann-dashboard/ascend-studio-design-report-evidence/`。提交 / 推送结果将在下方交付记录补齐。
+- 验证：报告构建 17 页 / 8,584,034 bytes；Chrome 1440×900 打开 `#2`，两张图均加载；2 个 Python 文件编译、2 段内联 JavaScript `node --check`、`git diff --check` 通过。截图与来源元数据保留在 `cann-dashboard/ascend-studio-design-report-evidence/`。实现提交 `d2722d64` 已推送至 `origin/main`。无未决事项。
