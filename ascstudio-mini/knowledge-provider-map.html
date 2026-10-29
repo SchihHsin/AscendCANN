@@ -1131,6 +1131,10 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .capability-map .map-node-shape{stroke-width:2.4}
 .capability-map .map-node-shape.interface{fill:#f1f6fc;stroke:#6f91b2}
 .capability-map .map-node-shape.orchestration{fill:#f3eff8;stroke:#8973aa}
+.capability-map .map-service-node{fill:#f7f4fa;stroke:#b9a9ca;stroke-width:1.4}
+.capability-map .map-service-icon{fill:none;stroke:#927fb5;stroke-width:1.8}
+.capability-map .map-service-title{fill:#27313d;font-size:17px;font-weight:740;text-anchor:start}
+.capability-map .map-service-note{fill:#68717d;font-size:12.5px;text-anchor:start}
 .capability-map .map-task-bus{fill:none;stroke:#9f95ad;stroke-width:1.5;opacity:.78}
 .capability-map .map-group-label{fill:#697481;font-size:12px;font-weight:720;text-anchor:middle;letter-spacing:.04em}
 .capability-map .map-legend-label{fill:#697481;font-size:12px;font-weight:650}
@@ -1374,14 +1378,14 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">知识底座、Agent 服务和开发者体验的三层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识检索服务、多色圆点表示任务能力、绿色圆点表示内容治理。上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文；Web 经 OpenAPI 查询底层知识检索服务，客户端上下文进入 Agent Host。Agent Host 路由 Skill 与 MCP，Skill 调用四类并行任务能力，MCP 查询底层知识索引和受控工具。底层对官方文档、API、课程、代码、Issue 和活动进行接入、解析归一、版本许可与 Owner 治理，形成带原文锚点、适用范围、前置关系、版本、证据和状态的 Knowledge Unit、关系图与检索索引，并提供全文 / 语义检索、版本过滤和来源返回。任务产物汇入结果校验，校验后返回共同体验层；经授权的完成与纠错信号沿独立虚线回到 Owner 复核。椭圆区域表示体验、Agent 服务和知识底座三层架构，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识检索服务、多色圆点表示任务能力、绿色圆点表示内容治理。上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文；Web 经 OpenAPI 查询底层知识检索服务，客户端上下文进入 Agent Host。Agent Host 路由 Skill 与 MCP，Skill 调用四类并行任务能力，MCP 查询底层知识索引和受控工具。最下层知识底座中，五步内容治理将官方文档、API、课程、代码、Issue 和活动加工成带原文锚点、适用范围、前置关系、版本、证据和状态的 Knowledge Unit、关系图与检索索引；独立的知识检索服务节点提供全文 / 语义检索、版本过滤和来源返回。任务产物汇入结果校验，校验后返回共同体验层；经授权的完成与纠错信号沿独立虚线回到 Owner 复核。三层区域表示体验、Agent 服务和知识底座，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
       </defs>
 
       <!-- 三个横向区域表示架构层级；留出左侧层级标题的呼吸空间 -->
-      <path class="map-stage-rule" d="M245 190H1380 M245 552H1380"/>
+      <path class="map-stage-rule" d="M245 190H1380 M245 540H1380"/>
       <g aria-hidden="true" transform="translate(760 37)">
         <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
         <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
@@ -1403,21 +1407,21 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-node-title" x="1050" y="84">项目客户端</text><text class="map-node-note" x="1050" y="106">授权项目 · 版本 · 选定日志</text><text class="map-node-label" x="1050" y="151">兼容建议 · 技术图解 · 下一步</text>
 
       <!-- 中层是服务接口与 Agent 编排；知识检索服务归到底部知识底座 -->
-      <ellipse class="map-fill knowledge" cx="800" cy="378" rx="550" ry="166"/>
-      <ellipse class="map-orbit knowledge" cx="800" cy="378" rx="550" ry="166"/>
+      <ellipse class="map-fill knowledge" cx="800" cy="365" rx="550" ry="162"/>
+      <ellipse class="map-orbit knowledge" cx="800" cy="365" rx="550" ry="162"/>
 
       <!-- 入口把目标或项目上下文送入相应服务 -->
       <path class="map-path experience" d="M500 161C480 206 420 228 363 265"/>
-      <path class="map-path future" d="M1050 161C940 210 760 231 619 265"/>
+      <path class="map-path future" d="M1050 161C980 180 790 181 690 190C660 204 635 239 619 265"/>
 
       <!-- 服务组件沿同一轨道排列，连线只表达实际调用关系 -->
       <path class="map-path agent" d="M365 277H600"/>
       <path class="map-path agent" d="M618 277H858"/>
       <path class="map-path agent" d="M878 280C1000 302 1150 330 1270 344"/>
-      <path class="map-path experience" d="M355 285C310 360 260 460 260 520C260 550 380 570 625 590"/>
+      <path class="map-path experience" d="M355 285C310 360 260 460 260 520C260 552 344 582 480 590"/>
       <path class="map-path agent" d="M870 287C870 330 740 385 635 430"/>
       <!-- 知识索引与检索服务归在底座；索引向上供 MCP -->
-      <path class="map-path foundation-link" d="M1168 611C1210 586 1312 506 1312 423S1305 371 1287 356"/>
+      <path class="map-path foundation-link" d="M1168 628C1210 598 1312 506 1312 423S1305 371 1287 356"/>
 
       <rect class="map-node-shape interface" x="347" y="269" width="16" height="16" rx="3"/>
       <text class="map-node-title text-end" x="335" y="221">OpenAPI · 查询服务</text><text class="map-node-note text-end" x="335" y="249">语义检索 · 版本过滤 · 原文引用</text>
@@ -1453,26 +1457,26 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <!-- 质量检查后回到入口；授权完成与纠错反馈进入 Owner 复核 -->
       <circle class="map-node-dot validation" cx="1105" cy="530" r="9"/>
       <text class="map-node-title text-start" x="1128" y="480">校验通过 → 入口</text><text class="map-node-note text-start" x="1128" y="500">来源 · 版本 · 范围</text><text class="map-node-note text-start" x="1128" y="517">权限 · 可执行性</text>
-      <path class="map-path feedback" d="M1096 537C1085 568 910 590 720 610"/>
-      <text class="feedback-note" x="960" y="559">授权完成 / 纠错 → Owner 复核</text>
+      <path class="map-path feedback" d="M1096 537C1085 570 910 594 720 618"/>
+      <text class="feedback-note" x="960" y="570">授权完成 / 纠错 → Owner 复核</text>
 
       <!-- 内容治理底座：五个治理环节从多源输入形成可追溯知识并供给 MCP -->
-      <ellipse class="map-fill governance" cx="800" cy="628" rx="550" ry="68"/>
-      <ellipse class="map-orbit governance dash" cx="800" cy="628" rx="532" ry="60"/>
-      <path class="map-path governance" d="M288 620H492 M508 620H712 M728 620H932 M948 620H1152"/>
-      <circle class="map-node-dot governance" cx="280" cy="620" r="8"/>
-      <circle class="map-node-dot governance" cx="500" cy="620" r="8"/>
-      <circle class="map-node-dot governance" cx="720" cy="620" r="9"/>
-      <circle class="map-node-dot governance" cx="940" cy="620" r="8"/>
-      <circle class="map-node-dot governance" cx="1160" cy="620" r="8"/>
-      <text class="map-foundation-title" x="280" y="648">多源内容接入</text><text class="map-foundation-note" x="280" y="668">文档 · API · 课程 · 代码</text><text class="map-foundation-note" x="280" y="684">Issue · 样例 · 活动</text>
-      <text class="map-foundation-title" x="500" y="648">解析与归一</text><text class="map-foundation-note" x="500" y="668">正文 · 代码 · 表格抽取</text><text class="map-foundation-note" x="500" y="684">切分去重 · 字段统一</text>
-      <text class="map-foundation-title" x="720" y="648">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="668">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="684">过期或冲突 → 复核 / 下架</text>
-      <text class="map-foundation-title" x="940" y="648">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="668">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="684">版本、证据与状态可追溯</text>
-      <text class="map-foundation-title" x="1160" y="648">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="668">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="684">robots · sitemap · Schema · llms.txt</text>
-      <circle class="map-core knowledge" cx="650" cy="590" r="25"/>
-      <circle class="map-core knowledge-ring" cx="650" cy="590" r="19"/>
-      <text class="map-core-title" x="650" y="588">检索服务</text><text class="map-core-note" x="650" y="604">全文 / 语义 · 版本 · 来源</text>
+      <ellipse class="map-fill governance" cx="800" cy="620" rx="550" ry="76"/>
+      <ellipse class="map-orbit governance dash" cx="800" cy="620" rx="532" ry="69"/>
+      <path class="map-path governance" d="M288 628H492 M508 628H712 M728 628H932 M948 628H1152"/>
+      <circle class="map-node-dot governance" cx="280" cy="628" r="8"/>
+      <circle class="map-node-dot governance" cx="500" cy="628" r="8"/>
+      <circle class="map-node-dot governance" cx="720" cy="628" r="9"/>
+      <circle class="map-node-dot governance" cx="940" cy="628" r="8"/>
+      <circle class="map-node-dot governance" cx="1160" cy="628" r="8"/>
+      <text class="map-foundation-title" x="280" y="652">多源内容接入</text><text class="map-foundation-note" x="280" y="670">文档 · API · 课程 · 代码</text><text class="map-foundation-note" x="280" y="686">Issue · 样例 · 活动</text>
+      <text class="map-foundation-title" x="500" y="652">解析与归一</text><text class="map-foundation-note" x="500" y="670">正文 · 代码 · 表格抽取</text><text class="map-foundation-note" x="500" y="686">切分去重 · 字段统一</text>
+      <text class="map-foundation-title" x="720" y="652">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="670">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="686">过期或冲突 → 复核 / 下架</text>
+      <text class="map-foundation-title" x="940" y="652">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="670">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="686">版本、证据与状态可追溯</text>
+      <text class="map-foundation-title" x="1160" y="652">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="670">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
+      <rect class="map-service-node" x="480" y="566" width="220" height="46" rx="23"/>
+      <circle class="map-service-icon" cx="501" cy="589" r="9"/><circle class="map-service-icon" cx="501" cy="589" r="4"/>
+      <text class="map-service-title" x="518" y="586">知识检索服务</text><text class="map-service-note" x="518" y="601">全文 / 语义 · 版本过滤 · 来源</text>
     </svg>
   </div></div>
   <div class="kp-foot"><span>建设关系示意；接口与数据服务需结合现有社区基础设施评估</span><span>知识向上供给，授权纠错回到 Owner 治理</span></div>
