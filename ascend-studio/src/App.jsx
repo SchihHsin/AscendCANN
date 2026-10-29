@@ -2,6 +2,7 @@ import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
 import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
+import { resolveTaskUrlValue, taskUrlIdentifier } from "./task-url";
 import { capabilities, modelOptions } from "./prototype-data";
 import { WorkbenchDialogs } from "./WorkbenchDialogs";
 import { ActionWorkspace } from "./ActionWorkspace";
@@ -210,8 +211,9 @@ function App() {
     try { localStorage.setItem("ascend-studio-theme", visualTheme); } catch { /* Keep the in-session choice when storage is unavailable. */ }
   }, [visualTheme]);
   const [mainView, setMainView] = useState(() => {
-    const launchTask = new URLSearchParams(window.location.search).get("task");
-    if (["learning", "development"].includes(launchTask)) return "task";
+    const taskNames = new Set(wb.groups.flatMap(group => group.tasks));
+    const launchTask = resolveTaskUrlValue(new URLSearchParams(window.location.search).get("task"), taskNames);
+    if (launchTask) return "task";
     const savedView = readSession("main-view", null);
     if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "task"].includes(savedView)) return savedView;
     // A home-variant query may remain in the URL after navigating into a task.
@@ -364,22 +366,52 @@ function App() {
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
   const showCommunityInvite = Boolean(communityInviteMessage && (selectedTask !== MAIN_TASK || session.communityInviteReady) && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
-  const learningLaunchHandled = useRef(false);
+  const routeInitialized = useRef(false);
   useEffect(() => {
-    if (learningLaunchHandled.current) return;
-    learningLaunchHandled.current = true;
-    const launchTask = new URLSearchParams(window.location.search).get("task");
-    if (launchTask === "learning" || launchTask === "development") {
-      setMainView("task");
-      wb.selectTask(launchTask === "learning" ? LEARNING_TASK : IMAGE_TASK);
-      wb.setQuery("");
-      wb.setFilterScope("all");
-      wb.setOpenedGroups(groups => groups.includes("inference") ? groups : [...groups, "inference"]);
-      const address = new URL(window.location.href);
-      address.searchParams.delete("task");
-      window.history.replaceState(null, "", address.pathname + address.search + address.hash);
+    const address = new URL(window.location.href);
+    const rawTask = address.searchParams.get("task");
+    const taskNames = new Set(wb.groups.flatMap(group => group.tasks));
+    const addressTask = resolveTaskUrlValue(rawTask, taskNames);
+    const targetTask = mainView === "task" ? selectedTask : null;
+    const urlAlreadyMatches = targetTask
+      ? addressTask === targetTask && rawTask === taskUrlIdentifier(targetTask)
+      : !rawTask;
+    const routeState = { view: mainView, task: targetTask };
+    const nextHistoryState = { ...(window.history.state || {}), ascendStudioRoute: routeState };
+    const currentRouteState = window.history.state?.ascendStudioRoute;
+    const stateAlreadyMatches = currentRouteState?.view === routeState.view && currentRouteState?.task === routeState.task;
+    const initialSync = !routeInitialized.current;
+    routeInitialized.current = true;
+
+    if (urlAlreadyMatches) {
+      if (!stateAlreadyMatches) window.history.replaceState(nextHistoryState, "", address.href);
+      return;
     }
-  }, []);
+
+    if (targetTask) address.searchParams.set("task", taskUrlIdentifier(targetTask));
+    else address.searchParams.delete("task");
+
+    // Normalize first loads and legacy aliases in place. User navigation adds
+    // history entries so Back / Forward restores the previous task or page.
+    const method = initialSync || (targetTask && addressTask === targetTask) ? "replaceState" : "pushState";
+    window.history[method](nextHistoryState, "", address.href);
+  }, [mainView, selectedTask, wb.groups]);
+  useEffect(() => {
+    const handlePopState = () => {
+      const taskNames = new Set(wb.groups.flatMap(group => group.tasks));
+      const addressTask = resolveTaskUrlValue(new URLSearchParams(window.location.search).get("task"), taskNames);
+      const routeState = window.history.state?.ascendStudioRoute;
+      if (addressTask) {
+        wb.selectTask(addressTask);
+        setMainView("task");
+        return;
+      }
+      if (routeState?.view === "task" && taskNames.has(routeState.task)) wb.selectTask(routeState.task);
+      setMainView(["home", "learning", "automations", "capabilities", "knowledge-pocket"].includes(routeState?.view) ? routeState.view : "home");
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [wb.groups, wb.selectTask]);
   const isInteractiveTask = isMainTask || isImageTask || isLearningTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
   const communityDraftFocus = showTaskWorkspace && supportsCommunityDraft && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
