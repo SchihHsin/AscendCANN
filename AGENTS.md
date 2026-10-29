@@ -7842,3 +7842,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`；资源缓存版本为 `20261029-note-one-sentence`。只调整讲解文案与排版，不改章节 / 设计点顺序、任务起点映射、导航、收起 / 拖动行为、小程序页面及 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户明确要求与截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本核对 16 条单句文案；CUA 本地打开社区经验设计点确认卡片仅显示一句话（M）。线上 HTML、JS、CSS 均 HTTP 200，页面引用新版本，JS 含 16 条 `note` 文案并读取 `activePoint.note`；未运行自动化测试。
 - 实现提交 `1827ece5` 已推送至 `origin/main`（先 rebase 到并行到达的远端提交 `dacc0849`）。GitHub Pages workflow `40838952056` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · Report PPT Skill 增补图示逻辑原则
+
+- 用户要求将“图本身承载逻辑：用节点、连线和区域组织复杂关系，让信息、内容和关系一眼可见”沉淀为 Skill 规则。确认放入独立 `report-ppt-skill` 仓库：`SKILL.md` 的汇报图表铁律与 `references/chart-selection.md` 的图示设计原则；不扩展至泛用交互可视化 skill，避免原则适用范围过宽。
+- 细则：节点表达对象 / 动作 / 状态 / 阶段，连线表达有依据的关系 / 顺序 / 依赖 / 流向，区域表达阶段 / 分组 / 层级 / 边界；优先用一张主图表达完整关系，文字只补图上难表达的解释；拆图时保留阶段或路径线索。
+- 依据为用户明确提出的表达原则（H）。仅更新汇报材料制作方法，不改 Ascend Studio 页面序列、实现或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过。`report-ppt-skill` 提交 `7841dd2` 已推送 `origin/main`；AscendCANN 本仓交接记录随后单独推送。
+- 无未决事项。
