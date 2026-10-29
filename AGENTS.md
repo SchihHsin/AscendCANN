@@ -7658,7 +7658,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户明确要求，将「范围图解」替换为原站 Format Lab 浅色版 iframe（`?theme=light`）；不再使用 Ascend Studio 自绘尾块图。iframe 保持挂载，切换到后续步骤再返回时可保留原站的交互状态。
 - 桌面端图解步骤临时扩展任务工作区以容纳 Format Lab 的编辑区、矩阵与 Inspector；项目侧栏和对话区在该步骤隐藏，离开后恢复原布局。外部页面仍在任务右侧工作区内交互。
 - 原站由用户提供（H）；本地 CUA 预览确认 iframe 成功加载，树中可见 Format Lab 标题、逻辑 / 物理矩阵、Inspector 与 `theme=light` URL（M）。本地确定性任务流程仍标注 0 tokens；嵌入没有增加模型调用或后端接入。Format Lab 的 NZ 映射示例仅作为交互图解，不替代 Add 算子的实际代码、编译或 NPU 验证。
-- 修改 `ascend-studio/src/LogTriageWorkspace.jsx`、`log-triage-workspace.css`、`styles.css` 与 `/ascstudio/` 发布包；未更改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。推送与 Pages 部署回执待本轮发布后补记。
+- 修改 `ascend-studio/src/LogTriageWorkspace.jsx`、`log-triage-workspace.css`、`styles.css` 与 `/ascstudio/` 发布包；未更改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。验证：合并当时最新 `origin/main` 后运行 `npm run build:pages`、构建 JS `node --check`、`git diff --check` 均通过；未运行自动化测试。
+- 实现提交 `e645d4e1` 已推送到 `origin/main`。Pages workflow `40792993205` 成功；线上 `/AscendCANN/ascstudio/` 已引用 `index-CDtEAn_k.js` 与 `index-brsW_dtn.css`，入口及两项资源 HTTP 200。线上 JS 回读确认浅色 Format Lab URL、iframe 标题与「`本地规则 · 0 tokens`」标记。当前尚未将 Format Lab 图解语义与 Add 算子具体布局数据绑定，也未接真实 AI、社区服务或 NPU。
 
 ### 2026-10-29 · Ascend Studio 旅程增加机会点行
 
