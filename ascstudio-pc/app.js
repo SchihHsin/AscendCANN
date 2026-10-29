@@ -1,15 +1,17 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-proactive-suggestion-card";
+const ROUTE_REV = "20261030-addcustom-journey-stages";
 const chapters = [
   {
-    id: "development", title: "解决问题后把经验留下", cover: "从错误现象到社区经验", summary: "从整理当前任务、理解问题、核对结果，到整理可分享的经验，串起完整的开发过程。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    id: "development", title: "解决问题后把经验留下", cover: "从错误现象到社区经验", summary: "从新建任务中的建议开始，经过回答、知识点、图解和动手修改，再把处理经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
-      { id: "connect", title: "主动呈现任务建议卡", note: "在新建任务页主动呈现任务建议卡，让用户从已有线索中选择起点。", emphasis: "主动呈现任务建议卡", description: "在新建任务页主动呈现任务建议卡，让用户从已有线索中选择起点。", entry: "新建任务首页 · 主动建议卡片", home: "classic", mode: "学习" },
-      { id: "micro", title: "把眼前内容带入提问", note: "选取内容、指向页面或调整输入区时，都能把当前上下文带入提问。", emphasis: "把当前上下文带入提问", description: "选取内容、指向页面或调整输入区时，都能把当前上下文带入提问。", entry: "Add 算子精度差异排查 · 对话内容与输入区", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
-      { id: "error-visual", title: "在问题发生处看懂原因", note: "把当前内容和解释图示放在一起，帮助用户理解原因和处理方式。", emphasis: "理解原因和处理方式", description: "把当前内容和解释图示放在一起，帮助用户理解原因和处理方式。", entry: "Add 算子精度差异排查 · 差异日志与图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
-      { id: "verify", title: "确认处理结果再继续", note: "对照处理前后的结果，确认问题是否解决，再决定下一步。", emphasis: "确认问题是否解决", description: "对照处理前后的结果，确认问题是否解决，再决定下一步。", entry: "Add 算子精度差异排查 · 结果核验", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
-      { id: "community", title: "处理完成后整理经验", note: "将处理过程整理成可审阅的经验草稿，由用户决定是否分享。", emphasis: "可审阅的经验草稿", description: "将处理过程整理成可审阅的经验草稿，由用户决定是否分享。", entry: "Add 算子精度差异排查 · 完成状态与经验草稿", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
+      { id: "connect", title: "从建议卡开始一个任务", note: "新建任务页主动呈现相关建议卡，开发者选择合适的线索作为任务起点。", emphasis: "选择合适的线索", description: "新建任务页主动呈现相关建议卡，开发者选择合适的线索作为任务起点。", entry: "新建任务首页 · 主动建议 · 开发模式", home: "classic", mode: "开发" },
+      { id: "answer", title: "回答问题时补充相关知识", note: "先回应开发者的问题，再在回答旁补充知识点，帮助理解判断依据。", emphasis: "补充知识点", description: "先回应开发者的问题，再在回答旁补充知识点，帮助理解判断依据。", entry: "任务对话 · 展开回答中的知识卡", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "knowledge" },
+      { id: "diagram", title: "打开图解看懂判断依据", note: "从回答中的知识点进入关联图解，直观看清线索与处理思路。", emphasis: "关联图解", description: "从回答中的知识点进入关联图解，直观看清线索与处理思路。", entry: "任务对话 · 知识卡中的图解入口", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
+      { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
+      { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },
+      { id: "community", title: "把处理过程整理成社区经验", note: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", emphasis: "整理为草稿", description: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", entry: "社区经验 · 草稿审阅", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "community" },
+      { id: "channels", title: "把经验带到更多平台", note: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", emphasis: "GitCode、CSDN 和抖音", description: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", entry: "社区经验 · 多渠道预览", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "channels" },
     ],
   },
   {
@@ -90,6 +92,102 @@ function selectedTaskLabel(doc) {
   return doc.querySelector(".task-title-button strong")?.textContent?.trim() || "";
 }
 
+function isVisible(element) {
+  return Boolean(element && element.getClientRects().length && !element.closest("[hidden]"));
+}
+
+function visibleButton(doc, selector, text) {
+  return [...doc.querySelectorAll(selector)].find(button => isVisible(button) && (!text || button.textContent.replace(/\s+/g, " ").trim().includes(text))) || null;
+}
+
+function applyPcStage(point, doc) {
+  if (!point.stage) return true;
+  const knowledgeCue = [...doc.querySelectorAll(".proactive-cue.is-knowledge")].find(isVisible);
+  const draftPanel = doc.querySelector(".community-draft-panel");
+  if (point.stage !== "community" && point.stage !== "channels" && isVisible(draftPanel)) {
+    const close = visibleButton(doc, 'button[aria-label="关闭社区经验草稿"]');
+    if (close) { close.click(); return false; }
+  }
+
+  const ensureInvite = () => {
+    if (isVisible(doc.querySelector('[aria-label="任务完成后的社区经验邀请"]')) || isVisible(doc.querySelector(".community-draft-card"))) return true;
+    const resolve = visibleButton(doc, "button", "标记为已解决");
+    if (resolve) { resolve.click(); return false; }
+    const overview = visibleButton(doc, 'button[aria-label="查看本任务全部内容"]');
+    if (overview) { overview.click(); return false; }
+    return false;
+  };
+
+  if (point.stage === "knowledge") {
+    const expand = knowledgeCue?.querySelector(".proactive-cue-expand");
+    if (expand && isVisible(expand)) expand.click();
+    return Boolean(knowledgeCue);
+  }
+
+  if (point.stage === "diagram") {
+    const primary = knowledgeCue?.querySelector(".proactive-cue-primary");
+    if (primary && isVisible(primary) && primary.textContent.includes("看尾块处理图解")) {
+      primary.click();
+      return false;
+    }
+    if (isVisible(doc.querySelector(".ex-panel"))) return true;
+    const direct = visibleButton(doc, 'button[aria-label="打开线索解释完整内容"]') || visibleButton(doc, ".cm-code-link button", "对照图解");
+    if (direct) { direct.click(); return false; }
+    const cueExpand = knowledgeCue?.querySelector(".proactive-cue-expand");
+    if (cueExpand && isVisible(cueExpand)) { cueExpand.click(); return false; }
+    return false;
+  }
+
+  if (point.stage === "draft") {
+    const editor = doc.querySelector('textarea[aria-label="编辑当前示例代码草案"]');
+    if (isVisible(editor)) return true;
+    const fullDraft = visibleButton(doc, 'button[aria-label="打开示例工作副本完整内容"]');
+    if (fullDraft) { fullDraft.click(); return false; }
+    if (!isVisible(doc.querySelector(".task-workspace"))) return false;
+    const contentOpen = visibleButton(doc, "button", "打开内容");
+    if (contentOpen) { contentOpen.click(); return false; }
+    const trigger = visibleButton(doc, ".tw-content-trigger");
+    const draftOption = visibleButton(doc, '.tw-content-option[role="menuitemradio"]', "示例工作副本");
+    if (draftOption) { draftOption.click(); return false; }
+    const pickerOption = visibleButton(doc, ".tw-material-open", "示例工作副本");
+    if (pickerOption) { pickerOption.click(); return false; }
+    const openOther = visibleButton(doc, '.tw-content-menu-foot button[role="menuitem"]', "打开其他内容");
+    if (openOther) { openOther.click(); return false; }
+    if (trigger && trigger.getAttribute("aria-expanded") !== "true") { trigger.click(); return false; }
+    return false;
+  }
+
+  if (point.stage === "invite") {
+    return ensureInvite();
+  }
+
+  if (point.stage === "community") {
+    const overviewBack = visibleButton(doc, ".community-overview-back");
+    if (overviewBack) { overviewBack.click(); return false; }
+    if (isVisible(doc.querySelector('.community-draft-panel[aria-label="昇腾社区发布草稿"]')) || isVisible(doc.querySelector('.community-draft-panel[aria-label="社区经验草稿"]'))) return true;
+    const generate = visibleButton(doc, ".community-entry-button", "生成草稿");
+    if (generate) { generate.click(); return false; }
+    const draftCard = visibleButton(doc, ".community-draft-card", "社区经验草稿已生成");
+    if (draftCard) { draftCard.click(); return false; }
+    if (!ensureInvite()) return false;
+    return false;
+  }
+
+  if (point.stage === "channels") {
+    if (isVisible(doc.querySelector(".community-draft-panel.is-channel-overview"))) return true;
+    const channelLink = visibleButton(doc, ".community-channel-back");
+    if (channelLink) { channelLink.click(); return false; }
+    const generate = visibleButton(doc, ".community-entry-button", "生成草稿");
+    if (generate) { generate.click(); return false; }
+    const draftCard = visibleButton(doc, ".community-draft-card", "社区经验草稿已生成");
+    if (draftCard) { draftCard.click(); return false; }
+    if (!ensureInvite()) return false;
+    return false;
+  }
+
+  return true;
+}
+
 function applyPcStart(point, attempt = 0, revision = loadingRevision) {
   if (revision !== loadingRevision) return;
   let doc;
@@ -116,6 +214,10 @@ function applyPcStart(point, attempt = 0, revision = loadingRevision) {
       else if (attempt < 22) { setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); return; }
       if (row && attempt < 22) { setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); return; }
     }
+  }
+  if (!applyPcStage(point, doc) && attempt < 22) {
+    setTimeout(() => applyPcStart(point, attempt + 1, revision), 180);
+    return;
   }
   $("#loading-state").hidden = true;
 }
