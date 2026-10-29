@@ -7811,3 +7811,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`、`ascstudio-pc/app.js`；资源缓存版本更新为 `20261029-note-icon-controls`。保留黑色 80% 不透明度、2px 背景模糊、卡片拖动和小程序样式；章节、设计点顺序及起点映射不变，也未改 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户明确的控件样式与位置要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地桌面预览确认目录可打开、前后设计点切换正常、图标尺寸为 24×24px 并靠右排列；线上 HTML、CSS、JS 已回读到本次版本。
 - 提交 `8cfa010f` 已推送到 `origin/main`；GitHub Pages workflow `40830839506` 的 build / deploy 均成功。无未决事项。
+
+### 2026-10-29 · 讲解卡导航调整为文字右侧竖排
+
+- 用户澄清控件应竖向排列在讲解文字右侧，而非卡片底部横排。将文字与导航控件合并为两列内容区；上箭头切换上一个设计点，列表图标打开章节目录，下箭头进入下一个设计点或章节封面。保留 24×24px IconButton、黑色 80% 不透明度、2px 背景模糊和拖动手柄。
+- 修改 `ascstudio-pc/index.html`、`styles.css`，缓存版本更新为 `20261029-note-icons-vertical`。章节与设计点的内容、起点映射、小程序样式及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据：用户明确澄清（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地预览确认文字左、控件右侧纵排，目录打开、下一点与上一点切换正常；线上 HTML、CSS、JS 已回读到新版本。
+- 提交 `87a63f33` 已推送至 `origin/main`；GitHub Pages workflow `40836171438` 的 build / deploy 均成功。无未决事项。
