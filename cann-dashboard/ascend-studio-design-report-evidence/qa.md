@@ -129,4 +129,4 @@
 - 用户给出 Before / After 并排参考图，并指定右侧使用 `learning-canvas-story/index.html#5` 中的画面（H）。第 2 页现将阶段标签改为 `Before · IDE 开发 + 社区找资料` 与 `After · AI 工作台提需求`；左侧保留昇腾社区 + IDE 透视合成，右侧直接加载该页面的 `images/codex-workspace-user.png`，加轻微 CSS 透视和两条开发者提问气泡。右侧界面不再由 ImageGen 重绘，屏幕内容保持源截图；气泡文案是示例任务。
 - 页面顺序仍为 17 页，用户旅程仍在第 3 页。没有改旅程或产品原型，也不影响 API / Protocol、Host / Harness、Application / Task 层边界。
 - 验证：`python3 -m py_compile cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、报告构建（17 页）、内联脚本 `node --check`、`git diff --check` 通过；CUA 在 1280×720 桌面本地预览确认两侧画面、Before / After 标签、Codex 截图与两条气泡完整可见。来源 PNG 成功加载。自动化测试未运行。
-- 当前本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#2`。提交与推送状态待记录。
+- 提交 `37f9ed8d` 已推送至 `origin/main`。线上报告与被复用 PNG 均 HTTP 200；线上 HTML 包含 Before / After、Codex 图片路径和提问文案。`gh` CLI 未安装，因此未读取 Actions workflow 状态。当前本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#2`。

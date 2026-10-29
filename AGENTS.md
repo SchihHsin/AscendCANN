@@ -7869,4 +7869,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户提供的并排参考图调整报告第 2 页；使用 `learning-canvas-story/index.html#5` 中现有 Codex 工作区截图，保留其原始界面并在周围加入两条示例提问气泡；左侧继续呈现昇腾社区和 IDE 的透视场景。结论依据为用户明确素材指向（H），CSS 透视与气泡排布为设计表达（M）。
 - 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html`，记录于 `cann-dashboard/ascend-studio-design-report-evidence/qa.md`。页面保持 17 页，入口 #2、用户旅程 #3；不影响用户旅程内容或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：报告构建、Python 编译、内联脚本 `node --check`、`git diff --check` 通过；CUA 本地 1280×720 预览确认来源图和气泡加载、左右场景可见。提交 / 推送待记录。
+- 验证：报告构建、Python 编译、内联脚本 `node --check`、`git diff --check` 通过；CUA 本地 1280×720 预览确认来源图和气泡加载、左右场景可见。实现提交 `37f9ed8d` 已推送至 `origin/main`；线上报告与 PNG 均 HTTP 200，线上 HTML 含新图路径和气泡文案。未查询 Actions workflow（本机没有 `gh` CLI）。
