@@ -7724,4 +7724,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 有效的 `task` 深链现在优先于上次保存的任务；`learning` / `development` 别名由 `App.jsx` 与 `useWorkbenchState.js` 共用。桌面评审使用 `showcaseRev` 区分启动深链，确保指定首页优先显示；初始化完成后清理启动参数，后续工作台导航仍按用户操作运行。外层页面脚本和内嵌工作台页面均加版本参数，避开旧缓存。
 - 设计点按旅程复用相关任务：微交互、错误图解、经验回流共用「图像推理调试」；路径共创和自定义节点共用「图像输入预处理路径共创」；练习、迁移与认知卡共用「学会图像输入预处理」。学习意图和 Prompt 探索分别从学习首页、探索首页进入。该修复不改变五章 / 设计点序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户指出的实际错误（H）；任务名称和各点配置来自桌面评审数据及现有 Studio 任务定义（H）。
-- 验证：`npm run build:pages`、`node --check ascstudio-pc/app.js`、生成 JS 语法检查和 `git diff --check`；本地 8765 浏览器逐点确认路径共创、学习练习、学习意图 / Prompt 探索和社区经验各自进入对应任务或首页，并确认任务参数覆盖此前保存的选择。未运行自动化测试套件。提交和推送结果在本轮结束时补记。
+- 验证：`npm run build:pages`、`node --check ascstudio-pc/app.js`、生成 JS 语法检查和 `git diff --check`；本地 8765 浏览器逐点确认路径共创、学习练习、学习意图 / Prompt 探索和社区经验各自进入对应任务或首页，并确认任务参数覆盖此前保存的选择。未运行自动化测试套件。
+- 提交 `54e904b8` 已推送至 `origin/main`；Pages workflow `40800776047` 的 build / deploy 成功。线上桌面入口加载带版本参数的脚本，内嵌 Studio HTML 指向新 JS / CSS，资源均 HTTP 200。本交接验证记录随本记录提交并推送。
