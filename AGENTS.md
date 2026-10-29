@@ -7895,3 +7895,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户确认的两页内容方向与“图本身承载逻辑”要求（H）；具体能力组织、接口和建设顺序为方案设计（M），需结合社区现有系统评估。
 - 验证：`git diff --check` 通过；Chrome 无头截图检查 1440×900、1280×720 下的第 5、6 页，确认主链路、连线与页脚完整；线上 `knowledge-provider-map.html?rev=46a69dd1` HTTP 200，回读内容与本地文件一致。未运行自动化测试。
 - 页面提交 `46a69dd1` 已 rebase 到并行主线提交后推送至 `origin/main`；GitHub Pages workflow `40848848215` build / deploy 成功。交接记录随后单独提交并推送至 `origin/main`。无未决事项。
+
+### 2026-10-29 · 用户旅程痛点静态呈现与角色线加深
+
+- 按用户截图反馈，将汇报第 3 页的“设计断点”统一改为“设计痛点”；五张痛点卡改为不可点击的静态展示，并移除配套弹窗、样式与事件处理。五个阶段、任务 / 学习两类用户痛点及对应绿色机会点不变。
+- 覆盖 `beautiful-mermaid` 的 `.lifeline` 类样式（`#7b8797`、2.2px、7/5 虚线），提高代表六类角色的横向生命线对比度；仅调整汇报呈现，不改变正式页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`runtime-1.js`、`qa.md` 与生成报告 `cann-dashboard/ascend-studio-design-report.html`。依据为用户明确反馈与截图（H）；生命线颜色 / 粗细为设计调整（M）。
+- 验证：报告 17 页；静态结构检查确认五张痛点卡、无断点旧文案 / 弹窗 / 点击处理、机会点行保留；`py_compile`、两段内联 JS `node --check`、`git diff --check` 通过。CUA 在 1280×720 本地 5219 预览第 3 页，点击痛点卡没有弹窗，生命线加深后清晰可辨（M）。未运行自动化测试套件。
+- 实现提交 `68e6302d` 已推送到 `origin/main`。交接记录由本提交追加，随后单独推送。
