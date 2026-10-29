@@ -1068,6 +1068,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .map-node-dot.future.agent{fill:#e4efe7;stroke:#7fa38b}
 .map-core{fill:#e9ebee;stroke:#a5adb8;stroke-width:2.2}
 .map-core.knowledge{fill:#eee9f5;stroke:#927fb5}
+.map-core.knowledge-ring{fill:none;stroke:#927fb5;stroke-width:1.4}
 .map-core-title{fill:#202630;font-size:20px;font-weight:760;text-anchor:middle}
 .map-core-note{fill:#656e7a;font-size:13px;text-anchor:middle}
 .map-road{fill:none;stroke:#a5adb8;stroke-width:1.5}
@@ -1368,12 +1369,12 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="kp-foot"><span>入口演进示意；当前 GitHub Pages 页面仍是静态原型</span><span>Web 与客户端共用知识目录和服务接口</span></div>
 </section>
 
-<section class="slide s-gray kp-slide kp-visual-clean feasibility-slide capability-feasibility" data-component="技术实现关系图" data-title="内容治理支撑 Agent 服务，最终形成开发者体验">
-  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">内容治理支撑 Agent 服务，最终形成开发者体验</span></div><div class="subttl">04 · CAPABILITY ARCHITECTURE　自底座向体验供给可信能力</div></div></div>
+<section class="slide s-gray kp-slide kp-visual-clean feasibility-slide capability-feasibility" data-component="技术实现关系图" data-title="知识底座支撑 Agent 服务，最终形成开发者体验">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">知识底座支撑 Agent 服务，最终形成开发者体验</span></div><div class="subttl">04 · CAPABILITY ARCHITECTURE　知识治理在下，服务能力在上</div></div></div>
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
-      <title id="cap-map-title">内容治理底座、Agent 服务和开发者体验的三层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示共享知识服务、多色圆点表示任务能力、绿色圆点表示内容治理。上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文；Web 经 OpenAPI 查询，客户端上下文进入 Agent Host。Agent Host 路由 Skill 与 MCP，OpenAPI 和 MCP 查询中心知识服务。知识服务通过共享分配线并行支撑学习路径规划、技术图解、资源推荐、活动与内容上新四类能力；各能力汇入结果校验，校验后返回共同体验层。底层对官方文档、API、课程、代码、Issue 和活动进行接入、解析归一、版本许可与 Owner 治理，形成带原文锚点、适用范围、前置关系、版本、证据和状态的 Knowledge Unit 及关系图和检索索引；索引向上供 MCP 查询。经授权的完成与纠错信号沿独立虚线回到 Owner 复核。椭圆区域表示体验、Agent 服务和内容治理三层架构，不表示时间步骤。</desc>
+      <title id="cap-map-title">知识底座、Agent 服务和开发者体验的三层关系图</title>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识检索服务、多色圆点表示任务能力、绿色圆点表示内容治理。上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文；Web 经 OpenAPI 查询底层知识检索服务，客户端上下文进入 Agent Host。Agent Host 路由 Skill 与 MCP，Skill 调用四类并行任务能力，MCP 查询底层知识索引和受控工具。底层对官方文档、API、课程、代码、Issue 和活动进行接入、解析归一、版本许可与 Owner 治理，形成带原文锚点、适用范围、前置关系、版本、证据和状态的 Knowledge Unit、关系图与检索索引，并提供全文 / 语义检索、版本过滤和来源返回。任务产物汇入结果校验，校验后返回共同体验层；经授权的完成与纠错信号沿独立虚线回到 Owner 复核。椭圆区域表示体验、Agent 服务和知识底座三层架构，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1384,13 +1385,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <g aria-hidden="true" transform="translate(760 37)">
         <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
         <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
-        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识服务</text>
+        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识检索服务</text>
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">任务能力</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
       <text class="map-stage-name experience" x="28" y="76">EXPERIENCE</text><text class="map-stage-sub" x="28" y="101">开发者入口</text>
       <text class="map-stage-name agent" x="28" y="305">AGENT SERVICE</text><text class="map-stage-sub" x="28" y="330">共享知识与任务能力</text>
-      <text class="map-stage-name governance" x="28" y="589">CONTENT BASE</text><text class="map-stage-sub" x="28" y="614">内容治理底座</text>
+      <text class="map-stage-name governance" x="28" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="28" y="614">内容治理 · 检索服务</text>
 
       <!-- 开发者体验：社区 Web 与项目客户端并列，共用同一知识供给 -->
       <ellipse class="map-fill api" cx="500" cy="115" rx="205" ry="43"/>
@@ -1401,11 +1402,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-node-title" x="500" y="84">社区 Web</text><text class="map-node-note" x="500" y="106">目标 · 主题 · 已学节点</text><text class="map-node-label" x="500" y="151">路径 · 课程 · 认证 · 活动</text>
       <text class="map-node-title" x="1050" y="84">项目客户端</text><text class="map-node-note" x="1050" y="106">授权项目 · 版本 · 选定日志</text><text class="map-node-label" x="1050" y="151">兼容建议 · 技术图解 · 下一步</text>
 
-      <!-- Agent 服务区域：OpenAPI / Host / Skill / MCP 通过中心知识服务协同 -->
+      <!-- 中层是服务接口与 Agent 编排；知识检索服务归到底部知识底座 -->
       <ellipse class="map-fill knowledge" cx="800" cy="378" rx="550" ry="166"/>
-      <ellipse class="map-fill knowledge-inner" cx="800" cy="378" rx="255" ry="86"/>
       <ellipse class="map-orbit knowledge" cx="800" cy="378" rx="550" ry="166"/>
-      <ellipse class="map-orbit knowledge dot" cx="800" cy="378" rx="255" ry="86"/>
 
       <!-- 入口把目标或项目上下文送入相应服务 -->
       <path class="map-path experience" d="M500 161C480 206 420 228 363 265"/>
@@ -1415,9 +1414,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <path class="map-path agent" d="M365 277H600"/>
       <path class="map-path agent" d="M618 277H858"/>
       <path class="map-path agent" d="M878 280C1000 302 1150 330 1270 344"/>
-      <path class="map-path experience" d="M365 285C450 330 566 355 748 371"/>
-      <path class="map-path agent" d="M1270 354C1180 364 950 370 852 373"/>
-      <!-- 知识索引向 MCP 供给；校验通过后按入口显示结果 -->
+      <path class="map-path experience" d="M355 285C310 360 260 460 260 520C260 550 380 570 625 590"/>
+      <path class="map-path agent" d="M870 287C870 330 740 385 635 430"/>
+      <!-- 知识索引与检索服务归在底座；索引向上供 MCP -->
       <path class="map-path foundation-link" d="M1168 611C1210 586 1312 506 1312 423S1305 371 1287 356"/>
 
       <rect class="map-node-shape interface" x="347" y="269" width="16" height="16" rx="3"/>
@@ -1429,21 +1428,17 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <rect class="map-node-shape interface" x="1272" y="342" width="16" height="16" rx="3"/>
       <text class="map-node-title text-end" x="1255" y="270">MCP · 知识与工具</text><text class="map-node-note text-end" x="1255" y="294">兼容 · 样例 · Issue · 活动</text><text class="map-node-note text-end" x="1255" y="312">授权读取项目环境 / 日志</text>
 
-      <circle class="map-core knowledge" cx="800" cy="378" r="52"/>
-      <text class="map-core-title" x="800" y="375">知识服务</text><text class="map-core-note" x="800" y="396">全文 / 语义 · 版本 · 来源</text>
-
-      <!-- 知识服务并行支撑四类能力，结果汇入统一质量检查 -->
+      <!-- Skill 发起四类并行任务，结果再汇入统一质量检查 -->
       <ellipse class="map-fill task-path" cx="350" cy="479" rx="88" ry="43"/>
       <ellipse class="map-fill task-diagram" cx="540" cy="479" rx="88" ry="43"/>
       <ellipse class="map-fill task-recommend" cx="730" cy="479" rx="88" ry="43"/>
       <ellipse class="map-fill task-event" cx="920" cy="479" rx="88" ry="43"/>
-      <path class="map-task-bus" d="M800 430V434"/>
       <path class="map-task-bus" d="M350 434H920"/>
       <path class="map-path task-path" d="M350 434V438"/>
       <path class="map-path task-diagram" d="M540 434V438"/>
       <path class="map-path task-recommend" d="M730 434V438"/>
       <path class="map-path task-event" d="M920 434V438"/>
-      <text class="map-group-label" x="635" y="425">并行任务能力</text>
+      <text class="map-group-label" x="635" y="415">并行任务能力</text>
       <path class="map-path validation-branch" d="M350 522V530 M540 522V530 M730 522V530 M920 522V530"/>
       <path class="map-path validation-bus" d="M350 530H1095"/>
       <circle class="map-node-dot task-path" cx="350" cy="447" r="8"/>
@@ -1459,7 +1454,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <circle class="map-node-dot validation" cx="1105" cy="530" r="9"/>
       <text class="map-node-title text-start" x="1128" y="480">校验通过 → 入口</text><text class="map-node-note text-start" x="1128" y="500">来源 · 版本 · 范围</text><text class="map-node-note text-start" x="1128" y="517">权限 · 可执行性</text>
       <path class="map-path feedback" d="M1096 537C1085 568 910 590 720 610"/>
-      <text class="feedback-note" x="510" y="577">授权完成 / 纠错 → Owner 复核</text>
+      <text class="feedback-note" x="960" y="559">授权完成 / 纠错 → Owner 复核</text>
 
       <!-- 内容治理底座：五个治理环节从多源输入形成可追溯知识并供给 MCP -->
       <ellipse class="map-fill governance" cx="800" cy="628" rx="550" ry="68"/>
@@ -1475,6 +1470,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-foundation-title" x="720" y="648">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="668">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="684">过期或冲突 → 复核 / 下架</text>
       <text class="map-foundation-title" x="940" y="648">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="668">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="684">版本、证据与状态可追溯</text>
       <text class="map-foundation-title" x="1160" y="648">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="668">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="684">robots · sitemap · Schema · llms.txt</text>
+      <circle class="map-core knowledge" cx="650" cy="590" r="25"/>
+      <circle class="map-core knowledge-ring" cx="650" cy="590" r="19"/>
+      <text class="map-core-title" x="650" y="588">检索服务</text><text class="map-core-note" x="650" y="604">全文 / 语义 · 版本 · 来源</text>
     </svg>
   </div></div>
   <div class="kp-foot"><span>建设关系示意；接口与数据服务需结合现有社区基础设施评估</span><span>知识向上供给，授权纠错回到 Owner 治理</span></div>
