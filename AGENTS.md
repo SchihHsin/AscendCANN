@@ -8049,3 +8049,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保留关键建设信息：来源和连接器、版本与适用范围、原文锚点和前置 / 兼容关系、全文 / 语义索引、robots / sitemap / Schema.org / llms.txt、查询 API、Agent Host 上下文与权限检查、Skill 流程、MCP 知识和受限工具、路径 / 图解 / 推荐 / 活动产物、结果校验与反馈回流。页面序列与 API / Protocol、Host / Harness、Application / Task 职责边界未变；能力架构仍是建设示意，不表示服务已经接入。
 - 依据为用户提供的结构图参考（H）；技术内容为此前确认的建设方案（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 第 06 页复核节点、分层、上行供给与反馈关系，截图未见节点文字重叠。GitHub Pages 部署 workflow `40899785914` 成功，线上 URL 返回 HTTP 200，回读到新版标题与 `arch-orbit` 结构、旧 `cap-box` 卡片标记已移除；线上 CUA 截图导航超时，视觉验收以本地预览为准。
 - 页面实现提交 `adf86329` 已推送至 `origin/main`；本交接记录将在文档提交中同步推送。
+
+### 2026-10-29 · 用户旅程补充 A/B 并修正时序图区间留白
+
+- 用户选择在第 3 页增加 A「任务与学习两条定性把握感曲线」和 B「各阶段的关键判断问题」。旅程仍描述使用 Ascend Studio 之前的过程；模糊兴趣与目标明确均属于学习导向，不按专业程度拆分，也不提前混入 Studio 功能。曲线标为体验推演，不是用户研究测量。
+- 用户截图中的空带来自旋转 Mermaid 时序图保留未使用的纵向坐标范围：角色标题锚在行首，泳道按旋转后的参与者坐标布置，造成标题与第一条泳道之间出现视觉空白。构建时按实际参与者中心裁切 SVG viewBox，并同步映射角色标签、事件卡和连线，空带消失。桌面复核截图保存在 `cann-dashboard/ascend-studio-design-report-evidence/journey-page3-final.png`。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`journey-sequence.mmd` / `.svg`、叙事与页面映射 / QA / handoff 文件及生成的 `cann-dashboard/ascend-studio-design-report.html`。报告仍为 17 页；未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户对 A/B 的选择和对截图空带的反馈（H）；把握感曲线是定性体验推演（M），需后续研究验证，未赋予数值评分。验证：`python3 -m py_compile`、报告构建、`node --check cann-dashboard/ascend-studio-design-report-evidence/render_journey_sequence.mjs`、`git diff --check`；本地 1352×778 桌面视口复核关键判断、协作角色、泳道与曲线连续呈现。未运行自动化测试。
+- 提交 `e8e460652984fbd9247ca2b1557623d6df315c62` 已包含于 `origin/main`；GitHub Pages workflow `40897671179` 成功。线上报告 HTTP 200，回读确认关键判断行和两条曲线已发布。
