@@ -7702,3 +7702,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`narrative.md`、`qa.md` 并重建 `cann-dashboard/ascend-studio-design-report.html`。来源为用户指定的界面化方向（H）；具体界面结构和任务内容为设计推演（L）。
 - 验证：`python3 -m py_compile build_report.py`、`python3 build_report.py`、两段内联脚本 `node --check`、17 页 / 旅程页码及素材引用结构检查通过；CUA 在 1280×720 浏览器视口复核第 2 页显示完整，双窗口与单工作区差异清楚。
 - 报告源码、生成页、支持素材与本记录按独立变更提交并推送 `origin/main`；其他工作区改动未纳入。
+
+### 2026-10-29 · 桌面设计点讲解改为深色浮层
+
+- 按用户要求，左下角设计点卡片改为半透明深色底和白色文字；标题 / 正文 / 起点页采用不同白色透明度，分隔线与次要按钮使用低对比白色层级，主按钮改为白底深字。收起后的左下角提示条同步深色样式。
+- 只修改 `ascstudio-pc/styles.css`；小程序页面、章节顺序、设计点内容和 Task 直达逻辑未变，不涉及 API / Protocol、Host / Harness 或产品任务边界。
+- 验证：`git diff --check` 通过；CUA 本地 1440×900 检查社区经验章节的展开卡与收起提示条，白字在 Studio 浅色工作区上清晰可读；未运行自动化测试套件。
+- `6f10d470`（`style: darken desktop design note overlay`）已推送至 `origin/main`。
