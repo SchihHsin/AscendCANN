@@ -7981,3 +7981,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html` 的图示色值与语义类名；保留原有节点、连线关系、布局、能力内容、页面序列与 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户截图与明确反馈（H），具体冷灰 / 语义色分配为设计表达（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 预览复核第 03、04 页，通用结构线为灰色，蓝紫绿与玫瑰色仅对应语义区域 / 路径，页面文字和节点关系可读。未运行自动化测试。
 - 实现提交 `e4a4aa54` 已推送至 `origin/main`；GitHub Pages workflow `40884051501` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · 入口演进图的横向分区明确标为层级
+
+- 用户指出第 03 页的 ENTRY、KNOWLEDGE CORE、SCENARIOS 是横向层级而非执行步骤。将右侧 `STEP 01/02/03` 改为 `LAYER 01/02/03`，并使用独立 `map-layer-code` 样式；第 04 页表示实际供给处理链路的 `STEP` 标记保留。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`；不改图中层级内容、节点关系、颜色、布局、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户截图与语义纠正（H）。`git diff --check` 通过；CUA 本地第 5 页预览确认右侧三个标签显示为 LAYER；未运行自动化测试。
+- 页面提交 `27e714c6` 已推送到 `origin/main`；GitHub Pages workflow `40885264158` build / deploy 成功。无未决事项。
