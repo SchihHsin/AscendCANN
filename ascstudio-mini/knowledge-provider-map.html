@@ -1125,9 +1125,18 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .capability-map .map-path{marker-end:url(#capability-arrow)}
 .capability-map .map-path.experience{stroke:#7e9dbc}.capability-map .map-path.agent{stroke:#927fb5}.capability-map .map-path.governance{stroke:#7fa38b}.capability-map .map-path.task-event{stroke:#b78495}
 .capability-map .map-path.feedback{stroke:#7fa38b;stroke-dasharray:6 7;marker-end:url(#capability-feedback-arrow)}
-.capability-map .map-path.future{stroke:#7fa38b;stroke-dasharray:7 8;marker-end:url(#capability-feedback-arrow)}
-.capability-map .map-path.return{stroke:#7e9dbc;stroke-width:1.7;marker-end:url(#capability-arrow)}
+.capability-map .map-path.future{stroke:#7e9dbc;stroke-dasharray:7 8;marker-end:url(#capability-arrow)}
 .capability-map .map-path.foundation-link{stroke:#7fa38b;stroke-width:1.7;marker-end:url(#capability-feedback-arrow)}
+.capability-map .map-node-shape{stroke-width:2.4}
+.capability-map .map-node-shape.interface{fill:#f1f6fc;stroke:#6f91b2}
+.capability-map .map-node-shape.orchestration{fill:#f3eff8;stroke:#8973aa}
+.capability-map .map-task-bus{fill:none;stroke:#9f95ad;stroke-width:1.5;opacity:.78}
+.capability-map .map-group-label{fill:#697481;font-size:12px;font-weight:720;text-anchor:middle;letter-spacing:.04em}
+.capability-map .map-legend-label{fill:#697481;font-size:12px;font-weight:650}
+.capability-map .map-legend-interface{fill:#f1f6fc;stroke:#6f91b2;stroke-width:2}
+.capability-map .map-legend-orchestration{fill:#f3eff8;stroke:#8973aa;stroke-width:2}
+.capability-map .map-legend-knowledge{fill:#eee9f5;stroke:#927fb5;stroke-width:1.7}
+.capability-map .map-legend-governance{fill:#e1ebe1;stroke:#6f9278;stroke-width:1}
 .capability-map .map-node-dot.governance{fill:#6f9278;stroke:#f4f8f4}
 .capability-map .map-node-title{font-size:18px}.capability-map .map-node-note{font-size:14px}
 .capability-map .map-node-label{font-size:14px}
@@ -1364,7 +1373,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">内容治理底座、Agent 服务和开发者体验的三层关系图</title>
-      <desc id="cap-map-desc">上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文；Web 经 OpenAPI 查询，客户端上下文进入 Agent Host。Agent Host 路由 Skill 与 MCP，OpenAPI 和 MCP 查询中心知识服务。知识服务向下支撑学习路径规划、技术图解、资源推荐、活动与内容上新四类并行能力，产物汇入结果校验后返回共同体验层。底层对官方文档、API、课程、代码、Issue 和活动进行接入、解析归一、版本许可与 Owner 治理，形成带原文锚点、适用范围、前置关系、版本、证据和状态的 Knowledge Unit 及关系图和检索索引；索引向上供 MCP 查询。经授权的完成与纠错信号回到 Owner 复核。椭圆区域表示体验、Agent 服务和内容治理三层架构，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示共享知识服务、多色圆点表示任务能力、绿色圆点表示内容治理。上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文；Web 经 OpenAPI 查询，客户端上下文进入 Agent Host。Agent Host 路由 Skill 与 MCP，OpenAPI 和 MCP 查询中心知识服务。知识服务通过共享分配线并行支撑学习路径规划、技术图解、资源推荐、活动与内容上新四类能力；各能力汇入结果校验，校验后返回共同体验层。底层对官方文档、API、课程、代码、Issue 和活动进行接入、解析归一、版本许可与 Owner 治理，形成带原文锚点、适用范围、前置关系、版本、证据和状态的 Knowledge Unit 及关系图和检索索引；索引向上供 MCP 查询。经授权的完成与纠错信号沿独立虚线回到 Owner 复核。椭圆区域表示体验、Agent 服务和内容治理三层架构，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1372,6 +1381,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
       <!-- 三个横向区域表示架构层级；留出左侧层级标题的呼吸空间 -->
       <path class="map-stage-rule" d="M245 190H1380 M245 552H1380"/>
+      <g aria-hidden="true" transform="translate(760 37)">
+        <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
+        <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
+        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识服务</text>
+        <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">任务能力</text>
+        <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
+      </g>
       <text class="map-stage-name experience" x="28" y="76">EXPERIENCE</text><text class="map-stage-sub" x="28" y="101">开发者入口</text>
       <text class="map-stage-name agent" x="28" y="305">AGENT SERVICE</text><text class="map-stage-sub" x="28" y="330">共享知识与任务能力</text>
       <text class="map-stage-name governance" x="28" y="589">CONTENT BASE</text><text class="map-stage-sub" x="28" y="614">内容治理底座</text>
@@ -1401,17 +1417,16 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <path class="map-path agent" d="M878 280C1000 302 1150 330 1270 344"/>
       <path class="map-path experience" d="M365 285C450 330 566 355 748 371"/>
       <path class="map-path agent" d="M1270 354C1180 364 950 370 852 373"/>
-      <!-- 知识索引向 MCP 供给；校验后的结果沿外侧回到项目入口 -->
+      <!-- 知识索引向 MCP 供给；校验通过后按入口显示结果 -->
       <path class="map-path foundation-link" d="M1168 611C1210 586 1312 506 1312 423S1305 371 1287 356"/>
-      <path class="map-path return" d="M1115 522C1260 520 1370 465 1370 350C1370 260 1360 150 1330 115"/>
 
-      <circle class="map-node-dot api" cx="355" cy="277" r="8"/>
+      <rect class="map-node-shape interface" x="347" y="269" width="16" height="16" rx="3"/>
       <text class="map-node-title text-end" x="335" y="221">OpenAPI · 查询服务</text><text class="map-node-note text-end" x="335" y="249">语义检索 · 版本过滤 · 原文引用</text>
-      <circle class="map-node-dot agent" cx="610" cy="277" r="9"/>
+      <path class="map-node-shape orchestration" d="M610 267L620 277L610 287L600 277Z"/>
       <text class="map-node-title text-end" x="590" y="221">Agent Host</text><text class="map-node-note text-end" x="590" y="249">目标 / 环境 / 授权 · 权限与工具路由</text>
-      <circle class="map-node-dot knowledge" cx="870" cy="277" r="8"/>
+      <path class="map-node-shape orchestration" d="M870 267L880 277L870 287L860 277Z"/>
       <text class="map-node-title" x="870" y="221">Skill · 任务流程</text><text class="map-node-note" x="870" y="249">步骤 · 输入输出 · 验收条件</text>
-      <circle class="map-node-dot task-event" cx="1280" cy="350" r="8"/>
+      <rect class="map-node-shape interface" x="1272" y="342" width="16" height="16" rx="3"/>
       <text class="map-node-title text-end" x="1255" y="270">MCP · 知识与工具</text><text class="map-node-note text-end" x="1255" y="294">兼容 · 样例 · Issue · 活动</text><text class="map-node-note text-end" x="1255" y="312">授权读取项目环境 / 日志</text>
 
       <circle class="map-core knowledge" cx="800" cy="378" r="52"/>
@@ -1422,10 +1437,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <ellipse class="map-fill task-diagram" cx="540" cy="479" rx="88" ry="43"/>
       <ellipse class="map-fill task-recommend" cx="730" cy="479" rx="88" ry="43"/>
       <ellipse class="map-fill task-event" cx="920" cy="479" rx="88" ry="43"/>
-      <path class="map-path task-path" d="M760 410C660 427 480 438 350 447"/>
-      <path class="map-path task-diagram" d="M776 422C700 437 610 443 540 447"/>
-      <path class="map-path task-recommend" d="M800 431C790 437 760 442 730 447"/>
-      <path class="map-path task-event" d="M824 422C850 433 890 439 920 447"/>
+      <path class="map-task-bus" d="M800 430V434"/>
+      <path class="map-task-bus" d="M350 434H920"/>
+      <path class="map-path task-path" d="M350 434V438"/>
+      <path class="map-path task-diagram" d="M540 434V438"/>
+      <path class="map-path task-recommend" d="M730 434V438"/>
+      <path class="map-path task-event" d="M920 434V438"/>
+      <text class="map-group-label" x="635" y="425">并行任务能力</text>
       <path class="map-path validation-branch" d="M350 522V530 M540 522V530 M730 522V530 M920 522V530"/>
       <path class="map-path validation-bus" d="M350 530H1095"/>
       <circle class="map-node-dot task-path" cx="350" cy="447" r="8"/>
