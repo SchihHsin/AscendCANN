@@ -8041,4 +8041,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈封面插图偏小，并选择放大约 30%。将右侧插图宽度改为所在栏的 130%，上限约 680px；使用网格居中，让插图向栏间留白适度延伸，左侧文字列与内容不变。
 - 修改 `ascstudio-pc/styles.css` 并更新 `index.html` 的 CSS / JS 缓存版本。未改变插图、章节内容、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户对尺寸的明确选择（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 打开第三章放大预览，确认标题、摘要、章节导航和插图仍存在。未运行自动化测试。
-- 提交 / 推送：待本次实现推送后补充。
+- 提交 / 推送：实现提交 `82bd8b2f` 已推送至 `origin/main`；线上 HTML 与 CSS 已更新，CSS 回读确认插图宽度为所在栏 130%、上限 680px。无其他未决事项。
