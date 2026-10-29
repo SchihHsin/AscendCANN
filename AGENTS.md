@@ -7715,4 +7715,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图显示左下角讲解卡仍为白底。回读线上资源确认 `styles.css` 已含半透明深色卡片，但 `index.html` 仍通过无版本参数的路径引用 CSS；为绕过浏览器 / CDN 对旧 CSS 的复用，在样式地址增加固定版本查询参数。对外复核时使用带新 `rev` 的页面 URL，避免旧页面缓存。
 - 仅修改 `ascstudio-pc/index.html` 的 CSS 资源引用和本交接记录；章节、设计点与起点页不变，小程序不变，不涉及 API / Protocol、Host / Harness 或 Application / Task 边界。
 - 来源：用户要求深色讲解卡（H）；线上 CSS 响应确认深色规则、截图确认显示白色（H）；浏览器旧缓存是与证据一致的原因推断（M）。
-- 验证：`git diff --check`；线上回读 HTML 应包含带 `rev` 的 CSS 地址，CSS 应继续包含深色 `.design-note` 规则。提交并推送至 `origin/main` 后，等待 Pages 部署并复核新入口。
+- 验证：`git diff --check` 通过；线上新入口 HTML 已回读到 `styles.css?rev=20261029-dark-note`，带版本参数的 CSS 响应包含 `background: rgba(20,21,24,.82); color: #fff`。Pages workflow `40795756618` 对应提交 `3945b319` 的 build / deploy 成功。CUA 打开新入口后截图调用超时，未将其记为完成视觉截图核验。
+- 提交 `3945b319`（`fix: bypass cached desktop note styles`）已推送至 `origin/main`；本交接记录的验证结果随本记录更新后也会提交并推送。
