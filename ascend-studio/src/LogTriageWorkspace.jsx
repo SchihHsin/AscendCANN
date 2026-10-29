@@ -1,8 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   IconAlertCircle,
   IconArrowRight,
-  IconBook,
   IconCheck,
   IconCircleCheck,
   IconCode,
@@ -15,6 +14,7 @@ import { ICON_SIZE } from "./icon-system.js";
 import "./log-triage-workspace.css";
 
 const FLOW_STEPS = ["日志线索", "范围图解", "示例核对", "经验回流"];
+const FORMAT_LAB_LIGHT_URL = "https://yinyucheng0601.github.io/compute-graph-viewer/format%20lab/index.html?theme=light";
 const LOG_ENTRIES = [
   { time: "09:41:08", kind: "pass", label: "precision_check", detail: "input_shape=[16,32]", status: "PASS" },
   { time: "09:41:13", kind: "fail", label: "precision_check", detail: "input_shape=[17,33]", status: "FAIL" },
@@ -35,40 +35,19 @@ function StepButton({ index, active, done, disabled, onClick }) {
   </button>;
 }
 
-function TailBlockDiagram() {
-  return <div className="log-tail-diagram" role="img" aria-label="17 乘 33 等于 561 个元素，按每块 32 个元素拆分为 17 个完整块和 1 个包含 17 个有效元素的尾块">
-    <div className="log-tail-math">
-      <div><span>行</span><strong>17</strong></div><b>×</b>
-      <div><span>列</span><strong>33</strong></div><b>=</b>
-      <div className="log-tail-math-total"><span>元素总数</span><strong>561</strong></div>
-    </div>
-    <div className="log-tail-blocks">
-      <div className="log-tail-block-full"><span className="log-tail-block-mark" /><div><strong>17 个完整块</strong><small>17 × 32 = 544 个元素</small></div></div>
-      <span className="log-tail-plus" aria-hidden="true">+</span>
-      <div className="log-tail-block-partial"><span className="log-tail-block-mark" /><div><strong>最后一块</strong><small>17 / 32 个位置有效</small></div></div>
-    </div>
-    <div className="log-tail-grid-wrap">
-      <div className="log-tail-grid-label"><strong>块大小 32</strong><span>第 18 块 · 尾块</span></div>
-      <div className="log-tail-grid" aria-hidden="true">
-        {Array.from({ length: 32 }, (_, index) => <i key={index} className={index < 17 ? "is-valid" : "is-unused"} />)}
-      </div>
-      <div className="log-tail-legend"><span><i className="is-valid" />17 个有效元素</span><span><i className="is-unused" />15 个待核对位置</span></div>
-    </div>
-    <p className="log-tail-caveat"><IconInfoCircle size={ICON_SIZE.inline} />这张图只展开输入形状的范围关系。日志让尾块值得优先核对，是否越界仍取决于实际循环与读写代码。</p>
-  </div>;
-}
-
 export const INITIAL_LOG_TRIAGE_STATE = Object.freeze({ step: 0, exampleApplied: false, verified: false, experienceReady: false });
 
 export function LogTriageWorkspace({ state = INITIAL_LOG_TRIAGE_STATE, onStateChange = () => {}, onCommunityExperienceReady, communityReady = false }) {
   const { step, exampleApplied, verified, experienceReady } = { ...INITIAL_LOG_TRIAGE_STATE, ...state };
   const contentRef = useRef(null);
+  const [formatLabMounted, setFormatLabMounted] = useState(step === 1);
   const total = 17 * 33;
   const tileSize = 32;
   const blocks = Math.ceil(total / tileSize);
   const tail = total % tileSize;
   const updateState = patch => onStateChange(previous => ({ ...INITIAL_LOG_TRIAGE_STATE, ...previous, ...patch }));
   const setStage = (next) => {
+    if (next === 1) setFormatLabMounted(true);
     updateState({ step: next });
     contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -121,10 +100,14 @@ export function LogTriageWorkspace({ state = INITIAL_LOG_TRIAGE_STATE, onStateCh
         <div className="log-triage-stage-footer"><span>预置日志命中规则，无需为重复解析消耗模型 Token</span><button className="log-triage-primary" type="button" onClick={() => setStage(1)}>看范围图解<IconArrowRight size={ICON_SIZE.inline} /></button></div>
       </div>}
 
-      {step === 1 && <div className="log-triage-stage">
-        <div className="log-triage-stage-heading"><span>02 / 04</span><h3>把 561 个元素拆开看</h3><p>把报错形状转成可读的分块图，理解为什么尾块值得检查。</p></div>
-        <TailBlockDiagram />
-        <div className="log-learning-note"><IconBook size={ICON_SIZE.control} /><p><strong>从形状到检查点</strong><br />[16,32] 共 512 个元素，正好是 16 个完整块；[17,33] 共 561 个，最后一块只覆盖 17 个有效元素。接下来要看循环是否按有效元素数读写。</p></div>
+      {formatLabMounted && <div className="log-triage-stage log-triage-stage--format-lab" hidden={step !== 1}>
+        <iframe
+          className="log-triage-format-lab-frame"
+          src={FORMAT_LAB_LIGHT_URL}
+          title="Format Lab · Layout Model（浅色模式）"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
         <div className="log-triage-stage-footer"><span>图解提供排查方向，不代替代码证据</span><button className="log-triage-primary" type="button" onClick={() => setStage(2)}>对照示例修正<IconArrowRight size={ICON_SIZE.inline} /></button></div>
       </div>}
 

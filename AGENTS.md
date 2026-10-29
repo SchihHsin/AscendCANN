@@ -7653,6 +7653,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现与验证细节在 `ascend-studio/AGENTS.md`。本地 1280×720 预览已完成端到端回放：四步操作、经验入口、可编辑草稿和旧任务保留；`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过，未运行自动化测试。没有改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布回执：实现提交 `9c3fcd97`（`feat: add log-first Add diagnostic task`）已推送到 `origin/main`；Pages workflow `40748397022` 成功。线上 `/AscendCANN/ascstudio/`、构建 JS `index-FtOVT1nn.js` 与 CSS `index-BLPeqaaM.css` 均 HTTP 200；JS 回读包含新旧任务显示名与「本地规则 · 0 tokens」。本地预览通过四步交互与草稿编辑核对，未真实接入模型、社区或 NPU。
 
+### 2026-10-29 · 范围图解直接嵌入 Format Lab 浅色版
+
+- 按用户明确要求，将「范围图解」替换为原站 Format Lab 浅色版 iframe（`?theme=light`）；不再使用 Ascend Studio 自绘尾块图。iframe 保持挂载，切换到后续步骤再返回时可保留原站的交互状态。
+- 桌面端图解步骤临时扩展任务工作区以容纳 Format Lab 的编辑区、矩阵与 Inspector；项目侧栏和对话区在该步骤隐藏，离开后恢复原布局。外部页面仍在任务右侧工作区内交互。
+- 原站由用户提供（H）；本地 CUA 预览确认 iframe 成功加载，树中可见 Format Lab 标题、逻辑 / 物理矩阵、Inspector 与 `theme=light` URL（M）。本地确定性任务流程仍标注 0 tokens；嵌入没有增加模型调用或后端接入。Format Lab 的 NZ 映射示例仅作为交互图解，不替代 Add 算子的实际代码、编译或 NPU 验证。
+- 修改 `ascend-studio/src/LogTriageWorkspace.jsx`、`log-triage-workspace.css`、`styles.css` 与 `/ascstudio/` 发布包；未更改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。推送与 Pages 部署回执待本轮发布后补记。
+
 ### 2026-10-29 · Ascend Studio 旅程增加机会点行
 
 - 用户要求在五个设计断点下方增加绿色机会点，并与此前提出的设计点建立明确对应。第 2 页新增五列机会点：主动建议 / 连线 Prompt；意图学习路径 / 协同编辑 / 自定义节点；开发中图解；社区经验回流 / 个人认知卡；小程序移动续学。

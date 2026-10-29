@@ -93,6 +93,19 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .workspace-grid.is-task-workspace.is-conversation-floating > .diagnostic-panel { grid-column: 3 / 5; grid-row: 1; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .workspace-divider--conversation { display: none; }
 .workspace-grid.is-task-workspace.is-conversation-floating.is-area-interaction-active > .conversation-panel { visibility: hidden; pointer-events: none; }
+@media (min-width: 981px) {
+  .workspace-grid.is-task-workspace:has(.log-triage-stage--format-lab:not([hidden])) {
+    grid-template-columns: 56px minmax(0, 0px) minmax(0, 0px) minmax(0, 1fr) !important;
+  }
+  .workspace-grid.is-task-workspace:has(.log-triage-stage--format-lab:not([hidden])) > .sidebar,
+  .workspace-grid.is-task-workspace:has(.log-triage-stage--format-lab:not([hidden])) > .conversation-panel {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .workspace-grid.is-task-workspace:has(.log-triage-stage--format-lab:not([hidden])) > .workspace-divider {
+    display: none;
+  }
+}
 .workspace-grid.is-new-task-home .new-task-button { background: #fff; }
 .primary-nav { display: flex; flex-direction: column; gap: 3px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 .new-task-button, .nav-row { width: 100%; display: flex; align-items: center; gap: 11px; text-align: left; border: 0; background: transparent; cursor: pointer; color: #45464c; }

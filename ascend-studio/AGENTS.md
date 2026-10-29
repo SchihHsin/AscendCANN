@@ -2115,3 +2115,10 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 
 - 小程序评审 iframe 使用 `pocket-task=图像推理调试`，从现有开发任务的 Agent 回答开始演示知识收纳；避免从尚在共创中的学习路径草案开始。该查询仅在 `pocket-demo=1` 时生效，并且不会向普通任务列表新增任务。
 - 现有回答和 HWC / NCHW 示意是策划的交互样例，不构成真实模型签名或 NPU 验证。
+
+### 2026-10-29 · 范围图解使用原站 Format Lab 浅色版
+
+- 用户要求把 `compute-graph-viewer/format lab` 浅色版原样放进右侧。现将「范围图解」中的自绘尾块示意替换成该页面 iframe，并通过 `?theme=light` 指定浅色；iframe 在离开该步后继续挂载，保留图内选择与播放状态。
+- 为完整容纳原站三栏交互，桌面端进入该步骤时扩展工作区、临时隐藏项目侧栏和对话区；离开后依赖 `:not([hidden])` 条件恢复既有工作台布局。步骤导航及示例核对 / 经验回流内容保留。
+- 用户提供的在线 Format Lab 是原样内容来源（H）；本地浏览器无障碍树确认 iframe、矩阵、Inspector 和 light-theme URL 已加载（M）。固定本地流程不调用模型，仍为 0 tokens；示例格式图不能作为真实 Add 算子根因、编译或 NPU 证据。
+- `LogTriageWorkspace.jsx`、`log-triage-workspace.css`、全局 `styles.css` 与 Pages 产物有改动。构建和推送详情由仓库根目录 `AGENTS.md` 记录；未改变页面路由、序列和 API / Host / Application 边界。

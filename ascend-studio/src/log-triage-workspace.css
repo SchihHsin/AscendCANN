@@ -86,11 +86,14 @@
 
 .log-triage-scroll { flex: 1 1 0; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 18px; scrollbar-width: thin; scrollbar-color: #ccd3d9 transparent; }
 .log-triage-stage { display: flex; flex-direction: column; gap: 14px; width: min(100%, 760px); margin: 0 auto; padding-bottom: 4px; }
+.log-triage-stage[hidden] { display: none; }
+.log-triage-stage--format-lab { width: 100%; max-width: none; }
+.log-triage-format-lab-frame { display: block; flex: 0 0 auto; width: 100%; min-width: 0; height: clamp(620px, calc(100dvh - 170px), 820px); border: 0; background: #fff; }
 .log-triage-stage-heading > span { display: block; margin-bottom: 5px; color: var(--log-blue); font-size: 10px; font-weight: 650; letter-spacing: .04em; }
 .log-triage-stage-heading h3 { margin: 0; color: var(--log-text); font-size: 17px; font-weight: 650; line-height: 1.38; }
 .log-triage-stage-heading p { margin: 5px 0 0; color: var(--log-muted); font-size: 12px; line-height: 1.55; }
 
-.log-evidence-card, .log-tail-diagram, .log-code-card, .log-community-outline { border: 1px solid var(--log-divider); border-radius: 10px; background: var(--log-surface); }
+.log-evidence-card, .log-code-card, .log-community-outline { border: 1px solid var(--log-divider); border-radius: 10px; background: var(--log-surface); }
 .log-evidence-card { overflow: hidden; }
 .log-evidence-card > header { display: flex; align-items: center; justify-content: space-between; min-height: 43px; padding: 0 12px; border-bottom: 1px solid #eceef0; }
 .log-evidence-card > header > div { display: flex; align-items: center; gap: 7px; color: #4c5964; }
@@ -125,40 +128,6 @@
 .log-triage-primary:hover:not(:disabled) { background: #363e45; transform: translateY(-1px); }
 .log-triage-primary:disabled { border-color: #dfe3e7; color: #989fa7; background: #eceff1; cursor: not-allowed; }
 .log-triage-action-wide { align-self: flex-start; }
-
-.log-tail-diagram { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
-.log-tail-math { display: flex; align-items: center; justify-content: center; gap: 15px; padding-bottom: 14px; border-bottom: 1px solid #edf0f2; }
-.log-tail-math > div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.log-tail-math span { color: #7d8791; font-size: 10px; }
-.log-tail-math strong { color: #2f628f; font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
-.log-tail-math > b { color: #9ba3aa; font-size: 16px; font-weight: 450; }
-.log-tail-math .log-tail-math-total strong { color: #202a32; }
-.log-tail-blocks { display: flex; align-items: center; justify-content: center; gap: 10px; }
-.log-tail-block-full, .log-tail-block-partial { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 9px 11px; border: 1px solid #dce9f5; border-radius: 8px; background: #f6faff; }
-.log-tail-block-partial { border-color: #eddba9; background: #fffbf0; }
-.log-tail-block-mark { flex: 0 0 auto; width: 24px; height: 24px; border: 1px solid #9bc1e2; border-radius: 6px; background: repeating-linear-gradient(90deg, #77aedd 0 2px, #eaf3fd 2px 4px); }
-.log-tail-block-partial .log-tail-block-mark { border-color: #d9b766; background: linear-gradient(90deg, #d9a947 0 53%, #f6ead0 53%); }
-.log-tail-block-full strong, .log-tail-block-partial strong { display: block; color: #364957; font-size: 11px; font-weight: 620; }
-.log-tail-block-partial strong { color: #6a5125; }
-.log-tail-block-full small, .log-tail-block-partial small { display: block; margin-top: 2px; color: #75828c; font-size: 10px; }
-.log-tail-plus { color: #929ba3; font-size: 16px; }
-.log-tail-grid-wrap { padding: 11px; border: 1px solid #e6ebef; border-radius: 8px; background: #fbfcfd; }
-.log-tail-grid-label { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
-.log-tail-grid-label strong { color: #4a5964; font-size: 10px; font-weight: 620; }
-.log-tail-grid-label span { color: #88919a; font-size: 10px; }
-.log-tail-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
-.log-tail-grid i { display: block; aspect-ratio: 1.55; border-radius: 3px; }
-.log-tail-grid i.is-valid, .log-tail-legend i.is-valid { border: 1px solid #91bde2; background: #cde4f8; }
-.log-tail-grid i.is-unused, .log-tail-legend i.is-unused { border: 1px solid #dce1e5; background: #f0f2f4; }
-.log-tail-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 9px; }
-.log-tail-legend span { display: inline-flex; align-items: center; gap: 5px; color: #717c86; font-size: 10px; }
-.log-tail-legend i { width: 9px; height: 9px; border-radius: 2px; }
-.log-tail-caveat { display: flex; align-items: flex-start; gap: 6px; margin: 0; color: #707b84; font-size: 10px; line-height: 1.5; }
-.log-tail-caveat svg { flex: 0 0 auto; margin-top: 1px; color: #788a9b; }
-.log-learning-note { display: flex; align-items: flex-start; gap: 9px; padding: 11px 12px; border: 1px solid #d7e7f5; border-radius: 8px; color: #3d607c; background: #eff7fd; }
-.log-learning-note > svg { flex: 0 0 auto; margin-top: 1px; color: var(--log-blue); }
-.log-learning-note p { margin: 0; color: #536b7f; font-size: 11px; line-height: 1.6; }
-.log-learning-note strong { color: #375873; font-size: 11px; }
 
 .log-code-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .log-code-card { min-width: 0; overflow: hidden; }
@@ -207,14 +176,6 @@
   .log-evidence-row code { font-size: 9px; }
   .log-code-comparison { grid-template-columns: 1fr; }
   .log-code-card pre { min-height: 70px; }
-  .log-tail-diagram { gap: 12px; padding: 12px 10px; }
-  .log-tail-math { gap: 10px; }
-  .log-tail-math strong { font-size: 19px; }
-  .log-tail-blocks { gap: 6px; }
-  .log-tail-block-full, .log-tail-block-partial { gap: 6px; padding: 8px 6px; }
-  .log-tail-block-mark { width: 18px; height: 18px; }
-  .log-tail-block-full strong, .log-tail-block-partial strong { font-size: 10px; }
-  .log-tail-block-full small, .log-tail-block-partial small { font-size: 9px; }
   .log-community-outline > div { grid-template-columns: 64px minmax(0, 1fr); }
 }
 
