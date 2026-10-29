@@ -7754,6 +7754,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅影响 `ascstudio-pc/styles.css`、`ascstudio-pc/index.html` 和本交接记录；章节、设计点、起点映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
 - 提交 `4b593740` 已推送到 `origin/main`；Pages workflow `40807503291` 的 build / deploy 均成功。线上 HTML 与 CSS 均 HTTP 200，HTML 引用新版本号，CSS 确认 80% 黑底和 2px 模糊。本交接记录随后单独提交并推送。
 
+### 2026-10-29 · 移除讲解卡中的起点页行
+
+- 按用户要求从卡片中移除“起点页”整行，删除对应渲染节点、JS 文本赋值和已无用样式，使讲解卡整体变矮；缓存版本更新为 `20261029-note-no-entry-row`。
+- 来源为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过，本地 HTML / CSS 资源返回新版版本参数。未运行自动化测试。
+- 仅影响 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css` 和本交接记录；章节、设计点内容、起点任务映射、小程序及 API / Protocol、Host / Harness、Application / Task 边界均未变。
+- 提交与 Pages 部署结果在本轮推送后补记。
+
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
 - 用户指出进入范围图解后对话不应收起，且日志排查入口应留在对话中。原因是宽幅图解 CSS 同时隐藏了 `.conversation-panel`，入口卡也曾在首次点击后自动折叠，并且只渲染在初始对话里。

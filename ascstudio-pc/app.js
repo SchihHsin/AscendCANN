@@ -162,7 +162,6 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   $("#note-kicker").textContent = `章节 ${String(currentChapter + 1).padStart(2, "0")} / ${String(chapters.length).padStart(2, "0")} · 设计点 ${currentPoint + 1} / ${chapters[currentChapter].points.length}`;
   $("#note-title").textContent = activePoint.title;
   $("#note-description").textContent = activePoint.description;
-  $("#note-entry").textContent = activePoint.entry;
   $("#dock-label").textContent = `${String(currentChapter + 1).padStart(2, "0")} · ${activePoint.title}`;
   $("#note-prev").disabled = currentPoint === 0 && currentChapter === 0;
   $("#note-next").textContent = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个 →" : currentChapter < chapters.length - 1 ? "下一章封面 →" : "回到章节封面 →";
