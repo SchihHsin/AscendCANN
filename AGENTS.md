@@ -8070,4 +8070,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认整体文字方案后，将三章标题改为「解决问题后把经验留下」「让学习目标一步步变成实践」「在手机上随时接着学」，并更新章节摘要。全部 17 个设计点标题与讲解句改为描述通用交互，不突出 Add、图像预处理、微信或固定内容组合；示例任务和路由仍在 Demo 中使用。
 - 更新 `ascstudio-pc/app.js` 与 `index.html` 脚本 / 样式缓存版本；同步调整章节插画 alt 文案。未改变章节顺序、设计点顺序、起点页映射或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户确认的文字方案（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对确认 3 个章节、17 个设计点、强调词与讲解句匹配，标题 / 讲解 / 摘要中没有指定的具体业务词；本地 8765 打开第一章封面核对新标题与摘要。未运行自动化测试。
-- 提交 / 推送：待本次实现推送后补充。
+- 提交 `60e6fbce8b23cff892ab46bd566d6d1206ffdf87` 已推送到 `origin/main`。GitHub Pages 桌面端入口与 `app.js` 均返回 HTTP 200；线上脚本与本地提交脚本 SHA-256 一致，并回读确认三章标题已更新。
