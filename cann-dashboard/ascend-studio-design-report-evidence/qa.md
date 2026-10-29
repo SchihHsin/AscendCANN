@@ -53,7 +53,7 @@
 ## 用户旅程样式修订 · 2026-10-29
 
 - 恢复旅程阶段标题中的 5 张原始插画。素材并未丢失：重建阶段标题卡的脚本没有重新生成插画节点，页面样式也将 `.cb-stage-visual` 设为 `display:none`；现已补回原始图片并恢复显示，在阶段标题卡内收敛到合适尺寸。
-- 去掉时序图交接卡阴影。五个设计断点改为独立的淡红底卡片，无描边；轨道保持白底，卡片之间留出白色间隔。每个断点都显示任务导向与学习导向的各一条痛点，点击后原有问题与设计回应详情仍保留。
+- 去掉时序图交接卡阴影。五个设计断点改为独立的淡红底卡片，无描边；轨道保持白底，卡片之间留出白色间隔。每张卡都显示任务导向与学习导向各一条痛点；该版曾保留点击详情，后续修订已移除。
 - `python3 -m py_compile build_report.py` 与重建通过；结构检查确认 16 页、5 张阶段插画、18 个无阴影交接卡、5 个断点且每个含 2 条痛点。
 - 本轮无法通过浏览器验证整页视觉：CUA 明确拒绝本地 `file://` 地址，既有本地 HTTP 预览服务器也未监听；遵守浏览器策略，没有通过另起本地服务器绕过限制。旧截图不能证明本次改动的渲染结果。
 
@@ -73,7 +73,7 @@
 
 ## 开发入口场景页 · 2026-10-29
 
-- 在封面与用户旅程之间新增第 2 页，对照 IDE / 昇腾社区官网检索与 Codex Agent 任务委托。用户强调只呈现界面、不放真人；两侧均用原生 HTML 绘制简化 UI，不嵌入人物或真实截图。传统侧用 IDE 与资料检索两个独立窗口，Agent 侧把任务、执行状态、改动和验证放进一个统一工作区。
+- 在封面与用户旅程之间新增第 2 页，对照 IDE / 昇腾社区官网检索与 Agent 任务委托。用户强调只呈现界面、不放真人；传统侧表现 IDE 与资料检索两个独立窗口，Agent 侧把任务、执行状态、改动和验证放进一个统一工作区。
 - 页面把两者定义为同一开发者可切换的工作方式，不当作“专业级 / 小白”两类固定人群。页脚承接下一页的共同旅程，用户进入目标会因任务或学习意图而不同。
 - 17 页，用户旅程由第 2 页顺延至第 3 页。报告 runtime 自动生成 nav dots、翻页数与页码 hash，未发现硬编码页码跳转；`page-map.json` 已同步。
 - 来源边界：昇腾社区与 Agent 工作区均为情景化界面结构示意，不是官方或 Codex 产品截图；任务内容是本页文案，不表示真实执行结果。
@@ -85,3 +85,55 @@
 - 根据用户反馈，两侧不再使用真实 Codex 截图或浮动任务气泡。两种画面都改成原生 HTML 界面草图，不含人物；左侧保留 IDE 与昇腾社区检索两个独立窗口，右侧改为单一 Agent 工作区，内含任务说明、执行步骤、文件改动和验证状态。两者的主要差异由窗口组织方式和任务信息结构表达。
 - 第 2 页仅为界面结构与情景内容示意，不代表现有产品状态、真实 AI 行动或测试结果；其他设计截图和旅程结构不变。
 - 本地浏览器 1280×720 视口检查通过：第 2 页完整显示、左右面积平衡、传统双窗口与 Agent 单工作区可辨，页脚可见；DOM 确认 17 页且旅程页为第 3 页。`python3 -m py_compile build_report.py`、`python3 build_report.py`、两段 `node --check` 与结构检查通过。未改变 API / Protocol、Host / Harness、Application / Task 边界或产品原型。
+
+### 开发入口页改用 ImageGen 界面图 · 2026-10-29
+
+- 用户要求不要用 HTML 手绘 Demo，改用 ImageGen。替换第 2 页左右界面：左图为 IDE + 昇腾社区资料检索两个独立窗口，右图为单一 Codex 风格工作区，包含任务输入、进度、Diff 与验证状态。两张图均为正视纯界面构图，无人物、设备、桌面或场景背景。
+- ImageGen 输出分别为 `entry-traditional-ui.png`、`entry-agent-workspace.png`（1672×941）；报告以单文件内嵌 PNG 使用。旧 HTML mock UI DOM 与其 CSS 已删除。界面内容和执行结果仍是设计情景，不代表既有产品状态。
+- 验证：待完成本轮构建、脚本与浏览器视觉核对后补入结果；页数目标仍为 17，旅程页为第 3 页。
+
+
+### 开发入口页按现有产品视觉重生成 · 2026-10-29
+
+- 用户补充要求透视构图必须沿用昇腾社区和 Codex 的现有界面语言，不能自由发挥。第 2 页图片重新生成：昇腾侧参照官网开发者入口的导航、红色品牌、白色内容区和资源卡；Codex 侧参照项目内既有 Codex 任务简报界面的导航、任务内容区、右侧 Context 面板和蓝色强调色。
+- ImageGen 只改变界面的空间角度与层次：传统开发仍为 IDE + 官网资源页两个独立窗口，Codex 仍为单一工作区。没有加入人物、实景或额外界面模块。图片是风格参照下的情景图，不是当前官网 / Codex 的真实截图或实际执行。
+- 官网样式依据为本轮浏览器打开的 `https://www.hiascend.com/zh/developer`（M）；用户最初给的 `/developer/community` 路径本轮返回 404，因此没有将其当作页面截图证据。Codex 风格依据为仓库已有的 `12-codex-task-brief.png`（M）。
+- 新图替换 `entry-traditional-ui.png` 与 `entry-agent-workspace.png`，单文件报告继续内嵌图片。页数保持 17，开发入口为第 2 页，用户旅程为第 3 页。
+- 验证完成：`python3 -m py_compile build_report.py`、报告重建、两段内联脚本 `node --check`、`git diff --check` 均通过；DOM 为 17 页，图片以 PNG 内嵌，入口页 #2、旅程页 #3。Chrome 本地预览确认两侧透视图完整可见、画面比例协调，昇腾官网与 Codex 的既有导航 / 主内容 / 侧栏结构可辨，标题和页脚完整。
+
+
+### 现有界面风格复核 · 2026-10-29
+
+- 用户强调昇腾社区与 Codex 的界面风格应基于现有产品，不能自由发挥。第 2 页两张透视图已再次校准：昇腾侧以 Chrome 中打开的官方开发者主页截图为视觉依据，保留红色品牌导航、浅蓝首页主视觉、公告和白色文章资源卡，并保留后置 IDE 独立窗口；Codex 侧以仓库原始任务简报 `12-codex-task-brief.png` 为依据，保留会话列表、任务简报、Context 面板、白色工作区和蓝色交互强调。
+- ImageGen 只用于透视构图与两张界面之间的空间关系。生成图仍是情景示意，细节文字可能与实时页面不同，不能当成官网 / Codex 的真实截图或产品状态；没有添加人物、设备或实景。
+- 构建保持 17 页，入口页 #2，旅程页 #3。Chrome 本地预览确认页面完整，左右画面面积平衡，官网双窗口与 Codex 单工作区可辨；两段内联脚本和 `git diff --check` 通过。
+
+### 以现有产品界面为准的透视合成 · 2026-10-29
+
+- 用户再次强调昇腾社区与 Codex 应沿用现有界面风格。第 2 页现以 Chrome 中实际打开的昇腾开发者主页截图（`https://www.hiascend.com/zh/developer`）和证据目录内 Codex 任务简报截图 `12-codex-task-brief.png` 为界面依据。ImageGen 只合成透视关系：左侧官网页面前置、IDE 代码窗口后置；右侧为单一 Codex 工作区。无物理显示器或桌面场景。
+- 屏幕中的品牌导航、红色选中态、浅蓝主视觉、公告与白色资源卡来自昇腾官网参考；Codex 侧保留会话导航、任务简报与右侧 Context 面板。生成图的细节文字可能与实时产品页面不同，故仍标为情景示意，不作为真实产品截图或执行证据。
+- 更新 `build_report.py`，使后续构建持续读取 ImageGen 图片，避免恢复旧的手绘界面；重新构建 `ascend-studio-design-report.html`。变更只涉及第 2 页入口比较素材与其构建源，不改变旅程顺序、原型内容或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm ci --prefix cann-dashboard/ascend-studio-design-report-evidence`（依锁文件安装本地构建依赖）、`python3 -m py_compile .../build_report.py`、报告重建（17 页、11,800,320 bytes）、两段内联脚本 `node --check`、`git diff --check`；Chrome 本地 5218 预览 #2 确认两张透视界面、标题、图注与页脚可见，传统双窗口与 Codex 单工作区可区分。
+
+
+### 界面风格校准 · 2026-10-29
+
+- 用户要求昇腾社区与 Codex 的界面风格严格基于现有产品，不随意发挥（H）。原 ImageGen 画面将屏幕细节也重新生成，可能产生与实际页面不同的导航、文字或面板关系。
+- 使用 `desktop-fullpage-screenshot` 流程重新读取 `https://www.hiascend.com/zh/developer`：1440×900 视口、scrollWidth=1440、无 cookie 覆盖；完整页面 1440×3156。将首屏裁出为 `hiascend-developer-style-reference-1440.png`，元数据保留在同目录 JSON。
+- 保留两张 ImageGen 透视构图作为场景外壳；把官网首屏与现有 `12-codex-task-brief.png` 屏幕区域做透视贴合，构成 `entry-traditional-ui-composite.jpg` 与 `entry-agent-workspace-composite.jpg`。官网导航 / 主视觉 / 公告 / 资源卡直接来自网页截图；Codex 中部任务简报与 Context 面板来自项目内截图，外侧会话导航参考截图布局并由 ImageGen 合成；IDE 仍是通用情景素材。
+- `compose_entry_perspective.py` 可重复生成两张合成图；报告构建改为读取合成图。透视图是场景合成，不作为当前实时执行的证据。用户旅程、页面序列和机制层边界不变。
+- 验证：截图尺寸与 1440×900 视口元数据复核；两张合成图逐一目视检查；报告重建为 17 页、8,584,034 bytes；Chrome 1440×900 预览 `#2` 确认两图加载且页标题 / 图注 / 页脚完整；2 段内联脚本 `node --check`、2 个 Python 文件编译与 `git diff --check` 均通过。截图见 `workmode-slide-final.png`。
+
+### 开发方式对照页改为 Before / After 场景 · 2026-10-29
+
+- 用户给出 Before / After 并排参考图，并指定右侧使用 `learning-canvas-story/index.html#5` 中的画面（H）。第 2 页现将阶段标签改为 `Before · IDE 开发 + 社区找资料` 与 `After · AI 工作台提需求`；左侧保留昇腾社区 + IDE 透视合成，右侧直接加载该页面的 `images/codex-workspace-user.png`，加轻微 CSS 透视和两条开发者提问气泡。右侧界面不再由 ImageGen 重绘，屏幕内容保持源截图；气泡文案是示例任务。
+- 页面顺序仍为 17 页，用户旅程仍在第 3 页。没有改旅程或产品原型，也不影响 API / Protocol、Host / Harness、Application / Task 层边界。
+- 验证：`python3 -m py_compile cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、报告构建（17 页）、内联脚本 `node --check`、`git diff --check` 通过；CUA 在 1280×720 桌面本地预览确认两侧画面、Before / After 标签、Codex 截图与两条气泡完整可见。来源 PNG 成功加载。自动化测试未运行。
+- 提交 `37f9ed8d` 已推送至 `origin/main`。线上报告与被复用 PNG 均 HTTP 200；线上 HTML 包含 Before / After、Codex 图片路径和提问文案。`gh` CLI 未安装，因此未读取 Actions workflow 状态。当前本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#2`。
+
+### 设计痛点静态呈现与角色生命线加深 · 2026-10-29
+
+- 用户要求把“设计断点”改为“设计痛点”，去掉卡片点击弹窗，并加深时序图中代表各角色的横向生命线。
+- 第 3 页五阶段卡片改为静态 `<article>`，统一标为“设计痛点 / DESIGN PAIN POINTS”；删除弹窗 DOM、样式与事件处理。五阶段、每阶段两类用户痛点及绿色机会点保持原位置与内容。
+- `beautiful-mermaid` 的 `.lifeline` 类样式优先于 SVG presentation attributes，单改 `stroke` 属性无效。现将类样式覆盖为 `#7b8797`、2.2px、7/5 虚线，六类角色生命线在 1280×720 预览中清晰可辨。
+- 验证：构建结果 17 页；结构核对确认五张静态痛点卡、无断点文案 / 弹窗 / 事件处理、机会点行仍在；`py_compile`、两段内联脚本 `node --check`、`git diff --check` 通过。CUA 在本地 5219 预览第 3 页核对痛点卡静态展示及生命线对比度；点击第一张卡后无弹窗，页码仍为 03 / 17。没有运行自动化测试套件。

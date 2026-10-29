@@ -21,8 +21,8 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
     problem = "在图像推理测试过程中，示例模型要求输入张量为 NCHW [1,3,224,224]，但当前预处理输出的图像张量为 NHWC [1,224,224,3]，两者通道顺序不一致。需要理解这种差异，以及如何在不修改原文件的情况下调整。";
     const axes = completion.snapshot?.axes || [2, 0, 1];
     const dimensions = completion.dimensions?.join(", ") || "1, 3, 224, 224";
-    approach = `在隔离的浏览器示例副本中，将 HWC 轴按 transpose(${axes.join(",")}) 调整为 CHW，并加入 batch 维度；示例输出为 NCHW [${dimensions}]。原项目文件保持只读。`;
-    verification = `本次开发任务的示例形状检查通过，记录输出为 [${dimensions}]。这只验证浏览器副本中的预设形状规则，没有写回项目文件，也没有运行真实 Python、模型或 NPU；真实模型签名、dtype、颜色顺序、归一化和推理结果仍需在对应环境核对。`;
+    approach = `在隔离的浏览器示例副本中，将 HWC 轴按 transpose(${axes.join(",")}) 调整为 CHW，并加入 batch 维度；当前输出为 NCHW [${dimensions}]。原项目文件保持只读。`;
+    verification = `当前输出轴与 batch 设置得到 [${dimensions}]，符合本 Demo 的 NCHW 形状约定。这只核对浏览器副本中的维度规则，没有写回项目文件，也没有运行真实 Python、模型或 NPU；真实模型签名、dtype、颜色顺序、归一化和推理结果仍需在对应环境核对。`;
   } else if (taskId === "图像推理调试") {
     problem = "在图像推理测试过程中，示例模型要求输入张量为 NCHW [1,3,224,224]，但当前预处理输出的图像张量为 NHWC [1,224,224,3]，两者通道顺序不一致。需要理解这种差异，以及如何在不修改原文件的情况下调整。";
     approach = "先对照图像与示例约定：图像以 HWC 读入，示例模型约定为 NCHW。可以在隔离的浏览器示例副本中调整轴顺序与 batch，观察形状变化；原项目文件保持只读。";

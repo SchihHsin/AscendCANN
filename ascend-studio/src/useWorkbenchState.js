@@ -3,6 +3,7 @@ import { initialGroups, taskDetails, capabilities, initialAutomations, modelOpti
 import { readSession, writeSession } from "./session-storage";
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
+import { resolveTaskUrlValue } from "./task-url";
 import { IMAGE_TASK } from "./useImageInference";
 
 export const MAIN_TASK = "AddCustom 精度异常";
@@ -77,10 +78,14 @@ function restoreWorkbench() {
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const launchParams = new URLSearchParams(window.location.search);
-  const requestedTask = launchParams.get("task");
-  const launchTask = taskNames.has(requestedTask) ? requestedTask : TASK_LAUNCH_ALIASES[requestedTask];
+  const requestedTask = resolveTaskUrlValue(launchParams.get("task"), taskNames);
   // Embedded knowledge-pocket reviews should open the chosen existing task even when this browser has another saved selection.
   const pocketDemoTask = launchParams.get("pocket-demo") === "1" ? launchParams.get("pocket-task") : null;
+  const urlTask = taskNames.has(pocketDemoTask) ? pocketDemoTask : requestedTask;
+  const selectedTask = urlTask || (taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK);
+  const selectedTaskGroup = urlTask ? groups.find(group => group.tasks.includes(urlTask))?.id : null;
+  const savedOpenedGroups = Array.isArray(value.openedGroups) ? value.openedGroups.filter(id => groups.some(group => group.id === id)) : ["operator", "inference"];
+  const openedGroups = selectedTaskGroup && !savedOpenedGroups.includes(selectedTaskGroup) ? [...savedOpenedGroups, selectedTaskGroup] : savedOpenedGroups;
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
   // Conversation exchanges and community feedback are page-session state.
   // A reload starts every task conversation fresh while task records remain available.
@@ -123,10 +128,10 @@ function restoreWorkbench() {
   if (meta["图像推理调试"]) meta["图像推理调试"] = { ...meta["图像推理调试"], ...taskDetails["图像推理调试"] };
   return {
     groups, meta, sessions,
-    query: typeof value.query === "string" ? value.query : "",
-    filterScope: ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
-    openedGroups: Array.isArray(value.openedGroups) ? value.openedGroups.filter(id => groups.some(group => group.id === id)) : ["operator", "inference"],
-    selectedTask: taskNames.has(pocketDemoTask) ? pocketDemoTask : taskNames.has(launchTask) ? launchTask : taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK,
+    query: urlTask ? "" : typeof value.query === "string" ? value.query : "",
+    filterScope: urlTask ? "all" : ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
+    openedGroups,
+    selectedTask,
     rationaleOpen: Boolean(value.rationaleOpen),
     selectedModel: modelOptions.some(model => model.id === value.selectedModel) ? value.selectedModel : "general",
     automations: Array.isArray(value.automations) ? objects(value.automations).map(entry => ({ ...entry, running: false })) : initialAutomations,
