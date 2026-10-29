@@ -16,7 +16,7 @@ export const MATERIAL_DEFINITIONS = Object.freeze({
   validation: { id: "validation", type: "preview", title: "示例范围复核" },
   precision: { id: "precision", type: "preview", title: "误差核对" },
   review: { id: "review", type: "preview", title: "复核记录" },
-  "log-diagnosis": { id: "log-diagnosis", type: "preview", title: "日志与范围图解", category: "explain", groupId: "content", summary: "从预置运行日志提取输入差异，查看尾块范围图解并核对浏览器示例。" },
+  "log-diagnosis": { id: "log-diagnosis", type: "preview", title: "Format Lab", category: "explain", groupId: "content", summary: "浅色 Format Lab 交互图解；操作后可在对话中生成社区经验草稿。" },
   reference: { id: "reference", type: "browser", title: "Ascend C 文档" },
   "task-brief": { id: "task-brief", type: "preview", title: "任务简报" },
   canvas: { id: "canvas", type: "canvas", title: "画布" },
