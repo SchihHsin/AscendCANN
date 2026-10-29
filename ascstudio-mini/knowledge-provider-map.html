@@ -1022,45 +1022,43 @@ body.overview #panel,body.overview #toggle{display:none!important}
 @media(max-width:1180px) and (min-width:761px){.shared-flow{grid-template-columns:minmax(0,.88fr) 18px minmax(0,1.38fr) 18px minmax(0,.95fr);gap:.25vw}.delivery-columns{gap:.48vw}.delivery-lane{padding:.55vh .45vw}.lane-label{padding:.4vh .45vw}.flow-node{padding:.3vh .38vw}.flow-node small,.flow-node code{font-size:11px}}
 @media(max-width:760px){.unified-board{height:auto;grid-template-rows:auto 34px auto auto;gap:10px}.shared-flow{grid-template-columns:1fr;gap:4px}.shared-arrow{height:17px;transform:rotate(90deg)}.flow-zone,.unit-zone{padding:12px}.source-grid{gap:6px}.source-chip{padding:7px;font-size:12px}.compile-flow{height:auto;gap:6px}.compile-node{min-height:58px;padding:8px 4px}.compile-node:not(:last-child)::after{right:-4px;font-size:16px}.branch-ribbon>span{font-size:11px}.branch-ribbon svg{display:none}.delivery-columns{grid-template-columns:1fr;gap:10px}.delivery-lane{grid-template-rows:auto auto;gap:7px;padding:8px}.lane-label{min-height:64px;padding:8px}.lane-steps{gap:0}.flow-node{min-height:66px;padding:8px}.flow-node-head b{font-size:13px}.flow-node code,.flow-node small{font-size:12px}.step-arrow{height:15px}.rollout-rail{grid-template-columns:1fr;gap:8px;padding:0}.rollout-steps{grid-template-columns:1fr;gap:6px}.rollout-step{min-height:34px}.rollout-step:not(:last-child)::after{content:"↓";right:auto;left:10px;top:auto;bottom:-10px}}
 
-/* Entry evolution and capability architecture: diagram-first, not decorative illustration. */
+/* Entry evolution: two swimlanes converge on one shared knowledge service. */
 .feasibility-slide .kp-body{min-height:0;overflow:hidden}
-.entry-evolution-map{display:grid;grid-template-rows:auto auto;align-content:start;gap:1.2vh;flex:1;min-height:0}
-.entry-network{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(235px,.78fr) 54px minmax(0,1fr);gap:.55vw;align-items:stretch;min-height:0;height:min(54vh,470px)}
-.entry-channel,.entry-shared-service{position:relative;min-width:0;min-height:0;border:1px solid rgba(255,255,255,.94);border-radius:17px;background:rgba(255,255,255,.76);box-shadow:0 14px 34px -26px rgba(38,50,70,.3),inset 0 1px 0 rgba(255,255,255,.94);padding:1.25vh 1.1vw;display:flex;flex-direction:column;gap:.4vh}
-.entry-channel{justify-content:space-between}
-.entry-channel-intro{display:grid;gap:.9vh}
-.entry-web{--entry-accent:#5b6f93;--entry-soft:#edf1f7}.entry-client{--entry-accent:#6e63a6;--entry-soft:#f0eef8}
-.entry-channel-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.entry-stage-tag{padding:5px 9px;border-radius:999px;background:var(--entry-soft);color:var(--entry-accent);font:750 11px Inter,sans-serif;letter-spacing:.03em}
-.entry-channel-mark{color:#8c95a2;font-size:var(--fs-xs)}
-.entry-channel h2{font-size:clamp(16px,1.2vw,19px);line-height:1.2;color:#29313d}
-.entry-screen-flow,.entry-client-flow{display:flex;align-items:center;justify-content:center;gap:.55vw;min-height:40px;padding:7px;border-radius:10px;background:#f6f7f9;color:#677385;font-size:var(--fs-sm)}
-.entry-screen-flow span,.entry-screen-flow b,.entry-client-flow span,.entry-client-flow b{padding:5px 8px;border:1px solid #e5e8ee;border-radius:7px;background:white;font-weight:650;white-space:nowrap}
-.entry-screen-flow b{background:#edf1f7;color:#4e6488;border-color:#e0e6ef}.entry-client-flow b{background:#f0eef8;color:#6e63a6;border-color:#e5e1f0}
-.entry-screen-flow i,.entry-client-flow i{color:#9ca5b1;font-style:normal}
-.entry-client-flow{gap:.35vw;font-size:clamp(11px,.78vw,13px)}
-.entry-context-block,.entry-output-block{display:grid;gap:.55vh}
-.entry-context-block>small,.entry-output-block>small{color:#8a929d;font-size:var(--fs-xs)}
-.entry-context-chips{display:flex;gap:5px;flex-wrap:wrap}
-.entry-context-chips span{padding:5px 8px;border-radius:7px;background:var(--entry-soft);color:var(--entry-accent);font-size:var(--fs-xs);white-space:nowrap}
-.entry-output-block{margin-top:0;padding:9px 10px;border-radius:10px;background:#f7f8fa}
-.entry-output-block strong{color:#343d4b;font-size:var(--fs-sm);line-height:1.35}
-.entry-channel-foot{color:#737d8a;font-size:var(--fs-sm);line-height:1.35}
-.entry-bridge{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:.45vh;color:#8b95a3}
-.entry-bridge-lines{width:100%;display:flex;flex-direction:column;gap:0;align-items:center;color:#687a94;font:500 23px/1 Inter,sans-serif}
-.entry-bridge-lines span{height:20px}.entry-bridge small{font-size:var(--fs-xs);text-align:center;line-height:1.2}
-.entry-bridge-right .entry-bridge-lines{transform:scaleX(-1)}
-.entry-shared-service{justify-content:center;gap:1.3vh;text-align:center;background:linear-gradient(155deg,rgba(255,255,255,.91),rgba(241,243,249,.9));border-color:#dfe3ec}
-.entry-service-kicker{font:700 10px Inter,sans-serif;color:#8178ad;letter-spacing:.12em}
-.entry-shared-service h2{font-size:clamp(18px,1.45vw,23px);color:#303446;line-height:1.15}
-.entry-service-core{display:grid;gap:5px;padding:1.25vh .75vw;border:1px solid #e7e8f0;border-radius:11px;background:rgba(255,255,255,.88)}
-.entry-service-core b{color:#4c5570;font-size:var(--fs-sm)}.entry-service-core span{color:#838c99;font-size:var(--fs-xs);line-height:1.3}
-.entry-service-ops{display:flex;justify-content:center;gap:6px;align-items:center;color:#6a7181;font-size:var(--fs-xs);white-space:nowrap}.entry-service-ops i{color:#b5bbc4;font-style:normal}
-.entry-service-api{padding:7px 8px;border-radius:8px;background:#e9ebf6;color:#5b5d86;font:600 11px Inter,sans-serif;line-height:1.25}
+.entry-evolution-map{display:grid;grid-template-rows:auto auto;align-content:start;gap:1.1vh;flex:1;min-height:0}
+.entry-flow-board{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) 34px minmax(0,1.02fr) 42px minmax(0,1.18fr) 42px minmax(0,.98fr);grid-template-rows:1fr 1fr;grid-template-areas:"web-source web-edge-a web-context web-edge-b service web-edge-c web-result" "client-source client-edge-a client-context client-edge-b service client-edge-c client-result";gap:.75vh .22vw;height:min(66vh,590px);min-height:0}
+.entry-flow-board::before,.entry-flow-board::after{content:"";position:absolute;left:0;right:0;height:calc(50% - .38vh);border:1px solid rgba(255,255,255,.64);border-radius:15px;pointer-events:none}
+.entry-flow-board::before{top:0;background:linear-gradient(90deg,rgba(237,243,251,.72),rgba(255,255,255,.34))}
+.entry-flow-board::after{bottom:0;background:linear-gradient(90deg,rgba(243,240,250,.72),rgba(255,255,255,.34))}
+.entry-route-node,.entry-shared-service{position:relative;z-index:1;min-width:0;min-height:0;border:1px solid rgba(255,255,255,.96);border-radius:14px;background:rgba(255,255,255,.82);box-shadow:0 9px 22px -18px rgba(35,45,66,.28),inset 0 1px 0 rgba(255,255,255,.9);padding:.95vh .75vw;display:flex;flex-direction:column;justify-content:center;gap:.8vh}
+.entry-web-source{grid-area:web-source;--route:#55739d;--route-soft:#eaf0f8}.entry-web-context{grid-area:web-context;--route:#55739d;--route-soft:#eaf0f8}.entry-web-result{grid-area:web-result;--route:#55739d;--route-soft:#eaf0f8}
+.entry-client-source{grid-area:client-source;--route:#7569a5;--route-soft:#efedf8}.entry-client-context{grid-area:client-context;--route:#7569a5;--route-soft:#efedf8}.entry-client-result{grid-area:client-result;--route:#7569a5;--route-soft:#efedf8}
+.entry-route-node header{display:flex;align-items:center;gap:7px;min-width:0}
+.entry-route-stage{display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:8px;background:var(--route-soft);color:var(--route);font:700 10px Inter,sans-serif}
+.entry-route-tag{padding:4px 7px;border-radius:999px;background:var(--route-soft);color:var(--route);font:700 10px Inter,sans-serif;letter-spacing:.03em}
+.entry-route-node strong{color:#303946;font-size:var(--fs-h3);line-height:1.2}
+.entry-route-node>small{color:#727d8c;font-size:var(--fs-sm);line-height:1.3}
+.entry-route-copy{color:#657286;font-size:var(--fs-sm);line-height:1.3}
+.entry-route-chips,.entry-result-list{display:flex;flex-wrap:wrap;gap:5px}
+.entry-route-chips span,.entry-result-list span{padding:5px 7px;border-radius:7px;background:var(--route-soft);color:var(--route);font-size:var(--fs-xs);line-height:1.2}
+.entry-web-edge-a{grid-area:web-edge-a;--edge:#647e9f}.entry-web-edge-b{grid-area:web-edge-b;--edge:#647e9f}.entry-web-edge-c{grid-area:web-edge-c;--edge:#647e9f}
+.entry-client-edge-a{grid-area:client-edge-a;--edge:#8275ae}.entry-client-edge-b{grid-area:client-edge-b;--edge:#8275ae}.entry-client-edge-c{grid-area:client-edge-c;--edge:#8275ae}
+.entry-flow-edge{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;min-width:0;color:var(--edge)}
+.entry-flow-edge::before{content:"";position:absolute;left:2px;right:8px;top:50%;border-top:2px solid currentColor;opacity:.58}
+.entry-flow-edge::after{content:"";position:absolute;right:3px;top:calc(50% - 4px);width:7px;height:7px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg)}
+.entry-flow-edge span{position:absolute;z-index:1;top:calc(50% - 24px);padding:1px 3px;border-radius:4px;background:#e9ebee;color:var(--edge);font-size:var(--fs-xs);white-space:nowrap}
+.entry-shared-service{grid-area:service;justify-content:center;gap:.7vh;padding:1.2vh .8vw;text-align:center;background:linear-gradient(150deg,rgba(255,255,255,.94),rgba(238,238,249,.92));border-color:#d9dced}
+.entry-service-kicker{color:#7771a6;font:700 10px Inter,sans-serif;letter-spacing:.12em}
+.entry-shared-service h2{color:#2f3542;font-size:var(--fs-h2);line-height:1.15}
+.entry-service-step{display:grid;grid-template-columns:23px minmax(0,1fr);align-items:center;gap:7px;padding:.7vh .55vw;border:1px solid #e5e7ef;border-radius:9px;background:rgba(255,255,255,.84);text-align:left}
+.entry-service-step>b{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#eeedf7;color:#716aa1;font:700 10px Inter,sans-serif}
+.entry-service-step span{display:grid;gap:2px;min-width:0;color:#394352;font-size:var(--fs-sm);font-weight:700;line-height:1.2}
+.entry-service-step small{color:#788392;font-size:var(--fs-xs);font-weight:400;line-height:1.2}
+.entry-service-link{color:#959eac;font:600 14px/1 Inter,sans-serif}
+.entry-service-api{padding:6px 8px;border-radius:8px;background:#e9eaf4;color:#5e608b;font:600 11px Inter,sans-serif;line-height:1.25}
 .entry-timeline{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);align-items:center;gap:.55vw;padding:.9vh .9vw;border:1px solid rgba(255,255,255,.92);border-radius:13px;background:rgba(255,255,255,.62)}
 .entry-timeline-node{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:9px;min-width:0}
 .entry-timeline-node small{grid-column:1/-1;color:#8a929d;font-size:var(--fs-xs)}
-.entry-timeline-node b{color:#414b5b;font-size:var(--fs-sm)}.entry-timeline-node span{color:#808995;font-size:var(--fs-xs);text-align:right}
+.entry-timeline-node b{color:#414b5b;font-size:var(--fs-sm)}.entry-timeline-node span{color:#737e8c;font-size:var(--fs-xs);text-align:right}
 .entry-timeline-node.current b{color:#69768c}.entry-timeline-node.web-phase b{color:#4e6e9a}.entry-timeline-node.client-phase b{color:#6c63a0}
 .entry-timeline>i{color:#9aa2ae;font-style:normal;text-align:center}
 
@@ -1130,17 +1128,16 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .cap-rollout{display:flex;align-items:center;justify-content:space-between;gap:.5vw;min-width:0;padding:4px 7px;border-top:1px solid rgba(128,138,153,.22);color:#687483;font-size:11px;white-space:nowrap}
 .cap-rollout>b{color:#5c6675;font-size:var(--fs-xs)}.cap-rollout>span{display:flex;align-items:center;gap:4px}.cap-rollout>span strong{padding:3px 5px;border-radius:5px;background:#eef0f5;color:#66758d;font:700 9px Inter,sans-serif}.cap-rollout>i{color:#a6aeb9;font-style:normal}
 @media(max-width:1180px) and (min-width:761px){
-  .entry-network{grid-template-columns:minmax(0,1fr) 40px minmax(200px,.8fr) 40px minmax(0,1fr);gap:.3vw}
-  .entry-channel,.entry-shared-service{padding:1vh .8vw}.entry-screen-flow{font-size:12px}.entry-client-flow{font-size:11px}
+  .entry-flow-board{grid-template-columns:minmax(0,.95fr) 26px minmax(0,1.02fr) 32px minmax(0,1.18fr) 32px minmax(0,.98fr);gap:.6vh .18vw}
+  .entry-route-node{padding:.8vh .55vw}.entry-flow-edge span{font-size:10px}
   .cap-supply-row{grid-template-columns:minmax(160px,.95fr) 18px minmax(210px,1.2fr) 18px minmax(0,1.8fr);gap:.25vw}
   .cap-route-row{grid-template-columns:minmax(0,.85fr) minmax(0,.95fr) minmax(0,1.55fr);gap:.4vw}
   .cap-rollout{gap:.25vw;font-size:10px}.cap-engine>small,.cap-trust-node>span{font-size:10px}
 }
 @media(max-width:760px){
-  .feasibility-slide .kp-body{overflow:visible}
+  .feasibility-slide .kp-body{overflow:auto}
   .entry-evolution-map,.capability-board{height:auto;overflow:visible}
-  .entry-network{grid-template-columns:1fr;gap:8px;height:auto}
-  .entry-bridge{height:36px}.entry-bridge-lines{flex-direction:row;justify-content:center;gap:18px}.entry-bridge-right .entry-bridge-lines{transform:none}
+  .entry-flow-board{min-width:930px;height:600px}
   .entry-timeline{grid-template-columns:1fr;gap:6px}.entry-timeline>i{transform:rotate(90deg)}
   .capability-board{display:flex;flex-direction:column;gap:8px}
   .cap-supply-row{display:grid;grid-template-columns:1fr;gap:6px}.cap-arrow{height:18px;transform:rotate(90deg)}
@@ -1265,29 +1262,57 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
 <section class="slide s-gray kp-slide kp-visual-clean feasibility-slide entry-evolution" data-component="入口演进图" data-title="入口先从社区 Web 开始，后续接入本地项目客户端">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">入口先从社区 Web 开始，后续接入本地项目客户端</span></div><div class="subttl">03 · ENTRY EVOLUTION　先验证发现服务，再引入项目上下文</div></div></div>
-  <div class="body-area kp-body"><div class="entry-evolution-map" role="img" aria-label="入口演进：初期从昇腾社区官网进入学习发现 Web，输入学习目标和关注主题，通过统一知识服务获得路径、课程、认证和活动。后续在开发客户端中连接当前项目，经用户授权读取最小项目上下文，再使用同一知识服务提供项目相关的资料、图解和学习建议。建设顺序是当前静态原型、社区 Web 服务、开发客户端项目上下文。">
-    <div class="entry-network">
-      <article class="entry-channel entry-web">
-        <div class="entry-channel-intro"><header class="entry-channel-head"><span class="entry-stage-tag">P1 · WEB 先行</span><span class="entry-channel-mark">社区入口</span></header><h2>官网「学习发现」</h2></div>
-        <div class="entry-screen-flow"><span>昇腾社区</span><i>→</i><b>学习发现</b></div>
-        <div class="entry-context-block"><small>提供给服务的上下文</small><div class="entry-context-chips"><span>学习目标</span><span>关注主题</span><span>已学节点</span></div></div>
-        <div class="entry-output-block"><small>获得</small><strong>学习路径 · 课程 · 认证 · 活动</strong></div>
-        <div class="entry-channel-foot">公开浏览为主；个性化信号由用户选择或授权提供</div>
+  <div class="body-area kp-body"><div class="entry-evolution-map" role="img" aria-label="双泳道入口流程：社区 Web 让用户选择学习目标、主题和已学节点，这些查询进入统一知识服务后返回学习路径、课程、认证和活动；项目客户端在用户授权后提取并最小化项目类型、CANN 或芯片版本、选定配置或日志，再调用同一知识服务，返回项目匹配资料、问题图解和下一步实践。底部是静态 Demo、社区 Web、项目感知客户端的建设顺序。">
+    <div class="entry-flow-board">
+      <article class="entry-route-node entry-web-source">
+        <header><span class="entry-route-stage">01</span><span class="entry-route-tag">P1 · WEB 先行</span></header>
+        <strong>昇腾社区官网</strong><div class="entry-route-copy">打开「学习发现」</div>
+        <small>公开浏览入口，无需安装客户端</small>
       </article>
-      <div class="entry-bridge entry-bridge-left" aria-label="Web 请求和返回结果"><div class="entry-bridge-lines"><span>→</span><span>←</span></div><small>查询 / 返回</small></div>
-      <section class="entry-shared-service" aria-label="共享知识服务">
-        <div class="entry-service-kicker">SHARED SERVICE</div><h2>统一知识服务</h2>
-        <div class="entry-service-core"><b>同一份可信资源目录</b><span>主题关系 · 版本范围 · 来源状态</span></div>
-        <div class="entry-service-ops"><span>搜索</span><i>·</i><span>兼容过滤</span><i>·</i><span>推荐排序</span></div>
-        <div class="entry-service-api">Catalog + Search / Recommendation API</div>
+      <div class="entry-flow-edge entry-web-edge-a"><span>进入</span></div>
+      <article class="entry-route-node entry-web-context">
+        <header><span class="entry-route-stage">02</span><span class="entry-route-tag">用户主动选择</span></header>
+        <strong>学习上下文</strong>
+        <div class="entry-route-chips"><span>学习目标</span><span>关注主题</span><span>已学节点</span></div>
+        <small>个性化信号由用户提供</small>
+      </article>
+      <div class="entry-flow-edge entry-web-edge-b"><span>查询</span></div>
+      <section class="entry-shared-service" aria-label="两个入口共用的知识服务">
+        <div class="entry-service-kicker">SHARED KNOWLEDGE SERVICE</div><h2>统一知识服务</h2>
+        <div class="entry-service-step"><b>01</b><span>可信资源目录<small>原文 · 主题关系 · 版本 · 来源</small></span></div>
+        <div class="entry-service-link">↓</div>
+        <div class="entry-service-step"><b>02</b><span>检索与条件匹配<small>全文 / 语义 · 版本兼容 · 前置知识</small></span></div>
+        <div class="entry-service-link">↓</div>
+        <div class="entry-service-step"><b>03</b><span>按入口组装结果<small>Web 学习推荐 · Client 项目建议</small></span></div>
+        <div class="entry-service-api">Catalog · Search · Recommendation API</div>
       </section>
-      <div class="entry-bridge entry-bridge-right" aria-label="客户端上下文请求和返回结果"><div class="entry-bridge-lines"><span>→</span><span>←</span></div><small>项目上下文 / 返回</small></div>
-      <article class="entry-channel entry-client">
-        <div class="entry-channel-intro"><header class="entry-channel-head"><span class="entry-stage-tag">P2 · CLIENT 后续</span><span class="entry-channel-mark">项目上下文</span></header><h2>开发客户端连接当前项目</h2></div>
-        <div class="entry-client-flow"><span>打开工程</span><i>→</i><span>用户授权</span><i>→</i><b>提取必要上下文</b></div>
-        <div class="entry-context-block"><small>经授权读取的最小信息</small><div class="entry-context-chips"><span>项目类型</span><span>CANN / 芯片版本</span><span>选定配置或日志</span></div></div>
-        <div class="entry-output-block"><small>获得</small><strong>项目匹配资料 · 问题图解 · 下一步实践</strong></div>
-        <div class="entry-channel-foot">本地上下文用于检索匹配；范围由用户控制</div>
+      <div class="entry-flow-edge entry-web-edge-c"><span>推荐</span></div>
+      <article class="entry-route-node entry-web-result">
+        <header><span class="entry-route-stage">03</span><span class="entry-route-tag">学习发现</span></header>
+        <strong>返回学习资源</strong>
+        <div class="entry-result-list"><span>学习路径</span><span>课程</span><span>认证</span><span>活动</span></div>
+        <small>从用户目标匹配可继续学习的内容</small>
+      </article>
+
+      <article class="entry-route-node entry-client-source">
+        <header><span class="entry-route-stage">01</span><span class="entry-route-tag">P2 · CLIENT 后续</span></header>
+        <strong>本地开发客户端</strong><div class="entry-route-copy">打开当前工程</div>
+        <small>在项目现场提出问题或学习目标</small>
+      </article>
+      <div class="entry-flow-edge entry-client-edge-a"><span>授权</span></div>
+      <article class="entry-route-node entry-client-context">
+        <header><span class="entry-route-stage">02</span><span class="entry-route-tag">本地最小上下文</span></header>
+        <strong>只读取必要信息</strong>
+        <div class="entry-route-chips"><span>项目类型</span><span>CANN / 芯片版本</span><span>选定配置或日志</span></div>
+        <small>先授权、本地筛选，再传给服务</small>
+      </article>
+      <div class="entry-flow-edge entry-client-edge-b"><span>匹配</span></div>
+      <div class="entry-flow-edge entry-client-edge-c"><span>返回</span></div>
+      <article class="entry-route-node entry-client-result">
+        <header><span class="entry-route-stage">03</span><span class="entry-route-tag">项目关联</span></header>
+        <strong>返回项目相关结果</strong>
+        <div class="entry-result-list"><span>匹配资料</span><span>问题图解</span><span>下一步实践</span></div>
+        <small>同一知识服务，增加项目上下文</small>
       </article>
     </div>
     <div class="entry-timeline" aria-label="分阶段建设路线">
