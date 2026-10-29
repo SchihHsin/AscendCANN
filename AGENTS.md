@@ -7870,3 +7870,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户提供的并排参考图调整报告第 2 页；使用 `learning-canvas-story/index.html#5` 中现有 Codex 工作区截图，保留其原始界面并在周围加入两条示例提问气泡；左侧继续呈现昇腾社区和 IDE 的透视场景。结论依据为用户明确素材指向（H），CSS 透视与气泡排布为设计表达（M）。
 - 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html`，记录于 `cann-dashboard/ascend-studio-design-report-evidence/qa.md`。页面保持 17 页，入口 #2、用户旅程 #3；不影响用户旅程内容或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：报告构建、Python 编译、内联脚本 `node --check`、`git diff --check` 通过；CUA 本地 1280×720 预览确认来源图和气泡加载、左右场景可见。实现提交 `37f9ed8d` 已推送至 `origin/main`；线上报告与 PNG 均 HTTP 200，线上 HTML 含新图路径和气泡文案。未查询 Actions workflow（本机没有 `gh` CLI）。
+
+
+### 2026-10-29 · 设计点讲解卡改为常驻
+
+- 按用户要求移除设计点讲解卡的收起 / 展开功能和收起提示条；卡片在桌面设计点页常驻显示。保留单句讲解、句内重点加粗、卡片拖动、右侧透明导航按钮和章节目录；拖动把手提示改为“拖动移动讲解卡”。
+- 修改 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`，资源缓存版本为 `20261029-note-always-visible`。小程序设计点仍使用原来的移动端页面，不显示桌面讲解卡；章节、内容、任务起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地确认讲解卡以普通容器常驻显示、收起提示条不存在，单句与局部加粗正常（M）。线上 HTML、JS、CSS 均 HTTP 200；HTML / JS 不含旧收起控件与处理函数，拖动把手和 pointer 事件保留。
+- 实现提交 `659f43ed` 已推送至 `origin/main`，rebase 时保留并行提交 `6f67f4e1`。GitHub Pages workflow `40847387679` build / deploy 成功。无未决事项。
