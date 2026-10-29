@@ -159,7 +159,8 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   $("#note-dock").hidden = true;
   $("#mobile-return").hidden = !activePoint.mobile;
   $("#loading-state").hidden = false;
-  $("#note-kicker").textContent = `章节 ${String(currentChapter + 1).padStart(2, "0")} / ${String(chapters.length).padStart(2, "0")} · 设计点 ${currentPoint + 1} / ${chapters[currentChapter].points.length}`;
+  $("#note-body-toggle").setAttribute("aria-expanded", "true");
+  $("#note-dock").setAttribute("aria-expanded", "false");
   $("#note-title").textContent = activePoint.title;
   $("#note-description").textContent = activePoint.description;
   $("#dock-label").textContent = `${String(currentChapter + 1).padStart(2, "0")} · ${activePoint.title}`;
@@ -211,24 +212,47 @@ function previousPoint() {
 }
 
 const designNote = $("#design-note");
-const noteDragHandle = designNote.querySelector(".note-topline");
+const noteToggle = $("#note-body-toggle");
+const noteDock = $("#note-dock");
+const noteDragHandle = noteToggle;
 let noteDrag = null;
+let ignoreNoteToggleUntil = 0;
+
+function collapseNote() {
+  showcase.classList.add("is-note-collapsed");
+  designNote.hidden = true;
+  noteDock.hidden = false;
+  noteToggle.setAttribute("aria-expanded", "false");
+  noteDock.setAttribute("aria-expanded", "false");
+}
+
+function expandNote() {
+  showcase.classList.remove("is-note-collapsed");
+  designNote.hidden = false;
+  noteDock.hidden = true;
+  noteToggle.setAttribute("aria-expanded", "true");
+  noteDock.setAttribute("aria-expanded", "true");
+}
 
 noteDragHandle.addEventListener("pointerdown", event => {
-  if (event.button !== 0 || event.target.closest("button") || designNote.hidden || showcase.classList.contains("is-mobile")) return;
+  if (event.button !== 0 || designNote.hidden || showcase.classList.contains("is-mobile")) return;
   const rect = designNote.getBoundingClientRect();
-  noteDrag = { pointerId: event.pointerId, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top };
-  designNote.style.left = `${rect.left}px`;
-  designNote.style.top = `${rect.top}px`;
-  designNote.style.right = "auto";
-  designNote.style.bottom = "auto";
-  designNote.classList.add("is-dragging");
+  noteDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, moved: false, rect };
   noteDragHandle.setPointerCapture(event.pointerId);
-  event.preventDefault();
 });
 
 noteDragHandle.addEventListener("pointermove", event => {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
+  if (!noteDrag.moved && Math.hypot(event.clientX - noteDrag.startX, event.clientY - noteDrag.startY) < 5) return;
+  if (!noteDrag.moved) {
+    noteDrag.moved = true;
+    designNote.style.left = `${noteDrag.rect.left}px`;
+    designNote.style.top = `${noteDrag.rect.top}px`;
+    designNote.style.right = "auto";
+    designNote.style.bottom = "auto";
+    designNote.classList.add("is-dragging");
+  }
+  event.preventDefault();
   const rect = designNote.getBoundingClientRect();
   const left = Math.min(Math.max(0, event.clientX - noteDrag.offsetX), Math.max(0, window.innerWidth - rect.width));
   const top = Math.min(Math.max(0, event.clientY - noteDrag.offsetY), Math.max(0, window.innerHeight - rect.height));
@@ -238,8 +262,10 @@ noteDragHandle.addEventListener("pointermove", event => {
 
 function finishNoteDrag(event) {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
+  const moved = noteDrag.moved;
   noteDrag = null;
   designNote.classList.remove("is-dragging");
+  if (moved) ignoreNoteToggleUntil = performance.now() + 400;
   if (noteDragHandle.hasPointerCapture(event.pointerId)) noteDragHandle.releasePointerCapture(event.pointerId);
 }
 
@@ -253,8 +279,14 @@ $("#note-next").addEventListener("click", nextPoint);
 $("#note-prev").addEventListener("click", previousPoint);
 $("#note-index").addEventListener("click", () => { menuOpen = !menuOpen; renderPointMenu(); });
 $("#menu-close").addEventListener("click", () => { menuOpen = false; renderPointMenu(); });
-$("#note-collapse").addEventListener("click", () => { showcase.classList.add("is-note-collapsed"); $("#design-note").hidden = true; $("#note-dock").hidden = false; });
-$("#note-dock").addEventListener("click", () => { showcase.classList.remove("is-note-collapsed"); $("#design-note").hidden = false; $("#note-dock").hidden = true; });
+noteToggle.addEventListener("click", event => {
+  if (performance.now() < ignoreNoteToggleUntil) { event.preventDefault(); return; }
+  collapseNote();
+});
+noteToggle.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") { event.preventDefault(); collapseNote(); }
+});
+noteDock.addEventListener("click", expandNote);
 $("#mobile-return").addEventListener("click", () => showChapterCover(4));
 $("#fullscreen-button").addEventListener("click", async () => {
   try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { /* Fullscreen may be unavailable in the embedded preview. */ }
