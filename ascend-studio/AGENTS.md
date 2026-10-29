@@ -2135,3 +2135,9 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 入口逻辑位于 `src/task-url.js`、`src/useWorkbenchState.js` 与 `src/App.jsx`。页面离开任务视图会移除任务参数；嵌入知识口袋预览继续沿用独立入口参数。
 - 自定义任务只在原浏览器已保存时可通过 URL 恢复；链接不包含任务数据。
 - 实现与 Pages 部署细节见仓库根 `AGENTS.md` 的「工作台任务 URL 标识保留」。
+
+### 2026-10-29 · Add 日志任务只展示 Format Lab 嵌入
+
+- 移除四段编号步骤和视频操作条，右侧仅呈现 Format Lab 浅色交互页。用户操作图解后，再在对话中出现「生成草稿」入口；对话与工作区保持打开。
+- 本地嵌入通过一次性交互事件触发邀请；刷新重置为初始嵌入状态。草稿由本地演示数据生成，0 tokens，不自动发布，也不代表真实根因或 NPU 验证。
+- 详细源文件、验证、提交与 Pages 状态见根目录 `AGENTS.md` 的「Add 日志排查改为直接操作 Format Lab」。页面序列和 API / Protocol、Host / Harness、Application / Task 边界未变。

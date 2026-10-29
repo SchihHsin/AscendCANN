@@ -7924,3 +7924,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`qa.md` 与生成报告 `cann-dashboard/ascend-studio-design-report.html`。依据为用户本轮明确要求（H）；行为行的通用短句与背景简化为设计组织（M）。
 - 验证：报告仍为 17 页；结构核对确认 5 个行为单元、行为行内无图片、无重复角色行、阶段背景矩形为 0；保留 6 条生命线、18 个交接消息、5 张痛点卡和 5 张机会点卡。`py_compile`、两段内联 JS `node --check`、`git diff --check` 通过；CUA 在 1280×720 本地 5219 预览第 3 页核对列对齐与时序可读性。未运行自动化测试。
 - 实现提交 `5ac98e7c` 已推送至 `origin/main`。本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#3`。
+
+### 2026-10-29 · Add 日志排查改为直接操作 Format Lab
+
+- 按用户要求移除「日志线索、范围图解、事例核对、经验汇流」编号阶段和视频操作条；Add 日志任务工作区直接显示 Format Lab 浅色嵌入。用户在图中操作后，对话中才出现「生成草稿」社区经验入口；对话与工作区保持打开。
+- 嵌入页以用户提供的 Format Lab 浅色版为来源（H），本地页面通过 `ascend-format-lab-interaction` 事件通知一次有效操作；交互完成后显示本地演示邀请。刷新回到初始嵌入状态，不保留旧缓存中的邀请或草稿。
+- `src/LogTriageWorkspace.jsx` 使用 `./format-lab/index.html?theme=light`；入口和草稿流程位于 `src/App.jsx`。草稿由演示数据生成，不调用模型或社区服务，成本为 0 tokens；图解和示例不能证明真实算子根因、编译、精度或 NPU 验证。
+- 未改变页面序列、任务 URL 或 API / Protocol、Host / Harness、Application / Task 边界。实现提交 `a54698a3` 已合并进主线历史；后续交接 / 主线同步提交 `5a7e533d`、`1339a7d5` 已在本次记录前同步至 `origin/main`。
+- 验证：`npm run build:pages` 已通过；本轮对发布 JS `ascstudio/assets/index-BZfnvKFm.js` 执行 `node --check`，并通过 `git diff --check`。本地 CUA 选择 Format Lab 参数后确认入口出现且工作区保持打开；线上 `/AscendCANN/ascstudio/` 与 JS 均 HTTP 200，JS 含浅色嵌入与「生成草稿」，不含四阶段标题或视频操作条。未运行自动化测试。Pages workflow `40854710406` build / deploy 成功。
