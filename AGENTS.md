@@ -7775,3 +7775,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确指定文案（H）。仅修改显示文案，不改变渠道选择、奖励规则、页面顺序 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`cd ascend-studio && npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；线上 `/AscendCANN/ascstudio/` 与 `index-DR6LR4f8.js` 均 HTTP 200，线上 JS 确认含新文案。未运行自动化测试。
 - 实现提交 `697bc217` 已推送到 `origin/main`；Pages workflow `40808644053` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · 图像推理调试在输出轴对齐后显示社区经验入口
+
+- 将社区经验邀请触发条件从「复核示例形状」按钮改为输出轴配置符合 Demo 约定：轴序 `2,0,1` 且 batch `N=1`。参数变更达到条件时立即显示；当前预设值已经符合时，用户离开轴选择框也会检查，因此不必重复选择同一值。初始页面仍不展示邀请。
+- 邀请与草稿文案改为描述“当前输出形状符合 Demo 预设”，不再声称执行过复核、Python、模型或 NPU；入口仍需用户点「生成草稿」后打开可编辑草稿。依据为用户明确要求在选好输出轴后出现入口（H）。不改变页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`cd ascend-studio && npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；线上 `/AscendCANN/ascstudio/` 与 `index-B7YhAokH.js` HTTP 200，线上 JS 含轴对齐提示和社区邀请入口。未运行自动化测试或真实模型 / NPU 验证。
+- 实现提交 `9c91e818` 已推送到 `origin/main`；Pages workflow `40810566854` build / deploy 成功。无未决事项。
