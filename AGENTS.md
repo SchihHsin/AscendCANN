@@ -8127,3 +8127,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确描述的端到端串联（H）；任务内容是原型中的演示材料，不代表真实任务记录或社区发布。未向 GitCode、CSDN、抖音等外部平台发布内容。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8766 逐点核对第一章 7 个页面起始状态。浏览器预览过程中本地 Demo 的 AddCustom 任务被标记为已解决并生成社区草稿，最后停在多渠道预览；这些仅是本地演示状态，无外部发布。
 - 实现提交 `d263aabb` 已推送到 `origin/main`。本条交接记录随后的文档提交推送。无未决事项。
+
+### 2026-10-30 · 主动建议卡起点归入学习模式
+
+- 用户澄清，从主页主动建议卡进入的这一场景应属于学习。第一章第一个设计点仍从新建任务页的主动建议卡开始，但起始模式改为「学习」；讲解同步改为学习建议卡帮助用户从已有线索开始学习，入口标注为「新建任务首页 · 主动建议 · 学习模式」。其余六个开发任务页面路由不变。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，同步更新路由与资源缓存版本。依据为用户明确纠正（H）；未改变章节和设计点顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认第一点的模式、入口及讲解均指向学习场景，缓存版本同步。
+- 实现提交 `31467f64` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
