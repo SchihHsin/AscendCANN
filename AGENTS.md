@@ -7915,4 +7915,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户明确要求，将设计点 1.1（`recommend`）的 `mode` 从「开发」改为「学习」，起点说明同步改为「新建任务首页 · 学习模式建议卡」。其他设计点文案、任务映射和页面路由不变。
 - 修改 `ascstudio-pc/app.js`；不改变章节顺序、卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
-- 依据为用户明确指定的模式（H）。`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；静态核对确认 1.1 配置为 `mode: "学习"`，并且不再包含开发模式入口。推送结果随后补记。
+- 依据为用户明确指定的模式（H）。`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；静态核对确认 1.1 配置为 `mode: "学习"`，并且不再包含开发模式入口。实现提交 `dfb5e605` 已推送至 `origin/main`。
