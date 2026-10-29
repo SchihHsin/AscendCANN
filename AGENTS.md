@@ -7886,3 +7886,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`，缓存版本为 `20261029-cover-ascend-logo`。复用随 Demo 发布的现有 SVG，不复制素材；章节 / 设计点内容、起点映射、页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 依据为用户明确要求和截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地章节 03 封面确认标志显示为与 Demo 一致的红色 Ascend Logo + Studio（M）。线上 HTML 与 Logo SVG 均 HTTP 200，HTML 使用新版本并引用 `./studio/assets/ascend-logo.svg`。
 - 实现提交 `bd8e7154` 已推送至 `origin/main`；GitHub Pages workflow `40848367698` build / deploy 成功。无未决事项。
+
+
+### 2026-10-29 · 知识供给蓝图新增入口演进与技术实现两页
+
+- 在 `ascstudio-mini/knowledge-provider-map.html` 新增第 03 页“入口演进”和第 04 页“技术实现能力架构”，目录扩为四章，整份材料共 6 页。入口图表达静态 Demo → 社区 Web → 项目感知客户端的阶段，以及两个入口共用知识目录、搜索和推荐服务；能力图串联内容来源、接入治理、Knowledge Unit / 关系索引、公开发现 / OpenAPI / Agent 通道、本地上下文、Skill / MCP、四类任务引擎、可信校验与授权反馈回流。
+- 按用户要求让图本身承载逻辑：以区域分阶段，以节点表达入口 / 服务 / 引擎，以有向连线呈现共用服务、三路分流、任务引擎分派和质量回流；没有加入装饰图。能力架构属于拟建设计示意，不代表现有系统已接入；不改变既有 API / Protocol、Host / Harness、Application / Task 的定义边界。
+- 依据：用户确认的两页内容方向与“图本身承载逻辑”要求（H）；具体能力组织、接口和建设顺序为方案设计（M），需结合社区现有系统评估。
+- 验证：`git diff --check` 通过；Chrome 无头截图检查 1440×900、1280×720 下的第 5、6 页，确认主链路、连线与页脚完整；线上 `knowledge-provider-map.html?rev=46a69dd1` HTTP 200，回读内容与本地文件一致。未运行自动化测试。
+- 页面提交 `46a69dd1` 已 rebase 到并行主线提交后推送至 `origin/main`；GitHub Pages workflow `40848848215` build / deploy 成功。交接记录本身待本次提交后推送。无未决事项。
