@@ -7826,3 +7826,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`，缓存版本为 `20261029-note-card-toggle`。卡片仍为黑色 80% 不透明度、2px 背景模糊。章节、设计点内容与起点任务映射不变；小程序和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 依据为用户明确的交互要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地预览验证收起、展开、拖动后不误收起及设计点导航（M）。未运行自动化测试。
 - 实现提交 `96634fe5` 已推送到 `origin/main`。本轮核对时线上 HTML 仍引用旧的 `20261029-note-icons-vertical` 资源版本，GitHub Actions API 返回 403 且本机无 `gh` CLI，因此 Pages 部署结果待确认；不据此宣称线上已更新。
+
+### 2026-10-29 · 工作台任务 URL 标识保留
+
+- 按用户要求让任务页网址保留任务标识。`?task=addcustom`、`?task=resnet50` 分别直达 AddCustom 精度异常与 ResNet50 离线推理；其他内置任务采用短标识，自定义任务以任务名作为回退标识。首次通过链接进入时自动打开对应任务、展开所属项目并清除旧搜索过滤；刷新、复制链接和浏览器前进 / 后退均保持当前任务。
+- 任务选择更新 `task` 查询参数，离开任务页时移除；其他查询参数和 hash 保留。旧 `learning` / `development` 参数会映射到原任务并规范化为新标识。知识口袋 `pocket-demo=1` 单次预览流程仍使用原有独立参数，不纳入普通任务路由同步。`showcaseRev` 清理不再删除 `task`。
+- 修改 `ascend-studio/src/task-url.js`、`useWorkbenchState.js`、`App.jsx` 和 `ascstudio/` Pages 构建产物。依据为用户明确要求（H）；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`node --check` 检查任务路由 helper、workbench 状态模块及构建 JS、`git diff --check` 通过；未运行自动化测试。旧的 8 个未跟踪 bundle 未暂存或清理。自定义任务路由依赖本浏览器已保存该任务；URL 不携带任务数据，不能跨设备共享本地自定义任务。
+- 实现提交 `b3af7cd5` 与保留最新主线的合并提交 `21ec1d9e` 已推送至 `origin/main`。主线随后前进到 `1d10ca81`；最新 Pages workflow `40837763028`（head `96634fe5`，包含本实现）成功。线上 `/AscendCANN/ascstudio/?task=addcustom` 返回工作台入口，引用 `index-Boe-x0YL.js` 与 `index-DzNzaxmV.css`；JS HTTP 200，且含 `addcustom`、`resnet50`、`log-triage` 与历史路由状态处理逻辑。
