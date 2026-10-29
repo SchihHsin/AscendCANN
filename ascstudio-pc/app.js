@@ -164,7 +164,9 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   $("#note-description").textContent = activePoint.description;
   $("#dock-label").textContent = `${String(currentChapter + 1).padStart(2, "0")} · ${activePoint.title}`;
   $("#note-prev").disabled = currentPoint === 0 && currentChapter === 0;
-  $("#note-next").textContent = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个 →" : currentChapter < chapters.length - 1 ? "下一章封面 →" : "回到章节封面 →";
+  const nextLabel = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个设计点" : currentChapter < chapters.length - 1 ? "进入下一章封面" : "回到第一章封面";
+  $("#note-next").setAttribute("aria-label", nextLabel);
+  $("#note-next").title = nextLabel;
   updateAddress("point");
 
   frame.onload = () => {

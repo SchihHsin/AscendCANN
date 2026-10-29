@@ -40,7 +40,7 @@ button:focus-visible { outline: 2px solid #5366c8; outline-offset: 3px; }
 .cover-copy h1 { max-width: 680px; margin: 0; color: #22232a; font: 500 clamp(36px,5.2vw,68px)/1.2 var(--serif); letter-spacing: -.035em; }
 .cover-description { max-width: 560px; margin: 22px 0 0; color: #646873; font-size: clamp(14px,1.2vw,17px); line-height: 1.8; }
 .cover-actions { display: flex; align-items: center; gap: 24px; margin-top: 34px; }
-.primary-button, .quiet-button, .text-button, .icon-button { border: 0; cursor: pointer; }
+.primary-button, .text-button, .icon-button { border: 0; cursor: pointer; }
 .primary-button { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 42px; padding: 0 18px; border-radius: 8px; background: var(--action); color: #fff; font-size: 13px; font-weight: 620; transition: background .16s ease, transform .16s ease; }
 .primary-button:hover { background: #303132; transform: translateY(-1px); }
 .text-button { padding: 8px 0; background: transparent; color: #626671; font-size: 13px; }
@@ -65,15 +65,15 @@ button:focus-visible { outline: 2px solid #5366c8; outline-offset: 3px; }
 .note-body { padding: 12px 16px 11px; text-shadow: 0 1px 3px rgba(0,0,0,.86); }
 .note-body h2 { margin: 0; color: #fff; font: 590 17px/1.38 var(--serif); letter-spacing: -.01em; }
 .note-body p { margin: 6px 0 0; color: rgba(255,255,255,.92); font-size: 12px; line-height: 1.58; }
-.note-controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 0 10px 10px; }
-.quiet-button { min-height: 31px; padding: 0 7px; border-radius: 7px; background: rgba(255,255,255,.12); color: rgba(255,255,255,.88); font-size: 10px; white-space: nowrap; }
-.quiet-button:hover { background: rgba(255,255,255,.21); color: #fff; }
-.note-next { min-height: 31px; padding: 0 9px; border-radius: 7px; font-size: 10px; white-space: nowrap; }
-.note-index-button { text-align: center; }
+.note-controls { display: flex; align-items: center; justify-content: flex-end; gap: 4px; padding: 0 10px 5px; }
+.note-controls .icon-button { width: 24px; height: 24px; color: rgba(255,255,255,.82); }
+.note-controls .icon-button:hover { background: rgba(255,255,255,.14); color: #fff; }
+.note-controls .icon-button:disabled { cursor: default; opacity: .36; }
+.note-controls .icon-button:disabled:hover { background: transparent; }
+.note-controls .icon-button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.note-controls .note-next { background: rgba(255,255,255,.12); }
 .design-note .icon-button { color: rgba(255,255,255,.78); }
 .design-note .icon-button:hover { background: rgba(255,255,255,.12); color: #fff; }
-.design-note .note-next { background: #fff; color: #191a1b; }
-.design-note .note-next:hover { background: #e9e9eb; color: #191a1b; }
 .note-dock { position: absolute; z-index: 4; left: max(22px, env(safe-area-inset-left)); bottom: max(22px, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 9px; max-width: min(360px, calc(100vw - 44px)); min-height: 43px; padding: 0 13px; border: 1px solid rgba(255,255,255,.28); border-radius: 12px; background: rgba(0,0,0,.80); box-shadow: 0 8px 26px rgba(0,0,0,.26); color: rgba(255,255,255,.95); cursor: pointer; font-size: 12px; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); text-shadow: 0 1px 3px rgba(0,0,0,.86); }
 .note-dock:hover { background: rgba(0,0,0,.86); }
 .dock-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #6979ce; }
