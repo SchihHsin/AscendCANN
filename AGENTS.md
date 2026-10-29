@@ -8109,4 +8109,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将“知识服务”图例细化为“知识检索服务”；授权完成 / 纠错标注移至反馈回流线旁的空白位置，避免与底层检索节点重叠。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户明确纠正底座层级（H）；接口、索引和任务关系为建设示意（M），不表示服务已经接入。
 - 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，确认检索服务位于最下方知识底座区域，内容治理仍在其下方同一底座内，反馈标注与检索节点分开。未运行自动化测试。
-- 页面提交 `6c8b64de` 已推送至 `origin/main`；GitHub Pages workflow `40965738961` 在写入本条记录时仍处于等待 / 部署中，部署结果待回读。
+- 页面提交 `6c8b64de` 已推送至 `origin/main`；GitHub Pages workflow `40965922472` 成功，线上页面返回 HTTP 200，并已读回新标题、KNOWLEDGE BASE 标签和“检索服务”节点。
