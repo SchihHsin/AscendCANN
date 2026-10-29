@@ -68,10 +68,12 @@ function restoreImageSession() {
   return state;
 }
 
-export function useImageInference({ visible, onRecord }) {
+export function useImageInference({ visible, onRecord, onAxesReady }) {
   const [state, setState] = useState(restoreImageSession);
   const current = useRef(state);
   const callback = useRef(onRecord); callback.current = onRecord;
+  const axesReadyCallback = useRef(onAxesReady); axesReadyCallback.current = onAxesReady;
+  const axesReadyNotified = useRef(false);
   current.current = state;
   const patch = change => {
     const previous = current.current;
@@ -90,6 +92,12 @@ export function useImageInference({ visible, onRecord }) {
     }), 200);
     return () => clearInterval(timer);
   }, [visible, state.playing, state.lessonOpen]);
+  const notifyAxesReady = snapshot => {
+    const result = imageShape(snapshot);
+    if (!result.passed || axesReadyNotified.current) return;
+    axesReadyNotified.current = true;
+    axesReadyCallback.current?.(snapshotOf(snapshot), result);
+  };
   const record = (title, summary, kind = "image-practice", data) => callback.current?.({ title, summary, kind, data, isDemo: true });
   const makeAttempt = snapshot => {
     const result = imageShape(snapshot);
@@ -151,8 +159,17 @@ export function useImageInference({ visible, onRecord }) {
     notice: "已恢复原始示例参数；尝试记录、已应用副本和历史核对均保留。",
   }));
   return { state, actions: {
-    axis: (index, value) => patch(old => ({ axes: old.axes.map((axis, i) => i === index ? Number(value) : axis), notice: "", proposal: null, playing: false, exploring: true, focus: "layout" })),
-    batch: value => patch({ batch: value, notice: "", proposal: null, playing: false, exploring: true, focus: "batch" }),
+    axis: (index, value) => {
+      const next = patch(old => ({ axes: old.axes.map((axis, i) => i === index ? Number(value) : axis), notice: "", proposal: null, playing: false, exploring: true, focus: "layout" }));
+      notifyAxesReady(next);
+      return next;
+    },
+    axisCommitted: () => notifyAxesReady(current.current),
+    batch: value => {
+      const next = patch({ batch: value, notice: "", proposal: null, playing: false, exploring: true, focus: "batch" });
+      notifyAxesReady(next);
+      return next;
+    },
     focus: focus => patch({ focus, playing: false }), channel: channel => patch({ channel, focus: "channels" }),
     correct: () => patch({ axes: [2, 0, 1], batch: true, focus: "layout", playing: false, exploring: true }),
     lesson: () => patch(old => ({ lessonOpen: !old.lessonOpen, playing: false, exploring: false })),

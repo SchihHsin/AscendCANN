@@ -544,17 +544,26 @@ function App() {
   }, [selectedTask, officialCanvasVisible, officialLearning.state.selectedNodeId]);
   const officialCanvasMaterialIds = officialCanvasVisible && officialLearning.state.selectedNodeId ? [officialLearning.state.selectedNodeId] : [];
   const imageVisible = isImageTask && contentVisible("image-explanation");
-  const inference = useImageInference({ visible: imageVisible, onRecord: record => {
+  const inference = useImageInference({ visible: imageVisible, onAxesReady: (snapshot, shape) => {
+    offerCommunityExperience({
+      id: `image-shape-check-${snapshot.axes.join("-")}-${snapshot.batch ? "n1" : "no-batch"}`,
+      kind: "image-shape-check",
+      dimensions: shape.dimensions,
+      snapshot,
+      demoFixture: true,
+      completionText: `输出轴设置与 batch 维度已符合示例约定：NCHW [${shape.dimensions.join(", ")}]。可以把本次参数调整整理为社区经验；真实模型推理仍需在目标环境验证。`,
+    });
+  }, onRecord: record => {
     wb.addRecord(record, IMAGE_TASK);
     if (record.kind === "image-validation" && record.data?.passed) {
       offerCommunityExperience({
-        id: `image-shape-check-${record.data.attemptId}`,
+        id: `image-shape-check-${record.data.snapshot.axes.join("-")}-${record.data.snapshot.batch ? "n1" : "no-batch"}`,
         kind: "image-shape-check",
         dimensions: record.data.dimensions,
         snapshot: record.data.snapshot,
         attemptCount: inference.state.attempts.length,
         demoFixture: true,
-        completionText: `隔离示例副本的形状复核通过：NCHW [${record.data.dimensions.join(", ")}]。可以把本次处理整理为社区经验；真实项目推理仍需在目标环境验证。`,
+        completionText: `输出轴设置与 batch 维度已符合示例约定：NCHW [${record.data.dimensions.join(", ")}]。可以把本次参数调整整理为社区经验；真实模型推理仍需在目标环境验证。`,
       });
     }
   } });
@@ -1377,7 +1386,7 @@ function App() {
       text: "我在浏览器示例中核对了 17×33 输入、每块 32 个元素的范围，末块有 17 个有效元素，范围外索引为 0。",
     }] : summary.demoFixture && summary.dimensions?.length ? [{
       id: crypto.randomUUID(), role: "user", isDemo: true,
-      text: `我在示例副本中调整了图像输入，形状核对结果为 NCHW [${dimensions}]。`,
+      text: `我在示例副本中调整了图像输入，当前输出形状为 NCHW [${dimensions}]。`,
     }] : [];
     wb.patchSession(old => old.messages.some(message => message.communityInvite?.summaryId === summary.id) ? (isAddCustomResolution ? { communityInviteReady: true } : {}) : ({
       ...(isAddCustomResolution ? { communityInviteReady: true } : {}),
@@ -1386,7 +1395,7 @@ function App() {
         communityInvite: { summaryId: summary.id, summary },
         text: summary.completionText || (isLogDiagnosticResolution
           ? "浏览器范围算例已核对。真实代码、算子精度与 NPU 结果仍待在目标环境验证。"
-          : `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`),
+          : `${summary.demoFixture ? "示例输出形状符合预设" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里展示的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`),
       }],
     }));
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
