@@ -8072,3 +8072,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `ascstudio-pc/app.js` 与 `index.html` 脚本 / 样式缓存版本；同步调整章节插画 alt 文案。未改变章节顺序、设计点顺序、起点页映射或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户确认的文字方案（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对确认 3 个章节、17 个设计点、强调词与讲解句匹配，标题 / 讲解 / 摘要中没有指定的具体业务词；本地 8765 打开第一章封面核对新标题与摘要。未运行自动化测试。
 - 提交 `60e6fbce8b23cff892ab46bd566d6d1206ffdf87` 已推送到 `origin/main`。GitHub Pages 桌面端入口与 `app.js` 均返回 HTTP 200；线上脚本与本地提交脚本 SHA-256 一致，并回读确认三章标题已更新。
+
+### 2026-10-30 · 第一个开发设计点改为新建任务建议卡起点
+
+- 用户指出该设计点呈现的是卡片而非可编辑 Prompt，且 Demo 错误直达已有 Add 任务。现改为说明「从任务建议卡开始」，起点设为 Studio 新建任务首页的「主动建议」页签与「学习」模式，不再带 `task` 参数直达既有任务；后续设计点仍保留其各自任务路由。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 缓存版本。依据为用户明确纠正（H）；未改章节顺序、其他设计点路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 和静态断言通过；确认第一点包含 `home: "classic"`、`mode: "学习"`，不再包含已有任务路由或 Prompt 字样。GitHub Pages workflow `40907770802` 成功；桌面端入口和脚本 HTTP 200，线上脚本 SHA-256 与本地一致，并回读核对新文案。
+- 实现提交 `e0a44ae8` 已推送到 `origin/main`；本条交接记录由后续文档提交同步推送。
