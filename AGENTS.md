@@ -7924,3 +7924,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`qa.md` 与生成报告 `cann-dashboard/ascend-studio-design-report.html`。依据为用户本轮明确要求（H）；行为行的通用短句与背景简化为设计组织（M）。
 - 验证：报告仍为 17 页；结构核对确认 5 个行为单元、行为行内无图片、无重复角色行、阶段背景矩形为 0；保留 6 条生命线、18 个交接消息、5 张痛点卡和 5 张机会点卡。`py_compile`、两段内联 JS `node --check`、`git diff --check` 通过；CUA 在 1280×720 本地 5219 预览第 3 页核对列对齐与时序可读性。未运行自动化测试。
 - 实现提交 `5ac98e7c` 已推送至 `origin/main`。本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#3`。
+
+
+### 2026-10-29 · 入口演进页改为双泳道可视化流程
+
+- 用户指出第 03 页截图仍像三块卡片并排，不符合“图本身承载逻辑”的要求（H）。将入口图重画为 Web 与客户端两条泳道：入口 → 上下文 → 同一知识服务 → 对应结果；箭头标出进入、查询、授权、匹配、推荐与返回。服务区域拆出可信目录、条件检索和按入口组装结果；P0 静态 Demo → P1 社区 Web → P2 项目感知客户端的建设顺序保留。
+- 只调整 `ascstudio-mini/knowledge-provider-map.html` 第 03 页的图结构与样式；第 04 页能力架构和原有页面不变。关系仍为方案示意，不表示对应服务已接入；不改变 API / Protocol、Host / Harness、Application / Task 定义。
+- 验证：`git diff --check` 通过；Chrome 无头截图核对 1440×900、1280×720 的第 5 页，双泳道、共享服务分流、建设时间线均完整；线上页面 HTTP 200，回读确认新版流程文字与 DOM。未运行自动化测试。
+- 页面提交 `c095d169` 已 rebase 并推送至 `origin/main`；并行主线提交 `fe34ea39` 的 GitHub Pages workflow `40854710406` build / deploy 成功并包含本次页面内容。交接记录随后单独推送。
