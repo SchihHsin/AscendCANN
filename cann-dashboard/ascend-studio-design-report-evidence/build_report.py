@@ -178,7 +178,6 @@ body.overview.ctrl #deck{width:auto}
 .r-sequence-role img.role-mark{display:block;object-fit:cover;border:1px solid color-mix(in srgb,var(--role-tone) 18%,#fff)}
 .r-sequence-role b{display:block;font-size:var(--fs-xs);line-height:1.1;color:#384453;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r-sequence-role small{display:block;margin-top:.16vh;font-size:var(--fs-xs);line-height:1.08;color:#798493;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.r-sequence-credit{position:absolute;right:.55vw;bottom:.35vh;font-size:8.5px;line-height:1;color:#a2a8b2}
 .r-live-demo{border:1px solid #ffffff;border-radius:18px;background:#f5f5f8;color:#242631;box-shadow:0 30px 100px #0005}
 .r-live-demo::backdrop{background:#080a13d9;backdrop-filter:blur(5px)}
 .r-demo-launch{display:inline-flex;align-items:center;gap:.5em;border:1px solid #ffffff42;border-radius:999px;background:#171820;color:#fff;padding:.65em 1em;font-size:var(--fs-body);cursor:pointer;white-space:nowrap;box-shadow:0 8px 24px #0003}
@@ -318,7 +317,6 @@ CSS += r"""
 .r-copy-journey .r-sequence-role[data-role="studio"],.r-copy-journey .r-sequence-role[data-role="agent"],.r-copy-journey .r-sequence-role[data-role="environment"],.r-copy-journey .r-sequence-role[data-role="community"]{border:0;background:transparent;box-shadow:none}
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
-.r-copy-journey .r-sequence-credit{position:absolute;right:.28vw;bottom:.18vh;z-index:3;font-size:var(--fs-xs);color:#8992a0}
 .r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-rail{grid-row:4;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
@@ -613,7 +611,7 @@ def sequence_diagram_markup():
         '<div class="r-sequence-role-label" aria-label="时序图参与角色">' + "".join(role_rows) + '</div>'
         '<div class="r-sequence-plot" aria-label="角色交接与阶段推进；时间从左向右">'
         + diagram + "".join(event_cards)
-        + '<small class="r-sequence-credit">连线布局：beautiful-mermaid · MIT　图标：Lucide · ISC</small></div>'
+        + '</div>'
     )
 
 JOURNEY_STAGES = [
