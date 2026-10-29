@@ -289,8 +289,9 @@ body.overview.ctrl #deck{width:auto}
 """
 
 CSS += r"""
-/* Standard journey grid: equal stages, one user-action row, shared interaction sequence. */
-.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5.7vh 7.2vh 46.3vh 9.3vh 7.5vh;gap:.5vh .45vw}
+/* Standard journey grid: stages, user action, key judgment, shared sequence,
+   qualitative confidence trace, pain points and opportunities. */
+.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5vh 5vh 6.4vh 38.4vh 6vh 8.3vh 6.5vh;gap:.4vh .45vw}
 .r-copy-journey .cb-axis{grid-column:1;grid-row:1}
 .r-copy-journey .cb-stage-rail{grid-row:1;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}
 .r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(36px,3.1vw,46px);gap:.35vw;padding:.38vh .5vw;background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:9px;box-shadow:none}
@@ -303,11 +304,22 @@ CSS += r"""
 .r-copy-journey .r-user-action{min-width:0;min-height:0;padding:.25vh .52vw;display:flex;align-items:center;justify-content:center;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#4d5b70;font-size:var(--fs-sm);font-weight:600;line-height:1.24;text-align:center}
 .r-copy-journey .r-user-action::before,.r-copy-journey .r-user-action::after{content:none!important}
 .r-copy-journey .r-user-action span{min-width:0}
+.r-copy-journey .r-key-judgment-label{grid-column:1;grid-row:3;display:flex;flex-direction:column;justify-content:center;gap:.12vh}
+.r-copy-journey .r-key-judgment-label .r-journey-legend,.r-copy-journey .r-emotion-label .r-journey-legend{display:flex;align-items:center;gap:.45vw;color:#697587;font-size:var(--fs-xs);line-height:1.05}
+.r-copy-journey .r-journey-legend span{display:inline-flex;align-items:center;gap:.18vw;white-space:nowrap}
+.r-copy-journey .r-journey-legend i{display:inline-block;width:.38em;height:.38em;border-radius:50%;background:var(--legend-tone);flex:0 0 auto}
+.r-copy-journey .r-journey-legend .task{--legend-tone:#4c82bd}.r-copy-journey .r-journey-legend .learn{--legend-tone:#8770bf}
+.r-copy-journey .r-key-judgment-rail{grid-column:2;grid-row:3;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
+.r-key-judgment-cell{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));align-items:center;min-width:0;min-height:0;gap:.1vh}
+.r-key-question{display:flex;align-items:center;min-width:0;gap:.32vw;color:#414e62;font-size:var(--fs-sm);font-weight:570;line-height:1.08;white-space:nowrap}
+.r-key-question i{display:block;width:5px;height:5px;border-radius:50%;background:var(--question-tone);flex:0 0 auto}
+.r-key-question.task{--question-tone:#4c82bd}.r-key-question.learn{--question-tone:#8770bf}
+.r-key-question span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
 .r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
-.r-copy-journey .r-sequence-role-label{grid-row:3}
-.r-copy-journey .r-sequence-role-label::before{content:"协作角色";position:absolute;top:.12vh;left:.18vw;font-size:var(--fs-xs);font-weight:700;color:#788293}
-.r-copy-journey .r-sequence-plot{grid-row:3}
+.r-copy-journey .r-sequence-role-label{grid-row:4}
+.r-copy-journey .r-sequence-role-label::before{content:"协作角色";position:absolute;top:-.95vh;left:.18vw;font-size:var(--fs-xs);font-weight:700;color:#788293}
+.r-copy-journey .r-sequence-plot{grid-row:4}
 .r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:none;color:#354052}
 .r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
 .r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
@@ -317,53 +329,73 @@ CSS += r"""
 .r-copy-journey .r-sequence-role[data-role="studio"],.r-copy-journey .r-sequence-role[data-role="agent"],.r-copy-journey .r-sequence-role[data-role="environment"],.r-copy-journey .r-sequence-role[data-role="community"]{border:0;background:transparent;box-shadow:none}
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
-.r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-rail{grid-row:4;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .r-emotion-label{grid-column:1;grid-row:5;display:flex;flex-direction:column;justify-content:center;gap:.08vh}
+.r-copy-journey .r-emotion-label b{font-size:var(--fs-sm);line-height:1.05}
+.r-copy-journey .r-emotion-label small{font-size:var(--fs-xs);line-height:1.02}
+.r-copy-journey .r-emotion-rail{grid-column:2;grid-row:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw}
+.r-emotion-cell{min-width:0;min-height:0;display:grid;place-items:center;overflow:hidden}
+.r-emotion-cell svg{display:block;width:100%;height:100%;overflow:visible}
+.r-emotion-track{fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.r-emotion-track.task{stroke:#4c82bd}.r-emotion-track.learn{stroke:#8770bf;stroke-dasharray:6 3}
+.r-emotion-point{stroke:#fff;stroke-width:1.4;vector-effect:non-scaling-stroke}
+.r-emotion-point.task{fill:#4c82bd}.r-emotion-point.learn{fill:#8770bf}
+.r-copy-journey .cb-painpoint-label{grid-row:6}.r-copy-journey .cb-painpoint-rail{grid-row:6;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
-.r-copy-journey .cb-opportunity-label{grid-row:5}
-.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-opportunity-label{grid-row:7}
+.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:7;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-opportunity{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25vh;padding:.4vh .52vw;border:0;border-radius:9px;background:#eaf5ed;color:#476956}
 .r-copy-journey .cb-opportunity small{font-size:var(--fs-xs);font-weight:760;line-height:1.1;color:#397453}
 .r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
 """
 
 journey_pain_points = [
-    {"label":"表达目标", "issues":[("任务","现场问题难提炼为可执行目标"),("学习","有兴趣，却不清楚从哪里开始")], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达"},
-    {"label":"学习起步", "issues":[("任务","Prompt 依赖用户主动组织上下文"),("学习","资料分散，版本与适用条件难核对")], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点"},
-    {"label":"边做边懂", "issues":[("任务","方案依据难看懂，也不易追问调整"),("学习","目标、基础与路径不一定匹配")], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动"},
-    {"label":"经验回流", "issues":[("任务","修复完成，仍可能不理解原因"),("学习","解释与练习脱节，难迁移到相似问题")], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用"},
-    {"label":"移动续学", "issues":[("任务","问题与修复留在私聊，社区难以复用"),("学习","个人笔记零散，跨端后难接续实践")], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践"},
+    {"label":"表达目标", "issues":[("任务","目标难提炼"),("学习","兴趣难落到起点")], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达"},
+    {"label":"学习起步", "issues":[("任务","Prompt 需补上下文"),("学习","资料版本难核对")], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点"},
+    {"label":"边做边懂", "issues":[("任务","依据难看懂"),("学习","路径未必适合自己")], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动"},
+    {"label":"经验回流", "issues":[("任务","修好仍不懂原因"),("学习","练习之后难迁移")], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用"},
+    {"label":"移动续学", "issues":[("任务","经验留在私聊"),("学习","笔记跨端难接续")], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践"},
 ]
+JOURNEY_KEY_QUESTIONS = [
+    ("我该先解决什么？", "我该从哪里开始学？"),
+    ("资料适配当前环境吗？", "内容适合我的基础吗？"),
+    ("还缺哪些现场信息？", "路径顺序适合我吗？"),
+    ("为什么这样改才有效？", "我能独立做出来吗？"),
+    ("哪些经验值得留下？", "下次遇到能用上吗？"),
+]
+# Relative SVG y-positions only: these qualitative traces are design hypotheses,
+# not measured scores. Higher positions mean greater perceived confidence.
+JOURNEY_CONFIDENCE_TRACE = {
+    "task": [0.62, 0.42, 0.33, 0.75, 0.50],
+    "learn": [0.38, 0.25, 0.31, 0.69, 0.56],
+}
 source_journey, SOURCE_JOURNEY_CSS = copy_editable_journey_markup_and_css()
 
 SEQUENCE_ROLES = [
     ("T", "task", "任务导向开发者", "带任务推进交付", None),
     ("L", "learn", "学习导向开发者", "从兴趣或目标起步", None),
-    ("S", "studio", "Ascend Studio", "承接任务与学习上下文", "layout-dashboard"),
-    ("A", "agent", "Agent", "读上下文 · 调工具 · 回结果", "bot"),
+    ("A", "agent", "Agent", "基于输入生成建议", "bot"),
     ("E", "environment", "开发环境", "运行并返回结果", "terminal"),
-    ("K", "community", "知识与社区", "提供依据、接收经验", "book-open"),
+    ("K", "community", "官方资料与社区", "文档、教程与经验帖", "book-open"),
 ]
 
 SEQUENCE_EVENT_CARDS = {
-    "任务现场": ("clipboard-list", "任务现场", "tone-blue"),
-    "学习目标": ("graduation-cap", "学习目标", "tone-violet"),
-    "主动建议": ("sparkles", "主动建议", "tone-violet"),
-    "检索资料": ("search", "检索资料", "tone-teal"),
-    "版本范围": ("badge-check", "版本范围", "tone-green", 9),
-    "返回依据": ("book-open-check", "返回依据", "tone-teal"),
-    "连线Prompt": ("link-2", "连线 Prompt", "tone-blue"),
-    "生成路径": ("route", "生成路径", "tone-violet"),
-    "自定义节点": ("list-plus", "自定义节点", "tone-violet", 19),
-    "运行代码": ("play", "运行代码", "tone-teal"),
-    "路径练习": ("code-xml", "路径练习", "tone-teal"),
-    "错误日志": ("triangle-alert", "错误日志", "tone-red"),
-    "错误图解": ("network", "错误图解", "tone-red"),
-    "复测修正": ("refresh-cw", "复测修正", "tone-green"),
-    "验证证据": ("circle-check", "验证证据", "tone-green"),
-    "社区草稿": ("file-pen-line", "社区草稿", "tone-green"),
-    "认知卡片": ("notebook-pen", "认知卡片", "tone-violet"),
-    "分享复用": ("share-2", "分享复用", "tone-green"),
+    "描述开发问题": ("clipboard-list", "描述开发问题", "tone-blue"),
+    "表达学习目标": ("graduation-cap", "表达学习目标", "tone-violet"),
+    "搜索文档与社区": ("search", "搜索文档与社区", "tone-teal"),
+    "查找教程示例": ("book-open", "查找教程示例", "tone-teal"),
+    "核对版本与环境": ("badge-check", "核对版本与环境", "tone-green"),
+    "补充项目上下文": ("file-text", "补充项目上下文", "tone-blue"),
+    "返回代码与步骤": ("code-xml", "返回代码与步骤", "tone-violet"),
+    "自行安排学习顺序": ("list-ordered", "自行安排学习顺序", "tone-violet"),
+    "应用建议并运行": ("play", "应用建议并运行", "tone-teal"),
+    "跟随示例练习": ("code-xml", "跟随示例练习", "tone-teal"),
+    "返回日志与报错": ("triangle-alert", "返回日志与报错", "tone-red"),
+    "贴日志继续追问": ("message-square", "贴日志继续追问", "tone-red"),
+    "对照资料核验": ("search-check", "对照资料核验", "tone-green"),
+    "检查运行结果": ("circle-check", "检查运行结果", "tone-green"),
+    "修复记录留在本地": ("file-text", "修复记录留在本地", "tone-violet"),
+    "学习笔记留在个人处": ("notebook-pen", "学习笔记留在个人处", "tone-violet"),
 }
 
 def sequence_diagram_markup():
@@ -397,6 +429,20 @@ def sequence_diagram_markup():
             center = float(label.get("x", "0"))
         if actor_id not in actor_positions or top < actor_positions[actor_id][0]:
             actor_positions[actor_id] = (top, center)
+
+    # Rotating the library's default left-to-right participant row creates a
+    # large empty band above the first lane. Crop the rotated diagram around
+    # the actual actor centers, with enough room for the lane labels/cards.
+    actor_lane_positions = [width - center for _top, center in actor_positions.values()]
+    lane_padding = 64
+    sequence_y_min = max(0, min(actor_lane_positions) - lane_padding)
+    sequence_y_max = min(width, max(actor_lane_positions) + lane_padding)
+    sequence_y_span = max(1, sequence_y_max - sequence_y_min)
+
+    def actor_lane_percent(actor_id):
+        center_x = actor_positions[actor_id][1]
+        lane_y = width - center_x
+        return (lane_y - sequence_y_min) / sequence_y_span * 100
 
     style_nodes, defs_nodes = [], []
     geometry = []
@@ -526,7 +572,7 @@ def sequence_diagram_markup():
             + f"padding-left:{left_space / height * 100:.4f}%;padding-right:{right_space / height * 100:.4f}%"
         )
 
-    event_cards = []
+    event_records = []
     event_strokes = {
         "tone-blue": "#9ba7b6",
         "tone-violet": "#9ba7b6",
@@ -538,27 +584,111 @@ def sequence_diagram_markup():
         label = message.get("data-label", "")
         event = SEQUENCE_EVENT_CARDS.get(label)
         line = message.find(f"{{{svg_ns}}}line")
-        if not event or line is None:
+        polyline = message.find(f"{{{svg_ns}}}polyline")
+        if not event or (line is None and polyline is None):
             continue
         icon, title, tone, *offset_values = event
-        x1 = float(line.get("x1", "0"))
-        x2 = float(line.get("x2", "0"))
-        event_time = float(line.get("y1", "0"))
-        center_actor = (x1 + x2) / 2
-        left_pct = max(0, min(100, event_time / height * 100))
-        top_pct = max(0, min(100, (width - center_actor) / width * 100 + (offset_values[0] if offset_values else 0)))
-        event_cards.append(
-            f'<div class="r-sequence-event {tone}" style="--event-x:{left_pct:.4f}%;--event-y:{top_pct:.4f}%" '
-            f'aria-label="{esc(label)}"><i>{lucide_svg(icon)}</i><b>{esc(title)}</b></div>'
-        )
-        stroke = event_strokes[tone]
-        line.set("stroke", stroke)
-        line.set("stroke-width", "1.5")
+        if line is not None:
+            x1 = float(line.get("x1", "0"))
+            x2 = float(line.get("x2", "0"))
+            event_time = float(line.get("y1", "0"))
+            center_actor = (x1 + x2) / 2
+            line.set("stroke", event_strokes[tone])
+            line.set("stroke-width", "1.5")
+            arrow = line
+        else:
+            values = [float(value) for value in re.findall(number_pattern, polyline.get("points", ""))]
+            if len(values) < 4 or len(values) % 2:
+                continue
+            event_time = sum(values[1::2]) / len(values[1::2])
+            center_actor = actor_positions[message.get("data-from")][1]
+            polyline.set("stroke", event_strokes[tone])
+            polyline.set("stroke-width", "1.5")
+            arrow = polyline
+        left_pct = max(5, min(95, event_time / height * 100))
+        source_y = actor_lane_percent(message.get("data-from"))
+        target_y = actor_lane_percent(message.get("data-to"))
+        base_top = ((width - center_actor - sequence_y_min) / sequence_y_span * 100
+                    + (offset_values[0] if offset_values else 0))
+        if message.get("data-from") == message.get("data-to"):
+            top_min, top_max = max(7, base_top - 10), min(93, base_top + 10)
+        else:
+            top_min = max(7, min(source_y, target_y) + 6)
+            top_max = min(93, max(source_y, target_y) - 6)
+        event_records.append({
+            "label": label, "title": title, "icon": icon, "tone": tone,
+            "left": left_pct, "base_top": base_top,
+            "top_min": top_min, "top_max": top_max,
+            "arrow": arrow, "used": False,
+        })
         marker_id = "seq-arrow-" + tone.replace("tone-", "")
-        line.set("marker-end", f"url(#{marker_id})")
+        arrow.set("marker-end", f"url(#{marker_id})")
         label_node = message.find(f"{{{svg_ns}}}text")
         if label_node is not None:
             message.remove(label_node)
+
+    # Keep icon cards tied to each vertical message line while staggering only
+    # labels that would otherwise collide in the compressed five-column view.
+    y_offsets = [0, -12, 12, -24, 24, -36, 36, -48, 48, -60, 60]
+    for record in event_records:
+        record["top_candidates"] = sorted({
+            max(record["top_min"], min(record["top_max"], record["base_top"] + offset))
+            for offset in y_offsets
+        }, key=lambda candidate: (abs(candidate - record["base_top"]), candidate))
+    overlap_edges = {
+        index: {other for other in range(len(event_records)) if other != index and
+                abs(event_records[index]["left"] - event_records[other]["left"]) < 9.5}
+        for index in range(len(event_records))
+    }
+    remaining = set(range(len(event_records)))
+    while remaining:
+        component = set()
+        frontier = [remaining.pop()]
+        while frontier:
+            index = frontier.pop()
+            component.add(index)
+            neighbors = overlap_edges[index] & remaining
+            remaining -= neighbors
+            frontier.extend(neighbors)
+        order = sorted(component, key=lambda index: (-len(overlap_edges[index] & component),
+                                                       len(event_records[index]["top_candidates"])))
+        assignment = {}
+
+        def assign_component(position):
+            if position == len(order):
+                return True
+            index = order[position]
+            record = event_records[index]
+            for candidate in record["top_candidates"]:
+                if any(abs(candidate - assignment[other]) < 11.2
+                       for other in overlap_edges[index] & assignment.keys()):
+                    continue
+                assignment[index] = candidate
+                if assign_component(position + 1):
+                    return True
+                assignment.pop(index)
+            return False
+
+        if not assign_component(0):
+            # Keep the closest feasible rendering if unusually dense future
+            # diagrams cannot satisfy every separation constraint.
+            for index in order:
+                record = event_records[index]
+                record["top"] = record["top_candidates"][0]
+        else:
+            for index, top in assignment.items():
+                event_records[index]["top"] = top
+
+    for record in sorted(event_records, key=lambda item: item["left"]):
+        top = record["top"]
+        event_cards_html = (
+            f'<div class="r-sequence-event {record["tone"]}" '
+            f'style="--event-x:{record["left"]:.4f}%;--event-y:{top:.4f}%" '
+            f'aria-label="{esc(record["label"])}"><i>{lucide_svg(record["icon"])}</i>'
+            f'<b>{esc(record["title"])}</b></div>'
+        )
+        record["card"] = event_cards_html
+    event_cards = "".join(record["card"] for record in sorted(event_records, key=lambda item: item["left"]))
 
     for defs in defs_nodes:
         for tone, color in event_strokes.items():
@@ -582,9 +712,9 @@ def sequence_diagram_markup():
         rotated.append(node)
 
     root.clear()
-    root.set("viewBox", f"0 0 {height:g} {width:g}")
+    root.set("viewBox", f"0 {sequence_y_min:g} {height:g} {sequence_y_span:g}")
     root.set("width", f"{height:g}")
-    root.set("height", f"{width:g}")
+    root.set("height", f"{sequence_y_span:g}")
     if root_style:
         root.set("style", root_style)
     root.set("role", "img")
@@ -597,9 +727,7 @@ def sequence_diagram_markup():
     role_rows = []
     avatars = {"T": svg_data("persona-task.svg"), "L": svg_data("persona-learning.svg")}
     for actor_id, role, name, desc, icon in SEQUENCE_ROLES:
-        _actor_top, center_x = actor_positions[actor_id]
-        lane_y = width - center_x
-        lane_pct = max(0, min(100, lane_y / width * 100))
+        lane_pct = max(0, min(100, actor_lane_percent(actor_id)))
         mark = (f'<img class="role-mark" src="{avatars[actor_id]}" alt="">' if actor_id in avatars else
                 f'<span class="role-mark">{lucide_svg(icon)}</span>')
         role_rows.append(
@@ -616,27 +744,27 @@ def sequence_diagram_markup():
 
 JOURNEY_STAGES = [
     ("01 · 起点", "认知起步", "任务 / 学习目标", "source", "need-context.png"),
-    ("02 · 找线索", "寻源与推荐", "依据 / 版本 / 范围", "action", "search-fetch.png"),
-    ("03 · 形成方向", "明确方向", "Prompt / 学习路径", "generate", "generate.png"),
-    ("04 · 实践验证", "边做边懂", "运行 / 图解 / 复测", "control", "decide.png"),
-    ("05 · 经验沉淀", "带入下一次", "认知卡 / 社区回流", "evidence", "execute.png"),
+    ("02 · 找线索", "查找与核对", "文档 / 社区 / 版本", "action", "search-fetch.png"),
+    ("03 · 形成方向", "明确方向", "Prompt / 自定学习顺序", "generate", "generate.png"),
+    ("04 · 实践验证", "边做边懂", "运行 / 练习 / 复测", "control", "decide.png"),
+    ("05 · 经验沉淀", "带入下一次", "个人记录 / 结果复用", "evidence", "execute.png"),
 ]
 
 def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="五阶段用户行为概要与共用人机协作时序；下方逐列对应设计痛点与机会点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="五阶段用户行为、关键判断、任务与学习把握感推演、协作时序、设计痛点和机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
         '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
-    section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
-    section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">同一服务，承接任务与学习两条旅程</div>', 1)
-    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '按当前目标区分旅程，不按专业程度分级；模糊兴趣与明确学习目标都属于学习导向', 1)
+    section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="Ascend Studio 之前的任务与学习旅程"', 1)
+    section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">Ascend Studio 之前，任务与学习都要自己串联</div>', 1)
+    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '按当前目标分两条旅程；模糊兴趣与明确学习目标都属于学习导向', 1)
     section = section.replace('<div class="section-tabs"></div>',
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
     section = re.sub(r'(<div class="body-area r-journey-body" aria-label=")[^"]*(")',
-        r'\1五阶段用户行为概要、共用人机协作时序及对应的设计痛点与机会点\2', section, count=1)
+        r'\1五阶段行为、关键判断、把握感推演、协作时序、痛点与机会点\2', section, count=1)
 
     stage_html = []
     for kicker, title, desc, phase, illustration in JOURNEY_STAGES:
@@ -655,10 +783,10 @@ def build_journey():
         '<div class="cb-row-label r-user-action-label"><small>USER ACTION</small><b>用户行为</b></div>', 1)
     human_actions = [
         "明确本次要解决的问题，或想掌握的能力",
-        "补充现场信息，寻找适用线索",
-        "把线索整理成 Prompt 或学习路径",
-        "运行或练习，核对结果并理解原因",
-        "留下可复用的结果、笔记或经验",
+        "自行查资料，核对版本与适用范围",
+        "补齐 Prompt 上下文，或安排学习顺序",
+        "运行代码或练习，依据结果迭代",
+        "结果和经验主要留在个人项目与记录中",
     ]
     human_lanes = "".join(
         f'<article class="cb-lane-cell cb-human-step r-user-action is-{stage[3]}">'
@@ -667,6 +795,22 @@ def build_journey():
     )
     section = replace_div_content(section, "cb-human-lane", human_lanes)
     section = section.replace('aria-label="开发者泳道"', 'aria-label="用户行为：五阶段主要行动"', 1)
+
+    judgment_label = (
+        '<div class="cb-row-label r-key-judgment-label"><small>KEY QUESTIONS</small><b>关键判断</b>'
+        '<div class="r-journey-legend"><span class="task"><i></i>任务</span><span class="learn"><i></i>学习</span></div></div>'
+    )
+    judgment_cells = "".join(
+        f'<article class="r-key-judgment-cell" aria-label="第 {index + 1} 阶段的关键判断">'
+        f'<div class="r-key-question task"><i aria-hidden="true"></i><span>{esc(task_question)}</span></div>'
+        f'<div class="r-key-question learn"><i aria-hidden="true"></i><span>{esc(learn_question)}</span></div>'
+        '</article>'
+        for index, (task_question, learn_question) in enumerate(JOURNEY_KEY_QUESTIONS)
+    )
+    judgment_rail = '<div class="r-key-judgment-rail" aria-label="任务用户与学习用户的阶段性关键判断">' + judgment_cells + '</div>'
+    handoff_marker = '<div class="cb-row-label cb-handoff-label">'
+    handoff_index = section.index(handoff_marker)
+    section = section[:handoff_index] + judgment_label + judgment_rail + section[handoff_index:]
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN PAIN POINTS</small><b>设计痛点</b></div>', 1)
@@ -695,7 +839,43 @@ def build_journey():
     middle_end = section.index('<div class="cb-row-label cb-painpoint-label">', middle_start)
     diagram_markup = sequence_diagram_markup()
     section = section[:middle_start] + diagram_markup + section[middle_end:]
-    for rail_class in ("cb-stage-rail", "cb-human-lane", "cb-painpoint-rail", "cb-opportunity-rail"):
+
+    def curve_y(value):
+        return 35 - value * 30
+
+    def curve_segment(values, index, series):
+        current = values[index]
+        start = current if index == 0 else (values[index - 1] + current) / 2
+        end = current if index == len(values) - 1 else (current + values[index + 1]) / 2
+        y_start, y_current, y_end = map(curve_y, (start, current, end))
+        path = (
+            f"M 0 {y_start:.2f} C 23 {y_start:.2f}, 27 {y_current:.2f}, 50 {y_current:.2f} "
+            f"C 73 {y_current:.2f}, 77 {y_end:.2f}, 100 {y_end:.2f}"
+        )
+        return (
+            f'<path class="r-emotion-track {series}" d="{path}" />'
+            f'<circle class="r-emotion-point {series}" cx="50" cy="{y_current:.2f}" r="2.2" />'
+        )
+
+    emotion_cells = "".join(
+        f'<article class="r-emotion-cell" aria-label="第 {index + 1} 阶段：任务与学习两条把握感体验推演">'
+        '<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">'
+        + curve_segment(JOURNEY_CONFIDENCE_TRACE["task"], index, "task")
+        + curve_segment(JOURNEY_CONFIDENCE_TRACE["learn"], index, "learn")
+        + '</svg></article>'
+        for index in range(len(JOURNEY_STAGES))
+    )
+    emotion_label = (
+        '<div class="cb-row-label r-emotion-label"><small>体验推演</small><b>把握感变化</b>'
+        '<div class="r-journey-legend"><span class="task"><i></i>任务</span>'
+        '<span class="learn"><i></i>学习</span><span class="r-confidence-up">↑更有把握 · 定性推演</span></div></div>'
+    )
+    emotion_rail = '<div class="r-emotion-rail" aria-label="定性把握感曲线，无数值评分；两条轨迹分别对应任务与学习目标">' + emotion_cells + '</div>'
+    painpoint_marker = '<div class="cb-row-label cb-painpoint-label">'
+    painpoint_index = section.index(painpoint_marker)
+    section = section[:painpoint_index] + emotion_label + emotion_rail + section[painpoint_index:]
+
+    for rail_class in ("cb-stage-rail", "cb-human-lane", "r-key-judgment-rail", "r-emotion-rail", "cb-painpoint-rail", "cb-opportunity-rail"):
         section = re.sub(
             rf'(<div class="[^"]*\b{rail_class}\b[^"]*"[^>]*)(>)',
             lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),

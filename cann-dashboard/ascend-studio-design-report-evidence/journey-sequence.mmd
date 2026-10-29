@@ -1,40 +1,37 @@
 sequenceDiagram
-    participant K as 知识与社区
+    participant K as 官方资料与社区
     participant E as 开发环境
-    participant A as 智能体
-    participant S as Ascend Studio
-    actor L as 学习开发者
-    actor T as 任务开发者
+    participant A as Agent
+    actor L as 学习导向开发者
+    actor T as 任务导向开发者
 
     rect 01 认知起步
-      T->>S: 任务现场
-      L->>S: 学习目标
-      S-->>T: 主动建议
+      T->>A: 描述开发问题
+      L->>K: 表达学习目标
     end
 
-    rect 02 找线索
-      A->>K: 检索资料
-      K-->>A: 版本范围
-      A-->>S: 返回依据
+    rect 02 查找与核对
+      T->>K: 搜索文档与社区
+      L->>K: 查找教程示例
+      K-->>T: 核对版本与环境
     end
 
     rect 03 形成方向
-      T->>S: 连线Prompt
-      S-->>L: 生成路径
-      L->>S: 自定义节点
+      T->>A: 补充项目上下文
+      A-->>T: 返回代码与步骤
+      L->>K: 自行安排学习顺序
     end
 
     rect 04 实践与理解
-      T->>E: 运行代码
-      L->>E: 路径练习
-      E->>A: 错误日志
-      A-->>S: 错误图解
-      T->>E: 复测修正
+      T->>E: 应用建议并运行
+      L->>E: 跟随示例练习
+      E-->>T: 返回日志与报错
+      T->>A: 贴日志继续追问
+      L->>K: 对照资料核验
     end
 
     rect 05 经验沉淀
-      E-->>S: 验证证据
-      S-->>T: 社区草稿
-      L->>S: 认知卡片
-      T->>K: 分享复用
+      E-->>T: 检查运行结果
+      T->>T: 修复记录留在本地
+      L->>L: 学习笔记留在个人处
     end
