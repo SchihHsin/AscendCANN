@@ -7686,3 +7686,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计点和任务状态沿用策划的本地演示数据；不代表真实用户个性化判断、模型调用或 NPU 验证。用户旅程设计点为方案展示，不是新增研究证据。
 - 验证：`npm run build:pages -- --emptyOutDir` 成功（沿用既有 JS bundle >500 kB 提示）；`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过。CUA 本地 1440×900 核对了 `?task=development`、任务名直达、章节路径共创起点与社区经验回流起点；未运行自动化测试套件。
 - `f269ead6`（`feat: add Ascend Studio task deep links and PC showcase`）已推送至 `origin/main`。Pages 工作流 `40791569433` 在本条记录时仍运行中；发布完成后补充线上状态。
+
+### 2026-10-29 · Ascend Studio 开发入口页改为界面草图
+
+- 用户反馈左右画面过于相似且不需要写实人物，要求只呈现界面。第 2 页现用原生 HTML/CSS 绘制两组结构不同的 UI：传统开发侧为 IDE 与社区资料检索两个独立窗口；Agent 侧为一个集成工作区，显示任务输入、执行步骤、代码改动和验证状态。移除 Codex 截图与浮动任务气泡，不放人物图像。
+- 第 2 页标题、17 页总数、旅程页第 3 页位置不变。任务文字是情景示意，不代表现有产品或真实 AI 执行。没有更新 Ascend Studio 产品原型，也不涉及 API / Protocol、Host / Harness、Application / Task 层边界。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`narrative.md`、`qa.md` 并重建 `cann-dashboard/ascend-studio-design-report.html`。来源为用户指定的界面化方向（H）；具体界面结构和任务内容为设计推演（L）。
+- 验证：`python3 -m py_compile build_report.py`、`python3 build_report.py`、两段内联脚本 `node --check`、17 页 / 旅程页码及素材引用结构检查通过；CUA 在 1280×720 浏览器视口复核第 2 页显示完整，双窗口与单工作区差异清楚。
+- 报告源码、生成页、支持素材与本记录按独立变更提交并推送 `origin/main`；其他工作区改动未纳入。

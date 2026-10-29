@@ -22,7 +22,8 @@ def esc(s):
 
 def asset(name):
     p = HERE / name
-    return "data:image/jpeg;base64," + base64.b64encode(p.read_bytes()).decode()
+    mime = "image/png" if p.suffix.lower() == ".png" else "image/jpeg"
+    return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
 
 def svg_data(name):
     p = HERE / name
@@ -274,6 +275,69 @@ body.overview.ctrl #deck{width:auto}
 .r-source-grid h2{font-size:var(--fs-h2);line-height:1.5;margin-bottom:1.5vh}
 .r-source-grid p,.r-source-grid li{font-size:var(--fs-body);line-height:1.8;color:#626977}.r-source-grid ul{padding-left:1.2em}
 .r-source-grid p+p{margin-top:1.5vh}
+.r-workmode-slide{padding:3.5vh 3.4vw 3vh}
+.r-workmode-slide .head{align-items:center;margin-bottom:1.7vh;gap:1.4vw}
+.r-workmode-slide .head-l{flex:1;min-width:0}
+.r-workmode-slide .head-l .ttl{font-size:clamp(25px,2vw,36px);line-height:1.2;white-space:nowrap}
+.r-workmode-slide .subttl{font-size:var(--fs-body)}
+.r-workmode-body{display:grid;grid-template-columns:1fr 1.08fr;gap:1.1vw;align-items:stretch;flex:1;min-height:0}
+.r-workmode-panel{display:flex;flex-direction:column;min-height:0;padding:1.2vh .95vw 1.1vh;border:1px solid rgba(255,255,255,.92);border-radius:14px;background:rgba(255,255,255,.62);box-shadow:none}
+.r-workmode-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:.7vw;min-height:7.5vh}
+.r-workmode-kicker{display:inline-flex;width:fit-content;align-items:center;padding:.35vh .58vw;border-radius:999px;background:#eceef3;color:#596171;font-size:var(--fs-xs);font-weight:750;letter-spacing:.02em}
+.r-workmode-kicker.agent{background:#ecebfa;color:#5750a6}
+.r-workmode-heading h2{margin-top:.5vh;font-size:var(--fs-h2);line-height:1.22;color:#242a35}
+.r-workmode-heading p{margin-top:.32vh;font-size:var(--fs-sm);line-height:1.35;color:#737c8b}
+.r-workmode-screenpair{display:grid;grid-template-columns:.92fr 1.08fr;gap:.55vw;flex:1;min-height:0;margin-top:.5vh}
+.r-mini-window{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;border:1px solid #d9dee7;border-radius:7px;background:#fff}
+.r-mini-windowbar{height:3vh;min-height:24px;display:flex;align-items:center;gap:.35vw;padding:0 .48vw;border-bottom:1px solid #dfe3ea;background:#f5f6f8;color:#556071;font-size:var(--fs-xs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-mini-windowbar i{width:5px;height:5px;border-radius:50%;background:#aeb7c4;flex:0 0 auto}
+.r-mini-ide{background:#20242b;color:#e1e5ec;border-color:#2b3038}
+.r-mini-ide .r-mini-windowbar{background:#292e37;border-color:#383e49;color:#bbc4d1}
+.r-mini-editor{display:grid;grid-template-columns:23% minmax(0,1fr);flex:1;min-height:0}
+.r-mini-filetree{padding:.8vh .38vw;background:#242932;color:#a1aaba;font:var(--fs-xs)/1.9 'JetBrains Mono',monospace;overflow:hidden}
+.r-mini-code{padding:.8vh .45vw;font:var(--fs-xs)/1.8 'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;color:#cdd4df}
+.r-mini-code div{overflow:hidden;text-overflow:ellipsis}.r-mini-code em{display:inline-block;width:1.25em;color:#748093;font-style:normal}.r-mini-code b{color:#81b7e8;font-weight:500}.r-mini-code strong{color:#d9a9ea;font-weight:500}.r-mini-code span{color:#a7cf9e}
+.r-mini-browser{flex:1;min-height:0;padding:.72vh .55vw;overflow:hidden;color:#3a4352}
+.r-mini-sitebrand{font-size:var(--fs-sm);font-weight:780;color:#425f8b}
+.r-mini-sitenav{display:flex;gap:.42vw;padding:.55vh 0 .65vh;border-bottom:1px solid #e5e8ee;color:#667181;font-size:var(--fs-xs);white-space:nowrap}
+.r-mini-search{margin:.75vh 0;padding:.6vh .5vw;border:1px solid #d9deea;border-radius:5px;background:#f8f9fb;color:#7a8390;font-size:var(--fs-xs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-mini-result{padding:.62vh .05vw;border-bottom:1px solid #edf0f4}
+.r-mini-result b{display:block;font-size:var(--fs-xs);line-height:1.2;color:#425f8b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-mini-result small{display:block;margin-top:.2vh;color:#808997;font-size:var(--fs-xs);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-workmode-route{display:flex;align-items:center;justify-content:center;gap:.48vw;margin-top:.9vh;padding:.62vh .45vw;border-radius:7px;background:#f0f1f4;color:#5d6674;font-size:var(--fs-xs);font-weight:650;white-space:nowrap}
+.r-workmode-route i{font-style:normal;color:#969eaa}
+.r-workmode-caption{display:flex;align-items:center;justify-content:space-between;gap:.5vw;margin-top:.65vh;color:#8a909c;font-size:var(--fs-xs);line-height:1.25}
+.r-workmode-caption span:last-child{text-align:right}
+.r-agent-ui{display:flex;flex-direction:column;flex:1;min-height:0;margin-top:.5vh;overflow:hidden;border:1px solid #d8dbe4;border-radius:8px;background:#f8f8fa;color:#303340}
+.r-agent-topbar{display:flex;align-items:center;justify-content:space-between;gap:.6vw;min-height:3.4vh;padding:.45vh .7vw;border-bottom:1px solid #e3e4ea;background:#fff;font-size:var(--fs-xs);color:#555c69}
+.r-agent-topbar strong{color:#303340;font-size:var(--fs-sm);font-weight:700}
+.r-agent-topmeta{display:flex;align-items:center;gap:.4vw;color:#757c89;white-space:nowrap}
+.r-agent-layout{display:grid;grid-template-columns:.31fr .69fr;flex:1;min-height:0}
+.r-agent-sidebar{padding:.8vh .55vw;border-right:1px solid #e3e4ea;background:#f0f1f4;color:#69707d;font-size:var(--fs-xs);line-height:1.7;overflow:hidden}
+.r-agent-sidebar b{display:block;margin-bottom:.5vh;color:#515765;font-size:var(--fs-xs)}
+.r-agent-file{display:block;padding:.25vh .35vw;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-agent-file.active{background:#e3e2f4;color:#524b9a}
+.r-agent-main{display:grid;grid-template-columns:1.08fr .92fr;gap:.65vw;padding:.8vh .7vw;min-height:0;overflow:hidden}
+.r-agent-thread{display:flex;flex-direction:column;gap:.65vh;min-width:0;min-height:0}
+.r-agent-task{padding:.65vh .62vw;border-radius:6px;background:#eeedfb;color:#3e3a60;font-size:var(--fs-xs);line-height:1.45}
+.r-agent-task b{display:block;margin-bottom:.25vh;color:#655db0;font-size:var(--fs-xs)}
+.r-agent-steps{display:grid;gap:.4vh}
+.r-agent-step{display:grid;grid-template-columns:1.2em 1fr auto;align-items:center;gap:.35vw;padding:.42vh .45vw;border:1px solid #e3e5eb;border-radius:5px;background:#fff;color:#4c5360;font-size:var(--fs-xs);line-height:1.2}
+.r-agent-step i{width:1.05em;height:1.05em;display:grid;place-items:center;border-radius:50%;background:#e8e9ef;color:#727988;font-size:9px;font-style:normal}
+.r-agent-step.done i{background:#e4f2ea;color:#32855e}.r-agent-step.current{border-color:#d7d4ef;background:#faf9ff}.r-agent-step.current i{background:#655db0;color:#fff}
+.r-agent-step small{color:#848a96;font-size:var(--fs-xs);white-space:nowrap}
+.r-agent-result{display:flex;flex-direction:column;min-width:0;min-height:0;padding:.7vh .58vw;border:1px solid #e0e2e9;border-radius:6px;background:#fff;overflow:hidden}
+.r-agent-result header{display:flex;align-items:center;justify-content:space-between;gap:.3vw;padding-bottom:.5vh;border-bottom:1px solid #eceef2;color:#505765;font-size:var(--fs-xs)}
+.r-agent-result header b{font-size:var(--fs-xs);font-weight:700}
+.r-agent-diff{margin-top:.55vh;padding:.52vh .45vw;border-radius:4px;background:#f2f4f6;color:#505967;font:var(--fs-xs)/1.55 'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden}
+.r-agent-diff .add{color:#31825c}.r-agent-diff .del{color:#b56067}
+.r-agent-checks{display:grid;gap:.42vh;margin-top:.6vh}
+.r-agent-check{display:flex;align-items:center;justify-content:space-between;gap:.4vw;color:#5d6572;font-size:var(--fs-xs)}
+.r-agent-check span:last-child{color:#8b6b38}
+.r-agent-compose{display:flex;align-items:center;justify-content:space-between;gap:.5vw;margin-top:auto;padding:.55vh .55vw;border:1px solid #dcdee6;border-radius:5px;background:#fff;color:#8a909c;font-size:var(--fs-xs)}
+.r-agent-compose button{border:0;border-radius:4px;padding:.3vh .5vw;background:#4f4a8b;color:#fff;font:inherit;font-weight:650}
+@media(max-width:1100px){.r-workmode-body{grid-template-columns:1fr 1fr}.r-agent-main{grid-template-columns:1fr}.r-agent-result{display:none}}
+@media(max-height:720px){.r-workmode-heading{min-height:6.5vh}.r-workmode-panel{padding-top:.8vh}.r-agent-step{padding:.25vh .4vw}.r-agent-main{padding:.5vh .55vw}}
 .report button:focus-visible,.report a:focus-visible{outline:3px solid #b3a3ff;outline-offset:4px}
 @media(max-width:1100px){.r-journey-user-ribbon{gap:.5vw;padding:.45vh .65vw}.r-journey-breakpoints{width:94vw;grid-template-columns:repeat(5,minmax(0,1fr))}.r-journey-breakpoints>span,.r-journey-breakpoints small{display:none}.r-journey-breakpoints button{font-size:var(--fs-xs)}}
 @media(max-height:720px){.r-design .points{gap:1.5vh}.r-design .body{margin-bottom:2vh}.r-bp-dialog>header{padding:1.8vh 2vw}.r-bp-panels{padding:1.6vh 2vw 2vh}}
@@ -738,6 +802,37 @@ breakpoint_dialog = f'''<dialog class="r-bp-dialog" aria-labelledby="r-bp-dialog
 slides=[]
 logo="data:image/svg+xml;base64,"+base64.b64encode((ROOT/"ascstudio/assets/ascend-logo.svg").read_bytes()).decode()
 slides.append(f'''<section class="slide s-cover r-cover" data-title="让任务推进，也让能力成长"><img class="r-cover-image" src="{asset('04-connected-prompt.jpg')}" alt=""><div class="r-cover-content"><img class="r-cover-logo" src="{logo}" alt="Ascend"><div class="r-cover-kicker">ASCEND STUDIO · EXPERIENCE DESIGN</div><h1>让任务推进<br><span>也让能力成长</span></h1><p class="r-cover-lead">从一次表达，到理解、实践与经验回流<br>电脑端 · 小程序 · 知识供给</p></div><div class="r-cover-bottom"><span>基于现有交互原型的设计提案</span><span>2026.10</span></div></section>''')
+
+workmode = f'''<section class="slide s-gray r-workmode-slide" data-title="从查资料到交任务：Agent 带来另一种开发入口">
+  <header class="head"><div class="head-l"><div class="brand"><h1 class="ttl">从查资料到交任务：Agent 带来另一种开发入口</h1></div><div class="subttl">不是两种固定人群，而是同一开发者可切换的两种协作方式</div></div>{tabs("用户旅程")}</header>
+  <main class="body-area r-workmode-body">
+    <article class="r-workmode-panel">
+      <header class="r-workmode-heading"><div><span class="r-workmode-kicker">传统开发 · 资料驱动</span><h2>工程与资料分在不同窗口</h2><p>开发者在 IDE、官方文档与社区之间切换，自行判断和拼接信息</p></div></header>
+      <div class="r-workmode-screenpair" aria-label="IDE 与昇腾社区文档界面示意">
+        <div class="r-mini-window r-mini-ide"><div class="r-mini-windowbar"><i></i><i></i><i></i><span>IDE · custom_add</span></div><div class="r-mini-editor"><div class="r-mini-filetree">▾ src<br>　add.cpp<br>　tiling.h<br>▾ tests<br>　test_add.py</div><div class="r-mini-code"><div><em>1</em><strong>__aicore__</strong> void Add()</div><div><em>2</em>  auto x = input.GetValue(0);</div><div><em>3</em>  auto y = input.GetValue(1);</div><div><em>4</em>  // verify shape and layout</div><div><em>5</em>  <span>SetOutput</span>(x + y);</div><div><em>6</em>}}</div><div><em>7</em></div><div><em>8</em><b>Build</b> · waiting</div><div><em>9</em><span>Run tests</span> · waiting</div></div></div></div>
+        <div class="r-mini-window"><div class="r-mini-windowbar"><i></i><i></i><i></i><span>社区 · 文档检索</span></div><div class="r-mini-browser"><div class="r-mini-sitebrand">昇腾社区</div><div class="r-mini-sitenav"><span>文档</span><span>开发资源</span><span>问答</span><span>论坛</span></div><div class="r-mini-search">⌕　Add 算子 · 编译失败</div><div class="r-mini-result"><b>Ascend C 算子开发指南</b><small>官方文档 · 接口与工程流程</small></div><div class="r-mini-result"><b>CANN 版本适配说明</b><small>官方资源 · 芯片与版本条件</small></div><div class="r-mini-result"><b>相似报错的社区讨论</b><small>开发者经验 · 现象与排查过程</small></div></div></div>
+      </div>
+      <div class="r-workmode-route"><span>写代码</span><i>↔</i><span>查资料</span><i>↔</i><span>回到工程验证</span></div>
+      <div class="r-workmode-caption"><span>两个独立窗口 · 上下文由开发者带着走</span><span>界面结构示意</span></div>
+    </article>
+    <article class="r-workmode-panel">
+      <header class="r-workmode-heading"><div><span class="r-workmode-kicker agent">Agent 开发 · 任务驱动</span><h2>目标、过程与结果留在同一工作区</h2><p>先描述任务与验收条件，再查看 Agent 的行动、改动和验证状态</p></div></header>
+      <div class="r-agent-ui" aria-label="Agent 开发工作区界面示意">
+        <div class="r-agent-topbar"><strong>Codex · custom_add</strong><div class="r-agent-topmeta"><span>工作区 / operator</span><span>·</span><span>任务进行中</span></div></div>
+        <div class="r-agent-layout">
+          <aside class="r-agent-sidebar"><b>工作区</b><span class="r-agent-file">▾ src</span><span class="r-agent-file active">　add.cpp</span><span class="r-agent-file">　tiling.h</span><span class="r-agent-file">▾ tests</span><span class="r-agent-file">　test_add.py</span><br><b>上下文</b><span class="r-agent-file">项目规则</span><span class="r-agent-file">官方资料</span></aside>
+          <div class="r-agent-main">
+            <section class="r-agent-thread"><div class="r-agent-task"><b>任务输入</b>优化 Add 算子的动态 Shape 延迟；保持精度与输入兼容。先核对环境，再运行现有测试并说明依据。</div><div class="r-agent-steps"><div class="r-agent-step done"><i>✓</i><span>读取工作区与项目约束</span><small>已完成</small></div><div class="r-agent-step current"><i>2</i><span>核对接口与版本资料</span><small>进行中</small></div><div class="r-agent-step"><i>3</i><span>准备改动方案与 Diff</span><small>待处理</small></div></div><div class="r-agent-compose"><span>补充条件，或继续追问…</span><button type="button">发送</button></div></section>
+            <section class="r-agent-result"><header><b>改动与验证</b><span>待开发者审阅</span></header><div class="r-agent-diff"><div> add.cpp</div><div class="add">+ 检查动态 Shape 分支</div><div class="del">− 移除固定尺寸假设</div></div><div class="r-agent-checks"><div class="r-agent-check"><span>环境版本</span><span>待确认</span></div><div class="r-agent-check"><span>精度测试</span><span>未运行</span></div><div class="r-agent-check"><span>性能对比</span><span>未运行</span></div></div></section>
+          </div>
+        </div>
+      </div>
+      <div class="r-workmode-caption"><span>一个工作区 · 任务、执行状态和结果集中呈现</span><span>界面结构示意 · 非真实执行</span></div>
+    </article>
+  </main>
+  <footer class="r-foot"><span>下一页回到共同旅程：两种协作方式都从用户目标出发，之后在任务中出现不同断点。</span><span>界面结构示意</span></footer>
+</section>'''
+slides.append(workmode)
 slides.append(journey)
 
 slides.append(dark("从空白输入<br>到有依据的起点","P1 · Prompt 的质量依赖用户先发现问题、回忆现场，再组织成语言。<b>把可讨论的线索主动摆出来。</b>",[
@@ -825,7 +920,7 @@ evals=[
 evaluation='<p class="r-summary">让用户更容易开始，在实践中理解，<br>把收获带入下一次任务。</p><table class="r-eval"><thead><tr><th>旅程阶段</th><th>需要验证的体验</th><th>观察信号</th></tr></thead><tbody>'+''.join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a,b,c in evals)+'</tbody></table>'
 slides.append(gray("设计价值回到旅程，用用户能做什么来验证", "验证方向 · 不以功能数量或内容浏览量替代体验成效",evaluation,note="以上为建议的后续验证问题与观察信号；当前没有对应的效果统计。"))
 
-sources='''<div class="r-source-grid"><article class="card"><h2>材料从哪里来</h2><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener">电脑端 Ascend Studio ↗</a><br>主动建议、线索串联、开发图解、社区草稿与学习路径共创。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/" target="_blank" rel="noopener">口袋新知小程序 Demo ↗</a><br>本轮界面来自本地 5217：服务通知、每周速览、知识卡与明确兴趣信号。</p><p><a href="ai-development-behavior-system-report-concise.html#5" target="_blank" rel="noopener">既有 AI 协作开发者旅程 #5 ↗</a><br>直接复制其 HTML 结构与样式并保持可编辑；两种开发者起点和角色时序在同页展开。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/knowledge-provider-map.html" target="_blank" rel="noopener">知识供给侧服务蓝图 ↗</a><br>参考其资源身份、适用范围、来源许可、核验状态与多入口服务关系，压缩为两页。</p></article><article class="card"><h2>如何理解这份设计提案</h2><ul><li>旅程、人群与问题是基于现有材料和本轮讨论的设计组织，尚非新一轮用户研究定稿。</li><li>界面截图来自现有原型；个人认知画布、知识供给图和角色时序为设计示意。</li><li>图解、推荐、AI 草稿和消息送达使用演示状态；不代表真实 AI、微信后台或 NPU 已接入。</li><li>未宣称任务完成率、学习收益或社区回流效果已被验证。</li></ul><p><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html" target="_blank" rel="noopener">知识例证：NumPy transpose ↗</a> · <a href="https://cloud.tencent.cn/document/product/1301/103770" target="_blank" rel="noopener">订阅消息接入参考 ↗</a></p></article></div>'''
+sources='''<div class="r-source-grid"><article class="card"><h2>材料从哪里来</h2><p><a href="https://www.hiascend.com/developer/community" target="_blank" rel="noopener">昇腾社区 ↗</a><br>第 2 页以简化界面示意传统开发的 IDE ↔ 官网 / 社区检索。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener">电脑端 Ascend Studio ↗</a><br>主动建议、线索串联、开发图解、社区草稿与学习路径共创。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/" target="_blank" rel="noopener">口袋新知小程序 Demo ↗</a><br>本轮界面来自本地 5217：服务通知、每周速览、知识卡与明确兴趣信号。</p><p><a href="ai-development-behavior-system-report-concise.html#5" target="_blank" rel="noopener">既有 AI 协作开发者旅程 #5 ↗</a><br>直接复制其 HTML 结构与样式并保持可编辑；两种开发者起点和角色时序在同页展开。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/knowledge-provider-map.html" target="_blank" rel="noopener">知识供给侧服务蓝图 ↗</a><br>参考其资源身份、适用范围、来源许可、核验状态与多入口服务关系，压缩为两页。</p></article><article class="card"><h2>如何理解这份设计提案</h2><ul><li>旅程、人群与问题是基于现有材料和本轮讨论的设计组织，尚非新一轮用户研究定稿。</li><li>第 2 页两个界面均为原生 HTML 绘制的结构示意；任务内容为情景文案，不表示真实执行。</li><li>个人认知画布、知识供给图和角色时序是设计示意；其他界面截图来自现有原型。</li><li>图解、推荐、AI 草稿和消息送达使用演示状态；不代表真实 AI、微信后台或 NPU 已接入。</li><li>未宣称任务完成率、学习收益或社区回流效果已被验证。</li></ul><p><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html" target="_blank" rel="noopener">知识例证：NumPy transpose ↗</a> · <a href="https://cloud.tencent.cn/document/product/1301/103770" target="_blank" rel="noopener">订阅消息接入参考 ↗</a></p></article></div>'''
 slides.append(gray("设计推演与现有原型，各有清楚的依据和边界", "来源与演示范围 · 支撑材料",sources,active="知识供给",note="2026.10.29 · 页面截图与状态记录见 ascend-studio-design-report-evidence/。"))
 
 # Copy the whole template, replace only deck content; preserve controls and runtime.
