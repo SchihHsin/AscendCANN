@@ -8327,3 +8327,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出选区只有渐变描边、缺少内部底色。现为已框选矩形与拖动预览统一添加低透明度的蓝 → 紫 → 粉 → 琥珀渐变填充（透明度约 7%–9%）；保留高辨识度渐变描边、内容透视与原有阴影，不遮挡区域内容。
 - 修改 `ascend-studio/src/task-workspace.css` 与 `ascstudio/` 构建产物。依据为用户明确视觉反馈（H）；页面顺序 / 路由及 API / Protocol、Host / Harness、Application / Task 边界未变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。提交 `2ab17ead` 已推送至 `origin/main`；Pages workflow `40997799973` 成功。线上 `/AscendCANN/ascstudio/`、`index-Hkq9HylO.js` 与 `index-BRtZ0RMp.css` 均 HTTP 200，CSS 已读回 alpha 约 7%–9% 的渐变填充。
+
+### 2026-10-30 · 在学习画布增加“指着说”设计点
+
+- 用户提出学习章节增加“划选区域、指着说”知识点。学习章由 3 个点扩展为 4 个，新增点名“框选内容，直接指着说”，讲解为“框选学习画布里的疑问区域，再通过文字或语音直接提问。”入口定位到 ResNet50 学习画布中的“认识图像分类任务”图解节点，指着说控件初始可见，演示者可以现场开启并框选。
+- Demo 点击“指着说”开启框选时，左下讲解同步切到新点；点击退出后同步回路径学习点。直接进入新点时保留可操作的待开启状态，不替演示者预选区域。框选后提供区域缩略图和描述输入；本次核对未发送任何内容。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，资源版本为 `20261030-learning-point-and-say`。仅增加学习设计点和同步映射，章节顺序、开发 / 移动章节及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户提出新增点（H）；对应按钮、框选浮层、区域描述输入和禁用的发送状态来自本地 Demo 实际交互（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 桌面预览确认新点落到 ResNet50 图解节点，打开 / 退出框选时讲解点在索引 2 与 3 间同步，拖动框选猫图后出现区域缩略图与描述输入框，未提交。页面提交 `216c71f5` 已推送至 `origin/main`；本交接记录随后单独提交并推送。工作区原有 `ascstudio-mini/knowledge-provider-map-line-options.html` 未改动、未暂存、未提交。
