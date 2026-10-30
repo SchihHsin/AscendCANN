@@ -8172,3 +8172,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确指定任务落点（H）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认推荐点和路径调整点均路由到指定任务、入口文案及缓存版本一致。
 - 实现提交 `6703d277` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
+
+
+### 2026-10-30 · 对调能力图的任务结果与服务链位置
+
+- 用户要求将任务结果汇流线与截图中的 OpenAPI → Agent Host → Skill → MCP 服务连线交换位置，并明确连线也要相应调整。现将四类并行任务节点放在上排，结果汇流线放在任务上方并进入统一校验；服务组件及调用链移至其下方。Skill 连接任务分派总线，社区 Web 输入接 OpenAPI，授权项目上下文绕行接入 Agent Host，知识索引从底座向上接 MCP，授权反馈仍沿外侧回到 Owner。
+- 调整 `ascstudio-mini/knowledge-provider-map.html` 的椭圆范围、节点行位置和入口 / 供给 / 校验路径。四类任务仍保持 200 单位等距；知识底座仍在最下层，页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。依据为用户明确要求（H）；服务流程仍是建设示意（M）。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认节点与连线避让、结果汇流指向校验、服务链位于任务能力下方。未运行自动化测试。GitHub Pages workflow `40977215049` 的 build / deploy / report-build-status 均成功；线上源码已读回上下行坐标和连线路径。
+- 页面提交 `54ff6178`、`d22ff551` 已推送至 `origin/main`；交接记录由随后文档提交推送。
