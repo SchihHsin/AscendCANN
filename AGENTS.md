@@ -8462,3 +8462,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 只修改 ascstudio-mini/knowledge-provider-map.html 的知识底座 SVG、辅助图例描述与作用域样式。图标是可编辑的 SVG 线形，不使用 ImageGen。页面序列、节点关系及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户明确指定治理节点添加图标（H）；图标语义按既有节点文案映射（M）。
 - 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 本地预览确认图标辨识度与节点标题间距；静态检查确认 5 个图标替换点位且原有连线轨道保留。GitHub Pages 部署 7433556063 状态 success，线上页面 HTTP 200 并读回 5 个图标及对应语义。未运行自动化测试。
 - 页面提交 ae51dbde 已推送至 origin/main；交接记录随后单独推送。
+
+### 2026-10-30 · 为入口节点增加黑色识别图标
+
+- 在“社区 AI 助手”标题前增加对话气泡 / AI 星点线形图标，在“项目客户端”标题前增加代码窗口图标；图标为黑色线条。图标只与入口标题并排，不插入“目标 · 主题 · 已学节点”或“路径 · 课程 · 认证 · 活动”等说明之间；两类说明、节点位置与现有连线关系保持不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确指定图标位置、对象与颜色（H）；图形语义沿用已确认的图标提议（H）。不影响页面序列、层级关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；静态检查 SVG 结构确认图标与入口标题成组，说明文字保留为独立居中元素。本次未运行自动化测试。
+- 页面提交 `64c352cb` 已推送至 `origin/main`；本交接记录将单独提交并推送。
