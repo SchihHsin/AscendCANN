@@ -1,8 +1,16 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-chapter-alignment-final2";
+const ROUTE_REV = "20261030-learning-development-mobile-order";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
+  {
+    id: "learning", title: "让学习目标一步步变成实践", cover: "从一张建议卡开始", summary: "从当前进度与问题获得学习建议，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
+    points: [
+      { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
+      { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
+      { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
+    ],
+  },
   {
     id: "development", title: "解决问题，也留下经验", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
@@ -11,14 +19,6 @@ const chapters = [
       { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },
       { id: "community", title: "把处理过程整理成社区经验", note: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", emphasis: "整理为草稿", description: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", entry: "社区经验 · 草稿审阅", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "community" },
       { id: "channels", title: "把经验带到更多平台", note: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", emphasis: "GitCode、CSDN 和抖音", description: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", entry: "社区经验 · 多渠道预览", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "channels" },
-    ],
-  },
-  {
-    id: "learning", title: "让学习目标一步步变成实践", cover: "从一张建议卡开始", summary: "从当前进度与问题获得学习建议，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
-    points: [
-      { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
-      { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
-      { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
     ],
   },
   {
@@ -107,9 +107,9 @@ function renderPointNote() {
 }
 
 function syncLearningPointToDemo(pointIndex) {
-  if (currentChapter !== 1 || pointIndex === currentPoint || !chapters[1].points[pointIndex]) return;
+  if (currentChapter !== 0 || pointIndex === currentPoint || !chapters[0].points[pointIndex]) return;
   currentPoint = pointIndex;
-  activePoint = chapters[1].points[pointIndex];
+  activePoint = chapters[0].points[pointIndex];
   menuOpen = false;
   renderPointMenu();
   renderPointNote();
@@ -137,7 +137,7 @@ function prefillLearningPrompt(doc, onlyIfBlank = true) {
 }
 
 function syncLearningPointFromDemo(doc) {
-  if (currentChapter !== 1 || showcase.dataset.view !== "stage") return;
+  if (currentChapter !== 0 || showcase.dataset.view !== "stage") return;
   const task = selectedTaskLabel(doc);
   if (task === "ResNet50 离线推理初体验") {
     syncLearningPointToDemo(2);
@@ -151,7 +151,7 @@ function syncLearningPointFromDemo(doc) {
 
 function installLearningDemoSync(doc, revision) {
   learningSyncCleanup?.();
-  if (currentChapter !== 1) return;
+  if (currentChapter !== 0) return;
   let syncTimer = 0;
   const scheduleSync = () => {
     clearTimeout(syncTimer);
@@ -351,7 +351,7 @@ function applyPcStart(point, attempt = 0, revision = loadingRevision) {
     return;
   }
   $("#loading-state").hidden = true;
-  if (currentChapter === 1) installLearningDemoSync(doc, revision);
+  if (currentChapter === 0) installLearningDemoSync(doc, revision);
 }
 
 function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
@@ -522,8 +522,9 @@ window.addEventListener("message", event => {
 renderPointMenu();
 const deepLink = location.hash.match(/^#chapter-(\d+)-([a-z0-9-]+)$/i);
 if (deepLink) {
-  const chapterIndex = Number(deepLink[1]) - 1;
-  const pointIndex = chapters[chapterIndex]?.points.findIndex(point => point.id === deepLink[2]) ?? -1;
+  const pointId = deepLink[2];
+  const chapterIndex = chapters.findIndex(chapter => chapter.points.some(point => point.id === pointId));
+  const pointIndex = chapterIndex >= 0 ? chapters[chapterIndex].points.findIndex(point => point.id === pointId) : -1;
   if (pointIndex >= 0) loadPoint(chapterIndex, pointIndex);
   else buildCover();
 } else buildCover();
