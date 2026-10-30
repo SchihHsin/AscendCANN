@@ -8438,8 +8438,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户澄清画布布局默认值按阶段区分：路径共创时默认选中「上下布局」；确认路径、进入学习后默认选中「左右布局」。这是画布路径布局，不影响顶部对话位置控件。进入学习后允许讲解者继续手动切换。
 - `ascend-studio/src/App.jsx` 依据共创草案 / 已确认路径状态设置布局；构建同步更新 `/ascstudio/` 与 `/ascstudio-pc/studio/` 的 Demo。电脑端设计材料更新资源版本。
 - 依据：用户明确指示（H）。页面序列、章节定位、路径内容与 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：本地浏览器回放确认共创默认上下、确认后左右，刷新共创页仍回到上下；`npm run build:pages` 已通过，仍有 Vite 既有大 bundle 提示。
-- Commit / push 与 Pages 发布回执待本轮完成后补记。
+- 验证：本地浏览器回放确认共创默认上下、确认后左右，刷新共创页仍回到上下；`npm run build:pages`、`node --check`（电脑端入口和两份构建 JS）、构建产物一致性检查及 `git diff --check` 通过。Vite 保留既有大 bundle 提示，未运行自动化测试。GitHub Pages workflow `41019867117` build / deploy 成功；线上 `/AscendCANN/ascstudio/` 与 `/AscendCANN/ascstudio-pc/studio/` 及新 JS / CSS 均 HTTP 200，均引用 `index-CBDMdl6j.js` / `index-DAHpXm-f.css`；电脑端入口加载的新 `app.js` 使用 `20261030-learning-layout-default`。
+- Commit / push：实现提交 `ecdd0907` 经合并提交 `7d6f6ba6` 推送至 `origin/main`；已同步保留并行主线提交 `d64b4e39`。本条交接记录随后单独提交并推送。
 
 ### 2026-10-30 · 修正入口箭头说明的相对位置
 
