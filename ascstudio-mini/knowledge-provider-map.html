@@ -1407,12 +1407,12 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-node-title" x="1050" y="84">项目客户端</text><text class="map-node-note" x="1050" y="106">授权项目 · 版本 · 选定日志</text><text class="map-node-label" x="1050" y="151">兼容建议 · 技术图解 · 下一步</text>
 
       <!-- 中层保留收紧后的椭圆分区，服务节点与任务能力按等距网格排列 -->
-      <ellipse class="map-fill knowledge" cx="720" cy="360" rx="410" ry="145"/>
-      <ellipse class="map-orbit knowledge" cx="720" cy="360" rx="410" ry="145"/>
+      <ellipse class="map-fill knowledge" cx="720" cy="360" rx="425" ry="148"/>
+      <ellipse class="map-orbit knowledge" cx="720" cy="360" rx="425" ry="148"/>
 
       <!-- 入口把目标或项目上下文送入相应服务 -->
-      <path class="map-path experience" d="M500 161C440 190 340 225 310 286C286 336 310 390 412 422"/>
-      <path class="map-path future" d="M1050 161C1105 205 1160 250 1160 310C1160 340 1150 358 1125 360H650C638 360 626 390 620 422"/>
+      <path class="map-path experience" d="M500 161C440 190 340 225 310 286C286 336 310 390 412 440"/>
+      <path class="map-path future" d="M1050 161C1110 210 1160 260 1160 340C1160 390 1190 450 1160 486C1100 500 900 490 650 486C635 486 620 470 620 458"/>
 
       <!-- 上排任务结果汇流校验；下排服务组件按调用关系串联 -->
       <path class="map-path validation-branch" d="M420 267V250 M620 267V250 M820 267V250 M1020 267V250"/>
@@ -1427,7 +1427,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <path class="map-path task-diagram" d="M620 360V353"/>
       <path class="map-path task-recommend" d="M820 360V353"/>
       <path class="map-path task-event" d="M1020 360V353"/>
-      <path class="map-path agent" d="M820 420C820 398 790 378 720 360"/>
+      <path class="map-path agent" d="M830 448C860 440 900 400 900 360"/>
       <circle class="map-node-dot task-path" cx="420" cy="278" r="8"/>
       <circle class="map-node-dot task-diagram" cx="620" cy="278" r="8"/>
       <circle class="map-node-dot task-recommend" cx="820" cy="278" r="8"/>
@@ -1438,19 +1438,19 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-node-title" x="1020" y="306">活动与内容上新</text><text class="map-task-note" x="1020" y="325">日期 / 受众 / 状态</text><text class="map-task-note" x="1020" y="341">更新 → 活动日程</text>
 
       <!-- 服务组件靠近知识底座，OpenAPI / Host / Skill / MCP 按调用关系串联 -->
-      <path class="map-path agent" d="M428 430H610"/>
-      <path class="map-path agent" d="M630 430H810"/>
-      <path class="map-path agent" d="M830 430H1012"/>
+      <path class="map-path agent" d="M428 448H610"/>
+      <path class="map-path agent" d="M630 448H810"/>
+      <path class="map-path agent" d="M830 448H1012"/>
       <!-- 知识索引与检索服务归在底座；索引向上供 MCP -->
-      <path class="map-path foundation-link" d="M1168 628C1220 584 1250 520 1230 472C1215 440 1140 430 1028 430"/>
+      <path class="map-path foundation-link" d="M1168 628C1220 584 1250 520 1230 472C1215 454 1140 448 1028 448"/>
 
-      <rect class="map-node-shape interface" x="412" y="422" width="16" height="16" rx="3"/>
+      <rect class="map-node-shape interface" x="412" y="440" width="16" height="16" rx="3"/>
       <text class="map-node-title text-end" x="405" y="380">OpenAPI · 查询服务</text><text class="map-node-note text-end" x="405" y="406">语义检索 · 版本过滤 · 原文引用</text>
-      <path class="map-node-shape orchestration" d="M620 420L630 430L620 440L610 430Z"/>
+      <path class="map-node-shape orchestration" d="M620 438L630 448L620 458L610 448Z"/>
       <text class="map-node-title text-end" x="605" y="380">Agent Host</text><text class="map-node-note text-end" x="605" y="406">目标 / 环境 / 授权 · 权限与工具路由</text>
-      <path class="map-node-shape orchestration" d="M820 420L830 430L820 440L810 430Z"/>
+      <path class="map-node-shape orchestration" d="M820 438L830 448L820 458L810 448Z"/>
       <text class="map-node-title" x="820" y="380">Skill · 任务流程</text><text class="map-node-note" x="820" y="406">步骤 · 输入输出 · 验收条件</text>
-      <rect class="map-node-shape interface" x="1012" y="422" width="16" height="16" rx="3"/>
+      <rect class="map-node-shape interface" x="1012" y="440" width="16" height="16" rx="3"/>
       <text class="map-node-title" x="1020" y="380">MCP · 知识与工具</text><text class="map-node-note" x="1020" y="406">兼容 · 样例 · Issue · 活动</text><text class="map-node-note" x="1020" y="423">授权读取项目环境 / 日志</text>
 
       <!-- 质量检查后回到入口；授权完成与纠错反馈进入 Owner 复核 -->
