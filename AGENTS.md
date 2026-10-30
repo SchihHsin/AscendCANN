@@ -8415,4 +8415,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出一张节点卡片的高度会随其他卡片变化，要求每张卡只按自身内容定高。定位到 `ascend-studio/src/task-content-map.css` 的 `height: 100%`：Grid 行高由同排最高节点决定，该声明把整行高度传给每张卡。现让节点包装层从行顶自然起排，卡片恢复 `height: auto`；行本身仍可容纳最高卡片，关系线仍按真实节点边界测量。
 - 修改 `ascend-studio/src/task-content-map.css`、`ascend-studio/AGENTS.md` 及该 Demo 的 Pages 产物。依据为用户直接观察（H）和实际选择器 / Grid 拉伸规则源码核对（M）。只影响任务内容总览网格节点高度；自由画布、页面序列 / 路由与 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；本地 `http://127.0.0.1:5196/` 返回 HTTP 200，开发服务 CSS 与构建 CSS 均含自然高度规则。未运行测试套件。当前无法从 CUA 打开浏览器截图进行视觉复核；推送回执与 Pages workflow 状态将在完成发布后追加。
+- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；本地 `http://127.0.0.1:5196/` 返回 HTTP 200，开发服务 CSS 与构建 CSS 均含自然高度规则。未运行测试套件。当前无法从 CUA 打开浏览器截图进行视觉复核；线上 `/AscendCANN/ascstudio/?rev=c4dfd082` 返回 HTTP 200，HTML 已引用新 JS / CSS，线上 CSS 已读回自然高度规则。
+- Commit / push：修复提交 `28fd9929` 连同并行更新合并后由 `c4dfd082` 推送至 `origin/main`；GitHub Pages workflow `41014217231` 成功。其后交接记录将单独提交并推送。
