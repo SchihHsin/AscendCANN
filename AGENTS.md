@@ -8326,4 +8326,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出选区只有渐变描边、缺少内部底色。现为已框选矩形与拖动预览统一添加低透明度的蓝 → 紫 → 粉 → 琥珀渐变填充（透明度约 7%–9%）；保留高辨识度渐变描边、内容透视与原有阴影，不遮挡区域内容。
 - 修改 `ascend-studio/src/task-workspace.css` 与 `ascstudio/` 构建产物。依据为用户明确视觉反馈（H）；页面顺序 / 路由及 API / Protocol、Host / Harness、Application / Task 边界未变。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。提交、推送及 Pages 状态待发布后补录。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。提交 `2ab17ead` 已推送至 `origin/main`；Pages workflow `40997799973` 成功。线上 `/AscendCANN/ascstudio/`、`index-Hkq9HylO.js` 与 `index-BRtZ0RMp.css` 均 HTTP 200，CSS 已读回 alpha 约 7%–9% 的渐变填充。
