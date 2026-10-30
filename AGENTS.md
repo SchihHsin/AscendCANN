@@ -8404,6 +8404,34 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户截图与明确反馈（H）；同源 iframe 的焦点与按键行为、页面转换结果由本地 CUA 实测（M）。仅调整展示材料键盘导航和资源缓存版本；章节顺序、Demo 起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 实测第一章封面左右切换、封面右键进入首个设计点、首个设计点左键返回封面、末章最后一点右键回到首章封面；未运行自动化测试。代码提交 `52da6176` 已推送至 `origin/main`；Pages workflow `41013373676` 成功。线上入口与 `app.js` 均 HTTP 200，确认入口引用新版本且脚本含 iframe 键盘监听。
 
+### 2026-10-30 · 统一能力架构图的圆角直角连线
+
+- 按用户确认，将正式页 `ascstudio-mini/knowledge-provider-map.html` 和对比页 `ascstudio-mini/knowledge-provider-map-line-options.html` 的连线统一为水平 / 垂直轨道，转弯处使用 8px 圆角；保留入口、Agent、知识供给、结果校验等关系颜色。校验节点横向微调 3px，为箭头进入节点前留出完整圆角。对比页的两种节点布局继续一致遵循这套线条规则。
+- 修改范围是路径几何和描边端点 / 接头样式；节点关系、内容、页面顺序不变，不影响 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确认可该线条方案（H）；既有连线的语义与落点沿用原图结构（M）。
+- 验证：`git diff --check`、两页内联脚本 `node --check`、ID 唯一性检查通过；静态核对正式页 12 条连线 / 13 个圆角、对比页 24 条连线 / 26 个圆角，均无自由曲线、直角折返或非 8px 圆角。本地预览服务 HTTP 200；headless 截图输出黑屏，因此不作为视觉验收证据。未运行自动化测试。
+- 页面提交 `aa27bc88` 已推送至 `origin/main`；线上正式页 HTTP 200，并读回入口、知识底座与校验线路径。当前环境未安装 `gh`，GitHub Pages 工作流状态未通过 CLI 核验。交接记录随后单独推送。
+
+### 2026-10-30 · 任务内容总览节点独立定高
+
+- 用户指出一张节点卡片的高度会随其他卡片变化，要求每张卡只按自身内容定高。定位到 `ascend-studio/src/task-content-map.css` 的 `height: 100%`：Grid 行高由同排最高节点决定，该声明把整行高度传给每张卡。现让节点包装层从行顶自然起排，卡片恢复 `height: auto`；行本身仍可容纳最高卡片，关系线仍按真实节点边界测量。
+- 修改 `ascend-studio/src/task-content-map.css`、`ascend-studio/AGENTS.md` 及该 Demo 的 Pages 产物。依据为用户直接观察（H）和实际选择器 / Grid 拉伸规则源码核对（M）。只影响任务内容总览网格节点高度；自由画布、页面序列 / 路由与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；本地 `http://127.0.0.1:5196/` 返回 HTTP 200，开发服务 CSS 与构建 CSS 均含自然高度规则。未运行测试套件。当前无法从 CUA 打开浏览器截图进行视觉复核；线上 `/AscendCANN/ascstudio/?rev=c4dfd082` 返回 HTTP 200，HTML 已引用新 JS / CSS，线上 CSS 已读回自然高度规则。
+- Commit / push：修复提交 `28fd9929` 连同并行更新合并后由 `c4dfd082` 推送至 `origin/main`；GitHub Pages workflow `41014217231` 成功。其后交接记录将单独提交并推送。
+
+### 2026-10-30 · 澄清连线方案交付范围
+
+- 用户确认当前只采用正式总图中的“分布轨线”方案，不需要把节点布局对比页作为本次交付。先前将旧方案对比页列为本次结果，是把更早的“方案一 / 方案二”预览请求混入当前任务，属于范围误判。
+- 正式页 `ascstudio-mini/knowledge-provider-map.html` 保留已选分布轨线及统一圆角直角连线；撤回本轮对 `ascstudio-mini/knowledge-provider-map-line-options.html` 的修改，恢复此前预览状态。该预览源于先前对比请求，保留作历史参考，不作为当前方案交付或推荐。
+- 页面结构与序列、节点关系以及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户对交付范围的直接澄清（H）。
+- 验证：`git diff --check` 通过；正式页线上 HTTP 200 且可读回分布轨线路径；旧预览页线上 HTTP 200 且已读回修改前内容。代码修正提交 `89d3c061` 已推送至 `origin/main`；本交接记录随后单独推送。
+
+### 2026-10-30 · 调整入口 / 形态层为纵向演进关系
+
+- 按用户指定，将第 06 页第一层命名为“入口 / 形态”，把社区节点改为“社区 AI 助手”；社区入口置上、项目客户端置下，以向下箭头连接，并在上方加粗“从 Web 走进项目”。为适配新落点，将 Web→API 查询线与校验结果→客户端回路线分别改接到新节点边缘；其他层级与关系不变。
+- 修改 ascstudio-mini/knowledge-provider-map.html。依据：用户直接确定的层名、节点名、垂直顺序、箭头与文案（H）；连接器落点按现有节点与服务关系调整（M）。页面序列、节点信息及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 本地图预览检查节点、标题、箭头与两条服务连线无重叠。GitHub Pages 部署 b332ad3846791e02e303de4594b539808e1ef410 状态 success，正式页 HTTP 200，并读回新标题、节点与箭头。未运行自动化测试。
+- 页面提交 b332ad38 已推送至 origin/main；交接记录随后单独推送。知识底座绿色区域的面积 / 淡化尚待后续确认与调整。
+
 
 ### 2026-10-30 · 学习路径共创与学习状态默认布局区分
 
