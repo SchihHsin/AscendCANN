@@ -8396,3 +8396,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户澄清需要增加的是左侧层级标题与右侧图形之间的横向距离，而非上下留白。正式蓝图和连线方案对比页的两张图都加宽左侧标题留白；层级标题位置不动，图形从左侧让开，节点、关系、字号规则与页面顺序保持不变。
 - 依据：用户明确校正空间方向并指出标题与图应拉开（H）。仅调整 SVG 视口和标题坐标，不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check`、两页内联脚本 `node --check`、HTML ID 唯一性（40 / 48）检查通过；CUA 本地预览以 1280×720 检查第 06 页，标题与绿色底座等图形之间留白清晰；线上正式页 HTTP 200，已读回新视口和标题坐标。未运行自动化测试。代码提交 `c8b8101a` 已推送至 `origin/main`；Pages workflow `41011988295` 成功，交接记录随后单独推送。
+
+### 2026-10-30 · 修复桌面端 Demo 左右键导航
+
+- 用户截图显示电脑端展示页停在第一章封面，并反馈左右键都不能翻页。根因是键盘监听只在外层文档，焦点进入同源 iframe 后按键不会冒泡到外层；封面也只有 Enter 进入章节。
+- `ascstudio-pc/app.js` 将键盘逻辑复用于外层和 iframe 文档：封面右键进入本章，左键回到上一章最后一个设计点（首章封面向前循环至末章）；Demo 页面左右键切换设计点，首个设计点左键回本章封面。左下导航的上一页按钮在首个设计点改为“返回本章封面”。文本框、选区和组合键保留原生操作。`ascstudio-pc/index.html` 与内嵌页面同步更新资源版本 `20261030-keyboard-navigation`。
+- 依据：用户截图与明确反馈（H）；同源 iframe 的焦点与按键行为、页面转换结果由本地 CUA 实测（M）。仅调整展示材料键盘导航和资源缓存版本；章节顺序、Demo 起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 实测第一章封面左右切换、封面右键进入首个设计点、首个设计点左键返回封面、末章最后一点右键回到首章封面；未运行自动化测试。代码提交 `52da6176` 已推送至 `origin/main`；Pages workflow `41013373676` 成功。线上入口与 `app.js` 均 HTTP 200，确认入口引用新版本且脚本含 iframe 键盘监听。
