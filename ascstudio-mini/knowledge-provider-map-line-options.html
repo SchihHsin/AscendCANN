@@ -1409,7 +1409,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <small id="lineOptionCaption">分组布线，减少长回路与交叉</small>
     </div></div>
   <div class="body-area kp-body"><div class="feasibility-map capability-map" id="lineOptionView">
-    <svg class="capability-system-map line-option-svg option-track" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
+    <svg class="capability-system-map line-option-svg option-track" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="-150 0 1550 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">方案一：分轨布线</title>
       <desc id="cap-map-desc">方案一保留节点位置，连线表达 Web 查询、Host 对 Skill / MCP 的路由、服务结果校验与知识供给；项目上下文与授权边界通过节点说明呈现。图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Host 组装授权上下文并路由 Skill 和 MCP，Skill 分派服务任务，任务结果汇入来源、版本、范围、权限与可执行性校验后返回体验入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；检索服务与受控工具经 API / MCP 向上供给，经授权的完成与纠错信号由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
@@ -1426,10 +1426,10 @@ body.overview #panel,body.overview #toggle{display:none!important}
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">开发者服务</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
-      <text class="map-stage-name experience" x="28" y="76">EXPERIENCE</text><text class="map-stage-sub" x="28" y="101">开发者入口</text>
-      <text class="map-stage-name services" x="28" y="272">DEVELOPER SERVICES</text><text class="map-stage-sub" x="28" y="297">面向开发者的服务</text>
-      <text class="map-stage-name runtime" x="28" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="28" y="462">运行与接入能力</text>
-      <text class="map-stage-name governance" x="28" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="28" y="614">内容治理 · 检索服务</text>
+      <text class="map-stage-name experience" x="-122" y="76">EXPERIENCE</text><text class="map-stage-sub" x="-122" y="101">开发者入口</text>
+      <text class="map-stage-name services" x="-122" y="272">DEVELOPER SERVICES</text><text class="map-stage-sub" x="-122" y="297">面向开发者的服务</text>
+      <text class="map-stage-name runtime" x="-122" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="-122" y="462">运行与接入能力</text>
+      <text class="map-stage-name governance" x="-122" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="-122" y="614">内容治理 · 检索服务</text>
 
       <!-- 开发者体验：社区 Web 与项目客户端并列，共用同一知识供给 -->
       <ellipse class="map-fill api" cx="500" cy="115" rx="205" ry="43"/>
@@ -1513,7 +1513,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-foundation-title" x="1160" y="652">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="670">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
       <text class="map-service-title" x="720" y="576">知识底座</text><text class="map-service-note" x="720" y="594">全文 / 语义 · 版本过滤 · 来源</text>
     </svg>
-<svg class="capability-system-map line-option-svg option-hub" role="img" aria-labelledby="hub-map-title hub-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
+<svg class="capability-system-map line-option-svg option-hub" role="img" aria-labelledby="hub-map-title hub-map-desc" viewBox="-150 0 1550 700" preserveAspectRatio="xMidYMid meet">
       <title id="hub-map-title">方案二：Host 中心 Hub-and-Spoke</title>
       <desc id="hub-map-desc">方案二将 Agent Host 放在运行层中心，API 保持独立查询入口；Host 分别调用 Skill 与 MCP，Skill 分派学习、图解和推荐服务，MCP 连接活动目录与受控知识工具。图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Host 组装授权上下文并路由 Skill 和 MCP，Skill 分派服务任务，任务结果汇入来源、版本、范围、权限与可执行性校验后返回体验入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；检索服务与受控工具经 API / MCP 向上供给，经授权的完成与纠错信号由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
@@ -1530,10 +1530,10 @@ body.overview #panel,body.overview #toggle{display:none!important}
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">开发者服务</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
-      <text class="map-stage-name experience" x="28" y="76">EXPERIENCE</text><text class="map-stage-sub" x="28" y="101">开发者入口</text>
-      <text class="map-stage-name services" x="28" y="272">DEVELOPER SERVICES</text><text class="map-stage-sub" x="28" y="297">面向开发者的服务</text>
-      <text class="map-stage-name runtime" x="28" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="28" y="462">运行与接入能力</text>
-      <text class="map-stage-name governance" x="28" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="28" y="614">内容治理 · 检索服务</text>
+      <text class="map-stage-name experience" x="-122" y="76">EXPERIENCE</text><text class="map-stage-sub" x="-122" y="101">开发者入口</text>
+      <text class="map-stage-name services" x="-122" y="272">DEVELOPER SERVICES</text><text class="map-stage-sub" x="-122" y="297">面向开发者的服务</text>
+      <text class="map-stage-name runtime" x="-122" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="-122" y="462">运行与接入能力</text>
+      <text class="map-stage-name governance" x="-122" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="-122" y="614">内容治理 · 检索服务</text>
 
       <!-- 开发者体验：社区 Web 与项目客户端并列，共用同一知识供给 -->
       <ellipse class="map-fill api" cx="500" cy="115" rx="205" ry="43"/>
