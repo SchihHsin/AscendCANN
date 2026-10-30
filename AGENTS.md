@@ -8277,3 +8277,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-mini/app.js`、`ascstudio-mini/index.html`。章节顺序不变；第一章 6 点调整为 5 点，第三章 5 点扩为 7 点。没有改动 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：章节范围与复用 Mini 的决定来自用户明确确认（H）；路由状态、Mini 的页面讲解和示例状态以现有原型代码为依据（M）。
 - 验证：`node --check ascstudio-pc/app.js`、`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过；本地桌面预览确认开发章首点打开 AddCustom 任务画布图解，Mini 第 4 点落在“已理解”的知识口袋状态；Mini 内切换下一点后，PC 外层目录及 URL 同步到第 2 点。未运行自动化测试。实现提交 `abe9c414` 已包含在 `origin/main`；本交接记录随后单独提交并推送。无未决事项。
+
+### 2026-10-30 · 复核能力架构页连线语义（待用户选型）
+
+- 用户要求整体梳理第 06 页连线。现图的主要歧义：社区 Web 到查询 API 的蓝线绕过服务层大幅折返；项目客户端到 Host 的虚线与右侧绿色反馈回路贴近；API—Host—Skill—MCP 被画成一条串行链，容易误读为 API 必须依次经过 Host、Skill 才到 MCP；Skill 到服务总线的曲线在卡片下方穿过汇流区域。四类服务向结果校验汇流、知识索引向 API / MCP 供给、授权反馈回 Owner 的语义仍需保留。
+- 方案 1（推荐）：保持四层和节点位置，按关系类别分轨布线：Web ↔ 查询 API；项目客户端 → Agent Host；Host 分别路由 Skill / MCP，Skill 扇出到路径、图解、推荐服务；活动服务单独接活动 / 内容目录；服务结果 → 校验 → 入口；知识底座 → API / MCP；授权结果 / 纠错以虚线 → Owner 复核。连线用左侧入口轨、运行层内部扇出轨、右侧校验 / 上下文轨和外侧反馈轨，拆开当前连续链和重叠弯线。
+- 方案 2：将运行层改成 Host 居中的 Hub-and-Spoke 结构，API 保持独立查询入口，Skill 与 MCP 作为 Host 的分支，再将服务能力、校验与知识底座连入；信息关系更明显，但需重排运行层节点位置。
+- 本轮等待用户选择方案，尚未修改页面。用户截图及页面现有节点定义为依据（H）；需要避免把建设示意误作已接入服务（M）。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
