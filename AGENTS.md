@@ -8440,3 +8440,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确指示（H）。页面序列、章节定位、路径内容与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：本地浏览器回放确认共创默认上下、确认后左右，刷新共创页仍回到上下；`npm run build:pages` 已通过，仍有 Vite 既有大 bundle 提示。
 - Commit / push 与 Pages 发布回执待本轮完成后补记。
+
+### 2026-10-30 · 修正入口箭头说明的相对位置
+
+- 用户澄清“上下”指箭头两侧的两句说明，不是两个节点的排列。正式图现恢复社区 AI 助手与项目客户端左右并列；两者之间为横向箭头，上方加粗“从 Web 走进项目”，下方以常规字重写“能力延展到开发流程”。第一层仍为“入口 / 形态”。
+- 同步恢复 Web→API 查询线与校验结果→客户端回路线的原始节点锚点；节点名称、其他层与分布轨线关系不变。依据：用户对节点和两句说明相对位置的直接澄清（H）。
+- 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 SVG 预览确认箭头标签不与两端节点文字重叠。GitHub Pages 部署 0e3e2bd06dc671443cc52e44c30105b8bb57ce7f 状态 success，线上正式页 HTTP 200 并读回并列节点、横向箭头及上下说明。未运行自动化测试。
+- 页面修正提交 0e3e2bd0 已推送至 origin/main；交接记录随后单独推送。
