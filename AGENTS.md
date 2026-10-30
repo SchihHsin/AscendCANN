@@ -8334,3 +8334,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Demo 点击“指着说”开启框选时，左下讲解同步切到新点；点击退出后同步回路径学习点。直接进入新点时保留可操作的待开启状态，不替演示者预选区域。框选后提供区域缩略图和描述输入；本次核对未发送任何内容。
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，资源版本为 `20261030-learning-point-and-say`。仅增加学习设计点和同步映射，章节顺序、开发 / 移动章节及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户提出新增点（H）；对应按钮、框选浮层、区域描述输入和禁用的发送状态来自本地 Demo 实际交互（M）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 桌面预览确认新点落到 ResNet50 图解节点，打开 / 退出框选时讲解点在索引 2 与 3 间同步，拖动框选猫图后出现区域缩略图与描述输入框，未提交。页面提交 `216c71f5` 已推送至 `origin/main`；本交接记录随后单独提交并推送。工作区原有 `ascstudio-mini/knowledge-provider-map-line-options.html` 未改动、未暂存、未提交。
+
+### 2026-10-30 · 收敛能力架构图的连线
+
+- 用户反馈第 06 页连线杂乱。本次只更新对比页 `ascstudio-mini/knowledge-provider-map-line-options.html`，正式蓝图 `knowledge-provider-map.html` 未修改；两种方案保留同一套节点与四层结构，分别保留 Host 左置与 Host 居中的布局差异。
+- 重排后的主关系为：Web 查询接 API；Host 分别路由 Skill 与 MCP；运行能力层以一条短垂直箭头支撑上方服务层；MCP 连接活动 / 内容服务；知识底座的检索索引沿底座上缘分流到 API 与 MCP；服务组统一进入来源、版本、范围、权限和可执行性校验，再返回体验入口。线条按入口、工具调用、知识供给、结果校验分轨布置，移除了跨整页的长回路线。
+- 为降低线路数量，项目上下文由“项目客户端”与 Host 的授权 / 环境节点说明呈现，没有另画一条绕过全图的独立箭头；授权完成与纠错回流保留在 Owner 节点说明中，也不再画长虚线回路。正式蓝图的详细关系未改变。页面序列、API / Protocol、Host / Harness、Application / Task 边界均未改变；建设示意不表示服务已接入。
+- 依据：用户对当前截图“线好乱”的直接反馈（H）；路线落点根据节点坐标、方向和不穿过节点文字的布局约束推演（M）。
+- 验证：`git diff --check`、页面内联脚本 `node --check`、静态 ID 唯一性检查通过；CUA 桌面 1280×720 逐一切换方案 1 / 2，确认分流线、底座供给线、校验回入口的端点均可见，未运行自动化测试。实现提交 `fcf05242` 已推送至 `origin/main`。Pages URL 返回 HTTP 200，但首次回读仍是旧内容，线上发布状态尚未确认；需在用户再次打开前复核部署。
