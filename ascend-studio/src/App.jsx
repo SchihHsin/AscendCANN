@@ -541,9 +541,16 @@ function App() {
   }, [areaInteractionActive]);
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
-  const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels", initialLayout: "vertical", resetOnLoad: isPathGenerationTask });
+  const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels", initialLayout: isPathGenerationTask ? "horizontal" : "vertical", resetOnLoad: isPathGenerationTask });
   const learningCanvasVisible = isStandardLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
   const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
+  const pathGenerationModeRef = useRef({ taskId: null, mode: null });
+  useEffect(() => {
+    const mode = !isPathGenerationTask ? null : learning.state.draftPath ? "co-create" : learning.state.path ? "learning" : "empty";
+    const previous = pathGenerationModeRef.current;
+    if (mode === "learning" && (previous.taskId !== selectedTask || previous.mode !== "learning")) learningCanvasView.actions.setLayout("vertical");
+    pathGenerationModeRef.current = { taskId: selectedTask, mode };
+  }, [selectedTask, isPathGenerationTask, learning.state.draftPath, learning.state.path, learningCanvasView.actions]);
   useEffect(() => {
     if (learningAgentAction && learningAgentAction.taskId !== selectedTask) setLearningAgentAction(null);
   }, [selectedTask, learningAgentAction]);

@@ -7837,7 +7837,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-10-30 · 画布左右 / 上下布局语义统一
 
-- 用户截图反馈画布左右 / 上下布局疑似反向。明确工具栏语义：左右＝层级在左、材料在右；上下＝路径在上、材料在下。顶部对话左侧 / 底部浮窗控件独立。标准学习画布旧状态继续按实际可见排布标示，不重置视口和节点位置；新建标准学习画布默认左右。详见 `ascend-studio/AGENTS.md` 的「画布左右 / 上下布局语义统一」。
+- 用户截图反馈画布左右 / 上下布局疑似反向。明确工具栏语义：左右＝层级在左、材料在右；上下＝路径在上、材料在下。顶部对话左侧 / 底部浮窗控件独立。普通学习状态默认左右；路径共创默认上下，确认进入学习时切为左右。已保存画布继续保留用户手动选择、视口和节点位置。详见 `ascend-studio/AGENTS.md` 的「画布左右 / 上下布局语义统一」。
 - 统一入口按画布类型映射历史相反的内部状态：标准学习画布左右布局对应内部 `vertical`，ResNet50 对应原内部 `horizontal`；上下布局相反。更新 `LearningCanvasToolbar`、`LearningHierarchyCanvas`、`useLearningCanvasView`、`App.jsx`，并生成 Pages bundle。合并 `origin/main` 的 `65affbaf` 时保留双方 AGENTS 记录。验证：`npm --prefix ascend-studio run build:pages`、`node --check ascend-studio/src/useLearningCanvasView.js`、`node --check ascstudio/assets/index-C65-L30K.js`、`git diff --check` 通过；未运行自动化测试。
 - 提交 `5e8c90b1`（包含合并主线与本次实现）已推送至 `origin/main`。GitHub Pages workflow `41001438232` build / deploy 成功；线上 `/AscendCANN/ascstudio/?task=image-preprocessing` 返回 200，引用的 JS/CSS 均返回 200，JS 含新映射 `leftRightLayout: vertical`。没有自动化交互测试；未运行测试套件。
 
@@ -8403,3 +8403,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascstudio-pc/app.js` 将键盘逻辑复用于外层和 iframe 文档：封面右键进入本章，左键回到上一章最后一个设计点（首章封面向前循环至末章）；Demo 页面左右键切换设计点，首个设计点左键回本章封面。左下导航的上一页按钮在首个设计点改为“返回本章封面”。文本框、选区和组合键保留原生操作。`ascstudio-pc/index.html` 与内嵌页面同步更新资源版本 `20261030-keyboard-navigation`。
 - 依据：用户截图与明确反馈（H）；同源 iframe 的焦点与按键行为、页面转换结果由本地 CUA 实测（M）。仅调整展示材料键盘导航和资源缓存版本；章节顺序、Demo 起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 实测第一章封面左右切换、封面右键进入首个设计点、首个设计点左键返回封面、末章最后一点右键回到首章封面；未运行自动化测试。代码提交 `52da6176` 已推送至 `origin/main`；Pages workflow `41013373676` 成功。线上入口与 `app.js` 均 HTTP 200，确认入口引用新版本且脚本含 iframe 键盘监听。
+
+
+### 2026-10-30 · 学习路径共创与学习状态默认布局区分
+
+- 用户澄清画布布局默认值按阶段区分：路径共创时默认选中「上下布局」；确认路径、进入学习后默认选中「左右布局」。这是画布路径布局，不影响顶部对话位置控件。进入学习后允许讲解者继续手动切换。
+- `ascend-studio/src/App.jsx` 依据共创草案 / 已确认路径状态设置布局；构建同步更新 `/ascstudio/` 与 `/ascstudio-pc/studio/` 的 Demo。电脑端设计材料更新资源版本。
+- 依据：用户明确指示（H）。页面序列、章节定位、路径内容与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：本地浏览器回放确认共创默认上下、确认后左右，刷新共创页仍回到上下；`npm run build:pages` 已通过，仍有 Vite 既有大 bundle 提示。
+- Commit / push 与 Pages 发布回执待本轮完成后补记。
