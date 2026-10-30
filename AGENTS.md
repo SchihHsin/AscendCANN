@@ -8377,3 +8377,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据：用户明确接受构建时同步（H）；仓库构建产物显示原始页与嵌入副本此前分别引用 `index-Bl19vu3G.js` / `index-16DLZEL2.css` 与旧 bundle（M）。本次副本改为与原始页使用相同构建产物，不改变章节序列、页面路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm --prefix ascend-studio run build:pages`、`node --check ascend-studio/scripts/publish-pages.mjs`、`node --check ascstudio-pc/app.js`、`git diff --check` 通过；对比确认构建目录与 `ascstudio-pc/studio/` 24 个文件逐一相同，index、JS、CSS 也与根仓 `/ascstudio/` 当前版本一致。Vite 保留既有大 bundle 提示；未运行自动化测试。
 - Commit / push：提交 `9ca1e217` 已推送至 `origin/main`；Pages workflow `41010001794` build / deploy 成功。线上内嵌页及新 JS / CSS 均返回 HTTP 200。
+
+### 2026-10-30 · 正式能力架构图采用分轨布线
+
+- 用户在连线方案比较后选择“分轨布线”，本次将方案一应用到正式蓝图第 06 页 `ascstudio-mini/knowledge-provider-map.html`；对比页 `knowledge-provider-map-line-options.html` 保持不变。
+- 连线按关系分轨：Web 查询进入 API；结果从开发者服务汇入右侧校验节点，再返回项目客户端；Host 通过一条横向主干分流至 Skill 与 MCP，MCP 单独连接活动 / 内容服务；知识底座的检索索引沿上缘总线分别供给 API 与 MCP。移除旧版穿越服务节点的汇流线、API→Host→Skill→MCP 直串线、项目上下文长绕线和跨图 Owner 虚线回路。项目授权范围仍由入口与 Host 文案表达；Owner、过期 / 冲突复核及授权纠错回流仍由底座节点与页脚说明承载。四层、节点内容和页面顺序不变，也不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：方案选择来自用户明确确认（H）；各轨道的节点落点、路由和颜色对照已选方案及现有 SVG 坐标推导（M）。建设示意不代表服务已接入。
+- 验证：`git diff --check`、页面内联脚本 `node --check`、40 个 HTML ID 唯一性检查通过；CUA 本地页确认第 06 页已加载，当前可用截图仅为窄侧栏视口，不作为桌面全图排版证据。静态核对各路由均从节点边缘进出且避开文字区域。页面提交 `711d16c1` 已推送至 `origin/main`；GitHub Pages workflow `41010354923` 成功，带 `rev=711d16c1` 的线上页面返回 HTTP 200，已读回分轨路线。未运行自动化测试。
