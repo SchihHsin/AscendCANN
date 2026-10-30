@@ -8,9 +8,9 @@
 
 在本目录执行 `npm ci` 后，可用 `npm run dev` 启动开发预览。
 
-- `npm run build:pages`：构建相对资源路径的GitHub Pages版本，更新根仓 `ascstudio/`；只覆盖本原型静态产物。
+- `npm run build:pages`：构建相对资源路径的GitHub Pages版本，更新根仓 `ascstudio/`，并同步刷新电脑端展示材料中的 `ascstudio-pc/studio/` 内嵌副本；不覆盖外层章节、起始页定位和设计点讲解。
 - `npm run build`：保留原项目的可选Sites构建能力。
-- 修改后应将本目录源码、`ascstudio/`静态产物和根仓交接记录一起提交并立即推送。
+- 修改后应将本目录源码、`ascstudio/`静态产物、`ascstudio-pc/studio/`同步副本和根仓交接记录一起提交并立即推送。
 
 ## 范围
 

@@ -8368,3 +8368,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js` 中第一章标题。依据为用户明确选定文案（H）；仅更新章节显示名，不改变章节顺序、Demo 起始页、交互或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；线上 `ascstudio-pc/app.js` 返回 HTTP 200，包含新标题且不再包含旧标题。Pages workflow `41009208481` 完成且成功。
 - Commit / push：实现提交 `0b235dad` 已推送至 `origin/main`；本交接记录随后的独立提交推送。
+
+
+### 2026-10-30 · 构建时同步电脑端展示 Demo
+
+- 用户确认原始 Ascend Studio 更新后，应在构建时同步到电脑端设计材料。当前原始 `/ascstudio/` 已包含更新的学习画布样式，材料内嵌副本此前仍引用旧 bundle。
+- `ascend-studio` 的 `build:pages` 现先构建到被忽略的 `dist/pages/`，再通过 `scripts/publish-pages.mjs` 更新根仓 `ascstudio/` 并替换 `ascstudio-pc/studio/` 副本；PC 外层章节、起始页定位、设计点讲解和焦点描边抑制仍由 `ascstudio-pc` 自己维护。更新 README 与 `ascend-studio/AGENTS.md` 说明构建和产物关系。
+- 证据：用户明确接受构建时同步（H）；仓库构建产物显示原始页与嵌入副本此前分别引用 `index-Bl19vu3G.js` / `index-16DLZEL2.css` 与旧 bundle（M）。本次副本改为与原始页使用相同构建产物，不改变章节序列、页面路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm --prefix ascend-studio run build:pages`、`node --check ascend-studio/scripts/publish-pages.mjs`、`node --check ascstudio-pc/app.js`、`git diff --check` 通过；对比确认构建目录与 `ascstudio-pc/studio/` 24 个文件逐一相同，index、JS、CSS 也与根仓 `/ascstudio/` 当前版本一致。Vite 保留既有大 bundle 提示；未运行自动化测试。
+- Commit / push：待本次同步功能提交并推送后补记。

@@ -85,8 +85,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户再次强调每次修改后立即push；此前只推交接记录是执行错误，不能以可视化目录在仓库外为由不推源码。
 - 当前权威源码位于 `/Users/hsin/Documents/Coding/AscendCANN/ascend-studio/`，后续修改在此进行；历史仓外目录保留作快照。
-- Pages产物在根仓 `/Users/hsin/Documents/Coding/AscendCANN/ascstudio/`，线上入口为 `https://schihhsin.github.io/AscendCANN/ascstudio/`。源码品牌资产按BASE_URL解析，Pages构建使用相对base；不改变UI、交互或研究边界。
-- 修改后构建 `npm run build:pages`，只暂存本任务源码/产物与交接记录并立即push；不得再次只提交交接文档。
+- Pages产物在根仓 `ascstudio/`，线上入口为 `https://schihhsin.github.io/AscendCANN/ascstudio/`；同一构建还会同步更新电脑端展示材料的 `ascstudio-pc/studio/` 内嵌副本。源码品牌资产按 BASE_URL 解析，Pages 构建使用相对 base。
+- 修改后构建 `npm run build:pages`，确认 `ascstudio/` 与 `ascstudio-pc/studio/` 引用同一份 JS / CSS；只暂存本任务源码、两处产物和交接记录并立即 push；不得再次只提交交接文档。
 - 保留原Sites可选模板文件；本轮使用用户指定的GitHub Pages，不调用Sites发布。
 
 
