@@ -8269,3 +8269,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户截图、明确选择方案 1 及“节点高度适应层级中间”的补充（H）。
 - 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认服务内容组位于分区中线、外椭圆留白均匀，校验与服务连线均接回目标节点；GitHub Pages workflow `40993224812` 成功，线上 HTTP 200 且回读源码确认新圆心和路径坐标。未运行自动化测试。
 - 页面提交 `b6874f16` 已推送至 `origin/main`；本交接记录需随后单独提交并推送。无未决事项。
+
+### 2026-10-30 · 对齐开发章起点并迁移 Mini 移动篇
+
+- 用户确认第一章从原第三个设计点“图解”开始，删去此前的 Prompt / 知识卡两点；第三章直接复用 `ascstudio-mini` 的材料。第一章现在从 AddCustom 排查图解进入，依次经过示例副本、经验回流邀请、社区草稿与多平台预览；章节标题为“解决问题，也留下经验”。学习章维持已确认的三点不变。
+- 第三章设计点由 5 个更新为 Mini 的 7 个，沿用 Mini 讲解和页面状态。电脑端外层目录会跟随 Mini 内的设计点切换更新选中项和 URL；“看懂后回到电脑”状态同步将示例知识卡标记为已理解。修正“返回桌面”按钮，使其回到第三章封面。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-mini/app.js`、`ascstudio-mini/index.html`。章节顺序不变；第一章 6 点调整为 5 点，第三章 5 点扩为 7 点。没有改动 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：章节范围与复用 Mini 的决定来自用户明确确认（H）；路由状态、Mini 的页面讲解和示例状态以现有原型代码为依据（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过；本地桌面预览确认开发章首点打开 AddCustom 任务画布图解，Mini 第 4 点落在“已理解”的知识口袋状态；Mini 内切换下一点后，PC 外层目录及 URL 同步到第 2 点。未运行自动化测试。实现提交 `abe9c414` 已包含在 `origin/main`；本交接记录随后单独提交并推送。无未决事项。
