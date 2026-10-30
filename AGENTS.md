@@ -8284,3 +8284,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 方案 1（推荐）：保持四层和节点位置，按关系类别分轨布线：Web ↔ 查询 API；项目客户端 → Agent Host；Host 分别路由 Skill / MCP，Skill 扇出到路径、图解、推荐服务；活动服务单独接活动 / 内容目录；服务结果 → 校验 → 入口；知识底座 → API / MCP；授权结果 / 纠错以虚线 → Owner 复核。连线用左侧入口轨、运行层内部扇出轨、右侧校验 / 上下文轨和外侧反馈轨，拆开当前连续链和重叠弯线。
 - 方案 2：将运行层改成 Host 居中的 Hub-and-Spoke 结构，API 保持独立查询入口，Skill 与 MCP 作为 Host 的分支，再将服务能力、校验与知识底座连入；信息关系更明显，但需重排运行层节点位置。
 - 本轮等待用户选择方案，尚未修改页面。用户截图及页面现有节点定义为依据（H）；需要避免把建设示意误作已接入服务（M）。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+
+### 2026-10-30 · 调整桌面端章节顺序
+
+- 用户确认章节封面顺序改为第一章学习、第二章开发；移动端章节继续放在第三章。`ascstudio-pc/app.js` 中重排章节数据，并将学习 Demo 的点位同步索引由 1 更新为 0；学习推荐卡、路径共创与 ResNet50 状态映射随章节数据保持一致。
+- 设计点深链接改为按全局唯一设计点 ID 查找章节与点位，确保旧链接中的章节序号变化后，学习和开发点仍能落到正确状态。更新 `ascstudio-pc/index.html` 的资源版本号为 `20261030-learning-development-mobile-order`。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`；页面序列明确为学习 → 开发 → 移动端，没有改变设计点内容或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户对章节先后顺序的明确要求（H），起始 Demo 页面由本地交互原型状态映射（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器核对第一章落在学习模式的新建任务主动建议页，第二章落在 Add 算子精度排查任务的图解工作区，左下角讲解与各自设计点一致。未运行自动化测试。页面提交 `e27465fd` 已推送至 `origin/main`；本交接记录随后单独提交并推送。无待确认事项。
