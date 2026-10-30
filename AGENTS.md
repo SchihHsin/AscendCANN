@@ -8210,3 +8210,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确要求（H）；未改变页面序列和 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 与静态断言通过；本地 CUA 1280×720 预览确认文字和图标直接位于绿色底座上。页面提交 `7d320bf9` 已推送至 `origin/main`；GitHub Pages workflow `40987889867` 在检查时仍处于运行中，线上状态待完成后核验。未运行自动化测试。
 - 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 统一四层椭圆并居中知识检索服务
+
+- 用户要求四层背景形状统一为椭圆，并继续处理背景居中；已将 Developer Services 与 Runtime & Tools 从圆角矩形改为椭圆，四层背景共用 `x=720` 中心轴，椭圆宽度收在内容区域内以免压到左侧层级标题。
+- 用户圈选的“知识检索服务”现居中放在知识底座绿色背景上，标题和说明改为深绿色；删除文字前方的双圈图标，保留图例自身的检索符号。无独立底色、边框或胶囊。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确要求（H）；没有改变节点关系、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 与椭圆形状、中心坐标、深绿色字、移除节点双圈的静态断言通过；本地 CUA 1280×720 预览确认椭圆不遮层级标题、检索服务居中落在绿色底座。页面提交 `ccef3b5d` 已推送至 `origin/main`；GitHub Pages workflow `40988684548` 在交接记录时仍运行中，线上发布回读待确认。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
