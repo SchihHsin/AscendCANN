@@ -8403,3 +8403,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascstudio-pc/app.js` 将键盘逻辑复用于外层和 iframe 文档：封面右键进入本章，左键回到上一章最后一个设计点（首章封面向前循环至末章）；Demo 页面左右键切换设计点，首个设计点左键回本章封面。左下导航的上一页按钮在首个设计点改为“返回本章封面”。文本框、选区和组合键保留原生操作。`ascstudio-pc/index.html` 与内嵌页面同步更新资源版本 `20261030-keyboard-navigation`。
 - 依据：用户截图与明确反馈（H）；同源 iframe 的焦点与按键行为、页面转换结果由本地 CUA 实测（M）。仅调整展示材料键盘导航和资源缓存版本；章节顺序、Demo 起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 实测第一章封面左右切换、封面右键进入首个设计点、首个设计点左键返回封面、末章最后一点右键回到首章封面；未运行自动化测试。代码提交 `52da6176` 已推送至 `origin/main`；Pages workflow `41013373676` 成功。线上入口与 `app.js` 均 HTTP 200，确认入口引用新版本且脚本含 iframe 键盘监听。
+
+### 2026-10-30 · 任务内容总览节点独立定高
+
+- 用户指出一张节点卡片的高度会随其他卡片变化，要求每张卡只按自身内容定高。定位到 `ascend-studio/src/task-content-map.css` 的 `height: 100%`：Grid 行高由同排最高节点决定，该声明把整行高度传给每张卡。现让节点包装层从行顶自然起排，卡片恢复 `height: auto`；行本身仍可容纳最高卡片，关系线仍按真实节点边界测量。
+- 修改 `ascend-studio/src/task-content-map.css`、`ascend-studio/AGENTS.md` 及该 Demo 的 Pages 产物。依据为用户直接观察（H）和实际选择器 / Grid 拉伸规则源码核对（M）。只影响任务内容总览网格节点高度；自由画布、页面序列 / 路由与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；本地 `http://127.0.0.1:5196/` 返回 HTTP 200，开发服务 CSS 与构建 CSS 均含自然高度规则。未运行测试套件。当前无法从 CUA 打开浏览器截图进行视觉复核；推送回执与 Pages workflow 状态将在完成发布后追加。
