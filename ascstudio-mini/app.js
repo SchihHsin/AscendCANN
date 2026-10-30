@@ -50,6 +50,14 @@ function updateDesktopPocketItem(id, patch) {
     return items.find(item => item.id === id) || null;
   } catch { return null; }
 }
+function syncDemoUnderstandingToDesktop(attempt = 0) {
+  const item = readDesktopPocket().items.find(entry => entry.id === "pocket-demo-input-layout");
+  if (item) {
+    if (item.status !== "understood") updateDesktopPocketItem(item.id, { status: "understood" });
+    return;
+  }
+  if (attempt < 30) setTimeout(() => syncDemoUnderstandingToDesktop(attempt + 1), 160);
+}
 function latestPocketNotification() {
   const pocket = readDesktopPocket();
   return pocket.items.find(item => item.id === pocket.lastNotificationId && item.sentAt) || null;
@@ -151,6 +159,7 @@ function updateReviewPanel(route = currentRoute) {
     $("#review-prev").disabled = true;
     $("#review-next").disabled = true;
     setReviewLocation(-1);
+    announceEmbeddedReviewStep(-1);
     return;
   }
   const step = REVIEW_STEPS[index];
@@ -183,6 +192,10 @@ function updateReviewPanel(route = currentRoute) {
     syncDesktopDemoView(index === 3 ? "pocket" : "task");
   }
   setReviewLocation(index);
+  announceEmbeddedReviewStep(index);
+}
+function announceEmbeddedReviewStep(index) {
+  if (window.parent !== window) window.parent.postMessage({ type: "ascstudio-mini-review-step", index }, location.origin);
 }
 function reviewRoute(index) {
   if (index === 0) return "review-pending";
@@ -526,6 +539,7 @@ function render() {
   const valid = ["wechat", "wechat-notification", "pocket-message", "review-handoff", "discover", "briefing", "tasks", "mine", "review-pending", "review-instant", "review-weekly-settings", "review-briefing"].includes(page) || (page === "task" && TASKS.some(t => t.id === id)) || Boolean(k);
   if (!valid) { go("discover"); return; }
   if (page === "wechat-notification" && id === REVIEW_SAMPLE_ID) reviewSampleRead = true;
+  else if (page === "review-handoff" && id === REVIEW_SAMPLE_ID) { reviewSampleRead = true; reviewSampleUnderstood = true; syncDemoUnderstandingToDesktop(); }
   else if (page === "wechat-notification" && id) {
     const pocketItem = readDesktopPocket().items.find(item => item.id === id);
     if (pocketItem?.status === "sent") updateDesktopPocketItem(id, { status: "read", readAt: Date.now() });
@@ -671,7 +685,7 @@ document.addEventListener("click", async event => {
     const saved = state.saved.includes(id); button.classList.toggle("is-saved", saved); button.setAttribute("aria-pressed", String(saved)); button.setAttribute("aria-label", saved ? "取消收藏" : "收藏知识点"); button.innerHTML = `${icon("bookmark")}<span>${saved ? "已收藏" : "收藏"}</span>`; toast(saved ? "已装进口袋，下次从「我的」继续" : "已取消收藏");
   }
   else if (action === "pocket-understood") {
-    if (id === REVIEW_SAMPLE_ID) { reviewSampleUnderstood = true; render(); toast("已记下这张卡的理解"); }
+    if (id === REVIEW_SAMPLE_ID) { reviewSampleUnderstood = true; syncDemoUnderstandingToDesktop(); render(); toast("已记下这张卡的理解"); }
     else {
       const updated = updateDesktopPocketItem(id, { status: "understood", understoodAt: Date.now() });
       if (updated) { render(); toast("已记下这张卡的理解"); }

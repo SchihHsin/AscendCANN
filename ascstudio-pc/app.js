@@ -1,13 +1,12 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-learning-three-point-sync-final2";
+const ROUTE_REV = "20261030-chapter-alignment-final2";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
-    id: "development", title: "解决问题后把经验留下", cover: "从错误现象到社区经验", summary: "从开发者提出问题开始，在回答中补充知识和图解，支持动手修改，再把处理经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    id: "development", title: "解决问题，也留下经验", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
-      { id: "answer", title: "回答问题时补充相关知识", note: "先回应开发者的问题，再在回答旁补充知识点，帮助理解判断依据。", emphasis: "补充知识点", description: "先回应开发者的问题，再在回答旁补充知识点，帮助理解判断依据。", entry: "任务对话 · 展开回答中的知识卡", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "knowledge" },
-      { id: "diagram", title: "打开图解看懂判断依据", note: "从回答中的知识点进入关联图解，直观看清线索与处理思路。", emphasis: "关联图解", description: "从回答中的知识点进入关联图解，直观看清线索与处理思路。", entry: "任务对话 · 知识卡中的图解入口", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
+      { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
       { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },
       { id: "community", title: "把处理过程整理成社区经验", note: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", emphasis: "整理为草稿", description: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", entry: "社区经验 · 草稿审阅", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "community" },
@@ -23,13 +22,15 @@ const chapters = [
     ],
   },
   {
-    id: "mobile", title: "在手机上随时接着学", cover: "把学习延伸到日常间隙", summary: "通过手机接收内容、保存学习线索和调整偏好，让学习可以随时接续。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
+    id: "mobile", title: "在手机上随时接着学", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、回访和自主发现，并将理解状态带回任务。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
     points: [
-      { id: "handoff", title: "新内容主动送到手边", note: "让新内容出现在常用消息入口，点开就能继续阅读。", emphasis: "继续阅读", description: "让新内容出现在常用消息入口，点开就能继续阅读。", entry: "小程序 · 微信消息列表", route: "wechat", mobile: true },
-      { id: "notification", title: "先看重点再继续阅读", note: "先展示内容重点和摘要，再进入完整内容。", emphasis: "内容重点和摘要", description: "先展示内容重点和摘要，再进入完整内容。", entry: "小程序 · 服务通知摘要", route: "wechat-notification", mobile: true },
-      { id: "digest", title: "让重点内容和相关卡片一起呈现", note: "将重点内容与相关知识卡放在一起，方便在手机上快速阅读。", emphasis: "快速阅读", description: "将重点内容与相关知识卡放在一起，方便在手机上快速阅读。", entry: "小程序 · 每周速览", route: "briefing", mobile: true },
-      { id: "signals", title: "把感兴趣和没弄懂的内容记下来", note: "为感兴趣或暂时没弄懂的内容留下标记，方便下次接着学。", emphasis: "留下标记", description: "为感兴趣或暂时没弄懂的内容留下标记，方便下次接着学。", entry: "小程序 · 知识卡与兴趣信号", route: "knowledge/scaling", mobile: true },
-      { id: "preferences", title: "按自己的习惯安排接收", note: "选择关注主题和接收时段，让后续内容更符合个人阅读习惯。", emphasis: "个人阅读习惯", description: "选择关注主题和接收时段，让后续内容更符合个人阅读习惯。", entry: "小程序 · 订阅设置", route: "briefing", openSettings: true, mobile: true },
+      { id: "desktop-handoff", title: "从电脑端的一条回答，接上手机里的下一步", note: "入口就在正在处理的任务里", emphasis: "正在处理的任务里", description: "在 Agent 回答或学习内容里收下一条知识，标记感兴趣或还没弄懂，再选择即时送达或加入定期速览。", entry: "小程序 · 电脑端入口", route: "review-pending", mobile: true },
+      { id: "instant-delivery", title: "电脑端选「现在看」，微信列表收到同一条知识", note: "让用户看清消息从哪里来", emphasis: "看清消息从哪里来", description: "发送后，手机微信会话列表出现带有知识标题的服务通知；手机样机与电脑端共用这一条内容。", entry: "小程序 · 即时学习", route: "review-instant", mobile: true },
+      { id: "mobile-short-read", title: "手机短读卡，把一个知识点拆成几分钟", note: "把电脑上的内容整理成适合手机读的形式", emphasis: "适合手机读的形式", description: "从通知打开知识卡，用简明解释、重点和理解小题完成一次轻量学习；感兴趣或存疑也能继续保留。", entry: "小程序 · 知识短读卡", route: "wechat-notification/review", mobile: true },
+      { id: "understanding-handoff", title: "看懂后回到电脑，理解状态也跟着回来", note: "内容和理解状态跨设备接续", emphasis: "理解状态跨设备接续", description: "手机端点「我看懂了」，电脑端知识口袋同步显示「已理解」，再回到原来的任务继续处理。", entry: "小程序 · 跨设备接续", route: "review-handoff/review", mobile: true },
+      { id: "weekly-review", title: "把关注或存疑的内容，放进每周回访", note: "由用户选择主题、时间和授权", emphasis: "用户选择主题、时间和授权", description: "电脑端可将知识加入定期速览；手机端再选择主题、接收时间并确认订阅。", entry: "小程序 · 定期回访设置", route: "review-weekly-settings", mobile: true },
+      { id: "weekly-briefing", title: "每周一条重点资讯，再补两张个性化卡片", note: "资讯与个人学习线索放在同一份速览里", emphasis: "同一份速览里", description: "速览用一条重点资讯开场，再优先带上电脑端安排的内容，并参考感兴趣或还没弄懂的信号。", entry: "小程序 · 每周速览", route: "review-briefing", mobile: true },
+      { id: "discover", title: "没有当前任务，也能主动发现下一点新知", note: "知识推荐与主动探索互相补充", emphasis: "主动探索互相补充", description: "用户可以搜索、浏览分类或从推荐知识卡继续探索；发现的兴趣与问题还能成为之后回访的线索。", entry: "小程序 · 自主探索", route: "discover", mobile: true },
     ],
   },
 ];
@@ -110,6 +111,15 @@ function syncLearningPointToDemo(pointIndex) {
   currentPoint = pointIndex;
   activePoint = chapters[1].points[pointIndex];
   menuOpen = false;
+  renderPointMenu();
+  renderPointNote();
+  updateAddress("point");
+}
+
+function syncMobilePointFromDemo(pointIndex) {
+  if (currentChapter !== 2 || showcase.dataset.view !== "stage" || !Number.isInteger(pointIndex) || pointIndex < 0 || pointIndex >= chapters[2].points.length || pointIndex === currentPoint) return;
+  currentPoint = pointIndex;
+  activePoint = chapters[2].points[pointIndex];
   renderPointMenu();
   renderPointNote();
   updateAddress("point");
@@ -235,6 +245,9 @@ function applyPcStage(point, doc) {
   }
 
   if (point.stage === "diagram") {
+    if (isVisible(doc.querySelector('[aria-label="AddCustom 任务内容画布"]'))) return true;
+    const diagramAction = knowledgeCue?.querySelector(".proactive-cue-secondary");
+    if (diagramAction && isVisible(diagramAction) && /图解/.test(diagramAction.textContent)) { diagramAction.click(); return false; }
     const primary = knowledgeCue?.querySelector(".proactive-cue-primary");
     if (primary && isVisible(primary) && primary.textContent.includes("看尾块处理图解")) {
       primary.click();
@@ -483,7 +496,7 @@ $("#cover-index").addEventListener("click", openPointMenu);
 $("#note-next").addEventListener("click", nextPoint);
 $("#note-prev").addEventListener("click", previousPoint);
 $("#menu-close").addEventListener("click", () => { menuOpen = false; renderPointMenu(); });
-$("#mobile-return").addEventListener("click", () => showChapterCover(4));
+$("#mobile-return").addEventListener("click", () => showChapterCover(2));
 $("#fullscreen-button").addEventListener("click", async () => {
   try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { /* Fullscreen may be unavailable in the embedded preview. */ }
 });
@@ -499,6 +512,11 @@ document.addEventListener("keydown", event => {
   if (showcase.dataset.view !== "stage" || event.target.closest("input,textarea,select,[contenteditable='true']")) return;
   if (event.key === "ArrowRight") { event.preventDefault(); nextPoint(); }
   else if (event.key === "ArrowLeft") { event.preventDefault(); previousPoint(); }
+});
+
+window.addEventListener("message", event => {
+  if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
+  if (event.data?.type === "ascstudio-mini-review-step") syncMobilePointFromDemo(event.data.index);
 });
 
 renderPointMenu();
