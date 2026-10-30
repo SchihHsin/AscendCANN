@@ -199,6 +199,14 @@ function selectedTaskLabel(doc) {
   return doc.querySelector(".task-title-button strong")?.textContent?.trim() || "";
 }
 
+function suppressDemoFocusHints(doc) {
+  if (!doc?.head || doc.getElementById("pc-demo-focus-hints")) return;
+  const style = doc.createElement("style");
+  style.id = "pc-demo-focus-hints";
+  style.textContent = ":focus-visible { outline: none !important; }";
+  doc.head.append(style);
+}
+
 function isVisible(element) {
   return Boolean(element && element.getClientRects().length && !element.closest("[hidden]"));
 }
@@ -335,6 +343,7 @@ function applyPcStart(point, attempt = 0, revision = loadingRevision) {
   if (revision !== loadingRevision) return;
   let doc;
   try { doc = frame.contentDocument; } catch { return; }
+  suppressDemoFocusHints(doc);
   if (!doc || !doc.querySelector("#root") || attempt > 22) { if (attempt < 22) setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); return; }
 
   if (point.startView === "new-task" && !isVisible(doc.querySelector(".new-task-home"))) {
@@ -378,6 +387,7 @@ function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
   if (revision !== loadingRevision) return;
   let doc;
   try { doc = frame.contentDocument; } catch { return; }
+  suppressDemoFocusHints(doc);
   if (!doc || !doc.querySelector("#screen")) {
     if (attempt < 22) setTimeout(() => applyMobileStart(point, attempt + 1, revision), 180);
     return;
