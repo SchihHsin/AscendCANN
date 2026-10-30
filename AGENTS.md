@@ -8301,3 +8301,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改仅为建设示意，不表示 API、MCP 或项目客户端已经接入。依据：用户选择同时查看两版（H）；连线具体落点根据当前 SVG 节点职责及坐标推演（M）。
 - 验证：`git diff --check`、页面脚本 `node --check`、静态 ID 唯一性检查通过；本地桌面浏览器以 `#6` 打开方案 1 / 方案 2 查询状态，确认切换控件默认选中与图形显隐正确。未运行自动化测试；未改变正式蓝图。
 - 对比页提交 `819968f8` 已推送至 `origin/main`。本条交接更新需随后单独提交并推送；GitHub Pages 发布状态待回读。
+
+
+### 2026-10-30 · 框选选区样式与语音主操作
+
+- 按用户截图调整区域框选态：选区左上角「已选区域」标签改为黑底白字；选区矩形和拖动预览使用克制的多色渐变描边，内部仍保持内容可见；局部输入框为空时显示普通输入框同款黑色波形语音按钮，有文本且停止听写后显示发送按钮。
+- 区域语音仍复用原型中的模拟听写与快捷键状态，不接真实语音服务。点击停止语音时阻止表单提交，避免按钮切换瞬间误发送。修改 `ascend-studio/src/AreaComposer.jsx`、`VoiceCaptureButton.jsx`、`task-workspace.css` 及 `ascstudio/` 构建产物。
+- 依据：用户提供截图与明确样式要求（H）；颜色和主要操作沿用 Ascend Studio 界面规范。页面顺序 / 路由未变，API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；未运行测试套件。推送和 Pages 发布回执将在发布完成后补记。

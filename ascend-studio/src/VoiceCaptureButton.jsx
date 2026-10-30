@@ -2,7 +2,7 @@ import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useRef, useState } from "react";
 import { IconMicrophone, IconMicrophoneOff } from "@tabler/icons-react";
 
-function VoiceWaveIcon() {
+export function VoiceWaveIcon() {
   return <svg className="voice-wave-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
     <path d="M3 8v4M6.5 5v10M10 3v14M13.5 6v8M17 8v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
   </svg>;

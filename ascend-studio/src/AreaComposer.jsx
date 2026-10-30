@@ -2,6 +2,7 @@ import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { IconMicrophone, IconMicrophoneOff, IconPointer2, IconSend, IconX } from "@tabler/icons-react";
+import { VoiceWaveIcon } from "./VoiceCaptureButton.jsx";
 
 const isFnKey = (event) => event.key === "Fn" || event.code === "Fn";
 const isControlKey = (event) => event.key === "Control" || event.code === "ControlLeft" || event.code === "ControlRight";
@@ -212,7 +213,7 @@ export function AreaComposer({ context, sourceRef, disabled = false, onSend, onD
     <div className="composer-context-chips">
       <span className="attachment-chip point-context-chip"><span ref={thumbnailRef} className="point-context-thumbnail" role="img" aria-label={`已选区域缩略图${context.contentTitle ? `：${context.contentTitle}` : ""}`} title={context.contentTitle || "已选区域"} /><span className="point-context-label">已选区域</span><button type="button" aria-label="移除已选区域" onClick={onDismiss}><IconX size={ICON_SIZE.micro} /></button></span>
     </div>
-    <textarea ref={textareaRef} value={draft} onChange={(event) => updateDraft(event.target.value)} onBlur={() => { if (listeningRef.current) stopVoice(); }} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSubmit(event); } }} placeholder="描述你希望我关注这个区域的什么…" aria-label="描述选中的工作区区域" rows={1} />
+    <textarea ref={textareaRef} value={draft} onChange={(event) => updateDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSubmit(event); } }} placeholder="描述你希望我关注这个区域的什么…" aria-label="描述选中的工作区区域" rows={1} />
     <div className="composer-toolbar">
       <div className="composer-tools">
         <span className={`tw-area-voice-hint${listening ? " is-listening" : ""}`} role="status">
@@ -220,7 +221,11 @@ export function AreaComposer({ context, sourceRef, disabled = false, onSend, onD
         </span>
       </div>
       <div className="composer-submit">
-        <button className="send-button" type="submit" aria-label="发送区域描述" disabled={disabled || !draft.trim()}><IconSend size={ICON_SIZE.heading} /></button>
+        {draft.trim() && !listening
+          ? <button className="send-button" type="submit" aria-label="发送区域描述" disabled={disabled}><IconSend size={ICON_SIZE.heading} /></button>
+          : <button className={`composer-primary-voice${listening ? " is-listening" : ""}`} type="button" aria-label={listening ? "停止语音输入" : "语音输入"} aria-pressed={listening} title={listening ? "停止语音输入" : "语音输入"} disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={(event) => { event.preventDefault(); listeningRef.current ? stopVoice() : startVoice(); }}>
+            {listening ? <IconMicrophoneOff size={ICON_SIZE.inline} /> : <VoiceWaveIcon />}
+          </button>}
       </div>
     </div>
     {listening && typeof document !== "undefined" && createPortal(
