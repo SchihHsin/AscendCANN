@@ -8354,3 +8354,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确偏好（H）；截图中的卡片内框对应推荐卡片按钮的 `:focus-visible` 样式（M）。本改动仅影响视觉焦点轮廓，不改变章节序列、任务页面定位或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；桌面预览 URL 返回 HTTP 200。未运行自动化测试。
 - Commit / push：代码提交 `da04db47` 已推送至 `origin/main`；本条交接记录随后的独立记录提交一并推送。
+
+### 2026-10-30 · 修复学习画布阶段节点选中态文字颜色
+
+- 用户截图指出 ResNet50 学习画布中「认识图像推理链路」阶段节点选中颜色不正确。根因为阶段节点采用浅灰选中面，但通用选中规则仍将标题、摘要和状态文字改成白色，导致对比不足。
+- 在 `ascend-studio/src/learning-hierarchy-canvas.css` 为阶段选中态恢复深色标题、灰色摘要，并保留完成 / 进行中状态色；子步骤仍用黑底白字。同步写入 `ascend-studio/AGENTS.md` 的阶段与步骤状态规则。不改节点结构、布局或任务状态。
+- 验证：`npm --prefix ascend-studio run build:pages`、构建 JS `node --check`、`git diff --check` 通过。没有运行自动化测试。提交 `11ddc283` 已推送至 `origin/main`；Pages workflow `41002083994` build / deploy 成功。线上 `/AscendCANN/ascstudio/?task=resnet50` 返回 200，HTML 引用的新 JS / CSS 均返回 200，CSS 包含阶段标题、摘要和状态色覆盖规则。
