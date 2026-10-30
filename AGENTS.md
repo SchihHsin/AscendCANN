@@ -7834,3 +7834,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/task-url.js`、`useWorkbenchState.js`、`App.jsx` 和 `ascstudio/` Pages 构建产物。依据为用户明确要求（H）；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`node --check` 检查任务路由 helper、workbench 状态模块及构建 JS、`git diff --check` 通过；未运行自动化测试。旧的 8 个未跟踪 bundle 未暂存或清理。自定义任务路由依赖本浏览器已保存该任务；URL 不携带任务数据，不能跨设备共享本地自定义任务。
 - 实现提交 `b3af7cd5` 与保留最新主线的合并提交 `21ec1d9e` 已推送至 `origin/main`。主线随后前进到 `1d10ca81`；最新 Pages workflow `40837763028`（head `96634fe5`，包含本实现）成功。线上 `/AscendCANN/ascstudio/?task=addcustom` 返回工作台入口，引用 `index-Boe-x0YL.js` 与 `index-DzNzaxmV.css`；JS HTTP 200，且含 `addcustom`、`resnet50`、`log-triage` 与历史路由状态处理逻辑。
+
+### 2026-10-30 · 画布左右 / 上下布局语义统一
+
+- 用户截图反馈画布左右 / 上下布局疑似反向。明确工具栏语义：左右＝层级在左、材料在右；上下＝路径在上、材料在下。顶部对话左侧 / 底部浮窗控件独立。标准学习画布旧状态继续按实际可见排布标示，不重置视口和节点位置；新建标准学习画布默认左右。详见 `ascend-studio/AGENTS.md` 的「画布左右 / 上下布局语义统一」。
