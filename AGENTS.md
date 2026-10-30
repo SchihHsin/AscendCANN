@@ -8404,6 +8404,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户截图与明确反馈（H）；同源 iframe 的焦点与按键行为、页面转换结果由本地 CUA 实测（M）。仅调整展示材料键盘导航和资源缓存版本；章节顺序、Demo 起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 实测第一章封面左右切换、封面右键进入首个设计点、首个设计点左键返回封面、末章最后一点右键回到首章封面；未运行自动化测试。代码提交 `52da6176` 已推送至 `origin/main`；Pages workflow `41013373676` 成功。线上入口与 `app.js` 均 HTTP 200，确认入口引用新版本且脚本含 iframe 键盘监听。
 
+### 2026-10-30 · 统一能力架构图的圆角直角连线
+
+- 按用户确认，将正式页 `ascstudio-mini/knowledge-provider-map.html` 和对比页 `ascstudio-mini/knowledge-provider-map-line-options.html` 的连线统一为水平 / 垂直轨道，转弯处使用 8px 圆角；保留入口、Agent、知识供给、结果校验等关系颜色。校验节点横向微调 3px，为箭头进入节点前留出完整圆角。对比页的两种节点布局继续一致遵循这套线条规则。
+- 修改范围是路径几何和描边端点 / 接头样式；节点关系、内容、页面顺序不变，不影响 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确认可该线条方案（H）；既有连线的语义与落点沿用原图结构（M）。
+- 验证：`git diff --check`、两页内联脚本 `node --check`、ID 唯一性检查通过；静态核对正式页 12 条连线 / 13 个圆角、对比页 24 条连线 / 26 个圆角，均无自由曲线、直角折返或非 8px 圆角。本地预览服务 HTTP 200；headless 截图输出黑屏，因此不作为视觉验收证据。未运行自动化测试。
+- 页面提交 `aa27bc88` 已推送至 `origin/main`。当前环境未安装 `gh`，GitHub Pages 工作流状态未通过 CLI 核验；线上 HTML 发布状态待 HTTP 读回确认。交接记录随后单独推送。
+
 ### 2026-10-30 · 任务内容总览节点独立定高
 
 - 用户指出一张节点卡片的高度会随其他卡片变化，要求每张卡只按自身内容定高。定位到 `ascend-studio/src/task-content-map.css` 的 `height: 100%`：Grid 行高由同排最高节点决定，该声明把整行高度传给每张卡。现让节点包装层从行顶自然起排，卡片恢复 `height: auto`；行本身仍可容纳最高卡片，关系线仍按真实节点边界测量。
