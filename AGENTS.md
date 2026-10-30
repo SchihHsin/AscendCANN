@@ -8232,3 +8232,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与“改为灰白”的明确反馈（H）。
 - 验证：`git diff --check` 与颜色配对静态断言通过；本地 CUA 预览确认服务大椭圆呈中性灰白，运行层保持浅紫。页面提交 `e6894f97` 已推送至 `origin/main`；Pages 状态待本次交接提交后核验。未运行自动化测试。
 - 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 平滑两条虚线路径
+
+- 用户澄清所指是蓝色与绿色两条虚线。调整蓝色项目上下文路径和绿色授权反馈路径的三次贝塞尔控制点，使相邻曲线段的切线方向连续；为两条虚线增加圆角端帽和连接。起止节点、路径语义与其他连线不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确反馈（H）。
+- 验证：`git diff --check` 和路径断言通过；本地 CUA 1280×720 预览确认两条虚线路径过渡平滑。页面提交 `79149a0e` 已推送至 `origin/main`；Pages 构建状态待本条交接提交后复核。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
