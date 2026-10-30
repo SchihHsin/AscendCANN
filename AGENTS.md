@@ -8417,3 +8417,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/task-content-map.css`、`ascend-studio/AGENTS.md` 及该 Demo 的 Pages 产物。依据为用户直接观察（H）和实际选择器 / Grid 拉伸规则源码核对（M）。只影响任务内容总览网格节点高度；自由画布、页面序列 / 路由与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；本地 `http://127.0.0.1:5196/` 返回 HTTP 200，开发服务 CSS 与构建 CSS 均含自然高度规则。未运行测试套件。当前无法从 CUA 打开浏览器截图进行视觉复核；线上 `/AscendCANN/ascstudio/?rev=c4dfd082` 返回 HTTP 200，HTML 已引用新 JS / CSS，线上 CSS 已读回自然高度规则。
 - Commit / push：修复提交 `28fd9929` 连同并行更新合并后由 `c4dfd082` 推送至 `origin/main`；GitHub Pages workflow `41014217231` 成功。其后交接记录将单独提交并推送。
+
+### 2026-10-30 · 澄清连线方案交付范围
+
+- 用户确认当前只采用正式总图中的“分布轨线”方案，不需要把节点布局对比页作为本次交付。先前将旧方案对比页列为本次结果，是把更早的“方案一 / 方案二”预览请求混入当前任务，属于范围误判。
+- 正式页 `ascstudio-mini/knowledge-provider-map.html` 保留已选分布轨线及统一圆角直角连线；撤回本轮对 `ascstudio-mini/knowledge-provider-map-line-options.html` 的修改，恢复此前预览状态。该预览源于先前对比请求，保留作历史参考，不作为当前方案交付或推荐。
+- 页面结构与序列、节点关系以及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户对交付范围的直接澄清（H）。
+- 验证：`git diff --check` 通过；正式页线上 HTTP 200 且可读回分布轨线路径；旧预览页线上 HTTP 200 且已读回修改前内容。代码修正提交 `89d3c061` 已推送至 `origin/main`；本交接记录随后单独推送。
