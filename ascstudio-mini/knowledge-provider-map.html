@@ -1155,6 +1155,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .capability-map .map-service-node-core{fill:#6f9278}
 .capability-map .map-node-dot.governance{fill:#6f9278;stroke:#f4f8f4}
 .capability-map .map-node-title{font-size:18px}.capability-map .map-node-note{font-size:14px}
+.capability-map .map-entry-transition{fill:#39424e;font-size:16px;font-weight:780;text-anchor:middle}
 .capability-map .map-node-label{font-size:14px}
 .capability-map .map-node-title,.capability-map .map-node-note,.capability-map .map-node-label,.capability-map .map-core-title,.capability-map .map-core-note,.capability-map .map-foundation-title,.capability-map .map-foundation-note{paint-order:stroke;stroke:#f3f3f4;stroke-width:4px;stroke-linejoin:round}
 .capability-map .map-core-title{font-size:20px}.capability-map .map-core-note{font-size:12.5px}
@@ -1388,8 +1389,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">开发者服务依托运行能力，知识底座支撑可信体验</span></div><div class="subttl">04 · CAPABILITY ARCHITECTURE　服务、运行能力与知识底座分层</div></div></div>
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="-150 0 1550 700" preserveAspectRatio="xMidYMid meet">
-      <title id="cap-map-title">体验入口、开发者服务、运行与接入能力、知识底座的四层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <title id="cap-map-title">入口 / 形态、开发者服务、运行与接入能力、知识底座的四层关系图</title>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层以社区 AI 助手作为 Web 入口，通过“从 Web 走进项目”的纵向关系延伸到项目客户端；前者接收学习目标与已学节点，后者在授权后读取项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1397,35 +1398,37 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
       <!-- 四个横向区域：体验入口、开发者服务、运行与接入能力、知识底座 -->
       <path class="map-stage-rule" d="M245 190H1380 M245 372H1380 M245 540H1380"/>
-      <g aria-hidden="true" transform="translate(760 37)">
+      <g aria-hidden="true" transform="translate(930 18)">
         <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
         <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
         <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识底座</text>
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">开发者服务</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
-      <text class="map-stage-name experience" x="-122" y="76">EXPERIENCE</text><text class="map-stage-sub" x="-122" y="101">开发者入口</text>
+      <text class="map-stage-name experience" x="-122" y="76">ENTRY / FORMS</text><text class="map-stage-sub" x="-122" y="101">入口 / 形态</text>
       <text class="map-stage-name services" x="-122" y="272">DEVELOPER SERVICES</text><text class="map-stage-sub" x="-122" y="297">面向开发者的服务</text>
       <text class="map-stage-name runtime" x="-122" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="-122" y="462">运行与接入能力</text>
       <text class="map-stage-name governance" x="-122" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="-122" y="614">内容治理 · 检索服务</text>
 
-      <!-- 开发者体验：社区 Web 与项目客户端并列，共用同一知识供给 -->
-      <ellipse class="map-fill api" cx="500" cy="115" rx="205" ry="43"/>
-      <ellipse class="map-fill agent" cx="1050" cy="115" rx="205" ry="43"/>
-      <ellipse class="map-orbit experience" cx="720" cy="115" rx="540" ry="62"/>
-      <circle class="map-node-dot api" cx="500" cy="122" r="8"/>
-      <circle class="map-node-dot future agent" cx="1050" cy="122" r="8"/>
-      <text class="map-node-title" x="500" y="84">社区 Web</text><text class="map-node-note" x="500" y="106">目标 · 主题 · 已学节点</text><text class="map-node-label" x="500" y="151">路径 · 课程 · 认证 · 活动</text>
-      <text class="map-node-title" x="1050" y="84">项目客户端</text><text class="map-node-note" x="1050" y="106">授权项目 · 版本 · 选定日志</text><text class="map-node-label" x="1050" y="151">兼容建议 · 技术图解 · 下一步</text>
+      <!-- 入口 / 形态：社区 AI 助手向下延伸至项目客户端 -->
+      <ellipse class="map-orbit experience" cx="720" cy="120" rx="380" ry="70"/>
+      <ellipse class="map-fill api" cx="720" cy="82" rx="320" ry="25"/>
+      <ellipse class="map-fill agent" cx="720" cy="156" rx="320" ry="25"/>
+      <text class="map-entry-transition" x="720" y="42">从 Web 走进项目</text>
+      <circle class="map-node-dot api" cx="430" cy="82" r="8"/>
+      <circle class="map-node-dot future agent" cx="430" cy="156" r="8"/>
+      <text class="map-node-title" x="720" y="77">社区 AI 助手</text><text class="map-node-note" x="720" y="96">目标 · 主题 · 已学节点　路径 · 课程 · 认证 · 活动</text>
+      <text class="map-node-title" x="720" y="151">项目客户端</text><text class="map-node-note" x="720" y="170">授权项目 · 版本 · 选定日志　兼容建议 · 技术图解 · 下一步</text>
+      <path class="map-path experience" d="M720 108V130"/>
 
       <!-- 服务层与运行层独立分区：上层表达提供什么，下层表达如何提供 -->
       <ellipse class="map-band services" cx="720" cy="281" rx="425" ry="69"/>
       <ellipse class="map-band runtime" cx="720" cy="454.5" rx="425" ry="75.5"/>
 
       <!-- 分轨 1：Web 查询进入 API；经校验的服务结果沿右侧轨道返回客户端 -->
-      <path class="map-path experience" d="M500 161V202Q500 210 492 210H298Q290 210 290 218V490Q290 498 298 498H412"/>
+      <path class="map-path experience" d="M400 82H298Q290 82 290 90V490Q290 498 298 498H412"/>
       <path class="map-path validation-bus" d="M1108 281H1168Q1176 281 1176 273V258Q1176 250 1184 250"/>
-      <path class="map-path validation-bus" d="M1193 241V173Q1193 165 1201 165H1247Q1255 165 1255 157V115"/>
+      <path class="map-path validation-bus" d="M1193 241V162Q1193 154 1185 154H1040"/>
 
       <ellipse class="map-fill task-path" cx="420" cy="281" rx="88" ry="43"/>
       <ellipse class="map-fill task-diagram" cx="620" cy="281" rx="88" ry="43"/>
