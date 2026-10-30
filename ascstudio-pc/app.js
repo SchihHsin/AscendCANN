@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-final-three-chapter-titles";
+const ROUTE_REV = "20261030-learning-point-and-say";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -9,6 +9,7 @@ const chapters = [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
       { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
       { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
+      { id: "point-and-say", title: "框选内容，直接指着说", note: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", emphasis: "框选学习画布里的疑问区域", description: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", entry: "ResNet50 学习画布 · 图解节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
     ],
   },
   {
@@ -136,11 +137,13 @@ function prefillLearningPrompt(doc, onlyIfBlank = true) {
   return false;
 }
 
-function syncLearningPointFromDemo(doc) {
+function syncLearningPointFromDemo(doc, pointModeChanged = false) {
   if (currentChapter !== 0 || showcase.dataset.view !== "stage") return;
   const task = selectedTaskLabel(doc);
   if (task === "ResNet50 离线推理初体验") {
-    syncLearningPointToDemo(2);
+    const pointMode = doc.querySelector(".tw-point-mode");
+    if (pointMode?.getAttribute("aria-pressed") === "true") syncLearningPointToDemo(3);
+    else if (currentPoint !== 3 || pointModeChanged) syncLearningPointToDemo(2);
     return;
   }
   if (task === "图像输入预处理路径共创" && currentPoint === 0) {
@@ -152,14 +155,17 @@ function syncLearningPointFromDemo(doc) {
 function installLearningDemoSync(doc, revision) {
   learningSyncCleanup?.();
   if (currentChapter !== 0) return;
-  let syncTimer = 0;
-  const scheduleSync = () => {
+  let syncTimer = 0, pointModeChanged = false;
+  const scheduleSync = (modeChanged = false) => {
+    pointModeChanged ||= modeChanged;
     clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
-      if (revision === loadingRevision) syncLearningPointFromDemo(doc);
+      if (revision === loadingRevision) syncLearningPointFromDemo(doc, pointModeChanged);
+      pointModeChanged = false;
     }, 160);
   };
   const handleClick = event => {
+    if (event.target.closest(".tw-point-mode")) { scheduleSync(true); return; }
     if (event.target.closest(".new-task-home__card-summary, .new-task-home__card-continue, .new-task-home__card-chat, .task-suggestion-actions button, .new-task-button")) scheduleSync();
   };
   const handleFocus = event => {
@@ -168,15 +174,22 @@ function installLearningDemoSync(doc, revision) {
       requestAnimationFrame(() => prefillLearningPrompt(doc));
     }
   };
-  const observer = new MutationObserver(scheduleSync);
+  const handleKeyDown = event => {
+    if (event.key === "Escape" && doc.querySelector(".tw-point-mode")?.getAttribute("aria-pressed") === "true") {
+      setTimeout(() => scheduleSync(true), 0);
+    }
+  };
+  const observer = new MutationObserver(() => scheduleSync());
   doc.addEventListener("click", handleClick, true);
   doc.addEventListener("focusin", handleFocus, true);
+  doc.addEventListener("keydown", handleKeyDown, true);
   if (doc.body) observer.observe(doc.body, { childList: true, subtree: true });
   learningSyncCleanup = () => {
     clearTimeout(syncTimer);
     observer.disconnect();
     doc.removeEventListener("click", handleClick, true);
     doc.removeEventListener("focusin", handleFocus, true);
+    doc.removeEventListener("keydown", handleKeyDown, true);
     learningSyncCleanup = null;
   };
   scheduleSync();
@@ -232,10 +245,17 @@ function applyPcStage(point, doc) {
 
   if (point.stage === "resnet-entry") {
     const firstStepNode = doc.querySelector('[data-learning-step="learning-official-step-image-classification"]');
-    if (firstStepNode?.getAttribute("aria-pressed") === "true") return true;
-    const firstStep = visibleButton(doc, ".task-suggestion-actions button", "从图像推理链路开始");
-    if (firstStep) { firstStep.click(); return false; }
-    return false;
+    if (firstStepNode?.getAttribute("aria-pressed") !== "true") {
+      const firstStep = visibleButton(doc, ".task-suggestion-actions button", "从图像推理链路开始");
+      if (firstStep) { firstStep.click(); return false; }
+      return false;
+    }
+    const pointMode = doc.querySelector(".tw-point-mode");
+    if (pointMode?.getAttribute("aria-pressed") === "true") {
+      pointMode.click();
+      return false;
+    }
+    return true;
   }
 
   if (point.stage === "knowledge") {
