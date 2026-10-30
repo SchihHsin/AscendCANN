@@ -67,6 +67,11 @@
 .goal-learning-canvas .lh-step-node.is-selected .lh-node-move-grip { color:rgb(255 255 255 / 78%); }
 .goal-learning-canvas .lh-stage-node.is-selected { border-color:var(--canvas-focus-ink, #191a1b); color:var(--canvas-focus-ink, #191a1b); background:#f1f1f0; box-shadow:0 2px 8px rgb(25 26 27 / 8%); }
 .goal-learning-canvas .lh-stage-node.is-selected .lh-node-icon { color:var(--canvas-focus-ink, #191a1b); }
+.goal-learning-canvas .lh-stage-node.is-selected strong { color:var(--canvas-focus-ink, #191a1b); }
+.goal-learning-canvas .lh-stage-node.is-selected small { color:#777a83; }
+.goal-learning-canvas .lh-stage-node.is-selected .og-stage-status { color:#8b849f; }
+.goal-learning-canvas .lh-stage-node.is-selected .og-stage-status.is-completed { color:#718c7b; }
+.goal-learning-canvas .lh-stage-node.is-selected .og-stage-status.is-in-progress { color:#8068b7; }
 .lh-tree-node.is-skipped { color:#9aa0b3; border-style:dashed; background:#f6f7fae6; }
 .lh-tree-node.is-skipped em { position:absolute; right:5px; top:4px; border-radius:4px; padding:0 5px; background:#a0a7b7; color:#fff; font-size:9px; font-style:normal; }
 .path-editing-canvas .lh-step-node { position:relative; left:auto!important; top:auto!important; width:100%!important; height:100%!important; border-radius:8px; gap:8px; padding:7px 11px; touch-action:none; user-select:none; }
