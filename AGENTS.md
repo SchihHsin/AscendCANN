@@ -8455,3 +8455,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确更名要求（H）。本次只更改品牌文字，不改变界面结构、功能、路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check`、发布入口与品牌文案断言、相关 Node 语法检查均通过。Vite 保留主 bundle 超过 500 kB 的既有体积提示；未运行自动化测试。静态产物同步到 `ascstudio/` 和 `ascstudio-pc/studio/`，两处入口引用同一 JS；旧本地存储键保留。
 - Commit / push：`ae120c2e` 已推送到 `origin/main`。该提交触发的 Pages 运行 `41023539220` 被后续主线更新取消；后续提交 `ae51dbde` 的运行 `41023622978` 已成功，并包含本次发布产物。线上 `/AscendCANN/ascstudio/`、`/AscendCANN/ascstudio-pc/studio/` 与两处 `index-CfqS_ZbN.js` 均 HTTP 200，两个入口均显示 Ascend Work。
+
+### 2026-10-30 · 为知识底座治理节点增加语义图标
+
+- 按用户选择，仅为知识底座五个治理节点增加小型线性 SVG 图标：文档接入、解析归一、版本 / 许可校验、可信知识单元、关系图 / 检索索引；替换原有绿色实心点。保留绿色圆形底、节点文案与横向加工连线，并调整线段端点以避开图标。
+- 只修改 ascstudio-mini/knowledge-provider-map.html 的知识底座 SVG、辅助图例描述与作用域样式。图标是可编辑的 SVG 线形，不使用 ImageGen。页面序列、节点关系及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户明确指定治理节点添加图标（H）；图标语义按既有节点文案映射（M）。
+- 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 本地预览确认图标辨识度与节点标题间距；静态检查确认 5 个图标替换点位且原有连线轨道保留。GitHub Pages 部署 7433556063 状态 success，线上页面 HTTP 200 并读回 5 个图标及对应语义。未运行自动化测试。
+- 页面提交 ae51dbde 已推送至 origin/main；交接记录随后单独推送。
