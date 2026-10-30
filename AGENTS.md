@@ -8321,3 +8321,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认三章名称为：第一章“让学习贴合个人目标与现有基础”、第二章“在开发过程中掌握知识”、第三章“让学习随时继续”。本次将第二、三章封面标题同步改为用户指定文案；第一章保留此前确认名称。
 - 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，资源版本更新为 `20261030-final-three-chapter-titles`。仅调整章节标题和资源版本，章节排序、设计点及页面状态映射不变。
 - 依据：用户明确选定三章标题（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第二章显示“在开发过程中掌握知识”、第三章显示“让学习随时继续”。页面提交 `b107df8b` 已推送至 `origin/main`；本交接记录随后单独提交并推送。未运行自动化测试。
+
+### 2026-10-30 · 框选区域增加淡彩渐变底色
+
+- 用户指出选区只有渐变描边、缺少内部底色。现为已框选矩形与拖动预览统一添加低透明度的蓝 → 紫 → 粉 → 琥珀渐变填充（透明度约 7%–9%）；保留高辨识度渐变描边、内容透视与原有阴影，不遮挡区域内容。
+- 修改 `ascend-studio/src/task-workspace.css` 与 `ascstudio/` 构建产物。依据为用户明确视觉反馈（H）；页面顺序 / 路由及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。提交、推送及 Pages 状态待发布后补录。
