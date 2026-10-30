@@ -8483,3 +8483,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出图标与名称挤压并要求增加间距（H）；按统一垂直位移调整图标与加工线位置（M）。不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41026810978` 完成且 success；线上页面 HTTP 200，读回确认加工线坐标为 616、五个图标组采用 `translate(0 -12)`，中心标题说明上移。
 - 页面提交 `5f208bfe` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-30 · 收紧入口说明并移除节点圆点
+
+- 移除社区 AI 助手与项目客户端标题说明之间的两个圆点；分别加大黑色图标到标题的水平间距。删除圆点后，将两处第二行说明从 y=151 上移到 y=136，和第一行说明拉近；入口节点、连线与其他楼层保持不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户直接要求去掉两处圆点、加大图标标题间距，并补充要求收紧两行说明间距（H）。不改变页面序列、层级关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41028316998` 完成且 success；线上页面 HTTP 200，读回确认两个圆点已删除、标题组偏移和说明行 y=136 已发布。
+- 页面提交 `024619f1`、`d062088c` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
