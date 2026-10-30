@@ -1416,6 +1416,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-stage-name runtime" x="-122" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="-122" y="462">运行与接入能力</text>
       <text class="map-stage-name governance" x="-122" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="-122" y="614">内容治理 · 检索服务</text>
 
+      <!-- 知识底座的绿色承托底色先绘制，后续连线、图标与文字自然叠在上层 -->
+      <ellipse class="map-fill governance" cx="720" cy="620" rx="550" ry="76"/>
+
       <!-- 入口 / 形态：社区 AI 助手与项目客户端并列，共用同一知识供给 -->
       <ellipse class="map-fill api" cx="500" cy="115" rx="205" ry="43"/>
       <ellipse class="map-fill agent" cx="1050" cy="115" rx="205" ry="43"/>
@@ -1489,7 +1492,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <circle class="map-node-dot validation" cx="1193" cy="250" r="9"/>
       <text class="map-node-title text-start" x="1216" y="220">校验通过 → 入口</text><text class="map-node-note text-start" x="1216" y="240">来源 · 版本 · 范围</text><text class="map-node-note text-start" x="1216" y="257">权限 · 可执行性</text>
       <!-- 内容治理底座：五个治理环节从多源输入形成可追溯知识并供给 MCP -->
-      <ellipse class="map-fill governance" cx="720" cy="620" rx="550" ry="76"/>
       <ellipse class="map-orbit governance dash" cx="720" cy="620" rx="532" ry="69"/>
       <path class="map-path governance" d="M292 628H488 M512 628H708 M732 628H928 M952 628H1148"/>
       <g class="map-foundation-icon" aria-hidden="true">
