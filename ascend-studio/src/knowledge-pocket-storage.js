@@ -6,7 +6,7 @@ const cleanItem = item => ({
   title: String(item?.title || "未命名知识点").slice(0, 100),
   summary: String(item?.summary || "").slice(0, 600),
   content: String(item?.content || item?.summary || "").slice(0, 5000),
-  sourceLabel: String(item?.sourceLabel || "Ascend Studio").slice(0, 160),
+  sourceLabel: String(item?.sourceLabel || "Ascend Work").slice(0, 160),
   sourceType: String(item?.sourceType || "学习内容").slice(0, 40),
   taskId: String(item?.taskId || "").slice(0, 120),
   signal: ["interested", "question"].includes(item?.signal) ? item.signal : "",

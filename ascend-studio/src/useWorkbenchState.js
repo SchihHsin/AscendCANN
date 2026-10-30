@@ -278,7 +278,7 @@ export function useWorkbenchState() {
   }, []);
 
   const copyText = async (text) => { try { await navigator.clipboard.writeText(text); notify("已复制"); } catch { openDialog("copy", { text }); } };
-  const conversationText = () => [session.showIntro ? task.question + "\n\n" + task.reply : "", ...session.messages.map((item) => (item.role === "user" ? "你：" : "Ascend Studio：") + item.text)].filter(Boolean).join("\n\n");
+  const conversationText = () => [session.showIntro ? task.question + "\n\n" + task.reply : "", ...session.messages.map((item) => (item.role === "user" ? "你：" : "Ascend Work：") + item.text)].filter(Boolean).join("\n\n");
   const exportTask = () => {
     const data = { task: selectedTask, project: currentGroup?.name, goal: task.goal, evidence: isMainTask ? evidenceDetails : [], records: session.records, messages: session.messages, attachments: session.attachments.map(({ id, name, type, size }) => ({ id, name, type, size })), verification: "待真实环境验证" };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));

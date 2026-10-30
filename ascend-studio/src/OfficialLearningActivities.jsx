@@ -21,7 +21,7 @@ function OfficialLessonVideo({ node, journey, onAsk }) {
   const point = chapter.summary;
   return <section className="og-local-lesson" aria-label="ResNet50 图像推理视频"><header><div><strong>ResNet50 图像推理</strong><span>完整流程讲解 · 45 秒</span></div><span>{mmss(state.time)} / 00:45</span></header>
       <div className="og-demo-screen" style={{ "--og-demo-progress": `${(state.time / duration) * 100}%`, "--og-demo-cursor-x": `${[17, 43, 68, 86][demoStepIndex]}%`, "--og-demo-cursor-y": `${[39, 58, 40, 67][demoStepIndex]}%` }} aria-label={`视频画面：${focus}`}>
-        <div className="og-demo-topbar"><span className="og-demo-dot"/><span className="og-demo-dot"/><span className="og-demo-dot"/><strong>resnet50_infer.cpp</strong><small>Ascend Studio · 推理工作台</small></div>
+        <div className="og-demo-topbar"><span className="og-demo-dot"/><span className="og-demo-dot"/><span className="og-demo-dot"/><strong>resnet50_infer.cpp</strong><small>Ascend Work · 推理工作台</small></div>
         <div className="og-demo-workspace">
           <div className="og-demo-editor" aria-label="代码编辑器演示">
             <div className="og-demo-pane-title"><span>应用代码</span><small>demo.cpp</small></div>

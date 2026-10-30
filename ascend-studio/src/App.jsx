@@ -1702,7 +1702,7 @@ function App() {
             </button>
             <article className="message-row assistant-message">
               <div className="message-content">
-                <div className="message-meta">Ascend Studio</div>
+                <div className="message-meta">Ascend Work</div>
                 <div className="assistant-response">
                   <p className="assistant-lead">先检查 <code>custom_op.cpp:128</code> 的尾块读写边界。</p>
                   <p><code>[17,33]</code> 共 561 个元素，块大小为 32 时，最后一块只有 17 个有效元素。</p>
@@ -1754,7 +1754,7 @@ function App() {
               </article>
               <article className="message-row assistant-message">
                 <div className="message-content">
-                  <div className="message-meta">Ascend Studio · 演示</div>
+                  <div className="message-meta">Ascend Work · 演示</div>
                   <div className="assistant-response">
                     {task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}
                     {isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button>{isPathGenerationTask && <button className="task-plain-button" type="button" onClick={() => { setDraft(PATH_REFINEMENT_DEMO_PROMPT); wb.draftRef.current?.focus(); }}>填入共创演示需求</button>}</div>}
@@ -1768,7 +1768,7 @@ function App() {
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
                 <div className="message-content">
-                  <div className="message-meta">{message.role === "user" ? "你" : "Ascend Studio"}{message.isDemo && " · 演示"}{message.model && " · " + message.model}</div>
+                  <div className="message-meta">{message.role === "user" ? "你" : "Ascend Work"}{message.isDemo && " · 演示"}{message.model && " · " + message.model}</div>
                   <div className={message.role === "user" ? "user-bubble" : "assistant-response extra-message"}>{message.text.split("\n\n").map((paragraph, i) => <p className="message-paragraph" key={i}>{paragraph}</p>)}
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={ICON_SIZE.inline} />{file.name}</button>)}</div>}
                   </div>
@@ -1863,7 +1863,7 @@ function App() {
         {wb.menu.name === "permissions" && <><div className="menu-label">当前任务权限 · 演示</div>{PERMISSION_OPTIONS.map(item => <button key={item.id} type="button" className={permissionMode === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => setPermissionModes(current => ({ ...current, [selectedTask]: item.id })))}><span>{item.label}</span>{permissionMode === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={ICON_SIZE.control} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
-        {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><div className="menu-label">界面主题</div><div className="theme-options" role="group" aria-label="界面主题">{[{ id: "neutral-gray", label: "中性灰" }, { id: "cool-gray", label: "冷灰" }].map(item => <button key={item.id} type="button" aria-pressed={visualTheme === item.id} className={visualTheme === item.id ? "is-active" : ""} onClick={() => setVisualTheme(item.id)}><span className={`theme-swatch theme-swatch--${item.id}`} aria-hidden="true" />{item.label}{visualTheme === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">{saveAvailable ? "任务参数、草案、对话与历史自动保存在此浏览器。原始附件需要重新选择。" : "此浏览器暂时无法保存新改动；请先导出当前任务记录。"}</p></>}
+        {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Work · 本地设计预览</span></div><div className="menu-label">界面主题</div><div className="theme-options" role="group" aria-label="界面主题">{[{ id: "neutral-gray", label: "中性灰" }, { id: "cool-gray", label: "冷灰" }].map(item => <button key={item.id} type="button" aria-pressed={visualTheme === item.id} className={visualTheme === item.id ? "is-active" : ""} onClick={() => setVisualTheme(item.id)}><span className={`theme-swatch theme-swatch--${item.id}`} aria-hidden="true" />{item.label}{visualTheme === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">{saveAvailable ? "任务参数、草案、对话与历史自动保存在此浏览器。原始附件需要重新选择。" : "此浏览器暂时无法保存新改动；请先导出当前任务记录。"}</p></>}
       </div>}
 
       <WorkbenchDialogs dialog={wb.dialog} onClose={wb.closeDialog} groups={wb.groups} taskName={selectedTask} taskGoal={task.goal} onCreateTask={wb.createTask} onAttachCode={wb.attachCode} history={session.history} onRestoreConversation={wb.restoreConversation} modelOptions={modelOptions} selectedModel={wb.selectedModel} onSelectModel={wb.chooseModel} attempts={wb.attempts} onAddAttempt={(entry) => wb.addRecord({ ...entry, kind: "attempt", isDemo: false })} evidenceDetail={wb.dialogData} copyText={wb.dialogData.text || ""} />

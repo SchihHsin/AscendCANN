@@ -1,4 +1,4 @@
-# Ascend Studio · 问题02判断与纠错原型
+# Ascend Work · 问题02判断与纠错原型
 
 在线预览：https://schihhsin.github.io/AscendCANN/ascstudio/
 

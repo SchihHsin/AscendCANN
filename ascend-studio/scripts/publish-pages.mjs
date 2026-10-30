@@ -18,5 +18,5 @@ rmSync(showcaseOutput, { recursive: true, force: true });
 mkdirSync(showcaseOutput, { recursive: true });
 cpSync(buildOutput, showcaseOutput, { recursive: true, force: true });
 
-console.log(`Published Ascend Studio to ${pagesOutput}`);
+console.log(`Published Ascend Work to ${pagesOutput}`);
 console.log(`Synchronized PC showcase copy to ${showcaseOutput}`);

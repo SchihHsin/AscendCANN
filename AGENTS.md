@@ -12,9 +12,9 @@
 2. 用学习体验 Demo 验证从学习入口、路径理解到首次可运行案例、失败恢复和本地迁移的连续体验。
 3. 以公开案例、任务级 AI 可用性对照与开发者旅程研究，定义 AI 时代昇腾社区的可信任务完成网络 / 协作层定位。
 4. 将 Agent 的 API、Host / Harness、可装配能力和昇腾侧知识 / 工具供给约束沉淀为可验证的建设与汇报材料。
-5. 用 Ascend Studio 呈现面向昇腾开发者体验的前沿交互概念；原型的首要任务是让设计点可见、可感知、可讨论，不要求每个概念都成为完整工程实现。
+5. 用 Ascend Work 呈现面向昇腾开发者体验的前沿交互概念；原型的首要任务是让设计点可见、可感知、可讨论，不要求每个概念都成为完整工程实现。
 
-### Ascend Studio 长期设计基准
+### Ascend Work 长期设计基准
 
 - 用户是体验与交互设计师，使用该项目提出并展示创新设计点。评审重点是概念是否清楚、交互是否能被体验、关键状态是否连贯；不要把每次设计讨论收窄为真实数据接入、模型 / NPU 验证或工程完备度评估。
 - 避免不必要的次级标签和说明，让布局本身承担解释（“Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.”）。
@@ -8447,3 +8447,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 同步恢复 Web→API 查询线与校验结果→客户端回路线的原始节点锚点；节点名称、其他层与分布轨线关系不变。依据：用户对节点和两句说明相对位置的直接澄清（H）。
 - 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 SVG 预览确认箭头标签不与两端节点文字重叠。GitHub Pages 部署 0e3e2bd06dc671443cc52e44c30105b8bb57ce7f 状态 success，线上正式页 HTTP 200 并读回并列节点、横向箭头及上下说明。未运行自动化测试。
 - 页面修正提交 0e3e2bd0 已推送至 origin/main；交接记录随后单独推送。
+
+### 2026-10-30 · Ascend Work 品牌更名
+
+- 当前产品品牌由 Ascend Studio 更名为 Ascend Work。同步更新工作台 HTML 标题与描述、对话助手署名、开发者菜单、ResNet50 演示栏、知识来源默认名、导出对话署名、README 和当前设计基准。
+- 保留 `ascend-studio/` 源码目录、`ascstudio/` Pages 地址、浏览器本地存储键与旧历史记录中的 Ascend Studio 名称，避免破坏已有任务状态、文件链接和历史决策引用。它们是兼容标识或历史上下文，不代表当前品牌。
+- 依据：用户明确更名要求（H）。本次只更改品牌文字，不改变界面结构、功能、路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check`、发布入口与品牌文案断言、相关 Node 语法检查均通过。Vite 保留主 bundle 超过 500 kB 的既有体积提示；未运行自动化测试。静态产物同步到 `ascstudio/` 和 `ascstudio-pc/studio/`，两处入口引用同一 JS；旧本地存储键保留。

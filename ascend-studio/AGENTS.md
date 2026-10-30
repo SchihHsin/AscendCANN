@@ -10,9 +10,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Confirmed design decisions
 
-### Ascend Studio 核心目标与概念 Demo 原则
+### Ascend Work 核心目标与概念 Demo 原则
 
-- Ascend Studio 是体验与交互设计概念的展示、试验和讨论空间。用户以体验 / 交互设计师视角提出创新点；原型首先要让设计点可见、可感知、可操作，不需要为了证明概念而完成真实 AI、日志、训练环境、NPU 或后端集成。
+- Ascend Work 是体验与交互设计概念的展示、试验和讨论空间。用户以体验 / 交互设计师视角提出创新点；原型首先要让设计点可见、可感知、可操作，不需要为了证明概念而完成真实 AI、日志、训练环境、NPU 或后端集成。
 - 做设计工作时，不要让“是否接入真实历史 / 遥测”取代对交互价值的讨论，也不要将“不读取历史”写成产品优点。可用策划的示例任务和状态讲清楚交互；如果需要标明演示语境，放在不打断体验的位置即可。
 - 历史任务、已有材料、过去的选择或未完成目标可以成为概念中的探索起点。让它们带出相关方向和下一步选择；示例词条应通过上下文关系被理解，不假定每位用户都需要同一组推荐。
 - 探索画布应体现渐进下钻：当前焦点移到中心，子节点向周围扩散，关系由连线表现；动效平滑、节点位置稳定。悬浮用于预览，经过停留后仍需用户再次移动或明确选择才进入下层，不能因新布局下鼠标恰好压住子节点而自动连跳；通过路径导航保留展开来源。
@@ -31,7 +31,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Keep the left shortcuts for new task, automation tasks, and capability library, then show compact, collapsible task groups under projects.
 - Use the selected screen mock as the visual reference, then make iteration changes in HTML/CSS. Keep generated imagery for small decorative accents, not as the editable page itself.
 - Keep typography compact and the palette restrained: warm white and light gray surfaces, a cool blue-violet accent used sparingly, and neutral selected states without saturated outlines or a left color strip. Yellow uncertainty cards may keep a pale yellow surface, but their text must not have an outline or glow.
-- The middle conversation and right operation area should remain close to the agreed 55:45 proportion. This prototype is Ascend Studio; do not imply that all issues are handled in Codex or add “学习组” labeling.
+- The middle conversation and right operation area should remain close to the agreed 55:45 proportion. This prototype is Ascend Work; do not imply that all issues are handled in Codex or add “学习组” labeling.
 - Omit avatars in the conversation. Keep AI responses directly on the conversation background without a bubble surface; align user messages to the right inside a restrained bubble.
 - Problem 02 must present tail-block handling as an unconfirmed clue. Do not state a root cause or claim NPU validation.
 - The new-task home keeps the left project/task list and supports both learning and development. Its recommendations are actions grounded in task facts, not a list of recently used tasks; default cards show the source task, specific next action, and why it is recommended.
@@ -76,7 +76,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 二维世界坐标与视口分离；空白拖动/抓手/滚轮平移，Ctrl/Command滚轮缩放，缩放控件15–150%，初始100%。标题拖动、角落调整尺寸、方向键微调；固定阻止移动和改尺寸。新增内容只调整自身位置，不移动已存在对象。小地图与适应全部负责导航；正文阅读通过定位对象展开。
 - 折叠留标题与摘要，收纳保留位置/尺寸/内容，索引是画布内部小浮层；区分待展开与已收纳。临时来源/草案对照保存和恢复位置、尺寸、可见性、折叠和视口；固定对象不移动。动态复核记录是画布对象。
 - 尝试与示例应用沿用原状态，取消提案保留草案和尝试，可重新生成；本轮没有新增取消提案历史。Diff保存生成时的基准，确认应用后仍能查看原差异。误差和复核各为独立卡，共享已算误差和范围依据；记录保存数据来源、数量与容差。计算期间锁定输入，恢复初始状态会清理卡内表单、结果和计时器。
-- 保留Ascend Studio三栏、项目任务分组、自动化任务/能力库、无头像、AI文字铺背景、用户气泡靠右和中性选中。不新增学习中心/学习组，不改变其他题目的平台或报告序列。新ImageGen装饰仍待用户选择。
+- 保留Ascend Work三栏、项目任务分组、自动化任务/能力库、无头像、AI文字铺背景、用户气泡靠右和中性选中。不新增学习中心/学习组，不改变其他题目的平台或报告序列。新ImageGen装饰仍待用户选择。
 - 本轮通过In-app Browser默认1280×720实际操作拖动、尺寸调整、平移、键盘微调、固定、临时对照退出恢复、收纳/恢复、折叠、索引定位、尝试→Diff取消/再生成/确认→范围复核、误差→复核记录→动态卡、任务切换与重置。原生overflow:hidden因按钮定位引起画布内部滚动，已改overflow:clip；之后观察tc-stage.scrollTop=0。未单独覆盖Ctrl/Command滚轮缩放或移动端，本轮未再次核验复制。
 - `npm run build`通过；最终刷新后未捕获console error。没有新增或运行自动化测试。截图保存在 `evidence/20261009-free-canvas-default.jpg`、`20261009-free-canvas-explanation.jpg`、`20261009-free-canvas-overview.jpg`；整体评审待用户。仍是浏览器范围/误差算例，未接真实AI、持久化、文件写入或NPU；根因未知。
 
@@ -2172,3 +2172,10 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 路径共创初始化为「上下布局」；确认路径进入学习后切为「左右布局」。进入学习后用户可手动切换，系统不持续覆盖其选择。普通学习与 ResNet50 仍默认左右。顶部工作台对话位置控件与画布方向无关。
 - 实现入口：`src/App.jsx` 中学习画布初始映射与路径状态转换；发布产物由 `npm run build:pages` 同步至 `../ascstudio/` 和 `../ascstudio-pc/studio/`。
 - 验证和发布回执见仓库根 `AGENTS.md`。
+
+### 2026-10-30 · Ascend Work 品牌更名
+
+- 当前产品品牌由 Ascend Studio 更名为 Ascend Work。同步更新工作台 HTML 标题与描述、对话助手署名、开发者菜单、ResNet50 演示栏、知识来源默认名、导出对话署名与 README。
+- 保留 `ascend-studio/` 源码目录、`ascstudio/` Pages 地址及浏览器本地存储键，避免破坏已有链接和本地任务状态；更名前的日期记录保留其历史称呼。
+- 依据：用户明确更名要求（H）。本次只更改品牌文字，不改变界面结构、功能、路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check`、发布入口与品牌文案断言、相关 Node 语法检查均通过。Vite 保留主 bundle 超过 500 kB 的既有体积提示；未运行自动化测试。Pages 及电脑端材料同步结果、推送与部署回执见仓库根 `AGENTS.md`。
