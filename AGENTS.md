@@ -8409,4 +8409,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认，将正式页 `ascstudio-mini/knowledge-provider-map.html` 和对比页 `ascstudio-mini/knowledge-provider-map-line-options.html` 的连线统一为水平 / 垂直轨道，转弯处使用 8px 圆角；保留入口、Agent、知识供给、结果校验等关系颜色。校验节点横向微调 3px，为箭头进入节点前留出完整圆角。对比页的两种节点布局继续一致遵循这套线条规则。
 - 修改范围是路径几何和描边端点 / 接头样式；节点关系、内容、页面顺序不变，不影响 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确认可该线条方案（H）；既有连线的语义与落点沿用原图结构（M）。
 - 验证：`git diff --check`、两页内联脚本 `node --check`、ID 唯一性检查通过；静态核对正式页 12 条连线 / 13 个圆角、对比页 24 条连线 / 26 个圆角，均无自由曲线、直角折返或非 8px 圆角。本地预览服务 HTTP 200；headless 截图输出黑屏，因此不作为视觉验收证据。未运行自动化测试。
-- 页面提交 `aa27bc88` 已推送至 `origin/main`。当前环境未安装 `gh`，GitHub Pages 工作流状态未通过 CLI 核验；线上 HTML 发布状态待 HTTP 读回确认。交接记录随后单独推送。
+- 页面提交 `aa27bc88` 已推送至 `origin/main`；线上正式页 HTTP 200，并读回入口、知识底座与校验线路径。当前环境未安装 `gh`，GitHub Pages 工作流状态未通过 CLI 核验。交接记录随后单独推送。
