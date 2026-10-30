@@ -8225,3 +8225,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户选择方案 1（H）。
 - 验证：`git diff --check` 与四项颜色配对静态断言通过；本地 CUA 桌面预览确认左右层级标题、底色和椭圆描边同色系。页面提交 `17ec263b` 已推送至 `origin/main`；页面 workflow `40989468438` 在记录时运行中，部署状态待本次交接提交后复核。未运行自动化测试。
 - 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 将 Developer Services 背景调为中性灰白
+
+- 用户指出 Developer Services 大椭圆仍带紫调，不像灰白。原 `#f1eff4` 是偏紫的灰白；现改为中性冷灰白 `#f4f5f6`，描边改为中性灰 `#d1d5db`，标题保持冷灰。Runtime & Tools 继续使用浅紫底、紫色标题与描边。形状、中心轴与节点关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与“改为灰白”的明确反馈（H）。
+- 验证：`git diff --check` 与颜色配对静态断言通过；本地 CUA 预览确认服务大椭圆呈中性灰白，运行层保持浅紫。页面提交 `e6894f97` 已推送至 `origin/main`；Pages 状态待本次交接提交后核验。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
