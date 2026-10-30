@@ -8424,3 +8424,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 正式页 `ascstudio-mini/knowledge-provider-map.html` 保留已选分布轨线及统一圆角直角连线；撤回本轮对 `ascstudio-mini/knowledge-provider-map-line-options.html` 的修改，恢复此前预览状态。该预览源于先前对比请求，保留作历史参考，不作为当前方案交付或推荐。
 - 页面结构与序列、节点关系以及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户对交付范围的直接澄清（H）。
 - 验证：`git diff --check` 通过；正式页线上 HTTP 200 且可读回分布轨线路径；旧预览页线上 HTTP 200 且已读回修改前内容。代码修正提交 `89d3c061` 已推送至 `origin/main`；本交接记录随后单独推送。
+
+### 2026-10-30 · 调整入口 / 形态层为纵向演进关系
+
+- 按用户指定，将第 06 页第一层命名为“入口 / 形态”，把社区节点改为“社区 AI 助手”；社区入口置上、项目客户端置下，以向下箭头连接，并在上方加粗“从 Web 走进项目”。为适配新落点，将 Web→API 查询线与校验结果→客户端回路线分别改接到新节点边缘；其他层级与关系不变。
+- 修改 ascstudio-mini/knowledge-provider-map.html。依据：用户直接确定的层名、节点名、垂直顺序、箭头与文案（H）；连接器落点按现有节点与服务关系调整（M）。页面序列、节点信息及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 本地图预览检查节点、标题、箭头与两条服务连线无重叠。GitHub Pages 部署 b332ad3846791e02e303de4594b539808e1ef410 状态 success，正式页 HTTP 200，并读回新标题、节点与箭头。未运行自动化测试。
+- 页面提交 b332ad38 已推送至 origin/main；交接记录随后单独推送。知识底座绿色区域的面积 / 淡化尚待后续确认与调整。
