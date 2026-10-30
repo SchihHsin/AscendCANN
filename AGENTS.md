@@ -8291,3 +8291,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计点深链接改为按全局唯一设计点 ID 查找章节与点位，确保旧链接中的章节序号变化后，学习和开发点仍能落到正确状态。更新 `ascstudio-pc/index.html` 的资源版本号为 `20261030-learning-development-mobile-order`。
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`；页面序列明确为学习 → 开发 → 移动端，没有改变设计点内容或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户对章节先后顺序的明确要求（H），起始 Demo 页面由本地交互原型状态映射（M）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器核对第一章落在学习模式的新建任务主动建议页，第二章落在 Add 算子精度排查任务的图解工作区，左下角讲解与各自设计点一致。未运行自动化测试。页面提交 `e27465fd` 已推送至 `origin/main`；本交接记录随后单独提交并推送。无待确认事项。
+
+
+### 2026-10-30 · 制作能力图连线方案对比页
+
+- 用户要求同时查看两种能力架构连线方案。新增独立对比页 `ascstudio-mini/knowledge-provider-map-line-options.html`，第 06 页提供可切换的方案 1 / 方案 2；原正式蓝图 `knowledge-provider-map.html` 未改，页面序列与 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 方案 1 保持四层和运行节点原位置，分开社区 Web → 查询 API、授权项目上下文 → Agent Host、Host → Skill / MCP 两路、Skill → 学习 / 图解 / 推荐、MCP → 活动服务；知识检索连到查询 API，服务结果继续汇入校验，授权反馈仍回到 Owner。
+- 方案 2 将 Agent Host 移至运行层中心；API 作为独立查询入口，Host 分支调用 Skill 与 MCP，Skill 再连接学习 / 图解 / 推荐，MCP 连接活动服务。两方案共用服务层、内容治理底座、校验和反馈节点，便于比较关系表达。
+- 修改仅为建设示意，不表示 API、MCP 或项目客户端已经接入。依据：用户选择同时查看两版（H）；连线具体落点根据当前 SVG 节点职责及坐标推演（M）。
+- 验证：`git diff --check`、页面脚本 `node --check`、静态 ID 唯一性检查通过；本地桌面浏览器以 `#6` 打开方案 1 / 方案 2 查询状态，确认切换控件默认选中与图形显隐正确。未运行自动化测试；未改变正式蓝图。
+- 对比页提交 `819968f8` 已推送至 `origin/main`。本条交接更新需随后单独提交并推送；GitHub Pages 发布状态待回读。
