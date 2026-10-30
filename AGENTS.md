@@ -8218,3 +8218,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确要求（H）；没有改变节点关系、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 与椭圆形状、中心坐标、深绿色字、移除节点双圈的静态断言通过；本地 CUA 1280×720 预览确认椭圆不遮层级标题、检索服务居中落在绿色底座。页面提交 `ccef3b5d` 已推送至 `origin/main`；GitHub Pages workflow `40988684548` 在交接记录时仍运行中，线上发布回读待确认。未运行自动化测试。
 - 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 同步 Developer Services 与 Runtime & Tools 的配色
+
+- 用户选择“保留已互换的底色，并同步互换标题与描边颜色”。现在 Developer Services 保留冷灰底 `#f1eff4`，标题与描边改为冷灰 `#6f7b89` / `#d0cbd7`；Runtime & Tools 保留浅紫底 `#eee8f5`，标题与描边改为浅紫 `#8471a8` / `#c8bbd7`。两层底色顺序、椭圆形状、中心轴和图中关系保持不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户选择方案 1（H）。
+- 验证：`git diff --check` 与四项颜色配对静态断言通过；本地 CUA 桌面预览确认左右层级标题、底色和椭圆描边同色系。页面提交 `17ec263b` 已推送至 `origin/main`；页面 workflow `40989468438` 在记录时运行中，部署状态待本次交接提交后复核。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
