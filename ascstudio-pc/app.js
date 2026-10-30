@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-learning-point-and-say";
+const ROUTE_REV = "20261030-keyboard-navigation";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -101,7 +101,10 @@ function renderPointNote() {
       document.createTextNode(activePoint.note.slice(emphasisEnd)),
     );
   }
-  $("#note-prev").disabled = currentPoint === 0 && currentChapter === 0;
+  const previousLabel = currentPoint === 0 ? "返回本章封面" : "上一个设计点";
+  $("#note-prev").disabled = false;
+  $("#note-prev").setAttribute("aria-label", previousLabel);
+  $("#note-prev").title = previousLabel;
   const nextLabel = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个设计点" : currentChapter < chapters.length - 1 ? "进入下一章封面" : "回到第一章封面";
   $("#note-next").setAttribute("aria-label", nextLabel);
   $("#note-next").title = nextLabel;
@@ -435,6 +438,7 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   if (frame.src === target.href && loadedFrameHref === target.href && frameReady) {
     showcase.dataset.view = "stage";
     $("#loading-state").hidden = true;
+    bindFrameKeyboard();
     if (!activePoint.mobile) setTimeout(() => applyPcStart(activePoint, 0, revision), 0);
     else setTimeout(() => applyMobileStart(activePoint, 0, revision), 0);
     return;
@@ -443,6 +447,7 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
     if (revision !== loadingRevision || frame.src !== target.href) return;
     loadedFrameHref = target.href;
     showcase.dataset.view = "stage";
+    bindFrameKeyboard();
     if (!activePoint.mobile) setTimeout(() => applyPcStart(activePoint, 0, revision), 120);
     else setTimeout(() => applyMobileStart(activePoint, 0, revision), 120);
   };
@@ -467,7 +472,42 @@ function nextPoint() {
 
 function previousPoint() {
   if (currentPoint > 0) loadPoint(currentChapter, currentPoint - 1);
-  else if (currentChapter > 0) showChapterCover(currentChapter - 1);
+  else showChapterCover(currentChapter);
+}
+
+function handleShowcaseKeydown(event) {
+  if (event.key === "Escape" && menuOpen) { menuOpen = false; renderPointMenu(); return; }
+  if (menuOpen || event.defaultPrevented) return;
+  if (showcase.dataset.view === "cover") {
+    if (event.key === "Enter" || event.key === "ArrowRight") {
+      if (event.key === "ArrowRight") event.preventDefault();
+      loadPoint(currentChapter, 0);
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      const previousChapterIndex = (currentChapter - 1 + chapters.length) % chapters.length;
+      const previousChapter = chapters[previousChapterIndex];
+      loadPoint(previousChapterIndex, previousChapter.points.length - 1);
+    }
+    return;
+  }
+  if (showcase.dataset.view !== "stage") return;
+  if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
+  const target = event.target;
+  if (target?.closest?.("input,textarea,select,[contenteditable='true'],[role='textbox'],[role='slider'],[role='spinbutton']")) return;
+  const selection = target?.ownerDocument?.getSelection?.();
+  if (selection && !selection.isCollapsed) return;
+
+  if (event.key === "ArrowRight") { event.preventDefault(); nextPoint(); }
+  else if (event.key === "ArrowLeft") { event.preventDefault(); previousPoint(); }
+}
+
+function bindFrameKeyboard() {
+  let doc;
+  try { doc = frame.contentDocument; } catch { return; }
+  if (!doc) return;
+  doc.removeEventListener("keydown", handleShowcaseKeydown);
+  doc.addEventListener("keydown", handleShowcaseKeydown);
 }
 
 function openPointMenu() {
@@ -536,13 +576,7 @@ $("#menu-content").addEventListener("click", event => {
   if (pointButton) { const [chapterIndex, pointIndex] = pointButton.dataset.point.split(":").map(Number); loadPoint(chapterIndex, pointIndex); }
   else if (chapterButton) showChapterCover(Number(chapterButton.dataset.chapterCover));
 });
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && menuOpen) { menuOpen = false; renderPointMenu(); return; }
-  if (showcase.dataset.view === "cover" && event.key === "Enter") { loadPoint(currentChapter, 0); return; }
-  if (showcase.dataset.view !== "stage" || event.target.closest("input,textarea,select,[contenteditable='true']")) return;
-  if (event.key === "ArrowRight") { event.preventDefault(); nextPoint(); }
-  else if (event.key === "ArrowLeft") { event.preventDefault(); previousPoint(); }
-});
+document.addEventListener("keydown", handleShowcaseKeydown);
 
 window.addEventListener("message", event => {
   if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
