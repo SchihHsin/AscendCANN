@@ -8342,3 +8342,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 为降低线路数量，项目上下文由“项目客户端”与 Host 的授权 / 环境节点说明呈现，没有另画一条绕过全图的独立箭头；授权完成与纠错回流保留在 Owner 节点说明中，也不再画长虚线回路。正式蓝图的详细关系未改变。页面序列、API / Protocol、Host / Harness、Application / Task 边界均未改变；建设示意不表示服务已接入。
 - 依据：用户对当前截图“线好乱”的直接反馈（H）；路线落点根据节点坐标、方向和不穿过节点文字的布局约束推演（M）。
 - 验证：`git diff --check`、页面内联脚本 `node --check`、静态 ID 唯一性检查通过；CUA 桌面 1280×720 逐一切换方案 1 / 2，确认分流线、底座供给线、校验回入口的端点均可见，未运行自动化测试。实现提交 `fcf05242` 已推送至 `origin/main`。Pages URL 返回 HTTP 200；加版本参数回读内容长度为 229904 bytes，确认新版方案文案及 Host / 知识供给连线路径已发布。
+
+### 2026-10-30 · 桌面端 Demo 不显示焦点描边
+
+- 用户明确要求展示时不出现焦点提示，讲解者会自行操作。桌面端外层控件不再显示 `:focus-visible` 描边；嵌入的 Studio 与小程序 Demo 在加载时注入同样的描边覆盖，避免推荐卡片等控件出现截图中的紫色焦点框。保留点击、键盘操作、悬停、选中和卡片展开行为。
+- 依据：用户明确偏好（H）；截图中的卡片内框对应推荐卡片按钮的 `:focus-visible` 样式（M）。本改动仅影响视觉焦点轮廓，不改变章节序列、任务页面定位或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；桌面预览 URL 返回 HTTP 200。未运行自动化测试。
+- Commit / push：代码提交 `da04db47` 已推送至 `origin/main`；本条交接记录随后的独立记录提交一并推送。
