@@ -8469,3 +8469,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确指定图标位置、对象与颜色（H）；图形语义沿用已确认的图标提议（H）。不影响页面序列、层级关系或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；静态检查 SVG 结构确认图标与入口标题成组，说明文字保留为独立居中元素。本次未运行自动化测试。
 - 页面提交 `64c352cb` 已推送至 `origin/main`；本交接记录将单独提交并推送。
+
+### 2026-10-30 · 知识底座绿色底色置于图形最底层
+
+- 根据用户反馈，将知识底座的绿色椭圆改为 SVG 中先绘制的承托底色；后续绘制的治理连线、节点图标和文字覆盖在其上方。保留椭圆尺寸、颜色、虚线轮廓及治理节点布局，不再通过缩小或进一步淡化底色来规避遮挡。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确要求把绿色放到最底层以避免遮挡节点（H）；采用 SVG 绘制顺序调整实现（M）。不改变页面序列、四层关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41025484671` 完成且 success；线上页面 HTTP 200，读回确认绿色底色位于 `foundation-trunk` 连线之前。未运行自动化测试。
+- 页面提交 `a91722b0` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
