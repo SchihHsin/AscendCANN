@@ -8360,3 +8360,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图指出 ResNet50 学习画布中「认识图像推理链路」阶段节点选中颜色不正确。根因为阶段节点采用浅灰选中面，但通用选中规则仍将标题、摘要和状态文字改成白色，导致对比不足。
 - 在 `ascend-studio/src/learning-hierarchy-canvas.css` 为阶段选中态恢复深色标题、灰色摘要，并保留完成 / 进行中状态色；子步骤仍用黑底白字。同步写入 `ascend-studio/AGENTS.md` 的阶段与步骤状态规则。不改节点结构、布局或任务状态。
 - 验证：`npm --prefix ascend-studio run build:pages`、构建 JS `node --check`、`git diff --check` 通过。没有运行自动化测试。提交 `11ddc283` 已推送至 `origin/main`；Pages workflow `41002083994` build / deploy 成功。线上 `/AscendCANN/ascstudio/?task=resnet50` 返回 200，HTML 引用的新 JS / CSS 均返回 200，CSS 包含阶段标题、摘要和状态色覆盖规则。
+
+
+### 2026-10-30 · 更新第一章章节名
+
+- 用户确认第一章标题改为“让学习贴合当前需要与现有基础”，替换“个人目标”；第二、三章标题和当前设计点不变。
+- 修改 `ascstudio-pc/app.js` 中第一章标题。依据为用户明确选定文案（H）；仅更新章节显示名，不改变章节顺序、Demo 起始页、交互或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；线上 `ascstudio-pc/app.js` 返回 HTTP 200，包含新标题且不再包含旧标题。Pages workflow `41009208481` 完成且成功。
+- Commit / push：实现提交 `0b235dad` 已推送至 `origin/main`；本交接记录随后的独立提交推送。
