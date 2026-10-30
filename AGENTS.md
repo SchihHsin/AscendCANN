@@ -8308,7 +8308,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户截图调整区域框选态：选区左上角「已选区域」标签改为黑底白字；选区矩形和拖动预览使用克制的多色渐变描边，内部仍保持内容可见；局部输入框为空时显示普通输入框同款黑色波形语音按钮，有文本且停止听写后显示发送按钮。
 - 区域语音仍复用原型中的模拟听写与快捷键状态，不接真实语音服务。点击停止语音时阻止表单提交，避免按钮切换瞬间误发送。修改 `ascend-studio/src/AreaComposer.jsx`、`VoiceCaptureButton.jsx`、`task-workspace.css` 及 `ascstudio/` 构建产物。
 - 依据：用户提供截图与明确样式要求（H）；颜色和主要操作沿用 Ascend Studio 界面规范。页面顺序 / 路由未变，API / Protocol、Host / Harness、Application / Task 边界未变。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；未运行测试套件。推送和 Pages 发布回执将在发布完成后补记。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；未运行测试套件。实现提交 `6a0f6a5f` 已推送至 `origin/main`，并合入保留并行改动的主线记录；Pages workflow `40997058036` 成功（部署提交 `1f9a4f29`）。线上 `/AscendCANN/ascstudio/`、`index-Dxg3mq0f.js` 与 `index-Bd0gfjuf.css` 均 HTTP 200，JS/CSS 已读回选区样式标识。
 
 ### 2026-10-30 · 确认学习章节名称
 
