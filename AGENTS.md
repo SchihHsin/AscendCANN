@@ -8247,3 +8247,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`。学习点数量由 6 收为 3；不改变章节顺序，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。主页推荐卡来自原型内的预置任务与近期记录演示数据，不代表真实个性化遥测。
 - 依据：用户确认的文案与完整提示词（H）；卡片、路径共创页和 ResNet50 学习首节点为现有原型状态（M）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面预览确认第 1 点显示学习模式的图像预处理建议卡，第 2 点完整提示词留在输入框且未进入对话，第 3 点打开 ResNet50 首节点，状态为 0/15 个动作完成。实现提交 `85dccc2c` 已推送至 `origin/main`；本交接记录随后单独提交并推送。无待确认事项。
+
+### 2026-10-30 · 统一开发者服务与运行能力的垂直排布
+
+- 用户认可继续调整 Developer Services 与 Runtime & Tools 的垂直对齐。Developer Services 背景椭圆收至 `cy=310, ry=62`，与四个服务节点内容组同心。Runtime & Tools 的四个标题、说明、节点图形及连接线按同一垂直规则落位：标题共用基线，说明按两行排布并对齐各节点中心，节点形状和关系线共用 `y=498` 基线；椭圆仍以 `cy=454.5, ry=75.5` 包住完整内容组。项目上下文虚线接到 Host 菱形下缘，知识索引连到 MCP 接口，已有服务关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户对两层内容垂直偏移的反馈及对统一排布规则的确认（H）；节点职责、服务关系、页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认标题和说明不互相挤压、运行层内容组在椭圆内均衡、连接端点贴合对应节点；GitHub Pages URL 返回 HTTP 200，线上源码回读确认标题基线、说明分行和路径端点均为新版本。未运行自动化测试。
+- 页面提交 `a407965a` 已推送至 `origin/main`；本交接记录随后的文档提交也需推送。无未决事项。
