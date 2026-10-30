@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261030-learning-title-personal-fit";
+const ROUTE_REV = "20261030-final-three-chapter-titles";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -12,7 +12,7 @@ const chapters = [
     ],
   },
   {
-    id: "development", title: "解决问题，也留下经验", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
@@ -22,7 +22,7 @@ const chapters = [
     ],
   },
   {
-    id: "mobile", title: "在手机上随时接着学", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、回访和自主发现，并将理解状态带回任务。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
+    id: "mobile", title: "让学习随时继续", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、回访和自主发现，并将理解状态带回任务。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
     points: [
       { id: "desktop-handoff", title: "从电脑端的一条回答，接上手机里的下一步", note: "入口就在正在处理的任务里", emphasis: "正在处理的任务里", description: "在 Agent 回答或学习内容里收下一条知识，标记感兴趣或还没弄懂，再选择即时送达或加入定期速览。", entry: "小程序 · 电脑端入口", route: "review-pending", mobile: true },
       { id: "instant-delivery", title: "电脑端选「现在看」，微信列表收到同一条知识", note: "让用户看清消息从哪里来", emphasis: "看清消息从哪里来", description: "发送后，手机微信会话列表出现带有知识标题的服务通知；手机样机与电脑端共用这一条内容。", entry: "小程序 · 即时学习", route: "review-instant", mobile: true },
