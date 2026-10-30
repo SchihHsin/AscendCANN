@@ -8180,3 +8180,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 调整 `ascstudio-mini/knowledge-provider-map.html` 的椭圆范围、节点行位置和入口 / 供给 / 校验路径。四类任务仍保持 200 单位等距；知识底座仍在最下层，页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。依据为用户明确要求（H）；服务流程仍是建设示意（M）。
 - 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认节点与连线避让、结果汇流指向校验、服务链位于任务能力下方。未运行自动化测试。GitHub Pages workflow `40977215049` 的 build / deploy / report-build-status 均成功；线上源码已读回上下行坐标和连线路径。
 - 页面提交 `54ff6178`、`d22ff551` 已推送至 `origin/main`；交接记录由随后文档提交推送。
+
+
+### 2026-10-30 · 讨论能力架构图中层拆分
+
+- 用户提出将当前 Agent 中层拆为“可提供的服务”与“支撑服务的能力”两个层级。概念建议：体验入口之下增设开发者服务层，呈现学习路径规划、技术图解、资源推荐、活动 / 内容上新；再下一层为 Agent 运行与连接能力，呈现 OpenAPI 查询、Agent Host、Skill 工作流、MCP 工具 / 知识接入；知识底座继续位于最下方。活动 / 内容上新是开发者服务，其日历与内容供给仍依赖知识治理和数据目录。
+- 这是讨论中的结构建议，尚未改动页面；需避免将 API、Host、Skill、MCP 与用户可见服务混为同类。服务与底层能力是多对多关系；页面序列及 API / Protocol、Host / Harness、Application / Task 边界暂无改动。
+- 依据：用户提出的分层理解与截图（H）。尚无实现和视觉验证；待后续确认后再实施。
+- 本轮只更新交接记录；文件检查与提交推送结果见本次 Git 记录。
