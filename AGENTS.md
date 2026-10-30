@@ -7839,6 +7839,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户截图反馈画布左右 / 上下布局疑似反向。明确工具栏语义：左右＝层级在左、材料在右；上下＝路径在上、材料在下。顶部对话左侧 / 底部浮窗控件独立。标准学习画布旧状态继续按实际可见排布标示，不重置视口和节点位置；新建标准学习画布默认左右。详见 `ascend-studio/AGENTS.md` 的「画布左右 / 上下布局语义统一」。
 - 统一入口按画布类型映射历史相反的内部状态：标准学习画布左右布局对应内部 `vertical`，ResNet50 对应原内部 `horizontal`；上下布局相反。更新 `LearningCanvasToolbar`、`LearningHierarchyCanvas`、`useLearningCanvasView`、`App.jsx`，并生成 Pages bundle。合并 `origin/main` 的 `65affbaf` 时保留双方 AGENTS 记录。验证：`npm --prefix ascend-studio run build:pages`、`node --check ascend-studio/src/useLearningCanvasView.js`、`node --check ascstudio/assets/index-C65-L30K.js`、`git diff --check` 通过；未运行自动化测试。
+- 提交 `5e8c90b1`（包含合并主线与本次实现）已推送至 `origin/main`。GitHub Pages workflow `41001438232` build / deploy 成功；线上 `/AscendCANN/ascstudio/?task=image-preprocessing` 返回 200，引用的 JS/CSS 均返回 200，JS 含新映射 `leftRightLayout: vertical`。没有自动化交互测试；未运行测试套件。
 
 ### 2026-10-29 · 桌面端讲解卡统一为单句
 
