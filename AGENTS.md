@@ -8301,3 +8301,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改仅为建设示意，不表示 API、MCP 或项目客户端已经接入。依据：用户选择同时查看两版（H）；连线具体落点根据当前 SVG 节点职责及坐标推演（M）。
 - 验证：`git diff --check`、页面脚本 `node --check`、静态 ID 唯一性检查通过；本地桌面浏览器以 `#6` 打开方案 1 / 方案 2 查询状态，确认切换控件默认选中与图形显隐正确。未运行自动化测试；未改变正式蓝图。
 - 对比页提交 `819968f8` 已推送至 `origin/main`。本条交接更新需随后单独提交并推送；GitHub Pages 发布状态待回读。
+
+### 2026-10-30 · 确认学习章节名称
+
+- 用户确认第一章名称为“让学习贴合个人目标与现有基础”。该表述覆盖根据个人目标与知识基础调整学习内容，也不假设用户最终一定要进入实操；第二章“在开发过程中掌握知识”和第三章“让学习随时继续”保持不变。
+- 修改 `ascstudio-pc/app.js` 的第一章标题，并更新 `ascstudio-pc/index.html` 与 `app.js` 的资源版本标识为 `20261030-learning-title-personal-fit`。章节顺序、设计点、Demo 页面状态映射及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 依据：用户明确确认标题文案（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第一章封面显示完整新标题。未运行自动化测试。页面提交 `8c90b280` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
