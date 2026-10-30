@@ -8196,3 +8196,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改：`ascstudio-mini/knowledge-provider-map.html`。依据为用户确认的分层判断（H）；具体服务、接口与治理关系作为建设示意（M）。
 - 验证：页面提交前 `git diff --check` 通过；1280×720 本地预览确认四层、服务节点与能力节点分开且知识底座在最下方；GitHub Pages workflow `40986454310` 已完成，线上源码读回包含四层标题与对应节点。未运行自动化测试。
 - 页面提交 `32205c11` 已推送至 `origin/main`；本条交接记录随后单独提交并推送。无未决事项。
+
+### 2026-10-30 · 互换服务与运行层底色并对齐四层背景
+
+- 用户明确要求将 Developer Service 与 Runtime & Tools 的现有底色互换。第 06 页已将服务层填充色改为原运行层的冷灰紫 `#f1eff4`，运行层改为原服务层的浅紫 `#eee8f5`；两者描边分别保持原有区分色。用户同时指出四层背景圈未居中：体验层与知识底座椭圆原中心 `x=800`，服务层与运行层背景中心 `x=720`，现将体验层和知识底座背景统一到 `x=720`，与中间两层及对应节点共用中心轴。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确要求互换底色、修正背景对齐（H）；信息层级和连线未改，页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`git diff --check` 与填色 / 圆心静态断言通过；本地 CUA 1280×720 预览确认底色互换且四层背景共用中心轴；GitHub Pages workflow `40987483532` 成功，线上 HTTP 200 且读回确认新填色和 `x=720` 圆心。未运行自动化测试。
+- 页面提交 `3688cec1` 已推送至 `origin/main`；本交接记录由随后文档提交推送。无未决事项。
