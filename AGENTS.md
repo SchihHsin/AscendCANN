@@ -8454,3 +8454,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保留 `ascend-studio/` 源码目录、`ascstudio/` Pages 地址、浏览器本地存储键与旧历史记录中的 Ascend Studio 名称，避免破坏已有任务状态、文件链接和历史决策引用。它们是兼容标识或历史上下文，不代表当前品牌。
 - 依据：用户明确更名要求（H）。本次只更改品牌文字，不改变界面结构、功能、路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check`、发布入口与品牌文案断言、相关 Node 语法检查均通过。Vite 保留主 bundle 超过 500 kB 的既有体积提示；未运行自动化测试。静态产物同步到 `ascstudio/` 和 `ascstudio-pc/studio/`，两处入口引用同一 JS；旧本地存储键保留。
+- Commit / push：`ae120c2e` 已推送到 `origin/main`。该提交触发的 Pages 运行 `41023539220` 被后续主线更新取消；后续提交 `ae51dbde` 的运行 `41023622978` 已成功，并包含本次发布产物。线上 `/AscendCANN/ascstudio/`、`/AscendCANN/ascstudio-pc/studio/` 与两处 `index-CfqS_ZbN.js` 均 HTTP 200，两个入口均显示 Ascend Work。
