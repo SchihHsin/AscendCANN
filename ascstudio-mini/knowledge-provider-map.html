@@ -1389,7 +1389,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">体验入口、开发者服务、运行与接入能力、知识底座的四层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识检索服务、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1400,7 +1400,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <g aria-hidden="true" transform="translate(760 37)">
         <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
         <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
-        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识检索服务</text>
+        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识底座</text>
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">开发者服务</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
@@ -1478,7 +1478,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-foundation-title" x="720" y="652">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="670">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="686">过期或冲突 → 复核 / 下架</text>
       <text class="map-foundation-title" x="940" y="652">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="670">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="686">版本、证据与状态可追溯</text>
       <text class="map-foundation-title" x="1160" y="652">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="670">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
-      <text class="map-service-title" x="720" y="586">知识检索服务</text><text class="map-service-note" x="720" y="604">全文 / 语义 · 版本过滤 · 来源</text>
+      <text class="map-service-title" x="720" y="586">知识底座</text><text class="map-service-note" x="720" y="604">全文 / 语义 · 版本过滤 · 来源</text>
     </svg>
   </div></div>
   <div class="kp-foot"><span>建设关系示意；接口与数据服务需结合现有社区基础设施评估</span><span>知识向上供给，授权纠错回到 Owner 治理</span></div>

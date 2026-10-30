@@ -1411,7 +1411,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map" id="lineOptionView">
     <svg class="capability-system-map line-option-svg option-track" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">方案一：分轨布线</title>
-      <desc id="cap-map-desc">方案一保留节点位置，连线表达 Web 查询、Host 对 Skill / MCP 的路由、服务结果校验与知识供给；项目上下文与授权边界通过节点说明呈现。图例用方形表示接口、菱形表示 Agent 编排、双环表示知识检索服务、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Host 组装授权上下文并路由 Skill 和 MCP，Skill 分派服务任务，任务结果汇入来源、版本、范围、权限与可执行性校验后返回体验入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；检索服务与受控工具经 API / MCP 向上供给，经授权的完成与纠错信号由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">方案一保留节点位置，连线表达 Web 查询、Host 对 Skill / MCP 的路由、服务结果校验与知识供给；项目上下文与授权边界通过节点说明呈现。图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Host 组装授权上下文并路由 Skill 和 MCP，Skill 分派服务任务，任务结果汇入来源、版本、范围、权限与可执行性校验后返回体验入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；检索服务与受控工具经 API / MCP 向上供给，经授权的完成与纠错信号由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1422,7 +1422,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <g aria-hidden="true" transform="translate(760 37)">
         <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
         <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
-        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识检索服务</text>
+        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识底座</text>
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">开发者服务</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
@@ -1511,11 +1511,11 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-foundation-title" x="720" y="652">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="670">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="686">授权完成 / 纠错 → Owner 复核</text>
       <text class="map-foundation-title" x="940" y="652">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="670">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="686">版本、证据与状态可追溯</text>
       <text class="map-foundation-title" x="1160" y="652">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="670">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
-      <text class="map-service-title" x="720" y="576">知识检索服务</text><text class="map-service-note" x="720" y="594">全文 / 语义 · 版本过滤 · 来源</text>
+      <text class="map-service-title" x="720" y="576">知识底座</text><text class="map-service-note" x="720" y="594">全文 / 语义 · 版本过滤 · 来源</text>
     </svg>
 <svg class="capability-system-map line-option-svg option-hub" role="img" aria-labelledby="hub-map-title hub-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
       <title id="hub-map-title">方案二：Host 中心 Hub-and-Spoke</title>
-      <desc id="hub-map-desc">方案二将 Agent Host 放在运行层中心，API 保持独立查询入口；Host 分别调用 Skill 与 MCP，Skill 分派学习、图解和推荐服务，MCP 连接活动目录与受控知识工具。图例用方形表示接口、菱形表示 Agent 编排、双环表示知识检索服务、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Host 组装授权上下文并路由 Skill 和 MCP，Skill 分派服务任务，任务结果汇入来源、版本、范围、权限与可执行性校验后返回体验入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；检索服务与受控工具经 API / MCP 向上供给，经授权的完成与纠错信号由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <desc id="hub-map-desc">方案二将 Agent Host 放在运行层中心，API 保持独立查询入口；Host 分别调用 Skill 与 MCP，Skill 分派学习、图解和推荐服务，MCP 连接活动目录与受控知识工具。图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。最上层社区 Web 和项目客户端接收学习目标或经授权的项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Host 组装授权上下文并路由 Skill 和 MCP，Skill 分派服务任务，任务结果汇入来源、版本、范围、权限与可执行性校验后返回体验入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；检索服务与受控工具经 API / MCP 向上供给，经授权的完成与纠错信号由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="hub-capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="hub-capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1526,7 +1526,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <g aria-hidden="true" transform="translate(760 37)">
         <rect class="map-legend-interface" x="0" y="-9" width="10" height="10" rx="2"/><text class="map-legend-label" x="16" y="0">接口</text>
         <path class="map-legend-orchestration" d="M82 -4L88 -10L94 -4L88 2Z"/><text class="map-legend-label" x="101" y="0">Agent 编排</text>
-        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识检索服务</text>
+        <circle class="map-legend-knowledge" cx="205" cy="-4" r="6"/><circle class="map-legend-knowledge" cx="205" cy="-4" r="2.5" fill="none"/><text class="map-legend-label" x="217" y="0">知识底座</text>
         <circle cx="297" cy="-5" r="4" fill="#7e9dbc"/><circle cx="304" cy="-5" r="4" fill="#927fb5"/><circle cx="297" cy="2" r="4" fill="#7fa38b"/><circle cx="304" cy="2" r="4" fill="#b78495"/><text class="map-legend-label" x="315" y="0">开发者服务</text>
         <circle class="map-legend-governance" cx="394" cy="-4" r="5"/><text class="map-legend-label" x="405" y="0">内容治理</text>
       </g>
@@ -1615,7 +1615,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-foundation-title" x="720" y="652">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="670">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="686">授权完成 / 纠错 → Owner 复核</text>
       <text class="map-foundation-title" x="940" y="652">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="670">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="686">版本、证据与状态可追溯</text>
       <text class="map-foundation-title" x="1160" y="652">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="670">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
-      <text class="map-service-title" x="720" y="576">知识检索服务</text><text class="map-service-note" x="720" y="594">全文 / 语义 · 版本过滤 · 来源</text>
+      <text class="map-service-title" x="720" y="576">知识底座</text><text class="map-service-note" x="720" y="594">全文 / 语义 · 版本过滤 · 来源</text>
     </svg>
   </div></div>
   <div class="kp-foot"><span>连线方案比选；正式蓝图暂未修改</span><span>方案二将 Agent Host 居中，Skill 与 MCP 分支调用</span></div>
