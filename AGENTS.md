@@ -8476,3 +8476,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确要求把绿色放到最底层以避免遮挡节点（H）；采用 SVG 绘制顺序调整实现（M）。不改变页面序列、四层关系或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41025484671` 完成且 success；线上页面 HTTP 200，读回确认绿色底色位于 `foundation-trunk` 连线之前。未运行自动化测试。
 - 页面提交 `a91722b0` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-30 · 拉开知识治理图标与标题的间距
+
+- 将知识底座五个治理图标及其横向加工线整体上移 12 个 SVG 单位，标题行留在原位，扩大图标与节点名称之间的空隙；中心“知识底座”标题与说明上移，避免与中央图标靠近。节点顺序、文字内容、绿色承托底色与层级关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出图标与名称挤压并要求增加间距（H）；按统一垂直位移调整图标与加工线位置（M）。不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41026810978` 完成且 success；线上页面 HTTP 200，读回确认加工线坐标为 616、五个图标组采用 `translate(0 -12)`，中心标题说明上移。
+- 页面提交 `5f208bfe` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
