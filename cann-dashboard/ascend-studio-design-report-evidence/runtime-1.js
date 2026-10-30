@@ -1,6 +1,5 @@
 
 const rModal=document.querySelector('.r-modal');
-const bpDialog=document.querySelector('.r-bp-dialog');
 const liveDialog=document.querySelector('.r-live-demo');
 const liveFrame=liveDialog.querySelector('iframe');
 let rFocus=null;
@@ -24,15 +23,6 @@ document.querySelectorAll('.r-enlarge').forEach(b=>b.addEventListener('click',()
 rModal.querySelector('button').addEventListener('click',closeFigure);
 rModal.addEventListener('click',e=>{if(e.target===rModal)closeFigure();});
 document.addEventListener('keydown',e=>{if(rModal.classList.contains('open')&&e.key==='Escape')closeFigure();if(rModal.classList.contains('open')&&e.key==='Tab'){e.preventDefault();rModal.querySelector('button').focus();}});
-function selectBreakpoint(index){
-  bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>{tab.classList.toggle('active',i===index);tab.setAttribute('aria-selected',String(i===index));});
-  bpDialog.querySelectorAll('[data-bp-panel]').forEach((panel,i)=>{panel.hidden=i!==index;});
-}
-document.querySelectorAll('[data-bp-open]').forEach(button=>button.addEventListener('click',()=>{selectBreakpoint(Number(button.dataset.bpOpen));bpDialog.showModal();}));
-bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>tab.addEventListener('click',()=>selectBreakpoint(i)));
-bpDialog.querySelector('.r-bp-close').addEventListener('click',()=>bpDialog.close());
-bpDialog.querySelectorAll('.r-bp-panel a').forEach(a=>a.addEventListener('click',()=>bpDialog.close()));
-bpDialog.addEventListener('click',e=>{if(e.target===bpDialog)bpDialog.close();});
 const phoneImage=document.querySelector('.r-phone-stage>img');
 const phoneCaption=document.querySelector('.r-phone-caption');
 const phoneSources=[...document.querySelectorAll('[data-phone-source]')];

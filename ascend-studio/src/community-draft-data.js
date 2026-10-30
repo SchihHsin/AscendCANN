@@ -38,6 +38,10 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
       approach = `开发者确认问题已在目标环境解决并复测通过。本次提交的逐元素对照包含 ${count} 项，${precision.failed ?? 0} 项超出所设容差（atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}）。当前对话与工作区没有记录实际修改点或根因，草稿不会推断修复方法；请在发布前从代码变更或任务记录中补全。`;
       verification = `开发者确认目标环境复测通过；本次逐元素数据 ${count} 项、${precision.failed ?? 0} 项超差。容差：atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}。Demo 未独立连接 NPU，也未核验数据来源；CANN、芯片、驱动与固件版本尚未提供。`;
     }
+  } else if (taskId === LOG_DIAGNOSTIC_TASK && completion?.kind === "addcustom-log-diagnostic-exploration") {
+    problem = "预置 AddCustom 日志显示输入 [16,32] 通过、[17,33] 出现 precision mismatch，位置在 custom_op.cpp:128。形状差异提示可以优先关注尾块访问；根因仍需结合真实代码确认。";
+    approach = "操作了嵌入的浅色 Format Lab 布局图解，用于理解数据布局与物理分块关系。图解是排查理解材料，没有修改真实项目代码，也没有完成示例范围或算子结果核对。";
+    verification = "当前仅记录对交互图解的操作，没有真实代码修改、C++ 编译、精度比较或 NPU 运行结果。提交前需补充实际循环边界、复现命令、两组运行条件、误差数据和环境版本。";
   } else if (taskId === LOG_DIAGNOSTIC_TASK && completion?.kind === "addcustom-log-diagnostic-resolution") {
     problem = "预置 AddCustom 日志显示输入 [16,32] 通过、[17,33] 出现 precision mismatch，位置在 custom_op.cpp:128。日志与形状差异提示优先核对尾块访问；根因尚未确认。";
     approach = "先从日志提取两组输入状态和错误位置，再用 17×33=561 的范围图解理解每块 32 个元素时的尾块。随后在浏览器示例副本中采用按有效元素数访问的候选写法，并完成范围算例。示例没有关联真实项目代码变更。";

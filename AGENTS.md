@@ -7838,3 +7838,518 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-10-30 · 画布左右 / 上下布局语义统一
 
 - 用户截图反馈画布左右 / 上下布局疑似反向。明确工具栏语义：左右＝层级在左、材料在右；上下＝路径在上、材料在下。顶部对话左侧 / 底部浮窗控件独立。标准学习画布旧状态继续按实际可见排布标示，不重置视口和节点位置；新建标准学习画布默认左右。详见 `ascend-studio/AGENTS.md` 的「画布左右 / 上下布局语义统一」。
+- 统一入口按画布类型映射历史相反的内部状态：标准学习画布左右布局对应内部 `vertical`，ResNet50 对应原内部 `horizontal`；上下布局相反。更新 `LearningCanvasToolbar`、`LearningHierarchyCanvas`、`useLearningCanvasView`、`App.jsx`，并生成 Pages bundle。合并 `origin/main` 的 `65affbaf` 时保留双方 AGENTS 记录。验证：`npm --prefix ascend-studio run build:pages`、`node --check ascend-studio/src/useLearningCanvasView.js`、`node --check ascstudio/assets/index-C65-L30K.js`、`git diff --check` 通过；未运行自动化测试。
+
+### 2026-10-29 · 桌面端讲解卡统一为单句
+
+- 按用户截图与要求，将桌面端全部 16 个设计点讲解由标题 + 正文改为单句；讲解卡只显示一句概括，章节封面和设计点目录仍使用原有标题。每条文案合并关键设计意图与交互价值，避免只针对当前显示的社区经验页。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`；资源缓存版本为 `20261029-note-one-sentence`。只调整讲解文案与排版，不改章节 / 设计点顺序、任务起点映射、导航、收起 / 拖动行为、小程序页面及 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确要求与截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本核对 16 条单句文案；CUA 本地打开社区经验设计点确认卡片仅显示一句话（M）。线上 HTML、JS、CSS 均 HTTP 200，页面引用新版本，JS 含 16 条 `note` 文案并读取 `activePoint.note`；未运行自动化测试。
+- 实现提交 `1827ece5` 已推送至 `origin/main`（先 rebase 到并行到达的远端提交 `dacc0849`）。GitHub Pages workflow `40838952056` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · Report PPT Skill 增补图示逻辑原则
+
+- 用户要求将“图本身承载逻辑：用节点、连线和区域组织复杂关系，让信息、内容和关系一眼可见”沉淀为 Skill 规则。确认放入独立 `report-ppt-skill` 仓库：`SKILL.md` 的汇报图表铁律与 `references/chart-selection.md` 的图示设计原则；不扩展至泛用交互可视化 skill，避免原则适用范围过宽。
+- 细则：节点表达对象 / 动作 / 状态 / 阶段，连线表达有依据的关系 / 顺序 / 依赖 / 流向，区域表达阶段 / 分组 / 层级 / 边界；优先用一张主图表达完整关系，文字只补图上难表达的解释；拆图时保留阶段或路径线索。
+- 依据为用户明确提出的表达原则（H）。仅更新汇报材料制作方法，不改 Ascend Studio 页面序列、实现或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过。`report-ppt-skill` 提交 `7841dd2` 已推送 `origin/main`；AscendCANN 本仓交接记录随后单独推送。
+- 无未决事项。
+
+### 2026-10-29 · 设计点导航按钮移到讲解卡外侧
+
+- 按用户确认的方向，把上一点 / 目录 / 下一点按钮从黑色讲解卡中移出，放到卡片右侧纵排；静止时图标背景透明并加白色阴影，悬停或按下时出现 48% 黑底与 4px 背景模糊。卡片本体仍为 80% 黑底和 2px 模糊，因此其高度由单句讲解决定。
+- 将卡片与按钮组纳入同一个可移动容器，拖动卡片文字会连同按钮一起移动；收起时按钮组随整个容器隐藏。修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`，缓存版本更新为 `20261029-note-controls-outside`。章节、设计点、任务起点映射和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 用户确认设计方向（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地确认下一点导航有效、收起时按钮组隐藏、拖动时卡片与按钮组同步移动（M）。线上 HTML、CSS、JS 均 HTTP 200，HTML 引用新版本，DOM 为卡片与导航同级；未运行自动化测试。
+- 实现提交 `7e20581a` 已推送至 `origin/main`；GitHub Pages workflow `40842186838` build / deploy 成功。无未决事项。
+
+
+### 2026-10-29 · 讲解句仅强调核心短语
+
+- 按用户要求避免整句加粗，将全部 16 条设计点讲解恢复为常规字重，并为每条标记一个核心短语显示为粗体；句子内容和单句结构不变。通过 DOM 文本节点加 `strong` 渲染，避免将讲解文本作为 HTML 注入。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`；资源缓存版本为 `20261029-note-selective-emphasis`。不改章节 / 设计点顺序、卡片拖动与导航、任务起点映射、小程序入口或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确的排版要求与截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本检查 16 条强调词均包含在对应句子中；CUA 本地预览确认普通字重与「可编辑的 Prompt」局部强调（M）。线上 HTML、JS、CSS 均 HTTP 200；JS 有 16 条强调标记，CSS 包含正文 400 / 强调 680 字重。
+- 实现提交 `7ec1fe30` 已推送至 `origin/main`；GitHub Pages workflow `40844206713` build / deploy 成功。无未决事项。
+### 2026-10-29 · 开发方式对照页采用 Before / After 现有界面
+
+- 按用户提供的并排参考图调整报告第 2 页；使用 `learning-canvas-story/index.html#5` 中现有 Codex 工作区截图，保留其原始界面并在周围加入两条示例提问气泡；左侧继续呈现昇腾社区和 IDE 的透视场景。结论依据为用户明确素材指向（H），CSS 透视与气泡排布为设计表达（M）。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html`，记录于 `cann-dashboard/ascend-studio-design-report-evidence/qa.md`。页面保持 17 页，入口 #2、用户旅程 #3；不影响用户旅程内容或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：报告构建、Python 编译、内联脚本 `node --check`、`git diff --check` 通过；CUA 本地 1280×720 预览确认来源图和气泡加载、左右场景可见。实现提交 `37f9ed8d` 已推送至 `origin/main`；线上报告与 PNG 均 HTTP 200，线上 HTML 含新图路径和气泡文案。未查询 Actions workflow（本机没有 `gh` CLI）。
+
+
+### 2026-10-29 · 设计点讲解卡改为常驻
+
+- 按用户要求移除设计点讲解卡的收起 / 展开功能和收起提示条；卡片在桌面设计点页常驻显示。保留单句讲解、句内重点加粗、卡片拖动、右侧透明导航按钮和章节目录；拖动把手提示改为“拖动移动讲解卡”。
+- 修改 `ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`，资源缓存版本为 `20261029-note-always-visible`。小程序设计点仍使用原来的移动端页面，不显示桌面讲解卡；章节、内容、任务起点映射及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地确认讲解卡以普通容器常驻显示、收起提示条不存在，单句与局部加粗正常（M）。线上 HTML、JS、CSS 均 HTTP 200；HTML / JS 不含旧收起控件与处理函数，拖动把手和 pointer 事件保留。
+- 实现提交 `659f43ed` 已推送至 `origin/main`，rebase 时保留并行提交 `6f67f4e1`。GitHub Pages workflow `40847387679` build / deploy 成功。无未决事项。
+
+
+### 2026-10-29 · 章节封面使用真实昇腾 Logo
+
+- 按用户截图要求，将章节封面左上角自绘的黑底字母 A 标记替换为 Demo 顶栏使用的真实 Ascend Logo `ascstudio-pc/studio/assets/ascend-logo.svg`，后接 “Studio” 字样，并保留分隔线与 “DESIGN JOURNEY”。五个章节封面共用这一页头。
+- 修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`，缓存版本为 `20261029-cover-ascend-logo`。复用随 Demo 发布的现有 SVG，不复制素材；章节 / 设计点内容、起点映射、页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确要求和截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地章节 03 封面确认标志显示为与 Demo 一致的红色 Ascend Logo + Studio（M）。线上 HTML 与 Logo SVG 均 HTTP 200，HTML 使用新版本并引用 `./studio/assets/ascend-logo.svg`。
+- 实现提交 `bd8e7154` 已推送至 `origin/main`；GitHub Pages workflow `40848367698` build / deploy 成功。无未决事项。
+
+
+### 2026-10-29 · 知识供给蓝图新增入口演进与技术实现两页
+
+- 在 `ascstudio-mini/knowledge-provider-map.html` 新增第 03 页“入口演进”和第 04 页“技术实现能力架构”，目录扩为四章，整份材料共 6 页。入口图表达静态 Demo → 社区 Web → 项目感知客户端的阶段，以及两个入口共用知识目录、搜索和推荐服务；能力图串联内容来源、接入治理、Knowledge Unit / 关系索引、公开发现 / OpenAPI / Agent 通道、本地上下文、Skill / MCP、四类任务引擎、可信校验与授权反馈回流。
+- 按用户要求让图本身承载逻辑：以区域分阶段，以节点表达入口 / 服务 / 引擎，以有向连线呈现共用服务、三路分流、任务引擎分派和质量回流；没有加入装饰图。能力架构属于拟建设计示意，不代表现有系统已接入；不改变既有 API / Protocol、Host / Harness、Application / Task 的定义边界。
+- 依据：用户确认的两页内容方向与“图本身承载逻辑”要求（H）；具体能力组织、接口和建设顺序为方案设计（M），需结合社区现有系统评估。
+- 验证：`git diff --check` 通过；Chrome 无头截图检查 1440×900、1280×720 下的第 5、6 页，确认主链路、连线与页脚完整；线上 `knowledge-provider-map.html?rev=46a69dd1` HTTP 200，回读内容与本地文件一致。未运行自动化测试。
+- 页面提交 `46a69dd1` 已 rebase 到并行主线提交后推送至 `origin/main`；GitHub Pages workflow `40848848215` build / deploy 成功。交接记录随后单独提交并推送至 `origin/main`。无未决事项。
+
+### 2026-10-29 · 用户旅程痛点静态呈现与角色线加深
+
+- 按用户截图反馈，将汇报第 3 页的“设计断点”统一改为“设计痛点”；五张痛点卡改为不可点击的静态展示，并移除配套弹窗、样式与事件处理。五个阶段、任务 / 学习两类用户痛点及对应绿色机会点不变。
+- 覆盖 `beautiful-mermaid` 的 `.lifeline` 类样式（`#7b8797`、2.2px、7/5 虚线），提高代表六类角色的横向生命线对比度；仅调整汇报呈现，不改变正式页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`runtime-1.js`、`qa.md` 与生成报告 `cann-dashboard/ascend-studio-design-report.html`。依据为用户明确反馈与截图（H）；生命线颜色 / 粗细为设计调整（M）。
+- 验证：报告 17 页；静态结构检查确认五张痛点卡、无断点旧文案 / 弹窗 / 点击处理、机会点行保留；`py_compile`、两段内联 JS `node --check`、`git diff --check` 通过。CUA 在 1280×720 本地 5219 预览第 3 页，点击痛点卡没有弹窗，生命线加深后清晰可辨（M）。未运行自动化测试套件。
+- 实现提交 `68e6302d` 已推送到 `origin/main`。交接记录由本提交追加，随后单独推送。
+
+### 2026-10-29 · 桌面端章节名与设计点说明改为日常表达
+
+- 用户确认文字方案后，将桌面端五个章节名调整为「开始一个开发任务」「规划学习路径」「边做边学」「整理并分享经验」「在手机上继续学习」，并改写全部 16 条设计点卡片单句，使交互动作与用户收益更直接；保留句内重点加粗。
+- 修改 `ascstudio-pc/app.js` 的章节 `title`、设计点 `note` / `emphasis`，并更新 `ascstudio-pc/index.html` 中脚本缓存版本为 `20261029-journey-copy`。未改章节摘要、目录中的设计点名称、章节顺序、任务 Demo 起点、页面路由、卡片样式或小程序页面；不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户确认的文案方案（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本校验确认 5 个章节标题、16 条单句说明、16 个强调词均有效。CUA 浏览器接口返回 `browser.user is unavailable`，未能做浏览器预览；本次未修改样式或布局。
+- 实现提交 `411f4ead` 已推送至 `origin/main`；推送时保留并行提交 `e3fe0a7c` 的交接内容。无未决事项。
+
+### 2026-10-29 · 设计点 1.1 起点切换为学习模式
+
+- 按用户明确要求，将设计点 1.1（`recommend`）的 `mode` 从「开发」改为「学习」，起点说明同步改为「新建任务首页 · 学习模式建议卡」。其他设计点文案、任务映射和页面路由不变。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，脚本缓存版本更新为 `20261029-learning-mode`；不改变章节顺序、卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确指定的模式（H）。`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；静态核对确认 1.1 配置为 `mode: "学习"`，并且不再包含开发模式入口。脚本缓存版本为 `20261029-learning-mode`。实现提交 `dfb5e605` 与缓存更新 `893539f3` 均已推送至 `origin/main`。
+
+### 2026-10-29 · 用户旅程统一行为行与白底时序
+
+- 按用户要求先提供无新增插画的版本：保留阶段标题已有的 5 张插画，阶段下方改为一行共同行为概述，不再重复显示任务导向 / 学习导向两条行为泳道。五列表达目标、找线索、整理下一步、实践核验和带走经验；角色差异仍在时序图中呈现。
+- 移除 `beautiful-mermaid` 生成的不规则彩色阶段背景矩形。阶段关系由上方五列标题及下方行为、设计痛点、机会点的列对齐表达；角色生命线、消息卡片、阶段标题插画和五组痛点 / 机会点内容保留。没有改变页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`qa.md` 与生成报告 `cann-dashboard/ascend-studio-design-report.html`。依据为用户本轮明确要求（H）；行为行的通用短句与背景简化为设计组织（M）。
+- 验证：报告仍为 17 页；结构核对确认 5 个行为单元、行为行内无图片、无重复角色行、阶段背景矩形为 0；保留 6 条生命线、18 个交接消息、5 张痛点卡和 5 张机会点卡。`py_compile`、两段内联 JS `node --check`、`git diff --check` 通过；CUA 在 1280×720 本地 5219 预览第 3 页核对列对齐与时序可读性。未运行自动化测试。
+- 实现提交 `5ac98e7c` 已推送至 `origin/main`。本地预览：`http://127.0.0.1:5219/cann-dashboard/ascend-studio-design-report.html#3`。
+
+### 2026-10-29 · Add 日志排查改为直接操作 Format Lab
+
+- 按用户要求移除「日志线索、范围图解、事例核对、经验汇流」编号阶段和视频操作条；Add 日志任务工作区直接显示 Format Lab 浅色嵌入。用户在图中操作后，对话中才出现「生成草稿」社区经验入口；对话与工作区保持打开。
+- 嵌入页以用户提供的 Format Lab 浅色版为来源（H），本地页面通过 `ascend-format-lab-interaction` 事件通知一次有效操作；交互完成后显示本地演示邀请。刷新回到初始嵌入状态，不保留旧缓存中的邀请或草稿。
+- `src/LogTriageWorkspace.jsx` 使用 `./format-lab/index.html?theme=light`；入口和草稿流程位于 `src/App.jsx`。草稿由演示数据生成，不调用模型或社区服务，成本为 0 tokens；图解和示例不能证明真实算子根因、编译、精度或 NPU 验证。
+- 未改变页面序列、任务 URL 或 API / Protocol、Host / Harness、Application / Task 边界。实现提交 `a54698a3` 已合并进主线历史；后续交接 / 主线同步提交 `5a7e533d`、`1339a7d5` 已在本次记录前同步至 `origin/main`。
+- 验证：`npm run build:pages` 已通过；本轮对发布 JS `ascstudio/assets/index-BZfnvKFm.js` 执行 `node --check`，并通过 `git diff --check`。本地 CUA 选择 Format Lab 参数后确认入口出现且工作区保持打开；线上 `/AscendCANN/ascstudio/` 与 JS 均 HTTP 200，JS 含浅色嵌入与「生成草稿」；Add 专属 `LogTriageWorkspace` 只渲染 Format Lab iframe，没有阶段导航或视频操作条。未运行自动化测试。初始页面部署 `40854710406` 成功；本轮交接提交 `b2755d03` 与并行主线更新合并为 `3a60131a`，已推送至 `origin/main`，Pages workflow `40856303638` build / deploy 成功。
+
+
+### 2026-10-29 · 入口演进页改为双泳道可视化流程
+
+- 用户指出第 03 页截图仍像三块卡片并排，不符合“图本身承载逻辑”的要求（H）。将入口图重画为 Web 与客户端两条泳道：入口 → 上下文 → 同一知识服务 → 对应结果；箭头标出进入、查询、授权、匹配、推荐与返回。服务区域拆出可信目录、条件检索和按入口组装结果；P0 静态 Demo → P1 社区 Web → P2 项目感知客户端的建设顺序保留。
+- 只调整 `ascstudio-mini/knowledge-provider-map.html` 第 03 页的图结构与样式；第 04 页能力架构和原有页面不变。关系仍为方案示意，不表示对应服务已接入；不改变 API / Protocol、Host / Harness、Application / Task 定义。
+- 验证：`git diff --check` 通过；Chrome 无头截图核对 1440×900、1280×720 的第 5 页，双泳道、共享服务分流、建设时间线均完整；线上页面 HTTP 200，回读确认新版流程文字与 DOM。未运行自动化测试。
+- 页面提交 `c095d169` 已 rebase 并推送至 `origin/main`；并行主线提交 `fe34ea39` 的 GitHub Pages workflow `40854710406` build / deploy 成功并包含本次页面内容。交接记录随后单独推送。
+
+### 2026-10-29 · 点击讲解卡打开目录，保留拖动操作
+
+- 按用户要求，把桌面设计点讲解卡的点击行为改为打开章节与设计点目录；拖动仍移动卡片。轻微点击打开目录，拖动达到移动阈值则只移动、不打开菜单；键盘 Enter / Space 也可打开目录。
+- 移除讲解卡右侧重复的目录 IconButton，上一点 / 下一点按钮保留；卡片整体可点击并作为拖动区域，目录可用原有关闭按钮或 Escape 收起。更新脚本缓存版本为 `20261029-card-opens-directory`。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`。不改变章节 / 设计点内容、任务起点、卡片视觉基调或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确指定的交互（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对覆盖点击 / 键盘打开目录、拖动独立工作、移除目录按钮并保留前后导航。本地 8765 页面返回的 HTML、JS、CSS 与工作区文件一致。实现提交 `20404654` 已 rebase 并推送至 `origin/main`，保留并行提交 `d645fa3f`。
+
+### 2026-10-29 · Ascend Studio 旅程时序图移除实现来源小字
+
+- 用户询问时序图右下角“连线布局：beautiful-mermaid · MIT / 图标：Lucide · ISC”的用途。该行是实现依赖来源注记，不属于评审叙事；已从 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py` 和生成页 `cann-dashboard/ascend-studio-design-report.html` 中移除。时序图、五阶段旅程、角色和设计痛点布局保持不变。
+- 验证：报告 17 页；生成 HTML 的来源注记命中数为 0；`py_compile`、报告构建、两段内联脚本 `node --check`、`git diff --check` 及 CUA 本地 1280×720 视觉复核通过。未改变产品原型、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 推送：实现提交 `95fdc3c4` 已推送到 `origin/main`；本交接记录随后的文档提交同步入仓。
+
+### 2026-10-29 · 知识供给可行性两页改用参考图式关系图
+
+- 按用户提供的参考图（H）重画第 03「入口演进」与第 04「技术实现」两页：浅灰画布、橙色节点与连接线、虚线阶段分隔、中央关系轴及椭圆区域；让入口阶段、内容流向、能力分支和结果回流由图形关系表达。
+- 第 03 页展示社区 Web / 后续项目客户端共用知识服务，再服务学习发现与项目任务，并保留 P0–P2 建设顺序。第 04 页保留内容来源与连接器、加工治理、Knowledge Unit 元数据、关系图与检索索引、公开发现 / OpenAPI / Agent Host（Skill、MCP、本地授权上下文）、四类任务引擎、结果校验、评测、反馈回流与 P0–P3 顺序；通过重排连线避开节点文字并拉开底部校验区。
+- 依据为用户提供的视觉参考和此前确认的技术建设内容。页面仍为方案示意，不表示服务已接入；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 的职责边界。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 复核第 5、6 页。未运行自动化测试。实现提交 `c473a0b9` 已推送至 `origin/main`；对应 GitHub Pages workflow `40863877943` 在本条记录写入时仍处于构建中，线上需待其完成后复核。
+
+### 2026-10-29 · 知识供给图按能力类型增加语义色块
+
+- 用户选择方案 2：按能力类型区分色彩，并希望图中有更多颜色与色块。第 03「入口演进」页用浅蓝表示社区 Web / 学习发现、浅绿表示项目客户端 / 项目任务、浅紫表示共享知识服务；第 04「技术实现」页用浅蓝表示内容来源与 API、浅紫表示知识底座、浅绿表示 Agent 与验证回流，并用浅蓝、浅紫、浅绿、浅珊瑚区分学习路径、技术图解、资源推荐、活动上新四类任务。橙色继续承载主连接线与阶段标记，整体沿用浅灰画布和参考图式节点关系。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`；仅补充语义区域底色与节点色，不改图中能力内容、连线逻辑、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。图仍为建设示意，不代表服务已经接入。
+- 依据为用户对配色方案的明确选择（H），具体色值为设计表达（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 查看第 03、04 页，确认入口、知识服务、任务类型与回流区域能由浅色块区分，主流程和图中文字仍可读。未运行自动化测试。
+- 提交与推送：实现提交 `2438eab5` 已推送到 `origin/main`；GitHub Pages workflow `40882045269` build / deploy 成功。线上 `/ascstudio-mini/knowledge-provider-map.html?rev=2438eab5` 已回读，含语义色块与节点样式。无未决事项。
+
+### 2026-10-29 · 桌面旅程按开发者、学习者与手机支线重排
+
+- 用户确认按两类角色串联主线，并在两条主线后呈现支线。章节改为 03 章、17 个设计点：开发场景「Add 算子精度排查」5 点（进入任务、带上下文提问、看错误图解、核对修改结果、整理社区经验）；学习场景 7 点（学习建议、目标、图像输入预处理路径共创、自定义节点、练习、认知卡、迁移到相关任务）；手机学习支线 5 点。社区经验回流并入开发主线收尾，划词、页面指向与输入框拖动留在相关任务步骤中。
+- 桌面开发点统一映射到 Studio 现有任务键 `AddCustom 精度异常`，界面显示名为「Add 算子精度差异排查」，项目为「CANN 自定义算子」。学习点沿用 Demo 已有的「图像输入预处理」学习路径与相关图像推理任务，避免把图像学习材料误写为 Add 课程。学习建议点放在学习章节，保持 `mode: "学习"`。
+- 同一嵌入 Demo 路由下切换设计点时复用已加载页面，不重新载入，以保留任务状态；任务目标变化时仍重新载入。更新 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，脚本版本为 `20261029-role-journeys`。未改卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户确认的角色与支线结构（H）；Add 任务显示别名、学习任务名和项目来自桌面 Demo 已有资源（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对确认 3 章 / 17 个唯一点、重点加粗匹配、Add 任务路由和学习模式映射有效。本地 8765 返回的 HTML、JS、CSS 与工作区文件一致。实现提交 `f513ba64` 已 rebase 并推送至 `origin/main`，保留并行提交 `e01d3197`；GitHub Pages workflow `40882929625` build / deploy 成功，线上 HTML 引用新脚本版本，JS 含三章、Add 任务路由和学习模式映射。
+
+### 2026-10-29 · 知识供给图去橙色主导并按语义着色
+
+- 用户指出第 03「入口演进」与第 04「技术实现」两页虽已有能力分色，通用连接线、椭圆边界、阶段标题、编号和箭头仍以橙色为主。按截图反馈将通用骨架改为冷灰；来源 / Web / 学习发现用浅蓝，知识底座用浅紫，Agent / 校验回流用浅绿，四类任务继续分别使用浅蓝、浅紫、浅绿、柔和玫瑰色。仅以色彩标识能力和对应流向，橙色不再承担通用强调。
+- 修改 `ascstudio-mini/knowledge-provider-map.html` 的图示色值与语义类名；保留原有节点、连线关系、布局、能力内容、页面序列与 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户截图与明确反馈（H），具体冷灰 / 语义色分配为设计表达（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 预览复核第 03、04 页，通用结构线为灰色，蓝紫绿与玫瑰色仅对应语义区域 / 路径，页面文字和节点关系可读。未运行自动化测试。
+- 实现提交 `e4a4aa54` 已推送至 `origin/main`；GitHub Pages workflow `40884051501` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · 入口演进图的横向分区明确标为层级
+
+- 用户指出第 03 页的 ENTRY、KNOWLEDGE CORE、SCENARIOS 是横向层级而非执行步骤。将右侧 `STEP 01/02/03` 改为 `LAYER 01/02/03`，并使用独立 `map-layer-code` 样式；第 04 页表示实际供给处理链路的 `STEP` 标记保留。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`；不改图中层级内容、节点关系、颜色、布局、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户截图与语义纠正（H）。`git diff --check` 通过；CUA 本地第 5 页预览确认右侧三个标签显示为 LAYER；未运行自动化测试。
+- 页面提交 `27e714c6` 已推送到 `origin/main`；GitHub Pages workflow `40885264158` build / deploy 成功。无未决事项。
+
+### 2026-10-29 · Ascend Studio 汇报统一使用 Agent 模式
+
+- 用户要求开发入口明确称为「Agent 模式」，避免「助手」引发 Copilot 联想。第 2 页标题改为「Agent 模式带来另一种开发入口」，右侧工作方式改为「Agent 模式下达目标」；旅程时序角色标为「Agent」，用简短动作描述其读取上下文、调用工具并回传结果。
+- 第 2 页说明对照的是资料驱动与 Agent 模式；第 3 页按当前目标呈现任务交付与目标学习，并说明不按专业程度分级。模糊兴趣和明确学习目标仍属于同一学习旅程的不同起点。此分组用于设计叙事，不是新一轮用户研究结论。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py` 并重新生成 `cann-dashboard/ascend-studio-design-report.html` 与 `page-map.json`；同步更新本地 5219 预览副本。页数、交互原型与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 依据为用户明确反馈（H）。验证：生成脚本 `py_compile` 与构建通过；17 页 `page-map.json` 保持；`git diff --check`、5219 HTTP 文案回读通过；CUA 第 3 页无障碍树确认 Agent 角色与旅程说明。
+- 提交 / 推送：构建脚本、生成汇报、page-map 与本交接记录组成独立提交；推送至 `origin/main`。
+
+### 2026-10-29 · 用户旅程补充维度待讨论
+
+- 用户指出“丰富旅程”应先判断是否新增分析行，而不是继续给现有阶段增加描述。本轮只讨论结构，未改汇报页面。
+- 第 3 页已有阶段、用户行为、角色协作时序、设计痛点、机会点。时序已承载主要触点；建议优先讨论一条定性「情绪 / 把握感」轨迹，分别呈现任务目标与学习目标，再落到痛点；替代选项是关键判断问题行或触点图标行。用户选择前不实施。
+- 无访谈或行为证据支撑情绪数值；若采用曲线，应标为体验推演、不加数值刻度，并保留两类目标的差异。页面序列与 API / Host / Application 边界不变。
+- 依据为当前旅程页面结构与用户本轮反馈；无新增用户研究证据。验证：只读核对 `build_report.py` 现有行结构；本轮未修改页面、未运行构建或测试。
+- 提交 / 推送：本轮仅同步本交接记录至 `origin/main`；无页面改动。
+### 2026-10-29 · 入口图的知识底座层级关系待澄清
+
+- 用户指出第 03 页（入口演进）把“知识底座”放在中间，整体逻辑不清。原因初判：页面同时借用“入口 → 服务 → 场景”的调用流和“底座应在下方”的架构分层语义，中心层命名与位置冲突。第 04 页技术实现图中的“内容供给 → 知识 → 任务引擎”是处理链路，知识处于中段的语义不同，不应与入口图的架构层混为一谈。
+- 本轮仅梳理备选结构，尚未改页面：A 保持调用流，将中心命名为共享知识服务；B 顶层入口 / 体验、中层知识服务、底层知识底座，并把 P0–P2 作为独立时间线；C 以 P0 / P1 / P2 为横向列展示演进阶段。需用户确认采用方向后再动图。
+- 暂无代码变更；待讨论定稿。
+
+### 2026-10-29 · 知识供给图改按治理、Agent、体验自底向上讨论
+
+- 用户进一步澄清底层是“内容治理”，不是内容制作，并提出由下至上的关系：内容治理形成知识底座 → 中间是 Agent 相关能力 → 顶层是用户直接接触的产品。查询从体验层进入服务层并向知识底座取数，结果返回体验层；授权纠错与任务反馈回到底层治理。
+- 初步理解为三层：底层呈现官方资源接入、解析与版本 / 许可治理、Knowledge Unit、关系图和索引；中层呈现知识服务接口、Agent Host、Skill、MCP、任务引擎与结果校验；顶层呈现社区 Web / 学习发现和项目客户端 / 项目任务。P0–P2 建设阶段应作为独立时间线，不与层级混用。此结构仍在讨论，未改页面，等待用户确认后实施。
+
+### 2026-10-29 · 知识供给架构图节点需要呈现动作与效果
+
+- 用户要求架构节点更丰富，明确每项能力如何实现、应达成什么效果；不能只罗列能力名称。节点组织原则更新为“输入 / 触发 → 处理动作 → 产物 / 对用户效果”，连线体现数据交接、查询返回与授权反馈闭环。
+- 讨论中的内容方向：内容治理层覆盖多源接入、解析归一、许可 / 版本 / 环境核验、Knowledge Unit 生成、关系与索引发布，并说明可追溯、可按版本检索和失效更新的效果；服务与 Agent 层区分 Web / 客户端 OpenAPI 与 Agent Host + Skill / MCP，展示上下文装配、权限校验、资源 / 前置 / 兼容查询，以及学习路径、技术图解、资源推荐、活动匹配各自的生成动作和可见结果；体验层说明 Web 与项目客户端分别收到什么结果。P0–P2 仍独立为建设时间线。
+- 本轮是内容模型讨论，页面尚未修改；需继续对齐节点密度和关系后再实现。用户反馈为直接依据（H），具体架构细节是方案设计（M）。
+### 2026-10-29 · 桌面章节封面改用二维线描插画
+
+- 用户比较两种样张后选择二维线描拼贴。按此风格为 Add 精度排查、学习路径与手机续学分别生成同系列封面插画，移除封面右侧设计点清单，直接在既有浅色背景上展示透明插画；普通章节导航与点列表仍保留在目录中。
+- 更新 `ascstudio-pc/index.html`、`app.js`、`styles.css`，新增 `ascstudio-pc/assets/cover-development.png`、`cover-learning.png`、`cover-mobile.png`。三张图片来自 Image Gen；RGBA 四角 alpha 均为 0，透明底核验通过。
+- 依据为用户明确选择的风格（H）；三张插画是章节含义的概念表达，不代表真实系统界面。未改变页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 分别打开三章封面，辅助功能树显示对应标题与插画 alt；结构检查确认封面不再渲染设计点清单。线上封面、脚本与三张图片均 HTTP 200，线上脚本含三章插画映射。未运行自动化测试。
+- 提交 / 推送：实现提交 `48d2e736` 已推送至 `origin/main`。无其他未决事项。
+
+
+### 2026-10-29 · 知识供给可行性页按“治理底座 → Agent 服务 → 开发者入口”重画
+
+- 用户明确要求把内容治理放在最底层，中层呈现 Agent 相关服务，再往上是开发者直接使用的入口；能力节点要说明具体做法和产物，不只列能力名称。第 03「入口演进」页据此改为三层总览：社区 Web 先行、项目客户端后接，两者经 OpenAPI / Agent 服务访问底层知识；知识索引上行供给 API / MCP，授权反馈回流治理。P0–P2 继续作为独立建设节奏。
+- 第 04「技术实现」页重画为详细架构：底层列出多源接入、解析归一、版本 / 许可 / Owner 治理、可信 Knowledge Unit、关系图与检索索引及公开发现文件；中层区分 OpenAPI、Agent Host、Skill、MCP、路径 / 图解 / 推荐 / 活动四类任务能力、结果校验、任务评测和授权反馈；顶层展示 Web 与本地项目客户端的输入、输出。通过箭头标明知识向上供给、结果返回入口以及授权纠错回到底层；P0–P3 单独置于图下方，不把架构层称为 STEP。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户确认的三层方向和对节点详实度的要求（H）；具体接口、Owner、数据连接与 Agent 能力是建设示意（M），不表示线上服务已接入。未改变汇报页序或 API / Protocol、Host / Harness、Application / Task 的机制边界。
+- 验证：`git diff --check` 通过；CUA 在 1280×720 本地预览第 05、06 页，核对层级顺序、上行检索、结果返回和反馈回路，没有发现文字与节点重叠；未运行自动化测试。
+- 页面提交 `1df16b53` 已直接推送到 `origin/main`；GitHub Pages workflow `40895594229` 已完成且成功。线上页面 HEAD 返回 HTTP 200；回读 HTML 可见第 06 页新标题、版本治理、项目客户端与授权反馈节点。线上浏览器截图请求超时，视觉复核以本地 CUA 1280×720 截图为准；没有把超时记为视觉回读成功。
+### 2026-10-29 · 桌面章节封面插图放大
+
+- 用户反馈封面插图偏小，并选择放大约 30%。将右侧插图宽度改为所在栏的 130%，上限约 680px；使用网格居中，让插图向栏间留白适度延伸，左侧文字列与内容不变。
+- 修改 `ascstudio-pc/styles.css` 并更新 `index.html` 的 CSS / JS 缓存版本。未改变插图、章节内容、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户对尺寸的明确选择（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 打开第三章放大预览，确认标题、摘要、章节导航和插图仍存在。未运行自动化测试。
+- 提交 / 推送：实现提交 `82bd8b2f` 已推送至 `origin/main`；线上 HTML 与 CSS 已更新，CSS 回读确认插图宽度为所在栏 130%、上限 680px。无其他未决事项。
+
+### 2026-10-29 · 技术实现页按参考结构取消卡片式呈现
+
+- 用户指出第 06 页又变回卡片式，希望沿用提供的结构化参考图，用区域、节点、连线和轨道本身阐释关系。将第 06 页改为一张连续 SVG 关系图：顶层开发者入口围绕目标汇合，中层 Agent Host、OpenAPI、Skill、MCP 与四类任务能力按调用和数据关系展开，底层内容治理围绕来源接入、解析归一、版本 / 许可 / Owner、可信 Knowledge Unit、关系图与索引组织；知识向上供给，授权完成 / 纠错沿独立回路回到 Owner。删除原卡片墙和 P0–P3 时间轴；三个架构层不再标成 STEP。
+- 保留关键建设信息：来源和连接器、版本与适用范围、原文锚点和前置 / 兼容关系、全文 / 语义索引、robots / sitemap / Schema.org / llms.txt、查询 API、Agent Host 上下文与权限检查、Skill 流程、MCP 知识和受限工具、路径 / 图解 / 推荐 / 活动产物、结果校验与反馈回流。页面序列与 API / Protocol、Host / Harness、Application / Task 职责边界未变；能力架构仍是建设示意，不表示服务已经接入。
+- 依据为用户提供的结构图参考（H）；技术内容为此前确认的建设方案（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 第 06 页复核节点、分层、上行供给与反馈关系，截图未见节点文字重叠。GitHub Pages 部署 workflow `40899785914` 成功，线上 URL 返回 HTTP 200，回读到新版标题与 `arch-orbit` 结构、旧 `cap-box` 卡片标记已移除；线上 CUA 截图导航超时，视觉验收以本地预览为准。
+- 页面实现提交 `adf86329` 已推送至 `origin/main`；本交接记录将在文档提交中同步推送。
+
+### 2026-10-29 · 用户旅程补充 A/B 并修正时序图区间留白
+
+- 用户选择在第 3 页增加 A「任务与学习两条定性把握感曲线」和 B「各阶段的关键判断问题」。旅程仍描述使用 Ascend Studio 之前的过程；模糊兴趣与目标明确均属于学习导向，不按专业程度拆分，也不提前混入 Studio 功能。曲线标为体验推演，不是用户研究测量。
+- 用户截图中的空带来自旋转 Mermaid 时序图保留未使用的纵向坐标范围：角色标题锚在行首，泳道按旋转后的参与者坐标布置，造成标题与第一条泳道之间出现视觉空白。构建时按实际参与者中心裁切 SVG viewBox，并同步映射角色标签、事件卡和连线，空带消失。桌面复核截图保存在 `cann-dashboard/ascend-studio-design-report-evidence/journey-page3-final.png`。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`journey-sequence.mmd` / `.svg`、叙事与页面映射 / QA / handoff 文件及生成的 `cann-dashboard/ascend-studio-design-report.html`。报告仍为 17 页；未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户对 A/B 的选择和对截图空带的反馈（H）；把握感曲线是定性体验推演（M），需后续研究验证，未赋予数值评分。验证：`python3 -m py_compile`、报告构建、`node --check cann-dashboard/ascend-studio-design-report-evidence/render_journey_sequence.mjs`、`git diff --check`；本地 1352×778 桌面视口复核关键判断、协作角色、泳道与曲线连续呈现。未运行自动化测试。
+- 提交 `e8e460652984fbd9247ca2b1557623d6df315c62` 已包含于 `origin/main`；GitHub Pages workflow `40897671179` 成功。线上报告 HTTP 200，回读确认关键判断行和两条曲线已发布。
+
+### 2026-10-29 · Ascend Studio 旅程按参考矩阵呈现
+
+- 用户要求参考其提供的旅程图结构：以阶段为列，按 Thinking、Doing、Feeling、设计痛点和机会点分行表达；两类开发者与 Agent / 环境 / 官方资料社区的交接需要在同页可读。第 3 页已将旅程重排为此矩阵，保留两条用户判断、角色时序、定性把握感曲线和逐阶段痛点 / 机会点，移除重复的行为摘要行。
+- 学习用户不按“专业 / 小白”划成固定人群；模糊兴趣和明确学习目标是同一学习旅程的两种起点，呈现在 Thinking 行。仍描述使用 Ascend Studio 之前的过程，不把 Studio 功能混入旅程。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`narrative.md`、`qa.md` 和生成页 `cann-dashboard/ascend-studio-design-report.html`。依据为用户提供的结构参考与明确反馈（H）；体验曲线是定性推演，不是测量结果。未改变汇报页序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：报告构建、`python3 -m py_compile`、Mermaid 渲染脚本与页面运行脚本语法检查、`git diff --check`；CUA 本地 1352×778 桌面预览第 3 页，核对 5 阶段、Thinking / Doing / Feeling、16 个时序事件、痛点与机会点的对齐，无独立重复行为行。
+- 提交 `94f162e1` 已推送至 `origin/main`；GitHub Pages workflow `40904592008` 对该提交部署成功。线上报告返回 HTTP 200，但本轮 40 秒回读下载到 582,208 / 8,076,556 字节后超时，未完成全量线上内容核对；结构与视觉以本地完整报告和桌面预览为准。
+
+### 2026-10-29 · 桌面章节名与设计点文案去业务化
+
+- 用户确认整体文字方案后，将三章标题改为「解决问题后把经验留下」「让学习目标一步步变成实践」「在手机上随时接着学」，并更新章节摘要。全部 17 个设计点标题与讲解句改为描述通用交互，不突出 Add、图像预处理、微信或固定内容组合；示例任务和路由仍在 Demo 中使用。
+- 更新 `ascstudio-pc/app.js` 与 `index.html` 脚本 / 样式缓存版本；同步调整章节插画 alt 文案。未改变章节顺序、设计点顺序、起点页映射或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户确认的文字方案（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对确认 3 个章节、17 个设计点、强调词与讲解句匹配，标题 / 讲解 / 摘要中没有指定的具体业务词；本地 8765 打开第一章封面核对新标题与摘要。未运行自动化测试。
+- 提交 `60e6fbce8b23cff892ab46bd566d6d1206ffdf87` 已推送到 `origin/main`。GitHub Pages 桌面端入口与 `app.js` 均返回 HTTP 200；线上脚本与本地提交脚本 SHA-256 一致，并回读确认三章标题已更新。
+
+### 2026-10-30 · 第一个开发设计点改为新建任务建议卡起点
+
+- 用户指出该设计点呈现的是卡片而非可编辑 Prompt，且 Demo 错误直达已有 Add 任务。现改为说明「从任务建议卡开始」，起点设为 Studio 新建任务首页的「主动建议」页签与「学习」模式，不再带 `task` 参数直达既有任务；后续设计点仍保留其各自任务路由。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 缓存版本。依据为用户明确纠正（H）；未改章节顺序、其他设计点路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 和静态断言通过；确认第一点包含 `home: "classic"`、`mode: "学习"`，不再包含已有任务路由或 Prompt 字样。GitHub Pages workflow `40907770802` 成功；桌面端入口和脚本 HTTP 200，线上脚本 SHA-256 与本地一致，并回读核对新文案。
+- 实现提交 `e0a44ae8` 已推送到 `origin/main`；本条交接记录由后续文档提交同步推送。
+
+### 2026-10-30 · 设计点 1.1 突出主动呈现
+
+- 用户要求进一步突出主动交互。将 1.1 标题改为「主动呈现任务建议卡」，讲解强调系统在新建任务页主动呈现卡片，用户再从已有线索中选择起点；新建任务首页、「主动建议」入口和「学习」模式保持不变。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 缓存版本；不改变其他设计点路由或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户明确反馈（H）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 和路由 / 文案静态断言通过。GitHub Pages workflow `40908526700` 成功；线上入口与脚本 HTTP 200，脚本 SHA-256 与本地一致，并回读确认新标题和讲解句。
+- 实现提交 `ff54701d` 已推送到 `origin/main`；本条交接记录由后续文档提交同步推送。
+
+### 2026-10-30 · 技术实现关系图选择方案 1 并明确回流
+
+- 用户选择方案 1：保留原有浅灰底、椭圆分区、中心知识服务与连线结构，在此基础上补足能力细节；三层表示开发者体验、Agent 服务、内容治理架构，不表示步骤。四类任务能力并行产出并汇入结果校验。
+- 调整 `ascstudio-mini/knowledge-provider-map.html`：知识索引到 MCP 改为外侧曲线路由，避免形成矩形框线；校验结果回到共同体验层，授权完成 / 纠错仍沿独立虚线回 Owner。补充 SVG 描述与视觉关系一致。未改变页面序列，也未改变 API / Protocol、Host / Harness、Application / Task 职责边界。
+- 依据：用户选择方案 1（H）；服务流程内容依据此前确认的建设方案（M），是概念示意，不代表服务已经接入。
+- 验证：`git diff --check` 通过；本地 CUA 1400×800 桌面视口打开第 06 页，检查上中下三层、知识服务、四类并行能力、MCP 供给和两类回流连线，无文字与节点重叠。未运行自动化测试。
+- 页面提交 `e8986304` 已推送至 `origin/main`；本交接记录将由下一文档提交同步推送。无未决事项。
+
+### 2026-10-30 · 关系图减线并强化节点类型
+
+- 用户选择 A：保留三层椭圆构图，整理连线和分组。删除穿过页面外缘的长结果回流线，以校验节点旁的“校验通过 → 入口”表达交付；知识索引供给 MCP、授权完成 / 纠错回 Owner 的线路保持独立。四类并行任务改为共享分配总线，减少中心放射线交叠。
+- 在 `ascstudio-mini/knowledge-provider-map.html` 增加轻量图例与节点形状语义：方形表示接口、菱形表示 Agent 编排、双环表示知识服务、多色圆点表示并行任务能力、绿色圆点表示内容治理。客户端上下文虚线改为蓝色，与绿色反馈虚线区分。页面序列、架构层级和 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 依据：用户选择 A（H）；技术关系依据此前确认的建设方案（M），仍是概念示意，不表示服务已经接入。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 预览第 06 页，确认类型图例、任务总线与反馈线路可读，未见文字和节点重叠。未运行自动化测试。
+- 页面提交 `be0998ba` 已推送到 `origin/main`；本交接记录由后续文档提交同步推送。
+
+### 2026-10-30 · 检索服务归入最下层知识底座
+
+- 用户再次明确：知识底座必须是整张能力图的最底层。第 06 页现将双环“检索服务”放在底部绿色知识底座区域、五步内容治理链上方；从 Agent 中层移除中心知识服务节点与内圈。OpenAPI 查询线直达底层检索服务，MCP 由底层索引供给，Agent 中层保留 Host、Skill、MCP 和并行任务能力。底层标签统一为 `KNOWLEDGE BASE / 内容治理 · 检索服务`。
+- 将“知识服务”图例细化为“知识检索服务”；授权完成 / 纠错标注移至反馈回流线旁的空白位置，避免与底层检索节点重叠。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确纠正底座层级（H）；接口、索引和任务关系为建设示意（M），不表示服务已经接入。
+- 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，确认检索服务位于最下方知识底座区域，内容治理仍在其下方同一底座内，反馈标注与检索节点分开。未运行自动化测试。
+- 页面提交 `6c8b64de` 已推送至 `origin/main`；GitHub Pages workflow `40965922472` 成功，线上页面返回 HTTP 200，并已读回新标题、KNOWLEDGE BASE 标签和“检索服务”节点。
+
+### 2026-10-30 · Ascend Studio 用户旅程矩阵续修与发布
+
+- 第 3 页沿用户提供的经典旅程结构整理为五阶段横向矩阵：现有触点、Thinking、Doing 角色时序、Feeling 定性曲线、每阶段多条设计痛点、逐列对应的机会点。删除重复的任务 / 学习导向行；学习用户仍是一类人，模糊兴趣和明确能力目标作为两种起点呈现。
+- 修复 Feeling 图例深灰字落在灰底行标题上对比不足的问题：文字改为浅色，蓝紫色点提高亮度并扩大至 6px。行列与主时序、阶段插画、头像和痛点 / 机会点保持可读。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`journey-sequence.mmd` / `.svg`、`narrative.md`、`qa.md`、`handoff-entry.md`、生成报告 `cann-dashboard/ascend-studio-design-report.html`，并保存桌面截图及元数据 `journey-page3-1352-viewport.png` / `journey-page3-1352-viewport-meta.json`。
+- 用户提供的旅程结构和角色讨论为 H；1352×778 桌面截图及浏览器计算布局为 M；痛点与把握感变化为定性设计推演（L），不是新研究或测量结论。汇报仍为 17 页；页面序列和 API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 验证：`npm run render:journey-sequence`、报告构建、`python3 -m py_compile .../build_report.py`、两段内联 JS 与 Mermaid 渲染脚本 `node --check`、`git diff --check`。桌面预览确认 5 列、16 个时序事件、每阶段两条痛点、5 个机会点；图例无溢出，页面无水平溢出。未运行自动化测试套件。
+- 报告提交 `393b85d7` 已推送至 `origin/main`。Pages workflow `40967886194` 成功；线上 URL 返回 HTTP 200，Range 回读确认新图例样式已发布。此次交接与截图证据随后续文档提交一并推送。
+
+### 2026-10-30 · 开发场景串联到社区经验回流
+
+- 按用户确认的开发者旅程，第一章围绕一个端到端任务拆为 7 个设计点：新建任务页主动呈现建议卡 → 回答旁补充知识点 → 从知识卡查看图解 → 在示例副本中修改 → 完成后邀请回流经验 → 整理社区草稿 → 预览 GitCode、CSDN、抖音等渠道。用户要求各设计点定位到相应页面状态；当前路由分别指向建议卡首页、任务回答知识卡、关联图解、示例副本编辑器、完成邀请、社区草稿审阅和多渠道预览，不再把多个点都落到同一个任务页。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，更新第一章设计点内容、逐点路由及资源缓存版本。章节名称和设计点保持通用表述，AddCustom 只作为演示任务。未改章节顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确描述的端到端串联（H）；任务内容是原型中的演示材料，不代表真实任务记录或社区发布。未向 GitCode、CSDN、抖音等外部平台发布内容。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8766 逐点核对第一章 7 个页面起始状态。浏览器预览过程中本地 Demo 的 AddCustom 任务被标记为已解决并生成社区草稿，最后停在多渠道预览；这些仅是本地演示状态，无外部发布。
+- 实现提交 `d263aabb` 已推送到 `origin/main`。本条交接记录随后的文档提交推送。无未决事项。
+
+### 2026-10-30 · 主动建议卡起点归入学习模式
+
+- 用户澄清，从主页主动建议卡进入的这一场景应属于学习。第一章第一个设计点仍从新建任务页的主动建议卡开始，但起始模式改为「学习」；讲解同步改为学习建议卡帮助用户从已有线索开始学习，入口标注为「新建任务首页 · 主动建议 · 学习模式」。其余六个开发任务页面路由不变。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，同步更新路由与资源缓存版本。依据为用户明确纠正（H）；未改变章节和设计点顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认第一点的模式、入口及讲解均指向学习场景，缓存版本同步。
+- 实现提交 `31467f64` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
+
+### 2026-10-30 · 学习旅程统一从主动建议卡开始
+
+- 用户要求整体只保留一个学习开场，即从主页主动建议卡进入学习。移除开发篇重复的建议卡起点，使开发篇从开发问题回答与知识点开始；移除学习篇“从模糊想法开始学习”的并列起点，保留主动建议卡后直接进入学习路径共创。学习卡片明确为根据已有学习记录主动呈现下一步建议，由学习者决定是否采用。
+- 更新 `ascstudio-pc/app.js`、`ascstudio-pc/index.html` 缓存版本。开发摘要改为从开发问题开始，学习章节封面和摘要改为从主动建议卡开始。设计点数量现为开发 6、学习 6、移动端 5；顺序之外的其余点及任务路由未变。未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确要求只保留主动卡片学习开场（H）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认删除开发篇重复 `connect` 和学习篇替代入口 `intent`，保留学习模式主动建议卡，章节点数及缓存版本匹配。
+- 实现提交 `d62f3ca1` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
+
+### 2026-10-30 · 重排能力架构图的知识底座与连线
+
+- 用户指出第 06 页视觉效果丑。复核截图后确认：检索服务双环压到知识底座边界并穿过标签，Agent 区域与底座距离过近，客户端上下文线穿过 Skill 标题。将检索服务改为底座内部的独立胶囊节点；扩展底座空间并让内容治理五步链在下方成行；缩短 Agent 区域高度，留出层间间隙；将客户端上下文线沿体验层下方绕行，避开 Skill 标题后进入 Agent Host。授权反馈文字与回流线保持分开。
+- 修改 `ascstudio-mini/knowledge-provider-map.html` 的 SVG 结构、节点样式与路径描述。保留三层架构、能力信息、页面序列和既定 API / Protocol、Host / Harness、Application / Task 边界。依据：用户截图与明确反馈（H）；关系图排版参照 Report PPT Skill 的“节点、连线和区域承载逻辑”规范。
+- 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，核对检索节点完整落在知识底座、治理链在其下方、客户端路径不穿过 Skill 标题。未运行自动化测试。GitHub Pages workflow `40971774367` 的 build / deploy / status jobs 均成功，线上已读回新服务节点与路径。
+- 页面提交 `5efae4d2` 已推送至 `origin/main`；本条记录将由随后文档提交推送。
+
+### 2026-10-30 · 移除 Agent 区域过大的空椭圆
+
+- 用户指出中间紫色区域过大且留有明显空洞。原因是移除中心知识服务节点后，仍保留原来包围它的 Agent 大椭圆。已移除该椭圆底色与外圈，改用页面已有的水平分区线、组件连线和任务总线表达 Agent 层；四类任务能力整体上移，缩短节点间空档，Skill 到并行任务总线的关系仍明确。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。保留最下层知识底座、其内独立检索服务、内容治理链、页面序列和既定 API / Protocol、Host / Harness、Application / Task 边界。依据为用户截图与明确反馈（H）；图以节点、关系和区域承载逻辑，符合 Report PPT Skill 图表规则。
+- 验证：`git diff --check` 通过；本地 CUA 桌面预览第 06 页，确认中层不再有空椭圆，任务节点上移且分组关系清楚。未运行自动化测试。GitHub Pages workflow `40972846351` 的 build / deploy / report-build-status 均成功，线上源码已读回无中层大椭圆且任务总线上移。
+- 页面提交 `996a88ec` 已推送至 `origin/main`；本条交接记录随后的文档提交推送。
+
+
+### 2026-10-30 · 保留并收紧 Agent 椭圆、统一节点间距
+
+- 用户纠正前一轮方向：不要直接删除中层紫色椭圆，而应调整椭圆尺寸与节点间距。恢复椭圆底色与轮廓，收紧至 `cx=720, cy=378, rx=410, ry=128`；OpenAPI、Agent Host、Skill、MCP 与四类并行任务按 `x=420/620/820/1020` 对齐，列间距统一为 200。结果校验节点留在椭圆外，作为并行任务之后的汇入点。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。保留最下层知识底座、三层架构、能力内容和页面序列；未改变 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确纠正（H）；服务关系仍为建设示意（M）。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 桌面视口复核椭圆覆盖节点组、四列等距、连线与文字无重叠；未运行自动化测试。GitHub Pages workflow `40974861574` 的 build / deploy / report-build-status 均成功；线上回读确认椭圆和四列坐标。
+- 页面提交 `c5e3f4dd` 已推送至 `origin/main`；交接记录由随后文档提交推送。
+
+### 2026-10-30 · 学习主动建议点直达路径共创任务
+
+- 用户明确指定，「从主动建议卡开始学习」这一设计点应定位到「图像输入预处理路径共创」任务。该点现与下一点「生成路径后一起调整」打开同一任务；第一点讲任务推荐与采用决策，第二点讲路径草案的共创调整。入口说明同步为「图像输入预处理路径共创任务 · 主动建议」。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html` 缓存版本。其余学习点、章节序列和 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 依据：用户明确指定任务落点（H）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态断言确认推荐点和路径调整点均路由到指定任务、入口文案及缓存版本一致。
+- 实现提交 `6703d277` 已推送至 `origin/main`；本交接记录随文档提交推送。无未决事项。
+
+
+### 2026-10-30 · 对调能力图的任务结果与服务链位置
+
+- 用户要求将任务结果汇流线与截图中的 OpenAPI → Agent Host → Skill → MCP 服务连线交换位置，并明确连线也要相应调整。现将四类并行任务节点放在上排，结果汇流线放在任务上方并进入统一校验；服务组件及调用链移至其下方。Skill 连接任务分派总线，社区 Web 输入接 OpenAPI，授权项目上下文绕行接入 Agent Host，知识索引从底座向上接 MCP，授权反馈仍沿外侧回到 Owner。
+- 调整 `ascstudio-mini/knowledge-provider-map.html` 的椭圆范围、节点行位置和入口 / 供给 / 校验路径。四类任务仍保持 200 单位等距；知识底座仍在最下层，页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。依据为用户明确要求（H）；服务流程仍是建设示意（M）。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认节点与连线避让、结果汇流指向校验、服务链位于任务能力下方。未运行自动化测试。GitHub Pages workflow `40977215049` 的 build / deploy / report-build-status 均成功；线上源码已读回上下行坐标和连线路径。
+- 页面提交 `54ff6178`、`d22ff551` 已推送至 `origin/main`；交接记录由随后文档提交推送。
+
+
+### 2026-10-30 · 讨论能力架构图中层拆分
+
+- 用户提出将当前 Agent 中层拆为“可提供的服务”与“支撑服务的能力”两个层级。概念建议：体验入口之下增设开发者服务层，呈现学习路径规划、技术图解、资源推荐、活动 / 内容上新；再下一层为 Agent 运行与连接能力，呈现 OpenAPI 查询、Agent Host、Skill 工作流、MCP 工具 / 知识接入；知识底座继续位于最下方。活动 / 内容上新是开发者服务，其日历与内容供给仍依赖知识治理和数据目录。
+- 这是讨论中的结构建议，尚未改动页面；需避免将 API、Host、Skill、MCP 与用户可见服务混为同类。服务与底层能力是多对多关系；页面序列及 API / Protocol、Host / Harness、Application / Task 边界暂无改动。
+- 依据：用户提出的分层理解与截图（H）。尚无实现和视觉验证；待后续确认后再实施。
+- 本轮只更新交接记录；文件检查与提交推送结果见本次 Git 记录。
+
+### 2026-10-30 · 将开发者服务与运行能力分层落图
+
+- 用户确认将原 Agent 中层拆成“可提供的服务”与“支撑服务的技术能力”。第 06 页现按自上而下四层表达：开发者体验入口、开发者服务、运行与接入能力、最下方知识底座。服务层包含学习路径规划、技术图解、资源推荐、活动与内容上新；运行层拆列查询 API、Agent Host、Skill 工作流、MCP 知识 / 工具接入。活动及上新服务连接内容目录与日历数据，不再与底层能力混作同类节点。
+- 关系仍由图中节点、连线、区域表达：Host 组装授权上下文并路由 Skill / MCP；任务结果进入来源、版本、范围、权限及可执行性校验；内容治理把官方文档、API、课程、代码、Issue、活动加工为 Knowledge Unit、关系图和索引；知识检索向上供给，授权反馈经复核后回流。四个横向区域表示架构层级，不表示时间步骤。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 修改：`ascstudio-mini/knowledge-provider-map.html`。依据为用户确认的分层判断（H）；具体服务、接口与治理关系作为建设示意（M）。
+- 验证：页面提交前 `git diff --check` 通过；1280×720 本地预览确认四层、服务节点与能力节点分开且知识底座在最下方；GitHub Pages workflow `40986454310` 已完成，线上源码读回包含四层标题与对应节点。未运行自动化测试。
+- 页面提交 `32205c11` 已推送至 `origin/main`；本条交接记录随后单独提交并推送。无未决事项。
+
+### 2026-10-30 · 互换服务与运行层底色并对齐四层背景
+
+- 用户明确要求将 Developer Service 与 Runtime & Tools 的现有底色互换。第 06 页已将服务层填充色改为原运行层的冷灰紫 `#f1eff4`，运行层改为原服务层的浅紫 `#eee8f5`；两者描边分别保持原有区分色。用户同时指出四层背景圈未居中：体验层与知识底座椭圆原中心 `x=800`，服务层与运行层背景中心 `x=720`，现将体验层和知识底座背景统一到 `x=720`，与中间两层及对应节点共用中心轴。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确要求互换底色、修正背景对齐（H）；信息层级和连线未改，页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`git diff --check` 与填色 / 圆心静态断言通过；本地 CUA 1280×720 预览确认底色互换且四层背景共用中心轴；GitHub Pages workflow `40987483532` 成功，线上 HTTP 200 且读回确认新填色和 `x=720` 圆心。未运行自动化测试。
+- 页面提交 `3688cec1` 已推送至 `origin/main`；本交接记录由随后文档提交推送。无未决事项。
+
+### 2026-10-30 · 将知识检索服务直接放在绿色知识底座上
+
+- 用户指出知识检索服务胶囊不需要独立底色和描边，应直接落在知识底座的绿色背景上。第 06 页已移除该胶囊矩形及对应样式，保留双环图标、标题与检索说明文字，直接叠放在绿色椭圆底座中；服务关系、连线及其他节点不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确要求（H）；未改变页面序列和 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 与静态断言通过；本地 CUA 1280×720 预览确认文字和图标直接位于绿色底座上。页面提交 `7d320bf9` 已推送至 `origin/main`；GitHub Pages workflow `40987889867` 在检查时仍处于运行中，线上状态待完成后核验。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 统一四层椭圆并居中知识检索服务
+
+- 用户要求四层背景形状统一为椭圆，并继续处理背景居中；已将 Developer Services 与 Runtime & Tools 从圆角矩形改为椭圆，四层背景共用 `x=720` 中心轴，椭圆宽度收在内容区域内以免压到左侧层级标题。
+- 用户圈选的“知识检索服务”现居中放在知识底座绿色背景上，标题和说明改为深绿色；删除文字前方的双圈图标，保留图例自身的检索符号。无独立底色、边框或胶囊。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确要求（H）；没有改变节点关系、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 与椭圆形状、中心坐标、深绿色字、移除节点双圈的静态断言通过；本地 CUA 1280×720 预览确认椭圆不遮层级标题、检索服务居中落在绿色底座。页面提交 `ccef3b5d` 已推送至 `origin/main`；GitHub Pages workflow `40988684548` 在交接记录时仍运行中，线上发布回读待确认。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 同步 Developer Services 与 Runtime & Tools 的配色
+
+- 用户选择“保留已互换的底色，并同步互换标题与描边颜色”。现在 Developer Services 保留冷灰底 `#f1eff4`，标题与描边改为冷灰 `#6f7b89` / `#d0cbd7`；Runtime & Tools 保留浅紫底 `#eee8f5`，标题与描边改为浅紫 `#8471a8` / `#c8bbd7`。两层底色顺序、椭圆形状、中心轴和图中关系保持不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户选择方案 1（H）。
+- 验证：`git diff --check` 与四项颜色配对静态断言通过；本地 CUA 桌面预览确认左右层级标题、底色和椭圆描边同色系。页面提交 `17ec263b` 已推送至 `origin/main`；页面 workflow `40989468438` 在记录时运行中，部署状态待本次交接提交后复核。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 将 Developer Services 背景调为中性灰白
+
+- 用户指出 Developer Services 大椭圆仍带紫调，不像灰白。原 `#f1eff4` 是偏紫的灰白；现改为中性冷灰白 `#f4f5f6`，描边改为中性灰 `#d1d5db`，标题保持冷灰。Runtime & Tools 继续使用浅紫底、紫色标题与描边。形状、中心轴与节点关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与“改为灰白”的明确反馈（H）。
+- 验证：`git diff --check` 与颜色配对静态断言通过；本地 CUA 预览确认服务大椭圆呈中性灰白，运行层保持浅紫。页面提交 `e6894f97` 已推送至 `origin/main`；Pages 状态待本次交接提交后核验。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 平滑两条虚线路径
+
+- 用户澄清所指是蓝色与绿色两条虚线。调整蓝色项目上下文路径和绿色授权反馈路径的三次贝塞尔控制点，使相邻曲线段的切线方向连续；为两条虚线增加圆角端帽和连接。起止节点、路径语义与其他连线不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确反馈（H）。
+- 验证：`git diff --check` 和路径断言通过；本地 CUA 1280×720 预览确认两条虚线路径过渡平滑。页面提交 `79149a0e` 已推送至 `origin/main`；Pages 构建状态待本条交接提交后复核。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
+
+### 2026-10-30 · 对齐学习篇设计点与 Demo 页面状态
+
+- 用户确认学习篇按三个设计点呈现：①基于用户当前进度与开发问题推荐下一步学习；②结合个人基础和目标共创、调整路径；③让共创路径贯通理解、练习与结果核验。第一点起始页改为「新建任务」的「学习」模式，并聚焦图像预处理相关建议卡；第二点进入「图像输入预处理路径共创」任务，将用户提供的完整提示词填入输入框但不发送；第三点进入「ResNet50 离线推理初体验」的首个学习动作「认识图像分类任务」。
+- 设计点讲解保持一句话。Demo 状态切换后，仅在进入明确映射的路径共创或 ResNet50 任务时自动更新讲解；左下角导航仍可手动切点。点 2 的提示词只通过演示输入控件填入，不触发提交。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`。学习点数量由 6 收为 3；不改变章节顺序，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。主页推荐卡来自原型内的预置任务与近期记录演示数据，不代表真实个性化遥测。
+- 依据：用户确认的文案与完整提示词（H）；卡片、路径共创页和 ResNet50 学习首节点为现有原型状态（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面预览确认第 1 点显示学习模式的图像预处理建议卡，第 2 点完整提示词留在输入框且未进入对话，第 3 点打开 ResNet50 首节点，状态为 0/15 个动作完成。实现提交 `85dccc2c` 已推送至 `origin/main`；本交接记录随后单独提交并推送。无待确认事项。
+
+### 2026-10-30 · 统一开发者服务与运行能力的垂直排布
+
+- 用户认可继续调整 Developer Services 与 Runtime & Tools 的垂直对齐。Developer Services 背景椭圆收至 `cy=310, ry=62`，与四个服务节点内容组同心。Runtime & Tools 的四个标题、说明、节点图形及连接线按同一垂直规则落位：标题共用基线，说明按两行排布并对齐各节点中心，节点形状和关系线共用 `y=498` 基线；椭圆仍以 `cy=454.5, ry=75.5` 包住完整内容组。项目上下文虚线接到 Host 菱形下缘，知识索引连到 MCP 接口，已有服务关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户对两层内容垂直偏移的反馈及对统一排布规则的确认（H）；节点职责、服务关系、页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认标题和说明不互相挤压、运行层内容组在椭圆内均衡、连接端点贴合对应节点；GitHub Pages URL 返回 HTTP 200，线上源码回读确认标题基线、说明分行和路径端点均为新版本。未运行自动化测试。
+- 页面提交 `a407965a` 与本交接记录提交 `747d9a6c` 均已推送至 `origin/main`。无未决事项。
+
+
+### 2026-10-30 · 讨论 Developer Services 内容组偏下
+
+- 用户指出 Developer Services 整层内容相对所在层偏下，并询问节点与底色的定位关系。结合截图及第 06 页 SVG 坐标，当前服务节点和椭圆均为独立的静态坐标，没有根据彼此内容自动适配；服务区域由 `y=190` 与 `y=372` 分隔，几何中点为 `281`，但服务内容与椭圆中心为 `y=310`，整体偏下约 29 个 SVG 单位。SVG 缩放只缩放整张 viewBox，不会重新布局。
+- 当前建议先以所在层可用区及上方校验总线确定服务组锚点，将四个彩色节点、点、标题说明与外层椭圆作为一个内容组共同上移约 20–25 个 SVG 单位，并按组边界加一致留白重新设定椭圆；相连的校验分支同步重接。单独扩大或移动椭圆不会修正内容组在层内偏低的问题。此方案尚待讨论，不改页面，等用户确认后再实施。
+- 本轮仅更新交接记录，未改变页面序列、节点关系或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户截图和现有静态 SVG 几何（H）。未进行代码验证或页面提交。
+
+### 2026-10-30 · 将 Developer Services 节点组居中到层级
+
+- 用户确认方案 1，并补充要求节点高度适应到层级中间。服务层由两条分隔线 `y=190` 与 `y=372` 界定，中线为 `y=281`。第 06 页现将四个服务椭圆中心统一到 `y=281`，同步上移节点圆点、标题、说明及下方任务汇流线；外层椭圆以 `cy=281, ry=69` 包住节点组，层内上下留白一致。
+- 随节点组重定位，顶部校验分支移至 `y=221` 并弯接右侧校验节点，Skill 到服务总线的连线终点改为 `y=331`。运行层、知识底座、页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户截图、明确选择方案 1 及“节点高度适应层级中间”的补充（H）。
+- 验证：`git diff --check` 通过；本地 CUA 1280×720 预览确认服务内容组位于分区中线、外椭圆留白均匀，校验与服务连线均接回目标节点；GitHub Pages workflow `40993224812` 成功，线上 HTTP 200 且回读源码确认新圆心和路径坐标。未运行自动化测试。
+- 页面提交 `b6874f16` 已推送至 `origin/main`；本交接记录需随后单独提交并推送。无未决事项。
+
+### 2026-10-30 · 对齐开发章起点并迁移 Mini 移动篇
+
+- 用户确认第一章从原第三个设计点“图解”开始，删去此前的 Prompt / 知识卡两点；第三章直接复用 `ascstudio-mini` 的材料。第一章现在从 AddCustom 排查图解进入，依次经过示例副本、经验回流邀请、社区草稿与多平台预览；章节标题为“解决问题，也留下经验”。学习章维持已确认的三点不变。
+- 第三章设计点由 5 个更新为 Mini 的 7 个，沿用 Mini 讲解和页面状态。电脑端外层目录会跟随 Mini 内的设计点切换更新选中项和 URL；“看懂后回到电脑”状态同步将示例知识卡标记为已理解。修正“返回桌面”按钮，使其回到第三章封面。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-mini/app.js`、`ascstudio-mini/index.html`。章节顺序不变；第一章 6 点调整为 5 点，第三章 5 点扩为 7 点。没有改动 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：章节范围与复用 Mini 的决定来自用户明确确认（H）；路由状态、Mini 的页面讲解和示例状态以现有原型代码为依据（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过；本地桌面预览确认开发章首点打开 AddCustom 任务画布图解，Mini 第 4 点落在“已理解”的知识口袋状态；Mini 内切换下一点后，PC 外层目录及 URL 同步到第 2 点。未运行自动化测试。实现提交 `abe9c414` 已包含在 `origin/main`；本交接记录随后单独提交并推送。无未决事项。
+
+### 2026-10-30 · 复核能力架构页连线语义（待用户选型）
+
+- 用户要求整体梳理第 06 页连线。现图的主要歧义：社区 Web 到查询 API 的蓝线绕过服务层大幅折返；项目客户端到 Host 的虚线与右侧绿色反馈回路贴近；API—Host—Skill—MCP 被画成一条串行链，容易误读为 API 必须依次经过 Host、Skill 才到 MCP；Skill 到服务总线的曲线在卡片下方穿过汇流区域。四类服务向结果校验汇流、知识索引向 API / MCP 供给、授权反馈回 Owner 的语义仍需保留。
+- 方案 1（推荐）：保持四层和节点位置，按关系类别分轨布线：Web ↔ 查询 API；项目客户端 → Agent Host；Host 分别路由 Skill / MCP，Skill 扇出到路径、图解、推荐服务；活动服务单独接活动 / 内容目录；服务结果 → 校验 → 入口；知识底座 → API / MCP；授权结果 / 纠错以虚线 → Owner 复核。连线用左侧入口轨、运行层内部扇出轨、右侧校验 / 上下文轨和外侧反馈轨，拆开当前连续链和重叠弯线。
+- 方案 2：将运行层改成 Host 居中的 Hub-and-Spoke 结构，API 保持独立查询入口，Skill 与 MCP 作为 Host 的分支，再将服务能力、校验与知识底座连入；信息关系更明显，但需重排运行层节点位置。
+- 本轮等待用户选择方案，尚未修改页面。用户截图及页面现有节点定义为依据（H）；需要避免把建设示意误作已接入服务（M）。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
+
+### 2026-10-30 · 调整桌面端章节顺序
+
+- 用户确认章节封面顺序改为第一章学习、第二章开发；移动端章节继续放在第三章。`ascstudio-pc/app.js` 中重排章节数据，并将学习 Demo 的点位同步索引由 1 更新为 0；学习推荐卡、路径共创与 ResNet50 状态映射随章节数据保持一致。
+- 设计点深链接改为按全局唯一设计点 ID 查找章节与点位，确保旧链接中的章节序号变化后，学习和开发点仍能落到正确状态。更新 `ascstudio-pc/index.html` 的资源版本号为 `20261030-learning-development-mobile-order`。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`；页面序列明确为学习 → 开发 → 移动端，没有改变设计点内容或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户对章节先后顺序的明确要求（H），起始 Demo 页面由本地交互原型状态映射（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器核对第一章落在学习模式的新建任务主动建议页，第二章落在 Add 算子精度排查任务的图解工作区，左下角讲解与各自设计点一致。未运行自动化测试。页面提交 `e27465fd` 已推送至 `origin/main`；本交接记录随后单独提交并推送。无待确认事项。
+
+
+### 2026-10-30 · 制作能力图连线方案对比页
+
+- 用户要求同时查看两种能力架构连线方案。新增独立对比页 `ascstudio-mini/knowledge-provider-map-line-options.html`，第 06 页提供可切换的方案 1 / 方案 2；原正式蓝图 `knowledge-provider-map.html` 未改，页面序列与 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 方案 1 保持四层和运行节点原位置，分开社区 Web → 查询 API、授权项目上下文 → Agent Host、Host → Skill / MCP 两路、Skill → 学习 / 图解 / 推荐、MCP → 活动服务；知识检索连到查询 API，服务结果继续汇入校验，授权反馈仍回到 Owner。
+- 方案 2 将 Agent Host 移至运行层中心；API 作为独立查询入口，Host 分支调用 Skill 与 MCP，Skill 再连接学习 / 图解 / 推荐，MCP 连接活动服务。两方案共用服务层、内容治理底座、校验和反馈节点，便于比较关系表达。
+- 修改仅为建设示意，不表示 API、MCP 或项目客户端已经接入。依据：用户选择同时查看两版（H）；连线具体落点根据当前 SVG 节点职责及坐标推演（M）。
+- 验证：`git diff --check`、页面脚本 `node --check`、静态 ID 唯一性检查通过；本地桌面浏览器以 `#6` 打开方案 1 / 方案 2 查询状态，确认切换控件默认选中与图形显隐正确。未运行自动化测试；未改变正式蓝图。
+- 对比页提交 `819968f8` 已推送至 `origin/main`。本条交接更新需随后单独提交并推送；GitHub Pages 发布状态待回读。
+
+
+### 2026-10-30 · 框选选区样式与语音主操作
+
+- 按用户截图调整区域框选态：选区左上角「已选区域」标签改为黑底白字；选区矩形和拖动预览使用克制的多色渐变描边，内部仍保持内容可见；局部输入框为空时显示普通输入框同款黑色波形语音按钮，有文本且停止听写后显示发送按钮。
+- 区域语音仍复用原型中的模拟听写与快捷键状态，不接真实语音服务。点击停止语音时阻止表单提交，避免按钮切换瞬间误发送。修改 `ascend-studio/src/AreaComposer.jsx`、`VoiceCaptureButton.jsx`、`task-workspace.css` 及 `ascstudio/` 构建产物。
+- 依据：用户提供截图与明确样式要求（H）；颜色和主要操作沿用 Ascend Studio 界面规范。页面顺序 / 路由未变，API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；未运行测试套件。实现提交 `6a0f6a5f` 已推送至 `origin/main`，并合入保留并行改动的主线记录；Pages workflow `40997058036` 成功（部署提交 `1f9a4f29`）。线上 `/AscendCANN/ascstudio/`、`index-Dxg3mq0f.js` 与 `index-Bd0gfjuf.css` 均 HTTP 200，JS/CSS 已读回选区样式标识。
+
+### 2026-10-30 · 确认学习章节名称
+
+- 用户确认第一章名称为“让学习贴合个人目标与现有基础”。该表述覆盖根据个人目标与知识基础调整学习内容，也不假设用户最终一定要进入实操；第二章“在开发过程中掌握知识”和第三章“让学习随时继续”保持不变。
+- 修改 `ascstudio-pc/app.js` 的第一章标题，并更新 `ascstudio-pc/index.html` 与 `app.js` 的资源版本标识为 `20261030-learning-title-personal-fit`。章节顺序、设计点、Demo 页面状态映射及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 依据：用户明确确认标题文案（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第一章封面显示完整新标题。未运行自动化测试。页面提交 `8c90b280` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-30 · 完成三章名称更新
+
+- 用户确认三章名称为：第一章“让学习贴合个人目标与现有基础”、第二章“在开发过程中掌握知识”、第三章“让学习随时继续”。本次将第二、三章封面标题同步改为用户指定文案；第一章保留此前确认名称。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，资源版本更新为 `20261030-final-three-chapter-titles`。仅调整章节标题和资源版本，章节排序、设计点及页面状态映射不变。
+- 依据：用户明确选定三章标题（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第二章显示“在开发过程中掌握知识”、第三章显示“让学习随时继续”。页面提交 `b107df8b` 已推送至 `origin/main`；本交接记录随后单独提交并推送。未运行自动化测试。
+
+### 2026-10-30 · 框选区域增加淡彩渐变底色
+
+- 用户指出选区只有渐变描边、缺少内部底色。现为已框选矩形与拖动预览统一添加低透明度的蓝 → 紫 → 粉 → 琥珀渐变填充（透明度约 7%–9%）；保留高辨识度渐变描边、内容透视与原有阴影，不遮挡区域内容。
+- 修改 `ascend-studio/src/task-workspace.css` 与 `ascstudio/` 构建产物。依据为用户明确视觉反馈（H）；页面顺序 / 路由及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。提交 `2ab17ead` 已推送至 `origin/main`；Pages workflow `40997799973` 成功。线上 `/AscendCANN/ascstudio/`、`index-Hkq9HylO.js` 与 `index-BRtZ0RMp.css` 均 HTTP 200，CSS 已读回 alpha 约 7%–9% 的渐变填充。
+
+### 2026-10-30 · 在学习画布增加“指着说”设计点
+
+- 用户提出学习章节增加“划选区域、指着说”知识点。学习章由 3 个点扩展为 4 个，新增点名“框选内容，直接指着说”，讲解为“框选学习画布里的疑问区域，再通过文字或语音直接提问。”入口定位到 ResNet50 学习画布中的“认识图像分类任务”图解节点，指着说控件初始可见，演示者可以现场开启并框选。
+- Demo 点击“指着说”开启框选时，左下讲解同步切到新点；点击退出后同步回路径学习点。直接进入新点时保留可操作的待开启状态，不替演示者预选区域。框选后提供区域缩略图和描述输入；本次核对未发送任何内容。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`，资源版本为 `20261030-learning-point-and-say`。仅增加学习设计点和同步映射，章节顺序、开发 / 移动章节及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户提出新增点（H）；对应按钮、框选浮层、区域描述输入和禁用的发送状态来自本地 Demo 实际交互（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 桌面预览确认新点落到 ResNet50 图解节点，打开 / 退出框选时讲解点在索引 2 与 3 间同步，拖动框选猫图后出现区域缩略图与描述输入框，未提交。页面提交 `216c71f5` 已推送至 `origin/main`；本交接记录随后单独提交并推送。工作区原有 `ascstudio-mini/knowledge-provider-map-line-options.html` 未改动、未暂存、未提交。
+
+### 2026-10-30 · 收敛能力架构图的连线
+
+- 用户反馈第 06 页连线杂乱。本次只更新对比页 `ascstudio-mini/knowledge-provider-map-line-options.html`，正式蓝图 `knowledge-provider-map.html` 未修改；两种方案保留同一套节点与四层结构，分别保留 Host 左置与 Host 居中的布局差异。
+- 重排后的主关系为：Web 查询接 API；Host 分别路由 Skill 与 MCP；运行能力层以一条短垂直箭头支撑上方服务层；MCP 连接活动 / 内容服务；知识底座的检索索引沿底座上缘分流到 API 与 MCP；服务组统一进入来源、版本、范围、权限和可执行性校验，再返回体验入口。线条按入口、工具调用、知识供给、结果校验分轨布置，移除了跨整页的长回路线。
+- 为降低线路数量，项目上下文由“项目客户端”与 Host 的授权 / 环境节点说明呈现，没有另画一条绕过全图的独立箭头；授权完成与纠错回流保留在 Owner 节点说明中，也不再画长虚线回路。正式蓝图的详细关系未改变。页面序列、API / Protocol、Host / Harness、Application / Task 边界均未改变；建设示意不表示服务已接入。
+- 依据：用户对当前截图“线好乱”的直接反馈（H）；路线落点根据节点坐标、方向和不穿过节点文字的布局约束推演（M）。
+- 验证：`git diff --check`、页面内联脚本 `node --check`、静态 ID 唯一性检查通过；CUA 桌面 1280×720 逐一切换方案 1 / 2，确认分流线、底座供给线、校验回入口的端点均可见，未运行自动化测试。实现提交 `fcf05242` 已推送至 `origin/main`。Pages URL 返回 HTTP 200；加版本参数回读内容长度为 229904 bytes，确认新版方案文案及 Host / 知识供给连线路径已发布。
+
+### 2026-10-30 · 桌面端 Demo 不显示焦点描边
+
+- 用户明确要求展示时不出现焦点提示，讲解者会自行操作。桌面端外层控件不再显示 `:focus-visible` 描边；嵌入的 Studio 与小程序 Demo 在加载时注入同样的描边覆盖，避免推荐卡片等控件出现截图中的紫色焦点框。保留点击、键盘操作、悬停、选中和卡片展开行为。
+- 依据：用户明确偏好（H）；截图中的卡片内框对应推荐卡片按钮的 `:focus-visible` 样式（M）。本改动仅影响视觉焦点轮廓，不改变章节序列、任务页面定位或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；桌面预览 URL 返回 HTTP 200。未运行自动化测试。
+- Commit / push：代码提交 `da04db47` 已推送至 `origin/main`；本条交接记录随后的独立记录提交一并推送。

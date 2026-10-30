@@ -23,6 +23,12 @@ export function getCommunityDraftTopic(draft) {
 function buildTikTokSlides(draft) {
   const topic = getCommunityDraftTopic(draft);
   const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
+  if (topic === LOG_DIAGNOSTIC_TASK) return [
+    { eyebrow: "问题现象", title: "Add 算子异常\n待核对的尾块线索", note: "[16,32] 通过，[17,33] 在 custom_op.cpp:128 出现 precision mismatch", visual: "cover", footer: "日志现象 · 根因待确认" },
+    { eyebrow: "输入对照", title: "两组输入，结果不同", note: "先保留可复现条件，不把相关性写成根因", visual: "compare", footer: "现象来自预置任务日志" },
+    { eyebrow: "布局理解", title: "图解帮助理解数据布局", note: "交互式 Format Lab 用于观察布局关系，不代表代码已验证", visual: "layout", footer: "图解作为排查参考" },
+    { eyebrow: "验证边界", title: "真实代码与环境待补", note: "补充循环边界、运行条件、误差数据和环境版本", visual: "evidence", footer: "真实验证结果待补" },
+  ];
   const coverTitle = topic === LOG_DIAGNOSTIC_TASK ? "Add 算子异常\n从日志到验证" : isAddCustom ? "AddCustom\n精度异常" : `${topic}怎么核对？`;
   return [
     { eyebrow: "先看现象", title: coverTitle, note: "先固定异常范围，再整理已有证据", visual: "cover", footer: "问题排查路径 · 01 / 04" },
@@ -80,6 +86,18 @@ function TikTokSlideContent({ slide, isAddCustom }) {
     <p className="visual-slide-note">{slide.note}</p>
   </>;
 
+  if (slide.visual === "layout") return <>
+    <div className="tiktok-slide-heading">
+      <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
+      <h3>{title}</h3>
+    </div>
+    <div className="visual-evidence-list">
+      {["输入形状差异", "逻辑布局与物理分块", "尾块访问线索"].map(item => <div key={item}><IconArrowRight size={ICON_SIZE.inline} aria-hidden="true" /><span>{item}</span><b>图解参考</b></div>)}
+      <strong>仍需对照真实代码确认</strong>
+    </div>
+    <p className="visual-slide-note">{slide.note}</p>
+  </>;
+
   return <>
     <div className="tiktok-slide-heading">
       <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
@@ -93,10 +111,10 @@ function TikTokSlideContent({ slide, isAddCustom }) {
   </>;
 }
 
-function TikTokVisual({ slide, slides, index, onPrevious, onNext, isAddCustom }) {
+function TikTokVisual({ slide, slides, index, onPrevious, onNext, isAddCustom, isLogDiagnostic = false }) {
   return <div className="tiktok-visual-shell">
     <div className={`tiktok-visual tiktok-visual--${slide.visual}`}>
-      <div className="tiktok-visual-topline"><span>ASCEND C · DEBUG NOTE</span><span>{String(index + 1).padStart(2, "0")} / 04</span></div>
+      <div className="tiktok-visual-topline"><span>ASCEND C · DEBUG NOTE</span>{!isLogDiagnostic && <span>{String(index + 1).padStart(2, "0")} / 04</span>}</div>
       <div className={`tiktok-slide-content tiktok-slide-content--${slide.visual}`}>
         <TikTokSlideContent slide={slide} isAddCustom={isAddCustom} />
       </div>
@@ -117,7 +135,7 @@ function TikTokDraft({ draft, generated, published, onGenerate, onPublish }) {
   const isLogDiagnostic = topic === LOG_DIAGNOSTIC_TASK;
   const slides = buildTikTokSlides(draft);
   const defaultCaption = isLogDiagnostic
-    ? "从 AddCustom 运行日志开始，对照输入差异和错误位置，再用范围图解理解尾块。示例核对不等于真实精度或 NPU 验证，根因仍待确认。"
+    ? "AddCustom 日志里 [16,32] 通过、[17,33] 在 custom_op.cpp:128 出现 precision mismatch。交互式 Format Lab 用来理解布局关系；图解不是根因结论，也不代表真实代码或 NPU 验证。"
     : isAddCustom
       ? "AddCustom 精度异常别急着改参数，先把输入边界、报错位置和尾块有效元素逐项对齐。尾块只是待验证线索，补齐运行条件与逐元素误差后，再判断根因。"
       : "图像输入形状核对先对齐输入、轴顺序与目标约定，再补充模型签名和实际运行结果。当前页面只展示形状变化，不能替代真实模型验证。";
@@ -129,11 +147,11 @@ function TikTokDraft({ draft, generated, published, onGenerate, onPublish }) {
   return <div className="channel-draft-main channel-draft-main--tiktok">
     <div className="channel-draft-scroll">
       <div className="channel-draft-tiktok-layout">
-        <TikTokVisual slide={slide} slides={slides} index={slideIndex} onPrevious={previous} onNext={next} isAddCustom={isAddCustom} />
+        <TikTokVisual slide={slide} slides={slides} index={slideIndex} onPrevious={previous} onNext={next} isAddCustom={isAddCustom} isLogDiagnostic={isLogDiagnostic} />
         <section className="channel-draft-copy">
-          <div className="channel-draft-kicker"><IconSparkles size={ICON_SIZE.control} />{generated ? isLogDiagnostic ? "本地排查步骤已整理" : "AI 已生成图文草稿" : "知识图文预览"}</div>
+          <div className="channel-draft-kicker"><IconSparkles size={ICON_SIZE.control} />{generated ? isLogDiagnostic ? "本地交互记录已整理" : "AI 已生成图文草稿" : "知识图文预览"}</div>
           <h3>{generated ? "核对图文内容后再发布" : `把${topic}整理成深色知识图文`}</h3>
-          <p>{isLogDiagnostic ? "将日志现象、尾块范围图解和示例核对拆成 4 张图；根因与真实设备结果仍待确认。" : isAddCustom ? "将本次任务中的现象、尾块候选线索和待补证据拆成 4 张图；尾块仅作为待验证线索，不会写成根因。" : "将本次任务中的现象、处理步骤和待补证据拆成 4 张图，区分形状记录与真实设备验证。"}</p>
+          <p>{isLogDiagnostic ? "将日志现象、图解观察和待补验证信息整理为社区经验；根因仍需结合代码与环境确认。" : isAddCustom ? "将本次任务中的现象、尾块候选线索和待补证据拆成 4 张图；尾块仅作为待验证线索，不会写成根因。" : "将本次任务中的现象、处理步骤和待补证据拆成 4 张图，区分形状记录与真实设备验证。"}</p>
           {generated ? <>
             <label className="channel-draft-field-label" htmlFor="tiktok-caption">配文</label>
             <textarea id="tiktok-caption" value={caption} onChange={event => setCaption(event.target.value)} rows={5} />
@@ -160,7 +178,7 @@ export function TikTokPublishedPost({ draft }) {
   const isLogDiagnostic = topic === LOG_DIAGNOSTIC_TASK;
   const slides = buildTikTokSlides(draft);
   const caption = isLogDiagnostic
-    ? "从 AddCustom 运行日志开始，对照输入差异和错误位置，再用范围图解理解尾块。示例核对不等于真实精度或 NPU 验证，根因仍待确认。"
+    ? "AddCustom 日志里 [16,32] 通过、[17,33] 在 custom_op.cpp:128 出现 precision mismatch。交互式 Format Lab 用来理解布局关系；图解不是根因结论，也不代表真实代码或 NPU 验证。"
     : isAddCustom
       ? "AddCustom 精度异常别急着改参数，先把输入边界、报错位置和尾块有效元素逐项对齐。尾块只是待验证线索，补齐运行条件与逐元素误差后，再判断根因。"
       : "图像输入形状核对先对齐输入、轴顺序与目标约定，再补充模型签名和实际运行结果。当前页面只展示形状变化，不能替代真实模型验证。";
@@ -175,6 +193,7 @@ export function TikTokPublishedPost({ draft }) {
         onPrevious={() => setSlideIndex(index => (index - 1 + slides.length) % slides.length)}
         onNext={index => setSlideIndex(typeof index === "number" ? index : (slideIndex + 1) % slides.length)}
         isAddCustom={isAddCustom}
+        isLogDiagnostic={isLogDiagnostic}
       />
       <div className="douyin-published-copy">
         <h3>{topic}排查笔记</h3>

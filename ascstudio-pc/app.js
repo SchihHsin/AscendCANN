@@ -1,46 +1,37 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261029-task-routing";
+const ROUTE_REV = "20261030-learning-point-and-say";
+const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
-    id: "expression", title: "先把目标说清", cover: "用户不是从空白开始", summary: "从任务现场或学习意图出发，让可讨论的线索先出现，再由用户组织并确认自己的 Prompt。",
+    id: "learning", title: "让学习贴合个人目标与现有基础", cover: "从一张建议卡开始", summary: "从当前进度与问题获得学习建议，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
     points: [
-      { id: "recommend", title: "主动建议先摆出依据", description: "结合已有任务线索给出可判断的下一步。建议是起点，开发者仍决定是否采用。", entry: "新建任务首页 · 开发模式建议卡", mode: "开发" },
-      { id: "connect", title: "把线索连起来，Prompt 逐步成形", description: "从训练目标、关注方向和约束出发，关系选择逐步写入可编辑 Prompt，再由用户明确发送。", entry: "新建任务首页 · 探索画布与 Prompt", home: "explore" },
-      { id: "micro", title: "从当前内容取上下文", description: "划词、指向工作区和调整输入区位置，都从用户眼前的内容开始；微交互跟随任务发生。", entry: "任务工作区 · 对话内容与输入区", task: "图像推理调试" },
+      { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
+      { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
+      { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
+      { id: "point-and-say", title: "框选内容，直接指着说", note: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", emphasis: "框选学习画布里的疑问区域", description: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", entry: "ResNet50 学习画布 · 图解节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
     ],
   },
   {
-    id: "learning-start", title: "让学习从目标开始", cover: "不必先知道课程名", summary: "兴趣、疑问和明确能力目标都能成为入口；系统先帮助形成方向，再把路径交给用户调整。",
+    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
-      { id: "intent", title: "模糊意图也能开始", description: "从“想提升训练效率，但不知道先学什么”进入，先补充目标与已有基础，再生成学习方向。", entry: "新建任务首页 · 学习模式与目标输入", mode: "学习" },
-      { id: "path", title: "生成路径后一起调整", description: "路径以草案出现，用户可以说明已有基础、补充重点，并逐项审阅变化。", entry: "学习路径共创任务 · 未确认草案", task: "图像输入预处理路径共创", group: "模型推理" },
-      { id: "custom-node", title: "路径允许加入自己的节点", description: "补充自定义节点并调整先后关系，保留用户对学习顺序和重点的决定权。", entry: "学习路径画布 · 选中一个可编辑节点", task: "图像输入预处理路径共创", group: "模型推理" },
+      { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
+      { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
+      { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },
+      { id: "community", title: "把处理过程整理成社区经验", note: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", emphasis: "整理为草稿", description: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", entry: "社区经验 · 草稿审阅", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "community" },
+      { id: "channels", title: "把经验带到更多平台", note: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", emphasis: "GitCode、CSDN 和抖音", description: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", entry: "社区经验 · 多渠道预览", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "channels" },
     ],
   },
   {
-    id: "practice", title: "在实践中理解", cover: "任务完成不等于理解完成", summary: "把解释放回当前任务或学习练习，让用户能观察、尝试、比较，再判断是否真正理解。",
+    id: "mobile", title: "让学习随时继续", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、回访和自主发现，并将理解状态带回任务。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
     points: [
-      { id: "error-visual", title: "错误发生时，把原理放回现场", description: "错误、图解、参数和代码相互对应；用户可以回看当前问题为什么需要这样处理。", entry: "开发任务工作区 · 错误线索与张量图解", task: "图像推理调试" },
-      { id: "path-practice", title: "路径练习承接刚学到的概念", description: "从路径节点进入练习，改变参数后观察形状变化，并用结果检查理解。", entry: "学习任务工作区 · 当前练习节点", task: "学会图像输入预处理", group: "模型推理" },
-      { id: "transfer", title: "理解可以带回实际任务", description: "学习记录保留来源和条件，再进入相关开发任务继续核对；示例演算不替代真实项目验证。", entry: "学习任务与开发任务的切换入口", task: "学会图像输入预处理", group: "模型推理" },
-    ],
-  },
-  {
-    id: "return", title: "把收获带入下一次", cover: "让经验有机会被找回", summary: "任务对话中的尝试与修复可整理成社区草稿，学习者自己的解释也能成为个人认知卡。",
-    points: [
-      { id: "community", title: "调试结束后，邀请整理社区经验", description: "根据当前任务形成可审阅草稿，保留问题、尝试、环境和验证状态；是否分享由用户确认。", entry: "开发任务完成状态 · 社区经验草稿入口", task: "图像推理调试", taskRoute: "development" },
-      { id: "cognition", title: "笔记、图解和代码成为认知卡", description: "学习者用自己的话重述、画图和关联代码，围绕同一知识点组织，之后还能回看。", entry: "学习画布 · 个人认知材料", task: "学会图像输入预处理", group: "模型推理" },
-    ],
-  },
-  {
-    id: "mobile", title: "离开电脑，继续学习", cover: "把疑问和线索带在身边", summary: "小程序承接短内容与明确的兴趣、疑问信号，帮助学习从桌面任务延伸到日常间隙。",
-    points: [
-      { id: "handoff", title: "新知先出现在微信里", description: "一条未读服务通知，让每周开发速览主动来到用户熟悉的消息列表。", entry: "小程序 · 微信消息列表", route: "wechat", mobile: true },
-      { id: "notification", title: "先看懂这条通知", description: "通知先交代本周重点和内容形态，再把用户带入完整速览。", entry: "小程序 · 服务通知摘要", route: "wechat-notification", mobile: true },
-      { id: "digest", title: "一条资讯，接两张卡", description: "重点资讯搭配两张短知识卡，让开发者用手机快速读完并接着学。", entry: "小程序 · 每周速览", route: "briefing", mobile: true },
-      { id: "signals", title: "把存疑留给下一次", description: "在知识卡上标记感兴趣或还没弄懂，为后续速览留下接续线索。", entry: "小程序 · 知识卡与兴趣信号", route: "knowledge/scaling", mobile: true },
-      { id: "preferences", title: "推送主题与时间可选", description: "选择关注主题和接收时间；确认后，Demo 模拟新通知回到微信列表。", entry: "小程序 · 订阅设置", route: "briefing", openSettings: true, mobile: true },
+      { id: "desktop-handoff", title: "从电脑端的一条回答，接上手机里的下一步", note: "入口就在正在处理的任务里", emphasis: "正在处理的任务里", description: "在 Agent 回答或学习内容里收下一条知识，标记感兴趣或还没弄懂，再选择即时送达或加入定期速览。", entry: "小程序 · 电脑端入口", route: "review-pending", mobile: true },
+      { id: "instant-delivery", title: "电脑端选「现在看」，微信列表收到同一条知识", note: "让用户看清消息从哪里来", emphasis: "看清消息从哪里来", description: "发送后，手机微信会话列表出现带有知识标题的服务通知；手机样机与电脑端共用这一条内容。", entry: "小程序 · 即时学习", route: "review-instant", mobile: true },
+      { id: "mobile-short-read", title: "手机短读卡，把一个知识点拆成几分钟", note: "把电脑上的内容整理成适合手机读的形式", emphasis: "适合手机读的形式", description: "从通知打开知识卡，用简明解释、重点和理解小题完成一次轻量学习；感兴趣或存疑也能继续保留。", entry: "小程序 · 知识短读卡", route: "wechat-notification/review", mobile: true },
+      { id: "understanding-handoff", title: "看懂后回到电脑，理解状态也跟着回来", note: "内容和理解状态跨设备接续", emphasis: "理解状态跨设备接续", description: "手机端点「我看懂了」，电脑端知识口袋同步显示「已理解」，再回到原来的任务继续处理。", entry: "小程序 · 跨设备接续", route: "review-handoff/review", mobile: true },
+      { id: "weekly-review", title: "把关注或存疑的内容，放进每周回访", note: "由用户选择主题、时间和授权", emphasis: "用户选择主题、时间和授权", description: "电脑端可将知识加入定期速览；手机端再选择主题、接收时间并确认订阅。", entry: "小程序 · 定期回访设置", route: "review-weekly-settings", mobile: true },
+      { id: "weekly-briefing", title: "每周一条重点资讯，再补两张个性化卡片", note: "资讯与个人学习线索放在同一份速览里", emphasis: "同一份速览里", description: "速览用一条重点资讯开场，再优先带上电脑端安排的内容，并参考感兴趣或还没弄懂的信号。", entry: "小程序 · 每周速览", route: "review-briefing", mobile: true },
+      { id: "discover", title: "没有当前任务，也能主动发现下一点新知", note: "知识推荐与主动探索互相补充", emphasis: "主动探索互相补充", description: "用户可以搜索、浏览分类或从推荐知识卡继续探索；发现的兴趣与问题还能成为之后回访的线索。", entry: "小程序 · 自主探索", route: "discover", mobile: true },
     ],
   },
 ];
@@ -50,10 +41,16 @@ const showcase = $("#showcase"), frame = $("#demo-frame"), cover = $("#chapter-c
 const params = new URLSearchParams(location.search);
 let currentChapter = Math.min(chapters.length - 1, Math.max(0, Number(params.get("chapter") || 1) - 1));
 let currentPoint = Math.min(chapters[currentChapter].points.length - 1, Math.max(0, Number(params.get("pointIndex") || 0)));
-let activePoint = null, menuOpen = false, loadingRevision = 0;
+let activePoint = null, menuOpen = false, loadingRevision = 0, loadedFrameHref = "", learningSyncCleanup = null;
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+}
+
+function updateCoverArt(chapter) {
+  const image = $("#cover-art");
+  image.src = chapter.art;
+  image.alt = chapter.artAlt;
 }
 
 function updateAddress(view) {
@@ -70,15 +67,12 @@ function buildCover() {
   $("#cover-number").textContent = String(currentChapter + 1).padStart(2, "0");
   $("#cover-title").textContent = chapter.title;
   $("#cover-description").textContent = chapter.summary;
-  $("#cover-point-count").textContent = `${String(chapter.points.length).padStart(2, "0")} 个设计点`;
-  $("#cover-points").innerHTML = chapter.points.map((point, index) => `<li><span>${String(index + 1).padStart(2, "0")}</span><span>${escapeHTML(point.title)}</span></li>`).join("");
-  $("#journey-rail").innerHTML = chapters.map((_, index) => `<span class="${index === currentChapter ? "is-current" : ""}"></span>`).join("");
+  updateCoverArt(chapter);
   $("#cover-enter").textContent = currentChapter === chapters.length - 1 ? "进入小程序演示" : "进入本章";
   showcase.dataset.view = "cover";
-  showcase.classList.remove("is-mobile", "is-note-collapsed");
+  showcase.classList.remove("is-mobile");
   $("#mobile-return").hidden = true;
   $("#design-note").hidden = true;
-  $("#note-dock").hidden = true;
   $("#chapter-menu").hidden = !menuOpen;
   updateAddress("cover");
 }
@@ -92,15 +86,273 @@ function renderPointMenu() {
   $("#chapter-menu").hidden = !menuOpen;
 }
 
+function renderPointNote() {
+  const noteText = $("#note-text");
+  const emphasis = activePoint.emphasis || "";
+  const emphasisStart = activePoint.note.indexOf(emphasis);
+  if (!emphasis || emphasisStart < 0) noteText.textContent = activePoint.note;
+  else {
+    const emphasisEnd = emphasisStart + emphasis.length;
+    const emphasized = document.createElement("strong");
+    emphasized.textContent = emphasis;
+    noteText.replaceChildren(
+      document.createTextNode(activePoint.note.slice(0, emphasisStart)),
+      emphasized,
+      document.createTextNode(activePoint.note.slice(emphasisEnd)),
+    );
+  }
+  $("#note-prev").disabled = currentPoint === 0 && currentChapter === 0;
+  const nextLabel = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个设计点" : currentChapter < chapters.length - 1 ? "进入下一章封面" : "回到第一章封面";
+  $("#note-next").setAttribute("aria-label", nextLabel);
+  $("#note-next").title = nextLabel;
+}
+
+function syncLearningPointToDemo(pointIndex) {
+  if (currentChapter !== 0 || pointIndex === currentPoint || !chapters[0].points[pointIndex]) return;
+  currentPoint = pointIndex;
+  activePoint = chapters[0].points[pointIndex];
+  menuOpen = false;
+  renderPointMenu();
+  renderPointNote();
+  updateAddress("point");
+}
+
+function syncMobilePointFromDemo(pointIndex) {
+  if (currentChapter !== 2 || showcase.dataset.view !== "stage" || !Number.isInteger(pointIndex) || pointIndex < 0 || pointIndex >= chapters[2].points.length || pointIndex === currentPoint) return;
+  currentPoint = pointIndex;
+  activePoint = chapters[2].points[pointIndex];
+  renderPointMenu();
+  renderPointNote();
+  updateAddress("point");
+}
+
+function prefillLearningPrompt(doc, onlyIfBlank = true) {
+  const input = doc.querySelector('textarea[aria-label="继续提问"]');
+  if (!isVisible(input) || (onlyIfBlank && input.value.trim())) return false;
+  const fillButton = visibleButton(doc, "button", "填入共创演示需求");
+  if (fillButton) {
+    fillButton.click();
+    return true;
+  }
+  return false;
+}
+
+function syncLearningPointFromDemo(doc, pointModeChanged = false) {
+  if (currentChapter !== 0 || showcase.dataset.view !== "stage") return;
+  const task = selectedTaskLabel(doc);
+  if (task === "ResNet50 离线推理初体验") {
+    const pointMode = doc.querySelector(".tw-point-mode");
+    if (pointMode?.getAttribute("aria-pressed") === "true") syncLearningPointToDemo(3);
+    else if (currentPoint !== 3 || pointModeChanged) syncLearningPointToDemo(2);
+    return;
+  }
+  if (task === "图像输入预处理路径共创" && currentPoint === 0) {
+    syncLearningPointToDemo(1);
+    requestAnimationFrame(() => prefillLearningPrompt(doc));
+  }
+}
+
+function installLearningDemoSync(doc, revision) {
+  learningSyncCleanup?.();
+  if (currentChapter !== 0) return;
+  let syncTimer = 0, pointModeChanged = false;
+  const scheduleSync = (modeChanged = false) => {
+    pointModeChanged ||= modeChanged;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+      if (revision === loadingRevision) syncLearningPointFromDemo(doc, pointModeChanged);
+      pointModeChanged = false;
+    }, 160);
+  };
+  const handleClick = event => {
+    if (event.target.closest(".tw-point-mode")) { scheduleSync(true); return; }
+    if (event.target.closest(".new-task-home__card-summary, .new-task-home__card-continue, .new-task-home__card-chat, .task-suggestion-actions button, .new-task-button")) scheduleSync();
+  };
+  const handleFocus = event => {
+    if (event.target.matches('textarea[aria-label="继续提问"]') && currentPoint === 0 && selectedTaskLabel(doc) === "图像输入预处理路径共创") {
+      syncLearningPointToDemo(1);
+      requestAnimationFrame(() => prefillLearningPrompt(doc));
+    }
+  };
+  const handleKeyDown = event => {
+    if (event.key === "Escape" && doc.querySelector(".tw-point-mode")?.getAttribute("aria-pressed") === "true") {
+      setTimeout(() => scheduleSync(true), 0);
+    }
+  };
+  const observer = new MutationObserver(() => scheduleSync());
+  doc.addEventListener("click", handleClick, true);
+  doc.addEventListener("focusin", handleFocus, true);
+  doc.addEventListener("keydown", handleKeyDown, true);
+  if (doc.body) observer.observe(doc.body, { childList: true, subtree: true });
+  learningSyncCleanup = () => {
+    clearTimeout(syncTimer);
+    observer.disconnect();
+    doc.removeEventListener("click", handleClick, true);
+    doc.removeEventListener("focusin", handleFocus, true);
+    doc.removeEventListener("keydown", handleKeyDown, true);
+    learningSyncCleanup = null;
+  };
+  scheduleSync();
+}
+
 function selectedTaskLabel(doc) {
   return doc.querySelector(".task-title-button strong")?.textContent?.trim() || "";
+}
+
+function suppressDemoFocusHints(doc) {
+  if (!doc?.head || doc.getElementById("pc-demo-focus-hints")) return;
+  const style = doc.createElement("style");
+  style.id = "pc-demo-focus-hints";
+  style.textContent = ":focus-visible { outline: none !important; }";
+  doc.head.append(style);
+}
+
+function isVisible(element) {
+  return Boolean(element && element.getClientRects().length && !element.closest("[hidden]"));
+}
+
+function visibleButton(doc, selector, text) {
+  return [...doc.querySelectorAll(selector)].find(button => isVisible(button) && (!text || button.textContent.replace(/\s+/g, " ").trim().includes(text))) || null;
+}
+
+function applyPcStage(point, doc) {
+  if (!point.stage) return true;
+  const knowledgeCue = [...doc.querySelectorAll(".proactive-cue.is-knowledge")].find(isVisible);
+  const draftPanel = doc.querySelector(".community-draft-panel");
+  if (point.stage !== "community" && point.stage !== "channels" && isVisible(draftPanel)) {
+    const close = visibleButton(doc, 'button[aria-label="关闭社区经验草稿"]');
+    if (close) { close.click(); return false; }
+  }
+
+  const ensureInvite = () => {
+    if (isVisible(doc.querySelector('[aria-label="任务完成后的社区经验邀请"]')) || isVisible(doc.querySelector(".community-draft-card"))) return true;
+    const resolve = visibleButton(doc, "button", "标记为已解决");
+    if (resolve) { resolve.click(); return false; }
+    const overview = visibleButton(doc, 'button[aria-label="查看本任务全部内容"]');
+    if (overview) { overview.click(); return false; }
+    return false;
+  };
+
+  if (point.stage === "recommend") {
+    const cards = [...doc.querySelectorAll(".new-task-home__card")].filter(isVisible);
+    if (!cards.length) return Boolean(isVisible(doc.querySelector(".new-task-home__empty")));
+    const matchingCard = cards.find(card => /图像预处理/.test(card.textContent)) || cards.find(card => /图像|输入 Shape/.test(card.textContent)) || cards[0];
+    const summary = matchingCard.querySelector(".new-task-home__card-summary");
+    if (summary && summary.getAttribute("aria-expanded") !== "true") summary.focus();
+    return true;
+  }
+
+  if (point.stage === "path-prompt") {
+    const input = doc.querySelector('textarea[aria-label="继续提问"]');
+    if (!isVisible(input)) return false;
+    if (input.value.trim() === point.prefill) return true;
+    const fillButton = visibleButton(doc, "button", "填入共创演示需求");
+    if (fillButton) { fillButton.click(); return false; }
+    return false;
+  }
+
+  if (point.stage === "resnet-entry") {
+    const firstStepNode = doc.querySelector('[data-learning-step="learning-official-step-image-classification"]');
+    if (firstStepNode?.getAttribute("aria-pressed") !== "true") {
+      const firstStep = visibleButton(doc, ".task-suggestion-actions button", "从图像推理链路开始");
+      if (firstStep) { firstStep.click(); return false; }
+      return false;
+    }
+    const pointMode = doc.querySelector(".tw-point-mode");
+    if (pointMode?.getAttribute("aria-pressed") === "true") {
+      pointMode.click();
+      return false;
+    }
+    return true;
+  }
+
+  if (point.stage === "knowledge") {
+    const expand = knowledgeCue?.querySelector(".proactive-cue-expand");
+    if (expand && isVisible(expand)) expand.click();
+    return Boolean(knowledgeCue);
+  }
+
+  if (point.stage === "diagram") {
+    if (isVisible(doc.querySelector('[aria-label="AddCustom 任务内容画布"]'))) return true;
+    const diagramAction = knowledgeCue?.querySelector(".proactive-cue-secondary");
+    if (diagramAction && isVisible(diagramAction) && /图解/.test(diagramAction.textContent)) { diagramAction.click(); return false; }
+    const primary = knowledgeCue?.querySelector(".proactive-cue-primary");
+    if (primary && isVisible(primary) && primary.textContent.includes("看尾块处理图解")) {
+      primary.click();
+      return false;
+    }
+    if (isVisible(doc.querySelector(".ex-panel"))) return true;
+    const direct = visibleButton(doc, 'button[aria-label="打开线索解释完整内容"]') || visibleButton(doc, ".cm-code-link button", "对照图解");
+    if (direct) { direct.click(); return false; }
+    const cueExpand = knowledgeCue?.querySelector(".proactive-cue-expand");
+    if (cueExpand && isVisible(cueExpand)) { cueExpand.click(); return false; }
+    return false;
+  }
+
+  if (point.stage === "draft") {
+    const editor = doc.querySelector('textarea[aria-label="编辑当前示例代码草案"]');
+    if (isVisible(editor)) return true;
+    const fullDraft = visibleButton(doc, 'button[aria-label="打开示例工作副本完整内容"]');
+    if (fullDraft) { fullDraft.click(); return false; }
+    if (!isVisible(doc.querySelector(".task-workspace"))) return false;
+    const contentOpen = visibleButton(doc, "button", "打开内容");
+    if (contentOpen) { contentOpen.click(); return false; }
+    const trigger = visibleButton(doc, ".tw-content-trigger");
+    const draftOption = visibleButton(doc, '.tw-content-option[role="menuitemradio"]', "示例工作副本");
+    if (draftOption) { draftOption.click(); return false; }
+    const pickerOption = visibleButton(doc, ".tw-material-open", "示例工作副本");
+    if (pickerOption) { pickerOption.click(); return false; }
+    const openOther = visibleButton(doc, '.tw-content-menu-foot button[role="menuitem"]', "打开其他内容");
+    if (openOther) { openOther.click(); return false; }
+    if (trigger && trigger.getAttribute("aria-expanded") !== "true") { trigger.click(); return false; }
+    return false;
+  }
+
+  if (point.stage === "invite") {
+    return ensureInvite();
+  }
+
+  if (point.stage === "community") {
+    const overviewBack = visibleButton(doc, ".community-overview-back");
+    if (overviewBack) { overviewBack.click(); return false; }
+    if (isVisible(doc.querySelector('.community-draft-panel[aria-label="昇腾社区发布草稿"]')) || isVisible(doc.querySelector('.community-draft-panel[aria-label="社区经验草稿"]'))) return true;
+    const generate = visibleButton(doc, ".community-entry-button", "生成草稿");
+    if (generate) { generate.click(); return false; }
+    const draftCard = visibleButton(doc, ".community-draft-card", "社区经验草稿已生成");
+    if (draftCard) { draftCard.click(); return false; }
+    if (!ensureInvite()) return false;
+    return false;
+  }
+
+  if (point.stage === "channels") {
+    if (isVisible(doc.querySelector(".community-draft-panel.is-channel-overview"))) return true;
+    const channelLink = visibleButton(doc, ".community-channel-back");
+    if (channelLink) { channelLink.click(); return false; }
+    const generate = visibleButton(doc, ".community-entry-button", "生成草稿");
+    if (generate) { generate.click(); return false; }
+    const draftCard = visibleButton(doc, ".community-draft-card", "社区经验草稿已生成");
+    if (draftCard) { draftCard.click(); return false; }
+    if (!ensureInvite()) return false;
+    return false;
+  }
+
+  return true;
 }
 
 function applyPcStart(point, attempt = 0, revision = loadingRevision) {
   if (revision !== loadingRevision) return;
   let doc;
   try { doc = frame.contentDocument; } catch { return; }
+  suppressDemoFocusHints(doc);
   if (!doc || !doc.querySelector("#root") || attempt > 22) { if (attempt < 22) setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); return; }
+
+  if (point.startView === "new-task" && !isVisible(doc.querySelector(".new-task-home"))) {
+    const projectRail = visibleButton(doc, 'button[aria-label="项目与任务"]');
+    if (projectRail && projectRail.getAttribute("aria-expanded") !== "true") { projectRail.click(); return setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); }
+    const newTaskButton = visibleButton(doc, ".new-task-button", "新建任务");
+    if (newTaskButton) { newTaskButton.click(); return setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); }
+    if (attempt < 22) { setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); return; }
+  }
 
   if (point.home) {
     const tab = doc.querySelector(`#home-tab-${point.home}`);
@@ -123,13 +375,19 @@ function applyPcStart(point, attempt = 0, revision = loadingRevision) {
       if (row && attempt < 22) { setTimeout(() => applyPcStart(point, attempt + 1, revision), 180); return; }
     }
   }
+  if (!applyPcStage(point, doc) && attempt < 22) {
+    setTimeout(() => applyPcStart(point, attempt + 1, revision), 180);
+    return;
+  }
   $("#loading-state").hidden = true;
+  if (currentChapter === 0) installLearningDemoSync(doc, revision);
 }
 
 function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
   if (revision !== loadingRevision) return;
   let doc;
   try { doc = frame.contentDocument; } catch { return; }
+  suppressDemoFocusHints(doc);
   if (!doc || !doc.querySelector("#screen")) {
     if (attempt < 22) setTimeout(() => applyMobileStart(point, attempt + 1, revision), 180);
     return;
@@ -146,6 +404,7 @@ function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
 }
 
 function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
+  learningSyncCleanup?.();
   const revision = ++loadingRevision;
   currentChapter = chapterIndex;
   currentPoint = pointIndex;
@@ -154,45 +413,45 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   renderPointMenu();
   showcase.dataset.view = "loading";
   showcase.classList.toggle("is-mobile", Boolean(activePoint.mobile));
-  showcase.classList.remove("is-note-collapsed");
   $("#design-note").hidden = Boolean(activePoint.mobile);
-  $("#note-dock").hidden = true;
   $("#mobile-return").hidden = !activePoint.mobile;
   $("#loading-state").hidden = false;
-  $("#note-body-toggle").setAttribute("aria-expanded", "true");
-  $("#note-dock").setAttribute("aria-expanded", "false");
-  $("#note-title").textContent = activePoint.title;
-  $("#note-description").textContent = activePoint.description;
-  $("#dock-label").textContent = `${String(currentChapter + 1).padStart(2, "0")} · ${activePoint.title}`;
-  $("#note-prev").disabled = currentPoint === 0 && currentChapter === 0;
-  const nextLabel = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个设计点" : currentChapter < chapters.length - 1 ? "进入下一章封面" : "回到第一章封面";
-  $("#note-next").setAttribute("aria-label", nextLabel);
-  $("#note-next").title = nextLabel;
+  renderPointNote();
   updateAddress("point");
 
+  const target = activePoint.mobile ? new URL(MINI_URL, location.href) : new URL(APP_URL, location.href);
+  if (activePoint.mobile) {
+    target.search = "";
+    target.hash = activePoint.route || "wechat";
+  } else {
+    target.searchParams.set("showcaseRev", ROUTE_REV);
+    if (activePoint.task) target.searchParams.set("task", activePoint.taskRoute || activePoint.task);
+    else target.searchParams.set("home", activePoint.home || "classic");
+    target.hash = "";
+  }
+  let currentDoc;
+  try { currentDoc = frame.contentDocument; } catch { currentDoc = null; }
+  const frameReady = activePoint.mobile ? currentDoc?.querySelector("#screen") : currentDoc?.querySelector("#root");
+  if (frame.src === target.href && loadedFrameHref === target.href && frameReady) {
+    showcase.dataset.view = "stage";
+    $("#loading-state").hidden = true;
+    if (!activePoint.mobile) setTimeout(() => applyPcStart(activePoint, 0, revision), 0);
+    else setTimeout(() => applyMobileStart(activePoint, 0, revision), 0);
+    return;
+  }
   frame.onload = () => {
-    if (revision !== loadingRevision) return;
+    if (revision !== loadingRevision || frame.src !== target.href) return;
+    loadedFrameHref = target.href;
     showcase.dataset.view = "stage";
     if (!activePoint.mobile) setTimeout(() => applyPcStart(activePoint, 0, revision), 120);
     else setTimeout(() => applyMobileStart(activePoint, 0, revision), 120);
   };
   frame.onerror = () => { if (revision === loadingRevision) $("#loading-state").textContent = "演示页面暂时无法载入"; };
-  if (activePoint.mobile) {
-    const target = new URL(MINI_URL, location.href);
-    target.search = "";
-    target.hash = activePoint.route || "wechat";
-    frame.src = target.href;
-  } else {
-    const target = new URL(APP_URL, location.href);
-    target.searchParams.set("showcaseRev", ROUTE_REV);
-    if (activePoint.task) target.searchParams.set("task", activePoint.taskRoute || activePoint.task);
-    else target.searchParams.set("home", activePoint.home || "classic");
-    target.hash = "";
-    frame.src = target.href;
-  }
+  frame.src = target.href;
 }
 
 function showChapterCover(index) {
+  learningSyncCleanup?.();
   loadingRevision += 1;
   currentChapter = Math.max(0, Math.min(chapters.length - 1, index));
   currentPoint = 0;
@@ -211,37 +470,23 @@ function previousPoint() {
   else if (currentChapter > 0) showChapterCover(currentChapter - 1);
 }
 
+function openPointMenu() {
+  menuOpen = true;
+  renderPointMenu();
+}
+
 const designNote = $("#design-note");
-const noteToggle = $("#note-body-toggle");
-const noteDock = $("#note-dock");
-const noteDragHandle = noteToggle;
+const noteCard = $("#note-card");
 let noteDrag = null;
-let ignoreNoteToggleUntil = 0;
 
-function collapseNote() {
-  showcase.classList.add("is-note-collapsed");
-  designNote.hidden = true;
-  noteDock.hidden = false;
-  noteToggle.setAttribute("aria-expanded", "false");
-  noteDock.setAttribute("aria-expanded", "false");
-}
-
-function expandNote() {
-  showcase.classList.remove("is-note-collapsed");
-  designNote.hidden = false;
-  noteDock.hidden = true;
-  noteToggle.setAttribute("aria-expanded", "true");
-  noteDock.setAttribute("aria-expanded", "true");
-}
-
-noteDragHandle.addEventListener("pointerdown", event => {
+noteCard.addEventListener("pointerdown", event => {
   if (event.button !== 0 || designNote.hidden || showcase.classList.contains("is-mobile")) return;
   const rect = designNote.getBoundingClientRect();
   noteDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, moved: false, rect };
-  noteDragHandle.setPointerCapture(event.pointerId);
+  noteCard.setPointerCapture(event.pointerId);
 });
 
-noteDragHandle.addEventListener("pointermove", event => {
+noteCard.addEventListener("pointermove", event => {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
   if (!noteDrag.moved && Math.hypot(event.clientX - noteDrag.startX, event.clientY - noteDrag.startY) < 5) return;
   if (!noteDrag.moved) {
@@ -262,32 +507,26 @@ noteDragHandle.addEventListener("pointermove", event => {
 
 function finishNoteDrag(event) {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
-  const moved = noteDrag.moved;
+  const shouldOpenMenu = !noteDrag.moved && event.type === "pointerup";
   noteDrag = null;
   designNote.classList.remove("is-dragging");
-  if (moved) ignoreNoteToggleUntil = performance.now() + 400;
-  if (noteDragHandle.hasPointerCapture(event.pointerId)) noteDragHandle.releasePointerCapture(event.pointerId);
+  if (noteCard.hasPointerCapture(event.pointerId)) noteCard.releasePointerCapture(event.pointerId);
+  if (shouldOpenMenu) openPointMenu();
 }
 
-noteDragHandle.addEventListener("pointerup", finishNoteDrag);
-noteDragHandle.addEventListener("pointercancel", finishNoteDrag);
-noteDragHandle.addEventListener("lostpointercapture", finishNoteDrag);
+noteCard.addEventListener("pointerup", finishNoteDrag);
+noteCard.addEventListener("pointercancel", finishNoteDrag);
+noteCard.addEventListener("lostpointercapture", finishNoteDrag);
+noteCard.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openPointMenu(); }
+});
 
 $("#cover-enter").addEventListener("click", () => loadPoint(currentChapter, 0));
-$("#cover-index").addEventListener("click", () => { menuOpen = true; renderPointMenu(); });
+$("#cover-index").addEventListener("click", openPointMenu);
 $("#note-next").addEventListener("click", nextPoint);
 $("#note-prev").addEventListener("click", previousPoint);
-$("#note-index").addEventListener("click", () => { menuOpen = !menuOpen; renderPointMenu(); });
 $("#menu-close").addEventListener("click", () => { menuOpen = false; renderPointMenu(); });
-noteToggle.addEventListener("click", event => {
-  if (performance.now() < ignoreNoteToggleUntil) { event.preventDefault(); return; }
-  collapseNote();
-});
-noteToggle.addEventListener("keydown", event => {
-  if (event.key === "Enter" || event.key === " ") { event.preventDefault(); collapseNote(); }
-});
-noteDock.addEventListener("click", expandNote);
-$("#mobile-return").addEventListener("click", () => showChapterCover(4));
+$("#mobile-return").addEventListener("click", () => showChapterCover(2));
 $("#fullscreen-button").addEventListener("click", async () => {
   try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { /* Fullscreen may be unavailable in the embedded preview. */ }
 });
@@ -305,11 +544,17 @@ document.addEventListener("keydown", event => {
   else if (event.key === "ArrowLeft") { event.preventDefault(); previousPoint(); }
 });
 
+window.addEventListener("message", event => {
+  if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
+  if (event.data?.type === "ascstudio-mini-review-step") syncMobilePointFromDemo(event.data.index);
+});
+
 renderPointMenu();
 const deepLink = location.hash.match(/^#chapter-(\d+)-([a-z0-9-]+)$/i);
 if (deepLink) {
-  const chapterIndex = Number(deepLink[1]) - 1;
-  const pointIndex = chapters[chapterIndex]?.points.findIndex(point => point.id === deepLink[2]) ?? -1;
+  const pointId = deepLink[2];
+  const chapterIndex = chapters.findIndex(chapter => chapter.points.some(point => point.id === pointId));
+  const pointIndex = chapterIndex >= 0 ? chapters[chapterIndex].points.findIndex(point => point.id === pointId) : -1;
   if (pointIndex >= 0) loadPoint(chapterIndex, pointIndex);
   else buildCover();
 } else buildCover();

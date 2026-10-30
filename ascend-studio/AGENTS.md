@@ -2141,3 +2141,18 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 入口逻辑位于 `src/task-url.js`、`src/useWorkbenchState.js` 与 `src/App.jsx`。页面离开任务视图会移除任务参数；嵌入知识口袋预览继续沿用独立入口参数。
 - 自定义任务只在原浏览器已保存时可通过 URL 恢复；链接不包含任务数据。
 - 实现与 Pages 部署细节见仓库根 `AGENTS.md` 的「工作台任务 URL 标识保留」。
+
+### 2026-10-29 · Add 日志任务只展示 Format Lab 嵌入
+
+- 移除四段编号步骤和视频操作条，右侧仅呈现 Format Lab 浅色交互页。用户操作图解后，再在对话中出现「生成草稿」入口；对话与工作区保持打开。
+- 本地嵌入通过一次性交互事件触发邀请；刷新重置为初始嵌入状态。草稿由本地演示数据生成，0 tokens，不自动发布，也不代表真实根因或 NPU 验证。
+- 详细源文件、验证、提交与 Pages 状态见根目录 `AGENTS.md` 的「Add 日志排查改为直接操作 Format Lab」。页面序列和 API / Protocol、Host / Harness、Application / Task 边界未变。
+
+
+### 2026-10-30 · 框选选区样式与语音主操作
+
+用户截图要求已落实：区域标签采用黑底白字，框选与预览矩形用彩色渐变边框，空输入时显示黑色波形语音按钮，输入文字并停止听写后切回发送按钮。语音继续使用本地模拟听写，不接真实语音服务；点停止不会误提交。页面序列、路由和 API / Protocol、Host / Harness、Application / Task 边界未变。构建和 JS 语法检查通过。实现提交 `6a0f6a5f` 已推送至 `origin/main`；Pages workflow `40997058036` 成功，线上入口及本次 JS/CSS 均 HTTP 200，详细回执见仓库根目录 `AGENTS.md`。
+
+### 2026-10-30 · 框选区域增加淡彩渐变底色
+
+选区矩形和拖动预览均新增低透明度彩色渐变底色（约 7%–9%），让内部有轻微色彩，同时保留内容可见和现有渐变描边。页面顺序、路由和 API / Protocol、Host / Harness、Application / Task 边界未变。构建和 JS 语法检查通过。提交 `2ab17ead` 已推送至 `origin/main`；Pages workflow `40997799973` 成功，线上入口及本次 JS/CSS 均 HTTP 200，详细回执见仓库根 `AGENTS.md`。

@@ -106,6 +106,9 @@ function restoreWorkbench() {
   // conversation so a page refresh brings back the initial review scenario.
   sessions[LEARNING_PATH_GENERATION_TASK] = blank();
   const meta = { ...taskDetails, ...(isObject(value.meta) ? Object.fromEntries(Object.entries(value.meta).filter(([, item]) => isObject(item))) : {}) };
+  if (meta[LOG_DIAGNOSTIC_TASK]?.kind === "log-diagnostic") {
+    meta[LOG_DIAGNOSTIC_TASK] = { ...meta[LOG_DIAGNOSTIC_TASK], ...taskDetails[LOG_DIAGNOSTIC_TASK] };
+  }
   // The co-creation task resets to its starter state on refresh, so keep its
   // canned brief in sync too (including the distinction between moving and reordering nodes).
   if (meta[LEARNING_PATH_GENERATION_TASK]?.kind === "learning") {

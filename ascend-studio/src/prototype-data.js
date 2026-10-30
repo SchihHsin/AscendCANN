@@ -70,9 +70,9 @@ export const taskDetails = {
   [LOG_DIAGNOSTIC_TASK]: {
     project: "CANN 自定义算子",
     kind: "log-diagnostic",
-    goal: "从 AddCustom 运行日志中识别排查线索，用图解理解尾块范围，再核对示例修正并沉淀经验。",
+    goal: "从 AddCustom 运行日志中理解排查方向，并把图解中的经验带回社区。",
     question: "AddCustom 日志显示 [16,32] 通过、[17,33] 出现 precision mismatch（custom_op.cpp:128）。能不能从日志开始，带我理解并验证可能的排查方向？",
-    reply: "我先把日志里的输入形状、错误位置和前一次尝试整理出来。形状差异提示可以优先核对尾块访问；这只是排查线索，不是已确认根因。\n\n右侧会用浅色范围图解展开 [17,33] 的 561 个元素如何落到 32 元素分块，再在浏览器中的示例副本里核对有效元素范围。整个流程由本地预置日志和确定性规则驱动，不调用模型；通过后可以把排查过程编辑成社区经验草稿。",
+    reply: "日志中 [16,32] 通过、[17,33] 在 custom_op.cpp:128 出现 precision mismatch，尾块访问值得优先检查，但根因还要结合实际代码确认。\n\n右侧直接打开浅色 Format Lab，你可以操作图解理解数据布局；操作后，对话里会出现社区经验草稿入口。",
     status: "active",
   },
   "Add batch dimension": {

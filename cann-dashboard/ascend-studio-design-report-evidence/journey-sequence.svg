@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896.545 2780" width="896.545" height="2780" style="--bg:#ffffff;--fg:#354052;--line:#9aa5b5;--accent:#6563b7;--muted:#657184;--surface:#f7f8fb;--border:#d9dee7">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 965.8349999999999 2560" width="965.8349999999999" height="2560" style="--bg:#ffffff;--fg:#354052;--line:#9aa5b5;--accent:#6563b7;--muted:#657184;--surface:#f7f8fb;--border:#d9dee7">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Arial:wght@400;500;600;700&amp;display=swap');
   text { font-family: 'Arial', system-ui, sans-serif; }
@@ -27,138 +27,125 @@
   </marker>
 </defs>
 <g class="block" data-type="rect" data-label="01 认知起步">
-  <rect x="431.28" y="78" width="435.265" height="340" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
-  <rect x="431.28" y="78" width="241.42" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="437.28" y="87" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [01 认知起步]</text>
+  <rect x="30" y="78" width="766.3" height="200" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="30" y="78" width="241.42" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="36" y="87" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [01 认知起步]</text>
 </g>
-<g class="block" data-type="rect" data-label="02 找线索">
-  <rect x="30" y="526" width="540.4449999999999" height="340" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
-  <rect x="30" y="526" width="219.58" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="36" y="535" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [02 找线索]</text>
+<g class="block" data-type="rect" data-label="02 查找与核对">
+  <rect x="30" y="386" width="766.3" height="340" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="30" y="386" width="281.97999999999996" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="36" y="395" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [02 查找与核对]</text>
 </g>
 <g class="block" data-type="rect" data-label="03 形成方向">
-  <rect x="431.28" y="974" width="435.265" height="340" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
-  <rect x="431.28" y="974" width="250.78" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="437.28" y="983" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [03 形成方向]</text>
+  <rect x="30" y="834" width="766.3" height="340" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="30" y="834" width="250.78" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="36" y="843" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [03 形成方向]</text>
 </g>
 <g class="block" data-type="rect" data-label="04 实践与理解">
-  <rect x="178.05" y="1422" width="688.4949999999999" height="620" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
-  <rect x="178.05" y="1422" width="281.97999999999996" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="184.05" y="1431" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [04 实践与理解]</text>
+  <rect x="30" y="1282" width="766.3" height="620" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="30" y="1282" width="281.97999999999996" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="36" y="1291" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [04 实践与理解]</text>
 </g>
 <g class="block" data-type="rect" data-label="05 经验沉淀">
-  <rect x="30" y="2150" width="836.545" height="480" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
-  <rect x="30" y="2150" width="250.78" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="36" y="2159" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [05 经验沉淀]</text>
+  <rect x="207.69" y="2010" width="588.6099999999999" height="370" rx="0" ry="0" fill="none" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="207.69" y="2010" width="250.78" height="18" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="213.69" y="2019" font-size="26" font-weight="600" fill="var(--_text-sec)" dy="9.1">rect [05 经验沉淀]</text>
 </g>
-<line class="lifeline" data-actor="K" x1="94.025" y1="70" x2="94.025" y2="2750" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
-<line class="lifeline" data-actor="E" x1="234.665" y1="70" x2="234.665" y2="2750" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
-<line class="lifeline" data-actor="A" x1="361.28" y1="70" x2="361.28" y2="2750" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
-<line class="lifeline" data-actor="S" x1="500.86249999999995" y1="70" x2="500.86249999999995" y2="2750" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
-<line class="lifeline" data-actor="L" x1="654.4699999999999" y1="70" x2="654.4699999999999" y2="2750" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
-<line class="lifeline" data-actor="T" x1="802.52" y1="70" x2="802.52" y2="2750" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
-<g class="message" data-from="T" data-to="S" data-label="任务现场" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="802.52" y1="118" x2="500.86249999999995" y2="118" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="651.69125" y="108" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">任务现场</text>
+<line class="lifeline" data-actor="K" x1="108.845" y1="70" x2="108.845" y2="2530" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
+<line class="lifeline" data-actor="E" x1="264.30499999999995" y1="70" x2="264.30499999999995" y2="2530" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
+<line class="lifeline" data-actor="A" x1="390.91999999999996" y1="70" x2="390.91999999999996" y2="2530" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
+<line class="lifeline" data-actor="L" x1="539.765" y1="70" x2="539.765" y2="2530" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
+<line class="lifeline" data-actor="T" x1="717.4549999999999" y1="70" x2="717.4549999999999" y2="2530" stroke="var(--_line)" stroke-width="0.75" stroke-dasharray="6 4" />
+<g class="message" data-from="T" data-to="A" data-label="描述开发问题" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="717.4549999999999" y1="118" x2="390.91999999999996" y2="118" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="554.1875" y="108" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">描述开发问题</text>
 </g>
-<g class="message" data-from="L" data-to="S" data-label="学习目标" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="654.4699999999999" y1="258" x2="500.86249999999995" y2="258" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="577.66625" y="248" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">学习目标</text>
+<g class="message" data-from="L" data-to="K" data-label="表达学习目标" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="539.765" y1="258" x2="108.845" y2="258" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="324.305" y="248" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">表达学习目标</text>
 </g>
-<g class="message" data-from="S" data-to="T" data-label="主动建议" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="500.86249999999995" y1="398" x2="802.52" y2="398" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="651.69125" y="388" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">主动建议</text>
+<g class="message" data-from="T" data-to="K" data-label="搜索文档社区" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="717.4549999999999" y1="426" x2="108.845" y2="426" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="413.15" y="416" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">搜索文档社区</text>
 </g>
-<g class="message" data-from="A" data-to="K" data-label="检索资料" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="361.28" y1="566" x2="94.025" y2="566" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="227.65249999999997" y="556" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">检索资料</text>
+<g class="message" data-from="L" data-to="K" data-label="查找教程示例" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="539.765" y1="566" x2="108.845" y2="566" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="324.305" y="556" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">查找教程示例</text>
 </g>
-<g class="message" data-from="K" data-to="A" data-label="版本范围" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="94.025" y1="706" x2="361.28" y2="706" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="227.65249999999997" y="696" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">版本范围</text>
+<g class="message" data-from="K" data-to="T" data-label="核对版本环境" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="108.845" y1="706" x2="717.4549999999999" y2="706" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
+  <text x="413.15" y="696" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">核对版本环境</text>
 </g>
-<g class="message" data-from="A" data-to="S" data-label="返回依据" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="361.28" y1="846" x2="500.86249999999995" y2="846" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="431.07124999999996" y="836" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">返回依据</text>
+<g class="message" data-from="T" data-to="A" data-label="补充工程现场" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="717.4549999999999" y1="874" x2="390.91999999999996" y2="874" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="554.1875" y="864" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">补充工程现场</text>
 </g>
-<g class="message" data-from="T" data-to="S" data-label="连线Prompt" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="802.52" y1="1014" x2="500.86249999999995" y2="1014" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="651.69125" y="1004" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">连线Prompt</text>
+<g class="message" data-from="A" data-to="T" data-label="返回代码步骤" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="390.91999999999996" y1="1014" x2="717.4549999999999" y2="1014" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
+  <text x="554.1875" y="1004" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">返回代码步骤</text>
 </g>
-<g class="message" data-from="S" data-to="L" data-label="生成路径" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="500.86249999999995" y1="1154" x2="654.4699999999999" y2="1154" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="577.66625" y="1144" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">生成路径</text>
+<g class="message" data-from="L" data-to="K" data-label="选定学习顺序" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="539.765" y1="1154" x2="108.845" y2="1154" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="324.305" y="1144" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">选定学习顺序</text>
 </g>
-<g class="message" data-from="L" data-to="S" data-label="自定义节点" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="654.4699999999999" y1="1294" x2="500.86249999999995" y2="1294" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="577.66625" y="1284" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">自定义节点</text>
+<g class="message" data-from="T" data-to="E" data-label="运行并核验" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="717.4549999999999" y1="1322" x2="264.30499999999995" y2="1322" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="490.87999999999994" y="1312" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">运行并核验</text>
 </g>
-<g class="message" data-from="T" data-to="E" data-label="运行代码" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="802.52" y1="1462" x2="234.665" y2="1462" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="518.5925" y="1452" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">运行代码</text>
+<g class="message" data-from="L" data-to="E" data-label="跟随示例练习" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="539.765" y1="1462" x2="264.30499999999995" y2="1462" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="402.03499999999997" y="1452" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">跟随示例练习</text>
 </g>
-<g class="message" data-from="L" data-to="E" data-label="路径练习" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="654.4699999999999" y1="1602" x2="234.665" y2="1602" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="444.56749999999994" y="1592" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">路径练习</text>
+<g class="message" data-from="E" data-to="T" data-label="返回日志报错" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="264.30499999999995" y1="1602" x2="717.4549999999999" y2="1602" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
+  <text x="490.87999999999994" y="1592" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">返回日志报错</text>
 </g>
-<g class="message" data-from="E" data-to="A" data-label="错误日志" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="234.665" y1="1742" x2="361.28" y2="1742" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="297.97249999999997" y="1732" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">错误日志</text>
+<g class="message" data-from="T" data-to="A" data-label="带日志再追问" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="717.4549999999999" y1="1742" x2="390.91999999999996" y2="1742" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="554.1875" y="1732" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">带日志再追问</text>
 </g>
-<g class="message" data-from="A" data-to="S" data-label="错误图解" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="361.28" y1="1882" x2="500.86249999999995" y2="1882" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="431.07124999999996" y="1872" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">错误图解</text>
+<g class="message" data-from="L" data-to="K" data-label="对照资料核验" data-line-style="solid" data-arrow-head="filled" data-self="false">
+  <line x1="539.765" y1="1882" x2="108.845" y2="1882" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="324.305" y="1872" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">对照资料核验</text>
 </g>
-<g class="message" data-from="T" data-to="E" data-label="复测修正" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="802.52" y1="2022" x2="234.665" y2="2022" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="518.5925" y="2012" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">复测修正</text>
+<g class="message" data-from="E" data-to="T" data-label="检查运行结果" data-line-style="dashed" data-arrow-head="filled" data-self="false">
+  <line x1="264.30499999999995" y1="2050" x2="717.4549999999999" y2="2050" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
+  <text x="490.87999999999994" y="2040" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">检查运行结果</text>
 </g>
-<g class="message" data-from="E" data-to="S" data-label="验证证据" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="234.665" y1="2190" x2="500.86249999999995" y2="2190" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="367.76374999999996" y="2180" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">验证证据</text>
+<g class="message" data-from="T" data-to="T" data-label="记录修复经验" data-line-style="solid" data-arrow-head="filled" data-self="true">
+  <polyline points="717.4549999999999,2190 747.4549999999999,2190 747.4549999999999,2210 717.4549999999999,2210" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="755.4549999999999" y="2200" font-size="26" text-anchor="start" font-weight="400" fill="var(--_text-muted)" dy="9.1">记录修复经验</text>
 </g>
-<g class="message" data-from="S" data-to="T" data-label="社区草稿" data-line-style="dashed" data-arrow-head="filled" data-self="false">
-  <line x1="500.86249999999995" y1="2330" x2="802.52" y2="2330" stroke="var(--_line)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#seq-arrow)" />
-  <text x="651.69125" y="2320" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">社区草稿</text>
+<g class="message" data-from="L" data-to="L" data-label="留下学习笔记" data-line-style="solid" data-arrow-head="filled" data-self="true">
+  <polyline points="539.765,2360 569.765,2360 569.765,2380 539.765,2380" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
+  <text x="577.765" y="2370" font-size="26" text-anchor="start" font-weight="400" fill="var(--_text-muted)" dy="9.1">留下学习笔记</text>
 </g>
-<g class="message" data-from="L" data-to="S" data-label="认知卡片" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="654.4699999999999" y1="2470" x2="500.86249999999995" y2="2470" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="577.66625" y="2460" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">认知卡片</text>
-</g>
-<g class="message" data-from="T" data-to="K" data-label="分享复用" data-line-style="solid" data-arrow-head="filled" data-self="false">
-  <line x1="802.52" y1="2610" x2="94.025" y2="2610" stroke="var(--_line)" stroke-width="1" marker-end="url(#seq-arrow)" />
-  <text x="448.2725" y="2600" font-size="26" text-anchor="middle" font-weight="400" fill="var(--_text-muted)" dy="9.1">分享复用</text>
-</g>
-<g class="actor" data-id="K" data-label="知识与社区" data-type="participant">
-  <rect x="40.00000000000001" y="30" width="108.05" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="94.025" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">知识与社区</text>
+<g class="actor" data-id="K" data-label="官方资料与社区" data-type="participant">
+  <rect x="40" y="30" width="137.69" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="108.845" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">官方资料与社区</text>
 </g>
 <g class="actor" data-id="E" data-label="开发环境" data-type="participant">
-  <rect x="188.05" y="30" width="93.22999999999999" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="234.665" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">开发环境</text>
+  <rect x="217.68999999999994" y="30" width="93.22999999999999" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="264.30499999999995" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">开发环境</text>
 </g>
-<g class="actor" data-id="A" data-label="智能体" data-type="participant">
-  <rect x="321.28" y="30" width="80" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="361.28" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">智能体</text>
+<g class="actor" data-id="A" data-label="Agent" data-type="participant">
+  <rect x="350.91999999999996" y="30" width="80" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="390.91999999999996" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Agent</text>
 </g>
-<g class="actor" data-id="S" data-label="Ascend Studio" data-type="participant">
-  <rect x="441.28" y="30" width="119.16499999999999" height="40" rx="4" ry="4" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
-  <text x="500.86249999999995" y="50" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">Ascend Studio</text>
-</g>
-<g class="actor" data-id="L" data-label="学习开发者" data-type="actor">
-  <g transform="translate(636.4699999999999,32) scale(1.5)">
+<g class="actor" data-id="L" data-label="学习导向开发者" data-type="actor">
+  <g transform="translate(521.765,32) scale(1.5)">
     <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="none" stroke="var(--_line)" stroke-width="0.6666666666666666" />
     <path d="M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z" fill="none" stroke="var(--_line)" stroke-width="0.6666666666666666" />
     <path d="M5.62842 18.3563C7.08963 17.0398 9.39997 16 12 16C14.6 16 16.9104 17.0398 18.3716 18.3563" fill="none" stroke="var(--_line)" stroke-width="0.6666666666666666" />
   </g>
-  <text x="654.4699999999999" y="84" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">学习开发者</text>
+  <text x="539.765" y="84" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">学习导向开发者</text>
 </g>
-<g class="actor" data-id="T" data-label="任务开发者" data-type="actor">
-  <g transform="translate(784.52,32) scale(1.5)">
+<g class="actor" data-id="T" data-label="任务导向开发者" data-type="actor">
+  <g transform="translate(699.4549999999999,32) scale(1.5)">
     <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="none" stroke="var(--_line)" stroke-width="0.6666666666666666" />
     <path d="M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z" fill="none" stroke="var(--_line)" stroke-width="0.6666666666666666" />
     <path d="M5.62842 18.3563C7.08963 17.0398 9.39997 16 12 16C14.6 16 16.9104 17.0398 18.3716 18.3563" fill="none" stroke="var(--_line)" stroke-width="0.6666666666666666" />
   </g>
-  <text x="802.52" y="84" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">任务开发者</text>
+  <text x="717.4549999999999" y="84" font-size="13" text-anchor="middle" font-weight="500" fill="var(--_text)" dy="4.55">任务导向开发者</text>
 </g>
 </svg>
