@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI 协作开发 · 任务开发者与学习开发者用户旅程</title>
+<style>
+:root{--grey:#999b9c;--red:#e94d40;--teal:#17a7a8;--line:#d1d5d5;--ink:#44494b;--pale:#eafbfc;--font:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#eef1f2;color:var(--ink);font-family:var(--font)}
+body{padding:16px}
+.journey{width:100%;min-width:1350px;max-width:1740px;margin:auto;background:#fff;box-shadow:0 5px 28px #3a4a531a;border:1px solid #e4e5e4;overflow:hidden}
+.intro{height:201px;background:#f9f9f8;position:relative;padding:50px 24px 12px}
+.ribbon{height:39px;width:284px;padding:12px 36px;position:absolute;top:0;left:0;color:white;background:#e24836;font-size:13px;letter-spacing:.45px;font-weight:700}
+.brands{position:absolute;top:13px;right:28px;display:flex;align-items:center;gap:12px;font-weight:bold}.xively-logo{color:#d94c3c;font-size:29px;letter-spacing:-1.7px}.brand-plus{font-size:22px;color:#3b3d3e}.genu-logo{font-size:20px;color:#222;letter-spacing:-1px;display:flex;align-items:center;gap:4px}.genu-mark{display:inline-block;width:24px;height:28px;border:5px solid #16778d;border-top-color:transparent;border-radius:70% 70% 55% 55%;transform:rotate(23deg);position:relative}.genu-mark:after{content:"";position:absolute;inset:2px 1px 2px 1px;border-radius:50%;border:2px solid #dfecee;border-top:0}
+.intro-inner{display:grid;grid-template-columns:41% 59%;height:100%;gap:0}.persona{display:flex;align-items:flex-start;gap:24px;margin-left:12px}.avatar{width:137px;height:137px;border-radius:50%;object-fit:cover;object-position:center 41%;border:4px solid white;background:white;flex:none}.persona-copy{padding-top:10px;min-width:0}.persona h1{font-size:27px;line-height:1.1;font-weight:400;margin:2px 0 15px;color:#282e2d}.job{font-size:13px;margin:0 0 15px}.knowledge{width:286px;max-width:100%;height:13px;background:linear-gradient(90deg,#059fa2 0%,#59c4c5 39%,#d4f1ef 100%);border-radius:9px;margin-bottom:8px}.knowledge-label{font-size:12px;color:#3a4547}.scenario{display:grid;grid-template-columns:110px 1fr;gap:18px;padding:30px 25px 0 2px}.scenario-label{font-size:13px;font-weight:700;color:#4d5557}.scenario-copy{font-size:13px;line-height:1.52;max-width:850px}.scenario-copy p{margin:0 0 15px}
+.sheet{display:grid;grid-template-columns:184px minmax(0,1fr);grid-template-rows:51px 107px 108px 265px 252px;gap:5px;padding:4px 16px 14px;background:white}
+.rail{background:#999b9c;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:19px;line-height:1.35}.rail small{display:block;font-weight:400;font-size:12px}.rail-stages{grid-column:1;grid-row:1}.rail-site{grid-column:1;grid-row:2}.rail-think{grid-column:1;grid-row:3}.rail-do{grid-column:1;grid-row:4;flex-direction:column;gap:2px}.rail-feel{grid-column:1;grid-row:5}
+.stage-headings{grid-column:2;grid-row:1;display:grid;grid-template-columns:18% 21% 21% 20% 20%;gap:4px}.stage-title{position:relative;display:flex;align-items:center;justify-content:center;background:#989a9b;color:white;text-align:center;font-size:18px;font-weight:bold;clip-path:polygon(0 0,calc(100% - 15px) 0,100% 50%,calc(100% - 15px) 100%,0 100%,15px 50%);padding:0 12px 0 18px}.stage-title:first-child{clip-path:polygon(0 0,calc(100% - 15px) 0,100% 50%,calc(100% - 15px) 100%,0 100%,15px 50%)}
+.stage-grid{grid-column:2;display:grid;grid-template-columns:18% 21% 21% 20% 20%;gap:5px}.stage-grid.site{grid-row:2}.stage-grid.thinking{grid-row:3}
+.stage-card{border:2px solid #dbdddd;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:stretch;font-size:12.2px;line-height:1.31;padding:10px 13px;background:#fff;min-width:0}.stage-card p{margin:0}.stage-card .sub{font-size:11.7px;margin-top:6px}.stage-card .lines{margin-top:4px}.stage-card .inline-cells{display:flex;margin:-10px -13px;width:calc(100% + 26px);height:calc(100% + 20px)}.stage-card .inline-cells .mini-cell{display:flex;align-items:center;justify-content:center;padding:4px 5px;text-align:center;flex:1;line-height:1.28}.stage-card .inline-cells .mini-cell+.mini-cell{border-left:2px solid #ddd}.stage-card.paired{padding:0}.stage-card.paired .pair-top{flex:1;display:grid;place-items:center;padding:7px 12px}.stage-card.paired .pair-bottom{display:grid;grid-template-columns:1fr 1fr;min-height:32px;border-top:2px solid #ddd}.stage-card.paired .pair-bottom span{display:grid;place-items:center;font-size:11.4px;padding:4px}.stage-card.paired .pair-bottom span+span{border-left:2px solid #ddd}.stage-card.retention{padding:0}.retention-grid{display:grid;grid-template-columns:58% 42%;grid-template-rows:1fr 1fr;height:100%}.retention-grid div{display:grid;place-items:center;padding:4px 7px}.retention-grid div:nth-child(odd){border-right:2px solid #ddd}.retention-grid div:nth-child(-n+2){border-bottom:2px solid #ddd}.stage-card b{font-weight:500}
+.doing{grid-column:2;grid-row:4;position:relative;border:2px solid #d8dada;overflow:hidden;background:#fff}.doing-segments{position:absolute;inset:0;display:grid;grid-template-columns:18% 21% 21% 20% 20%;pointer-events:none}.doing-segments div{border-right:2px solid #d6d9da}.doing-segments div:last-child{border-right:0}.touch-links{position:absolute;width:100%;height:100%;inset:0;z-index:1;overflow:visible}.touch-links .connection{fill:none;stroke:#b9bdbd;stroke-width:1.5;vector-effect:non-scaling-stroke}.touch-links .edge{fill:none;stroke:#b9bdbd;stroke-width:1.6;vector-effect:non-scaling-stroke;marker-end:url(#arrow)}.touch-links .vertical{fill:none;stroke:#cf5048;stroke-width:2.3;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}.touchpoint{position:absolute;z-index:3;transform:translate(-50%,-50%);width:45px;height:45px;border-radius:50%;background:#f5fcfc;border:2px solid #b6cbcf;display:flex;align-items:center;justify-content:center;color:#0ea8a6;filter:drop-shadow(0 1px 0 #fff);transition:transform .15s,filter .15s}.touchpoint.red{background:#ed4f43;border-color:#f0786a;color:white;width:47px;height:47px}.touchpoint.mini{width:34px;height:34px}.touchpoint:hover,.touchpoint:focus{transform:translate(-50%,-50%) scale(1.13);z-index:8;filter:drop-shadow(0 3px 5px #636d6d55);outline:0}.touchpoint svg{width:25px;height:25px;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;fill:none}.touchpoint .filled-icon{fill:currentColor;stroke:none}.touch-label{position:absolute;z-index:2;text-align:left;font-size:11.3px;line-height:1.22;color:#454a4b;pointer-events:none}.touch-label .caps{font-weight:700}.touchpoint:hover + .touch-label{z-index:9;color:#111}
+.feeling{grid-column:2;grid-row:5;position:relative;overflow:hidden;background:linear-gradient(to bottom,#eafbfc 0%,#eafafb 48%,#cdeeee 49%,#cdeeee 100%)}.emotion-chart{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}.emotion-chart .line{stroke:#9cbec0;stroke-width:1.35;fill:none;vector-effect:non-scaling-stroke}.emotion-chart .point{fill:#12a8ab;stroke:#06a0a1;stroke-width:1}.emotion-chart .point-red{fill:#ed554a;stroke:#e2463c;stroke-width:1}.emotion-chart .dash{fill:none;stroke:#d5534a;stroke-width:2;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}.emotion-text{position:absolute;z-index:2;font-size:10.7px;line-height:1.17;max-width:160px;pointer-events:none}.emotion-text.center{text-align:center}.emotion-text.right{text-align:right}.emotion-symbol{position:absolute;z-index:2;font-size:28px;color:#009e9d;right:2%;top:21%;font-weight:700;line-height:1}
+.bottom-note{max-width:1740px;margin:7px auto 0;color:#7f8a8a;text-align:right;font-size:10px;letter-spacing:.05px}
+@media(max-width:1390px){body{overflow-x:auto}.journey{margin:0}}
+@media print{@page{size:A3 landscape;margin:7mm}html,body{background:white;padding:0}.journey{width:100%;min-width:0;box-shadow:none;border:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}.bottom-note{display:none}.touchpoint{filter:none}}
+
+/* 两个旅程保持同一原版视觉体系，仅增加页面间距 */
+.journey + .journey{margin-top:24px}
+@media print{.journey + .journey{break-before:page;margin-top:0}}
+
+/* 中性灰色结构保持一致；任务以青绿、学习以橙色表达各自主题。红色只用于痛点。 */
+.journey--task .ribbon {background:#169fa1}
+.journey--task .xively-logo {color:#169fa1}
+
+.journey--learning .intro {background:#f9f9f8}
+.journey--learning .ribbon {background:#db822c}
+.journey--learning .xively-logo {color:#d47a22}
+.journey--learning .avatar {box-shadow:none}
+.journey--learning .knowledge {background:linear-gradient(90deg,#d47a22 0%,#f0b56f 43%,#fcecd7 100%)}
+.journey--learning .rail {background:#999b9c}
+.journey--learning .stage-title {background:#989a9b}
+.journey--learning .stage-card {border-color:#dbdddd}
+.journey--learning .stage-card .mini-cell + .mini-cell,
+.journey--learning .stage-card.paired .pair-bottom,
+.journey--learning .stage-card.paired .pair-bottom span + span,
+.journey--learning .retention-grid div:nth-child(odd),
+.journey--learning .retention-grid div:nth-child(-n+2) {border-color:#ddd}
+.journey--learning .doing {border-color:#d8dada;background:#fff}
+.journey--learning .doing-segments div {border-right-color:#d6d9da}
+.journey--learning .touch-links .connection {stroke:#b9bdbd}
+.journey--learning .touch-links .edge {stroke:#b9bdbd}
+.journey--learning .touch-links marker path {stroke:#abb2b2}
+.journey--learning .touchpoint:not(.red) {background:#fff7e9;border-color:#e5ba84;color:#d17b24}
+.journey--learning .touchpoint.red {background:#ed4f43;border-color:#f0786a;color:#fff}
+.journey--learning .feeling {background:linear-gradient(to bottom,#fffaf0 0%,#fffaf0 48%,#ffead0 49%,#ffead0 100%)}
+.journey--learning .emotion-chart .line {stroke:#d2b69b}
+.journey--learning .emotion-chart .point {fill:#e39443;stroke:#d27e28}
+.journey--learning .emotion-chart .point-red {fill:#ed554a;stroke:#e2463c}
+.journey--learning .emotion-symbol {color:#cf7b25}
+
+/* 情绪曲线铺满容器，圆点作为独立 HTML 元素保持真实圆形，避免 SVG 横向拉伸。 */
+.emotion-dots{position:absolute;inset:0;z-index:2;pointer-events:none}
+.emotion-dot{position:absolute;width:12px;height:12px;border-radius:50%;box-sizing:border-box;transform:translate(-50%,-50%);background:#12a8ab;border:1px solid #06a0a1}
+.emotion-dot.red{background:#ed554a;border-color:#e2463c}
+.journey--learning .emotion-dot:not(.red){background:#e39443;border-color:#d27e28}
+
+/* 体验感受：仅强调与红色触点及低谷对应的痛点描述，不增加背景或装饰。 */
+.emotion-text.pain{font-size:12px;font-weight:600;color:#a82d29;line-height:1.2}
+</style>
+</head>
+<body>
+<main aria-label="任务开发者与 AI 编码助手的现状用户旅程" class="journey journey--task">
+<section class="intro">
+<div class="ribbon">任务开发者 · 用户旅程</div>
+<div aria-label="Developer and AI Coding" class="brands"><span class="xively-logo">Developer</span><span class="brand-plus">+</span><span class="genu-logo">AI Coding</span></div>
+<div class="intro-inner">
+<div class="persona">
+<img alt="任务开发者画像：短发、深色上衣的插画人物" class="avatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI5MCIgY3k9IjkwIiByPSI5MCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIGZpbGw9IiNlOGYxZjIiLz48cGF0aCBkPSJNLTggMTgyYzMtNDMgMjItNjcgNjEtNzZsMzggOSAzNy05YzM3IDkgNTcgMzEgNjAgNzYiIGZpbGw9IiM2NjgxOGIiLz48cGF0aCBkPSJNNTIgMTI1YzggMTIgMjIgMjIgMzggMjcgMTktNSAyOS0xNSAzOS0yN2wtNy0xNy0zMyAxLTMwLTJ6IiBmaWxsPSIjZjlmYmZiIi8+PHBhdGggZD0iTTY1IDEyMmwyNSAyMiAyNS0yMi00LTI2SDY4eiIgZmlsbD0iI2Q4OWY3YiIvPjxlbGxpcHNlIGN4PSI4OSIgY3k9Ijc4IiByeD0iNDciIHJ5PSI1NiIgZmlsbD0iI2U1YjE4YyIvPjxwYXRoIGQ9Ik00MyA3M1EzOCAyMCA4OCAyMmMzMS01IDUzIDE4IDQ3IDU0bC03LTEwLTQtMjFxLTI3IDE3LTY3IDE0TDUwIDc4eiIgZmlsbD0iIzI3M2I0OSIvPjxwYXRoIGQ9Ik02MyA3OWgxNW0yMyAwaDE1IiBzdHJva2U9IiMyNTM1NDQiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSI4MiIgcj0iMi42IiBmaWxsPSIjMjYzNTQ0Ii8+PGNpcmNsZSBjeD0iMTA3IiBjeT0iODIiIHI9IjIuNiIgZmlsbD0iIzI2MzU0NCIvPjxwYXRoIGQ9Ik04NCA5OXE2IDQgMTIgMG0tMjEgMTJxMTUgMTEgMzAgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYWQ3MDVkIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Im0zOSAxNjggMTgtNTAgMzQgMjggMzEtMjggMjAgNTAiIGZpbGw9IiM0YzZkN2EiLz48L2c+PC9zdmc+"/>
+<div class="persona-copy">
+<h1>任务开发者 · AI 协作</h1>
+<p class="job">软件开发者 / 功能实现与问题排查</p>
+<div aria-label="AI 编码协作经验：由初步尝试逐渐熟悉" class="knowledge" role="img"></div>
+<div class="knowledge-label">AI 协作经验：从尝试到逐步熟悉</div>
+</div>
+</div>
+<div class="scenario">
+<div class="scenario-label">SCENARIO:</div>
+<div class="scenario-copy"><p>开发者希望更快完成功能开发或故障排查，在 IDE、代码仓库与终端中向 AI 编码助手描述任务目标，并逐步补充代码、日志、环境、版本与约束。AI 根据上下文解释问题、提出修改方案或直接生成代码。</p><p>开发者需要持续审查 AI 输出、执行测试并决定是否采纳与交付。任务进展可能受到目标模糊、上下文缺漏、方案不透明和调试反复影响；解决过程也可能只留在对话中，难以复用。</p></div>
+</div>
+</div>
+</section>
+<section aria-label="AI 协作开发的五阶段用户旅程" class="sheet">
+<div class="rail rail-stages">阶段</div>
+<div class="rail rail-site">开发活动</div>
+<div class="rail rail-think">思考与疑问</div>
+<div class="rail rail-do"><span>操作与交互</span><small>（触点）</small></div>
+<div class="rail rail-feel">体验感受</div>
+<nav aria-label="旅程阶段" class="stage-headings">
+<div class="stage-title">01 提出目标</div>
+<div class="stage-title">02 补充上下文</div>
+<div class="stage-title">03 理解与协作</div>
+<div class="stage-title">04 修改、运行与调试</div>
+<div class="stage-title">05 人工检验与结束</div>
+</nav>
+<div class="stage-grid site">
+<div class="stage-card"><p>开发者描述要实现的功能<br/>或报告遇到的故障</p><p class="sub">明确需求、预期结果<br/>与完成的验收条件</p></div>
+<div class="stage-card paired"><div class="pair-top">手动搜集与补齐可供 AI 使用的项目上下文</div><div class="pair-bottom"><span>代码 / 文件 / 日志</span><span>版本 / 环境 / 约束</span></div></div>
+<div class="stage-card"><p>AI 阅读上下文，解释原因、<br/>提出方案并与开发者迭代</p><p class="lines">• 识别依赖与问题成因<br/>• 给出建议及代码修改<br/>• 遇到缺口继续追问</p></div>
+<div class="stage-card" style="padding:0"><div class="inline-cells"><div class="mini-cell">修改<br/>代码</div><div class="mini-cell">人工<br/>审查</div><div class="mini-cell">运行<br/>与调试</div></div></div>
+<div class="stage-card retention"><div class="retention-grid"><div>核对测试结果<br/>与任务目标</div><div>人工判断<br/>是否通过</div><div>整理变更与<br/>交付记录</div><div>问题经验<br/>回流共享</div></div></div>
+</div>
+<div class="stage-grid thinking">
+<div class="stage-card"><p>我要实现什么？<br/>哪些算完成？<br/>这个报错到底意味着什么？<br/>怎么向 AI 讲清楚需求？</p></div>
+<div class="stage-card"><p>需要提供哪些文件、日志？<br/>AI 了解我的环境与依赖吗？<br/>是否还缺版本、约束或<br/>复现步骤？</p></div>
+<div class="stage-card"><p>AI 给出的原因可靠吗？<br/>为什么这样修改？<br/>该采纳哪个方案？<br/>我能理解其影响范围吗？</p></div>
+<div class="stage-card"><p>改动会破坏其他功能吗？<br/>测试失败是代码还是环境问题？<br/>是否需要再次让 AI 修复？</p></div>
+<div class="stage-card"><p>测试通过就代表完成了吗？<br/>边界场景覆盖了吗？<br/>结果与经验怎样留存，<br/>让团队或后来者复用？</p></div>
+</div>
+<div aria-label="Touchpoint map" class="doing">
+<div aria-hidden="true" class="doing-segments"><div></div><div></div><div></div><div></div><div></div></div>
+<svg aria-hidden="true" class="touch-links" preserveaspectratio="none" viewbox="0 0 1000 265">
+<defs><marker id="arrow" markerheight="6" markerwidth="6" orient="auto" refx="5" refy="3"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#abb2b2" stroke-width="1.2"></path></marker></defs>
+<path class="connection" d="M54 49 Q92 18 135 40 M54 49 Q41 98 72 157 M72 157 Q129 206 169 195 M135 40 Q153 103 169 195"></path>
+<path class="edge" d="M169 195 Q201 142 215 47 M215 47 Q259 36 292 103 M292 103 Q317 162 345 175 M345 175 Q375 130 417 52"></path>
+<path class="connection" d="M215 47 Q234 160 246 211 M246 211 Q285 200 345 175"></path>
+<path class="edge" d="M417 52 Q454 52 495 106 M495 106 Q518 142 549 203 M549 203 Q589 182 621 58 M621 58 Q649 88 689 143 M689 143 Q729 180 754 205 M754 205 Q766 130 783 62"></path>
+<path class="connection" d="M417 52 Q435 130 438 178 M438 178 Q494 190 549 203 M783 62 Q820 90 838 154 M838 154 Q866 111 893 57 M893 57 Q944 72 965 136 M965 136 Q973 182 965 211"></path>
+<path class="vertical" d="M169 219 V265 M345 199 V265 M438 202 V265 M754 229 V265 M965 235 V265"></path>
+</svg>
+<div id="touchpoints"></div>
+</div>
+<div aria-label="Emotional journey plot" class="feeling">
+<svg aria-hidden="true" class="emotion-chart" preserveaspectratio="none" viewbox="0 0 1000 252">
+<polyline class="line" points="24,148 94,56 169,184 246,84 301,130 345,212 399,100 438,185 495,96 549,72 621,80 689,57 754,216 838,113 893,48 965,200"></polyline>
+<path class="dash" d="M169 0 V184 M345 0 V212 M438 0 V185 M754 0 V216 M965 0 V200"></path>
+
+
+</svg><div class="emotion-dots" aria-hidden="true"><span class="emotion-dot" style="left:2.4%;top:148px"></span><span class="emotion-dot" style="left:9.4%;top:56px"></span><span class="emotion-dot" style="left:24.6%;top:84px"></span><span class="emotion-dot" style="left:30.1%;top:130px"></span><span class="emotion-dot" style="left:39.9%;top:100px"></span><span class="emotion-dot" style="left:49.5%;top:96px"></span><span class="emotion-dot" style="left:54.9%;top:72px"></span><span class="emotion-dot" style="left:62.1%;top:80px"></span><span class="emotion-dot" style="left:68.9%;top:57px"></span><span class="emotion-dot" style="left:83.8%;top:113px"></span><span class="emotion-dot" style="left:89.3%;top:48px"></span><span class="emotion-dot red" style="left:16.9%;top:184px"></span><span class="emotion-dot red" style="left:34.5%;top:212px"></span><span class="emotion-dot red" style="left:43.8%;top:185px"></span><span class="emotion-dot red" style="left:75.4%;top:216px"></span><span class="emotion-dot red" style="left:96.5%;top:200px"></span></div>
+<div id="feelings"></div>
+<div class="emotion-symbol" title="完成任务后的信心">☺</div>
+</div>
+</section>
+</main><main aria-label="学习开发者借助 AI 学习开发知识与实践技能的现状用户旅程" class="journey journey--learning">
+<section class="intro">
+<div class="ribbon">学习开发者 · 用户旅程</div>
+<div aria-label="Developer and AI Coding" class="brands"><span class="xively-logo">Learner</span><span class="brand-plus">+</span><span class="genu-logo">AI Coding</span></div>
+<div class="intro-inner">
+<div class="persona">
+<img alt="学习开发者画像：身穿橙色连帽衫、背双肩包并佩戴书本徽章的大学生插画人物" class="avatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSLog4znnYDlj4zogqnljIXjgIHnqb/mqZnoibLov57luL3ooavjgIHmi7/nnYDnrJTorrDmnKznmoTlpKflrabnlJ/mj5LnlLvlpLTlg48iPgo8ZGVmcz48Y2xpcFBhdGggaWQ9ImN1dCI+PGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iOTAiLz48L2NsaXBQYXRoPjwvZGVmcz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2N1dCkiPgo8cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2ZmZjBkYiIvPjxjaXJjbGUgY3g9IjE0MiIgY3k9IjI1IiByPSI2NiIgZmlsbD0iI2ZmZTFiNSIvPjxjaXJjbGUgY3g9IjIzIiBjeT0iMTQ1IiByPSI0OCIgZmlsbD0iI2ZmZGZiMSIgb3BhY2l0eT0iLjYyIi8+CjwhLS0gaGFpciBhcm91bmQgZmFjZSAtLT4KPHBhdGggZD0iTTQ5IDg0Yy02LTIwLTItNDQgMTEtNTYgMTItMTQgNDQtMTggNjItNSAxNyAxMCAyNyAzMiAxNyA2NGwtMTAgMjBINTd6IiBmaWxsPSIjM2MzOTQzIi8+CjwhLS0gYmFja3BhY2sgbWFpbiBjYW52YXMgYW5kIHNob3VsZGVyIHN0cmFwcyAtLT4KPHBhdGggZD0iTTI3IDE4MWMyLTM2IDE5LTYxIDQ3LTY4bDE2IDcgMTctN2MzMCAxMCA0NCAzMyA0OCA2OCIgZmlsbD0iI2VmOTIzYyIvPgo8cGF0aCBkPSJNNDggMTI1Yy05IDEyLTEzIDI4LTEzIDU2aDE2YzAtMTkgNC0zNSAxMi00N3pNMTMyIDEyNmM5IDEyIDEzIDI4IDEzIDU1aC0xNmMwLTE5LTQtMzUtMTItNDd6IiBmaWxsPSIjNTI0YTUwIi8+CjxwYXRoIGQ9Ik04MCAxMDNoMjB2MjZsLTEwIDExLTEwLTExeiIgZmlsbD0iI2RhYTA4MCIvPgo8cGF0aCBkPSJNNzEgMTE1bDE5IDI1IDIwLTI1IDEwIDgtMzAgMzctMjktMzZ6IiBmaWxsPSIjZmZmNGU3Ii8+CjwhLS0gZWFycyBhbmQgZmFjZSAtLT4KPGVsbGlwc2UgY3g9IjU0IiBjeT0iODgiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiNlOWFiOGUiLz48ZWxsaXBzZSBjeD0iMTI2IiBjeT0iODgiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiNlOWFiOGUiLz4KPGVsbGlwc2UgY3g9IjkwIiBjeT0iNzgiIHJ4PSIzNiIgcnk9IjQ0IiBmaWxsPSIjZjFiYTlkIi8+CjxwYXRoIGQ9Ik01MyA3M2MtNS0yNSAwLTQ3IDE2LTU0IDIxLTEyIDQ1LTUgNTkgMTAgOCAxMCAxMSAyNyA2IDQyLTctOC05LTE2LTEyLTI0LTE0IDctMjEgOS0zNCAxMC04IDktMjEgMTQtMzUgMTYiIGZpbGw9IiMzYzM5NDMiLz4KPHBhdGggZD0iTTU4IDU2YzEwLTUgMTctMTIgMTktMTlNOTUgMzFjNyAxMCAxNyAxNCAyOCAxNSIgc3Ryb2tlPSIjNTU1MDVjIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIGdsYXNzZXMgLS0+CjxyZWN0IHg9IjU4IiB5PSI3NSIgd2lkdGg9IjI4IiBoZWlnaHQ9IjI0IiByeD0iMTEiIGZpbGw9IiNmZmZkZjgiIGZpbGwtb3BhY2l0eT0iLjE1IiBzdHJva2U9IiM1NTRjNTAiIHN0cm9rZS13aWR0aD0iMi42Ii8+CjxyZWN0IHg9Ijk1IiB5PSI3NSIgd2lkdGg9IjI4IiBoZWlnaHQ9IjI0IiByeD0iMTEiIGZpbGw9IiNmZmZkZjgiIGZpbGwtb3BhY2l0eT0iLjE1IiBzdHJva2U9IiM1NTRjNTAiIHN0cm9rZS13aWR0aD0iMi42Ii8+CjxwYXRoIGQ9Ik04NiA4M3E1LTMgOSAwTTU4IDgxbC02LTNtNzEgMyA3LTQiIHN0cm9rZT0iIzU1NGM1MCIgc3Ryb2tlLXdpZHRoPSIyLjQiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iNzQiIGN5PSI4NiIgcj0iMi42IiBmaWxsPSIjMmQzNDM5Ii8+PGNpcmNsZSBjeD0iMTA4IiBjeT0iODYiIHI9IjIuNiIgZmlsbD0iIzJkMzQzOSIvPgo8cGF0aCBkPSJNOTEgODlsLTMgMTAgNSAxIiBzdHJva2U9IiNkOTk0NzgiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik04MiAxMDlxOSA2IDE4LTEiIHN0cm9rZT0iI2FhNjk1ZiIgc3Ryb2tlLXdpZHRoPSIyLjciIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNNDggMTcxYzctMjAgMTAtMzUgMjItNDhsMjAgMjYgMTktMjZjMTMgMTQgMTggMjggMjIgNDgiIGZpbGw9IiNlNzg0MmMiLz4KPHBhdGggZD0iTTY1IDEyN2MwIDE1IDEwIDIyIDI1IDM3bTI0LTM3YzAgMTUtMTEgMjgtMjQgMzciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2VmYWI2NCIgc3Ryb2tlLXdpZHRoPSIzIi8+CjwhLS0gb3BlbiBib29rIHN0dWRlbnQgZW1ibGVtIC0tPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4OSAxNTEpIj48cGF0aCBkPSJNLTE2LTNjNy0zIDEzLTIgMTYgMSA1LTQgMTEtNCAxNy0ydjE5Yy03LTItMTItMS0xNyAzLTQtNC0xMC01LTE2LTN6IiBmaWxsPSIjZmZmOWViIiBzdHJva2U9IiM5NTU2MjkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0wLTJ2MjBNLTEyIDRsNy0xTTUgNGw3LTFNLTEyIDlsNy0xTTUgOWw3LTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2NkOWQ3MCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48L2c+CjwvZz48L3N2Zz4="/>
+<div class="persona-copy">
+<h1>学习开发者 · AI 辅助学习</h1>
+<p class="job">软件开发者 / 新知识学习与实践掌握</p>
+<div aria-label="已具备基础编程经验，对新主题了解有限" class="knowledge" role="img"></div>
+<div class="knowledge-label">知识背景：已有部分基础，目标主题尚不熟悉</div>
+</div>
+</div>
+<div class="scenario">
+<div class="scenario-label">SCENARIO:</div>
+<div class="scenario-copy"><p>开发者希望学习一项新的开发知识或技术（例如训练调优、框架机制或调试方法），直接向 AI 提出“我想学……”的请求。AI 通常给出学习大纲、概念解释与代码示例；开发者再逐步补充基础、提出疑问，并要求更具体的示例或练习。</p><p>学习不以“AI 给出正确答案”为终点，而在于开发者能否解释原理、独立操作并迁移到新问题。现实中的对话经常在讲解、追问、运行和纠错之间往返，学习水平诊断、理解验证与长期复习往往需要用户主动发起。</p></div>
+</div>
+</div>
+</section>
+<section aria-label="学习开发者与 AI 协作学习的五阶段旅程" class="sheet">
+<div class="rail rail-stages">阶段</div>
+<div class="rail rail-site">开发活动</div>
+<div class="rail rail-think">思考与疑问</div>
+<div class="rail rail-do"><span>操作与交互</span><small>（触点）</small></div>
+<div class="rail rail-feel">体验感受</div>
+<nav aria-label="旅程阶段" class="stage-headings">
+<div class="stage-title">01 表达学习意图</div>
+<div class="stage-title">02 明确基础与路径</div>
+<div class="stage-title">03 讲解、追问与理解</div>
+<div class="stage-title">04 动手练习与纠错</div>
+<div class="stage-title">05 自测、迁移与回顾</div>
+</nav>
+<div class="stage-grid site">
+<div class="stage-card"><p>向 AI 说“我想学习某项技术”<br/>描述想了解或掌握的内容</p><p class="sub">可能只提出一个宽泛主题<br/>未说明达到什么程度</p></div>
+<div class="stage-card paired"><div class="pair-top">AI 给出初步大纲；用户按需补充背景、时间与目标</div><div class="pair-bottom"><span>已有知识 / 经验</span><span>难度 / 资料 / 路径</span></div></div>
+<div class="stage-card"><p>AI 分段讲解概念、原理<br/>提供示例并回应追问</p><p class="lines">• 对比概念、说明因果<br/>• 解释代码、举例类比<br/>• 持续追问“为什么”</p></div>
+<div class="stage-card" style="padding:0"><div class="inline-cells"><div class="mini-cell">尝试<br/>练习</div><div class="mini-cell">运行<br/>示例</div><div class="mini-cell">发现问题<br/>并追问</div></div></div>
+<div class="stage-card retention"><div class="retention-grid"><div>让 AI 出题<br/>或给变式任务</div><div>尝试独立<br/>解释与实现</div><div>整理知识<br/>与错题笔记</div><div>按需回顾<br/>并迁移应用</div></div></div>
+</div>
+<div class="stage-grid thinking">
+<div class="stage-card"><p>我应该从哪里开始？<br/>我想“了解”还是“会做”？<br/>需要学到什么深度？<br/>如何告诉 AI 我的目的？</p></div>
+<div class="stage-card"><p>AI 知道我的基础吗？<br/>哪些知识必须先学？<br/>这条路线适合我吗？<br/>示例和文档是否适用？</p></div>
+<div class="stage-card"><p>这和我已知的概念有什么关系？<br/>为什么这样设计或编写？<br/>解释有依据吗？<br/>我是真的懂了还是听懂了？</p></div>
+<div class="stage-card"><p>我能自己写出来吗？<br/>运行成功是否代表掌握？<br/>遇到错误要看提示还是答案？<br/>为什么这次成功、下次却不会？</p></div>
+<div class="stage-card"><p>不看 AI 我还能做到吗？<br/>换个问题还能运用吗？<br/>哪些知识点仍然薄弱？<br/>过几天还记得多少？</p></div>
+</div>
+<div aria-label="学习开发者与 AI 的操作触点及痛点" class="doing">
+<div aria-hidden="true" class="doing-segments"><div></div><div></div><div></div><div></div><div></div></div>
+<svg aria-hidden="true" class="touch-links" preserveaspectratio="none" viewbox="0 0 1000 265"><defs><marker id="arrow-learning" markerheight="6" markerwidth="6" orient="auto" refx="5" refy="3"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#abb2b2" stroke-width="1.2"></path></marker></defs>
+<path class="connection" d="M47 53 Q80 23 110 142 M110 142 Q128 180 155 213 M210 47 Q238 81 266 128 M266 128 Q253 184 235 211 M266 128 Q297 161 340 194"></path>
+<path class="edge" d="M155 213 Q173 132 210 47 M340 194 Q363 87 418 53 M418 53 Q448 74 475 129 M475 129 Q502 147 520 217 M520 217 Q535 129 562 53 M562 53 Q592 44 624 47 M624 47 Q658 83 689 133 M689 133 Q733 151 755 211 M755 211 Q770 108 784 51 M784 51 Q822 56 835 130 M835 130 Q863 80 894 54 M894 54 Q920 78 932 125 M932 125 Q955 167 960 211" style="marker-end:url(#arrow-learning)"></path>
+<path class="connection" d="M210 47 Q223 115 235 211 M235 211 Q284 223 340 194 M418 53 Q520 7 562 53 M624 47 Q693 17 784 51 M835 130 Q888 179 932 125"></path>
+<path class="vertical" d="M155 237 V265 M340 218 V265 M520 241 V265 M755 235 V265 M960 235 V265"></path></svg>
+<div id="learning-touchpoints"></div>
+</div>
+<div aria-label="学习开发者的情绪与痛点对应曲线" class="feeling">
+<svg aria-hidden="true" class="emotion-chart" preserveaspectratio="none" viewbox="0 0 1000 252"><polyline class="line" points="26,144 90,65 155,207 210,104 275,75 340,214 418,61 475,106 520,206 562,63 624,84 689,46 755,218 784,132 835,90 894,58 932,111 960,210"></polyline>
+<path class="dash" d="M155 0 V207 M340 0 V214 M520 0 V206 M755 0 V218 M960 0 V210"></path>
+
+</svg><div class="emotion-dots" aria-hidden="true"><span class="emotion-dot" style="left:2.6%;top:144px"></span><span class="emotion-dot" style="left:9%;top:65px"></span><span class="emotion-dot" style="left:21%;top:104px"></span><span class="emotion-dot" style="left:27.5%;top:75px"></span><span class="emotion-dot" style="left:41.8%;top:61px"></span><span class="emotion-dot" style="left:47.5%;top:106px"></span><span class="emotion-dot" style="left:56.2%;top:63px"></span><span class="emotion-dot" style="left:62.4%;top:84px"></span><span class="emotion-dot" style="left:68.9%;top:46px"></span><span class="emotion-dot" style="left:78.4%;top:132px"></span><span class="emotion-dot" style="left:83.5%;top:90px"></span><span class="emotion-dot" style="left:89.4%;top:58px"></span><span class="emotion-dot" style="left:93.2%;top:111px"></span><span class="emotion-dot red" style="left:15.5%;top:207px"></span><span class="emotion-dot red" style="left:34%;top:214px"></span><span class="emotion-dot red" style="left:52%;top:206px"></span><span class="emotion-dot red" style="left:75.5%;top:218px"></span><span class="emotion-dot red" style="left:96%;top:210px"></span></div>
+<div id="learning-feelings"></div>
+<div class="emotion-symbol" title="独立理解与迁移的学习成就感">☺</div>
+</div>
+</section>
+</main>
+<script>
+// All touchpoints and emotion labels are independently editable here.
+const icons = {
+ calendar:'<rect x="5" y="6" width="14" height="14" rx="2"/><path d="M8 4v4M16 4v4M5 11h14"/>',
+ bulb:'<path d="M9 17h6M10 20h4M8 14a7 7 0 1 1 8 0l-1 2H9z"/>',
+ search:'<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
+ chat:'<path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/>',
+ desktop:'<rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8m-4-4v4"/>',
+ users:'<circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 19c0-4 3-6 6-6s6 2 6 6M13 15c1-2 3-3 5-3 3 0 5 2 5 6"/>',
+ check:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m7 12 3.5 3.5L17 8"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ document:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/>',
+ phone:'<path d="M6 3 4 7c1 6 7 12 13 13l4-2-1-5-4-1-2 3c-3-1-5-3-6-6l3-2-1-4z"/>',
+ tools:'<circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/>',
+ chart:'<path d="M3 21h18M5 18l5-6 4 3 6-9"/><path d="M17 6h3v3"/>',
+ signup:'<path d="M13 5H5v15h14v-9M10 13l9-9 2 2-9 9-4 1z"/>',
+ link:'<path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-2 2M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l2-2"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/>',
+ plus:'<path d="M12 3v18M3 12h18"/>',
+ mobile:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/>',
+ handshake:'<path d="m2 9 5-4 5 2 5-2 5 4-5 8-3-2-3 2-4-2zM7 13l4 4m-1-8 3 3m0 0 3-2"/>',
+ quote:'<path d="M10 7C6 7 4 10 4 14v4h7v-7H7c0-2 1-3 3-4zm11 0c-4 0-6 3-6 7v4h7v-7h-4c0-2 1-3 3-4z" fill="currentColor" stroke="none"/>'
+};
+// 节点使用原 HTML 的图标、圆形与文本标签样式；可独立修改内容及位置。
+// x / lx 为泳道全宽百分比；y / ly 为泳道内垂直像素坐标。
+const touches = [
+ {x:5.4,y:49,icon:'target',label:'任务开发者：<br>提出功能需求',lx:1.0,ly:84,w:104},
+ {x:13.5,y:40,icon:'chat',label:'任务开发者：<br>报告故障并求助',lx:9.4,ly:76,w:122},
+ {x:7.2,y:157,icon:'desktop',label:'IDE 中定位<br>目标代码',lx:1.5,ly:190,w:110},
+ {x:16.9,y:195,icon:'target',red:true,label:'需求边界模糊<br>验收标准不清',lx:11.1,ly:225,w:114},
+ {x:21.5,y:47,icon:'document',label:'收集相关代码<br>与项目文件',lx:24.3,ly:26,w:124},
+ {x:29.2,y:103,icon:'search',label:'检索报错日志<br>与依赖版本',lx:31.8,ly:98,w:115},
+ {x:24.6,y:211,icon:'link',label:'查阅官方文档<br>或社区线索',lx:19.4,ly:235,w:119},
+ {x:34.5,y:175,icon:'tools',red:true,label:'上下文信息缺漏<br>反复补齐环境与约束',lx:27.1,ly:196,w:137},
+ {x:41.7,y:52,icon:'document',label:'AI 阅读上下文<br>识别相关代码',lx:44.5,ly:17,w:115},
+ {x:49.5,y:106,icon:'bulb',label:'AI 解释问题<br>并提出修改方案',lx:52.2,ly:90,w:116},
+ {x:43.8,y:178,icon:'chat',red:true,label:'方案依据不透明<br>开发者需反复追问',lx:38.7,ly:207,w:136},
+ {x:54.9,y:203,icon:'check',label:'人工选择、<br>批准或调整方案',lx:55.8,ly:221,w:128},
+ {x:62.1,y:58,icon:'signup',label:'AI 生成或<br>修改代码',lx:60.5,ly:93,w:100},
+ {x:68.9,y:143,icon:'search',label:'开发者审查<br>代码 Diff',lx:63.3,ly:176,w:106},
+ {x:78.3,y:62,icon:'desktop',label:'终端执行命令<br>运行测试',lx:73.0,ly:18,w:114},
+ {x:75.4,y:205,icon:'tools',red:true,label:'测试失败：分析<br>日志并交由 AI 修复',lx:70.0,ly:226,w:151},
+ {x:83.8,y:154,icon:'chart',label:'查看输出、测试<br>与执行结果',lx:80.5,ly:185,w:118},
+ {x:89.3,y:57,icon:'check',label:'人工检验：功能、<br>边界与回归',lx:84.0,ly:14,w:121},
+ {x:96.5,y:136,icon:'document',label:'确认完成并保存<br>变更与测试记录',lx:90.7,ly:163,w:133},
+ {x:96.5,y:211,icon:'chat',red:true,label:'经验停留在对话中<br>未回流公共知识',lx:86.9,ly:230,w:136}
+];
+const tpEl=document.getElementById('touchpoints');
+for(const t of touches){
+ if(t.box){let d=document.createElement('div');d.className='touch-label';d.style.cssText=`left:${t.lx}%;top:${t.ly}px;width:${t.w}px;text-align:center;padding:7px 4px;border:1px solid #c7d0d0;background:#fff;font-size:11px`;d.innerHTML=t.label;tpEl.append(d);continue}
+ const btn=document.createElement('div');btn.className='touchpoint'+(t.red?' red':'');btn.tabIndex=0;btn.setAttribute('role','img');btn.setAttribute('aria-label',t.label.replace(/<br\s*\/?\s*>/gi,' ')||t.icon);btn.style.left=t.x+'%';btn.style.top=t.y+'px';btn.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${icons[t.icon]||''}</svg>`;
+ const label=document.createElement('div');label.className='touch-label';label.style.cssText=`left:${t.lx}%;top:${t.ly}px;width:${t.w}px;text-align:${t.align||'left'}`;label.innerHTML=t.label;
+ tpEl.append(btn,label)
+}
+const emotions=[
+ {x:0.7,y:165,w:139,text:'任务刚开始：<br>期望 AI 提升效率'},
+ {x:4.7,y:7,w:156,text:'找到 AI 求助入口，<br>期待更快推进',align:'center'},
+ {x:11.2,y:193,w:140,text:'需求边界不明确，<br>验收标准难界定',pain:true},
+ {x:19.0,y:36,w:151,text:'找到相关代码与<br>报错线索',align:'center'},
+ {x:26.3,y:213,w:150,text:'上下文信息缺漏，<br>反复补齐环境与约束',pain:true},
+ {x:34.7,y:44,w:151,text:'AI 开始理解项目，<br>逐步定位问题'},
+ {x:39.0,y:195,w:147,text:'方案依据不透明，<br>需反复解释和追问',pain:true},
+ {x:48.3,y:38,w:153,text:'AI 提供修改建议，<br>可以参与方案判断',align:'center'},
+ {x:60.0,y:7,w:153,text:'AI 生成代码提速，<br>看到开发进展',align:'center'},
+ {x:66.5,y:213,w:155,text:'测试失败后，<br>定位和修复成本高',pain:true},
+ {x:76.0,y:62,w:145,text:'分析日志并重新测试，<br>逐渐恢复信心'},
+ {x:82.0,y:7,w:155,text:'人工验证通过，<br>任务完成',align:'center'},
+ {x:87.7,y:211,w:135,text:'解决经验未回流，<br>难以被后来者复用',pain:true}
+];
+const feelingsEl=document.getElementById('feelings');
+for(const e of emotions){let d=document.createElement('div');d.className='emotion-text'+(e.align?' '+e.align:'')+(e.pain?' pain':'');d.style.cssText=`left:${e.x}%;top:${e.y}px;width:${e.w}px`;d.innerHTML=e.text;feelingsEl.append(d)}
+</script>
+<script>
+// Learning-journey data: normal activities are teal; red means an explicit pain point.
+// Red touchpoint x-coordinates match the dashed line and red emotional trough below.
+const learningTouches=[
+ {x:4.7,y:53,icon:'chat',label:'对 AI 说：<br>我想学这项技术',lx:1.1,ly:88,w:119},
+ {x:11,y:142,icon:'target',label:'说明想解决的<br>学习场景',lx:2.3,ly:174,w:112},
+ {x:15.5,y:213,icon:'target',red:true,label:'学习目标过于宽泛<br>AI 只给通用大纲',lx:9.2,ly:233,w:125},
+ {x:21,y:47,icon:'chat',label:'AI 给出初步大纲<br>或追问学习背景',lx:23.4,ly:25,w:139},
+ {x:26.6,y:128,icon:'users',label:'补充已有知识<br>与学习时间',lx:28.5,ly:115,w:125},
+ {x:23.5,y:211,icon:'document',label:'查看官方教程<br>与相关资料',lx:18.8,ly:236,w:120},
+ {x:34,y:194,icon:'tools',red:true,label:'默认前置知识不匹配<br>看不懂或重复学习',lx:28.3,ly:222,w:137},
+ {x:41.8,y:53,icon:'bulb',label:'AI 按主题分段<br>解释概念与原理',lx:40.0,ly:88,w:129},
+ {x:47.5,y:129,icon:'chat',label:'不断追问“为什么”<br>要求换一种讲法',lx:41.5,ly:163,w:138},
+ {x:52,y:217,icon:'search',red:true,label:'解释繁杂或缺依据<br>难以判断是否理解',lx:45.6,ly:235,w:138},
+ {x:56.2,y:53,icon:'document',label:'查看案例、示意<br>与示例代码',lx:54.7,ly:88,w:115},
+ {x:62.4,y:47,icon:'signup',label:'AI 提供练习题<br>和示例代码',lx:60.8,ly:81,w:125},
+ {x:68.9,y:133,icon:'desktop',label:'在 IDE 自己尝试<br>修改并运行',lx:62.0,ly:165,w:138},
+ {x:75.5,y:211,icon:'tools',red:true,label:'代码、运行结果<br>与 AI 解释分散，难以关联',lx:65.8,ly:231,w:187},
+ {x:78.4,y:51,icon:'chat',label:'报错后向 AI 追问<br>获得解释或提示',lx:73.2,ly:86,w:129},
+ {x:83.5,y:130,icon:'check',label:'请 AI 出自测题<br>检查薄弱点',lx:80.5,ly:164,w:113},
+ {x:89.4,y:54,icon:'target',label:'不看答案尝试<br>完成变式任务',lx:84.3,ly:14,w:119},
+ {x:93.2,y:125,icon:'document',label:'整理笔记与<br>错题、回顾要点',lx:90.0,ly:160,w:127},
+ {x:96,y:211,icon:'chat',red:true,label:'练习结束后缺少回顾<br>知识散落在对话里',lx:86.6,ly:233,w:154}
+];
+const learningEmotionLabels=[
+ {x:0.7,y:164,w:120,text:'遇到新知识：<br>不知道如何开始'},
+ {x:3.5,y:9,w:150,text:'AI 能随时解答，<br>开始有学习动力',align:'center'},
+ {x:10.3,y:213,w:146,text:'目标模糊，拿到的<br>只是通用学习大纲',pain:true},
+ {x:19,y:38,w:150,text:'逐渐弄清已有基础<br>与适合的学习路线',align:'center'},
+ {x:26.0,y:214,w:162,text:'知识前提与难度不匹配，<br>学起来吃力',pain:true},
+ {x:36.6,y:12,w:158,text:'AI 逐步讲解，<br>概念似乎变清晰',align:'center'},
+ {x:44.2,y:208,w:158,text:'解释太多或缺少依据，<br>不知道是否真的懂了',pain:true},
+ {x:52.3,y:7,w:150,text:'通过例子和追问，<br>出现理解的瞬间',align:'center'},
+ {x:59.5,y:13,w:155,text:'动手练习成功，<br>获得初步成就感',align:'center'},
+ {x:67.3,y:218,w:179,text:'代码、运行结果与 AI 解释<br>分散，难以关联',pain:true},
+ {x:75.6,y:129,w:129,text:'借助提示纠错，<br>重新理解知识点'},
+ {x:82.0,y:8,w:151,text:'独立完成变式题，<br>逐渐建立信心',align:'center'},
+ {x:87.0,y:213,w:137,text:'学习结束缺少复习机制，<br>知识容易遗忘',pain:true}
+];
+(function(){
+ const root=document.getElementById('learning-touchpoints');
+ for(const t of learningTouches){
+  const btn=document.createElement('div');
+  btn.className='touchpoint'+(t.red?' red':'');
+  btn.tabIndex=0;btn.setAttribute('role','img');
+  btn.setAttribute('aria-label',t.label.replace(/<br\s*\/?\s*>/gi,' '));
+  btn.style.left=t.x+'%';btn.style.top=t.y+'px';
+  btn.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${icons[t.icon]||''}</svg>`;
+  const label=document.createElement('div');label.className='touch-label';
+  label.style.cssText=`left:${t.lx}%;top:${t.ly}px;width:${t.w}px;text-align:${t.align||'left'}`;
+  label.innerHTML=t.label;root.append(btn,label);
+ }
+ const f=document.getElementById('learning-feelings');
+ for(const e of learningEmotionLabels){
+  const label=document.createElement('div');label.className='emotion-text'+(e.align?' '+e.align:'')+(e.pain?' pain':'');
+  label.style.cssText=`left:${e.x}%;top:${e.y}px;width:${e.w}px`;
+  label.innerHTML=e.text;f.append(label);
+ }
+})();
+</script><p class="bottom-note">典型情境示意 · 两类开发动机可在同一开发者身上切换 · 红色触点对应下方红色情绪低谷</p></body>
+</html>
