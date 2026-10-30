@@ -8203,3 +8203,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确要求互换底色、修正背景对齐（H）；信息层级和连线未改，页面序列及 API / Protocol、Host / Harness、Application / Task 边界未变。
 - 验证：`git diff --check` 与填色 / 圆心静态断言通过；本地 CUA 1280×720 预览确认底色互换且四层背景共用中心轴；GitHub Pages workflow `40987483532` 成功，线上 HTTP 200 且读回确认新填色和 `x=720` 圆心。未运行自动化测试。
 - 页面提交 `3688cec1` 已推送至 `origin/main`；本交接记录由随后文档提交推送。无未决事项。
+
+### 2026-10-30 · 将知识检索服务直接放在绿色知识底座上
+
+- 用户指出知识检索服务胶囊不需要独立底色和描边，应直接落在知识底座的绿色背景上。第 06 页已移除该胶囊矩形及对应样式，保留双环图标、标题与检索说明文字，直接叠放在绿色椭圆底座中；服务关系、连线及其他节点不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户截图与明确要求（H）；未改变页面序列和 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 与静态断言通过；本地 CUA 1280×720 预览确认文字和图标直接位于绿色底座上。页面提交 `7d320bf9` 已推送至 `origin/main`；GitHub Pages workflow `40987889867` 在检查时仍处于运行中，线上状态待完成后核验。未运行自动化测试。
+- 本条交接记录由随后文档提交推送。
