@@ -8309,3 +8309,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 区域语音仍复用原型中的模拟听写与快捷键状态，不接真实语音服务。点击停止语音时阻止表单提交，避免按钮切换瞬间误发送。修改 `ascend-studio/src/AreaComposer.jsx`、`VoiceCaptureButton.jsx`、`task-workspace.css` 及 `ascstudio/` 构建产物。
 - 依据：用户提供截图与明确样式要求（H）；颜色和主要操作沿用 Ascend Studio 界面规范。页面顺序 / 路由未变，API / Protocol、Host / Harness、Application / Task 边界未变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；未运行测试套件。推送和 Pages 发布回执将在发布完成后补记。
+
+### 2026-10-30 · 确认学习章节名称
+
+- 用户确认第一章名称为“让学习贴合个人目标与现有基础”。该表述覆盖根据个人目标与知识基础调整学习内容，也不假设用户最终一定要进入实操；第二章“在开发过程中掌握知识”和第三章“让学习随时继续”保持不变。
+- 修改 `ascstudio-pc/app.js` 的第一章标题，并更新 `ascstudio-pc/index.html` 与 `app.js` 的资源版本标识为 `20261030-learning-title-personal-fit`。章节顺序、设计点、Demo 页面状态映射及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 依据：用户明确确认标题文案（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第一章封面显示完整新标题。未运行自动化测试。页面提交 `8c90b280` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
