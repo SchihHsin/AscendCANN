@@ -1160,6 +1160,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .capability-map .map-node-title{font-size:18px}.capability-map .map-node-note{font-size:14px}
 .capability-map .map-entry-transition{fill:#39424e;font-size:16px;font-weight:780;text-anchor:middle}
 .capability-map .map-entry-note{fill:#68717c;font-size:12px;font-weight:500;text-anchor:middle}
+.capability-map .map-node-title.map-entry-title{text-anchor:start}
+.capability-map .map-entry-icon{fill:none;stroke:#20242b;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
 .capability-map .map-node-label{font-size:14px}
 .capability-map .map-node-title,.capability-map .map-node-note,.capability-map .map-node-label,.capability-map .map-core-title,.capability-map .map-core-note,.capability-map .map-foundation-title,.capability-map .map-foundation-note{paint-order:stroke;stroke:#f3f3f4;stroke-width:4px;stroke-linejoin:round}
 .capability-map .map-core-title{font-size:20px}.capability-map .map-core-note{font-size:12.5px}
@@ -1420,8 +1422,22 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <ellipse class="map-orbit experience" cx="720" cy="115" rx="540" ry="62"/>
       <circle class="map-node-dot api" cx="500" cy="122" r="8"/>
       <circle class="map-node-dot future agent" cx="1050" cy="122" r="8"/>
-      <text class="map-node-title" x="500" y="84">社区 AI 助手</text><text class="map-node-note" x="500" y="106">目标 · 主题 · 已学节点</text><text class="map-node-label" x="500" y="151">路径 · 课程 · 认证 · 活动</text>
-      <text class="map-node-title" x="1050" y="84">项目客户端</text><text class="map-node-note" x="1050" y="106">授权项目 · 版本 · 选定日志</text><text class="map-node-label" x="1050" y="151">兼容建议 · 技术图解 · 下一步</text>
+      <g class="map-entry-title-group" transform="translate(438 0)" aria-label="社区 AI 助手">
+        <g class="map-entry-icon" aria-hidden="true">
+          <rect x="0.5" y="72" width="15" height="11" rx="2.5"/>
+          <path d="M5 83v3l4-3 M4 76h8 M4 79h6 M19 70v5m-2.5-2.5h5"/>
+        </g>
+        <text class="map-node-title map-entry-title" x="24" y="84">社区 AI 助手</text>
+      </g>
+      <text class="map-node-note" x="500" y="106">目标 · 主题 · 已学节点</text><text class="map-node-label" x="500" y="151">路径 · 课程 · 认证 · 活动</text>
+      <g class="map-entry-title-group" transform="translate(992 0)" aria-label="项目客户端">
+        <g class="map-entry-icon" aria-hidden="true">
+          <rect x="0.5" y="71.5" width="19" height="14" rx="2.5"/>
+          <path d="M0.5 75h19 M7 78l-2 2 2 2 M13 78l2 2-2 2 M10.5 77.5l-1 5"/>
+        </g>
+        <text class="map-node-title map-entry-title" x="25" y="84">项目客户端</text>
+      </g>
+      <text class="map-node-note" x="1050" y="106">授权项目 · 版本 · 选定日志</text><text class="map-node-label" x="1050" y="151">兼容建议 · 技术图解 · 下一步</text>
       <text class="map-entry-transition" x="775" y="104">从 Web 走进项目</text>
       <path class="map-path experience" d="M705 115H845"/>
       <text class="map-entry-note" x="775" y="133">能力延展到开发流程</text>
