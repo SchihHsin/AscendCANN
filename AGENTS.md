@@ -8315,3 +8315,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认第一章名称为“让学习贴合个人目标与现有基础”。该表述覆盖根据个人目标与知识基础调整学习内容，也不假设用户最终一定要进入实操；第二章“在开发过程中掌握知识”和第三章“让学习随时继续”保持不变。
 - 修改 `ascstudio-pc/app.js` 的第一章标题，并更新 `ascstudio-pc/index.html` 与 `app.js` 的资源版本标识为 `20261030-learning-title-personal-fit`。章节顺序、设计点、Demo 页面状态映射及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
 - 依据：用户明确确认标题文案（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第一章封面显示完整新标题。未运行自动化测试。页面提交 `8c90b280` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-30 · 完成三章名称更新
+
+- 用户确认三章名称为：第一章“让学习贴合个人目标与现有基础”、第二章“在开发过程中掌握知识”、第三章“让学习随时继续”。本次将第二、三章封面标题同步改为用户指定文案；第一章保留此前确认名称。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，资源版本更新为 `20261030-final-three-chapter-titles`。仅调整章节标题和资源版本，章节排序、设计点及页面状态映射不变。
+- 依据：用户明确选定三章标题（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地桌面浏览器确认第二章显示“在开发过程中掌握知识”、第三章显示“让学习随时继续”。页面提交 `b107df8b` 已推送至 `origin/main`；本交接记录随后单独提交并推送。未运行自动化测试。
