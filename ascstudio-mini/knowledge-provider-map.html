@@ -1125,8 +1125,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .capability-map .map-orbit.experience{stroke:#a2bad2}.capability-map .map-orbit.agent{stroke:#b2a2c9}.capability-map .map-orbit.governance{stroke:#a8c0ad}
 .capability-map .map-path{marker-end:url(#capability-arrow)}
 .capability-map .map-path.experience{stroke:#7e9dbc}.capability-map .map-path.agent{stroke:#927fb5}.capability-map .map-path.governance{stroke:#7fa38b}.capability-map .map-path.task-event{stroke:#b78495}
-.capability-map .map-path.feedback{stroke:#7fa38b;stroke-dasharray:6 7;marker-end:url(#capability-feedback-arrow)}
-.capability-map .map-path.future{stroke:#7e9dbc;stroke-dasharray:7 8;marker-end:url(#capability-arrow)}
+.capability-map .map-path.feedback{stroke:#7fa38b;stroke-dasharray:6 7;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#capability-feedback-arrow)}
+.capability-map .map-path.future{stroke:#7e9dbc;stroke-dasharray:7 8;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#capability-arrow)}
 .capability-map .map-path.foundation-link{stroke:#7fa38b;stroke-width:1.7;marker-end:url(#capability-feedback-arrow)}
 .capability-map .map-node-shape{stroke-width:2.4}
 .capability-map .map-node-shape.interface{fill:#f1f6fc;stroke:#6f91b2}
@@ -1416,7 +1416,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
       <!-- 入口把目标或项目上下文送入相应服务 -->
       <path class="map-path experience" d="M500 161C440 190 340 225 310 286C286 336 310 390 412 440"/>
-      <path class="map-path future" d="M1050 161C1110 210 1160 260 1160 340C1160 390 1190 450 1160 486C1100 500 900 490 650 486C635 486 620 470 620 458"/>
+      <path class="map-path future" d="M1050 161C1109 206 1154 265 1158 329C1162 383 1180 446 1160 478C1137 514 1058 499 976 493C875 486 766 486 650 486C632 486 620 474 620 458"/>
 
       <!-- 上排任务结果汇流校验；下排服务组件按调用关系串联 -->
       <path class="map-path validation-branch" d="M420 267V250 M620 267V250 M820 267V250 M1020 267V250"/>
@@ -1460,7 +1460,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <!-- 质量检查后回到入口；授权完成与纠错反馈进入 Owner 复核 -->
       <circle class="map-node-dot validation" cx="1190" cy="250" r="9"/>
       <text class="map-node-title text-start" x="1213" y="220">校验通过 → 入口</text><text class="map-node-note text-start" x="1213" y="240">来源 · 版本 · 范围</text><text class="map-node-note text-start" x="1213" y="257">权限 · 可执行性</text>
-      <path class="map-path feedback" d="M1198 259C1260 315 1285 425 1270 500C1258 560 1100 600 720 618"/>
+      <path class="map-path feedback" d="M1198 259C1248 305 1271 367 1274 430C1277 488 1266 520 1238 548C1188 598 1024 614 720 618"/>
       <text class="feedback-note" x="970" y="552">授权完成 / 纠错 → Owner 复核</text>
 
       <!-- 内容治理底座：五个治理环节从多源输入形成可追溯知识并供给 MCP -->
