@@ -8384,3 +8384,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 连线按关系分轨：Web 查询进入 API；结果从开发者服务汇入右侧校验节点，再返回项目客户端；Host 通过一条横向主干分流至 Skill 与 MCP，MCP 单独连接活动 / 内容服务；知识底座的检索索引沿上缘总线分别供给 API 与 MCP。移除旧版穿越服务节点的汇流线、API→Host→Skill→MCP 直串线、项目上下文长绕线和跨图 Owner 虚线回路。项目授权范围仍由入口与 Host 文案表达；Owner、过期 / 冲突复核及授权纠错回流仍由底座节点与页脚说明承载。四层、节点内容和页面顺序不变，也不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：方案选择来自用户明确确认（H）；各轨道的节点落点、路由和颜色对照已选方案及现有 SVG 坐标推导（M）。建设示意不代表服务已接入。
 - 验证：`git diff --check`、页面内联脚本 `node --check`、40 个 HTML ID 唯一性检查通过；CUA 本地页确认第 06 页已加载，当前可用截图仅为窄侧栏视口，不作为桌面全图排版证据。静态核对各路由均从节点边缘进出且避开文字区域。页面提交 `711d16c1` 已推送至 `origin/main`；GitHub Pages workflow `41010354923` 成功，带 `rev=711d16c1` 的线上页面返回 HTTP 200，已读回分轨路线。未运行自动化测试。
+
+### 2026-10-30 · 将知识检索服务标签改为知识底座
+
+- 按用户要求，将正式蓝图与连线方案对比页中的“知识检索服务”统一改为“知识底座”，覆盖图例、中心标签和 SVG 无障碍描述；检索说明仍保留在副标题中。没有调整节点位置、字号、层级关系或连线。
+- 依据：用户明确指定名称（H）。页面顺序及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 验证：两个 HTML 文件 `git diff --check`、各自内联脚本 `node --check`、ID 唯一性检查（40 / 48 个 ID）通过；线上正式页 HTTP 200，并读回“知识底座”图例与中心标签。未运行自动化测试。代码提交 `0aaacc7a` 已推送至 `origin/main`，Pages workflow `41011369263` 成功；交接记录随后单独推送。
