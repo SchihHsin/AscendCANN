@@ -1396,7 +1396,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="-150 0 1550 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">入口 / 形态、开发者服务、运行与接入能力、知识底座的四层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。知识底座五个线性图标分别表示多源接入、解析归一、版本与许可校验、可信知识单元、关系图与检索索引，连线表示内容加工顺序。最上层社区 AI 助手与项目客户端并列；中间箭头上方强调“从 Web 走进项目”，下方说明“能力延展到开发流程”。前者接收学习目标与已学节点；项目客户端在授权后读取项目环境、版本与选定日志，并沿右侧轨线送入 MCP。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。知识底座按五步整理内容：接入文档、API、课程、代码、样例、Issue 和活动；提取正文、代码与表格，按主题拆分、统一格式并清理重复；按 CANN、芯片、OS 和框架核对版本与适用条件，确认内容能否公开、明确谁负责更新并复核过期内容；形成带原文链接、适用范围、前置知识、版本与核验结果的可引用知识条目；建立概念、前置知识与兼容版本的关联，提供关键词或问题查找。robots.txt、sitemap.xml、Schema.org 与 llms.txt 用于帮助站外发现公开内容。连线表示内容加工顺序。最上层社区 AI 助手与项目客户端并列；中间箭头上方强调“从 Web 走进项目”，下方说明“能力延展到开发流程”。前者接收学习目标与已学节点；项目客户端在授权后读取项目环境、版本与选定日志，并沿右侧轨线送入 MCP。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。授权完成与纠错反馈由内容负责团队复核并更新知识。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1414,7 +1414,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <text class="map-stage-name experience" x="-122" y="76">ENTRY / FORMS</text><text class="map-stage-sub" x="-122" y="101">入口 / 形态</text>
       <text class="map-stage-name services" x="-122" y="272">DEVELOPER SERVICES</text><text class="map-stage-sub" x="-122" y="297">面向开发者的服务</text>
       <text class="map-stage-name runtime" x="-122" y="437">RUNTIME &amp; TOOLS</text><text class="map-stage-sub" x="-122" y="462">运行与接入能力</text>
-      <text class="map-stage-name governance" x="-122" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="-122" y="614">内容治理 · 检索服务</text>
+      <text class="map-stage-name governance" x="-122" y="589">KNOWLEDGE BASE</text><text class="map-stage-sub" x="-122" y="614">内容收集 · 整理 · 查找</text>
 
       <!-- 知识底座的绿色承托底色先绘制，后续连线、图标与文字自然叠在上层 -->
       <ellipse class="map-fill governance" cx="720" cy="620" rx="550" ry="76"/>
@@ -1517,15 +1517,15 @@ body.overview #panel,body.overview #toggle{display:none!important}
         <path d="M1155 622l6 5-6 7m0-12v12m0-6h7"/>
         <circle class="map-foundation-icon-mark" cx="1155" cy="622" r="1.3"/><circle class="map-foundation-icon-mark" cx="1161" cy="627" r="1.3"/><circle class="map-foundation-icon-mark" cx="1155" cy="634" r="1.3"/>
       </g>
-      <text class="map-foundation-title" x="280" y="652">多源内容接入</text><text class="map-foundation-note" x="280" y="670">文档 · API · 课程 · 代码</text><text class="map-foundation-note" x="280" y="686">Issue · 样例 · 活动</text>
-      <text class="map-foundation-title" x="500" y="652">解析与归一</text><text class="map-foundation-note" x="500" y="670">正文 · 代码 · 表格抽取</text><text class="map-foundation-note" x="500" y="686">切分去重 · 字段统一</text>
-      <text class="map-foundation-title" x="720" y="652">版本 / 许可 / Owner</text><text class="map-foundation-note" x="720" y="670">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="686">过期或冲突 → 复核 / 下架</text>
-      <text class="map-foundation-title" x="940" y="652">可信 Knowledge Unit</text><text class="map-foundation-note" x="940" y="670">原文锚点 · 范围 · 前置</text><text class="map-foundation-note" x="940" y="686">版本、证据与状态可追溯</text>
-      <text class="map-foundation-title" x="1160" y="652">关系图与检索索引</text><text class="map-foundation-note" x="1160" y="670">全文 · 语义 · 兼容</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
-      <text class="map-service-title" x="720" y="574">知识底座</text><text class="map-service-note" x="720" y="592">全文 / 语义 · 版本过滤 · 来源</text>
+      <text class="map-foundation-title" x="280" y="652">接入内容来源</text><text class="map-foundation-note" x="280" y="670">文档 · API · 课程 · 代码</text><text class="map-foundation-note" x="280" y="686">Issue · 样例 · 活动</text>
+      <text class="map-foundation-title" x="500" y="652">提取并整理内容</text><text class="map-foundation-note" x="500" y="670">提取正文 · 代码 · 表格</text><text class="map-foundation-note" x="500" y="686">按主题拆分 · 统一格式 · 清理重复</text>
+      <text class="map-foundation-title" x="720" y="652">核对版本与适用条件</text><text class="map-foundation-note" x="720" y="670">CANN · 芯片 · OS · 框架</text><text class="map-foundation-note" x="720" y="686">能否公开 · 谁来更新 · 过期复核</text>
+      <text class="map-foundation-title" x="940" y="652">形成可引用知识条目</text><text class="map-foundation-note" x="940" y="670">原文链接 · 适用范围 · 前置知识</text><text class="map-foundation-note" x="940" y="686">记录版本 · 核验结果</text>
+      <text class="map-foundation-title" x="1160" y="652">关联内容 · 外部可查</text><text class="map-foundation-note" x="1160" y="670">概念 · 前置知识 · 兼容版本</text><text class="map-foundation-note" x="1160" y="686">robots · sitemap · Schema · llms.txt</text>
+      <text class="map-service-title" x="720" y="574">知识底座</text><text class="map-service-note" x="720" y="592">关键词 / 问题查找 · 版本筛选 · 原文可回看</text>
     </svg>
   </div></div>
-  <div class="kp-foot"><span>建设关系示意；接口与数据服务需结合现有社区基础设施评估</span><span>知识向上供给，授权纠错回到 Owner 治理</span></div>
+  <div class="kp-foot"><span>建设关系示意；接口与数据服务需结合现有社区基础设施评估</span><span>整理后的内容供上层服务调用，授权反馈与纠错交回内容负责团队</span></div>
 </section>
 
 <div id="panel" style="display:none">
