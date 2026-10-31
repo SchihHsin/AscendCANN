@@ -1597,7 +1597,7 @@ function App() {
       <header className="topbar">
         <div className="brand-lockup">
           <img className="brand-logo" src={`${import.meta.env.BASE_URL}assets/ascend-logo.svg`} alt="Ascend" />
-          <span className="brand-studio">Studio</span>
+          <span className="brand-work">Work</span>
         </div>
         <div className="topbar-divider" />
         <nav className="breadcrumbs" aria-label="当前位置">

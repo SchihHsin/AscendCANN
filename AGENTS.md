@@ -8462,3 +8462,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 只修改 ascstudio-mini/knowledge-provider-map.html 的知识底座 SVG、辅助图例描述与作用域样式。图标是可编辑的 SVG 线形，不使用 ImageGen。页面序列、节点关系及 API / Protocol、Host / Harness、Application / Task 边界不变。依据：用户明确指定治理节点添加图标（H）；图标语义按既有节点文案映射（M）。
 - 验证：git diff --check、内联脚本 node --check、40 个 HTML ID 唯一性检查通过；1600×900 本地预览确认图标辨识度与节点标题间距；静态检查确认 5 个图标替换点位且原有连线轨道保留。GitHub Pages 部署 7433556063 状态 success，线上页面 HTTP 200 并读回 5 个图标及对应语义。未运行自动化测试。
 - 页面提交 ae51dbde 已推送至 origin/main；交接记录随后单独推送。
+
+### 2026-10-31 · 补齐 Ascend Work 左上角品牌标签
+
+- 用户发现左上角仍显示 Ascend Studio。根因是标识由「Ascend」图形加独立文字组成，之前只替换了完整品牌字符串，漏掉了 JSX 中单独写出的 `Studio`。
+- 将 `ascend-studio/src/App.jsx` 的可见标签改为 `Work`，并把对应样式类从 `.brand-studio` 改为 `.brand-work`（包括窄屏规则）；已重建 `ascstudio/` 与 `ascstudio-pc/studio/`。
+- 依据：用户在本地 Demo 的直接观察（H）及源码核查（M）。只修正品牌标识，不改变其他功能或页面结构。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；发布产物入口 / 品牌断言和相关 JS 语法检查通过。Vite 保留主 bundle 超过 500 kB 的体积提示；未运行自动化测试。推送与 Pages 部署状态在本条完成后补记。

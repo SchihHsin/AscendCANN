@@ -2179,3 +2179,9 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 保留 `ascend-studio/` 源码目录、`ascstudio/` Pages 地址及浏览器本地存储键，避免破坏已有链接和本地任务状态；更名前的日期记录保留其历史称呼。
 - 依据：用户明确更名要求（H）。本次只更改品牌文字，不改变界面结构、功能、路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`git diff --check`、发布入口与品牌文案断言、相关 Node 语法检查均通过。Vite 保留主 bundle 超过 500 kB 的既有体积提示；未运行自动化测试。Pages 及电脑端材料同步结果、推送与部署回执见仓库根 `AGENTS.md`。
+
+### 2026-10-31 · 补齐 Ascend Work 左上角品牌标签
+
+- 左上角旧字样来自单独的 `Studio` JSX 文本，而非完整品牌字符串；现改为 `Work`，并同步将样式类 `.brand-studio` 改为 `.brand-work`。
+- `npm run build:pages` 构建并同步了 GitHub Pages 与电脑端展示副本。该修改只处理当前可见品牌标签与选择器名称，不影响功能或布局。
+- 依据、检查和发布状态见仓库根 `AGENTS.md`。

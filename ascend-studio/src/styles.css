@@ -55,7 +55,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .topbar { height: 58px; display: flex; align-items: center; gap: 16px; padding: 0 24px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.96); z-index: 3; }
 .brand-lockup { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; white-space: nowrap; }
 .brand-logo { display: block; width: 75px; height: 30px; object-fit: contain; object-position: left center; }
-.brand-studio { margin-left: 1px; font-weight: 600; font-size: 14px; letter-spacing: -.15px; color: #33343a; }
+.brand-work { margin-left: 1px; font-weight: 600; font-size: 14px; letter-spacing: -.15px; color: #33343a; }
 .topbar-divider { height: 22px; width: 1px; background: var(--line); }
 .breadcrumbs { display: flex; align-items: center; gap: 9px; min-width: 0; color: #858791; font-size: 13px; white-space: nowrap; }
 .breadcrumbs svg { color: #b7b8bd; flex: 0 0 auto; }
@@ -314,7 +314,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 @media (max-width: 580px) {
   .topbar { padding-inline: 12px; gap: 8px; }
   .brand-logo { width: 59px; }
-  .brand-studio { font-size: 12px; }
+  .brand-work { font-size: 12px; }
   .proposal-badge { display: none; }
   .sidebar { padding-inline: 10px; }
   .panel-header { padding-inline: 14px; }
@@ -403,7 +403,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   .topbar { gap: 8px; }
   .topbar-spacer { display: none; }
   .topbar .proposal-badge { display: none; }
-  .brand-studio, .topbar-divider { display: none; }
+  .brand-work, .topbar-divider { display: none; }
   .conversation-panel { overflow: clip; }
 }
 @media (max-width: 420px) { .topbar .profile-button { display: none; } .new-reply-button { font-size: 10px; padding-inline: 5px; } .reopen-content { font-size: 11px; padding-inline: 6px; } }
