@@ -8468,7 +8468,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户发现左上角仍显示 Ascend Studio。根因是标识由「Ascend」图形加独立文字组成，之前只替换了完整品牌字符串，漏掉了 JSX 中单独写出的 `Studio`。
 - 将 `ascend-studio/src/App.jsx` 的可见标签改为 `Work`，并把对应样式类从 `.brand-studio` 改为 `.brand-work`（包括窄屏规则）；已重建 `ascstudio/` 与 `ascstudio-pc/studio/`。
 - 依据：用户在本地 Demo 的直接观察（H）及源码核查（M）。只修正品牌标识，不改变其他功能或页面结构。
-- 验证：`npm run build:pages` 与 `git diff --check` 通过；发布产物入口 / 品牌断言和相关 JS 语法检查通过。Vite 保留主 bundle 超过 500 kB 的体积提示；未运行自动化测试。推送与 Pages 部署状态在本条完成后补记。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；发布产物入口 / 品牌断言和相关 JS 语法检查通过。Vite 保留主 bundle 超过 500 kB 的体积提示；未运行自动化测试。本地 `http://127.0.0.1:5196/` 与 Vite 转换后的 App 模块 HTTP 200，模块中可读到 `brand-work` / `Work`；CUA 未能连接该 IAB 标签（`browser.user is unavailable`），因此没有截图级浏览器验收。未运行自动化测试。
+- Commit / push：修复提交 `4a8196c1` 已随合并提交 `13d72b21` 推送至 `origin/main`；GitHub Pages workflow `41155941708` 完成且 success。线上 `/AscendCANN/ascstudio/` 与 `/AscendCANN/ascstudio-pc/studio/` 均引用 `index-DWxKwVH3.js` / `index-BnI3CnWd.css`，两处页面和 JS / CSS 均 HTTP 200；新版 JS 无旧 `brand-studio` 类或 `Studio` 标签。
 
 
 ### 2026-10-30 · 为入口节点增加黑色识别图标

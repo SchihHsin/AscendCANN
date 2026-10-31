@@ -2184,4 +2184,4 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 
 - 左上角旧字样来自单独的 `Studio` JSX 文本，而非完整品牌字符串；现改为 `Work`，并同步将样式类 `.brand-studio` 改为 `.brand-work`。
 - `npm run build:pages` 构建并同步了 GitHub Pages 与电脑端展示副本。该修改只处理当前可见品牌标签与选择器名称，不影响功能或布局。
-- 依据、检查和发布状态见仓库根 `AGENTS.md`。
+- 验证与发布回执：实现提交 `4a8196c1` 随合并提交 `13d72b21` 推送至 `origin/main`；Pages workflow `41155941708` 成功。线上两个 Demo 入口均引用新品牌标签构建产物，详情见仓库根 `AGENTS.md`。
