@@ -8514,4 +8514,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 桌面知识口袋和小程序读取旧浏览器记录时，将精确匹配的旧品牌来源标签显示为 Ascend Work；保留 `/ascstudio/`、`/ascstudio-mini/`、源码目录名和 localStorage 键，保留历史 QA / 研究记录中的原称呼。仅品牌文案与兼容规范化有变化，未改变页面序列、交互或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户明确更名要求（H）；当前 UI 和构建入口由源码静态核查（M）。
 - 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`node --check ascend-studio/src/knowledge-pocket-storage.js`、当前发布 JS `node --check`、`git diff --check` 通过；`npm --prefix ascend-studio run build:pages` 成功，更新 `ascstudio/` 与 `ascstudio-pc/studio/`。保留 Vite 主 bundle 超过 500 kB 的体积提醒；未运行自动化测试。
-- 实现提交 / push 与 GitHub Pages 部署状态待发布后补记。
+- 实现提交 `3945f7ea`（`rebrand: complete Ascend Work labels`）已普通推送至 `origin/main`；GitHub Pages workflow `41156995600` 完成且 success。线上 `/ascstudio-mini/`、`/ascstudio/`、`/ascstudio-pc/` 与 `/ascstudio-mini/knowledge-provider-map.html` 均 HTTP 200；回读确认标题、交互脚本、电脑端新 bundle 和知识蓝图已呈现 Ascend Work。
