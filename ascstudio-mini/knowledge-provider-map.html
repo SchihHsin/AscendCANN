@@ -1396,7 +1396,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="-150 0 1550 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">入口 / 形态、开发者服务、运行与接入能力、知识底座的四层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。知识底座五个线性图标分别表示多源接入、解析归一、版本与许可校验、可信知识单元、关系图与检索索引，连线表示内容加工顺序。最上层社区 AI 助手与项目客户端并列；中间箭头上方强调“从 Web 走进项目”，下方说明“能力延展到开发流程”。前者接收学习目标与已学节点，后者在授权后读取项目上下文。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。知识底座五个线性图标分别表示多源接入、解析归一、版本与许可校验、可信知识单元、关系图与检索索引，连线表示内容加工顺序。最上层社区 AI 助手与项目客户端并列；中间箭头上方强调“从 Web 走进项目”，下方说明“能力延展到开发流程”。前者接收学习目标与已学节点；项目客户端在授权后读取项目环境、版本与选定日志，并沿右侧轨线送入 MCP。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。最下层知识底座通过内容治理，将官方文档、API、课程、代码、Issue 和活动加工为带来源、范围、前置关系、版本、证据与状态的 Knowledge Unit、关系图和检索索引；索引沿独立轨道供 API 与 MCP 查询，授权完成与纠错由 Owner 复核。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1449,6 +1449,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
       <!-- 分轨 1：Web 查询进入 API；经校验的服务结果沿右侧轨道返回客户端 -->
       <path class="map-path experience" d="M500 161V202Q500 210 492 210H298Q290 210 290 218V490Q290 498 298 498H412"/>
+      <!-- 客户端沿右侧专用轨线把授权项目上下文送入 MCP -->
+      <path class="map-path future client-context" d="M1050 158V174Q1050 182 1058 182H1170Q1178 182 1178 190V524Q1178 532 1170 532H1020V508"/>
+      <text class="map-entry-note text-start" x="1190" y="400">项目上下文</text>
       <path class="map-path validation-bus" d="M1108 281H1168Q1176 281 1176 273V258Q1176 250 1184 250"/>
       <path class="map-path validation-bus" d="M1193 241V173Q1193 165 1201 165H1247Q1255 165 1255 157V115"/>
 
