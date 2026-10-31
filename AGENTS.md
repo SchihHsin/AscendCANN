@@ -8515,3 +8515,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确更名要求（H）；当前 UI 和构建入口由源码静态核查（M）。
 - 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`node --check ascend-studio/src/knowledge-pocket-storage.js`、当前发布 JS `node --check`、`git diff --check` 通过；`npm --prefix ascend-studio run build:pages` 成功，更新 `ascstudio/` 与 `ascstudio-pc/studio/`。保留 Vite 主 bundle 超过 500 kB 的体积提醒；未运行自动化测试。
 - 实现提交 `3945f7ea`（`rebrand: complete Ascend Work labels`）已普通推送至 `origin/main`；GitHub Pages workflow `41156995600` 完成且 success。线上 `/ascstudio-mini/`、`/ascstudio/`、`/ascstudio-pc/` 与 `/ascstudio-mini/knowledge-provider-map.html` 均 HTTP 200；回读确认标题、交互脚本、电脑端新 bundle 和知识蓝图已呈现 Ascend Work。
+
+### 2026-10-31 · 简化结果返回前校验文案
+
+- 将校验节点标题改为“检查通过后返回入口”，两条说明改为“来源与版本匹配 · 内容适用”和“权限符合 · 操作可执行”，让校验对象和返回条件更易理解。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户确认采用更直白的说明（H）；保留节点位置、线条、层级与其他服务关系，不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41159821796` 完成且 success；线上页面 HTTP 200，读回确认三行新文案。
+- 页面提交 `7c3d0465` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
