@@ -8522,3 +8522,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户确认采用更直白的说明（H）；保留节点位置、线条、层级与其他服务关系，不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41159821796` 完成且 success；线上页面 HTTP 200，读回确认三行新文案。
 - 页面提交 `7c3d0465` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-31 · 补齐项目客户端到 Runtime 的上下文输入线
+
+- 原图已画社区 Web 经查询 API 进入运行层，却漏画项目客户端输入授权项目上下文。新增右侧专用虚线轨线，将客户端的项目环境、版本与选定日志送入 MCP，并标注“项目上下文”；更新 SVG 无障碍描述。经 MCP / Agent Host 协作处理后，校验结果仍按原线返回客户端。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户询问客户端为何没有指向 Runtime 的连线；按现有客户端授权上下文、MCP 读取项目环境 / 日志的节点说明补全该关系（H）。页面序列、层级以及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41160744957` 完成且 success；线上页面 HTTP 200，读回确认新增右侧轨线与“项目上下文”标注。
+- 页面提交 `6391fdda` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
