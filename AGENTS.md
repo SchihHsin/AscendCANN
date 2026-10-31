@@ -8469,3 +8469,39 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将 `ascend-studio/src/App.jsx` 的可见标签改为 `Work`，并把对应样式类从 `.brand-studio` 改为 `.brand-work`（包括窄屏规则）；已重建 `ascstudio/` 与 `ascstudio-pc/studio/`。
 - 依据：用户在本地 Demo 的直接观察（H）及源码核查（M）。只修正品牌标识，不改变其他功能或页面结构。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；发布产物入口 / 品牌断言和相关 JS 语法检查通过。Vite 保留主 bundle 超过 500 kB 的体积提示；未运行自动化测试。推送与 Pages 部署状态在本条完成后补记。
+
+
+### 2026-10-30 · 为入口节点增加黑色识别图标
+
+- 在“社区 AI 助手”标题前增加对话气泡 / AI 星点线形图标，在“项目客户端”标题前增加代码窗口图标；图标为黑色线条。图标只与入口标题并排，不插入“目标 · 主题 · 已学节点”或“路径 · 课程 · 认证 · 活动”等说明之间；两类说明、节点位置与现有连线关系保持不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确指定图标位置、对象与颜色（H）；图形语义沿用已确认的图标提议（H）。不影响页面序列、层级关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；静态检查 SVG 结构确认图标与入口标题成组，说明文字保留为独立居中元素。本次未运行自动化测试。
+- 页面提交 `64c352cb` 已推送至 `origin/main`；本交接记录将单独提交并推送。
+
+### 2026-10-30 · 知识底座绿色底色置于图形最底层
+
+- 根据用户反馈，将知识底座的绿色椭圆改为 SVG 中先绘制的承托底色；后续绘制的治理连线、节点图标和文字覆盖在其上方。保留椭圆尺寸、颜色、虚线轮廓及治理节点布局，不再通过缩小或进一步淡化底色来规避遮挡。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户明确要求把绿色放到最底层以避免遮挡节点（H）；采用 SVG 绘制顺序调整实现（M）。不改变页面序列、四层关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41025484671` 完成且 success；线上页面 HTTP 200，读回确认绿色底色位于 `foundation-trunk` 连线之前。未运行自动化测试。
+- 页面提交 `a91722b0` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-30 · 拉开知识治理图标与标题的间距
+
+- 将知识底座五个治理图标及其横向加工线整体上移 12 个 SVG 单位，标题行留在原位，扩大图标与节点名称之间的空隙；中心“知识底座”标题与说明上移，避免与中央图标靠近。节点顺序、文字内容、绿色承托底色与层级关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出图标与名称挤压并要求增加间距（H）；按统一垂直位移调整图标与加工线位置（M）。不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41026810978` 完成且 success；线上页面 HTTP 200，读回确认加工线坐标为 616、五个图标组采用 `translate(0 -12)`，中心标题说明上移。
+- 页面提交 `5f208bfe` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-30 · 收紧入口说明并移除节点圆点
+
+- 移除社区 AI 助手与项目客户端标题说明之间的两个圆点；分别加大黑色图标到标题的水平间距。删除圆点后，将两处第二行说明从 y=151 上移到 y=136，和第一行说明拉近；入口节点、连线与其他楼层保持不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户直接要求去掉两处圆点、加大图标标题间距，并补充要求收紧两行说明间距（H）。不改变页面序列、层级关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41028316998` 完成且 success；线上页面 HTTP 200，读回确认两个圆点已删除、标题组偏移和说明行 y=136 已发布。
+- 页面提交 `024619f1`、`d062088c` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-31 · 下移入口标题与第一行说明
+
+- 社区 AI 助手与项目客户端两组入口的图标、标题及第一行说明统一下移 6 个 SVG 单位，保持标题与图标对齐；第二行说明保持原位，两行之间继续维持紧凑间距。连线与节点关系不变。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户要求将两组名称和首行说明下移至合适位置（H）；按标题组、图标和首行说明统一偏移落实（M）。不影响页面序列、四层关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41032437606` 完成且 success；线上页面 HTTP 200，读回确认标题组位移 `translate(... 6)`、首行说明 y=112，第二行 y=136。
+- 页面提交 `41878295` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
