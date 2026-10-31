@@ -143,3 +143,11 @@
 - 本地 1280×720 浏览器回放确认：电脑 Demo 默认显示「图像推理调试」、现有 Agent 回答与收纳按钮；点按后提示已收纳，打开知识口袋可见新卡及原有三条示例卡。页面序列保持七点不变，不改变 API / Protocol、Host / Harness、Application / Task 边界。内容是策划示例，不代表真实模型或设备验证。
 - `cd ascend-studio && npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check` 通过；未运行自动化测试。
 - 提交 `1d27dc34` 已推送至 `origin/main`；Pages workflow `40749416960` 成功。线上评审入口 HTTP 200，含 `pocket-task=图像推理调试`；电脑端 HTML 引用的新 JS / CSS 及 JS 资源均 HTTP 200。
+
+
+## 2026-10-31 · Ascend Work 品牌名同步
+
+- 将小程序手机页、微信服务通知、桌面评审页、电脑端展示页和知识供给蓝图中的当前品牌文案统一为「Ascend Work」。电脑工作台源码及当前标题已在主线完成更名，本轮同时统一其知识来源展示。
+- 对同一浏览器已保存的旧「Ascend Studio」来源标签做兼容显示；保留旧目录、`/ascstudio/` 与 `/ascstudio-mini/` 地址及本地存储键。历史 QA / 设计记录中的旧称呼保留。页序、交互、API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`node --check ascend-studio/src/knowledge-pocket-storage.js`、构建产物 `node --check` 与 `git diff --check` 通过；`npm --prefix ascend-studio run build:pages` 成功，将电脑端静态页同步到 `ascstudio/` 和 `ascstudio-pc/studio/`。Vite 保留既有主 bundle 超过 500 kB 的提醒；未运行自动化测试。
+- 推送与 Pages 部署回执记在根目录 `AGENTS.md` 本轮记录。

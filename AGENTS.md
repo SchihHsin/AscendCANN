@@ -8506,3 +8506,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户要求将两组名称和首行说明下移至合适位置（H）；按标题组、图标和首行说明统一偏移落实（M）。不影响页面序列、四层关系或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41032437606` 完成且 success；线上页面 HTTP 200，读回确认标题组位移 `translate(... 6)`、首行说明 y=112，第二行 y=136。
 - 页面提交 `41878295` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+
+### 2026-10-31 · Ascend Work 品牌名同步到小程序评审
+
+- 用户明确要求将 Ascend Studio 更名为 Ascend Work。本轮补齐小程序标题与首页品牌、电脑端 / 微信通知 / 手机知识卡文案、电脑端评审封面，以及知识供给侧服务蓝图中的当前品牌名；电脑工作台 JSX、助手署名、开发者菜单、演示栏、标题与静态产物已由主线既有更名提交更新。
+- 桌面知识口袋和小程序读取旧浏览器记录时，将精确匹配的旧品牌来源标签显示为 Ascend Work；保留 `/ascstudio/`、`/ascstudio-mini/`、源码目录名和 localStorage 键，保留历史 QA / 研究记录中的原称呼。仅品牌文案与兼容规范化有变化，未改变页面序列、交互或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确更名要求（H）；当前 UI 和构建入口由源码静态核查（M）。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`node --check ascend-studio/src/knowledge-pocket-storage.js`、当前发布 JS `node --check`、`git diff --check` 通过；`npm --prefix ascend-studio run build:pages` 成功，更新 `ascstudio/` 与 `ascstudio-pc/studio/`。保留 Vite 主 bundle 超过 500 kB 的体积提醒；未运行自动化测试。
+- 实现提交 / push 与 GitHub Pages 部署状态待发布后补记。

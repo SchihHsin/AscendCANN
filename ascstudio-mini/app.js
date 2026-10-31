@@ -2,6 +2,7 @@ import { DESKTOP_URL, TASKS, KNOWLEDGE, WEEKLY_FEATURES, WEEKLY_TOPICS, taskById
 
 const $ = s => document.querySelector(s);
 const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const brandSourceLabel = value => String(value || "Ascend Work").replaceAll("Ascend Studio", "Ascend Work");
 const paths = {
   arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>', back: '<path d="m14 5-7 7 7 7"/>',
   search: '<circle cx="10.7" cy="10.7" r="6.7"/><path d="m16 16 4 4"/>',
@@ -184,7 +185,7 @@ function updateReviewPanel(route = currentRoute) {
   document.body.classList.toggle("review-shows-desktop", showDesktopDemo);
   $("#device-wrap").classList.toggle("shows-desktop-demo", showDesktopDemo);
   $("#desktop-demo-window").hidden = !showDesktopDemo;
-  $("#review-device-caption").textContent = showDesktopDemo ? "Ascend Studio · 桌面 Demo" : "HUAWEI Pura X View · 阔直板 · 6.39″";
+  $("#review-device-caption").textContent = showDesktopDemo ? "Ascend Work · 桌面 Demo" : "HUAWEI Pura X View · 阔直板 · 6.39″";
   if (showDesktopDemo) {
     const frame = $("#desktop-demo-frame");
     if (!frame.getAttribute("src")) frame.src = frame.dataset.src;
@@ -400,7 +401,7 @@ function wechatPage(mode = "default") {
   const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
   const item = mode === "instant" ? latestPocketNotification() || reviewSampleItem() : mode === "pending" ? currentReviewNotification() : latestPocketNotification();
   const unread = item ? item.status === "sent" : !state.noticeRead;
-  const preview = item ? `Ascend Studio：给你送来「${item.title || "一张知识卡"}」` : state.noticeRead ? "Ascend Studio：每周开发速览" : "Ascend Studio：每周开发速览到了";
+  const preview = item ? `Ascend Work：给你送来「${item.title || "一张知识卡"}」` : state.noticeRead ? "Ascend Work：每周开发速览" : "Ascend Work：每周开发速览到了";
   const time = item?.sentAt ? new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }).format(new Date(item.sentAt)) : "09:12";
   const route = item ? `wechat-notification/${encodeURIComponent(item.id)}` : "wechat-notification";
   const serviceRow = mode === "pending" && !item ? "" : `<button class="wechat-chat-row service-chat" data-route="${esc(route)}"><span class="wechat-avatar service-avatar">${icon("pocket")}</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>服务通知</strong><time>${esc(time)}</time></span><span class="wechat-chat-preview"><span>${esc(preview)}</span></span></span>${unread ? '<span class="wechat-unread-count">1</span>' : ""}</button>`;
@@ -412,18 +413,18 @@ function wechatNotificationPage(itemId = "") {
   const item = itemId === REVIEW_SAMPLE_ID ? reviewSampleItem() : pocket.items.find(entry => entry.id === itemId) || latestPocketNotification();
   if (item) {
     const time = item.sentAt ? new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }).format(new Date(item.sentAt)) : "刚刚";
-    return `<div class="wechat-service-page"><div class="wechat-date-divider">今天 · ${esc(time)}</div><article class="wechat-push-card"><div class="push-source"><img src="./mark.svg" alt=""><span><strong>Ascend Studio</strong><small>小程序订阅消息 · 来自电脑端</small></span><time>${esc(time)}</time></div><h1>有一张知识卡，适合在手机上看</h1><p>你从电脑端知识口袋里选择了「现在看」。这条内容已整理成手机短读卡。</p><div class="push-preview"><span>${esc(item.sourceType || "学习内容")} · ${esc(item.sourceLabel || "Ascend Studio")}</span><strong>${esc(item.title || "未命名知识点")}</strong><p>${esc(item.summary || "打开后查看完整内容。")}</p></div><button class="primary-button" data-route="pocket-message/${encodeURIComponent(item.id)}">打开知识卡${icon("arrow")}</button></article><p class="wechat-service-hint">这里模拟微信服务通知列表中的新消息；真实发送需要接入小程序订阅消息能力。</p></div>`;
+    return `<div class="wechat-service-page"><div class="wechat-date-divider">今天 · ${esc(time)}</div><article class="wechat-push-card"><div class="push-source"><img src="./mark.svg" alt=""><span><strong>Ascend Work</strong><small>小程序订阅消息 · 来自电脑端</small></span><time>${esc(time)}</time></div><h1>有一张知识卡，适合在手机上看</h1><p>你从电脑端知识口袋里选择了「现在看」。这条内容已整理成手机短读卡。</p><div class="push-preview"><span>${esc(item.sourceType || "学习内容")} · ${esc(brandSourceLabel(item.sourceLabel))}</span><strong>${esc(item.title || "未命名知识点")}</strong><p>${esc(item.summary || "打开后查看完整内容。")}</p></div><button class="primary-button" data-route="pocket-message/${encodeURIComponent(item.id)}">打开知识卡${icon("arrow")}</button></article><p class="wechat-service-hint">这里模拟微信服务通知列表中的新消息；真实发送需要接入小程序订阅消息能力。</p></div>`;
   }
   const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
   const date = new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric", timeZone: "Asia/Shanghai" }).format(new Date());
-  return `<div class="wechat-service-page"><div class="wechat-date-divider">${esc(date)} · 09:12</div><article class="wechat-push-card"><div class="push-source"><img src="./mark.svg" alt=""><span><strong>Ascend Studio</strong><small>小程序订阅消息</small></span><time>09:12</time></div><h1>每周开发速览到了</h1><p>一条${esc(feature.category)}重点，再加两张按你关注或疑问整理的知识卡。</p><div class="push-preview"><span>${esc(feature.category)} · 本周重点</span><strong>${esc(feature.title)}</strong><div><i></i><i></i><span>2 张相关知识卡</span></div></div><button class="primary-button" data-route="briefing">查看本周速览${icon("arrow")}</button></article><p class="wechat-service-hint">通过微信服务通知送达。此处为交互演示，真实推送需用户授权和可用订阅模板。</p></div>`;
+  return `<div class="wechat-service-page"><div class="wechat-date-divider">${esc(date)} · 09:12</div><article class="wechat-push-card"><div class="push-source"><img src="./mark.svg" alt=""><span><strong>Ascend Work</strong><small>小程序订阅消息</small></span><time>09:12</time></div><h1>每周开发速览到了</h1><p>一条${esc(feature.category)}重点，再加两张按你关注或疑问整理的知识卡。</p><div class="push-preview"><span>${esc(feature.category)} · 本周重点</span><strong>${esc(feature.title)}</strong><div><i></i><i></i><span>2 张相关知识卡</span></div></div><button class="primary-button" data-route="briefing">查看本周速览${icon("arrow")}</button></article><p class="wechat-service-hint">通过微信服务通知送达。此处为交互演示，真实推送需用户授权和可用订阅模板。</p></div>`;
 }
 function pocketMessagePage(item) {
   if (!item) return empty("这张知识卡暂时不可用", "回到微信通知或我的知识口袋，继续查看其他内容。", "回到微信", "go-wechat");
   const paragraphs = String(item.content || item.summary || "").split(/\n\s*\n/).map(text => text.trim()).filter(Boolean);
   if (item.summary && paragraphs[0] === item.summary.trim()) paragraphs.shift();
   const understood = item.status === "understood";
-  return `<article class="pocket-message-page"><div class="pocket-message-meta">${esc(item.sourceLabel || "Ascend Studio")} · ${esc(item.sourceType || "学习内容")}</div><h1>${esc(item.title)}</h1>${understood ? `<div class="pocket-handoff-state">${icon("check")} 已理解 · 状态已带回电脑端</div>` : ""}${item.summary ? `<p class="pocket-message-summary">${esc(item.summary)}</p>` : ""}<div class="pocket-message-body">${paragraphs.map(text => `<p>${esc(text)}</p>`).join("")}</div>${item.taskId ? `<div class="pocket-message-context">来自电脑端任务 · ${esc(item.taskId)}</div>` : ""}<div class="pocket-message-actions"><button class="secondary-button" data-route="wechat">回到微信</button><button class="primary-button" data-action="pocket-understood" data-id="${esc(item.id)}">${icon("check")}${understood ? "已记住" : "我看懂了"}</button></div><p class="prototype-note">这张卡来自当前浏览器中的电脑端知识口袋，适配手机阅读。</p></article>`;
+  return `<article class="pocket-message-page"><div class="pocket-message-meta">${esc(brandSourceLabel(item.sourceLabel))} · ${esc(item.sourceType || "学习内容")}</div><h1>${esc(item.title)}</h1>${understood ? `<div class="pocket-handoff-state">${icon("check")} 已理解 · 状态已带回电脑端</div>` : ""}${item.summary ? `<p class="pocket-message-summary">${esc(item.summary)}</p>` : ""}<div class="pocket-message-body">${paragraphs.map(text => `<p>${esc(text)}</p>`).join("")}</div>${item.taskId ? `<div class="pocket-message-context">来自电脑端任务 · ${esc(item.taskId)}</div>` : ""}<div class="pocket-message-actions"><button class="secondary-button" data-route="wechat">回到微信</button><button class="primary-button" data-action="pocket-understood" data-id="${esc(item.id)}">${icon("check")}${understood ? "已记住" : "我看懂了"}</button></div><p class="prototype-note">这张卡来自当前浏览器中的电脑端知识口袋，适配手机阅读。</p></article>`;
 }
 function discover() {
   const t = activeTask();
@@ -555,7 +556,7 @@ function render() {
     $("#app-header").innerHTML = `<div class="header-title"><button class="icon-button" data-route="wechat" aria-label="返回微信消息列表">${icon("back")}</button><span>服务通知</span></div><span class="wechat-notification-menu">${icon("more")}</span>`;
   } else {
     const backRoute = page === "knowledge" ? esc(returnRoute) : page === "pocket-message" || page === "review-handoff" ? esc(pocketReturnRoute) : page === "briefing" || page === "review-briefing" || page === "review-weekly-settings" ? "wechat-notification" : "tasks";
-    $("#app-header").innerHTML = `<div class="header-title">${nested ? `<button class="icon-button" data-route="${backRoute}" aria-label="返回">${icon("back")}</button><span>${pageName}</span>` : `<img src="./mark.svg" width="22" height="22" alt=""><span>Ascend Studio</span>`}</div><div class="mini-capsule"><button data-action="more" aria-label="更多选项">${icon("more")}</button><i></i><button data-route="discover" aria-label="回到发现首页">${icon("home")}</button></div>`;
+    $("#app-header").innerHTML = `<div class="header-title">${nested ? `<button class="icon-button" data-route="${backRoute}" aria-label="返回">${icon("back")}</button><span>${pageName}</span>` : `<img src="./mark.svg" width="22" height="22" alt=""><span>Ascend Work</span>`}</div><div class="mini-capsule"><button data-action="more" aria-label="更多选项">${icon("more")}</button><i></i><button data-route="discover" aria-label="回到发现首页">${icon("home")}</button></div>`;
   }
   const pocketItem = id === REVIEW_SAMPLE_ID ? reviewSampleItem() : readDesktopPocket().items.find(item => item.id === id);
   $("#screen").innerHTML = page === "wechat" ? wechatPage() : page === "review-pending" ? wechatPage("pending") : page === "review-instant" ? wechatPage("instant") : page === "wechat-notification" ? wechatNotificationPage(id) : page === "pocket-message" || page === "review-handoff" ? pocketMessagePage(pocketItem) : page === "discover" ? discover() : page === "review-briefing" || page === "review-weekly-settings" ? weeklyDigest(true) : page === "briefing" ? weeklyDigest() : k ? detail(k) : page === "tasks" ? tasksPage() : page === "task" ? taskDetail(taskById(id)) : mine(id);
@@ -607,7 +608,7 @@ function handoff(t) {
   const notes = state.notes.filter(n => n.taskId === t.id);
   const learned = t.knowledge.filter(id => state.learned.includes(id)).map(knowledgeById);
   const text = `${t.question}${learned.length ? `\n\n我已理解：\n${learned.map(k => `- ${k.takeaway}`).join("\n")}` : ""}${notes.length ? `\n\n我的学习小结：\n${notes.map(n => n.text).join("\n\n")}` : ""}`;
-  openOverlay("回到电脑，接着这个思路", `<div class="handoff-visual">${icon("pocket")}<span>···········</span>${icon("desktop")}</div><p class="handoff-copy">复制这份任务小结，在电脑端粘贴继续。<br>也可以先改成你想问的问题。</p><label class="field-label" for="handoff-text">${esc(t.title)}</label><textarea id="handoff-text" rows="7" maxlength="8000">${esc(text)}</textarea><button class="primary-button" data-action="copy-handoff">${icon("copy")}复制小结与问题</button><a class="secondary-button full-width" href="${DESKTOP_URL}" target="_blank" rel="noopener">打开 Ascend Studio ${icon("external")}</a>`);
+  openOverlay("回到电脑，接着这个思路", `<div class="handoff-visual">${icon("pocket")}<span>···········</span>${icon("desktop")}</div><p class="handoff-copy">复制这份任务小结，在电脑端粘贴继续。<br>也可以先改成你想问的问题。</p><label class="field-label" for="handoff-text">${esc(t.title)}</label><textarea id="handoff-text" rows="7" maxlength="8000">${esc(text)}</textarea><button class="primary-button" data-action="copy-handoff">${icon("copy")}复制小结与问题</button><a class="secondary-button full-width" href="${DESKTOP_URL}" target="_blank" rel="noopener">打开 Ascend Work ${icon("external")}</a>`);
 }
 async function copy(text) {
   try { await navigator.clipboard.writeText(text); return true; } catch {
@@ -699,7 +700,7 @@ document.addEventListener("click", async event => {
   else if (action === "copy-handoff") { const ok = await copy($("#handoff-text").value); if (ok) { button.innerHTML = `${icon("check")}已复制，在电脑端粘贴继续`; toast("任务小结已复制"); } else { $("#handoff-text").select(); toast("请长按或按 Ctrl / ⌘ + C 复制选中的小结"); } }
   else if (action === "more") openOverlay("随手学一点", `<div class="menu-options"><button data-action="about">${icon("spark")}关于口袋新知${icon("chevron")}</button><button data-action="share">${icon("copy")}复制当前知识卡链接${icon("chevron")}</button><a href="${DESKTOP_URL}" target="_blank" rel="noopener">${icon("desktop")}打开电脑端 Demo${icon("external")}</a></div>`);
   else if (action === "share") { const url = location.href; const ok = await copy(url); closeOverlay(); if (ok) toast("链接已复制，手机打开也可以继续看"); else openOverlay("分享这点新知", `<p class="sheet-hint">长按或选中下方链接复制。</p><textarea rows="3" readonly aria-label="分享链接">${esc(url)}</textarea>`); }
-  else if (action === "about") openOverlay("Ascend Studio · 口袋新知", `<div class="about-mark"><img src="./mark.svg" alt="" width="48" height="48"></div><p class="about-copy">把下一点新知，接上你的思路。</p><p class="sheet-hint">这是交互 Demo。桌面与手机页面在同一浏览器中通过本地存储模拟知识口袋同步；不同设备的账户同步、真实微信发送与周期推送尚未接入。</p><p class="sheet-hint">收藏与学习记录保存在当前浏览器；知识卡中的吞吐、梯度等数值用于概念演示。延伸阅读可打开相应公开资料。</p><button class="primary-button" data-action="close-overlay">继续探索 ${icon("arrow")}</button>`);
+  else if (action === "about") openOverlay("Ascend Work · 口袋新知", `<div class="about-mark"><img src="./mark.svg" alt="" width="48" height="48"></div><p class="about-copy">把下一点新知，接上你的思路。</p><p class="sheet-hint">这是交互 Demo。桌面与手机页面在同一浏览器中通过本地存储模拟知识口袋同步；不同设备的账户同步、真实微信发送与周期推送尚未接入。</p><p class="sheet-hint">收藏与学习记录保存在当前浏览器；知识卡中的吞吐、梯度等数值用于概念演示。延伸阅读可打开相应公开资料。</p><button class="primary-button" data-action="close-overlay">继续探索 ${icon("arrow")}</button>`);
 });
 document.addEventListener("input", event => {
   if (event.target.id === "knowledge-search") { query = event.target.value; group = 0; $(".clear-search").classList.toggle("is-hidden", !query); $("#discovery-results").innerHTML = discoveryResults(); }
