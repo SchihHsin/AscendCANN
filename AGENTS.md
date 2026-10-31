@@ -8536,3 +8536,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html` 的技术实现图知识底座层。依据：用户指出术语不清并要求统一梳理（H）；按照内容接入、整理、核对、条目化、关联与查找顺序改写（M）。节点数、布局、连线及其他楼层不变；不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41161521724` 完成且 success；线上页面 HTTP 200，读回确认五步新标题、说明及中心查找文案。未运行自动化测试。
 - 页面提交 `e637cfe9` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-31 · 下移入口内容使其在椭圆内垂直居中
+
+- 将社区 AI 助手、项目客户端两组入口中的图标 / 标题与首行说明各下移 8 个 SVG 单位；第二行说明、两入口之间的箭头及其他楼层保持原位，使内容组在各自椭圆中更居中。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出两个入口内容在椭圆内偏上并要求下移（H）。页面结构、节点关系、连线和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41177398298` 完成且 success；线上页面 HTTP 200，读回确认标题组偏移 `translate(... 14)`、首行 y=120、第二行 y=144。
+- 页面提交 `5d0f8cd2` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
