@@ -8529,3 +8529,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户询问客户端为何没有指向 Runtime 的连线；按现有客户端授权上下文、MCP 读取项目环境 / 日志的节点说明补全该关系（H）。页面序列、层级以及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41160744957` 完成且 success；线上页面 HTTP 200，读回确认新增右侧轨线与“项目上下文”标注。
 - 页面提交 `6391fdda` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+### 2026-10-31 · 用白话统一知识底座步骤
+
+- 将知识底座五步统一为“接入内容来源 → 提取并整理内容 → 核对版本与适用条件 → 形成可引用知识条目 → 关联内容并便于外部查找”，并把具体动作和产物写入节点说明。用“统一格式、清理重复”解释原“解析与归一”；将 Knowledge Unit、Owner、全文 / 语义检索等词改成可读的中文说明。同步简化区域副标题、中心检索说明、页脚和 SVG 无障碍描述。
+- 修改 `ascstudio-mini/knowledge-provider-map.html` 的技术实现图知识底座层。依据：用户指出术语不清并要求统一梳理（H）；按照内容接入、整理、核对、条目化、关联与查找顺序改写（M）。节点数、布局、连线及其他楼层不变；不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；GitHub Pages workflow `41161521724` 完成且 success；线上页面 HTTP 200，读回确认五步新标题、说明及中心查找文案。未运行自动化测试。
+- 页面提交 `e637cfe9` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
