@@ -8611,4 +8611,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选择方案 1：在「多层探索」Tab 的可继续下钻节点上恢复小型闭合进度圈，保留外围鼠标方向短弧。鼠标停留时圆环按 620ms 逐步闭合，与节点悬浮预览等待一致；点击锁定时圆环扩散淡出。
 - 实现于 `ascend-studio/src/ExploreTaskHome.jsx`、`ascend-studio/src/explore-task-home.css`；Pages 与电脑端展示副本由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。
 - 依据：用户明确选择方案 1（H）；本地预览确认多层探索路径与节点变化（M）。未改变 Tab 顺序、提示词生成方式或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 本地预览确认最新首页与训练主题路径可见。未运行自动化测试。提交 / push 与 Pages 发布回执待完成后补记。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 本地预览确认最新首页与训练主题路径可见。未运行自动化测试。实现提交 `4d54a930` 已推送至 `origin/main`；GitHub Pages workflow `41496448516` 成功，线上 `/AscendCANN/ascstudio/`、`index-CoFt8SSr.js` 与 `index-BvxxS5s9.css` 均 HTTP 200。
