@@ -8586,3 +8586,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根据本轮 VOC 页面排版问题，更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/deck-architecture.md`、`references/components.md` 与 `references/checklist.md`：VOC 卡片组默认按内容高度布局，并在页眉与页脚之间上下居中；组件骨架不再以 `flex:1` 撑满主体；补充以真实可见边界检查、匹配页脚选择器和不同视口复核的要求。其他组件仍依实际内容高度选择居中或填满。
 - 依据：本轮用户明确指出 VOC 墙理论上也应垂直居中（H）。未修改汇报页面，不影响现有页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：skill frontmatter 与参考路径结构检查通过，`git diff --check` 通过；skill-creator 的 `quick_validate.py` 因环境缺少 `PyYAML` 无法运行。skill 仓库提交 `faaf211` 已推送至 `origin/main`；既有模板文件改动未暂存、未提交。
+
+### 2026-11-03 · 按阐释目标选择 ImageGen 或原生图形
+
+- 更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/chart-selection.md` 和 `references/pitfalls.md`：不再笼统禁止生成图，也不为固定主题或页面指定 ImageGen。按图要解释的内容选择媒介：精确数据、证据、真实界面和技术关系使用可核对的 HTML / SVG / 图表；概念场景与视觉隐喻在确实帮助理解时可用 ImageGen；两者兼需时组合，并明确概念图不是实证材料。
+- 依据：用户指出应依据“什么时候适合用图像阐释”来判断，不要局限到具体场景（H）。没有修改报告页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；skill 仓库提交 `9e2fb1e` 已推送至 `origin/main`，仅提交本次三份规则文档。
