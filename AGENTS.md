@@ -8604,3 +8604,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根据用户确认，更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/chart-selection.md` 与 `references/checklist.md`：移除“手画 / 手绘优先”，改为按阐释目标选择 ImageGen、真实素材、原生图形和图表库。ImageGen 可承担概念、场景、定性发现与视觉隐喻的主要表达；真实素材用于具体产品与证据；原生图形用于需要准确核对、编辑或交互的信息。
 - 依据：用户明确要求不要设置“手绘优先”规则，并同意更新 Skill（H）。没有修改访谈报告页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；检索确认 Skill 中已无“手画优先 / 手绘优先”规则。`quick_validate.py` 因当前 Python 缺少 `PyYAML` 未能运行。Skill 仓库提交 `8f9f138` 已推送 `origin/main`；模板目录中的既有修改未暂存、未提交。
+
+
+### 2026-11-03 · 多层探索恢复悬浮闭合圈
+
+- 用户选择方案 1：在「多层探索」Tab 的可继续下钻节点上恢复小型闭合进度圈，保留外围鼠标方向短弧。鼠标停留时圆环按 620ms 逐步闭合，与节点悬浮预览等待一致；点击锁定时圆环扩散淡出。
+- 实现于 `ascend-studio/src/ExploreTaskHome.jsx`、`ascend-studio/src/explore-task-home.css`；Pages 与电脑端展示副本由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。
+- 依据：用户明确选择方案 1（H）；本地预览确认多层探索路径与节点变化（M）。未改变 Tab 顺序、提示词生成方式或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 本地预览确认最新首页与训练主题路径可见。未运行自动化测试。提交 / push 与 Pages 发布回执待完成后补记。

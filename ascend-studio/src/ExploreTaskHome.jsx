@@ -442,7 +442,7 @@ export function ExploreTaskHome({ onCreateTask }) {
           aria-label={focused.label + (isPreviewing ? "。点击锁定当前方向。" : "。当前已选方向。")}
         >
           <span className="explore-field__node-content">
-            {topicEnglishTitles[focused.id] && <span className="explore-field__node-kind"><span className="explore-field__node-cue" aria-hidden="true"><i /></span>{topicEnglishTitles[focused.id]}</span>}
+            {topicEnglishTitles[focused.id] && <span className="explore-field__node-kind"><span className="explore-field__node-cue" aria-hidden="true"><i /><svg className="explore-field__dwell-ring" viewBox="0 0 18 18"><circle className="explore-field__dwell-track" cx="9" cy="9" r="7" /><circle className="explore-field__dwell-progress" cx="9" cy="9" r="7" pathLength="100" /></svg></span>{topicEnglishTitles[focused.id]}</span>}
             <strong>{focused.label}</strong>
             <span className="explore-field__node-hint">{focused.hint}</span>
           </span>
@@ -473,7 +473,7 @@ export function ExploreTaskHome({ onCreateTask }) {
           >
             <span className="explore-field__node-content">
               <span className="explore-field__node-kind">
-                <span className="explore-field__node-cue" aria-hidden="true"><i /></span>
+                <span className="explore-field__node-cue" aria-hidden="true"><i /><svg className="explore-field__dwell-ring" viewBox="0 0 18 18"><circle className="explore-field__dwell-track" cx="9" cy="9" r="7" /><circle className="explore-field__dwell-progress" cx="9" cy="9" r="7" pathLength="100" /></svg></span>
                 {Icon && rootNode ? <Icon size={ICON_SIZE.inline} /> : null}
                 {rootNode ? topicEnglishTitles[item.id] || label : label}
               </span>
