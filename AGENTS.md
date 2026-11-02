@@ -8557,3 +8557,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出上一版只有小字号文字标注，线条本身看起来变化不明显。将两处关系说明明确写成“实线：服务请求与结果流”和“虚线：授权项目上下文”，并把标注从 12px / 常规字重调整为 14px / 720 字重、使用更深的蓝灰色；不增加独立图例，不改变连线路径、节点或 P2 路线图。
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户看图反馈变化不明显并追问是否为新版（H）；加大线型语义注释，让图面直接说明两类关系。没有影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；本地 8133 页面返回两处新标注和样式。页面与交接记录已提交并推送至 `origin/main`；线上部署结果随后核对。
+
+
+### 2026-11-02 · 统一架构图的连线语法
+
+- 将全图带箭头实线统一解释为实际调用或数据流（服务调用 / 返回、Host 调用 Skill / MCP、知识供给、内容治理加工）；带箭头虚线仅表示经授权后补充进入 Agent Host 的项目上下文；无箭头干线表示共用传输路径，分支箭头表达方向；颜色继续区分功能域。将知识底座外围的长虚线椭圆改为点状边界，以免与虚线关系箭头混淆。
+- 项目客户端上下文线改为进入 Agent Host，Host 到 Skill / MCP 的调用继续用实线；入口附近同步显示线型规则。修改 SVG 无障碍描述，明确分隔线与区域边界不是关系流，P0–P2 由独立路线图表达。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户确认按全图统一规则调整（H）。保留节点和页面结构；不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；本地 8133 页面返回新连线路径、标签和样式。页面与交接记录已提交并推送至 `origin/main`。
