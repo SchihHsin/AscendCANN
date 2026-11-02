@@ -8592,3 +8592,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/chart-selection.md` 和 `references/pitfalls.md`：不再笼统禁止生成图，也不为固定主题或页面指定 ImageGen。按图要解释的内容选择媒介：精确数据、证据、真实界面和技术关系使用可核对的 HTML / SVG / 图表；概念场景与视觉隐喻在确实帮助理解时可用 ImageGen；两者兼需时组合，并明确概念图不是实证材料。
 - 依据：用户指出应依据“什么时候适合用图像阐释”来判断，不要局限到具体场景（H）。没有修改报告页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；skill 仓库提交 `9e2fb1e` 已推送至 `origin/main`，仅提交本次三份规则文档。
+
+### 2026-11-03 · 图形释义优先并整合 ImageGen 选型
+
+- 按用户确认的文案更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/chart-selection.md`、`references/components.md` 与 `references/checklist.md`：逐页先明确读者需要理解什么，优先用图解呈现关系、流程、层级、因果、对照和变化；按阐释目标在 ImageGen、HTML / SVG / 图表之间选择，必要时组合；卡片用于彼此独立的并列信息、原声证据或查阅条目，并在交付检查中复核卡片平铺是否遮蔽关系。
+- 依据：用户确认将图形释义优先、ImageGen 判断方式和卡片边界一并写入 Skill，并要求使用正向、直接的表述（H）。没有修改报告页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：skill 文档 `git diff --check` 通过，检索确认总规则、媒介判断、组件路由和检查清单均已更新。skill 仓库提交 `bd07e20` 已推送至 `origin/main`；模板库中其他已有改动未暂存、未提交。
