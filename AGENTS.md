@@ -8612,3 +8612,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现于 `ascend-studio/src/ExploreTaskHome.jsx`、`ascend-studio/src/explore-task-home.css`；Pages 与电脑端展示副本由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。
 - 依据：用户明确选择方案 1（H）；本地预览确认多层探索路径与节点变化（M）。未改变 Tab 顺序、提示词生成方式或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 本地预览确认最新首页与训练主题路径可见。未运行自动化测试。实现提交 `4d54a930` 已推送至 `origin/main`；GitHub Pages workflow `41496448516` 成功，线上 `/AscendCANN/ascstudio/`、`index-CoFt8SSr.js` 与 `index-BvxxS5s9.css` 均 HTTP 200。
+
+
+### 2026-11-03 · 按确认范围重新设计访谈报告 21 页
+
+- 全篇重排 `cann-dashboard/mindstudio-agent-interview-research-report.html` 的内容呈现，并新增 `cann-dashboard/mindstudio-agent-interview-research-report-assets/` 内的 10 张 ImageGen 概念图。保留 21 页章节顺序、访谈观点边界、原有外部来源链接与 Nsight 官方截图；目录改为普通章节列表。其余页面使用任务叙事图、VOC 时间线、流程、证据分层、实验链、治理关卡、试点路线、复访问题和来源索引等结构，减少同款卡片平铺。
+- ImageGen 主视觉用于封面、核心判断、性能调优断点、任务协作、参数巡优、NVIDIA 案例概览与经验回流等页面；精确数字、界面截图、产品名称、任务关系和引用仍由 HTML / 原始截图承载。生成图只作概念表达，不作竞品证据。没有把公开案例认作受访者提到的内部工具，也没有改变 API / Protocol、Host / Harness、Application / Task 边界或页面序列。
+- 依据：用户确认将访谈报告 21 页全部重新设计，并已确认目录无需可视化（H）；公开产品截图和引用仍可复核（H）；ImageGen 画面只表达概念关系（M）。
+- 验证：21 页外层 section、HTML 标签栈、div 嵌套平衡；9 个原有外部 URL 均保留；10 张素材路径均存在；内联脚本 `node --check`、`git diff --check` 通过。浏览器对本地 `file://` 预览拒绝访问，并明确禁止通过其他浏览器入口绕过；因此未声称已完成渲染截图检查。提交与推送状态待完成。
