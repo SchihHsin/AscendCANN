@@ -8573,3 +8573,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 移除 `client-context` 与反馈关系的虚线样式；保留横向层级分隔线与知识底座点状椭圆作为结构边界，它们不代表关系流或 P2 阶段。更新可访问描述与入口标注，明确所有关系箭头为实线。
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户确认所有实际关系线统一实线，授权上下文线仍作为真实流转；阶段由路线图表达（H）。不改变节点、层级或页面序列，不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；本地 8133 页面返回实线样式、新标注和 Agent Host 路径。页面与交接记录已提交并推送至 `origin/main`。
+
+### 2026-11-02 · 性能调优访谈与 NVIDIA 公开案例汇报
+
+- 新增单文件网页汇报 `cann-dashboard/mindstudio-agent-interview-research-report.html`，按 Report PPT skill 完整模板制作 21 页，整理一次访谈讨论的性能分析痛点、Agent 协作、团队回应、服务化巡优、NVIDIA 案例与经验回流；同时附访谈时间索引和公开来源。访谈观点、团队当时的方案、设计推演和公开事实分别标注，未将口述数字作为统计结论。
+- NVIDIA 部分区分 Nsight Compute / Copilot 界面、AVO 长时优化研究、KDA 工作流及内部 CUDA Agent 轨迹；没有认定它们就是受访者所述的同一内部工具，也不把 CUDA 文档检索 MCP 写成性能采集执行能力。资料链接和 Nsight 官方示例截图均保留来源。结论为单次访谈与公开材料，不影响现有页面序列和 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Chrome 在 1440×900 和 1280×720 检查全部 21 页，正文无越界；键盘翻页、URL 页码、概览选页、全屏进入 / 退出和图片加载通过，内联脚本 `node --check` 与 `git diff --check` 通过。所有页面图片内嵌，字体使用 CDN 与系统回退。
+- 页面提交 `f6c75e35`、名称补充提交 `666bf2b3` 已推送 `origin/main`；Pages workflow `41425565950` 成功，线上页面 HTTP 200，已核对 21 页及 NVIDIA 方案全称。后续需向受访者确认所指内部工具名称及其接入方式。
