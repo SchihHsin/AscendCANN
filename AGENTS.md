@@ -8543,3 +8543,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出两个入口内容在椭圆内偏上并要求下移（H）。页面结构、节点关系、连线和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`git diff --check` 通过；GitHub Pages workflow `41177398298` 完成且 success；线上页面 HTTP 200，读回确认标题组偏移 `translate(... 14)`、首行 y=120、第二行 y=144。
 - 页面提交 `5d0f8cd2` 已推送至 `origin/main`；本交接记录随后单独提交并推送。
+
+
+### 2026-11-02 · 让连线表达服务流与授权上下文
+
+- 第 6 页将社区 Web 到 API 的实线标注为“服务请求 / 结果流”，将项目客户端到 MCP 的虚线标注为“经授权的项目上下文”。虚线改用 `client-context` 语义类，不再复用表示未来阶段的 `future` 类；P0–P2 继续由路线图表达。同步更新图的无障碍描述，并把“内容加工顺序”限定为知识底座内部连线。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出实线 / 虚线要表达关系原理，不应用来区分 P2 阶段，并要求直接修改查看（H）。没有更改页面序列、节点结构或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；本地 8133 预览返回新线型类和两处标注。页面提交 `71fcfdee` 已推送至 `origin/main`。GitHub Pages 初次 HTTP 200 检查尚未读到新文案，线上发布仍待确认；当前环境没有 `gh` CLI。
