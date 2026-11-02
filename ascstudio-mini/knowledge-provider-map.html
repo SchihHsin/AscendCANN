@@ -1131,8 +1131,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .capability-map .map-path.foundation-trunk{stroke:#7fa38b;stroke-width:1.3;opacity:.62;marker-end:none;stroke-linecap:round;stroke-linejoin:round}
 .capability-map .map-path.foundation-link{stroke:#7fa38b;stroke-width:1.4;opacity:.84;marker-end:url(#capability-feedback-arrow)}
 .capability-map .map-path.service-bridge{stroke:#927fb5;stroke-width:1.45;opacity:.78}
-.capability-map .map-path.feedback{stroke:#7fa38b;stroke-dasharray:6 7;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#capability-feedback-arrow)}
-.capability-map .map-path.client-context{stroke:#7e9dbc;stroke-dasharray:7 8;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#capability-arrow)}
+.capability-map .map-path.feedback{stroke:#7fa38b;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#capability-feedback-arrow)}
+.capability-map .map-path.client-context{stroke:#7e9dbc;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#capability-arrow)}
 .capability-map .map-orbit.dash{stroke-dasharray:2 8;stroke-linecap:round;opacity:.48}
 .capability-map .map-path.foundation-link{stroke:#7fa38b;stroke-width:1.4;marker-end:url(#capability-feedback-arrow)}
 .capability-map .map-node-shape{stroke-width:2.4}
@@ -1398,7 +1398,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
     <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="-150 0 1550 700" preserveAspectRatio="xMidYMid meet">
       <title id="cap-map-title">入口 / 形态、开发者服务、运行与接入能力、知识底座的四层关系图</title>
-      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。知识底座按五步整理内容：接入文档、API、课程、代码、样例、Issue 和活动；提取正文、代码与表格，按主题拆分、统一格式并清理重复；按 CANN、芯片、OS 和框架核对版本与适用条件，确认内容能否公开、明确谁负责更新并复核过期内容；形成带原文链接、适用范围、前置知识、版本与核验结果的可引用知识条目；建立概念、前置知识与兼容版本的关联，提供关键词或问题查找。robots.txt、sitemap.xml、Schema.org 与 llms.txt 用于帮助站外发现公开内容。知识底座内部连线表示内容加工顺序。最上层社区 AI 助手与项目客户端并列；中间箭头上方强调“从 Web 走进项目”，下方说明“能力延展到开发流程”。前者接收学习目标与已学节点。连线规则为：带箭头实线表示实际调用或数据流，包括服务请求与返回、Host 调用 Skill / MCP、知识供给和内容治理加工；带箭头虚线表示项目客户端经授权后补充到 Agent Host 的环境、版本与日志上下文；无箭头干线表示共用传输路径，由分支箭头表达方向；线色区分所属功能域。点状椭圆与浅色横向分隔线表示区域或层级，不表示数据流或建设阶段。P0 到 P2 由独立路线图表达。项目客户端的项目上下文由 Agent Host 组装并按权限筛选，再由 Host 调用 MCP。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。授权完成与纠错反馈由内容负责团队复核并更新知识。四个横向区域表达架构层级，不表示时间步骤。</desc>
+      <desc id="cap-map-desc">图例用方形表示接口、菱形表示 Agent 编排、双环表示知识底座、多色圆点表示开发者服务、绿色圆点表示内容治理。知识底座按五步整理内容：接入文档、API、课程、代码、样例、Issue 和活动；提取正文、代码与表格，按主题拆分、统一格式并清理重复；按 CANN、芯片、OS 和框架核对版本与适用条件，确认内容能否公开、明确谁负责更新并复核过期内容；形成带原文链接、适用范围、前置知识、版本与核验结果的可引用知识条目；建立概念、前置知识与兼容版本的关联，提供关键词或问题查找。robots.txt、sitemap.xml、Schema.org 与 llms.txt 用于帮助站外发现公开内容。知识底座内部连线表示内容加工顺序。最上层社区 AI 助手与项目客户端并列；中间箭头上方强调“从 Web 走进项目”，下方说明“能力延展到开发流程”。前者接收学习目标与已学节点。连线规则为：所有带箭头实线表示实际调用或数据流，包括服务请求与返回、经授权提供到 Agent Host 的项目上下文、Host 调用 Skill / MCP、知识供给和内容治理加工；无箭头干线表示共用传输路径，由分支箭头表达方向；颜色区分所属功能域。点状椭圆与浅色横向分隔线表示分组或层级，不表示关系流或建设阶段。P0 到 P2 由独立路线图表达。项目客户端的项目上下文由 Agent Host 组装并按权限筛选，再由 Host 调用 MCP。开发者服务层提供学习路径规划、技术图解、资源推荐、活动与内容上新；学习、图解和推荐由运行层能力协同提供，活动与上新连接内容目录和日历数据。运行与接入能力层包含查询 API、Agent Host、Skill 工作流与 MCP 知识 / 工具接入：Web 查询经 API 检索，Host 组装授权上下文并分流调用 Skill 和 MCP，MCP 连接活动目录；服务结果汇总后校验来源、版本、范围、权限与可执行性，再返回入口。授权完成与纠错反馈由内容负责团队复核并更新知识。四个横向区域表达架构层级，不表示时间步骤。</desc>
       <defs>
         <marker id="capability-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
         <marker id="capability-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
@@ -1451,9 +1451,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
       <!-- 分轨 1：Web 查询进入 API；经校验的服务结果沿右侧轨道返回客户端 -->
       <path class="map-path experience" d="M500 161V202Q500 210 492 210H298Q290 210 290 218V490Q290 498 298 498H412"/>
-      <!-- 客户端沿右侧专用轨线把授权项目上下文送入 MCP -->
+      <!-- 客户端沿右侧专用轨线把授权项目上下文送入 Agent Host -->
       <text class="map-entry-note text-end request-flow" x="280" y="405">实线箭头：调用 / 数据流</text>
-      <text class="map-entry-note text-start context-flow" x="1183" y="400">虚线箭头：授权上下文 → Host</text>
+      <text class="map-entry-note text-start context-flow" x="1183" y="400">授权项目上下文 → Agent Host</text>
       <path class="map-path validation-bus" d="M1108 281H1168Q1176 281 1176 273V258Q1176 250 1184 250"/>
       <path class="map-path validation-bus" d="M1193 241V173Q1193 165 1201 165H1247Q1255 165 1255 157V115"/>
 

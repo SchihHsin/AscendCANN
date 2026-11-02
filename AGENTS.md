@@ -8565,3 +8565,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 项目客户端上下文线改为进入 Agent Host，Host 到 Skill / MCP 的调用继续用实线；入口附近同步显示线型规则。修改 SVG 无障碍描述，明确分隔线与区域边界不是关系流，P0–P2 由独立路线图表达。
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户确认按全图统一规则调整（H）。保留节点和页面结构；不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；本地 8133 页面返回新连线路径、标签和样式。页面与交接记录已提交并推送至 `origin/main`。
+
+
+### 2026-11-02 · 关系流统一使用实线箭头
+
+- 按用户确认的统一规则，把图中实际调用与数据流的连接箭头全部统一为实线：包括项目客户端到 Agent Host 的授权上下文输入。授权条件由文字标注表达；箭头表达真实流向；颜色继续标识功能域；无箭头干线和箭头分支表达共享路径。
+- 移除 `client-context` 与反馈关系的虚线样式；保留横向层级分隔线与知识底座点状椭圆作为结构边界，它们不代表关系流或 P2 阶段。更新可访问描述与入口标注，明确所有关系箭头为实线。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户确认所有实际关系线统一实线，授权上下文线仍作为真实流转；阶段由路线图表达（H）。不改变节点、层级或页面序列，不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；本地 8133 页面返回实线样式、新标注和 Agent Host 路径。页面与交接记录已提交并推送至 `origin/main`。
