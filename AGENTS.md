@@ -8580,3 +8580,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - NVIDIA 部分区分 Nsight Compute / Copilot 界面、AVO 长时优化研究、KDA 工作流及内部 CUDA Agent 轨迹；没有认定它们就是受访者所述的同一内部工具，也不把 CUDA 文档检索 MCP 写成性能采集执行能力。资料链接和 Nsight 官方示例截图均保留来源。结论为单次访谈与公开材料，不影响现有页面序列和 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：Chrome 在 1440×900 和 1280×720 检查全部 21 页，正文无越界；键盘翻页、URL 页码、概览选页、全屏进入 / 退出和图片加载通过，内联脚本 `node --check` 与 `git diff --check` 通过。所有页面图片内嵌，字体使用 CDN 与系统回退。
 - 页面提交 `f6c75e35`、名称补充提交 `666bf2b3` 已推送 `origin/main`；Pages workflow `41425565950` 成功，线上页面 HTTP 200，已核对 21 页及 NVIDIA 方案全称。后续需向受访者确认所指内部工具名称及其接入方式。
+
+### 2026-11-03 · 明确 VOC 墙的垂直居中规则
+
+- 根据本轮 VOC 页面排版问题，更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/deck-architecture.md`、`references/components.md` 与 `references/checklist.md`：VOC 卡片组默认按内容高度布局，并在页眉与页脚之间上下居中；组件骨架不再以 `flex:1` 撑满主体；补充以真实可见边界检查、匹配页脚选择器和不同视口复核的要求。其他组件仍依实际内容高度选择居中或填满。
+- 依据：本轮用户明确指出 VOC 墙理论上也应垂直居中（H）。未修改汇报页面，不影响现有页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：skill frontmatter 与参考路径结构检查通过，`git diff --check` 通过；skill-creator 的 `quick_validate.py` 因环境缺少 `PyYAML` 无法运行。skill 仓库提交 `faaf211` 已推送至 `origin/main`；既有模板文件改动未暂存、未提交。
