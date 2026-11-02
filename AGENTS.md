@@ -8619,4 +8619,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 全篇重排 `cann-dashboard/mindstudio-agent-interview-research-report.html` 的内容呈现，并新增 `cann-dashboard/mindstudio-agent-interview-research-report-assets/` 内的 10 张 ImageGen 概念图。保留 21 页章节顺序、访谈观点边界、原有外部来源链接与 Nsight 官方截图；目录改为普通章节列表。其余页面使用任务叙事图、VOC 时间线、流程、证据分层、实验链、治理关卡、试点路线、复访问题和来源索引等结构，减少同款卡片平铺。
 - ImageGen 主视觉用于封面、核心判断、性能调优断点、任务协作、参数巡优、NVIDIA 案例概览与经验回流等页面；精确数字、界面截图、产品名称、任务关系和引用仍由 HTML / 原始截图承载。生成图只作概念表达，不作竞品证据。没有把公开案例认作受访者提到的内部工具，也没有改变 API / Protocol、Host / Harness、Application / Task 边界或页面序列。
 - 依据：用户确认将访谈报告 21 页全部重新设计，并已确认目录无需可视化（H）；公开产品截图和引用仍可复核（H）；ImageGen 画面只表达概念关系（M）。
-- 验证：21 页外层 section、HTML 标签栈、div 嵌套平衡；9 个原有外部 URL 均保留；10 张素材路径均存在；内联脚本 `node --check`、`git diff --check` 通过。浏览器对本地 `file://` 预览拒绝访问，并明确禁止通过其他浏览器入口绕过；因此未声称已完成渲染截图检查。提交与推送状态待完成。
+- 验证：21 页外层 section、HTML 标签栈、div 嵌套平衡；9 个原有外部 URL 均保留；10 张素材路径均存在；内联脚本 `node --check`、`git diff --check` 通过。浏览器对本地 `file://` 预览拒绝访问，并明确禁止通过其他浏览器入口绕过；因此未声称已完成渲染截图检查。提交 `2ea16fd9` 已推送至 `origin/main`；GitHub Pages workflow `41502645291` 对应该提交且结果为 success。浏览器未能做线上截图复核：本地预览 URL 被安全策略拒绝，线上页面交互时设备处于锁屏状态。
