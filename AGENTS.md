@@ -8598,3 +8598,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认的文案更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/chart-selection.md`、`references/components.md` 与 `references/checklist.md`：逐页先明确读者需要理解什么，优先用图解呈现关系、流程、层级、因果、对照和变化；按阐释目标在 ImageGen、HTML / SVG / 图表之间选择，必要时组合；卡片用于彼此独立的并列信息、原声证据或查阅条目，并在交付检查中复核卡片平铺是否遮蔽关系。
 - 依据：用户确认将图形释义优先、ImageGen 判断方式和卡片边界一并写入 Skill，并要求使用正向、直接的表述（H）。没有修改报告页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：skill 文档 `git diff --check` 通过，检索确认总规则、媒介判断、组件路由和检查清单均已更新。skill 仓库提交 `bd07e20` 已推送至 `origin/main`；模板库中其他已有改动未暂存、未提交。
+
+### 2026-11-03 · 移除手绘优先规则
+
+- 根据用户确认，更新独立仓库 `report-ppt-skill` 的 `SKILL.md`、`references/chart-selection.md` 与 `references/checklist.md`：移除“手画 / 手绘优先”，改为按阐释目标选择 ImageGen、真实素材、原生图形和图表库。ImageGen 可承担概念、场景、定性发现与视觉隐喻的主要表达；真实素材用于具体产品与证据；原生图形用于需要准确核对、编辑或交互的信息。
+- 依据：用户明确要求不要设置“手绘优先”规则，并同意更新 Skill（H）。没有修改访谈报告页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；检索确认 Skill 中已无“手画优先 / 手绘优先”规则。`quick_validate.py` 因当前 Python 缺少 `PyYAML` 未能运行。Skill 仓库提交 `8f9f138` 已推送 `origin/main`；模板目录中的既有修改未暂存、未提交。
