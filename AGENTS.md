@@ -8550,3 +8550,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 第 6 页将社区 Web 到 API 的实线标注为“服务请求 / 结果流”，将项目客户端到 MCP 的虚线标注为“经授权的项目上下文”。虚线改用 `client-context` 语义类，不再复用表示未来阶段的 `future` 类；P0–P2 继续由路线图表达。同步更新图的无障碍描述，并把“内容加工顺序”限定为知识底座内部连线。
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户指出实线 / 虚线要表达关系原理，不应用来区分 P2 阶段，并要求直接修改查看（H）。没有更改页面序列、节点结构或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；本地 8133 预览返回新线型类和两处标注。页面提交 `71fcfdee` 已推送至 `origin/main`；GitHub Pages workflow `41374769702` 完成且 success，线上页面 HTTP 200 并回读确认新标注和 `client-context` 类。workflow 状态通过 GitHub Actions API 确认。
+
+
+### 2026-11-02 · 提高线型含义的可见度
+
+- 用户指出上一版只有小字号文字标注，线条本身看起来变化不明显。将两处关系说明明确写成“实线：服务请求与结果流”和“虚线：授权项目上下文”，并把标注从 12px / 常规字重调整为 14px / 720 字重、使用更深的蓝灰色；不增加独立图例，不改变连线路径、节点或 P2 路线图。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据：用户看图反馈变化不明显并追问是否为新版（H）；加大线型语义注释，让图面直接说明两类关系。没有影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；本地 8133 页面返回两处新标注和样式。页面与交接记录已提交并推送至 `origin/main`；线上部署结果随后核对。
