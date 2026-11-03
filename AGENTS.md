@@ -8781,4 +8781,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户选定的方案 1，在 `cann-learning-home/index.html` 增加首页可见的四层技术栈地图与课程方向浏览器；新增 `capability-map.css`、`capability-map.js`。四层数据按 README 的技术栈 × 难度分布呈现：L1 44、L2 29、L3 13、L4 49，共 135 门。课程按钮从原目录保留每门课的阶段与链接，原折叠详情中的大表改为地图入口说明。
 - 两种分类保持分开：四层技术栈 × 难度（135 门）用于全景地图；课程目录的 11 个技术方向 × 难度用于下方逐项查课，未假定每个方向只属于一层。依据为学习仓课程体系内容（H）；卡片化图形和交互为设计表达（M）。未影响其他学习目标区、页面序列或 API / Host / Application 边界。
 - 桌面本地预览确认四层、135 门总量与难度分布可见；点选 Ascend C 与大模型训练时，跨级课程、原始资源链接和建设中标注正确展开。补充窄屏展开后的阶段标记；桌面以外的实际视口未做截图核验。`node --check cann-learning-home/capability-map.js` 与 `git diff --check` 通过；未运行自动化测试。
-- 提交 / 推送与 GitHub Pages 发布状态：待本轮提交后填写。
+- 实现提交 `83c973ea` 已推送到 `origin/main`；Pages workflow `41590675342` 成功。线上 `/AscendCANN/cann-learning-home/` 页面含地图内容，HTML、`capability-map.css` 与 `capability-map.js` 均返回 HTTP 200。无待决事项。
