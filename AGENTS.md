@@ -8905,3 +8905,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将外层分享 URL 的 `rev` 在每次地址同步时更新为当前 Showcase revision，并把 HTML 引用与内嵌路由 revision 升至 `20261103-node-content-height-v2`，让新入口使用新的缓存键；不改学习路径节点尺寸算法、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；线上读回确认 PC 页面引用 `20261103-node-content-height-v2`，外层 `app.js` 会同步 `rev` 和 iframe `showcaseRev`，内嵌页面加载 `index-WLxVK2ZF.js` 与 `index-X5obAocZ.css`。当前 5196 预览来自别的 worktree，未将其作为本次新版视觉验收。无法读取 Windows 浏览器缓存 / 实际渲染，因此是否还存在最新版本内的布局问题仍待复核。
 - 提交 `ed31df949989718a4eae418a914335bdc6345a4a` 已推送到 `origin/main`；Pages workflow `41629866638` 成功。新版入口：`https://schihhsin.github.io/AscendCANN/ascstudio-pc/?rev=20261103-node-content-height-v2&chapter=1&pointIndex=2#chapter-1-resnet-path`。
+
+### 2026-11-03 · 组合稿封面加入知识供给与 Agent 生态主张
+
+- 用户确认封面标题为「面向人机协作开发新范式，构建昇腾开发者的知识供给与 Agent 协作生态」。在组合页首屏沿用原报告封面的视觉结构，将长标题分三行呈现；原报告源文件、其余四页和既有副标题均未改动。
+- 变更：`cann-dashboard/ascend-studio-combined-report/index.html`、`composition.json`。不影响报告 `#2`、两条旅程或 PC 原页面，也不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：内联脚本 `node --check`、组合 JSON 与标题覆盖检查、`git diff --check` 通过；Chrome 在 1600×900 与 1280×720 检查封面完整显示，线上封面截图确认新标题已生效。
+- 提交 `b2dd627864cfef189ffbe0c33015d39821d6ac51` 已推送到 `origin/main`；Pages workflow `41630892753` 成功。组合页线上地址返回 HTTP 200。
