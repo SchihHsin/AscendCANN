@@ -8718,4 +8718,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 根据用户选择的方案 1，修改 `cann-learning-home/index.html`：移除五条学习主线卡片右上角被裁切的同心圆装饰；保留主题图标、课程信息、浅灰卡片底色与细边框，避免装饰抢过课程信息。
 - 设计依据：用户提供的当前页面截图，以及用户确认采用“简洁入口卡”方案；该改动只作用于“选择学习主线”卡片，不改 README 内容结构、详情卡片或 API / Host / Application 边界。
-- 验证：本地桌面预览已检查主线卡片，圆环已消失，五张卡片信息和图标仍完整；待记录 `git diff --check`、commit 与 push 状态。
+- 验证：`git diff --check` 通过；本地桌面预览确认主线卡片圆环已消失，五张卡片信息和图标仍完整。页面与交接记录均已提交并推送到 main（页面改动 `54419ed0`，交接记录后续提交）；GitHub Pages 更新可能有延迟。
