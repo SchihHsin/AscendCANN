@@ -8671,7 +8671,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `ascend-studio/src/CombinationTaskHome.jsx`：外围关联字段向右展开至 80–92% 画布宽度，并增加纵向分散范围；祖先路径改为随节点数量递增展开、最多占画布 76% 的左侧纵向轨道，短路径保持紧凑，长路径可继续拉开。
 - 截图依据为用户提供的当前重叠画面（H）；根因与布局调整基于代码检查（M）。桌面本地预览在 1440×900 与 1200×800 下串联「提升训练吞吐 → samples/s → 数据加载 → CPU 预处理」，均看到焦点居中、路径分层、外围节点展开且无重叠（M）。未改变默认字段、连线确认行为、Prompt 语义、页面序列或 API / Host / Application 边界。
 - Pages 与电脑端演示副本由 `npm run build:pages` 同步。验证：生产构建成功，发布 JS `node --check` 与 `git diff --check` 通过；未运行自动化测试。Vite 仍提示主 JS chunk 超过 500 kB。
-- 本轮实现提交 `bbb6b341` 已生成，待与最新 `origin/main` 同步后推送；需核对对应 GitHub Pages 工作流及线上资源响应。
+- 实现提交 `bbb6b341` 已随合并提交 `bd17bedc` 推送至 `origin/main`；GitHub Pages 工作流 `41566769204` 成功。线上 `/AscendCANN/ascstudio/?home=combine` HTML 引用 `index-Bjwsm1Ez.js` 与 `index-DSTbdyTU.css`，页面、JS 与 CSS 均 HTTP 200。
 
 
 ### 2026-11-03 · 多轮对话知识汇聚独立 Demo
