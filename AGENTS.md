@@ -8840,3 +8840,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计依据：Report PPT Skill `pitfalls.md` 明确要求避免左描边 accent 卡片，改用整框柔阴影或白底；本轮沿用该规则。无内容、来源或页面序列变化，不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check`；本地桌面预览检查第 4、6 页，VOC 总结、原声卡和结论卡均以完整描边呈现；线上报告 HTTP 200、21 页结构正确，原声 / VOC 总结 / 结论样式均无 `border-left`。
 - 实现提交 `fd75e6c2` 已推送 `origin/main`；GitHub Pages workflow `41602980238` 成功。无待决事项。
+
+### 2026-11-03 · 报告目录页改为 Skill 章节卡
+
+- 将 `cann-dashboard/mindstudio-agent-interview-research-report.html` 第 2 页从旧式四行目录列表改为 Report PPT Skill §18 的 `contents-directory contents-4` 横排玻璃章节卡；保留「目录」作为唯一可见标题，移除阅读路径页脚。四个章节名与正文的 section tabs 一致，每卡包含编号、中文名、英文辅助名、两条内容锚点和一句章节职责。
+- 卡片继续链接至原章节锚点 `#3`、`#7`、`#10`、`#15`。规范来源为 `report-ppt-skill/references/components.md` §18 和模板库 `contents-directory`；章节内容依据报告正文。未改变 21 页顺序、研究判断或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：本地桌面浏览器 `#2` 预览确认四卡单行、主体垂直居中、章节链接可访问；`git diff --check` 通过。提交与 GitHub Pages 发布结果待完成后补记。
