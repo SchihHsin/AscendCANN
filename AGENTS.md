@@ -8803,3 +8803,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 第 1 页封面、第 2 页目录、第 11—14 页 NVIDIA 公开证据页及第 21 页资料索引不强加访谈原声；竞品判断仍以官方截图、论文和公开资料为证据，以免将受访者转述误作竞品事实。内容依据为用户提供的转写稿（原声 H；只整理断句、标点与省略），页面观点和复访问题是编辑归纳 / 设计建议（M）。未改变 21 页序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；本地桌面预览检查第 6、19、20 页并确认长引文、补充引文和时间轴布局正常；浏览器 DOM 确认 21 页结构及各访谈观点页原声覆盖。线上报告 HTTP 200、21 页结构正确，第 19 页新引文、时间轴 5 条原声和头像资源均已部署（HTTP 200）。
 - 报告提交 `1b1ad541` 已推送 `origin/main`；GitHub Pages workflow `41600316240` 成功。无待决事项。
+
+### 2026-11-03 · 学习首页取消课程折叠、呈现三条核心体验
+
+- 用户选择方案 3：教师教学、个人学习进度路径、CANN 端到端能力直接呈现；五条学习主线阶段保持可见；其余 README 资料放在页面下方按主题分区，并以目录锚点导航，不再折叠隐藏。
+- 更新 `cann-learning-home/index.html` 与新增 `cann-learning-home/homepage-structure.css`：教师区图示“135 门原子课程 → 四种教学组织 → 学生路径与实践”；五条主线阶段直接显示；课程资料区所有原详情直接展开。旧 ASCII 课程架构图改为指向教师教学图的说明；将遗留的“展开查看 / 查看全部”等折叠语气改为中性标题。课程内容和入口仍依据 README 快照。
+- 内容来源为 2026-11-03 GitCode 学习仓 README（H）；分区卡片、阶段图和四层能力图是页面呈现（M）。这是静态页面快照，不更改 GitCode 上游仓库；未影响页面序列或 API / Host / Application 边界。
+- 验证：本地桌面浏览器检查教师流程、五条路径、CANN 全栈能力地图及资料区；HTML 结构检查无 `<details>` / `<summary>`、重复属性 / ID、缺失页内锚点或未闭合标签；内联脚本 `node --check` 和 `git diff --check` 通过。未做窄屏实际视口截图。
+- 实现提交 `20f6af51` 已推送至 `origin/main`。GitHub Pages workflow `41600651954` 成功；线上 `/AscendCANN/cann-learning-home/` 与 `homepage-structure.css` 均 HTTP 200，线上页面确认没有折叠元素并包含本次标题和结构。后续随 README 课程及链接更新时需同步静态快照。
