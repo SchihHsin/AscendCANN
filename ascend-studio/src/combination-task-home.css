@@ -99,6 +99,9 @@
 .combination-field--small .combination-field__title { font-size: clamp(14px, 1.38cqi, 20px); }
 .combination-field.is-connected .combination-field__title { color: var(--field-color); }
 .combination-field.is-connected .combination-field__dot { transform: scale(1.14); box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-color) 12%, transparent); }
+.combination-field__remove { position: absolute; top: -5px; right: -10px; display: grid; width: 17px; height: 17px; place-items: center; border: 1px solid #e5e5e5; border-radius: 50%; color: #777a83; background: #fff; box-shadow: 0 1px 4px rgba(35, 38, 45, .08); opacity: 0; transform: scale(.82); transition: opacity 140ms ease, transform 140ms ease, color 140ms ease; }
+.combination-field.is-connected:hover .combination-field__remove,
+.combination-field.is-connected:focus-visible .combination-field__remove { color: #25252a; opacity: 1; transform: scale(1); }
 .combination-field:hover .combination-field__title,
 .combination-field.is-connection-source .combination-field__title { color: var(--field-color); }
 .combination-field.is-connection-source { z-index: 2; }
@@ -129,6 +132,11 @@
 .combination-composer__sparkle { flex: 0 0 auto; color: #6b69dc; }
 .combination-composer textarea { min-width: 0; min-height: 38px; max-height: 62px; flex: 1 1 auto; padding: 2px 0; border: 0; outline: 0; resize: vertical; color: #30333b; background: transparent; font: 13px/1.6 Inter, "Noto Sans SC", sans-serif; }
 .combination-composer textarea::placeholder { color: #9ca1aa; }
+.combination-composer__history { display: flex; flex: 0 0 auto; align-items: center; gap: 2px; }
+.combination-composer__history-button { display: inline-flex; min-width: 52px; height: 34px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 4px; padding: 0 6px; border: 1px solid transparent; border-radius: 8px; color: #777a83; background: transparent; font: 12px/1 Inter, "Noto Sans SC", sans-serif; cursor: pointer; transition: color 140ms ease, background 140ms ease; }
+.combination-composer__history-button:hover:not(:disabled) { color: #25252a; background: #f2f2f3; }
+.combination-composer__history-button:focus-visible { outline: 2px solid #7770d5; outline-offset: 1px; }
+.combination-composer__history-button:disabled { color: #b7b8bd; cursor: not-allowed; }
 .combination-composer__send { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border: 0; border-radius: 50%; color: #fff; background: #17181d; cursor: pointer; transition: background 150ms ease, transform 150ms ease; }
 .combination-composer__send:hover:not(:disabled) { transform: translateY(-1px); background: #32343a; }
 .combination-composer__send:disabled { opacity: .42; cursor: not-allowed; }
@@ -153,6 +161,7 @@
   .combination-field.is-expanded-neighbor { justify-self: center; }
   .combination-field__english { font-size: 9px; }
   .combination-field__hint { max-width: 44vw; font-size: 10px; }
+  .combination-field.is-connected .combination-field__remove { opacity: 1; transform: scale(1); }
   .combination-field--large .combination-field__title { font-size: clamp(22px, 5.4vw, 30px); }
   .combination-field--medium .combination-field__title { font-size: clamp(16px, 4vw, 22px); }
   .combination-field--small .combination-field__title { font-size: clamp(14px, 3.6vw, 19px); }
@@ -168,17 +177,20 @@
   .combination-field__hint { max-width: 42vw; }
   .combination-composer { gap: 8px; padding: 8px; border-radius: 12px; }
   .combination-composer__sparkle { width: 16px; }
+  .combination-composer__history-button { min-width: 44px; gap: 2px; padding-inline: 4px; font-size: 11px; }
   .combination-composer__send { width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .combination-cloud__line,
   .combination-field,
   .combination-field__dot,
+  .combination-field__remove,
   .combination-field__title,
   .combination-composer__send,
   .combination-field__dwell circle,
   .combination-cloud__line-preview,
   .combination-home.has-focused-field .combination-cloud::before,
-  .combination-field.is-expanded-neighbor { transition: none; animation: none; }
+  .combination-field.is-expanded-neighbor,
+  .combination-composer__history-button { transition: none; animation: none; }
   .combination-field__dwell circle { stroke-dashoffset: 0; }
 }

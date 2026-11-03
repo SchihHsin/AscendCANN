@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { IconSparkles, IconSend } from "@tabler/icons-react";
+import { IconArrowBackUp, IconArrowForwardUp, IconSparkles, IconSend, IconX } from "@tabler/icons-react";
 import {
   buildCompositionPrompt,
   compositionFields,
@@ -81,6 +81,7 @@ function previewBetweenNodes(source, target, canvas, clientX, clientY) {
 export function CombinationTaskHome({ onCreateTask }) {
   const [connections, setConnections] = useState([]);
   const [manuallySelected, setManuallySelected] = useState([]);
+  const [historyAvailability, setHistoryAvailability] = useState({ canUndo: false, canRedo: false });
   const [geometry, setGeometry] = useState({ width: 0, height: 0, edges: [] });
   const [hoverSourceId, setHoverSourceId] = useState(null);
   const [hoverSourceCandidateId, setHoverSourceCandidateId] = useState(null);
@@ -102,6 +103,16 @@ export function CombinationTaskHome({ onCreateTask }) {
   const pointerPositionRef = useRef(null);
   const cancelHoverRef = useRef(null);
   const focusRearmRef = useRef(null);
+  const compositionRef = useRef({ connections: [], manuallySelected: [] });
+  const compositionHistoryRef = useRef({ past: [], future: [] });
+  const focusFieldRef = useRef(null);
+  const undoCompositionRef = useRef(null);
+  const redoCompositionRef = useRef(null);
+
+  const setFocusedField = (fieldId) => {
+    focusFieldRef.current = fieldId;
+    setHoverSourceId(fieldId);
+  };
 
   const selectedIds = connectedCompositionIds(connections, manuallySelected);
   const selectedSet = new Set(selectedIds);
@@ -184,9 +195,53 @@ export function CombinationTaskHome({ onCreateTask }) {
     setDraft(buildCompositionPrompt(selectedIds));
   }, [connections, manuallySelected]);
 
+  const captureComposition = () => ({
+    ...compositionRef.current,
+    focusId: focusFieldRef.current,
+  });
+
+  const updateHistoryAvailability = () => {
+    setHistoryAvailability({
+      canUndo: compositionHistoryRef.current.past.length > 0,
+      canRedo: compositionHistoryRef.current.future.length > 0,
+    });
+  };
+
+  const applyCompositionSnapshot = (snapshot) => {
+    compositionRef.current = {
+      connections: snapshot.connections,
+      manuallySelected: snapshot.manuallySelected,
+    };
+    setConnections(snapshot.connections);
+    setManuallySelected(snapshot.manuallySelected);
+    setFocusedField(snapshot.focusId || null);
+  };
+
+  const recordCompositionChange = (nextConnections, nextManuallySelected, focusId = focusFieldRef.current) => {
+    const current = captureComposition();
+    const sameConnections = current.connections.length === nextConnections.length
+      && current.connections.every((edge, index) => edge.from === nextConnections[index]?.from && edge.to === nextConnections[index]?.to);
+    const sameManualSelection = current.manuallySelected.length === nextManuallySelected.length
+      && current.manuallySelected.every((id, index) => id === nextManuallySelected[index]);
+    if (sameConnections && sameManualSelection) return false;
+
+    const past = [...compositionHistoryRef.current.past, current].slice(-50);
+    compositionHistoryRef.current = { past, future: [] };
+    compositionRef.current = { connections: nextConnections, manuallySelected: nextManuallySelected };
+    setConnections(nextConnections);
+    setManuallySelected(nextManuallySelected);
+    setFocusedField(focusId);
+    updateHistoryAvailability();
+    return true;
+  };
+
   const removeConnection = (from, to) => {
     const key = pairKey(from, to);
-    setConnections((items) => items.filter((item) => pairKey(item.from, item.to) !== key));
+    const current = compositionRef.current;
+    recordCompositionChange(
+      current.connections.filter((item) => pairKey(item.from, item.to) !== key),
+      current.manuallySelected,
+    );
   };
 
   const clearSourceHoverTimer = () => {
@@ -217,9 +272,41 @@ export function CombinationTaskHome({ onCreateTask }) {
 
   const cancelHoverConnection = () => {
     clearPendingHover();
-    setHoverSourceId(null);
+    setFocusedField(null);
   };
   cancelHoverRef.current = cancelHoverConnection;
+
+  const undoComposition = () => {
+    const { past, future } = compositionHistoryRef.current;
+    if (!past.length) return;
+    const previous = past[past.length - 1];
+    const current = captureComposition();
+    compositionHistoryRef.current = {
+      past: past.slice(0, -1),
+      future: [...future, current].slice(-50),
+    };
+    clearPendingHover();
+    applyCompositionSnapshot(previous);
+    updateHistoryAvailability();
+    setError("");
+  };
+
+  const redoComposition = () => {
+    const { past, future } = compositionHistoryRef.current;
+    if (!future.length) return;
+    const next = future[future.length - 1];
+    const current = captureComposition();
+    compositionHistoryRef.current = {
+      past: [...past, current].slice(-50),
+      future: future.slice(0, -1),
+    };
+    clearPendingHover();
+    applyCompositionSnapshot(next);
+    updateHistoryAvailability();
+    setError("");
+  };
+  undoCompositionRef.current = undoComposition;
+  redoCompositionRef.current = redoComposition;
 
   const updateHoverPreview = (clientX, clientY, targetId = null) => {
     const sourceId = activeSourceRef.current;
@@ -243,20 +330,47 @@ export function CombinationTaskHome({ onCreateTask }) {
 
   const createConnection = (from, to) => {
     if (!from || !to || from === to) return;
-    if (orderedCompositionPath(connections).includes(to)) return;
+    const current = compositionRef.current;
+    if (orderedCompositionPath(current.connections).includes(to)) return;
     const key = pairKey(from, to);
-    setConnections((items) => items.some((item) => pairKey(item.from, item.to) === key)
-      ? items
-      : [...items, { from, to }]);
+    if (current.connections.some((item) => pairKey(item.from, item.to) === key)) return;
+    recordCompositionChange([...current.connections, { from, to }], current.manuallySelected, to);
     setError("");
   };
 
   const toggleConnection = (from, to) => {
     if (!from || !to || from === to) return;
+    const current = compositionRef.current;
     const key = pairKey(from, to);
-    setConnections((items) => items.some((item) => pairKey(item.from, item.to) === key)
-      ? items.filter((item) => pairKey(item.from, item.to) !== key)
-      : [...items, { from, to }]);
+    const exists = current.connections.some((item) => pairKey(item.from, item.to) === key);
+    const nextConnections = exists
+      ? current.connections.filter((item) => pairKey(item.from, item.to) !== key)
+      : [...current.connections, { from, to }];
+    recordCompositionChange(nextConnections, current.manuallySelected, null);
+    setError("");
+  };
+
+  const toggleFieldSelection = (fieldId) => {
+    const current = compositionRef.current;
+    const isSelected = connectedCompositionIds(current.connections, current.manuallySelected).includes(fieldId);
+    let nextConnections = current.connections;
+    let nextManuallySelected;
+
+    if (!isSelected) {
+      nextManuallySelected = [...current.manuallySelected, fieldId];
+    } else {
+      nextManuallySelected = current.manuallySelected.filter((id) => id !== fieldId);
+      const path = orderedCompositionPath(current.connections);
+      const fieldIndex = path.indexOf(fieldId);
+      if (fieldIndex >= 0) {
+        const retainedPrefix = path.slice(0, fieldIndex);
+        const retainedPath = new Set(retainedPrefix);
+        nextConnections = current.connections.filter(({ from, to }) => retainedPath.has(from) && retainedPath.has(to));
+        nextManuallySelected = [...new Set([...nextManuallySelected, ...retainedPrefix])];
+      }
+    }
+
+    recordCompositionChange(nextConnections, nextManuallySelected, null);
     setError("");
   };
 
@@ -299,7 +413,6 @@ export function CombinationTaskHome({ onCreateTask }) {
       activeSourceRef.current = canContinue ? targetId : null;
       focusRearmRef.current = canContinue ? (pointer ? { ...pointer } : { clientX, clientY }) : null;
       targetCandidateRef.current = null;
-      setHoverSourceId(targetId);
       setHoverSourceCandidateId(null);
       setHoverTargetId(null);
       setHoverPreview(null);
@@ -383,7 +496,7 @@ export function CombinationTaskHome({ onCreateTask }) {
       focusRearmRef.current = canContinue && pointer ? { ...pointer } : null;
       activeSourceRef.current = canContinue ? field.id : null;
       setHoverSourceCandidateId(null);
-      setHoverSourceId(field.id);
+      setFocusedField(field.id);
       setPendingKeyboardNode(null);
       setHoverPreview(null);
     }, SOURCE_HOVER_DELAY);
@@ -406,13 +519,13 @@ export function CombinationTaskHome({ onCreateTask }) {
 
   const handleFieldClick = (event, field) => {
     if (event.detail === 0 && pendingKeyboardNode) {
-      cancelHoverConnection();
+      clearPendingHover();
       toggleConnection(pendingKeyboardNode, field.id);
       setPendingKeyboardNode(null);
       return;
     }
-    cancelHoverConnection();
-    setManuallySelected((items) => items.includes(field.id) ? items.filter((id) => id !== field.id) : [...items, field.id]);
+    clearPendingHover();
+    toggleFieldSelection(field.id);
   };
 
   const handleFieldKeyDown = (event, field) => {
@@ -434,9 +547,19 @@ export function CombinationTaskHome({ onCreateTask }) {
 
   useEffect(() => {
     const handleWindowKeyDown = (event) => {
-      if (event.key !== "Escape") return;
-      cancelHoverRef.current?.();
-      setPendingKeyboardNode(null);
+      const key = event.key.toLowerCase();
+      const hasModifier = event.metaKey || event.ctrlKey;
+      if (hasModifier && (key === "z" || key === "y")) {
+        if (event.target?.closest?.("textarea, input, [contenteditable='true']")) return;
+        event.preventDefault();
+        const shouldRedo = key === "y" || (key === "z" && event.shiftKey);
+        (shouldRedo ? redoCompositionRef.current : undoCompositionRef.current)?.();
+        return;
+      }
+      if (event.key === "Escape") {
+        cancelHoverRef.current?.();
+        setPendingKeyboardNode(null);
+      }
     };
     window.addEventListener("keydown", handleWindowKeyDown);
     return () => {
@@ -493,7 +616,8 @@ export function CombinationTaskHome({ onCreateTask }) {
           type="button"
           data-composition-field={field.id}
           aria-pressed={selectedSet.has(field.id)}
-          aria-label={`${field.title}。${field.hint}。悬浮片刻作为连线起点，移到其他字段并停留确认；确认后从目标继续连线。点击加入或移除。按 Alt 加 Enter 可用键盘连线。`}
+          aria-label={`${field.title}。${field.hint}。${selectedSet.has(field.id) ? (isPath ? "已选中；再次点击取消。若处于连续路径中，会同时移除它之后的路径。" : "已选中；再次点击取消此字段。") : "悬浮片刻作为连线起点，移到其他字段并停留确认；确认后从目标继续连线。点击加入。"}按 Alt 加 Enter 可用键盘连线。`}
+          title={selectedSet.has(field.id) ? (isPath ? "再次点击取消此字段及其后的路径" : "再次点击取消此字段") : "点击加入组合"}
           style={{ "--field-x": `${position.x}%`, "--field-y": `${position.y}%`, "--field-color": `var(--composition-${field.tone})`, "--dwell-duration": `${dwellDuration}ms`, "--field-order": visibleFields.indexOf(field) }}
           onPointerEnter={(event) => handleFieldPointerEnter(event, field)}
           onPointerLeave={(event) => handleFieldPointerLeave(event, field)}
@@ -505,6 +629,7 @@ export function CombinationTaskHome({ onCreateTask }) {
           {showDwell && <svg className="combination-field__dwell" viewBox="0 0 22 22" aria-hidden="true">
             <circle cx="11" cy="11" r="8" pathLength="100" />
           </svg>}
+          {selectedSet.has(field.id) && <span className="combination-field__remove" aria-hidden="true"><IconX size={12} stroke={1.8} /></span>}
           <span className="combination-field__english">{field.english}</span>
           <span className="combination-field__title">{field.title}</span>
           {revealHint && <span className="combination-field__hint">{field.hint}</span>}
@@ -522,6 +647,30 @@ export function CombinationTaskHome({ onCreateTask }) {
         placeholder="连接目标、线索、条件与验证方式…"
         rows={2}
       />
+      <div className="combination-composer__history" role="group" aria-label="组合操作历史">
+        <button
+          className="combination-composer__history-button"
+          type="button"
+          onClick={undoComposition}
+          disabled={!historyAvailability.canUndo}
+          aria-label="撤销上一步选择或连线"
+          title="撤销上一步（⌘Z / Ctrl+Z）"
+        >
+          <IconArrowBackUp size={16} stroke={1.8} aria-hidden="true" />
+          <span>撤销</span>
+        </button>
+        <button
+          className="combination-composer__history-button"
+          type="button"
+          onClick={redoComposition}
+          disabled={!historyAvailability.canRedo}
+          aria-label="重做上一步选择或连线"
+          title="重做上一步（⌘⇧Z / Ctrl+Y）"
+        >
+          <IconArrowForwardUp size={16} stroke={1.8} aria-hidden="true" />
+          <span>重做</span>
+        </button>
+      </div>
       <button className="combination-composer__send" type="submit" aria-label="发送并开始" disabled={!draft.trim()}><IconSend size={ICON_SIZE.navigation} aria-hidden="true" /></button>
     </form>
     {error && <p className="combination-home__error" role="alert">{error}</p>}

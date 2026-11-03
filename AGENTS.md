@@ -8769,3 +8769,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 在 `cann-dashboard/mindstudio-agent-interview-research-report.html` 第 4 页强化 VOC 原声层级：左侧受访者身份使用本地匿名化人物头像；六条访谈摘录用醒目的浅色大引号和时间戳呈现；“访谈归纳”独立放在页底，避免和受访者原话混读。对 00:50:23 的时间标注按转写修正。匿名化头像保存在 `cann-dashboard/mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg`，使用 DiceBear notionists SVG；未使用未授权真人照片。
 - 内容依据为用户提供的访谈语音转写（原声 H；只整理断句、标点，省略内容以省略号表示）；页底归纳属于编辑整理（M）。未改变 21 页顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：本地桌面预览 `#4` 可见头像、六条引语、大引号及独立归纳区；核对 21 页结构、6 条引语与头像本地资源引用；`git diff --check` 通过。实现提交 `8254a844` 已推送 `origin/main`；Pages workflow `41573844672` 成功，报告页和头像资源均已部署并返回 HTTP 200，响应更新时间为 2026-11-03 03:44 UTC。
+
+### 2026-11-03 · 关联探索增加全局撤销与字段取消
+
+- 用户确认采用两者结合：整个组合过程可撤销 / 重做，也可再次点击已选字段取消。更新 `ascend-studio/src/CombinationTaskHome.jsx` 与 `combination-task-home.css`：连接字段与手动加入 / 移除都进入最多 50 步的操作历史；底部 Prompt 区显示撤销、重做及可用状态，支持焦点不在文本输入区时的 `⌘Z / Ctrl+Z`、`⌘⇧Z / Ctrl+Y`；再次点击已选字段可取消，若移除连续路径中的节点，则收回它及后续路径并保留前段。
+- 选中字段悬浮时显示轻量取消符号；窄屏选中字段直接显示取消符号。文本编辑仍使用输入框原生撤销，不与字段 / 连线历史混在一起。依据为用户确认的交互方案（H）；操作行为为演示原型实现，不代表接入真实任务服务。未改变首页字段、页面序列或 API / Host / Application 边界。
+- 验证：本地 1280×720 浏览器预览检查字段加入 / 再次取消、两步连接、移除中间字段后前段保留、底部 Prompt 同步；按钮撤销 / 重做和 `⌘Z / ⌘⇧Z` 均恢复预期状态（M）。`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；Vite 保留主 JS chunk 超过 500 kB 提醒；未运行自动化测试。Pages 资源同步、提交与发布状态待本轮回执补记。
