@@ -8811,3 +8811,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 内容来源为 2026-11-03 GitCode 学习仓 README（H）；分区卡片、阶段图和四层能力图是页面呈现（M）。这是静态页面快照，不更改 GitCode 上游仓库；未影响页面序列或 API / Host / Application 边界。
 - 验证：本地桌面浏览器检查教师流程、五条路径、CANN 全栈能力地图及资料区；HTML 结构检查无 `<details>` / `<summary>`、重复属性 / ID、缺失页内锚点或未闭合标签；内联脚本 `node --check` 和 `git diff --check` 通过。未做窄屏实际视口截图。
 - 实现提交 `20f6af51` 已推送至 `origin/main`。GitHub Pages workflow `41600651954` 成功；线上 `/AscendCANN/cann-learning-home/` 与 `homepage-structure.css` 均 HTTP 200，线上页面确认没有折叠元素并包含本次标题和结构。后续随 README 课程及链接更新时需同步静态快照。
+
+### 2026-11-03 · 原声锚点沿用 VOC 卡片样式
+
+- 根据用户指定的 VOC 墙视觉，将 `cann-dashboard/mindstudio-agent-interview-research-report.html` 中观点页的原声锚点调整为独立圆角证据卡：头像和淡色大引号更突出，卡片使用白色浅底、细描边和轻阴影，引语加重；深色页保留相同卡片层级并适配暗色。第 20 页时间索引的 5 条引语也改为同一套卡片样式，保留各自头像、发言人和时间。
+- 样式依据为第 4 页 VOC 卡片及用户明确要求；引语及归属来自访谈转写（H），卡片样式为呈现设计（M）。不改正文引语、竞品截图、21 页顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check`；本地桌面预览检查第 3、6、16、19、20 页，浅色、暗色、长引文和时间轴卡片均正常；线上页面 HTTP 200、21 页结构正确，圆角原声卡片和时间轴卡片样式已生效。
+- 实现提交 `07e50a5b` 已推送 `origin/main`；GitHub Pages workflow `41601507834` 成功。无待决事项。
