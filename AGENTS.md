@@ -8763,3 +8763,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 个人学习者：角色入口、CANN 基础第一课、五条主线的适合人群 / 时长 / 收获 / 难度帮助选路径；没有个人完成状态、当前节点、下一步或继续学习记录。若“进度”指找入门位置则已有，若指追踪个人进展则缺失。
 - CANN 能力：首页呈现基础课和训练、推理、算子、应用、推荐五条主线；深层课程索引按 11 个技术领域 × 3 级难度组织，教学详情含四层技术栈与 135 门原子课。内容覆盖面存在，但首页未将能力层级与任务路径连接成端到端地图。
 - 本次为内容核查，没有修改网站、页面序列或 API / Host / Application 边界；核查记录提交 `413680b6` 已推送至 main。
+
+### 2026-11-03 · 访谈原声与归纳区分
+
+- 在 `cann-dashboard/mindstudio-agent-interview-research-report.html` 第 4 页强化 VOC 原声层级：左侧受访者身份使用本地匿名化人物头像；六条访谈摘录用醒目的浅色大引号和时间戳呈现；“访谈归纳”独立放在页底，避免和受访者原话混读。对 00:50:23 的时间标注按转写修正。匿名化头像保存在 `cann-dashboard/mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg`，使用 DiceBear notionists SVG；未使用未授权真人照片。
+- 内容依据为用户提供的访谈语音转写（原声 H；只整理断句、标点，省略内容以省略号表示）；页底归纳属于编辑整理（M）。未改变 21 页顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：本地桌面预览 `#4` 可见头像、六条引语、大引号及独立归纳区；核对 21 页结构、6 条引语与头像本地资源引用；`git diff --check` 通过。实现提交 `8254a844` 已推送 `origin/main`；Pages workflow `41573844672` 成功，报告页和头像资源均已部署并返回 HTTP 200，响应更新时间为 2026-11-03 03:44 UTC。
