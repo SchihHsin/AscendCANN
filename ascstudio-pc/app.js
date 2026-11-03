@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261103-node-content-height";
+const ROUTE_REV = "20261103-node-content-height-v2";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -55,6 +55,7 @@ function updateCoverArt(chapter) {
 
 function updateAddress(view) {
   const url = new URL(location.href);
+  url.searchParams.set("rev", ROUTE_REV);
   url.searchParams.set("chapter", String(currentChapter + 1));
   url.searchParams.set("pointIndex", String(currentPoint));
   url.hash = view === "cover" ? `chapter-${currentChapter + 1}` : `chapter-${currentChapter + 1}-${chapters[currentChapter].points[currentPoint].id}`;

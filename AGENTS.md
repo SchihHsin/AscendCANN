@@ -8898,3 +8898,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户补充 Windows 连带 `rev` 参数的 `/ascstudio-pc/?chapter=1&pointIndex=2` 仍复现。核对路由后确认该章节进入 ResNet50 官方学习路径；旧实现的 `.lh-step-node` 在 `makeTree` 与内联样式中均固定 47px，之前 `.tco-topic-node` 的规则针对另一视图，故不会修复此场景。
 - `OfficialLearningPathCanvas.jsx` 现以 47px 为最小高度，节点自然增长；测量各节点实际高度并重排其后续坐标、组间距和连接线，节点间留 8px，全部展开时以节点 / 内容卡较高者加 34px 排布。电脑端 Showcase 更新 app 与内嵌路由版本号，避免继续沿用旧的内嵌页面入口。
 - 依据：用户指出跨设备同一电脑端章节链接仍拉伸（H）；URL 参数解析、React 节点尺寸和线上静态入口核查（M）。不改路径顺序、章节内容或 API / Protocol、Host / Harness、Application / Task 边界。验证、commit / push 与 Pages 结果待本轮完成后补记。
+
+### 2026-11-03 · 修正电脑端 Showcase 旧 revision 链接
+
+- 用户再次反馈 Windows 同一链接仍有节点高度拉伸。复核发现 Mac 当前 `127.0.0.1:5196` 实际由另一个 `training-composition-publish` worktree 的 `vite preview` 提供，不能作为本工作区修复后的本机对照（H）。线上 PC 外层 HTML 已指向 `20261103-node-content-height`，但其 `updateAddress()` 保留用户旧链接中的 `rev=20261029-task-routing`，且 Pages HTML 的缓存时间为 600 秒（H）；Windows 是否实际命中旧缓存未直接读取（M）。
+- 将外层分享 URL 的 `rev` 在每次地址同步时更新为当前 Showcase revision，并把 HTML 引用与内嵌路由 revision 升至 `20261103-node-content-height-v2`，让新入口使用新的缓存键；不改学习路径节点尺寸算法、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；代码 commit / push 和 Pages 状态待本轮结束后记录。
