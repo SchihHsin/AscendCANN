@@ -115,7 +115,7 @@ export function CombinationTaskHome({ onCreateTask }) {
     focusPositions.set(hoverSourceId, { x: 50, y: 50 });
     const leftRailIds = [
       ...pathIds.filter((id) => id !== hoverSourceId),
-      ...manuallySelected.filter((id) => !pathIds.includes(id)),
+      ...manuallySelected.filter((id) => id !== hoverSourceId && !pathIds.includes(id)),
     ];
     leftRailIds.forEach((id, index) => {
       focusPositions.set(id, pathRailPosition(index, leftRailIds.length));
