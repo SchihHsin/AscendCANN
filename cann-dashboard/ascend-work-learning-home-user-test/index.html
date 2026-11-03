@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <meta name="description" content="Ascend Work 与 CANN 学习首页的探索性用户测试提纲、MindMap 与任务书。">
+  <title>双 Demo 用户测试 · Ascend Work × CANN 学习首页</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f6f5f1;
+      --paper: #fff;
+      --ink: #202326;
+      --muted: #697077;
+      --line: #e5e5e0;
+      --red: #b74445;
+      --red-soft: #f8ecea;
+      --blue: #4d6f8c;
+      --blue-soft: #edf2f5;
+      --green: #657f6e;
+      --green-soft: #eef3ee;
+      --shadow: 0 18px 48px rgba(36, 40, 38, .055);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font: 15px/1.7 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button { font: inherit; }
+    .skip-link { position: absolute; left: -999px; top: 8px; z-index: 9; background: #fff; padding: 8px 12px; }
+    .skip-link:focus { left: 12px; }
+    .wrap { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+    .hero { padding: 52px 0 32px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 36px; align-items: end; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--red); font-size: 11px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+    h1 { max-width: 760px; margin: 16px 0 12px; font-size: clamp(34px, 5vw, 58px); line-height: 1.12; letter-spacing: -.045em; font-weight: 650; }
+    .hero-copy { max-width: 720px; margin: 0; color: var(--muted); font-size: 16px; }
+    .hero-copy strong { color: var(--ink); font-weight: 650; }
+    .hero-side { border-left: 1px solid var(--line); padding: 4px 0 4px 24px; }
+    .hero-side-label { color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 12px; margin-top: 14px; }
+    .metric strong { display: block; font-size: 25px; line-height: 1.2; letter-spacing: -.035em; font-weight: 650; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .demo-links { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+    .demo-link, .action-button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 38px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 6px;
+      background: rgba(255,255,255,.65); text-decoration: none; color: var(--ink); font-size: 12px; font-weight: 620;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .demo-link:hover, .action-button:hover { background: #fff; border-color: #c9cbc6; transform: translateY(-1px); }
+    .demo-link::after { content: "↗"; color: var(--muted); font-size: 13px; }
+    .jump-nav { position: sticky; top: 0; z-index: 5; background: rgba(246,245,241,.92); backdrop-filter: blur(14px); border-block: 1px solid var(--line); }
+    .jump-inner { display: flex; align-items: center; gap: 24px; min-height: 54px; }
+    .jump-nav a { color: #555d62; font-size: 12px; text-decoration: none; }
+    .jump-nav a:hover { color: var(--red); }
+    .jump-nav .spacer { flex: 1; }
+    .action-button { min-height: 32px; padding: 5px 10px; cursor: pointer; }
+    main { padding: 32px 0 72px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 15px; }
+    .section-kicker { color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin: 4px 0 0; font-size: 25px; line-height: 1.25; letter-spacing: -.025em; font-weight: 650; }
+    .section-note { max-width: 400px; margin: 0; color: var(--muted); font-size: 12px; }
+    .map-panel, .taskbook-panel { background: var(--paper); border: 1px solid #ebeae5; border-radius: 10px; box-shadow: var(--shadow); }
+    .map-panel { overflow: hidden; }
+    .map-meta { display: flex; align-items: center; gap: 9px; padding: 15px 20px; border-bottom: 1px solid #efefeb; color: var(--muted); font-size: 11px; }
+    .map-meta b { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+    .map-meta .map-open-source { margin-left: auto; color: #77818a; text-decoration: none; }
+    .map-meta .map-open-source:hover { text-decoration: underline; }
+    .map-stage { min-height: 425px; overflow: auto; padding: 16px 20px 20px; display: grid; place-items: center; }
+    #map-render { width: 100%; min-width: 760px; text-align: center; }
+    #map-render svg { display: block; width: 100%; height: auto; max-height: 680px; margin: auto; }
+    .map-loading, .map-fallback { color: var(--muted); font-size: 13px; }
+    .map-fallback { max-width: 640px; margin: auto; text-align: left; }
+    .map-fallback ul { padding-left: 20px; }
+    .map-caption { display: flex; justify-content: space-between; gap: 20px; padding: 12px 20px; border-top: 1px solid #efefeb; color: var(--muted); font-size: 11px; }
+    .map-caption strong { color: var(--ink); font-weight: 620; }
+    .taskbook-section { margin-top: 42px; }
+    .taskbook-panel { padding: clamp(20px, 4vw, 42px); }
+    #taskbook-content { max-width: 850px; margin-inline: auto; }
+    #taskbook-content > h1:first-child { display: none; }
+    #taskbook-content h1 { max-width: none; margin: 0 0 10px; font-size: clamp(28px, 4vw, 40px); }
+    #taskbook-content h2 { margin: 38px 0 13px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 23px; }
+    #taskbook-content h3 { margin: 28px 0 9px; font-size: 18px; line-height: 1.35; }
+    #taskbook-content h4 { margin: 18px 0 5px; font-size: 14px; }
+    #taskbook-content p { margin: 10px 0; }
+    #taskbook-content ul, #taskbook-content ol { padding-left: 23px; }
+    #taskbook-content li { margin: 4px 0; }
+    #taskbook-content blockquote { margin: 12px 0; padding: 12px 16px; border-left: 3px solid #d2a09b; background: #faf7f4; color: #42474a; }
+    #taskbook-content blockquote p { margin: 0; }
+    #taskbook-content table { width: 100%; margin: 14px 0 20px; border-collapse: collapse; font-size: 12px; line-height: 1.55; }
+    #taskbook-content th, #taskbook-content td { padding: 9px 10px; border: 1px solid #e6e7e2; text-align: left; vertical-align: top; }
+    #taskbook-content th { background: #f4f5f2; color: #3e4548; font-weight: 650; }
+    #taskbook-content td { color: #4c5458; }
+    #taskbook-content code { padding: 1px 4px; border-radius: 3px; background: #f0f1ed; font: .92em ui-monospace, SFMono-Regular, Menlo, monospace; }
+    #taskbook-content hr { border: 0; border-top: 1px solid var(--line); margin: 26px 0; }
+    #taskbook-content a { color: #496c89; overflow-wrap: anywhere; }
+    #taskbook-content input[type="checkbox"] { accent-color: var(--green); }
+    .load-error { padding: 18px; border: 1px solid #eed3d0; border-radius: 6px; background: #fff8f6; color: #743a38; }
+    .load-error a { color: inherit; }
+    footer { padding: 18px 0 30px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 20px; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 30px, 1180px); }
+      .hero { padding-top: 35px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+      .hero-side { border-left: 0; border-top: 1px solid var(--line); padding: 15px 0 0; }
+      .metrics { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+      .metric strong { font-size: 20px; }
+      .jump-inner { gap: 17px; min-height: 50px; }
+      .jump-nav a { font-size: 11px; }
+      .jump-nav .spacer { min-width: 0; }
+      .jump-inner .action-button { white-space: nowrap; }
+      main { padding-top: 24px; }
+      .section-head { align-items: start; flex-direction: column; gap: 6px; }
+      .map-stage { min-height: 320px; padding: 12px; }
+      #map-render { min-width: 700px; }
+      .map-caption { flex-direction: column; gap: 4px; }
+      #taskbook-content table { display: block; overflow-x: auto; }
+      footer .wrap { flex-direction: column; gap: 6px; }
+    }
+    @media (max-width: 420px) {
+      .wrap { width: calc(100% - 24px); }
+      h1 { font-size: 35px; }
+      .hero-copy { font-size: 14px; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .jump-inner { gap: 12px; }
+      .jump-inner > a:first-child { display: none; }
+      .jump-inner .action-button { font-size: 10px; padding-inline: 7px; }
+    }
+    @media print {
+      :root { --page: #fff; }
+      body { background: #fff; font-size: 11pt; }
+      .hero, .jump-nav, .map-section, footer { display: none !important; }
+      main { padding: 0; }
+      .taskbook-section { margin: 0; }
+      .taskbook-panel { padding: 0; border: 0; box-shadow: none; }
+      #taskbook-content { max-width: none; }
+      #taskbook-content > h1:first-child { display: block; margin-bottom: 8px; font-size: 25px; }
+      #taskbook-content h2 { break-after: avoid; }
+      #taskbook-content h3 { break-after: avoid; }
+      #taskbook-content blockquote, #taskbook-content table { break-inside: avoid; }
+      a { color: inherit !important; text-decoration: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#taskbook">跳到主持提纲与任务书</a>
+  <header class="hero" id="overview">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">探索性用户测试 · 研究方案</div>
+        <h1>两套 Demo 的用户测试<br>任务协作 × 学习资源</h1>
+        <p class="hero-copy">一套可直接主持的测试提纲与任务书，覆盖 <strong>Ascend Work</strong> 与 <strong>CANN 学习首页</strong>。通过真实情境观察用户如何找入口、理解材料、尝试下一步并判断结果是否可信。</p>
+        <div class="demo-links" aria-label="测试原型">
+          <a class="demo-link" href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener noreferrer">打开 Ascend Work</a>
+          <a class="demo-link" href="https://schihhsin.github.io/AscendCANN/cann-learning-home/" target="_blank" rel="noopener noreferrer">打开 CANN 学习首页</a>
+        </div>
+      </div>
+      <aside class="hero-side" aria-label="测试安排摘要">
+        <div class="hero-side-label">建议安排</div>
+        <div class="metrics">
+          <div class="metric"><strong>8</strong><span>参与者建议数</span></div>
+          <div class="metric"><strong>65–70</strong><span>分钟 / 人</span></div>
+          <div class="metric"><strong>2</strong><span>核心 Demo</span></div>
+          <div class="metric"><strong>4 + 2</strong><span>核心任务 + 可选</span></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <nav class="jump-nav" aria-label="页面目录">
+    <div class="wrap jump-inner">
+      <a href="#overview">测试方案</a>
+      <a href="#mindmap">MindMap</a>
+      <a href="#taskbook">主持提纲与任务书</a>
+      <span class="spacer"></span>
+      <a class="action-button" href="./taskbook.md" download>下载 Markdown</a>
+      <button class="action-button" type="button" onclick="window.print()">打印任务书</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="map-section" id="mindmap" aria-labelledby="mindmap-heading">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">测试结构 · 双 Demo 分支对照</div>
+          <h2 id="mindmap-heading">先看全局，再进入任务</h2>
+        </div>
+        <p class="section-note">共同主持流程放在中间，两套 Demo 各自展开；核心任务与可选探索分开，方便分配测试时间。</p>
+      </div>
+      <div class="map-panel">
+        <div class="map-meta"><b aria-hidden="true"></b><span>用户测试总览</span><span>·</span><span>Mermaid 开源 mindmap</span><a class="map-open-source" href="https://github.com/mermaid-js/mermaid" target="_blank" rel="noopener noreferrer">Mermaid 项目 ↗</a></div>
+        <div class="map-stage">
+          <div id="map-render" role="img" aria-label="双 Demo 用户测试结构图"><p class="map-loading">正在加载 MindMap…</p></div>
+        </div>
+        <div class="map-caption"><span><strong>共同观察</strong>：入口理解、上下文连续、内容信任与真实验证边界</span><span>打印时自动收起图，保留完整任务书</span></div>
+      </div>
+      <noscript><p class="load-error">MindMap 需要启用 JavaScript；完整的主持提纲与任务书仍可从 <a href="./taskbook.md">Markdown 文件</a>查看。</p></noscript>
+      <pre id="map-source" hidden>mindmap
+  root((双 Demo 用户测试))
+    共同主持流程
+      招募分组与知情同意
+      背景访谈与 Think aloud
+      任务执行与中性追问
+      复盘比较与证据整理
+    Ascend Work 任务协作与学习
+      AW01 AddCustom 精度异常
+        已知输入差异与错误位置
+        参数尝试与代码材料
+        范围复核与结论边界
+      AW02 ResNet50 离线推理
+        学习路径与步骤导航
+        输入准备到输出解读
+        样例条件与待核实事项
+      AW03 训练与调优 可选
+        关联方向逐步探索
+        编辑任务需求草稿
+        区分选择与预设诊断
+    CANN Learning Hub 学习资源首页
+      LH01 选择学习主线
+        按角色与目标找路线
+        比较适合人群时长收获
+      LH02 高校教学资源
+        找课程与教学方案
+        发现边学边练入口
+      LH03 练习方式 可选
+        Notebook 与 CANNLab
+        本地运行条件与期待
+    共同复盘与分析
+      哪些入口直观或隐蔽
+      什么内容被视为已验证
+      哪里期待进度与能力全景
+      观察事实原话研究解释
+      P0阻断 P1主要摩擦 P2次要摩擦</pre>
+    </section>
+
+    <section class="taskbook-section" id="taskbook" aria-labelledby="taskbook-heading">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">主持人使用 · 可打印</div>
+          <h2 id="taskbook-heading">测试提纲与任务书</h2>
+        </div>
+        <p class="section-note">参与者只看每张任务卡的“朗读给参与者”部分；观察点与完成判断留给主持人。</p>
+      </div>
+      <div class="taskbook-panel">
+        <article id="taskbook-content" aria-live="polite" aria-busy="true">
+          <p class="map-loading">正在载入任务书…</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap"><span>AscendCANN · 用户研究工作材料 · 2026-11-03</span><span>本轮为小样本探索，不作总体比例推断。</span></div></footer>
+
+  <script type="module">
+    const mapTarget = document.getElementById("map-render");
+    const bookTarget = document.getElementById("taskbook-content");
+
+    try {
+      const response = await fetch("./taskbook.md");
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const markdown = await response.text();
+      const { marked } = await import("https://cdn.jsdelivr.net/npm/marked@15.0.12/+esm");
+      bookTarget.innerHTML = marked.parse(markdown, { gfm: true, breaks: false });
+      bookTarget.setAttribute("aria-busy", "false");
+    } catch (error) {
+      bookTarget.innerHTML = '<div class="load-error">任务书暂时未能显示。可<a href="./taskbook.md">打开或下载 Markdown 版本</a>。页面使用的静态文件应与 index.html 放在同一目录。</div>';
+      bookTarget.setAttribute("aria-busy", "false");
+    }
+
+    try {
+      const mermaid = (await import("https://unpkg.com/mermaid@11.17.2/dist/mermaid.esm.min.mjs")).default;
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "strict",
+        theme: "base",
+        themeVariables: {
+          background: "#ffffff",
+          primaryColor: "#f7f0ec",
+          primaryTextColor: "#202326",
+          primaryBorderColor: "#d8b1a9",
+          secondaryColor: "#edf2f5",
+          secondaryTextColor: "#202326",
+          secondaryBorderColor: "#bdcbd4",
+          tertiaryColor: "#eef3ee",
+          tertiaryTextColor: "#202326",
+          tertiaryBorderColor: "#c1d0c3",
+          lineColor: "#aeb6b6",
+          fontFamily: "-apple-system, BlinkMacSystemFont, PingFang SC, Microsoft YaHei, sans-serif",
+          fontSize: "15px"
+        },
+        mindmap: { padding: 24, maxNodeWidth: 190 }
+      });
+      const source = document.getElementById("map-source").textContent.trim();
+      const { svg, bindFunctions } = await mermaid.render("ascend-work-learning-home-test-map", source);
+      mapTarget.innerHTML = svg;
+      bindFunctions?.(mapTarget);
+    } catch (error) {
+      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>MindMap 图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>共同主持流程：招募、开场、任务执行、复盘与证据整理</li><li>Ascend Work：AddCustom、ResNet50、可选训练与调优探索</li><li>CANN 学习首页：路线选择、高校教学资源、可选练习方式</li><li>共同观察：任务入口、上下文连续、内容信任与进度能力预期</li></ul><p>如果当前网络无法访问 Mermaid CDN，可使用下方 Markdown 任务书。</p></div>';
+    }
+  </script>
+</body>
+</html>
