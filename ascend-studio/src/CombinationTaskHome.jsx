@@ -28,10 +28,10 @@ function satellitePosition(index, count) {
 }
 
 function pathRailPosition(index, count) {
-  if (count <= 1) return { x: 12, y: 50 };
-  const spread = Math.min(76, 28 + (count - 2) * 9);
-  const start = (100 - spread) / 2;
-  return { x: 12, y: start + index * (spread / (count - 1)) };
+  if (count <= 1) return { x: 16, y: 50 };
+  const spread = Math.min(2, 0.7 + (count - 2) * 0.22);
+  const position = -spread / 2 + index * (spread / (count - 1));
+  return { x: 16 + 18 * position ** 2, y: 50 + 38 * position };
 }
 
 function pointAtEdge(rect, dx, dy, canvasRect) {
@@ -219,7 +219,7 @@ export function CombinationTaskHome({ onCreateTask }) {
     const sourceId = activeSourceRef.current;
     const sourceElement = sourceId ? nodeRefs.current.get(sourceId) : null;
     const canvas = canvasRef.current;
-    if (!sourceElement || !canvas) {
+    if (!sourceElement || !canvas || !nodeMap.get(sourceId)?.related.length) {
       setHoverPreview(null);
       return;
     }
@@ -255,7 +255,13 @@ export function CombinationTaskHome({ onCreateTask }) {
   };
 
   const startTargetDwell = (sourceId, targetId, clientX, clientY) => {
-    if (!sourceId || !targetId || sourceId === targetId) return;
+    if (!sourceId || !targetId || sourceId === targetId || !nodeMap.get(sourceId)?.related.length) {
+      clearTargetDwellTimer();
+      targetCandidateRef.current = null;
+      setHoverTargetId(null);
+      setHoverPreview(null);
+      return;
+    }
     const alreadyConnected = connections.some((item) => pairKey(item.from, item.to) === pairKey(sourceId, targetId));
     if (alreadyConnected || orderedCompositionPath(connections).includes(targetId)) {
       clearTargetDwellTimer();
@@ -283,8 +289,9 @@ export function CombinationTaskHome({ onCreateTask }) {
       ) return;
       clearTargetDwellTimer();
       createConnection(sourceId, targetId);
-      activeSourceRef.current = targetId;
-      focusRearmRef.current = pointer ? { ...pointer } : { clientX, clientY };
+      const canContinue = Boolean(nodeMap.get(targetId)?.related.length);
+      activeSourceRef.current = canContinue ? targetId : null;
+      focusRearmRef.current = canContinue ? (pointer ? { ...pointer } : { clientX, clientY }) : null;
       targetCandidateRef.current = null;
       setHoverSourceId(targetId);
       setHoverSourceCandidateId(null);
@@ -298,6 +305,10 @@ export function CombinationTaskHome({ onCreateTask }) {
     pointerPositionRef.current = { clientX: event.clientX, clientY: event.clientY };
     const sourceId = activeSourceRef.current;
     if (!sourceId) return;
+    if (!nodeMap.get(sourceId)?.related.length) {
+      setHoverPreview(null);
+      return;
+    }
     const target = event.target.closest?.("[data-composition-field]");
     const targetId = target?.dataset.compositionField || null;
     const rearmPoint = focusRearmRef.current;
@@ -350,7 +361,7 @@ export function CombinationTaskHome({ onCreateTask }) {
     }
 
     sourceCandidateRef.current = field.id;
-    setHoverSourceCandidateId(field.id);
+    if (field.related.length) setHoverSourceCandidateId(field.id);
     const generation = ++sourceTimerGenerationRef.current;
     sourceHoverTimerRef.current = window.setTimeout(() => {
       if (
@@ -362,8 +373,9 @@ export function CombinationTaskHome({ onCreateTask }) {
       clearSourceHoverTimer();
       sourceCandidateRef.current = null;
       const pointer = pointerPositionRef.current;
-      focusRearmRef.current = pointer ? { ...pointer } : null;
-      activeSourceRef.current = field.id;
+      const canContinue = field.related.length > 0;
+      focusRearmRef.current = canContinue && pointer ? { ...pointer } : null;
+      activeSourceRef.current = canContinue ? field.id : null;
       setHoverSourceCandidateId(null);
       setHoverSourceId(field.id);
       setPendingKeyboardNode(null);
