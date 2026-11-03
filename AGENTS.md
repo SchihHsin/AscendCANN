@@ -8876,4 +8876,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出电脑端 `/ascstudio-pc/` 的横向节点仍会被同行较高卡片拉高。此前 `28fd9929` 的规则只作用于 `.tco-map-node-wrap` 中的摘要 / 详情卡片；`mapLevel === 0` 的主题概览由 `.tco-topic-node` 渲染，仍使用 Grid 默认的纵向拉伸，因此未被覆盖。
 - 在 `ascend-studio/src/task-content-map.css` 为 `.tco-topic-node` 增加 `align-self: start` 和 `height: auto`。主题概览节点现在按自身内容高度排列，同行网格轨道仍可按最高节点定高。
 - 依据：用户在电脑端展示页的直接观察（H）；React 层级映射与构建 CSS 选择器核对（M）。同一 CSS 被 `/ascstudio/` 和 `/ascstudio-pc/studio/` 共用；不改变页面结构、路由或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；构建断言确认两处入口均引用同一份含 `.tco-topic-node{align-self:start;height:auto}` 的 CSS；本地 `http://127.0.0.1:5196/` HTTP 200。未运行自动化测试；Vite 保留主 JS bundle 超过 500 kB 的体积提示。推送及 Pages 发布回执在本条完成后补记。
+- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；构建断言确认两处入口均引用同一份含 `.tco-topic-node{align-self:start;height:auto}` 的 CSS；本地 `http://127.0.0.1:5196/` HTTP 200。未运行自动化测试；Vite 保留主 JS bundle 超过 500 kB 的体积提示。未运行自动化测试；Vite 保留主 JS bundle 超过 500 kB 的体积提示。
+- Commit / push：`2ee2ff15` 已推送到 `origin/main`；GitHub Pages workflow `41623830896` 完成且 success。线上 `/AscendCANN/ascstudio/` 与 `/AscendCANN/ascstudio-pc/studio/` 均已更新，新 JS/CSS 返回 HTTP 200，已读回主题节点自然高度规则。

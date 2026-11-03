@@ -2208,4 +2208,4 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 ### 2026-11-03 · 主题概览节点按自身内容定高
 
 - 主题概览中的 `.tco-topic-node` 是独立节点类型；之前应用于组内 `.tco-map-node-wrap` 的定高规则并不覆盖它。已在 `task-content-map.css` 为主题节点增加 `align-self: start` 与自然高度，避免被同排高卡片拉伸。
-- Pages 与电脑端展示副本由 `npm run build:pages` 一并重建；摘要 / 详情节点规则不变。依据、检查及部署回执见仓库根 `AGENTS.md`。
+- Pages 与电脑端展示副本由 `npm run build:pages` 一并重建；摘要 / 详情节点规则不变。提交 `2ee2ff15` 已推送，Pages workflow `41623830896` 成功；详细回执见仓库根 `AGENTS.md`。
