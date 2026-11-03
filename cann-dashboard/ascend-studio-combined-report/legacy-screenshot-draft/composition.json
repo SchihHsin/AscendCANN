@@ -1,0 +1,38 @@
+{
+  "title": "Ascend Studio · 设计材料组合",
+  "page_size": "16:9",
+  "slides": [
+    {
+      "name": "原报告封面",
+      "image": "../ascend-studio-design-report-evidence/report-01.jpg",
+      "source_url": "https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-studio-design-report.html#1"
+    },
+    {
+      "name": "原报告第 2 页",
+      "image": "../ascend-studio-design-report-evidence/report-02-journey.jpg",
+      "source_url": "https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-studio-design-report.html#2"
+    },
+    {
+      "name": "任务开发者用户旅程",
+      "image": "assets/03-task-developer-journey.png",
+      "source_url": "https://schihhsin.github.io/AscendCANN/ai-developer-dual-user-journeys-knowledge-links-pain.html"
+    },
+    {
+      "name": "学习开发者用户旅程",
+      "image": "assets/04-learning-developer-journey.png",
+      "source_url": "https://schihhsin.github.io/AscendCANN/ai-developer-dual-user-journeys-knowledge-links-pain.html"
+    },
+    {
+      "name": "Ascend Studio PC 页面",
+      "image": "assets/04-ascstudio-pc-1440-full.png",
+      "source_url": "https://schihhsin.github.io/AscendCANN/ascstudio-pc/"
+    }
+  ],
+  "journey_source": {
+    "image": "assets/03-dual-user-journeys-1440-full.png",
+    "task_crop": [0, 0, 1440, 1040],
+    "learning_crop": [0, 1065, 1440, 2125],
+    "capture_meta": "assets/03-dual-user-journeys-1440-meta.json"
+  },
+  "pc_capture_meta": "assets/04-ascstudio-pc-1440-meta.json"
+}

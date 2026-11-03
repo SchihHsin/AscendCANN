@@ -8878,3 +8878,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户在电脑端展示页的直接观察（H）；React 层级映射与构建 CSS 选择器核对（M）。同一 CSS 被 `/ascstudio/` 和 `/ascstudio-pc/studio/` 共用；不改变页面结构、路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；构建断言确认两处入口均引用同一份含 `.tco-topic-node{align-self:start;height:auto}` 的 CSS；本地 `http://127.0.0.1:5196/` HTTP 200。未运行自动化测试；Vite 保留主 JS bundle 超过 500 kB 的体积提示。未运行自动化测试；Vite 保留主 JS bundle 超过 500 kB 的体积提示。
 - Commit / push：`2ee2ff15` 已推送到 `origin/main`；GitHub Pages workflow `41623830896` 完成且 success。线上 `/AscendCANN/ascstudio/` 与 `/AscendCANN/ascstudio-pc/studio/` 均已更新，新 JS/CSS 返回 HTTP 200，已读回主题节点自然高度规则。
+
+### 2026-11-03 · Ascend Studio 设计材料组合为原页面放映
+
+- 按确认顺序组合：原报告封面 → 报告 `#2`「从查资料到交任务：Agent 模式带来另一种开发入口」→ 任务开发者旅程 → 学习开发者旅程 → 用户指定的 Ascend Studio PC 页面。报告 `#2` 表达当前开发入口趋势与现状，不是双用户页；它引出后面的两条独立用户旅程。
+- 当前交付为 `cann-dashboard/ascend-studio-combined-report/index.html`：前四页以同源原页面嵌入，两个用户旅程分别呈现；沿用附件现有颜色、阶段、触点、情绪曲线与内容，仅按 16:9 视口重新排布。PC 页使用用户给出的线上原地址，完整保留原页面布局和交互，不转截图。此前截图式 PPTX 与构建材料移入 `legacy-screenshot-draft/`，不作为当前交付。
+- 来源与证据：报告页来自用户指定的线上报告（H）；两条旅程源文件与用户桌面附件 SHA-256 一致（H）；PC 页使用用户指定线上 URL（H）。组合仅改变展示顺序和视口适配，不改研究结论、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTML 内联脚本语法与组合 JSON 检查通过；Chrome 1600×900 桌面视口复核趋势页、两条独立旅程和线上 PC 页面；`#3`、`#4` 与 `#5` 的直接定位可用。`git diff --check` 待提交前复核。
+- 提交 / 推送：组合页与本交接更新按独立文件范围推送至 `origin/main`；GitHub Pages 发布状态待确认。

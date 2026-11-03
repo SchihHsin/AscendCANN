@@ -1,38 +1,39 @@
 {
   "title": "Ascend Studio · 设计材料组合",
-  "page_size": "16:9",
+  "format": "responsive HTML presentation",
+  "final_artifact": "index.html",
+  "page_size": "16:9 viewport-adaptive slides",
   "slides": [
     {
-      "name": "原报告封面",
-      "image": "../ascend-studio-design-report-evidence/report-01.jpg",
-      "source_url": "https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-studio-design-report.html#1"
+      "name": "封面",
+      "source": "../ascend-studio-design-report.html#1",
+      "embed_mode": "report"
     },
     {
-      "name": "原报告第 2 页",
-      "image": "../ascend-studio-design-report-evidence/report-02-journey.jpg",
-      "source_url": "https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-studio-design-report.html#2"
+      "name": "趋势与现状",
+      "source": "../ascend-studio-design-report.html#2",
+      "embed_mode": "report"
     },
     {
       "name": "任务开发者用户旅程",
-      "image": "assets/03-task-developer-journey.png",
-      "source_url": "https://schihhsin.github.io/AscendCANN/ai-developer-dual-user-journeys-knowledge-links-pain.html"
+      "source": "../../ai-developer-dual-user-journeys-knowledge-links-pain.html",
+      "embed_mode": "journey"
     },
     {
       "name": "学习开发者用户旅程",
-      "image": "assets/04-learning-developer-journey.png",
-      "source_url": "https://schihhsin.github.io/AscendCANN/ai-developer-dual-user-journeys-knowledge-links-pain.html"
+      "source": "../../ai-developer-dual-user-journeys-knowledge-links-pain.html",
+      "embed_mode": "journey"
     },
     {
-      "name": "Ascend Studio PC 页面",
-      "image": "assets/04-ascstudio-pc-1440-full.png",
-      "source_url": "https://schihhsin.github.io/AscendCANN/ascstudio-pc/"
+      "name": "Ascend Studio PC",
+      "source": "https://schihhsin.github.io/AscendCANN/ascstudio-pc/?chapter=1&pointIndex=0#chapter-1",
+      "embed_mode": "pc"
     }
   ],
-  "journey_source": {
-    "image": "assets/03-dual-user-journeys-1440-full.png",
-    "task_crop": [0, 0, 1440, 1040],
-    "learning_crop": [0, 1065, 1440, 2125],
-    "capture_meta": "assets/03-dual-user-journeys-1440-meta.json"
-  },
-  "pc_capture_meta": "assets/04-ascstudio-pc-1440-meta.json"
+  "notes": [
+    "第 1 页使用原报告封面。",
+    "第 2 页直接嵌入报告 #2「从查资料到交任务：Agent 模式带来另一种开发入口」。",
+    "任务开发者与学习开发者两条旅程分别嵌入原附件，并按 16:9 视口自适应。",
+    "PC 原型直接嵌入用户指定的线上原页面，保留原有布局和交互，不转为截图。"
+  ]
 }
