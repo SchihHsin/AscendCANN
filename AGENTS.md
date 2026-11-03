@@ -8719,3 +8719,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根据用户选择的方案 1，修改 `cann-learning-home/index.html`：移除五条学习主线卡片右上角被裁切的同心圆装饰；保留主题图标、课程信息、浅灰卡片底色与细边框，避免装饰抢过课程信息。
 - 设计依据：用户提供的当前页面截图，以及用户确认采用“简洁入口卡”方案；该改动只作用于“选择学习主线”卡片，不改 README 内容结构、详情卡片或 API / Host / Application 边界。
 - 验证：`git diff --check` 通过；本地桌面预览确认主线卡片圆环已消失，五张卡片信息和图标仍完整。页面与交接记录均已提交并推送到 main（页面改动 `54419ed0`，交接记录后续提交）；GitHub Pages 更新可能有延迟。
+
+### 2026-11-03 · 关联探索采用左侧弧形路径并收束终点连线
+
+- 用户认可左侧弧形展开。更新 `ascend-studio/src/CombinationTaskHome.jsx`：焦点节点留在中央，已连接的祖先节点在左侧沿平滑弧线排列；节点增多时扩大弧线覆盖的纵向范围，保留路径顺序和来源。用户明确确认路径案例由「多卡收益不明显 → 多卡扩展效率 → HCCL 通信 → 通信等待 → 梯度同步 → 数据并行 → global batch → 有效 batch → 收敛稳定性」组成。
+- 修复无后继节点的终点行为：没有关联项的节点不再成为连线源，不显示等待确认圈，也不会产生指向空白的预览虚线；终点仍可居中，已确认的入线继续显示。
+- 证据：弧形方向依据用户确认（H）；本地 1440×900 预览实际悬浮串联上述 9 个节点，确认 8 段线清楚、祖先弧形可读、终点没有悬空预览线（M）。示例是交互概念，不代表真实训练诊断。没有改变首页 Tab、Prompt 发送语义、页面序列或 API / Host / Application 边界。
+- Pages 与电脑端静态包由 `npm run build:pages` 同步。构建成功，发布 JS `node --check` 与 `git diff --check` 通过；未运行自动化测试。Vite 保留主 JS chunk 超过 500 kB 的提示。
+- 实现提交 `e86a75a9` 已推送至 `origin/main`；GitHub Pages workflow `41570618291` 成功。线上 `/AscendCANN/ascstudio/?home=combine` 引用 `index-D54gv9pY.js`，页面与 JS 均 HTTP 200。当前无未决事项。
