@@ -8631,3 +8631,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **依据与边界：** 交互方向、信息层级和首页结构依据用户确认（H）；新首页本地静态截图与构建读取（M）。未改变正式汇报页序 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；不接入真实模型、训练遥测或 NPU。
 - **验证：** `npm run build:pages` 成功；源码与发布 JS `node --check`、`git diff --check` 通过。Vite 保留主 JS chunk 大于 500 kB 提醒；未运行自动化测试。前后图为 1440×900 页面截图及组合图。
 - **推送：** 实现、静态包、交接与截图提交 `d7be2370` 已推送至 `origin/main`；GitHub Pages workflow `41561438771` 成功。线上 `/AscendCANN/ascstudio/?home=combine` HTML、`index-IpE05c3Z.js` 与 `index-DSTbdyTU.css` 均 HTTP 200；JS 回读包含「关联探索」及本轮字段。
+
+
+### 2026-11-03（CANN Learning Hub 图形化首页）
+
+- 新建 `cann-learning-home/index.html`，依据用户提供的 CANN GitCode 组织首页截图，采用浅色卡片、主栏与侧栏和任务入口，呈现公共基础、五条学习主线、在线实践及学习共建；提供首屏主题切换与路径筛选。
+- 内容及课程时长来自 2026-11-03 访问的 GitCode 学习仓 README（H）；页面为独立 GitHub Pages 设计原型，不改变 GitCode 仓库首页。无页面序列或 API / Host / Application 边界变更。
+- 验证：浏览器检查首屏主题切换和路径筛选，核对 README 内路径锚点；`git diff --check`。提交并推送至 main，GitHub Pages 地址为 `/AscendCANN/cann-learning-home/`。后续需随上游课程与链接更新并确认仓库自定义首页支持。
