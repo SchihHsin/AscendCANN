@@ -8,7 +8,7 @@
 .stack-axis i{height:1px;flex:1;background:#dfe5ef}
 .stack-axis b{color:#707b8d;font-weight:600;white-space:nowrap}
 .stack-layers{display:grid;gap:8px}
-.stack-layer{--layer:#7893cc;display:grid;grid-template-columns:170px minmax(160px,1fr) 235px;align-items:center;gap:16px;min-height:104px;padding:14px 16px;background:#f8f9fb;border:1px solid #e9edf3;border-left:3px solid var(--layer);border-radius:6px}
+.stack-layer{--layer:#7893cc;display:grid;grid-template-columns:170px minmax(160px,1fr) 235px;align-items:center;gap:16px;min-height:104px;padding:14px 16px;background:#f8f9fb;border:1px solid #e9edf3;border-radius:6px}
 .stack-layer[data-layer="framework"]{--layer:#9987c2}
 .stack-layer[data-layer="libraries"]{--layer:#77a39c}
 .stack-layer[data-layer="programming"]{--layer:#c28d78}

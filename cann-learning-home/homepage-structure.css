@@ -2,9 +2,9 @@
 #teacher-support,#learning-progress,#cann-capability-map,#practice-modes,#resource-preparation,#resource-path-details,#resource-course-index,#resource-teaching,#resource-updates,#resource-teaching-card,#resource-community-card{scroll-margin-top:18px}
 .teacher-route{display:grid;grid-template-columns:minmax(0,1fr) 18px minmax(0,1.4fr) 18px minmax(0,1fr);align-items:stretch;gap:8px}
 .teacher-route-stage{min-width:0;padding:14px;background:#f8f9fb;border:1px solid #e9edf3;border-radius:5px}
-.teacher-foundation{background:linear-gradient(120deg,#f4f6fc,#f8f9fb);border-left:3px solid #7893cc}
-.teacher-formats{background:linear-gradient(120deg,#faf9fc,#f8f9fb);border-left:3px solid #9987c2}
-.teacher-support{background:linear-gradient(120deg,#f7faf9,#f8f9fb);border-left:3px solid #77a39c}
+.teacher-foundation{background:linear-gradient(120deg,#f4f6fc,#f8f9fb)}
+.teacher-formats{background:linear-gradient(120deg,#faf9fc,#f8f9fb)}
+.teacher-support{background:linear-gradient(120deg,#f7faf9,#f8f9fb)}
 .route-kicker{display:block;margin-bottom:6px;color:#8e9bb5;font-size:9px;font-weight:700;letter-spacing:.08em}
 .teacher-route-stage h3{margin:0 0 7px;color:#303640;font-size:13px}
 .teacher-route-stage p{margin:0 0 10px;color:#818a98;font-size:10px;line-height:1.65}
@@ -22,11 +22,7 @@
 .teacher-support>a span{float:right;color:#9aa9a7}
 .stage-map-section{margin-top:28px}
 .learning-stage-list{display:grid;gap:6px}
-.learning-stage-row{display:grid;grid-template-columns:170px minmax(0,1fr);align-items:center;gap:14px;padding:10px 13px;background:#f8f9fb;border:1px solid #eceff4;border-left:3px solid #7893cc;border-radius:4px}
-.learning-stage-row[data-kind="infer"]{border-left-color:#9987c2}
-.learning-stage-row[data-kind="operator"]{border-left-color:#77a39c}
-.learning-stage-row[data-kind="app"]{border-left-color:#c28d78}
-.learning-stage-row[data-kind="recsys"]{border-left-color:#8299bf}
+.learning-stage-row{display:grid;grid-template-columns:170px minmax(0,1fr);align-items:center;gap:14px;padding:10px 13px;background:#f8f9fb;border:1px solid #eceff4;border-radius:4px}
 .learning-stage-row>a{display:grid;gap:2px;color:#39414d}
 .learning-stage-row>a:hover{text-decoration:none;color:#5574b2}
 .learning-stage-row>a strong{font-size:11px}
@@ -51,7 +47,7 @@
 .resource-card .reference-block{margin:12px 0;padding:12px 14px;background:#f8f9fb;border:1px solid #e9edf3;border-radius:4px;overflow:visible}
 .resource-card .reference-block .reference-block{margin:10px 0;background:#fff}
 .reference-subhead{margin:0 0 8px;color:#475364;font-size:12px;font-weight:650;line-height:1.5}
-.curriculum-reference-card{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;background:#f3f5fa;border-left:3px solid #8ba0cc;border-radius:4px}
+.curriculum-reference-card{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;background:#f3f5fa;border:1px solid #e9edf3;border-radius:4px}
 .curriculum-reference-card strong{color:#46536a;font-size:11px}
 .curriculum-reference-card p{margin:3px 0 0;color:#858e9b;font-size:10px}
 .curriculum-reference-card a{flex:0 0 auto;color:#6c85b5;font-size:10px}
