@@ -1443,3 +1443,13 @@ final result: passed
 - **实现：** 路径用单个白色圆角外框，五个阶段沿彩色横向时间轴排列，阶段间细竖线分隔；编号圈位于时间轴，步骤为无卡片底的文本行并用细横线区分。保留阶段的蓝、青、紫、粉、绿颜色关系，降低饱和度和对比度以减少花感。
 - **复核：** 本地 1280×720 CUA 可见横轴节点、五阶段列、步骤分隔和柔和多色（M）。`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过，未运行测试套件。
 - **发布：** 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送到 `origin/main`；Pages workflow `40369406352` build / deploy 成功；线上 HTML 确认引用 `index-Da-ZKEET.js` / `index-B8kzfCoY.css`，HTML、JS 与 CSS 均 HTTP 200。
+
+
+## 2026-11-03 · 合并多层探索与线索串联
+
+- **设计点：** 将“字段数量多”与“关联层级深”分成两个连续动作。初始只给 12 个可理解的起点、没有预设连线；悬浮把当前线索移到中心，只显示直接相关项；下一次停留确认关系，沿确认后的节点继续深入。节点字号表达其下还有多少可探索内容，叶节点较小；祖先链持续保留。最终路径实时写成可编辑 Prompt。
+- **用户依据：** 用户要求把第二 Tab 的“节点较少”和第三 Tab 的“字段太多太乱”结合，按用户最好的信息关联方式直接改造，并给出改前／改后对比（H）。
+- **修改文件：** `src/CombinationTaskHome.jsx`、`src/NewTaskHome.jsx`、`src/home-composition.js`、`src/combination-task-home.css`、`src/explore-task-home.css`，新增 `src/home-variants.css`。构建发布文件位于根 `ascstudio/` 与 `ascstudio-pc/studio/`。
+- **截图证据：** `evidence/20261103-home-association/before.png`、`after.png` 是 1440×900 页面截图，`comparison.png` 为并排图，`comparison-meta.json` 记录来源与状态。改后截图来自本地构建 `/` 的 `?home=combine` 初始态，默认无连线；本轮未保存指针悬浮状态截图。
+- **检查：** `npm run build:pages` 成功；`node --check src/home-composition.js`、发布 JS 语法检查及 `git diff --check` 通过。Vite 提示主 bundle 超过 500 kB；未运行测试套件。页面 URL 参数兼容；不改汇报页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不接入真实训练数据 / NPU。
+- **发布：** 实现与静态包提交推送 `origin/main`；Pages workflow 和线上资源复核状态见根 `AGENTS.md`。

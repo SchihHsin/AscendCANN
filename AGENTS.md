@@ -8620,3 +8620,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - ImageGen 主视觉用于封面、核心判断、性能调优断点、任务协作、参数巡优、NVIDIA 案例概览与经验回流等页面；精确数字、界面截图、产品名称、任务关系和引用仍由 HTML / 原始截图承载。生成图只作概念表达，不作竞品证据。没有把公开案例认作受访者提到的内部工具，也没有改变 API / Protocol、Host / Harness、Application / Task 边界或页面序列。
 - 依据：用户确认将访谈报告 21 页全部重新设计，并已确认目录无需可视化（H）；公开产品截图和引用仍可复核（H）；ImageGen 画面只表达概念关系（M）。
 - 验证：21 页外层 section、HTML 标签栈、div 嵌套平衡；9 个原有外部 URL 均保留；10 张素材路径均存在；内联脚本 `node --check`、`git diff --check` 通过。浏览器对本地 `file://` 预览拒绝访问，并明确禁止通过其他浏览器入口绕过；因此未声称已完成渲染截图检查。提交 `2ea16fd9` 已推送至 `origin/main`；GitHub Pages workflow `41502645291` 对应该提交且结果为 success。浏览器未能做线上截图复核：本地预览 URL 被安全策略拒绝，线上页面交互时设备处于锁屏状态。
+
+
+### 2026-11-03 · 合并多层探索与线索串联为“关联探索”
+
+- **设计决策：** 用户确认第二个 Tab 节点偏少、第三个 Tab 字段过多，需要按用户更自然地理解信息关系的方式融合（H）。首页保留「主动建议」与「关联探索」两个 Tab；原 `?home=explore` 入口兼容并打开整合页，`?home=combine` 继续直达。旧版“多层探索 / 线索串联”不再作为两个独立 Tab。
+- **关联方式：** 初始展示 12 个经过策划的训练调优入口，覆盖目标、现象、指标、方法、约束与验证；默认无连线。悬浮约 280ms 后将焦点移至中央，只展开直接相关节点；字号按节点后续关联数量分层，终端节点更小。焦点变更后要求指针再次移动至少 14px，目标停留约 680ms 才确认连线；新目标成为下一段起点，祖先路径保留，形成单条可读的探索路径。
+- **Prompt：** 已确认的线索持续组成可编辑需求草稿，并由底部明确发送动作继续。预设内容服务于交互概念展示，不代表真实训练诊断或个性化推断。
+- **修改：** `ascend-studio/src/CombinationTaskHome.jsx`、`NewTaskHome.jsx`、`home-composition.js`、`combination-task-home.css`、`explore-task-home.css`，新增 `home-variants.css`；Pages 与电脑端静态包由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。图像证据见 `ascend-studio/evidence/20261103-home-association/`。
+- **依据与边界：** 交互方向、信息层级和首页结构依据用户确认（H）；新首页本地静态截图与构建读取（M）。未改变正式汇报页序 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；不接入真实模型、训练遥测或 NPU。
+- **验证：** `npm run build:pages` 成功；源码与发布 JS `node --check`、`git diff --check` 通过。Vite 保留主 JS chunk 大于 500 kB 提醒；未运行自动化测试。前后图为 1440×900 页面截图及组合图。
+- **推送：** 本轮源码、交接与截图证据合并提交后推送至 `origin/main`；Pages 结果以该提交对应的部署检查为准。

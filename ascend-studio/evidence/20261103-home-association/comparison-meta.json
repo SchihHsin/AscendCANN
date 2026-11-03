@@ -1,0 +1,23 @@
+{
+  "title": "Ascend Work 首页信息关联设计前后对比",
+  "capturedAt": "2026-11-03",
+  "before": {
+    "screenshot": "before.png",
+    "dimensions": "1440x900",
+    "stateNote": "旧的线索串联首页：较多字段同时出现。原始截图来自本轮修改前的本地预览。"
+  },
+  "after": {
+    "screenshot": "after.png",
+    "dimensions": "1440x900",
+    "url": "http://127.0.0.1:5193/?home=combine",
+    "stateNote": "合并后的关联探索首页初始状态；默认无连线。截图由已安装 Chrome 的本地预览捕获。"
+  },
+  "comparison": "comparison.png",
+  "viewportProbe": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "devicePixelRatio": 1,
+    "note": "本地预览在 1440px 宽度下无横向溢出；内层页面视口通过同源嵌入页面核对。"
+  }
+}

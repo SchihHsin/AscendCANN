@@ -1,0 +1,43 @@
+.workspace-grid.is-standalone-view > .home-variants { grid-column: 3; grid-row: 1; }
+.home-variants {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--canvas-surface, #f5f5f5);
+  container-type: inline-size;
+}
+.home-variants__tabs {
+  position: absolute;
+  top: 19px;
+  right: 24px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid #e1e1e5;
+  border-radius: 9px;
+  background: rgba(239,239,240,.95);
+}
+.home-variants__tabs button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #74747e;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.home-variants__tabs button[aria-selected="true"] { background: #fff; color: #24232b; box-shadow: 0 1px 5px #20202c12; }
+.home-variants__panel { height: 100%; min-height: 0; }
+.home-variants__panel[hidden] { display: none; }
+.home-variants__panel > .new-task-home { height: 100%; }
+.home-variants button:focus-visible, .home-variants select:focus-visible { outline: 2px solid #8274c2; outline-offset: 4px; }
+@container (max-width: 680px) {
+  .home-variants__tabs { top: 4px; right: 12px; }
+}

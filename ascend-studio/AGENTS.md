@@ -2196,3 +2196,11 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 ### 2026-11-03 · 多层探索悬浮闭合圈
 
 用户选择方案 1：恢复可下钻节点旁随停留逐步闭合的小圆环（620ms），保留外围方向短弧；点击锁定时圆环扩散淡出。实现提交 `4d54a930` 已推送至 `origin/main`；Pages workflow `41496448516` 成功，线上 `/AscendCANN/ascstudio/`、`index-CoFt8SSr.js` 与 `index-BvxxS5s9.css` 均 HTTP 200。详见仓库根 `AGENTS.md`。
+
+### 2026-11-03 · 首页“关联探索”整合版
+
+- 首页交互方案由「多层探索」与「线索串联」两 Tab 合为「关联探索」，与「主动建议」并列；旧 `?home=explore` 地址兼容整合页。初始词云缩至 12 个设计入口，不预连线；节点数据保留目标、现象、指标、策略、约束和验证类型。
+- 用户悬浮一个节点后约 280ms，焦点移至画布中央，仅呈现直接关联节点；字号编码该节点还能继续展开的空间，叶节点更小。焦点变更后需再移动指针，目标停留约 680ms 后才写入连线；连接目标成为下一层焦点，祖先链仍可见。所选关系生成可编辑 Prompt。
+- 视觉保留无卡片的字段表达和现有中文衬线标题风格。Tab 样式现由 `NewTaskHome.jsx` 直接加载的 `home-variants.css` 提供；`explore-task-home.css` 不再承载已拆出的共享 Tab 样式。
+- 本地证据：`evidence/20261103-home-association/before.png`、`after.png`、`comparison.png`、`comparison-meta.json`。改前为原先多字段同时展开；改后是整合版 12 字段初始态，默认无连线。构建读取了新 Tab、节点与 Prompt；未在本轮进行真实训练或 NPU 验证。
+- `npm run build:pages`、源码 / 生成 JS `node --check`、`git diff --check` 通过。未改变其他页面序列、hash 或 API / Host / Application 边界；推送与 Pages 回执详见根 `AGENTS.md`。

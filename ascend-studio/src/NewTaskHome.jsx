@@ -1,6 +1,5 @@
 import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useRef, useState } from "react";
-import { ExploreTaskHome } from "./ExploreTaskHome";
 import { CombinationTaskHome } from "./CombinationTaskHome";
 import {
   IconArrowRight,
@@ -14,7 +13,6 @@ import {
   IconPlus,
   IconSparkles,
   IconBrain,
-  IconHierarchy3,
   IconAffiliate,
   IconX,
 } from "@tabler/icons-react";
@@ -23,6 +21,7 @@ import { FolderCardSurface } from "./FolderCardSurface";
 import { buildHomeSuggestions } from "./home-recommendations";
 import { useHomeRecommendationState } from "./useHomeRecommendationState";
 import "./new-task-home.css";
+import "./home-variants.css";
 
 const modes = [
   { id: "learning", label: "学习", placeholder: "描述你的学习目标、遇到的问题或想掌握的主题…", action: "生成学习路径" },
@@ -315,9 +314,10 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
 
 
 export function NewTaskHome(props) {
-  const homeViews = ["classic", "explore", "combine"];
+  const homeViews = ["classic", "combine"];
   const readView = () => {
     const requested = new URLSearchParams(window.location.search).get("home");
+    if (requested === "explore") return "combine";
     return homeViews.includes(requested) ? requested : "classic";
   };
   const [view, setView] = useState(readView);
@@ -348,10 +348,9 @@ export function NewTaskHome(props) {
   };
   return <section className="home-variants" aria-label="新建任务首页">
     <div className="home-variants__tabs" role="tablist" aria-label="首页交互方式" onKeyDown={handleTabKey}>
-      {[{ id: "classic", label: "主动建议", Icon: IconCards }, { id: "explore", label: "多层探索", Icon: IconHierarchy3 }, { id: "combine", label: "线索串联", Icon: IconAffiliate }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={ICON_SIZE.inline} />{label}</button>)}
+      {[{ id: "classic", label: "主动建议", Icon: IconCards }, { id: "combine", label: "关联探索", Icon: IconAffiliate }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={ICON_SIZE.inline} />{label}</button>)}
     </div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-classic" aria-labelledby="home-tab-classic" hidden={view !== "classic"}><ClassicTaskHome {...props} /></div>
-    <div className="home-variants__panel" role="tabpanel" id="home-panel-explore" aria-labelledby="home-tab-explore" hidden={view !== "explore"}><ExploreTaskHome onCreateTask={props.onCreateTask} /></div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-combine" aria-labelledby="home-tab-combine" hidden={view !== "combine"}><CombinationTaskHome onCreateTask={props.onCreateTask} /></div>
   </section>;
 }
