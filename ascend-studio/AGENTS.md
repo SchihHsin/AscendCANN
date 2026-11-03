@@ -2204,3 +2204,8 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 视觉保留无卡片的字段表达和现有中文衬线标题风格。Tab 样式现由 `NewTaskHome.jsx` 直接加载的 `home-variants.css` 提供；`explore-task-home.css` 不再承载已拆出的共享 Tab 样式。
 - 本地证据：`evidence/20261103-home-association/before.png`、`after.png`、`comparison.png`、`comparison-meta.json`。改前为原先多字段同时展开；改后是整合版 12 字段初始态，默认无连线。构建读取了新 Tab、节点与 Prompt；未在本轮进行真实训练或 NPU 验证。
 - `npm run build:pages`、源码 / 生成 JS `node --check`、`git diff --check` 通过。未改变其他页面序列、hash 或 API / Host / Application 边界；推送与 Pages 回执详见根 `AGENTS.md`。
+
+### 2026-11-03 · 主题概览节点按自身内容定高
+
+- 主题概览中的 `.tco-topic-node` 是独立节点类型；之前应用于组内 `.tco-map-node-wrap` 的定高规则并不覆盖它。已在 `task-content-map.css` 为主题节点增加 `align-self: start` 与自然高度，避免被同排高卡片拉伸。
+- Pages 与电脑端展示副本由 `npm run build:pages` 一并重建；摘要 / 详情节点规则不变。依据、检查及部署回执见仓库根 `AGENTS.md`。

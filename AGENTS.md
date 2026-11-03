@@ -8870,3 +8870,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计依据：用户偏好随指针轻微响应的方向（H）；色彩与运动逻辑复用现有探索页规则（M）。该 Demo 呈现的是关联构想交互，不涉及真实训练诊断或个性化结论。
 - 不改变首页页面序列、字段关系或 API / Host / Application 边界。`npm run build:pages` 与 `git diff --check` 通过；本地 1440×900 桌面截图确认静态底色层次，未运行自动化测试。
 - 实现提交 `45b910e8` 已推送至 `origin/main`；Pages workflow `41623068256` 成功。线上 `/AscendCANN/ascstudio/` 已引用 `index-C7M__eQj.js` 与 `index-CBr2jb_Z.css`，两项资源均 HTTP 200。
+
+### 2026-11-03 · 补齐主题概览节点独立定高
+
+- 用户指出电脑端 `/ascstudio-pc/` 的横向节点仍会被同行较高卡片拉高。此前 `28fd9929` 的规则只作用于 `.tco-map-node-wrap` 中的摘要 / 详情卡片；`mapLevel === 0` 的主题概览由 `.tco-topic-node` 渲染，仍使用 Grid 默认的纵向拉伸，因此未被覆盖。
+- 在 `ascend-studio/src/task-content-map.css` 为 `.tco-topic-node` 增加 `align-self: start` 和 `height: auto`。主题概览节点现在按自身内容高度排列，同行网格轨道仍可按最高节点定高。
+- 依据：用户在电脑端展示页的直接观察（H）；React 层级映射与构建 CSS 选择器核对（M）。同一 CSS 被 `/ascstudio/` 和 `/ascstudio-pc/studio/` 共用；不改变页面结构、路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm --prefix ascend-studio run build:pages`、`git diff --check` 通过；构建断言确认两处入口均引用同一份含 `.tco-topic-node{align-self:start;height:auto}` 的 CSS；本地 `http://127.0.0.1:5196/` HTTP 200。未运行自动化测试；Vite 保留主 JS bundle 超过 500 kB 的体积提示。推送及 Pages 发布回执在本条完成后补记。

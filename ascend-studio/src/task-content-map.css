@@ -103,7 +103,7 @@
 .tco-root[data-map-level="summary"] .tco-history-panel { display: none; }
 
 .tco-topic-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); align-content: start; gap: 9px; min-width: 0; padding: 12px; }
-.tco-topic-node { min-width: 0; overflow: visible; border: 1px solid #e4e5e7; border-radius: 7px; background: #fff; }
+.tco-topic-node { align-self: start; height: auto; min-width: 0; overflow: visible; border: 1px solid #e4e5e7; border-radius: 7px; background: #fff; }
 .tco-topic-open {
   display: flex;
   align-items: center;
