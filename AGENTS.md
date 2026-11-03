@@ -8630,4 +8630,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **修改：** `ascend-studio/src/CombinationTaskHome.jsx`、`NewTaskHome.jsx`、`home-composition.js`、`combination-task-home.css`、`explore-task-home.css`，新增 `home-variants.css`；Pages 与电脑端静态包由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。图像证据见 `ascend-studio/evidence/20261103-home-association/`。
 - **依据与边界：** 交互方向、信息层级和首页结构依据用户确认（H）；新首页本地静态截图与构建读取（M）。未改变正式汇报页序 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；不接入真实模型、训练遥测或 NPU。
 - **验证：** `npm run build:pages` 成功；源码与发布 JS `node --check`、`git diff --check` 通过。Vite 保留主 JS chunk 大于 500 kB 提醒；未运行自动化测试。前后图为 1440×900 页面截图及组合图。
-- **推送：** 本轮源码、交接与截图证据合并提交后推送至 `origin/main`；Pages 结果以该提交对应的部署检查为准。
+- **推送：** 实现、静态包、交接与截图提交 `d7be2370` 已推送至 `origin/main`；GitHub Pages workflow `41561438771` 成功。线上 `/AscendCANN/ascstudio/?home=combine` HTML、`index-IpE05c3Z.js` 与 `index-DSTbdyTU.css` 均 HTTP 200；JS 回读包含「关联探索」及本轮字段。

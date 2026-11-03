@@ -10,14 +10,18 @@
     "screenshot": "after.png",
     "dimensions": "1440x900",
     "url": "http://127.0.0.1:5193/?home=combine",
-    "stateNote": "合并后的关联探索首页初始状态；默认无连线。截图由已安装 Chrome 的本地预览捕获。"
+    "stateNote": "合并后的关联探索首页初始状态；默认无连线。截图由已安装 Chrome 的本地预览捕获。",
+    "captureMethod": "使用已安装的 Chrome 无头浏览器，以 1440×900 窗口参数从本地预览捕获。"
   },
   "comparison": "comparison.png",
   "viewportProbe": {
+    "probeWindowSize": "1440x987",
     "innerWidth": 1440,
     "innerHeight": 900,
-    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "documentScrollWidth": 1440,
+    "bodyScrollWidth": 1440,
     "devicePixelRatio": 1,
-    "note": "本地预览在 1440px 宽度下无横向溢出；内层页面视口通过同源嵌入页面核对。"
+    "note": "单独的同源 iframe 视口探测，CSS 视口为 1440×900；页面无横向溢出。"
   }
 }

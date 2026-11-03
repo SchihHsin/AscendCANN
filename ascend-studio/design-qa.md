@@ -1452,4 +1452,4 @@ final result: passed
 - **修改文件：** `src/CombinationTaskHome.jsx`、`src/NewTaskHome.jsx`、`src/home-composition.js`、`src/combination-task-home.css`、`src/explore-task-home.css`，新增 `src/home-variants.css`。构建发布文件位于根 `ascstudio/` 与 `ascstudio-pc/studio/`。
 - **截图证据：** `evidence/20261103-home-association/before.png`、`after.png` 是 1440×900 页面截图，`comparison.png` 为并排图，`comparison-meta.json` 记录来源与状态。改后截图来自本地构建 `/` 的 `?home=combine` 初始态，默认无连线；本轮未保存指针悬浮状态截图。
 - **检查：** `npm run build:pages` 成功；`node --check src/home-composition.js`、发布 JS 语法检查及 `git diff --check` 通过。Vite 提示主 bundle 超过 500 kB；未运行测试套件。页面 URL 参数兼容；不改汇报页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不接入真实训练数据 / NPU。
-- **发布：** 实现与静态包提交推送 `origin/main`；Pages workflow 和线上资源复核状态见根 `AGENTS.md`。
+- **发布：** 提交 `d7be2370` 已推送 `origin/main`；Pages workflow `41561438771` 成功。线上 `/AscendCANN/ascstudio/?home=combine` HTML、`index-IpE05c3Z.js`、`index-DSTbdyTU.css` HTTP 200，脚本回读确认「关联探索」与本轮训练字段。
