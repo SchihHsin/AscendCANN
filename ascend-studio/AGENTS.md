@@ -2209,3 +2209,8 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 
 - 主题概览中的 `.tco-topic-node` 是独立节点类型；之前应用于组内 `.tco-map-node-wrap` 的定高规则并不覆盖它。已在 `task-content-map.css` 为主题节点增加 `align-self: start` 与自然高度，避免被同排高卡片拉伸。
 - Pages 与电脑端展示副本由 `npm run build:pages` 一并重建；摘要 / 详情节点规则不变。提交 `2ee2ff15` 已推送，Pages workflow `41623830896` 成功；详细回执见仓库根 `AGENTS.md`。
+
+### 2026-11-03 · ResNet50 学习动作节点按自身内容定高
+
+- `OfficialLearningPathCanvas.jsx` 的 `.lh-step-node` 不同于任务内容总览的 `.tco-topic-node`。学习动作节点取消固定 `height: 47px`，保留 47px 最小高度；使用 `ResizeObserver` 读取各节点自身实际高度，并据此重排后续节点、组间距和连线锚点。默认节点间距 8px；全部展开时按节点高度与内容卡高度中的较大值加 34px 排布，避免覆盖。
+- 字体与屏幕换行只改变对应节点自身高度，不把同行节点拉齐。此规则不改变学习顺序、状态语义、材料节点或用户已保存的位置。

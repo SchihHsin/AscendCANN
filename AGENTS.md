@@ -8892,3 +8892,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈 Mac 本机未出现同行等高、Windows 电脑端仍等高。核对发现上条修复只作用于“全部内容”主题概览卡 `.tco-topic-node`；本机 `5196/?task=resnet50` 当前打开的是 ResNet50 学习画布，若用户比较的是学习路径节点，则不属于该 CSS 规则的作用范围。需要在两端进入相同视图后再判定。
 - 线上 `/ascstudio-pc/studio/index.html` 已加载 `index-X5obAocZ.css`，其中已含 `.tco-topic-node{align-self:start;height:auto}`（H）；GitHub Pages 对该 HTML 响应 `Cache-Control: max-age=600`，且 PC 展示页内嵌路由修订号仍为 `20261030-learning-layout-default`（H）。因此 Windows 浏览器可能暂时复用部署前的内嵌 HTML / 资源；强制刷新或无痕窗口是区分缓存与视图范围的下一步。Windows 浏览器自身缓存状态未直接读取，具体是否命中旧缓存仍待确认（M）。
 - 本轮为只读诊断，无源码、页面序列、API / Protocol、Host / Harness 或 Application / Task 边界改动。证据来自仓库选择器与渲染组件、线上 HTML/CSS 与响应头，以及本机 5196 当前无障碍树。核验：`git diff --check`；未运行自动化测试。提交 / 推送结果见后续交接记录。
+
+### 2026-11-03 · ResNet50 电脑端学习节点高度自适应
+
+- 用户补充 Windows 连带 `rev` 参数的 `/ascstudio-pc/?chapter=1&pointIndex=2` 仍复现。核对路由后确认该章节进入 ResNet50 官方学习路径；旧实现的 `.lh-step-node` 在 `makeTree` 与内联样式中均固定 47px，之前 `.tco-topic-node` 的规则针对另一视图，故不会修复此场景。
+- `OfficialLearningPathCanvas.jsx` 现以 47px 为最小高度，节点自然增长；测量各节点实际高度并重排其后续坐标、组间距和连接线，节点间留 8px，全部展开时以节点 / 内容卡较高者加 34px 排布。电脑端 Showcase 更新 app 与内嵌路由版本号，避免继续沿用旧的内嵌页面入口。
+- 依据：用户指出跨设备同一电脑端章节链接仍拉伸（H）；URL 参数解析、React 节点尺寸和线上静态入口核查（M）。不改路径顺序、章节内容或 API / Protocol、Host / Harness、Application / Task 边界。验证、commit / push 与 Pages 结果待本轮完成后补记。

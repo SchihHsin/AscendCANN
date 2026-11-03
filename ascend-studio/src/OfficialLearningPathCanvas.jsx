@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "./icon-system.js";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { IconArrowRight, IconBook, IconCheck, IconChevronDown, IconCode, IconCube, IconDeviceDesktop, IconGripVertical, IconPhoto, IconPointer, IconRoute, IconSearch } from "@tabler/icons-react";
 import { OFFICIAL_LEARNING_STAGES, getOfficialCourseStatus, getOfficialLearningNode, officialStatusLabel } from "./official-learning-data";
 import LearningCanvasToolbar from "./LearningCanvasToolbar";
@@ -18,7 +18,9 @@ import "./official-learning-canvas.css";
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const icons = [IconRoute, IconDeviceDesktop, IconPhoto, IconCube, IconSearch];
-function makeTree(layout, personalPlan, positions = {}, allExpanded = false, heights = {}) {
+const STEP_NODE_MIN_HEIGHT = 47;
+const STEP_NODE_GAP = 8;
+function makeTree(layout, personalPlan, positions = {}, allExpanded = false, heights = {}, nodeHeights = {}) {
   let offset = 0;
   const horizontal = layout === "horizontal";
   const groups = OFFICIAL_LEARNING_STAGES.map((stage, i) => {
@@ -31,15 +33,21 @@ function makeTree(layout, personalPlan, positions = {}, allExpanded = false, hei
     });
     let rowOffset = 0;
     const children = orderedChildren.map(child => {
-      const rect = horizontal ? { x: 32, y: offset + 82 + rowOffset, width: 226, height: 47 } : { x: i * columnWidth + 20, y: 88 + rowOffset, width: 272, height: 47 };
-      rowOffset += allExpanded ? canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[child.id], "resnet50") + 34 : 55;
+      const nodeHeight = Math.max(STEP_NODE_MIN_HEIGHT, nodeHeights[child.id] || STEP_NODE_MIN_HEIGHT);
+      const cardHeight = canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[child.id], "resnet50");
+      const rect = horizontal ? { x: 32, y: offset + 82 + rowOffset, width: 226, height: nodeHeight } : { x: i * columnWidth + 20, y: 88 + rowOffset, width: 272, height: nodeHeight };
+      rowOffset += allExpanded ? Math.max(nodeHeight, cardHeight) + 34 : nodeHeight + STEP_NODE_GAP;
       return { ...child, rect };
     });
-    const rowsHeight = children.reduce((sum, child) => sum + (allExpanded ? canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[child.id], "resnet50") + 34 : 55), 0);
-    offset += allExpanded ? 82 + rowsHeight + 82 : 95 + children.length * 55;
+    offset += allExpanded ? 82 + rowOffset + 82 : 95 + rowOffset;
     return { ...stage, index: i, rect, children };
   });
-  const rowsHeight = Math.max(0, ...groups.map(group => { const last = group.children.at(-1); return last ? last.rect.y + (allExpanded ? canvasCardContentHeight({ id: last.id, nodeType: "step", contentType: "summary" }, heights[last.id], "resnet50") + 34 : 55) : 0; }));
+  const rowsHeight = Math.max(0, ...groups.map(group => {
+    const last = group.children.at(-1);
+    if (!last) return 0;
+    const cardHeight = canvasCardContentHeight({ id: last.id, nodeType: "step", contentType: "summary" }, heights[last.id], "resnet50");
+    return last.rect.y + (allExpanded ? Math.max(last.rect.height, cardHeight) + 34 : last.rect.height + STEP_NODE_GAP);
+  }));
   return positionTreeNodes({ groups, width: horizontal ? 258 : groups.length * (allExpanded ? 1050 : 320) - 28, height: horizontal ? offset - 20 : allExpanded ? rowsHeight + 20 : 310 }, positions, "groups", "children");
 }
 
@@ -102,7 +110,7 @@ function Hierarchy({ tree, layout, node, statuses, onSelect, onDrag, onMoveNode,
     </>}</svg>
     {liveTree.groups.map(stage => { const Icon = icons[stage.index]; const status = getOfficialCourseStatus(stage, statuses); const stageKey = canvasNodeKey("stage", stage.id); return <div key={stage.id}>
       <button type="button" data-node-id={stage.id} data-official-stage={stage.id} className={`lh-tree-node lh-stage-node${node.courseId === stage.id ? " is-selected" : ""}${dragPreview?.key === stageKey ? " is-node-dragging" : ""}`} data-node-type="step" data-content-type="summary" data-node-status={normalizeCanvasStatus(status)} data-node-domain="resnet50" style={{left:stage.rect.x,top:stage.rect.y,width:stage.rect.width,height:stage.rect.height}} onClick={() => { if (suppressClick.current) { suppressClick.current = false; return; } onSelect(stage.children.find(child => statuses[child.id] !== "completed")?.id || stage.children[0].id); }} aria-pressed={node.courseId === stage.id} aria-label={editing ? `${stage.title}；${officialStatusLabel(status)}；拖动调整画布位置，学习顺序不变` : `${stage.title}；${officialStatusLabel(status)}`} title={editing ? "拖动调整画布位置；Alt + 方向键可微调" : "选择学习阶段"} {...dragHandlers(stageKey, stage.rect)}><span className={`lh-node-icon${status === "completed" ? " is-done" : ""}`}>{status === "completed" ? <IconCheck size={ICON_SIZE.navigation} /> : <Icon size={20} />}</span><span><strong>{String(stage.index + 1).padStart(2,"0")}　{stage.title}</strong><small>{stage.children.filter(child => statuses[child.id] === "completed").length}/{stage.children.length} 已完成 · 建议 {stage.minutes} 分钟</small></span><em className={`og-stage-status is-${status}`}>{officialStatusLabel(status)}</em>{editing && <IconGripVertical className="lh-node-move-grip" size={ICON_SIZE.inline} aria-hidden="true" />}</button>
-      {stage.children.map((child,index) => { const stepKey = canvasNodeKey("step", stage.id, child.id); return <button type="button" key={child.id} data-node-id={child.id} data-official-stage={stage.id} data-official-step={child.id} className={`lh-tree-node lh-step-node${node.id === child.id ? " is-selected" : ""}${dragPreview?.key === stepKey ? " is-node-dragging" : ""}`} data-node-type="step" data-content-type="lesson" data-node-status={normalizeCanvasStatus(statuses[child.id])} data-node-domain="resnet50" data-parent-id={stage.id} style={{left:child.rect.x,top:child.rect.y,width:child.rect.width,height:child.rect.height}} onClick={() => { if (suppressClick.current) { suppressClick.current = false; return; } onSelect(child.id); }} aria-pressed={node.id === child.id} aria-label={editing ? `${child.title}；${officialStatusLabel(statuses[child.id])}；拖动调整画布位置，学习顺序不变` : `${child.title}；${officialStatusLabel(statuses[child.id])}`} title={editing ? "拖动调整画布位置；Alt + 方向键可微调" : "选择学习节点"} {...dragHandlers(stepKey, child.rect)}><span className="lh-step-index">{stage.index + 1}.{index + 1}</span><span><strong>{child.title}</strong><small>{child.concepts.slice(0,2).join(" · ")}</small></span>{statuses[child.id] === "completed" && <i className="og-step-status is-completed" aria-hidden="true"><IconCheck size={ICON_SIZE.micro} /></i>}{statuses[child.id] === "in-progress" && <i className="og-step-status is-in-progress" aria-hidden="true" />}{editing && <IconGripVertical className="lh-node-move-grip" size={ICON_SIZE.inline} aria-hidden="true" />}</button>; })}
+      {stage.children.map((child,index) => { const stepKey = canvasNodeKey("step", stage.id, child.id); return <button type="button" key={child.id} data-node-id={child.id} data-official-stage={stage.id} data-official-step={child.id} className={`lh-tree-node lh-step-node${node.id === child.id ? " is-selected" : ""}${dragPreview?.key === stepKey ? " is-node-dragging" : ""}`} data-node-type="step" data-content-type="lesson" data-node-status={normalizeCanvasStatus(statuses[child.id])} data-node-domain="resnet50" data-parent-id={stage.id} style={{left:child.rect.x,top:child.rect.y,width:child.rect.width,minHeight:STEP_NODE_MIN_HEIGHT}} onClick={() => { if (suppressClick.current) { suppressClick.current = false; return; } onSelect(child.id); }} aria-pressed={node.id === child.id} aria-label={editing ? `${child.title}；${officialStatusLabel(statuses[child.id])}；拖动调整画布位置，学习顺序不变` : `${child.title}；${officialStatusLabel(statuses[child.id])}`} title={editing ? "拖动调整画布位置；Alt + 方向键可微调" : "选择学习节点"} {...dragHandlers(stepKey, child.rect)}><span className="lh-step-index">{stage.index + 1}.{index + 1}</span><span><strong>{child.title}</strong><small>{child.concepts.slice(0,2).join(" · ")}</small></span>{statuses[child.id] === "completed" && <i className="og-step-status is-completed" aria-hidden="true"><IconCheck size={ICON_SIZE.micro} /></i>}{statuses[child.id] === "in-progress" && <i className="og-step-status is-in-progress" aria-hidden="true" />}{editing && <IconGripVertical className="lh-node-move-grip" size={ICON_SIZE.inline} aria-hidden="true" />}</button>; })}
     </div>; })}
   </div>;
 }
@@ -116,6 +124,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const [positionEditing,setPositionEditing] = useState(false);
   const drawing = useCanvasDrawing({ canvasContent, editing: positionEditing });
   const [heights,setHeights] = useState({});
+  const [nodeHeights,setNodeHeights] = useState({});
   const [allExpanded,setAllExpanded] = useState(false);
   useEffect(()=>{
     if(!visible){setHand(false);setPositionEditing(false);drawing.stop();return undefined;}
@@ -132,7 +141,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     const id = `all:${child.id}`;
     return [child.id, canvas.collapsed?.includes(id) ? 44 : canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[id], "resnet50")];
   }))), [canvas.collapsed, heights]);
-  const tree = useMemo(() => makeTree(canvas.layout, personalPlan, allExpanded ? {} : canvas.positions, allExpanded, expandedHeights), [canvas.layout, personalPlan, canvas.positions, allExpanded, expandedHeights]);
+  const tree = useMemo(() => makeTree(canvas.layout, personalPlan, allExpanded ? {} : canvas.positions, allExpanded, expandedHeights, nodeHeights), [canvas.layout, personalPlan, canvas.positions, allExpanded, expandedHeights, nodeHeights]);
   const selected = getOfficialLearningNode(state.selectedNodeId);
   const node = selected?.kind === "step" ? selected : getOfficialLearningNode(OFFICIAL_LEARNING_STAGES[0].children[0].id);
   const stage = tree.groups.find(item => item.id === node.courseId) || tree.groups[0];
@@ -270,6 +279,22 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     const observer=new ResizeObserver(entries=>{const{width,height}=entries[0].contentRect;if(width>0&&height>0)setSize({width,height});});
     observer.observe(element);return()=>observer.disconnect();
   },[]);
+  useLayoutEffect(()=>{
+    const nodes=[...(host.current?.querySelectorAll(".lh-step-node[data-official-step]")||[])];
+    if(!nodes.length)return undefined;
+    const measure=()=>{
+      const measured=nodes.map(element=>[element.dataset.officialStep,Math.max(STEP_NODE_MIN_HEIGHT,element.offsetHeight)]);
+      setNodeHeights(previous=>{
+        const next={...previous};let changed=false;
+        for(const [id,height] of measured){if(id&&Math.abs((previous[id]||STEP_NODE_MIN_HEIGHT)-height)>.5){next[id]=height;changed=true;}}
+        return changed?next:previous;
+      });
+    };
+    const observer=new ResizeObserver(measure);
+    nodes.forEach(element=>observer.observe(element));
+    measure();
+    return()=>observer.disconnect();
+  },[canvas.layout,personalPlan,allExpanded]);
   useEffect(()=>{if(!allExpanded||size.width<50)return;requestAnimationFrame(()=>requestAnimationFrame(fitPath));},[allExpanded,size.width,size.height]);
   useEffect(()=>{
     const cards=[...(host.current?.querySelectorAll(".lh-card") || [])];
