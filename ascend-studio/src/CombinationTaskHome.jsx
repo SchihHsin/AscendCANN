@@ -18,13 +18,18 @@ const REQUIRED_POINTER_MOVEMENT = 14;
 
 function satellitePosition(index, count) {
   const positions = {
-    1: [[75, 50]],
-    2: [[74, 34], [78, 66]],
-    3: [[72, 27], [83, 50], [72, 73]],
-    4: [[71, 25], [83, 40], [83, 60], [71, 75]],
-    5: [[71, 22], [83, 36], [86, 50], [83, 64], [71, 78]],
+    1: [[77, 50]],
+    2: [[78, 32], [78, 68]],
+    3: [[77, 22], [88, 50], [77, 78]],
+    4: [[75, 17], [89, 39], [89, 61], [75, 83]],
+    5: [[73, 13], [88, 30], [91, 50], [88, 70], [73, 87]],
   };
-  return positions[count]?.[index] || [75, 50];
+  return positions[count]?.[index] || [78, 50];
+}
+
+function pathRailPosition(index, count) {
+  if (count <= 1) return { x: 13, y: 50 };
+  return { x: 13, y: 22 + index * (56 / (count - 1)) };
 }
 
 function pointAtEdge(rect, dx, dy, canvasRect) {
@@ -108,11 +113,12 @@ export function CombinationTaskHome({ onCreateTask }) {
   const focusPositions = new Map();
   if (hoverSourceId) {
     focusPositions.set(hoverSourceId, { x: 50, y: 50 });
-    pathIds.filter((id) => id !== hoverSourceId).forEach((id, index) => {
-      focusPositions.set(id, { x: 14 + index * 12, y: 50 });
-    });
-    manuallySelected.filter((id) => !pathIds.includes(id)).forEach((id, index) => {
-      focusPositions.set(id, { x: 14 + index * 12, y: 84 });
+    const leftRailIds = [
+      ...pathIds.filter((id) => id !== hoverSourceId),
+      ...manuallySelected.filter((id) => !pathIds.includes(id)),
+    ];
+    leftRailIds.forEach((id, index) => {
+      focusPositions.set(id, pathRailPosition(index, leftRailIds.length));
     });
     expandedIds.forEach((id, index) => {
       if (!focusPositions.has(id)) {
