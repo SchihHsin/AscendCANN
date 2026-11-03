@@ -8818,3 +8818,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 样式依据为第 4 页 VOC 卡片及用户明确要求；引语及归属来自访谈转写（H），卡片样式为呈现设计（M）。不改正文引语、竞品截图、21 页顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check`；本地桌面预览检查第 3、6、16、19、20 页，浅色、暗色、长引文和时间轴卡片均正常；线上页面 HTTP 200、21 页结构正确，圆角原声卡片和时间轴卡片样式已生效。
 - 实现提交 `07e50a5b` 已推送 `origin/main`；GitHub Pages workflow `41601507834` 成功。无待决事项。
+
+### 2026-11-03 · 学习首页移除无语义卡片左色条
+
+- 按用户指出的 CANN 组织首页视觉参照，移除学习首页教师流程卡、五条主线阶段卡、四层能力层级卡、课程提纲提示卡的左描边，并删除五条主线课程卡组上模拟左描边的内阴影。卡片保留浅色底、整体细边框、圆角和内容层级。
+- 依据：用户对 CANN 首页与学习首页的明确视觉反馈（H）；实现范围为 `cann-learning-home/homepage-structure.css`、`capability-map.css`、`index.html`。引用块边线与路径连接线有内容语义，未移除。课程内容、页面序列及 API / Host / Application 边界未变。
+- 验证：本地桌面预览确认教师流程卡、能力层级卡没有左色条（M）；CSS 搜索仍命中的竖线仅为引用块与路径连接线；`git diff --check` 通过。
+- 实现提交 `8cd4ad7f` 已基于最新 `origin/main` 重放。交接记录与实现一并提交并推送后，核对 GitHub Pages 工作流与学习首页线上资源状态。
