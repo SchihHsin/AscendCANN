@@ -8855,3 +8855,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：本地桌面浏览器确认 MindMap 与 Markdown 任务书加载；内联脚本 `node --check`、暂存差异 `git diff --cached --check` 通过。GitHub Pages workflow `41603506417` 成功；页面与 Markdown 均 HTTP 200。
 - 提交与推送：实施提交 `62f2119e` 已推送至 `origin/main`。
 - 未决事项：尚未招募参与者或开展用户测试；实际招募和测试结果需另行记录，不得写成本轮结论。
+
+### 2026-11-03 · 用户确认双 Demo 测试页采用放射式 Simple Mind Map
+
+- 根据用户给出的思维导图参考，将测试页原 Mermaid mindmap 替换为 `simple-mind-map@0.14.0-fix.3`：中心主题向两侧分支，使用彩色曲线、短节点与展开 / 收起圆点；可拖动画布并用“重置视图”回到全图。MIT 许可与项目入口在图旁注明；组件通过 jsDelivr 加载，加载失败时显示结构摘要，任务书仍可单独访问。
+- 用户测试提纲和 `taskbook.md` 内容不变：8 人探索性样本、65–70 分钟主持流程、两个 Demo 的核心任务与可选任务、主持话术、观察点、完成标准、记录表及分析方式。该材料仍是测试计划，未开展参与者测试，也不代表原型示例通过真实模型、算子或 NPU 验证。
+- 设计与内容依据：用户确认采用放射式思维导图样式（H）；测试目标与情境来自用户提供的两个 Demo 说明和页面链接（H）；具体任务、观察点与访谈安排为研究计划（L），用于后续验证。
+- 验证：`node --check /tmp/dual-demo-test-page.mjs`、`git diff --check` 通过；本地与线上 1440×2000 桌面截图确认放射式图和 Markdown 任务书显示，CDN 资源、页面和 `taskbook.md` 均返回 HTTP 200。截图：`/tmp/dual-demo-user-test-live.png`。未进行真实参与者测试。
+- 提交 / 推送：放射式图更新 `36dc71eb` 已推送 `origin/main`；Pages workflow `41621109677` 成功，线上页面已核对为 Simple Mind Map 版本。该页面内容不改变两个 Demo 的页面序列，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
