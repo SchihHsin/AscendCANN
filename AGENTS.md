@@ -8718,7 +8718,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户反馈连接字段后鼠标离开，页面会退回首页布局。代码检查确认 `pointerleave` 复用了完整取消逻辑，连焦点字段一起清空；改为单独清理计时器、候选目标和临时预览线，保留当前焦点与已建立连接。空白处点击与 Escape 仍调用完整取消逻辑，可以明确退出当前聚焦状态。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`；Pages 与电脑端静态包由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。连线与焦点行为来自现有演示字段关系及用户反馈（H）；根因来自组件事件逻辑检查（M）。不改变首页字段、Prompt、页面序列或 API / Host / Application 边界。
-- 验证：本地浏览器已有一条已确认连接时，将鼠标移至 Prompt 输入区，焦点布局、连接线与草稿均保留（M）；`npm run build:pages` 成功，发布 JS `node --check` 与 `git diff --check` 通过。Vite 继续提示主 JS chunk 超过 500 kB；未运行自动化测试。提交、推送及 Pages 发布结果待本轮回执补记。
+- 验证：本地浏览器已有一条已确认连接时，将鼠标移至 Prompt 输入区，焦点布局、连接线与草稿均保留（M）；`npm run build:pages` 成功，发布 JS `node --check` 与 `git diff --check` 通过。Vite 继续提示主 JS chunk 超过 500 kB；未运行自动化测试。
+- 提交 `071751ab` 已推送至 `origin/main`，后续主线提交仍包含本次改动。Pages 工作流 `41572595247` 被更高优先级的排队发布自动取消；继发工作流也被后续主线更新取代。线上 `/AscendCANN/ascstudio/` 已引用新脚本 `index-BPSk3jtd.js`，HTML 与 JS 均返回 HTTP 200；发布状态按线上资源核验为已生效。
 
 ### 2026-11-03（学习主线卡片去除无语义圆环）
 
