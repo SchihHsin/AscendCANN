@@ -8863,3 +8863,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计与内容依据：用户确认采用放射式思维导图样式（H）；测试目标与情境来自用户提供的两个 Demo 说明和页面链接（H）；具体任务、观察点与访谈安排为研究计划（L），用于后续验证。
 - 验证：`node --check /tmp/dual-demo-test-page.mjs`、`git diff --check` 通过；本地与线上 1440×2000 桌面截图确认放射式图和 Markdown 任务书显示，CDN 资源、页面和 `taskbook.md` 均返回 HTTP 200。截图：`/tmp/dual-demo-user-test-live.png`。未进行真实参与者测试。
 - 提交 / 推送：放射式图更新 `36dc71eb` 已推送 `origin/main`；Pages workflow `41621109677` 成功，线上页面已核对为 Simple Mind Map 版本。该页面内容不改变两个 Demo 的页面序列，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
+
+### 2026-11-03 · 关联探索背景增加随鼠标缓动光晕
+
+- 根据用户选择的方案 3，在 `ascend-studio/src/CombinationTaskHome.jsx` 与 `combination-task-home.css` 为关联探索恢复与第二个 Tab 相近的低饱和蓝紫 / 暖粉渐变，并加入跨整页的鼠标跟随光晕。光晕复用探索页的缓动跟随方式，鼠标离开页面时渐隐；尊重系统减少动态效果设置。字段、连线、Prompt 和首页 Tab 未改。
+- 设计依据：用户偏好随指针轻微响应的方向（H）；色彩与运动逻辑复用现有探索页规则（M）。该 Demo 呈现的是关联构想交互，不涉及真实训练诊断或个性化结论。
+- 不改变首页页面序列、字段关系或 API / Host / Application 边界。`npm run build:pages` 与 `git diff --check` 通过；本地 1440×900 桌面截图确认静态底色层次，未运行自动化测试。
+- 实现提交 `45b910e8` 已推送至 `origin/main`；Pages workflow `41623068256` 成功。线上 `/AscendCANN/ascstudio/` 已引用 `index-C7M__eQj.js` 与 `index-CBr2jb_Z.css`，两项资源均 HTTP 200。
