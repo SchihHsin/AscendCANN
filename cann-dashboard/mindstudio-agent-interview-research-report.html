@@ -599,6 +599,33 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .re-skill-proof-shot img{display:block;width:100%;height:0;min-height:0;flex:1;object-fit:cover;object-position:top}
 .re-skill-proof-shot figcaption{flex:none;padding:.35vh .55vw;background:#f2f4f8;color:#687384;font-size:var(--fs-xs);line-height:1.25}
 
+
+/* 原声锚点：以头像、淡化大引号和来源信息把访谈证据贴近对应观点 */
+.re-voice-inline{position:relative;display:grid;grid-template-columns:2.7vw 2.4vw minmax(0,1fr);align-items:center;gap:.8vw;min-width:0;margin-top:1.1vh;padding:.85vh 1vw .85vh .75vw;overflow:hidden;border-left:2px solid rgba(100,116,213,.62);background:linear-gradient(90deg,rgba(101,119,218,.075),rgba(101,119,218,.018) 72%,transparent)}
+.re-voice-inline::before{content:none}.re-voice-mark{position:relative;z-index:0;display:block;align-self:center;color:rgba(92,108,196,.19);font:700 4.7vw/.8 Georgia,serif;pointer-events:none}
+.re-voice-avatar{position:relative;z-index:1;display:grid;place-items:center;width:2.5vw;height:2.5vw;min-width:34px;min-height:34px;overflow:hidden;border:1px solid rgba(100,116,213,.24);border-radius:50%;background:#e9ebee;box-shadow:0 5px 15px -10px rgba(60,75,140,.5)}
+.re-voice-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.re-voice-initial{background:linear-gradient(145deg,#eef0ff,#dce6f7);color:#4e5fb0;font-size:var(--fs-sm);font-weight:800}
+.re-voice-copy{position:relative;z-index:1;min-width:0}
+.re-voice-copy blockquote{position:relative;z-index:1;margin:0;color:#323b4c;font-size:var(--fs-body);font-weight:650;line-height:1.42}
+.re-voice-meta{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:.7vw;margin-top:.45vh;color:#737e90;font-size:var(--fs-xs);line-height:1.2}
+.re-voice-meta strong{font-weight:650}.re-voice-meta time{flex:none;font:600 var(--fs-xs)/1.2 'JetBrains Mono',sans-serif}
+.re-voice-dark{border-left-color:rgba(172,184,255,.72);background:linear-gradient(90deg,rgba(151,163,255,.1),rgba(151,163,255,.025) 72%,transparent)}
+.re-voice-dark .re-voice-mark{color:rgba(191,198,255,.25)}.re-voice-dark .re-voice-copy blockquote{color:rgba(255,255,255,.9)}.re-voice-dark .re-voice-meta{color:rgba(219,224,255,.62)}.re-voice-dark .re-voice-initial{background:linear-gradient(145deg,#e4e8ff,#bfc9fa);color:#303f99}
+.re-voice-inline.re-voice-compact{grid-template-columns:2.35vw 2.2vw minmax(0,1fr);gap:.65vw;margin-top:.8vh;padding:.65vh .85vw .65vh .65vw}.re-voice-compact::before{left:2.7vw;font-size:4.5vw}.re-voice-compact .re-voice-avatar{width:2.15vw;height:2.15vw;min-width:30px;min-height:30px}
+@media(max-width:1100px){.re-voice-inline{grid-template-columns:34px 30px minmax(0,1fr);gap:8px}.re-voice-mark{font-size:48px}.re-voice-inline.re-voice-compact{grid-template-columns:30px 28px minmax(0,1fr);gap:7px}.re-voice-compact .re-voice-mark{font-size:42px}}
+@media(max-height:720px){.re-voice-inline{margin-top:.65vh;padding:.55vh .8vw .55vh .65vw}.re-voice-copy blockquote{font-size:var(--fs-sm)}.re-voice-meta{margin-top:.25vh}}
+
+.re-time-events p{font-size:var(--fs-sm);line-height:1.45;color:#566174}.re-time-events p small{display:block;margin-top:.65vh;color:#778398;font-size:var(--fs-xs);line-height:1.25;font-weight:650}
+.re-time-events p{position:relative;margin:0;padding:.35vh .2vw .2vh 0}
+.re-time-quote-mark{position:absolute;top:-1.05vh;right:.1vw;color:rgba(92,108,196,.16);font:700 3.2vw/.8 Georgia,serif;pointer-events:none}
+.re-time-quote{position:relative;z-index:1;display:block}
+.re-time-events p small{position:relative;z-index:1;display:flex;align-items:center;gap:.4vw;margin-top:.7vh;color:#778398}
+.re-time-avatar{flex:none;display:grid;place-items:center;width:1.65vw;height:1.65vw;min-width:22px;min-height:22px;overflow:hidden;border:1px solid rgba(100,116,213,.24);border-radius:50%;background:#e9ebee;box-shadow:0 4px 12px -9px rgba(60,75,140,.5)}
+.re-time-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.re-time-initial{background:linear-gradient(145deg,#eef0ff,#dce6f7);color:#4e5fb0;font-size:var(--fs-xs);font-weight:800}
+.re-time-events p small>b{font-weight:650;color:#5f6b7e}
+.re-time-events p small time{margin-left:auto;white-space:nowrap;font:600 var(--fs-xs)/1.2 'JetBrains Mono',sans-serif;color:#687386}
 </style>
 </head>
 <body>
@@ -622,6 +649,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div><b>任务方向</b><span>围绕目标，串联采集、诊断、改动和对照验证。</span></div>
 <div><b>知识回流</b><span>经用户选择和审核的有效过程，可支持社区与工具复用。</span></div>
 </div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>如何能高效的沉淀下来，这些经验对我们团队我觉得至关重要。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:31:33</time></div></div></aside>
 </div>
 <figure class="re-visual re-overview-visual"><img src="mindstudio-agent-interview-research-report-assets/analysis-to-result.jpg" alt="性能分析逐步连接到代码修改、结果验证和经验留存"><figcaption>分析结果 → 任务验证 → 可复用经验</figcaption></figure>
 </div>
@@ -631,11 +659,11 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <aside class="re-voc-speaker"><span class="re-voc-speaker-label">受访者原声</span><div class="re-voc-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="孙华龙的匿名化头像"></div><strong>孙华龙</strong><span class="re-voc-speaker-role">访谈受访者</span><time class="re-voc-speaker-time">00:31—01:03</time></aside>
 <div class="re-voc-quotes">
 <figure class="re-voc-quote"><blockquote>大部分可能 90% 的调优经验，还是在某些具体的人身上。</blockquote><figcaption><time>00:31:33</time><span>经验沉淀</span></figcaption></figure>
-<figure class="re-voc-quote"><blockquote>平时的代码操作任务是有缝的，就是它没有真正地结合成一条线。</blockquote><figcaption><time>00:34:38</time><span>工具衔接</span></figcaption></figure>
+<figure class="re-voc-quote"><blockquote>平时的代码操作任务是有缝的，就是它没有真正的结合成一条线。</blockquote><figcaption><time>00:34:38</time><span>工具衔接</span></figcaption></figure>
 <figure class="re-voc-quote"><blockquote>大家最大的困难就是不知道它应该长什么样，不知道这个算子应该执行多久。</blockquote><figcaption><time>00:39:11</time><span>判断标杆</span></figcaption></figure>
 <figure class="re-voc-quote"><blockquote>每一个框架的采集方式都不一样……总体来看，确实是有一定的学习成本。</blockquote><figcaption><time>00:39—00:42</time><span>采集成本</span></figcaption></figure>
-<figure class="re-voc-quote"><blockquote>不能让它慢慢地被合成一个脏东西，大家有啥东西都往里合，都是自然语言，你也判断不出来它有没有效？</blockquote><figcaption><time>00:50:23</time><span>质量治理</span></figcaption></figure>
-<figure class="re-voc-quote"><blockquote>假设一个任务最后真的有了效果，如何把它收回来？</blockquote><figcaption><time>01:01:15</time><span>知识回流</span></figcaption></figure>
+<figure class="re-voc-quote"><blockquote>不能让它慢慢的被合成一个脏东西，就是大家有啥东西都往里合，都是自然语言，你也判断不出来，它有没有效？</blockquote><figcaption><time>00:50:23</time><span>质量治理</span></figcaption></figure>
+<figure class="re-voc-quote"><blockquote>假设一个任务，它最后真的有了效果，或者说是如何把它收回来，这个有没有考虑过？</blockquote><figcaption><time>01:01:15</time><span>知识回流</span></figcaption></figure>
 </div>
 <div class="re-voc-summary"><strong>访谈归纳</strong><p>经验沉淀依赖个人；性能分析与代码修改尚未连成任务闭环；有效结果如何回流，仍需要明确机制。</p></div>
 </div></div><div class="report-foot"><span>来源：用户提供的访谈转写，孙华龙 00:31:33—01:03:23 · 原声仅整理断句与标点；归纳内容单独标示</span></div></section>
@@ -650,7 +678,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div><i>03</i><b>修改实现</b><span>回到 IDE 推测瓶颈并改代码</span></div>
 <div><i>04</i><b>编译复测</b><span>重新运行、采集并比较效果</span></div>
 </div>
-<div class="re-inline-conclusion"><b>断点：</b>上下文跨界面传递；每一轮验证都要重新衔接工具与代码。</div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>平时的代码操作任务是有缝的，就是它没有真正的结合成一条线。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:34:38</time></div></div></aside>
 </div></div>
 </div><div class="report-foot"><span>来源：访谈 00:34—00:38 · 路径按讲话内容归纳</span></div></section>
 <section class="slide s-gray " data-title="用户既缺少可对照的标杆，也承担采集试错成本"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">用户既缺少可对照的标杆，也承担采集试错成本</span></div><div class="subttl">访谈归纳 · 两类障碍，不把主观估计当作统计结果</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 访谈发现</span><span>02 任务协作</span><span>03 NVIDIA 案例</span><span>04 经验回流</span></div></div><div class="body-area re-body">
@@ -660,6 +688,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <p class="re-eyebrow">用户要跨过的两道坎</p>
 <section><div class="re-index">A</div><div><h3>缺少可比的性能标杆</h3><p>新手看到执行耗时和指标后，缺少相近算子、形状与条件下的参照。</p></div></section>
 <section><div class="re-index">B</div><div><h3>不同框架的采集方式不一致</h3><p>环境变量、启动命令和单独工具等方式不同；采集不符合要求可能需要重来。</p></div></section>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>大家最大的困难就是不知道它应该长什么样，不知道这个算子应该执行多久。……每一个框架的采集方式都不一样……总体来看，确实是有一定的学习成本。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:39:11</time></div></div></aside>
 <div class="re-inline-conclusion"><b>体验方向：</b>先确认任务、环境和采集目标，再给出可比基线与采集检查提示。</div>
 </div></div>
 </div><div class="report-foot"><span>来源：访谈 00:39—00:42；关于采集与重采成本的描述为归纳整理，非逐字原声</span></div></section>
@@ -673,6 +702,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div><span>03</span><h3>端到端 Workflow</h3><p>探索用状态管理与验收约束串联服务化优化流程。</p></div>
 </div>
 <div class="re-inline-conclusion"><b>口述待核：</b>会上提及 2,000 多个案例与文档、50 多个 Skill，当前数量与覆盖情况待核实。</div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar re-voice-initial" aria-hidden="true">潘</span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>我们现在 MCP 可能也没有做得特别全。</blockquote><div class="re-voice-meta"><strong>潘杨杰 · 受访者原声</strong><time>00:43:53</time></div></div></aside>
 </div>
 <figure class="re-visual"><img src="mindstudio-agent-interview-research-report-assets/team-capabilities.jpg" alt="多个工具能力与知识资产通过协作连接"><figcaption>能力逐步连接为任务闭环 · 概念图</figcaption></figure>
 </div>
@@ -687,6 +717,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div><small>04</small><b>运行比较</b><span>编译 · 正确性 · 性能</span></div><i>→</i>
 <div><small>05</small><b>保留沉淀</b><span>有效结果 · 适用条件</span></div>
 </div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>就相当于变成 Agent 可以调用的东西。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:35:11</time></div></div></aside>
 <div class="re-inline-conclusion"><b>闭环可见：</b>目标、执行状态、依据与结果；底层需要工具调用、运行权限、任务状态和验收机制。</div>
 </div>
 </div><div class="report-foot"><span>来源：访谈 00:35—00:38、00:51—00:55 · 目标链路示意</span></div></section>
@@ -698,6 +729,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <h3>从一份基线配置开始，<br>找到满足目标的候选解。</h3>
 <div class="re-parameter-flow"><div><b>任务输入</b><span>吞吐、时延或资源目标；框架、模型、硬件、原始配置</span></div><div><b>可调空间</b><span>P/D 比例、并行配置、序列数、批处理 token</span></div><div><b>验收对照</b><span>先建基线，再比较候选配置与改动效果</span></div></div>
 <div class="re-micro-stat"><strong>0.5%</strong><span>会上用于说明验收思路的单次改进示例<br>不是统一阈值，也不是已验证收益</span></div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>针对一些小任务，比如……部署的参数巡优，就不只是代码级的修改了。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:53:39</time></div></div></aside>
 </div></div>
 </div><div class="report-foot"><span>来源：访谈 00:51:51—00:54:45 · 团队提及正在探索服务化工作流</span></div></section>
 <section class="slide s-gray " data-title="NVIDIA 线索涉及三个不同层次，不能合并成一个产品"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">NVIDIA 线索涉及三个不同层次，不能合并成一个产品</span></div><div class="subttl">竞品判断 · 用户未给出产品名称，身份仍需向受访者确认</div></div><div class="section-tabs" aria-label="当前章节"><span>01 访谈发现</span><span>02 任务协作</span><span class="active">03 NVIDIA 案例</span><span>04 经验回流</span></div></div>
@@ -711,7 +743,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class="re-level"><strong>03<br><small>任务工作流</small></strong><div><h3>KDA · Kernel Design Agents</h3><p>Agent 组织实现、验证、测量与记录候选结果。</p></div><div><span class="evidence-label">公开研究原型</span><p>可作任务约束与证据记录参照；不是访谈所指内部系统的身份凭证。</p><a href="https://github.com/NVlabs/kda" target="_blank" rel="noopener">KDA 仓库 ↗</a></div></div>
 </div>
 </div>
-<div class="re-inline-conclusion re-evidence-boundary"><b>复访待确认：</b>受访者提到的 NVIDIA 内部工作方式，是否对应上述任何一项。</div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>基本上不需要他们人做什么太多的调试了，就是一个长城任务扔下去，它一直在优化。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者转述 · 身份待确认</strong><time>00:48:56</time></div></div></aside>
 </div>
 <div class="report-foot"><span>来源：访谈 00:48—00:49；NVIDIA 官方 Nsight 文档、AVO 论文 Figure 1、NVLabs KDA 案例页</span></div></section>
 <section class="slide s-gray " data-title="Nsight 把报告中的问题直接带入 AI 对话"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">Nsight 把报告中的问题直接带入 AI 对话</span></div><div class="subttl">用户与 UI · 官方截图来自 Nsight Compute 文档</div></div><div class="section-tabs" aria-label="当前章节"><span>01 访谈发现</span><span>02 任务协作</span><span class="active">03 NVIDIA 案例</span><span>04 经验回流</span></div></div><div class="body-area re-body">
@@ -740,6 +772,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class="re-dark-layout">
 <div class="re-dark-copy"><p class="re-dark-kicker">设计推演 · 待验证</p><h1>一次有效任务，<br>产生两种可复用结果</h1><p>同一份经过用户选择和审核的任务材料，可服务开发者分享，也可支持工具能力建设。</p>
 <div class="re-branch-labels"><div><b>社区经验</b><span>阅读 · 讨论 · 复用</span></div><div><b>能力资产</b><span>案例 · 知识 · Skill，评测后复用</span></div></div>
+<aside class="re-voice-inline re-voice-dark" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>假设一个任务，它最后真的有了效果，或者说是如何把它收回来，这个有没有考虑过？</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>01:01:15</time></div></div></aside>
 </div>
 <figure class="re-visual re-dark-visual"><img src="mindstudio-agent-interview-research-report-assets/knowledge-return.jpg" alt="任务经验经由审核，分流到开发者社区和工具能力资产"><figcaption>任务材料经审阅后分流 · 设计概念图</figcaption></figure>
 <div class="re-source-flow"><span>任务目标、环境、过程、结果</span><i>→</i><span>AI 生成草稿 · 用户选择</span><i>→</i><span>审阅后再进入两类去向</span></div>
@@ -756,6 +789,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div><b>02</b><span><strong>生成并选择</strong>展示问题、方法、环境和结果，用户勾选材料。</span></div>
 <div><b>03</b><span><strong>审阅与反馈</strong>确认内容和去向，提交后查看处理状态。</span></div>
 </div>
+<aside class="re-voice-inline re-voice-dark" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>那就按他的想法去做他的那个信息分级，这样贡献上去。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>01:03:31</time></div></div></aside>
 </div>
 <div class="re-chat-concept">
 <div class="re-chat-top"><span>任务对话</span><small>结果已验证</small></div>
@@ -775,6 +809,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <i>→</i>
 <section><small>GATE 03</small><div class="re-gate-shape">03</div><h3>治理长期资产</h3><p>审核、去重、版本与失效机制；再决定进入案例、知识或 Skill。</p></section>
 </div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>不能让它慢慢的被合成一个脏东西，就是大家有啥东西都往里合，都是自然语言，你也判断不出来，它有没有效？</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:50:23</time></div></div></aside>
 <div class="re-inline-conclusion re-skill-proof"><div class="re-skill-proof-copy"><b>参考依据：</b>SkillEvaluator 分层检查结构与安全、覆盖重复和真实任务效果；其适用方式仍需验证。</div><figure class="re-skill-proof-shot"><img src="mindstudio-agent-interview-research-report-assets/competitor-evidence/skillevaluator-results-crop.jpg" alt="NVIDIA SkillEvaluator 技术博客中的评测结果原文截图"><figcaption>NVIDIA SkillEvaluator · 官方评测结果页截图</figcaption></figure></div>
 </div>
 </div><div class="report-foot"><span>来源：访谈 00:49—00:50、01:03；NVIDIA SkillEvaluator 公开说明</span><a target="_blank" rel="noopener noreferrer" href="https://developer.nvidia.com/blog/evaluating-ai-agent-skill-performance-with-nvidia-skillevaluator/">查看来源 ↗</a></div></section>
@@ -786,6 +821,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <section><small>阶段 02</small><h3>走完一次任务与贡献</h3><p>观察入口何时出现、用户选择哪些内容、是否理解发布去向。</p></section>
 <section><small>阶段 03</small><h3>复核可复用效果</h3><p>比较回流前后对同类任务的支持，检查正确性、表现、时间与人工介入。</p></section>
 </div>
+<aside class="re-voice-inline" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>没有特别大的试错机会，就基本上要求一把成功。</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>00:42:22</time></div></div></aside>
 <div class="re-pilot-dependencies"><b>启动前确认</b><span>数据权限与接收方</span><i>·</i><span>评测环境</span><i>·</i><span>资产维护责任</span><i>·</i><span>外部发布范围</span></div>
 </div>
 </div><div class="report-foot"><span>建议：基于本次访谈推导；试点范围、资源与排期待团队确认</span></div></section>
@@ -795,17 +831,18 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div><span>02</span><p>它与 IDE、Nsight 或其他 Profiling 工具怎样衔接？由人在哪些节点确认？</p><small>工具与人工边界</small></div>
 <div><span>03</span><p>优化过程和结果会不会被保存、审核并贡献到公共案例或 Skill？由谁维护？</p><small>知识去向</small></div>
 <div><span>04</span><p>在真实项目中，基线、正确性和性能效果分别如何确定与复测？</p><small>验证证据</small></div>
+<aside class="re-voice-inline re-voice-compact" aria-label="受访者原声"><span class="re-voice-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt="匿名化访谈头像"></span><span class="re-voice-mark" aria-hidden="true">“</span><div class="re-voice-copy"><blockquote>这个上下文或者这一条日志有没有一个贡献渠道，让大家能够……</blockquote><div class="re-voice-meta"><strong>孙华龙 · 受访者原声</strong><time>01:02:19</time></div></div></aside>
 </div>
-</div><div class="report-foot"><span>来源：访谈 00:48—00:49、01:01—01:05；以下为建议复访问题</span></div></section>
+</div><div class="report-foot"><span>来源：访谈 00:48—00:49、01:01—01:05；原声用于说明复访问题的来由，问题本身为建议</span></div></section>
 <section class="slide s-gray " data-title="访谈时间索引：从任务痛点到经验贡献"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">访谈时间索引：从任务痛点到经验贡献</span></div><div class="subttl">证据索引 · 语音转写存在同音和断句问题，专业术语按上下文整理</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 访谈发现</span><span>02 任务协作</span><span>03 NVIDIA 案例</span><span>04 经验回流</span></div></div><div class="body-area re-body">
 <div class="re-time-index">
 <div class="re-time-axis"><span></span></div>
 <div class="re-time-events">
-<section><time>00:31—00:39</time><b>经验沉淀与执行断点</b><p>专家经验、IDE 与 Profiling、Agent 调用原子能力。</p></section>
-<section><time>00:39—00:43</time><b>标杆与采集成本</b><p>缺少可量化参照；跨框架采集不同，错误后重采。</p></section>
-<section><time>00:43—00:49</time><b>团队回应与 NVIDIA 线索</b><p>MCP、Skill、Insight 2.0；受访者提及 NVIDIA 内部做法。</p></section>
-<section><time>00:49—00:56</time><b>治理与任务闭环</b><p>Skill 质量、端到端 Workflow、验收和试点。</p></section>
-<section><time>00:59—01:05</time><b>经验贡献与评测机制</b><p>展示 Insight 方案，讨论信息分级和知识回流。</p></section>
+<section><time>00:31—00:39</time><b>经验沉淀与执行断点</b><p><span class="re-time-quote-mark" aria-hidden="true">“</span><span class="re-time-quote">大部分可能 90% 的调优经验，还是在某些具体的人身上。</span><small><span class="re-time-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt=""></span><b>孙华龙</b><time>00:31:33</time></small></p></section>
+<section><time>00:39—00:43</time><b>标杆与采集成本</b><p><span class="re-time-quote-mark" aria-hidden="true">“</span><span class="re-time-quote">不知道它应该长什么样，不知道这个算子应该执行多久。</span><small><span class="re-time-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt=""></span><b>孙华龙</b><time>00:39:11</time></small></p></section>
+<section><time>00:43—00:49</time><b>团队回应与 NVIDIA 线索</b><p><span class="re-time-quote-mark" aria-hidden="true">“</span><span class="re-time-quote">我们现在 MCP 可能也没有做得特别全。</span><small><span class="re-time-avatar re-time-initial" aria-hidden="true">潘</span><b>潘杨杰</b><time>00:43:53</time></small></p></section>
+<section><time>00:49—00:56</time><b>治理与任务闭环</b><p><span class="re-time-quote-mark" aria-hidden="true">“</span><span class="re-time-quote">确保之后能够有一个很明确的交付，而不是所有形式都是 Skill。</span><small><span class="re-time-avatar re-time-initial" aria-hidden="true">刘</span><b>刘西伦</b><time>00:52:33</time></small></p></section>
+<section><time>00:59—01:05</time><b>经验贡献与评测机制</b><p><span class="re-time-quote-mark" aria-hidden="true">“</span><span class="re-time-quote">假设一个任务，它最后真的有了效果，或者说是如何把它收回来，这个有没有考虑过？</span><small><span class="re-time-avatar"><img src="mindstudio-agent-interview-research-report-assets/avatars/sunhualong.svg" alt=""></span><b>孙华龙</b><time>01:01:15</time></small></p></section>
 </div>
 </div>
 </div><div class="report-foot"><span>来源：用户提供的访谈语音转文字稿；不推断未披露的真实环境与完成情况</span></div></section>
