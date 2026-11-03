@@ -8886,3 +8886,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 来源与证据：报告页来自用户指定的线上报告（H）；两条旅程源文件与用户桌面附件 SHA-256 一致（H）；PC 页使用用户指定线上 URL（H）。组合仅改变展示顺序和视口适配，不改研究结论、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：内联脚本 `node --check`、组合 JSON / 来源选择器检查、`git diff --cached --check` 通过。Chrome 1600×900 核对五页，1280×720 核对旅程缩放；页面 `#1`–`#5` 均可定位，PC 显示线上原页面。推送后组合页 HTTP 200，GitHub Pages workflow `41625528689` 成功。
 - 提交 / 推送：组合材料提交 `1ce58bd7` 已推送至 `origin/main`；线上地址 `https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-studio-combined-report/` 可访问。
+
+### 2026-11-03 · Mac 本机与 Windows 电脑端节点高度差异核对
+
+- 用户反馈 Mac 本机未出现同行等高、Windows 电脑端仍等高。核对发现上条修复只作用于“全部内容”主题概览卡 `.tco-topic-node`；本机 `5196/?task=resnet50` 当前打开的是 ResNet50 学习画布，若用户比较的是学习路径节点，则不属于该 CSS 规则的作用范围。需要在两端进入相同视图后再判定。
+- 线上 `/ascstudio-pc/studio/index.html` 已加载 `index-X5obAocZ.css`，其中已含 `.tco-topic-node{align-self:start;height:auto}`（H）；GitHub Pages 对该 HTML 响应 `Cache-Control: max-age=600`，且 PC 展示页内嵌路由修订号仍为 `20261030-learning-layout-default`（H）。因此 Windows 浏览器可能暂时复用部署前的内嵌 HTML / 资源；强制刷新或无痕窗口是区分缓存与视图范围的下一步。Windows 浏览器自身缓存状态未直接读取，具体是否命中旧缓存仍待确认（M）。
+- 本轮为只读诊断，无源码、页面序列、API / Protocol、Host / Harness 或 Application / Task 边界改动。证据来自仓库选择器与渲染组件、线上 HTML/CSS 与响应头，以及本机 5196 当前无障碍树。核验：`git diff --check`；未运行自动化测试。提交 / 推送结果见后续交接记录。
