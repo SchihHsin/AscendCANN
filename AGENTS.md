@@ -8747,3 +8747,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据依据：Nsight Compute 用户文档、AVO 论文、NVLabs KDA 案例与 Wishlist、Nemotron 3 Super 技术报告、NVIDIA SkillEvaluator 官方文章（H）；适用范围判断仍限于公开材料与单次访谈。
 - 验证：`git diff --check` 通过；21 页结构完整；报告引用的 15 个本地图片路径均存在，竞品证据目录 13 个素材均列入来源清单；本地桌面预览检查第 10–14、17 页截图与布局。
 - 发布核验：报告与素材提交 `475997a8` 已推送至 `origin/main`；GitHub Pages 报告页 HTTP 200、21 页结构正确，8 个实际嵌入的竞品素材均 HTTP 200，线上内容已更新。Actions workflow 运行详情未能通过仓库 API 获取，因此不记录其运行编号；以 Pages 页面与素材的线上响应确认发布。
+
+### 2026-11-03 · Agent 输出知识汇聚按语义聚类
+
+- 根据用户要求，将 Harness、算子开发、训练调优、推理调优四组示例各扩展为 10 轮深入追问。覆盖概念边界、输入 / 环境约束、失败恢复、性能与质量取舍、验证证据；分别汇聚 20、22、20、20 个知识点。
+- 更新 `agent-output-exploration/index.html`：右侧知识图按 4 个语义簇布局，位置依簇与关系度组织，连线保留跨簇关联；轮次只用于回答来源回看。回答标明新知识汇入的语义簇；默认显示完整图谱与完整对话，中心对话栏定位到最新追问，节点来源跳转只滚动中间对话栏。四组复用同一交互规则。样式沿用 Ascend Studio 浅色基底与克制的类别色。
+- 内容和图谱均为策划的本地演示（L），不代表真实模型输出、训练 / 推理结果或 NPU 验证。未改变既有 Studio 页面序列、API / Host / Application 边界。
+- 验证：内联 JS `node --check`、`git diff --check`；桌面 1440×900 与窄屏 500 CSS px 浏览器预览；4 组均显示 10 轮 / 4 个簇；节点重叠检查为 0；主题切换、重置后继续、第三轮来源跳转与最新轮定位均通过。
+- 发布：核心实现提交 `2c29f72c` 已推送 `origin/main`；GitHub Pages workflow `41572233417` 成功，线上 `/agent-output-exploration/` 返回 HTTP 200，已核对四组均为 10 轮。来源跳转的容器内定位修正随本次后续提交一起推送。
