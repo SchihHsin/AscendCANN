@@ -8727,3 +8727,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据：弧形方向依据用户确认（H）；本地 1440×900 预览实际悬浮串联上述 9 个节点，确认 8 段线清楚、祖先弧形可读、终点没有悬空预览线（M）。示例是交互概念，不代表真实训练诊断。没有改变首页 Tab、Prompt 发送语义、页面序列或 API / Host / Application 边界。
 - Pages 与电脑端静态包由 `npm run build:pages` 同步。构建成功，发布 JS `node --check` 与 `git diff --check` 通过；未运行自动化测试。Vite 保留主 JS chunk 超过 500 kB 的提示。
 - 实现提交 `e86a75a9` 已推送至 `origin/main`；GitHub Pages workflow `41570618291` 成功。线上 `/AscendCANN/ascstudio/?home=combine` 引用 `index-D54gv9pY.js`，页面与 JS 均 HTTP 200。当前无未决事项。
+### 2026-11-03（共建资源卡去除无语义圆环）
+
+- 根据用户指出的截图，在 `cann-learning-home/index.html` 移除“更多学习与共建”六张资源卡右上角的圆环，并将卡片统一为浅灰底、细边框；保留编号、标题、摘要与链接。
+- 设计依据：用户已选择学习主线卡片的简洁入口卡方案；将同一处理延续到页面同类资源卡。只调整该组六张卡片的视觉，不改变 README 内容、资源结构、页面序列或 API / Host / Application 边界。
+- 验证：`git diff --check` 通过；本地桌面预览确认六张卡片圆环已移除，编号、摘要与入口链接仍完整。页面改动与交接记录已提交；推送和 Pages 发布状态以下方回执为准。
