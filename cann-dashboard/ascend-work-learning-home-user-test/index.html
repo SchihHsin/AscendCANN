@@ -72,11 +72,13 @@
     .map-panel { overflow: hidden; }
     .map-meta { display: flex; align-items: center; gap: 9px; padding: 15px 20px; border-bottom: 1px solid #efefeb; color: var(--muted); font-size: 11px; }
     .map-meta b { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
-    .map-meta .map-open-source { margin-left: auto; color: #77818a; text-decoration: none; }
+    .map-meta-actions { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+    .map-meta .map-open-source { color: #77818a; text-decoration: none; }
     .map-meta .map-open-source:hover { text-decoration: underline; }
-    .map-stage { min-height: 425px; overflow: auto; padding: 16px 20px 20px; display: grid; place-items: center; }
-    #map-render { width: 100%; min-width: 760px; text-align: center; }
-    #map-render svg { display: block; width: 100%; height: auto; max-height: 680px; margin: auto; }
+    .map-stage { height: min(64vh, 570px); min-height: 425px; overflow: auto; padding: 10px 14px; }
+    #map-render { width: 100%; min-width: 760px; height: 100%; min-height: 400px; background: #fff; }
+    #map-render:focus-visible { outline: 2px solid #7b95ad; outline-offset: -3px; }
+    .smm-richtext-node-wrap p { margin: 0; }
     .map-loading, .map-fallback { color: var(--muted); font-size: 13px; }
     .map-fallback { max-width: 640px; margin: auto; text-align: left; }
     .map-fallback ul { padding-left: 20px; }
@@ -120,8 +122,8 @@
       .jump-inner .action-button { white-space: nowrap; }
       main { padding-top: 24px; }
       .section-head { align-items: start; flex-direction: column; gap: 6px; }
-      .map-stage { min-height: 320px; padding: 12px; }
-      #map-render { min-width: 700px; }
+      .map-stage { height: min(62vh, 470px); min-height: 320px; padding: 10px; }
+      #map-render { min-width: 700px; min-height: 300px; }
       .map-caption { flex-direction: column; gap: 4px; }
       #taskbook-content table { display: block; overflow-x: auto; }
       footer .wrap { flex-direction: column; gap: 6px; }
@@ -197,49 +199,13 @@
         <p class="section-note">共同主持流程放在中间，两套 Demo 各自展开；核心任务与可选探索分开，方便分配测试时间。</p>
       </div>
       <div class="map-panel">
-        <div class="map-meta"><b aria-hidden="true"></b><span>用户测试总览</span><span>·</span><span>Mermaid 开源 mindmap</span><a class="map-open-source" href="https://github.com/mermaid-js/mermaid" target="_blank" rel="noopener noreferrer">Mermaid 项目 ↗</a></div>
+        <div class="map-meta"><b aria-hidden="true"></b><span>用户测试总览</span><span>·</span><span>Simple Mind Map · MIT · v0.14.0-fix.3</span><div class="map-meta-actions"><button class="action-button" type="button" id="fit-map" aria-controls="map-render">重置视图</button><a class="map-open-source" href="https://github.com/wanglin2/mind-map" target="_blank" rel="noopener noreferrer">开源项目 ↗</a></div></div>
         <div class="map-stage">
-          <div id="map-render" role="img" aria-label="双 Demo 用户测试结构图"><p class="map-loading">正在加载 MindMap…</p></div>
+          <div id="map-render" role="region" aria-label="双 Demo 用户测试思维导图" tabindex="0"><p class="map-loading">正在加载思维导图…</p></div>
         </div>
-        <div class="map-caption"><span><strong>共同观察</strong>：入口理解、上下文连续、内容信任与真实验证边界</span><span>打印时自动收起图，保留完整任务书</span></div>
+        <div class="map-caption"><span><strong>浏览方式</strong>：拖动画布查看，点击分支旁圆点收起或展开</span><span>打印时自动收起图，保留完整任务书</span></div>
       </div>
       <noscript><p class="load-error">MindMap 需要启用 JavaScript；完整的主持提纲与任务书仍可从 <a href="./taskbook.md">Markdown 文件</a>查看。</p></noscript>
-      <pre id="map-source" hidden>mindmap
-  root((双 Demo 用户测试))
-    共同主持流程
-      招募分组与知情同意
-      背景访谈与 Think aloud
-      任务执行与中性追问
-      复盘比较与证据整理
-    Ascend Work 任务协作与学习
-      AW01 AddCustom 精度异常
-        已知输入差异与错误位置
-        参数尝试与代码材料
-        范围复核与结论边界
-      AW02 ResNet50 离线推理
-        学习路径与步骤导航
-        输入准备到输出解读
-        样例条件与待核实事项
-      AW03 训练与调优 可选
-        关联方向逐步探索
-        编辑任务需求草稿
-        区分选择与预设诊断
-    CANN Learning Hub 学习资源首页
-      LH01 选择学习主线
-        按角色与目标找路线
-        比较适合人群时长收获
-      LH02 高校教学资源
-        找课程与教学方案
-        发现边学边练入口
-      LH03 练习方式 可选
-        Notebook 与 CANNLab
-        本地运行条件与期待
-    共同复盘与分析
-      哪些入口直观或隐蔽
-      什么内容被视为已验证
-      哪里期待进度与能力全景
-      观察事实原话研究解释
-      P0阻断 P1主要摩擦 P2次要摩擦</pre>
     </section>
 
     <section class="taskbook-section" id="taskbook" aria-labelledby="taskbook-heading">
@@ -276,35 +242,132 @@
       bookTarget.setAttribute("aria-busy", "false");
     }
 
+    const loadMindMap = () => new Promise((resolve, reject) => {
+      if (window.simpleMindMap) return resolve();
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/simple-mind-map@0.14.0-fix.3/dist/simpleMindMap.umd.min.js";
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("Simple Mind Map CDN unavailable"));
+      document.head.append(script);
+    });
+
     try {
-      const mermaid = (await import("https://unpkg.com/mermaid@11.17.2/dist/mermaid.esm.min.mjs")).default;
-      mermaid.initialize({
-        startOnLoad: false,
-        securityLevel: "strict",
-        theme: "base",
-        themeVariables: {
-          background: "#ffffff",
-          primaryColor: "#f7f0ec",
-          primaryTextColor: "#202326",
-          primaryBorderColor: "#d8b1a9",
-          secondaryColor: "#edf2f5",
-          secondaryTextColor: "#202326",
-          secondaryBorderColor: "#bdcbd4",
-          tertiaryColor: "#eef3ee",
-          tertiaryTextColor: "#202326",
-          tertiaryBorderColor: "#c1d0c3",
-          lineColor: "#aeb6b6",
-          fontFamily: "-apple-system, BlinkMacSystemFont, PingFang SC, Microsoft YaHei, sans-serif",
-          fontSize: "15px"
+      await loadMindMap();
+      const MindMap = window.simpleMindMap.default || window.simpleMindMap;
+      if (typeof MindMap !== "function") throw new Error("Simple Mind Map constructor unavailable");
+      mapTarget.innerHTML = "";
+
+      const makeBranch = (text, color, children = [], depth = 1) => ({
+        data: {
+          text,
+          color,
+          lineColor: color,
+          lineWidth: 3,
+          fontSize: depth === 1 ? 16 : 13,
+          fontWeight: depth === 1 ? "bold" : "normal"
         },
-        mindmap: { padding: 24, maxNodeWidth: 190 }
+        children: children.map(item => makeBranch(item.text, color, item.children || [], depth + 1))
       });
-      const source = document.getElementById("map-source").textContent.trim();
-      const { svg, bindFunctions } = await mermaid.render("ascend-work-learning-home-test-map", source);
-      mapTarget.innerHTML = svg;
-      bindFunctions?.(mapTarget);
+
+      const categories = [
+        {
+          text: "共同主持流程", color: "#b74445", children: [
+            { text: "招募分组与知情同意" },
+            { text: "背景访谈与边做边说" },
+            { text: "任务执行与中性追问" },
+            { text: "复盘比较与证据整理" }
+          ]
+        },
+        {
+          text: "Ascend Work", color: "#4d6f8c", children: [
+            { text: "AW-01 AddCustom", children: [ { text: "尾块访问线索" }, { text: "参数尝试" }, { text: "范围复核" } ] },
+            { text: "AW-02 ResNet50", children: [ { text: "学习路径" }, { text: "输入到输出" }, { text: "运行条件核对" } ] },
+            { text: "AW-03 训练调优 · 选做", children: [ { text: "逐步探索方向" }, { text: "编辑需求草稿" }, { text: "不当作已诊断" } ] }
+          ]
+        },
+        {
+          text: "CANN 学习首页", color: "#657f6e", children: [
+            { text: "LH-01 选择学习主线", children: [ { text: "按目标找路线" }, { text: "比较时长与收获" } ] },
+            { text: "LH-02 高校教学资源", children: [ { text: "课程与教学方案" }, { text: "备课所需信息" } ] },
+            { text: "LH-03 练习方式 · 选做", children: [ { text: "Notebook 与 CANNLab" }, { text: "本地运行条件" } ] }
+          ]
+        },
+        {
+          text: "共同复盘", color: "#8b62a3", children: [
+            { text: "入口是否容易发现" },
+            { text: "内容依据与验证边界" },
+            { text: "离开后如何继续" },
+            { text: "进度与能力全景期待" }
+          ]
+        },
+        {
+          text: "记录与分析", color: "#c08a36", children: [
+            { text: "完成度、用时与帮助" },
+            { text: "分开记事实、原话、解释" },
+            { text: "P0 阻断 · P1 摩擦 · P2 次要" },
+            { text: "8 人样本只作方向判断" }
+          ]
+        }
+      ];
+
+      const mapData = {
+        data: {
+          text: "双 Demo 用户测试",
+          fillColor: "#294b6e",
+          color: "#fff",
+          fontSize: 21,
+          fontWeight: "bold",
+          borderRadius: 12
+        },
+        children: categories.map(item => makeBranch(item.text, item.color, item.children))
+      };
+
+      const mindMap = new MindMap({
+        el: mapTarget,
+        data: mapData,
+        layout: "mindMap",
+        theme: "default",
+        readonly: true,
+        fit: true,
+        alwaysShowExpandBtn: true,
+        expandBtnSize: 16,
+        textAutoWrapWidth: 240,
+        themeConfig: {
+          backgroundColor: "#fff",
+          lineStyle: "curve",
+          lineWidth: 3,
+          nodeUseLineStyle: true,
+          root: {
+            shape: "roundedRectangle",
+            fillColor: "#294b6e",
+            color: "#fff",
+            fontSize: 21,
+            fontWeight: "bold",
+            borderRadius: 12
+          },
+          second: {
+            shape: "rectangle",
+            fillColor: "transparent",
+            fontSize: 16,
+            fontWeight: "bold",
+            borderColor: "transparent",
+            borderWidth: 0
+          },
+          node: {
+            shape: "rectangle",
+            fillColor: "transparent",
+            fontSize: 13,
+            borderColor: "transparent",
+            borderWidth: 0
+          }
+        }
+      });
+
+      document.getElementById("fit-map").addEventListener("click", () => mindMap.view.fit());
+      window.addEventListener("resize", () => mindMap.view.fit());
+      window.setTimeout(() => mindMap.view.fit(), 250);
     } catch (error) {
-      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>MindMap 图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>共同主持流程：招募、开场、任务执行、复盘与证据整理</li><li>Ascend Work：AddCustom、ResNet50、可选训练与调优探索</li><li>CANN 学习首页：路线选择、高校教学资源、可选练习方式</li><li>共同观察：任务入口、上下文连续、内容信任与进度能力预期</li></ul><p>如果当前网络无法访问 Mermaid CDN，可使用下方 Markdown 任务书。</p></div>';
+      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>共同主持流程：招募、开场、任务执行与复盘</li><li>Ascend Work：AddCustom、ResNet50、可选训练与调优探索</li><li>CANN 学习首页：学习主线、高校教学资源和可选练习方式</li><li>共同记录：完成度、用时、帮助、事实、原话与研究解释</li></ul><p>如果 CDN 暂时不可用，可直接<a href="./taskbook.md">打开 Markdown 任务书</a>；图表组件见 <a href="https://github.com/wanglin2/mind-map">Simple Mind Map</a>。</p></div>';
     }
   </script>
 </body>
