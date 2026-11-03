@@ -8774,7 +8774,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认采用两者结合：整个组合过程可撤销 / 重做，也可再次点击已选字段取消。更新 `ascend-studio/src/CombinationTaskHome.jsx` 与 `combination-task-home.css`：连接字段与手动加入 / 移除都进入最多 50 步的操作历史；底部 Prompt 区显示撤销、重做及可用状态，支持焦点不在文本输入区时的 `⌘Z / Ctrl+Z`、`⌘⇧Z / Ctrl+Y`；再次点击已选字段可取消，若移除连续路径中的节点，则收回它及后续路径并保留前段。
 - 选中字段悬浮时显示轻量取消符号；窄屏选中字段直接显示取消符号。文本编辑仍使用输入框原生撤销，不与字段 / 连线历史混在一起。依据为用户确认的交互方案（H）；操作行为为演示原型实现，不代表接入真实任务服务。未改变首页字段、页面序列或 API / Host / Application 边界。
-- 验证：本地 1280×720 浏览器预览检查字段加入 / 再次取消、两步连接、移除中间字段后前段保留、底部 Prompt 同步；按钮撤销 / 重做和 `⌘Z / ⌘⇧Z` 均恢复预期状态（M）。`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；Vite 保留主 JS chunk 超过 500 kB 提醒；未运行自动化测试。Pages 资源同步、提交与发布状态待本轮回执补记。
+- 验证：本地 1280×720 浏览器预览检查字段加入 / 再次取消、两步连接、移除中间字段后前段保留、底部 Prompt 同步；按钮撤销 / 重做和 `⌘Z / ⌘⇧Z` 均恢复预期状态（M）。`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；Vite 保留主 JS chunk 超过 500 kB 提醒；未运行自动化测试。
+- 实现提交 `9668db0c` 已推送至 `origin/main`；并行主线提交 `83c973ea` 仍包含本次代码。GitHub Pages workflow `41590675342` 成功；线上 `/AscendCANN/ascstudio/` 引用 `index-CHtE-d3j.js` 与 `index-DhQFMNhb.css`，HTML、JS、CSS 均 HTTP 200。
 
 ### 2026-11-03（CANN 全栈能力地图可视化）
 
