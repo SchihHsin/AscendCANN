@@ -8824,4 +8824,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户指出的 CANN 组织首页视觉参照，移除学习首页教师流程卡、五条主线阶段卡、四层能力层级卡、课程提纲提示卡的左描边，并删除五条主线课程卡组上模拟左描边的内阴影。卡片保留浅色底、整体细边框、圆角和内容层级。
 - 依据：用户对 CANN 首页与学习首页的明确视觉反馈（H）；实现范围为 `cann-learning-home/homepage-structure.css`、`capability-map.css`、`index.html`。引用块边线与路径连接线有内容语义，未移除。课程内容、页面序列及 API / Host / Application 边界未变。
 - 验证：本地桌面预览确认教师流程卡、能力层级卡没有左色条（M）；CSS 搜索仍命中的竖线仅为引用块与路径连接线；`git diff --check` 通过。
-- 实现提交 `8cd4ad7f` 已基于最新 `origin/main` 重放。交接记录与实现一并提交并推送后，核对 GitHub Pages 工作流与学习首页线上资源状态。
+- 实现提交 `acfed2fe` 与交接记录提交 `0430ac02` 已推送至 `origin/main`。GitHub Pages workflow `41602061812` 成功；线上学习首页、`homepage-structure.css`、`capability-map.css` 均 HTTP 200；核对线上教师卡、阶段卡、四层卡规则已无左色条，首页内阴影计数为 0。
