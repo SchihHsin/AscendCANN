@@ -8846,3 +8846,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将 `cann-dashboard/mindstudio-agent-interview-research-report.html` 第 2 页从旧式四行目录列表改为 Report PPT Skill §18 的 `contents-directory contents-4` 横排玻璃章节卡；保留「目录」作为唯一可见标题，移除阅读路径页脚。四个章节名与正文的 section tabs 一致，每卡包含编号、中文名、英文辅助名、两条内容锚点和一句章节职责。
 - 卡片继续链接至原章节锚点 `#3`、`#7`、`#10`、`#15`。规范来源为 `report-ppt-skill/references/components.md` §18 和模板库 `contents-directory`；章节内容依据报告正文。未改变 21 页顺序、研究判断或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：本地桌面浏览器 `#2` 预览确认四卡单行、主体垂直居中、章节链接可访问；`git diff --check` 通过。提交与 GitHub Pages 发布结果待完成后补记。
+
+### 2026-11-03 · Ascend Work × CANN 学习首页用户测试提纲
+
+- 新增 `cann-dashboard/ascend-work-learning-home-user-test/index.html` 与 `taskbook.md`：以 Mermaid 开源 MindMap 汇总共同主持流程和两套 Demo 分支；任务书含 8 人探索性样本建议、65–70 分钟流程、主持话术、4 项核心任务、2 项可选任务、记录表、复盘提问和分析口径，可在线打印或下载 Markdown。
+- 业务目的：为 Ascend Work 的 AddCustom 精度异常、ResNet50 学习、训练与调优探索，以及 CANN 学习首页的路线选择、高校教学资源和实践方式发现准备可执行测试。依据为用户提供的 Demo 说明与链接，以及 Ascend Work 任务路径的源码核对；本材料是研究计划，不是参与者实测发现。
+- 证据边界：测试主持词明确标出原型中的对话、状态、代码改动和结果有演示内容，不据此声称真实模型、算子或 NPU 验证。记录区分行为观察、用户原话和研究解释；8 人结果只作方向性判断。没有修改两个 Demo 的页面序列，也没有改动 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：本地桌面浏览器确认 MindMap 与 Markdown 任务书加载；内联脚本 `node --check`、暂存差异 `git diff --cached --check` 通过。GitHub Pages workflow `41603506417` 成功；页面与 Markdown 均 HTTP 200。
+- 提交与推送：实施提交 `62f2119e` 已推送至 `origin/main`。
+- 未决事项：尚未招募参与者或开展用户测试；实际招募和测试结果需另行记录，不得写成本轮结论。
