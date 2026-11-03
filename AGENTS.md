@@ -8825,3 +8825,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户对 CANN 首页与学习首页的明确视觉反馈（H）；实现范围为 `cann-learning-home/homepage-structure.css`、`capability-map.css`、`index.html`。引用块边线与路径连接线有内容语义，未移除。课程内容、页面序列及 API / Host / Application 边界未变。
 - 验证：本地桌面预览确认教师流程卡、能力层级卡没有左色条（M）；CSS 搜索仍命中的竖线仅为引用块与路径连接线；`git diff --check` 通过。
 - 实现提交 `acfed2fe` 与交接记录提交 `0430ac02` 已推送至 `origin/main`。GitHub Pages workflow `41602061812` 成功；线上学习首页、`homepage-structure.css`、`capability-map.css` 均 HTTP 200；核对线上教师卡、阶段卡、四层卡规则已无左色条，首页内阴影计数为 0。
+
+### 2026-11-03 · Ascend Studio 材料直接组合为 PPTX
+
+- 按用户明确的顺序组合既有材料：原报告封面 → 指定报告 `#2` → 双用户旅程附件中的任务开发者旅程 → 学习开发者旅程 → 用户指定的 Ascend Studio PC 页面。共 5 页、16:9；没有新增分析、总结或重新设计封面。双用户旅程页只按原截图边界拆分，文字、阶段、情绪曲线和痛点未改写。
+- 输出与可复建材料位于 `cann-dashboard/ascend-studio-combined-report/`：`ascend-studio-combined-report.pptx`、`composition.json`、`build_combined_report.py`、原始页面截图 / 元数据、两张旅程裁切图和 `preview.png`。PPTX 中每页保留为来源截图图片对象，并可点击返回原站；图中文字未拆成可编辑文本。
+- 证据来源：报告第 1 / 2 页来自用户指定报告（H，既有桌面截图）；双用户旅程为用户纠正后的附件及其线上同内容页面（H，1440×900 视口、整页 1440×2125）；PC 使用用户指定线上页面（H，1440×900），捕获状态为第 1 / 3 章“让学习贴合当前需要与现有基础”。未使用仓库本地另一个 5 章版本替代线上页面。此组合不改变网站页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Report PPTX Skill 的结构校验读回 5 页、每页 1 张图；LibreOffice 导出 PDF 后逐页查看渲染图，确认原图完整、顺序正确；Python 检查 16:9 尺寸和 5 个来源链接；`git diff --check` 通过。
+- 提交 / 推送：交付提交 `15533270` 已推送至 `origin/main`。由于工作区原有改动未参与，本次通过从最新 `origin/main` 建立的隔离工作树提交。
