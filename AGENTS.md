@@ -8645,3 +8645,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `cann-learning-home/index.html`：按原 README 顺序保留角色导航、前置基础、基础第一课、五条主线及各阶段课程、完整课程体系、高校与共建、赛事、认证、SwanLab、生态、博客、科研、贡献、新闻和版本信息；角色及主线总览改为卡片，课程表与折叠内容保留原内容及链接。
 - 内容来源为 2026-11-03 GitCode 页面渲染的 README（H，页面为该时点快照）；视觉采用 CANN 组织首页的浅灰分区、紧凑卡片、顶部导航和侧栏。未修改 GitCode 上游仓库，也不影响页面序列或 API / Host / Application 边界。
 - 验证：本地浏览器检查页面与课程内容；对照原 README 的表格、折叠项和站内锚点，执行 `git diff --check`。提交并推送 main；上游内容变动需重新同步。
+
+### 2026-11-03（学习首页图形化视觉修订）
+
+- 用户反馈上一版仍保留 emoji、长表格和 Markdown 外观，没有达到 CANN 首页视觉要求。更新 `cann-learning-home/index.html`：使用仓库 CANN 标识，按参考首页重做首屏、角色卡片、学习方式、主线卡片、课程条目和右栏，移除装饰 emoji；保留原有课程、跳转、阶段折叠和建设状态，课程难度改为文字表达。
+- 内容继续依据 GitCode 学习仓 README 的 2026-11-03 快照（H），不改上游仓库，不影响页面序列或 API / Host / Application 边界；完整课程矩阵等仍保留表格以承载对照。
+- 验证：桌面与窄屏浏览器检查，比较原页面与新版课程链接及 24 处折叠内容，检查站内锚点与 `git diff --check`；提交并推送 main。GitHub Pages 可能需要短暂构建时间。
