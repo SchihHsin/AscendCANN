@@ -8732,3 +8732,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根据用户指出的截图，在 `cann-learning-home/index.html` 移除“更多学习与共建”六张资源卡右上角的圆环，并将卡片统一为浅灰底、细边框；保留编号、标题、摘要与链接。
 - 设计依据：用户已选择学习主线卡片的简洁入口卡方案；将同一处理延续到页面同类资源卡。只调整该组六张卡片的视觉，不改变 README 内容、资源结构、页面序列或 API / Host / Application 边界。
 - 验证：`git diff --check` 通过；本地桌面预览确认六张卡片圆环已移除，编号、摘要与入口链接仍完整。页面提交 `bb46ff51` 与交接记录已推送至 main；GitHub Pages 返回 HTTP 200，线上源码确认圆环规则已移除（workflow `41571683416` 当时仍在运行）。
+
+
+### 2026-11-03 · 为竞品相关页面补充真实来源截图
+
+- 在 `cann-dashboard/mindstudio-agent-interview-research-report.html` 的 NVIDIA 竞品章节加入并整理一手视觉证据：第 10 页呈现 Nsight 官方界面、AVO 论文 Figure 1 与 KDA 案例图；第 11 页展示 Nsight Copilot 两个官方界面状态；第 12 页使用 AVO 论文 Figure 2 原图；第 13 页展示 KDA 官方 B300 案例时间线；第 14 页展示 Nemotron 技术报告、KDA Wishlist 与 SkillEvaluator 评测页截图；第 17 页在 SkillEvaluator 作为治理参考处补上官方评测结果截图。
+- 素材存于 `cann-dashboard/mindstudio-agent-interview-research-report-assets/competitor-evidence/`，`sources.json` 记录官方来源、截图类型和裁切信息。公开产品页面截图、论文原图、技术报告裁图分别标注；ImageGen 概念图不作为竞品证据。访谈提到的 NVIDIA 内部工具身份仍待受访者确认；第 19 页保持身份追问，不把公开产品图与未知内部工具绑定。未改变 21 页顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 证据依据：Nsight Compute 用户文档、AVO 论文、NVLabs KDA 案例与 Wishlist、Nemotron 3 Super 技术报告、NVIDIA SkillEvaluator 官方文章（H）；适用范围判断仍限于公开材料与单次访谈。
+- 验证：`git diff --check` 通过；21 页结构完整；报告引用的 15 个本地图片路径均存在，竞品证据目录 13 个素材均列入来源清单；本地桌面预览检查第 10–14、17 页截图与布局。
+- 发布：报告、素材与本交接条目将在本轮推送至 `origin/main`；推送后的 Pages workflow 与线上素材加载状态待核验。

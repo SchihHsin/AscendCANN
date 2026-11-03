@@ -1,0 +1,122 @@
+{
+  "capturedAt": "2026-11-03T11:05+08:00",
+  "evidenceStandard": "Primary-source visuals. Website screenshots are 1440x900 desktop captures; crops are noted. Paper figures are original publication graphics, not product screenshots.",
+  "assets": [
+    {
+      "file": "nsight-copilot-entry.png",
+      "kind": "official product screenshot from documentation",
+      "source": "https://docs.nvidia.com/nsight-compute/NsightCompute/",
+      "viewport": "source image in NVIDIA Nsight Compute user documentation",
+      "stateNote": "NVIDIA official example image showing Copilot entry from a report item."
+    },
+    {
+      "file": "nsight-copilot-context.png",
+      "kind": "official product screenshot from documentation",
+      "source": "https://docs.nvidia.com/nsight-compute/NsightCompute/",
+      "viewport": "source image in NVIDIA Nsight Compute user documentation",
+      "stateNote": "NVIDIA official example image showing report context in Copilot conversation."
+    },
+    {
+      "file": "avo-figure-1-teaser.png",
+      "kind": "original paper figure",
+      "source": "https://arxiv.org/html/2603.24517v1/",
+      "viewport": "not applicable",
+      "stateNote": "AVO paper Figure 1, EVO vs AVO; original figure image."
+    },
+    {
+      "file": "avo-figure-2-overview.png",
+      "kind": "original paper figure",
+      "source": "https://arxiv.org/html/2603.24517v1/",
+      "viewport": "not applicable",
+      "stateNote": "AVO paper Figure 2, Illustration of the Agentic Variation Operator."
+    },
+    {
+      "file": "kda-case-page.png",
+      "kind": "official website screenshot",
+      "source": "https://nvlabs.github.io/kda/blog/2026-09-27-kda-for-kda/",
+      "viewport": "1440x1000 CSS px",
+      "browserMetrics": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440,
+        "scrollHeight": null
+      },
+      "stateNote": "Desktop viewport screenshot of the public NVLabs KDA case page header/hero; no cookie or login overlay."
+    },
+    {
+      "file": "kda-results-page.png",
+      "kind": "official website screenshot",
+      "source": "https://nvlabs.github.io/kda/blog/2026-09-27-kda-for-kda/#results",
+      "viewport": "1440x900 CSS px",
+      "browserMetrics": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440,
+        "scrollHeight": 12391
+      },
+      "stateNote": "Section screenshot of NVLabs KDA B300 result charts and improvement timeline; no cookie or login overlay."
+    },
+    {
+      "file": "kda-wishlist-page.png",
+      "kind": "official website screenshot",
+      "source": "https://nvlabs.github.io/kda/#submit",
+      "viewport": "1440x900 CSS px",
+      "browserMetrics": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440,
+        "scrollHeight": 6019
+      },
+      "stateNote": "Section screenshot of public KDA request form; it directs submitters to provide repository fork and branch. No data was entered or submitted."
+    },
+    {
+      "file": "kda-wishlist-form-crop.jpg",
+      "kind": "cropped official website screenshot",
+      "source": "https://nvlabs.github.io/kda/#submit",
+      "viewport": "1440x900 CSS px",
+      "imageDimensions": "1280x540 px",
+      "stateNote": "Focused crop of the request form and surrounding page copy; crop retains the source page context."
+    },
+    {
+      "file": "skillevaluator-results-page.png",
+      "kind": "official website screenshot",
+      "source": "https://developer.nvidia.com/blog/evaluating-ai-agent-skill-performance-with-nvidia-skillevaluator/#live_evaluation_results",
+      "viewport": "1440x900 CSS px",
+      "browserMetrics": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440,
+        "scrollHeight": 8548
+      },
+      "stateNote": "Live evaluation results section from NVIDIA Technical Blog. Optional cookies rejected in isolated capture profile; visible cookie overlay verified false."
+    },
+    {
+      "file": "skillevaluator-results-crop.jpg",
+      "kind": "cropped official website screenshot",
+      "source": "https://developer.nvidia.com/blog/evaluating-ai-agent-skill-performance-with-nvidia-skillevaluator/#live_evaluation_results",
+      "viewport": "1440x900 CSS px",
+      "imageDimensions": "935x375 px",
+      "stateNote": "Focused crop of article results section; optional cookies rejected in isolated capture profile; no visible cookie overlay."
+    },
+    {
+      "file": "nemotron-p22-cuda-traces-crop.jpg",
+      "kind": "cropped official PDF page screenshot",
+      "source": "https://research.nvidia.com/labs/nemotron/files/NVIDIA-Nemotron-3-Super-Technical-Report.pdf#page=22",
+      "viewport": "PDF page 22 rendered at 160 dpi, original image 1323x1870 px",
+      "imageDimensions": "1068x427 px",
+      "stateNote": "Crop from the technical report page containing the paragraph describing internal CUDA-agent trace examples."
+    },
+    {
+      "file": "kda-results-timeline-crop.jpg",
+      "kind": "cropped official website screenshot",
+      "source": "https://nvlabs.github.io/kda/blog/2026-09-27-kda-for-kda/#results",
+      "viewport": "1440x900 CSS px",
+      "imageDimensions": "1200x490 px",
+      "stateNote": "Focused crop of the official public KDA improvement timeline chart; no cookie or login overlay."
+    },
+    {
+      "file": "kda-case-page-hero-crop.jpg",
+      "kind": "cropped official website screenshot",
+      "source": "https://nvlabs.github.io/kda/blog/2026-09-27-kda-for-kda/",
+      "viewport": "1440x1000 CSS px",
+      "imageDimensions": "1190x440 px",
+      "stateNote": "Focused crop of the NVLabs case page title and hero benchmark graphic; no cookie or login overlay."
+    }
+  ]
+}
