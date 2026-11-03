@@ -8884,5 +8884,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按确认顺序组合：原报告封面 → 报告 `#2`「从查资料到交任务：Agent 模式带来另一种开发入口」→ 任务开发者旅程 → 学习开发者旅程 → 用户指定的 Ascend Studio PC 页面。报告 `#2` 表达当前开发入口趋势与现状，不是双用户页；它引出后面的两条独立用户旅程。
 - 当前交付为 `cann-dashboard/ascend-studio-combined-report/index.html`：前四页以同源原页面嵌入，两个用户旅程分别呈现；沿用附件现有颜色、阶段、触点、情绪曲线与内容，仅按 16:9 视口重新排布。PC 页使用用户给出的线上原地址，完整保留原页面布局和交互，不转截图。此前截图式 PPTX 与构建材料移入 `legacy-screenshot-draft/`，不作为当前交付。
 - 来源与证据：报告页来自用户指定的线上报告（H）；两条旅程源文件与用户桌面附件 SHA-256 一致（H）；PC 页使用用户指定线上 URL（H）。组合仅改变展示顺序和视口适配，不改研究结论、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：HTML 内联脚本语法与组合 JSON 检查通过；Chrome 1600×900 桌面视口复核趋势页、两条独立旅程和线上 PC 页面；`#3`、`#4` 与 `#5` 的直接定位可用。`git diff --check` 待提交前复核。
-- 提交 / 推送：组合页与本交接更新按独立文件范围推送至 `origin/main`；GitHub Pages 发布状态待确认。
+- 验证：内联脚本 `node --check`、组合 JSON / 来源选择器检查、`git diff --cached --check` 通过。Chrome 1600×900 核对五页，1280×720 核对旅程缩放；页面 `#1`–`#5` 均可定位，PC 显示线上原页面。推送后组合页 HTTP 200，GitHub Pages workflow `41625528689` 成功。
+- 提交 / 推送：组合材料提交 `1ce58bd7` 已推送至 `origin/main`；线上地址 `https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-studio-combined-report/` 可访问。
