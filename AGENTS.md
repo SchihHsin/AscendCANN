@@ -8664,3 +8664,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `cann-learning-home/index.html`：首页围绕 README 的九类角色、基础第一课的五门实际课程、五条学习主线、三种运行方式及高校/赛事/AI 应用/社区专题组织；课程卡保留原实际运行方式与入口。五条主线详情独立展开，取消把所有主线一起展开的做法，避免把示例进度表述成用户已完成。
 - 来源为 2026-11-03 实际访问的 GitCode README（H），教学/认证/课程状态沿用该时点公开内容；单页为静态快照，不修改上游仓库，不涉及 API / Host / Application 层边界。社区首页视觉仅用于浅灰分区、卡片、导航和双栏呈现。
 - 验证：本地桌面浏览首页，检查单一主线与赛事专题展开、课程跳转链接、原 README 的外部链接与页内锚点；执行 `git diff --check`，完成后提交并推送 main。上游更新需同步，外部平台运行环境以其页面为准。
+
+### 2026-11-03 · 多轮对话知识汇聚独立 Demo
+
+- 用户确认先用独立 HTML 验证通用的 Agent 输出汇聚，并要求沿用既有 Ascend Studio 三栏结构与样式规范，不另造产品架构。新增 `agent-output-exploration/index.html` 与标识资源：左侧切换 Harness、算子开发、训练调优、推理调优四组示例；中间每组五轮策划问答；右侧按共同的节点、关系、来源记录逐步汇聚，可选择节点回看对应回答。
+- 交互是本地预设演示（L：设计假设），没有连接模型或真实训练 / NPU；输入仅支持预设问题匹配。示例内容不代表运行验证或研究结论。未更改现有 Studio 页面序列、API / Host / Application 边界。
+- 已检查内联 JS 语法，浏览器检查多轮递进与主题切换；源文件在最新远端基础上隔离提交。在线地址：`https://schihhsin.github.io/AscendCANN/agent-output-exploration/`，发布状态以实际回执为准。
