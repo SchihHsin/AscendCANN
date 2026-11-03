@@ -201,17 +201,23 @@ export function CombinationTaskHome({ onCreateTask }) {
     targetDwellTimerRef.current = null;
   };
 
-  const cancelHoverConnection = () => {
+  const clearPendingHover = () => {
     clearSourceHoverTimer();
     clearTargetDwellTimer();
     activeSourceRef.current = null;
     focusRearmRef.current = null;
     sourceCandidateRef.current = null;
     targetCandidateRef.current = null;
-    setHoverSourceId(null);
+    hoveredFieldRef.current = null;
     setHoverSourceCandidateId(null);
     setHoverTargetId(null);
     setHoverPreview(null);
+    setPendingKeyboardNode(null);
+  };
+
+  const cancelHoverConnection = () => {
+    clearPendingHover();
+    setHoverSourceId(null);
   };
   cancelHoverRef.current = cancelHoverConnection;
 
@@ -338,7 +344,7 @@ export function CombinationTaskHome({ onCreateTask }) {
   };
 
   const handleCanvasPointerLeave = (event) => {
-    if (!event.currentTarget.contains(event.relatedTarget)) cancelHoverConnection();
+    if (!event.currentTarget.contains(event.relatedTarget)) clearPendingHover();
   };
 
   const handleFieldPointerEnter = (event, field) => {

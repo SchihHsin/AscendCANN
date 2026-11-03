@@ -8714,6 +8714,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Harness 示例可讨论“核心概念与职责边界”“上下文 / 规则”“模型 / 工具调用 / 结果回填”“候选结果 / 任务验收”等关系群；Harness 与外部模型的位置需体现系统边界。聚类仍为设计假设，具体节点归属需依据对话内容，不能预设所有主题有相同簇结构。
 - 当前仅记录讨论方向，尚未改界面或验证用户理解；无页面序列及 API / Host / Application 边界变化。
 
+### 2026-11-03 · 关联探索离开画布后保留焦点
+
+- 用户反馈连接字段后鼠标离开，页面会退回首页布局。代码检查确认 `pointerleave` 复用了完整取消逻辑，连焦点字段一起清空；改为单独清理计时器、候选目标和临时预览线，保留当前焦点与已建立连接。空白处点击与 Escape 仍调用完整取消逻辑，可以明确退出当前聚焦状态。
+- 修改 `ascend-studio/src/CombinationTaskHome.jsx`；Pages 与电脑端静态包由 `npm run build:pages` 同步至 `ascstudio/`、`ascstudio-pc/studio/`。连线与焦点行为来自现有演示字段关系及用户反馈（H）；根因来自组件事件逻辑检查（M）。不改变首页字段、Prompt、页面序列或 API / Host / Application 边界。
+- 验证：本地浏览器已有一条已确认连接时，将鼠标移至 Prompt 输入区，焦点布局、连接线与草稿均保留（M）；`npm run build:pages` 成功，发布 JS `node --check` 与 `git diff --check` 通过。Vite 继续提示主 JS chunk 超过 500 kB；未运行自动化测试。提交、推送及 Pages 发布结果待本轮回执补记。
+
 ### 2026-11-03（学习主线卡片去除无语义圆环）
 
 - 根据用户选择的方案 1，修改 `cann-learning-home/index.html`：移除五条学习主线卡片右上角被裁切的同心圆装饰；保留主题图标、课程信息、浅灰卡片底色与细边框，避免装饰抢过课程信息。
