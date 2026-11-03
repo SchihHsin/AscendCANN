@@ -8845,7 +8845,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 将 `cann-dashboard/mindstudio-agent-interview-research-report.html` 第 2 页从旧式四行目录列表改为 Report PPT Skill §18 的 `contents-directory contents-4` 横排玻璃章节卡；保留「目录」作为唯一可见标题，移除阅读路径页脚。四个章节名与正文的 section tabs 一致，每卡包含编号、中文名、英文辅助名、两条内容锚点和一句章节职责。
 - 卡片继续链接至原章节锚点 `#3`、`#7`、`#10`、`#15`。规范来源为 `report-ppt-skill/references/components.md` §18 和模板库 `contents-directory`；章节内容依据报告正文。未改变 21 页顺序、研究判断或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：本地桌面浏览器 `#2` 预览确认四卡单行、主体垂直居中、章节链接可访问；`git diff --check` 通过。提交与 GitHub Pages 发布结果待完成后补记。
+- 验证：本地桌面浏览器 `#2` 预览确认四卡单行、主体垂直居中，浏览器无障碍树显示四个章节链接分别指向原锚点；`git diff --check` 通过。实现提交 `07965711` 经合并提交 `aec36c85` 推送至 `origin/main`，保留并行提交 `949c8bbe`；GitHub Pages workflow `41605583085` 成功，线上页面 HTTP 200，已核对四卡结构、新章节锚点且旧列表与阅读路径页脚均已移除。
 
 ### 2026-11-03 · Ascend Work × CANN 学习首页用户测试提纲
 
