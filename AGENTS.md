@@ -8731,4 +8731,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 根据用户指出的截图，在 `cann-learning-home/index.html` 移除“更多学习与共建”六张资源卡右上角的圆环，并将卡片统一为浅灰底、细边框；保留编号、标题、摘要与链接。
 - 设计依据：用户已选择学习主线卡片的简洁入口卡方案；将同一处理延续到页面同类资源卡。只调整该组六张卡片的视觉，不改变 README 内容、资源结构、页面序列或 API / Host / Application 边界。
-- 验证：`git diff --check` 通过；本地桌面预览确认六张卡片圆环已移除，编号、摘要与入口链接仍完整。页面改动与交接记录已提交；推送和 Pages 发布状态以下方回执为准。
+- 验证：`git diff --check` 通过；本地桌面预览确认六张卡片圆环已移除，编号、摘要与入口链接仍完整。页面提交 `bb46ff51` 与交接记录已推送至 main；GitHub Pages 返回 HTTP 200，线上源码确认圆环规则已移除（workflow `41571683416` 当时仍在运行）。
