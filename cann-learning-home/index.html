@@ -1,0 +1,1608 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CANN Learning Hub · 学习中心</title><style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:20px}body{margin:0;color:#25272e;background:#fff;font:14px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}a{color:#3980d9;text-decoration:none}a:hover{text-decoration:underline}.top{height:56px;border-bottom:1px solid #e9ebef;display:flex;align-items:center;padding:0 3%;gap:18px;font-size:13px}.brand{font-size:15px;font-weight:700;color:#282a31}.brand b{font-size:11px;letter-spacing:-1px;color:#e13542;margin-right:8px}.search{margin:auto;border:1px solid #e5e7eb;border-radius:4px;color:#9da2ac;padding:4px 12px;width:280px;font-size:12px}.community{color:#737883;font-size:12px}.nav{display:flex;align-items:stretch;gap:30px;padding:0 3%;height:46px;border-bottom:1px solid #e9ebef;overflow:auto;white-space:nowrap}.nav a{display:flex;align-items:center;color:#6c707a;font-size:13px}.nav a:first-child{color:#27292d;font-weight:700;border-bottom:2px solid #25262a}.nav a:first-child:before{content:'◆';color:#ed5670;margin-right:8px;font-size:10px}.page{max-width:1500px;padding:0 3% 60px;margin:auto}.identity{display:flex;align-items:center;gap:20px;padding:28px 0}.logo{width:88px;height:88px;flex-shrink:0;border:1px solid #eff0f3;border-radius:9px;display:grid;place-items:center;font-size:24px;letter-spacing:-3px;font-weight:900;box-shadow:0 8px 24px #d8e0f044}.logo span{color:#dc2335}.identity h1{font-size:20px;margin:0 0 4px}.identity p{font-size:13px;color:#69707c;margin:0;max-width:890px}.repo{margin-left:auto;background:#1c1d21;color:#fff;padding:8px 17px;border-radius:4px;font-size:12px;white-space:nowrap}.layout{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:16px;align-items:start}.intro{padding:23px 24px;background:linear-gradient(110deg,#f8f5f5,#f7f8fb 55%,#e9edff);border-radius:5px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:20px}.intro small{color:#8b91a0;letter-spacing:.08em;font-size:11px}.intro h2{font-size:20px;margin:5px 0}.intro p{color:#7b818d;font-size:12px;margin:0}.intro a{border:1px solid #a5aab4;color:#333;padding:6px 12px;border-radius:4px;background:#fff;white-space:nowrap;font-size:12px}.source-section{margin:0 0 28px;min-width:0}.source-section h2{font-size:16px;line-height:1.5;margin:0 0 12px;color:#202228}.source-section h3{font-size:15px;line-height:1.5;margin:0 0 12px}.source-section h4{font-size:13px}.source-section p{margin:10px 0;color:#656c78;font-size:13px}.source-section blockquote{border:0;background:#f7f8fa;padding:12px 15px;margin:10px 0;color:#69707a;border-radius:4px}.source-section blockquote p{margin:0}.source-section hr{border:0;border-top:1px solid #e8eaf0}.source-section ul,.source-section ol{color:#626975;padding-left:23px}.source-section li{margin:5px 0}.source-section code{background:#edf0f5;border-radius:3px;padding:1px 4px;font-size:12px}.source-section pre{overflow:auto;background:#f7f8fa;padding:14px;font-size:12px}.source-section img{max-width:100%}.table-wrap{overflow-x:auto;border:1px solid #eff0f2;border-radius:4px;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.6;background:#fff}th{background:#f5f6f8;color:#5d626d;font-weight:600}td,th{padding:11px 13px;border-bottom:1px solid #eef0f3;text-align:left!important;vertical-align:top;min-width:90px}tr:last-child td{border-bottom:0}td{color:#666d79}td strong{color:#30343d}.role-grid,.path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#e7eaee;border:1px solid #eef0f2;border-radius:5px;overflow:hidden;margin:12px 0}.overview-card{background:#f8f9fa;padding:17px;min-height:100px}.card-title{font-weight:700;color:#272a32;font-size:13px;margin-bottom:7px}.card-copy{font-size:12px;line-height:1.7;color:#858b96}.path-grid .overview-card{min-height:135px}.path-grid .card-copy{margin-top:4px}.source-section details{background:#f8f9fa;border-radius:4px;margin:9px 0;padding:0 15px;overflow:hidden}.source-section summary{cursor:pointer;font-size:13px;font-weight:650;padding:13px 0;color:#343840}.source-section details[open]{padding-bottom:10px}.source-section details details{background:#fff;border:1px solid #eef0f3}.source-section details .table-wrap{background:#fff}.side{position:sticky;top:16px}.panel{background:#f7f8fa;border-radius:5px;padding:17px;margin-bottom:14px}.panel h2{font-size:14px;margin:0 0 12px}.panel a{display:block;color:#626a76;font-size:12px;padding:7px 9px;border-radius:3px}.panel a:hover{background:#fff;color:#347bd3;text-decoration:none}.panel p{font-size:12px;color:#8a909c}.promo{background:linear-gradient(130deg,#e4ebff,#f0f6ff);min-height:140px;position:relative;overflow:hidden}.promo h2,.promo p,.promo a{position:relative;z-index:1}.promo a{display:inline-block;background:white;border:1px solid #afb8cc;color:#343b4b;padding:5px 10px}.orb{position:absolute;width:105px;height:105px;right:-2px;bottom:-33px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#9dbbff 30%,#8598ec 60%,#d7e6ff 75%)}.foot{border-top:1px solid #edf0f3;padding-top:18px;color:#969ca6;font-size:12px}.source-section :target{scroll-margin-top:16px}@media(max-width:900px){.layout{grid-template-columns:1fr}.side{position:static;display:grid;grid-template-columns:1fr 1fr;gap:12px}.search{display:none}.role-grid,.path-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.page{padding:0 15px 40px}.identity{align-items:flex-start}.identity .repo{display:none}.logo{width:60px;height:60px;font-size:18px}.identity h1{font-size:17px}.identity p{font-size:12px}.intro{display:block}.intro a{display:inline-block;margin-top:12px}.role-grid,.path-grid{grid-template-columns:1fr}.overview-card,.path-grid .overview-card{min-height:0}.side{display:block}.community{display:none}}
+</style></head><body><header><div class="top"><span style="font-size:20px;color:#717680">☰</span><a class="brand" href="https://gitcode.com/cann"><b>CANN</b>CANN　✿</a><a class="search" href="https://gitcode.com/cann/cann-learning-hub">⌕　前往 GitCode 查看项目</a><a class="community" href="https://gitcode.com/cann">CANN 社区首页 ↗</a></div><nav class="nav"><a href="#top">主页</a><a href="#角色导航">角色导航</a><a href="#从这里开始">从这里开始</a><a href="#学完基础选择一条主线">学习主线</a><a href="#完整课程体系查阅用">课程体系</a><a href="#参与贡献">参与贡献</a><a href="https://gitcode.com/cann/cann-learning-hub">代码仓库 ↗</a></nav></header><div class="page" id="top"><div class="identity"><div class="logo"><div><span>C</span>ANN</div></div><div><h1>CANN Learning Hub 📚</h1><p>CANN 生态的开源学习中心，汇聚从入门到进阶的教程、示例和最佳实践，支持在线互动运行、边学边练。</p></div><a class="repo" href="https://gitcode.com/cann/cann-learning-hub">访问代码仓库 ↗</a></div><div class="layout"><main><div class="intro"><div><small>CANN LEARNING HUB</small><h2>找到你的学习起点</h2><p>按角色直达，从 CANN 基础出发，选择适合自己的学习主线。</p></div><a href="#角色导航">查看角色导航 ›</a></div><section class="source-section"><h2 id="角色导航">🎯 角色导航</h2>
+<blockquote>
+<p>找到你的角色，直达对应内容 👇</p>
+</blockquote>
+<div class="role-grid"><div class="overview-card"><div class="card-title">🌱 <strong>新手开发者</strong></div><div class="card-copy"><a href="#cann-basics">从这里开始</a> — CANN 基础第一课，零门槛入门</div></div><div class="overview-card"><div class="card-title">🧠 <strong>大模型开发者</strong></div><div class="card-copy"><a href="#mainline-training">大模型训练</a> · <a href="#mainline-inference">大模型推理</a> · <a href="#swanlab">SwanLab 微调案例</a></div></div><div class="overview-card"><div class="card-title">⚙️ <strong>算子开发工程师</strong></div><div class="card-copy"><a href="#mainline-operator">算子开发</a> — Ascend C 编程与自定义算子实战</div></div><div class="overview-card"><div class="card-title">📱 <strong>应用开发工程师</strong></div><div class="card-copy"><a href="#mainline-appdev">应用开发（离线推理）</a> — ATC 编译、ACL 推理与性能调优</div></div><div class="overview-card"><div class="card-title">🧩 <strong>AI 应用开发者</strong></div><div class="card-copy"><a href="#mainline-ai-appdev">AI 应用开发实践</a> — RAG 知识库问答端到端实践</div></div><div class="overview-card"><div class="card-title">📊 <strong>推荐算法工程师</strong></div><div class="card-copy"><a href="#mainline-recsys">推荐系统</a> — CTR 排序 + 召回全链路</div></div><div class="overview-card"><div class="card-title">🏫 <strong>高校老师</strong></div><div class="card-copy"><a href="#university">高校教学方案专区</a></div></div><div class="overview-card"><div class="card-title">🏆 <strong>竞赛选手</strong></div><div class="card-copy"><a href="#competition">赛事备考专区</a> — CANNJudge 题库、大赛报名、备赛路径</div></div><div class="overview-card"><div class="card-title">🤝 <strong>社区开发者</strong></div><div class="card-copy">看<a href="#%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">技术博客</a>· <a href="#%E7%A7%91%E7%A0%94%E6%A1%88%E4%BE%8B">科研案例</a> 实践， <a href="#%E5%8F%82%E4%B8%8E%E8%B4%A1%E7%8C%AE">参与贡献</a> — 贡献教程与案例</div></div></div><p><strong>🚦 三种学习方式</strong>：<strong>Notebook 在线体验</strong>（浏览器零配置直接运行，点课程表「在线体验」链接）；<strong>CANNLab 云端环境</strong>（完整 NPU 云环境，点「open in CANNLab」，<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/docs/CANNLab_env_experience_guide.md">体验指南</a>）；<strong>本地环境运行</strong>（克隆本仓，自备昇腾硬件按课程 README 配置运行）。均以各课程 README 支持的方式为准。</p>
+</section>
+<section class="source-section"><h2 id="前置基础按需补不用先全学完">📋 前置基础（按需补，不用先全学完）</h2>
+<p>入门阶段，你只需 <strong>Python + NumPy</strong> 就能开始第一课。其他基础可以边学边补，学到卡住时回来查即可。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">基础</th>
+<th style="text-align: left">什么时候需要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>Python</strong></td>
+<td style="text-align: left">全部课程，第一课就用到</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>NumPy / PyTorch</strong></td>
+<td style="text-align: left">第一课起，张量与矩阵运算</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>C / C++</strong></td>
+<td style="text-align: left">进入算子开发主线时</td>
+</tr>
+</tbody>
+</table>
+</div><details>
+<summary>查看完整前置基础清单（8 项 + 推荐资源 + 支撑课程）</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">基础</th>
+<th style="text-align: left">需要掌握的内容</th>
+<th style="text-align: left">推荐资源</th>
+<th style="text-align: left">支撑课程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>Python</strong></td>
+<td style="text-align: left">变量、函数、类、模块，能读懂并运行脚本</td>
+<td style="text-align: left"><a href="https://liaoxuefeng.com/books/python/introduction/index.html" rel="noopener noreferrer nofollow" target="_blank">廖雪峰 Python 教程</a> ｜ B站搜索「黑马程序员 Python」</td>
+<td style="text-align: left">全部课程</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>NumPy / PyTorch</strong></td>
+<td style="text-align: left">会创建张量、做矩阵运算，了解 <code>Tensor</code> 基本操作</td>
+<td style="text-align: left"><a href="https://numpy.org/doc/stable/user/quickstart.html" rel="noopener noreferrer nofollow" target="_blank">NumPy 官方快速入门</a> ｜ <a href="https://pytorch.org/tutorials/" rel="noopener noreferrer nofollow" target="_blank">PyTorch 官方教程</a> ｜ <a href="https://zh.d2l.ai/" rel="noopener noreferrer nofollow" target="_blank">李沐《动手学深度学习》</a></td>
+<td style="text-align: left">01 人工智能基础、04 NPU 实践、推理/训练/推荐主线</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>C / C++</strong></td>
+<td style="text-align: left">指针、函数、编译链接，能读懂 C++ 源码</td>
+<td style="text-align: left"><a href="https://www.runoob.com/cplusplus/cpp-tutorial.html" rel="noopener noreferrer nofollow" target="_blank">菜鸟教程 C++</a> ｜ B站搜索「黑马程序员 C++」</td>
+<td style="text-align: left">Ascend C 算子开发主线</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Linux 基础</strong></td>
+<td style="text-align: left">常用命令、环境变量，能在服务器上运行程序</td>
+<td style="text-align: left"><a href="https://www.bilibili.com/video/BV1Sv411r7vd" rel="noopener noreferrer nofollow" target="_blank">韩顺平《一周学会 Linux》</a> ｜ <a href="https://www.bilibili.com/video/BV1dW411M7xL" rel="noopener noreferrer nofollow" target="_blank">尚硅谷 Linux 教程</a></td>
+<td style="text-align: left">全部实践课程</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>数学基础</strong></td>
+<td style="text-align: left">矩阵运算、梯度概念</td>
+<td style="text-align: left"><a href="https://www.bilibili.com/video/BV1d7wAzsE8V" rel="noopener noreferrer nofollow" target="_blank">宋浩《线性代数》</a> ｜ 备选：<a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/" rel="noopener noreferrer nofollow" target="_blank">MIT 18.06 线性代数（英文）</a></td>
+<td style="text-align: left">深度学习、模型训练</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>深度学习概念</strong></td>
+<td style="text-align: left">神经网络、反向传播，知道模型怎么训练和推理</td>
+<td style="text-align: left"><a href="https://www.bilibili.com/video/BV1FT4y1E74V" rel="noopener noreferrer nofollow" target="_blank">吴恩达《深度学习专项》</a> ｜ <a href="https://zh.d2l.ai/" rel="noopener noreferrer nofollow" target="_blank">李沐《动手学深度学习》</a></td>
+<td style="text-align: left">01 人工智能基础、推理/训练主线</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Git</strong></td>
+<td style="text-align: left">clone / commit / push / pull，会提交 PR</td>
+<td style="text-align: left"><a href="https://liaoxuefeng.com/books/git/introduction/index.html" rel="noopener noreferrer nofollow" target="_blank">廖雪峰 Git 教程</a> ｜ <a href="https://git-scm.com/book/zh/v2" rel="noopener noreferrer nofollow" target="_blank">Pro Git 中文版</a></td>
+<td style="text-align: left">全部课程、社区贡献</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>社区贡献</strong></td>
+<td style="text-align: left">了解社区行为准则、CLA 签署、Issue / PR 提交流程</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/community">CANN 社区贡献指南</a></td>
+<td style="text-align: left">全部课程、社区共建</td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 入门阶段只需 Python + NumPy 即可开始第一课；进入算子开发主线时再补 C/C++，进入大模型主线时再补深度学习与 PyTorch。</p>
+</blockquote>
+</details>
+<p><a id="cann-basics"></a></p>
+</section>
+<section class="source-section"><h2 id="从这里开始">🚀 从这里开始</h2>
+<h3 id="cann-基础第一课"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/quick_start/cann_basics">CANN 基础（第一课）</a></h3>
+<blockquote>
+<p>📖 <strong>配套课件</strong>：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/00_atomic_courses/02_framework/01_overview/artificial_intelligence_basics.pptx">CANN 基础</a></p>
+</blockquote>
+<p>点击「在线体验」，在浏览器中运行你的第一个 Notebook，无需任何环境配置。</p>
+<p>这是所有学习路径的<strong>公共基础</strong>（阶段一：CANN 基础，约 2 小时），也是后续五条学习主线的共同起点：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/01_ai_basics.ipynb">人工智能基础</a></td>
+<td style="text-align: left">AI 发展历程、算子概念（名称/类型/Tensor/shape）</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=quick_start/cann_basics&amp;scanFilePath=quick_start/cann_basics/01_ai_basics.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/02_what_is_npu.ipynb">什么是 NPU</a></td>
+<td style="text-align: left">昇腾 NPU 硬件架构：DaVinci 核心、AI Core / Vector / Cube 计算单元</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=quick_start/cann_basics&amp;scanFilePath=quick_start/cann_basics/02_what_is_npu.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/03_what_is_cann.ipynb">什么是 CANN</a></td>
+<td style="text-align: left">CANN 异构计算架构与软件栈：分层架构、Ascend C、torch_npu 适配</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=quick_start/cann_basics&amp;scanFilePath=quick_start/cann_basics/03_what_is_cann.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/04_npu_practice.ipynb">NPU 实践</a></td>
+<td style="text-align: left">Hello NPU、张量运算、矩阵乘法性能对比、Batch 运算、图像高斯模糊卷积</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=quick_start/cann_basics&amp;scanFilePath=quick_start/cann_basics/04_npu_practice.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/swanlab_examples/mnist/mnist.ipynb">MNIST 手写数字识别（可选）</a></td>
+<td style="text-align: left">你的第一个模型训练：数据加载 → 模型构建 → 训练 → 评估，配套 SwanLab 可视化</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=contrib/tutorials/swanlab_examples/mnist/mnist.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 想用完整 NPU 环境做进阶练习？进入 <a href="https://gitcode.com/org/cann/cannlab">CANNLab</a> 创建云环境（初始 100 小时，积分可兑换时长）。</p>
+</blockquote>
+</section>
+<section class="source-section"><h2 id="学完基础选择一条主线">🧭 学完基础，选择一条主线</h2>
+<p>完成公共基础（阶段一）后，按你关心的场景选一个方向深入。五条主线互不冲突，可以都学，也可以只学一条。</p>
+<div class="path-grid"><div class="overview-card"><div class="card-title"><a href="#mainline-training">🏋️ 大模型训练</a></div><div class="card-copy">想做模型训练与微调</div><div class="card-copy">~16h</div><div class="card-copy">SFT/RL 训练与微调能力</div><div class="card-copy">★★★</div></div><div class="overview-card"><div class="card-title"><a href="#mainline-inference">🧠 大模型推理</a></div><div class="card-copy">想快速跑通大模型、做推理优化</div><div class="card-copy">~10h</div><div class="card-copy">端到端推理调优能力</div><div class="card-copy">★★☆</div></div><div class="overview-card"><div class="card-title"><a href="#mainline-operator">⚙️ 算子开发</a></div><div class="card-copy">想掌握底层编程、做算子级优化</div><div class="card-copy">~20h</div><div class="card-copy">自定义算子开发与接入</div><div class="card-copy">★★★</div></div><div class="overview-card"><div class="card-title"><a href="#mainline-appdev">📱 应用开发（离线推理）</a></div><div class="card-copy">想做 ACL 离线推理与应用部署</div><div class="card-copy">~6h</div><div class="card-copy">ATC 编译 + ACL 推理 + 调优</div><div class="card-copy">★★☆</div></div><div class="overview-card"><div class="card-title"><a href="#mainline-recsys">📊 推荐系统</a></div><div class="card-copy">想做推荐/召回业务落地</div><div class="card-copy">~8h</div><div class="card-copy">CTR 排序 + 召回全链路</div><div class="card-copy">★★☆</div></div></div><p><a id="mainline-training"></a></p>
+</section>
+<section class="source-section"><h3 id="主线一-大模型训练">主线一：🏋️ 大模型训练</h3>
+<blockquote>
+<p>从微调实战到 SFT/RL 训练全流程，系统掌握大模型训练与性能优化能力。</p>
+</blockquote>
+<p><strong>阶段一：<a href="#cann-basics">CANN 基础</a>（公共基础，约 2h）</strong> ✅ 已在此完成 → 直接进入本主线后续阶段</p>
+<p><strong>阶段二：微调实战案例（SwanLab 共建）🚧</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: center">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/swanlab_examples/qwen3_medical_sft">医学模型微调</a></td>
+<td style="text-align: left">Qwen3 医学领域 SFT + SwanLab 可视化</td>
+<td style="text-align: center">✅ 已上线</td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: left"><a href="https://docs.swanlab.cn/course/llm_train_course/03-sft/8.other_frameworks/ms-swift.html" rel="noopener noreferrer nofollow" target="_blank">ms-swift 框架微调</a></td>
+<td style="text-align: left">ms-swift 框架微调 + SwanLab 可视化</td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: left"><a href="https://docs.swanlab.cn/course/llm_train_course/06-multillm/2.qwen3_smolvlm_muxi/" rel="noopener noreferrer nofollow" target="_blank">Qwen3-smolVLM 多模态微调</a></td>
+<td style="text-align: left">多模态拼接微调 + SwanLab 可视化</td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: left"><a href="https://docs.swanlab.cn/course/llm_train_course/07-audio/1.cosyvoice-sft/" rel="noopener noreferrer nofollow" target="_blank">CosyVoice 语音微调</a></td>
+<td style="text-align: left">语音模型微调 + SwanLab 可视化</td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 案例正在从 SwanLab 平台迁移至 <code>contrib/tutorials/swanlab_examples/</code>，完成后将在 CANNLab 环境提供在线体验。</p>
+</blockquote>
+<details>
+<summary>阶段三：SFT/RL 初阶课程</summary>
+<blockquote>
+<p>📖 <strong>配套课件</strong>：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/sft_training_pipeline/slides/01_sft_training_pipeline.pptx">SFT 训练流程</a>，<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/rl_training_pipeline/slides/01_rl_training_pipeline.pptx">RL 训练流程</a></p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程（实践）</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/sft_training_pipeline">SFT 训练系列（初阶）</a></td>
+<td style="text-align: left">Wordle 任务与 SFT 原理 / TorchTitan-FSDP 框架与环境配置 / Qwen3-1.7B 基线训练与推理评测 / 融合算子接入与 Profiling 分析</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/sft_training_pipeline/README.md&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">6</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/rl_training_pipeline">RL 训练系列（初阶）</a></td>
+<td style="text-align: left">verl+vLLM-Ascend 环境与框架概览 / RL+GRPO 核心概念与 KL 稳定性 / Wordle Agent Loop 与奖励函数 / 训练指标监控与崩塌调优</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/rl_training_pipeline/README.md&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>阶段四：SFT/RL 中阶课程</summary>
+<blockquote>
+<p>📖 <strong>配套课件</strong>：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/sft_training_pipeline/slides/02_sft_training_pipeline.pptx">SFT 训练流程</a>，<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/rl_training_pipeline/slides/02_rl_training_pipeline.pptx">RL 训练流程</a></p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: center">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">7</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/sft_training_pipeline">SFT 训练系列（中阶）</a></td>
+<td style="text-align: left">Attention 算子优化（SDPA→VarLen）/ Sequence Packing 与 TND 变长注意力 / FSDP·TP·CP 分布式通信与体积分析 / VarLen+CP 协同与 TP2/FSDP2 对比</td>
+<td style="text-align: center"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/sft_training_pipeline/README.md&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">8</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/rl_training_pipeline">RL 训练系列（中阶）</a></td>
+<td style="text-align: left">FSDP→TorchTitan-NPU FSDP2 后端切换 / FSDP2·offload·TND 变长注意力核心特性 / Wordle 三步训练实践 / 后端切换总结与排查</td>
+<td style="text-align: center"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/rl_training_pipeline/README.md&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>阶段五：SFT/RL 高阶课程 🚧</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: center">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">9</td>
+<td style="text-align: left">SFT 训练系列（高阶）</td>
+<td style="text-align: left">计算图静态化与 AutoFuse 融合优化，selective AC 显存调优</td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: center">10</td>
+<td style="text-align: left">RL 训练系列（高阶）</td>
+<td style="text-align: left">性能基线搭建与瓶颈定位，FSDP2/TP/CP/PP 并行调优</td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<p><a id="mainline-inference"></a></p>
+</section>
+<section class="source-section"><h3 id="主线二-大模型推理">主线二：🧠 大模型推理</h3>
+<blockquote>
+<p>以 Qwen3 端到端推理案例为主线，理论课件 + 双模型实践双轨并行，自然贯通「跑通推理 → 发现瓶颈 → 融合优化 → 量化与算子 → 图模式调优」。</p>
+</blockquote>
+<p><strong>阶段一：<a href="#cann-basics">CANN 基础</a>（公共基础，约 2h）</strong> ✅ 已在此完成 → 直接进入本主线后续阶段</p>
+<p><strong>阶段二：初阶 — 跑通推理（约 3-4h）</strong></p>
+<p><strong>目标</strong>：在 NPU 上跑通大模型推理，建立 Baseline 并完成首次 Profiling。</p>
+<blockquote>
+<p>📖 <strong>配套课件</strong>：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/intermediate/01_llm_fundamentals.pdf">大语言模型基础</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/intermediate/02_cann_inference_repository_overview.pdf">CANN 开源推理仓库</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/intermediate/03_llm_inference_optimization_fundamentals.pdf">大模型推理优化基础</a></p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/01_chapter_intro.ipynb">章节介绍</a></td>
+<td style="text-align: left">全流程概览，知道接下来要做什么</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/01_chapter_intro.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/02_baseline_inference.ipynb">Baseline 推理</a></td>
+<td style="text-align: left">跑通 Qwen3-8B BF16 推理，感知大模型推理</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/02_baseline_inference.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/03_profiling_analysis.ipynb">Profiling 分析</a></td>
+<td style="text-align: left">对 Baseline 做 Profiling，定位 RMSNorm 等小算子链路瓶颈</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/03_profiling_analysis.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div><details>
+<summary>阶段三：中阶 — 融合优化与量化（约 4-6h）</summary>
+<p><strong>目标</strong>：走完「融合优化 → 量化 → 自定义算子接入」工程闭环。</p>
+<blockquote>
+<p>📖 <strong>配套课件</strong>：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/intermediate/04_llm_quantization_fundamentals.pdf">大模型量化基础</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/intermediate/05_profiling_and_performance_bottleneck_analysis.pdf">Profiling 与性能瓶颈定位</a></p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/04_npu_optimization.ipynb">Dense RMSNorm NPU 融合优化</a></td>
+<td style="text-align: left">切换融合开关，A/B 对比验证算子融合的性能收益</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/04_npu_optimization.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/05_quantization_qwen3_8b.ipynb">量化 Qwen3-8B 模型</a></td>
+<td style="text-align: left">AMCT 工具导出 W8A8 权重 → 量化推理 → Profiling 定位 <code>QuantBatchMatmulV3</code> 瓶颈</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/05_quantization_qwen3_8b.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">6</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/06_custom_matmul_operator_development_and_integration_with_qwen3_8b.ipynb">自定义量化算子开发并接入 Qwen3-8B</a></td>
+<td style="text-align: left">用 Ascend C 实现 <code>QmmCustom</code> → 编译 → 替换瓶颈算子 → 验证收益</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/06_custom_matmul_operator_development_and_integration_with_qwen3_8b.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 步骤 ⑥ 需要自定义算子开发能力，前置学习 <a href="#mainline-operator">主线三：Ascend C 算子开发系列</a>。至此完成推理主线核心，已具备端到端 BF16 推理调优与量化算子接入能力。</p>
+</blockquote>
+</details>
+<details>
+<summary>阶段四：高阶 — 图模式调优与高级理论（可选）</summary>
+<p><strong>目标</strong>：掌握图执行模式调优与权重预取，系统理解大模型推理高级优化技术。</p>
+<blockquote>
+<p>📖 <strong>配套课件（高级）</strong>：
+<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/01_fundamentals_of_llm_inference_optimization.pptx">01 推理优化基础</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/02_parallel_strategy_design.pptx">02 并行策略设计</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/03_core_inference_optimization_mtp_multi_stream_prefetch.pptx">03 MTP/多流/预取</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/04_llm_quantization_optimization_and_practice.pptx">04 量化优化与实践</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/05_cann_optimization_for_mainstream_inference_frameworks.pptx">05 主流框架 CANN 优化</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/06_multimodal_generation_inference_optimization.pptx">06 多模态生成推理</a> ｜ <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/slides/advance/07_model_agent_fundamentals_from_skills_to_inference_optimization.pptx">07 模型 Agent 基础</a></p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">7</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/07_npu_graph_optimization.ipynb">图模式优化：GE Graph vs NPU Graph EX</a></td>
+<td style="text-align: left">对比 eager、ge_graph 与 npugraph_ex 三种执行模式，给出图后端选择建议</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/07_npu_graph_optimization.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">8</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/08_ge_o_proj_prefetch.ipynb">GE Graph o_proj 权重预取</a></td>
+<td style="text-align: left">固定 GE 图模式，对比 o_proj 权重预取关闭/16MiB/32MiB 三组性能收益</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=tutorials/llm_inference/qwen3_8b/08_ge_o_proj_prefetch.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 更多模型与复杂部署优化实践，见 <a href="https://gitcode.com/cann/cann-recipes-infer">cann-recipes-infer</a> 完整仓库。</p>
+</blockquote>
+</details>
+<p><a id="mainline-operator"></a></p>
+</section>
+<section class="source-section"><h3 id="主线三-算子开发">主线三：⚙️ 算子开发</h3>
+<blockquote>
+<p>从「10 分钟体验算子」到系统掌握 Ascend C 编程范式，具备自定义算子开发与工程化能力。</p>
+</blockquote>
+<p><strong>阶段一：<a href="#cann-basics">CANN 基础</a>（公共基础，约 2h）</strong> ✅ 已在此完成 → 直接进入本主线后续阶段</p>
+<p><strong>阶段二：体验算子（约 2h）</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_custom_operator/first_custom_operator.ipynb">10 分钟体验自定义算子</a></td>
+<td style="text-align: left">第一个自定义算子开发，感知 Ascend C 编写与编译全流程</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=quick_start/first_custom_operator&amp;scanFilePath=quick_start/first_custom_operator/first_custom_operator.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_operator_api_call/first_operator_api_call.ipynb">10 分钟体验算子 API 调用</a></td>
+<td style="text-align: left">第一个算子调用，感知算子调用与价值</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=quick_start/first_operator_api_call&amp;scanFilePath=quick_start/first_operator_api_call/first_operator_api_call.ipynb">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div><details>
+<summary>阶段三：系统学习（约 12h）</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development_light">Ascend C 算子开发系列（Kernel 直调版）</a></td>
+<td style="text-align: left">算子基础概念、编程范式、Vector/Cube/融合算子开发与调试调优</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development_light">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>阶段四：算子开发实战</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development">Ascend C 算子开发系列（算子工程版）</a></td>
+<td style="text-align: left">工程化开发流程、开源社区贡献规范与玩法</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: left">Vector 算子开发</td>
+<td style="text-align: left">Vector 算子开发实战</td>
+<td style="text-align: left">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: center">6</td>
+<td style="text-align: left">Conv 算子开发实战</td>
+<td style="text-align: left">卷积算子开发核心概念与实践</td>
+<td style="text-align: left">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: center">7</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/MC2_fused_operator_development">MC2 融合算子实战</a></td>
+<td style="text-align: left">Matmul/Conv/通算融合等典型算子实战</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/MC2_fused_operator_development">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 <strong>进阶练习</strong>：<a href="https://cannjudge.cn" rel="noopener noreferrer nofollow" target="_blank">CANNJudge 算子题库</a> 在线刷题 → <a href="https://competition.gitcode.com/competition?type=cann">CANN 大赛专区</a> 参赛验证</p>
+</blockquote>
+</details>
+<details>
+<summary>阶段五：算子性能优化（进阶）</summary>
+<p><strong>目标</strong>：通过典型算子实践，掌握从性能基线、瓶颈分析到分步优化与精度校验的调优流程。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">类别</th>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">样例链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">Vector 类</td>
+<td style="text-align: center">8</td>
+<td style="text-align: left">Vector 算子优化</td>
+<td style="text-align: left">逐元素、归约、归一化与路由算子的 RegBase 改写、融合、多核并行及访存优化</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/gelu_eltwise_regbase_story">GELU</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/softmax_regbase_story">Softmax</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/rms_norm_quant_story">RmsNormQuant</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/kv_rms_norm_rope_cache_story">KvRmsNormRoPE</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/moe_init_routing_story">MoeInitRouting</a></td>
+</tr>
+<tr>
+<td style="text-align: left">Cube 类</td>
+<td style="text-align: center">9</td>
+<td style="text-align: left">矩阵乘算子优化</td>
+<td style="text-align: left">矩阵乘与分组矩阵乘的 Tiling、数据搬运、尾轮负载均衡及低精度量化</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/matmul_story">MatMul</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/grouped_matmul_story">Grouped MatMul</a></td>
+</tr>
+<tr>
+<td style="text-align: left">CV 融合类</td>
+<td style="text-align: center">10</td>
+<td style="text-align: left">Cube/Vector 融合优化</td>
+<td style="text-align: left">极简 FA 的 CV 核融合优化实践、全量化 FA 实现、注意力残差的模板选择与两阶段流水，以及 KDA 的 Chunkwise 并行</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/flash_attn_lite_story">FlashAttnLite</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/full_quant_fused_infer_attention_score_story">FIA</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/block_attn_res_story">AttnRes</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/kimi_delta_attn_lite_story">Kimi Delta Attention Lite</a></td>
+</tr>
+<tr>
+<td style="text-align: left">通算融合类</td>
+<td style="text-align: center">11</td>
+<td style="text-align: left">通信与计算融合优化</td>
+<td style="text-align: left">MoE Token 分发与合并中的通信、计算融合及性能优化</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/moe_dispatch_and_combine_story">MoE Dispatch &amp; Combine</a></td>
+</tr>
+<tr>
+<td style="text-align: left">专题类</td>
+<td style="text-align: center">12</td>
+<td style="text-align: left">SIMD VF、SIMT 与 Scalar 优化专题</td>
+<td style="text-align: left">SIMD VF 广播、归约与数据变换；SIMT 不规则访存与并行计数；ScalarBound 诊断及标量开销优化</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/simd_vf_story">SIMD VF</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/vf_data_transform_story">VF 数据变换</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/simt_scatter_story">SIMT Scatter</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/simt_histogram_story">SIMT Histogram</a> / <a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance/scalar_story">Scalar</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 <strong>实践入口</strong>：<a href="https://gitcode.com/cann/cann-samples">cann-samples</a> 是 CANN 算子实战样例与性能调优知识库，提供算子实现、优化讲解及编译运行与精度校验示例，可从上表或<a href="https://gitcode.com/cann/cann-samples/tree/master/Samples/2_Performance">性能优化样例总览</a>选择学习内容。</p>
+<p><strong>学习方式</strong>：</p>
+<ol>
+<li>克隆仓库，按仓库首页的环境部署指南配置 CANN 与依赖。</li>
+<li>按所选样例 README 在本地编译执行，完成精度校验并记录性能基线。</li>
+<li>结合优化文档阅读源码；有分步版本的样例可逐版对比，理解各项优化的作用。</li>
+<li>尝试修改 Tiling、数据搬运或流水安排，重新编译、校验精度并对比性能。</li>
+</ol>
+<p>适用芯片、CANN 版本和运行命令以对应样例说明为准。</p>
+</blockquote>
+</details>
+<p><a id="mainline-appdev"></a></p>
+</section>
+<section class="source-section"><h3 id="主线四-应用开发离线推理">主线四：📱 应用开发（离线推理）</h3>
+<blockquote>
+<p>以 YOLOv13 目标检测为例，走通 ONNX 导出 → ATC 离线编译 → ACL 推理 → 性能调优全流程，掌握昇腾应用开发核心能力。</p>
+</blockquote>
+<p><strong>阶段一：<a href="#cann-basics">CANN 基础</a>（公共基础，约 2h）</strong> ✅ 已在此完成 → 直接进入本主线后续阶段</p>
+<p><strong>阶段二：YOLOv13 离线推理实战（约 4h）</strong></p>
+<p><strong>目标</strong>：在昇腾 NPU 上完成 YOLOv13 端到端离线推理，掌握 ATC 模型编译与 ACL 推理应用开发。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/01_chapter_intro.ipynb">章节介绍</a></td>
+<td style="text-align: left">学习目标、流程和目录说明</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=reference_practice/yolov13_offline_inference/01_chapter_intro.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/02_model_prepare.ipynb">环境准备与模型转换</a></td>
+<td style="text-align: left">准备 YOLOv13、导出 ONNX 并使用 ATC 生成 OM</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=reference_practice/yolov13_offline_inference/02_model_prepare.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/03_acl_offline_inference.ipynb">ACL 离线推理</a></td>
+<td style="text-align: left">编译并运行 ACL C++ 推理程序</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=reference_practice/yolov13_offline_inference/03_acl_offline_inference.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/04_result_and_tuning.ipynb">结果处理与性能调优</a></td>
+<td style="text-align: left">后处理、可视化和多流参数调优</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=reference_practice/yolov13_offline_inference/04_result_and_tuning.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/05_chapter_practice.ipynb">章节练习</a></td>
+<td style="text-align: left">巩固模型转换、推理和调优知识</td>
+<td style="text-align: left"><a href="https://gitcode.com/org/cann/cannlab/environment?folder=/mnt/workspace/gitCode/cann/cann-learning-hub&amp;autoverify=1&amp;repo_url=https://gitcode.com/cann/cann-learning-hub.git&amp;file=reference_practice/yolov13_offline_inference/05_chapter_practice.ipynb&amp;repo_name=cann/cann-learning-hub">open in CANNLab</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 应用开发系列更多课程（GE/ATC/模型转换全流程）持续建设中。</p>
+</blockquote>
+<p><a id="mainline-recsys"></a></p>
+</section>
+<section class="source-section"><h3 id="主线五-推荐系统">主线五：📊 推荐系统</h3>
+<blockquote>
+<p>基于 Torch-RecHub 跑通推荐系统全链路：排序 → 召回 → 多任务 → 工程化 → NPU 推理优化。</p>
+</blockquote>
+<p><strong>阶段一：<a href="#cann-basics">CANN 基础</a>（公共基础，约 2h）</strong> ✅ 已在此完成 → 直接进入本主线后续阶段</p>
+<p><strong>阶段二：跑通 CTR（约 2h）</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/00_QuickStart_CTR_DeepFM.ipynb">QuickStart：CTR 预测（DeepFM）</a></td>
+<td style="text-align: left">DataFrame → Feature → DeepFM → CTRTrainer → AUC</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/00_QuickStart_CTR_DeepFM.ipynb">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div><details>
+<summary>阶段三：进阶建模（约 4h）</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/01_Ranking_DIN.ipynb">序列兴趣建模：DIN</a></td>
+<td style="text-align: left">历史行为序列、SequenceFeature 与 DIN attention</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/01_Ranking_DIN.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/02_Matching_DSSM.ipynb">匹配/召回：DSSM + Annoy</a></td>
+<td style="text-align: left">双塔召回与向量 Top-K 检索</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/02_Matching_DSSM.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/03_MultiTask_MMOE.ipynb">多任务学习：MMOE</a></td>
+<td style="text-align: left">多目标建模、expert、gate 与 tower</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/03_MultiTask_MMOE.ipynb">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>阶段四：工程化（约 2h）</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/04_Experiment_Tracking_Light.ipynb">实验跟踪：WandB / SwanLab / TensorBoardX</a></td>
+<td style="text-align: left">WandB / SwanLab / TensorBoardX 轻量实验跟踪</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/04_Experiment_Tracking_Light.ipynb">在线体验</a></td>
+</tr>
+<tr>
+<td style="text-align: center">6</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/05_Model_Export_and_Serving.ipynb">模型导出与推理验证：ONNX</a></td>
+<td style="text-align: left">ONNX 导出、ONNXRuntime 推理验证和量化入口</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/05_Model_Export_and_Serving.ipynb">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>阶段五：NPU 推理优化（约 1h）</summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">序号</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">课程内容</th>
+<th style="text-align: left">运行方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">7</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/10_NPU_DIN_Inference_MultiInstance_CoreControl.ipynb">DIN 多进程控核推理</a></td>
+<td style="text-align: left">多进程（spawn Pool）运行 DIN 推理，通过 TorchAir <code>ge.aicoreNum</code> 整图控核，含 1000 请求基准与 latency 统计</td>
+<td style="text-align: left"><a href="https://ai.gitcode.com/user/username/notebookcann?repoUrl=https://gitcode.com/cann/cann-learning-hub.git&amp;ttl=120&amp;diskSize=40Gi&amp;path=contrib/tutorials/torch-rechub&amp;scanFilePath=contrib/tutorials/torch-rechub/10_NPU_DIN_Inference_MultiInstance_CoreControl.ipynb">在线体验</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<blockquote>
+<p>💡 <strong>推荐学习路径</strong>：选方向 → 看教程 → CANNJudge 刷题 / CANNLab 实验 → 参赛验证 → PR 到 contrib/</p>
+</blockquote>
+</section>
+<section class="source-section"><h2 id="完整课程体系查阅用">📖 完整课程体系（查阅用）</h2>
+<blockquote>
+<p>以下为课程体系的完整索引，适合有明确学习目标、需要定位具体课程的开发者。初次学习请从上方「从这里开始」入手。</p>
+</blockquote>
+<h3 id="全栈课程体系地图">全栈课程体系地图</h3>
+<p>按 <strong>技术领域 × 难度等级</strong> 双维度组织（11 个技术领域 × 3 级难度），高手可直接跳过入门内容，精准定位高阶课程。</p>
+<div class="table-wrap"><table>
+<tbody><tr>
+<th>技术领域</th><th>初级课程</th><th>中级课程</th><th>高级课程</th>
+</tr>
+<tr>
+<td>⚙️ 算子开发 · Ascend C</td>
+<td colspan="3" align="center"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development_light">Ascend C算子开发系列（Kernel 直调版）</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development">Ascend C算子开发系列(工程版)</a> · Ascend C算子开发Ascend 950系列 🚧</td>
+</tr>
+<tr>
+<td>⚙️ 算子开发 · PyASC</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pyasc_operator_development">PyASC 初级（概述/核函数基础）</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pyasc_operator_development">PyASC 中级（Vector/Matmul）</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pyasc_operator_development">PyASC 高级（融合/调优）</a></td>
+</tr>
+<tr>
+<td>⚙️ 算子开发 · PyPTO</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pypto_development">PyPTO 初级（概述/基础/实践）</a></td>
+<td colspan="2" align="center"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pypto_development">PyPTO 进阶（中高级算子实践）</a></td>
+</tr>
+<tr>
+<td>⚙️ 算子开发实战（Ascend 950）</td>
+<td>Vector 🚧</td>
+<td>Matmul 🚧 · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/conv_operator_development">Conv 实战</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/MC2_fused_operator_development">MC2 融合算子</a> · MoE 🚧 · FA 🚧</td>
+</tr>
+<tr>
+<td>🧠 大模型推理</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference/slides/intermediate">大模型推理初级</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_1.7B">Qwen3_1.7B 实践</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference/slides/intermediate">大模型推理中级</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference/qwen3_8b">Qwen3-8B 实践</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference/slides/advance">大模型推理高级</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/reference_practice/model_inference_optimization/sana_video">Sana-Video</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/reference_practice/pytorch_online_inference_operator_optimize">PyTorch 算子优化</a></td>
+</tr>
+<tr>
+<td>🏋️ 大模型训练</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/sft_training_pipeline">SFT 初阶</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/rl_training_pipeline">RL 初阶</a> · <a href="#swanlab">SwanLab 微调</a></td>
+<td colspan="2" align="center"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/sft_training_pipeline">SFT 进阶</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/rl_training_pipeline">RL 进阶</a></td>
+</tr>
+<tr>
+<td>📊 推荐系统</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/00_QuickStart_CTR_DeepFM.ipynb">CTR 预测</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/01_Ranking_DIN.ipynb">DIN</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/02_Matching_DSSM.ipynb">DSSM</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/03_MultiTask_MMOE.ipynb">MMOE</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/04_Experiment_Tracking_Light.ipynb">实验跟踪</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/05_Model_Export_and_Serving.ipynb">模型导出</a></td>
+<td colspan="2" align="center"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/10_NPU_DIN_Inference_MultiInstance_CoreControl.ipynb">DIN 多进程控核推理</a></td>
+</tr>
+<tr>
+<td>🔗 图框架</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ge_development">GE 图引擎</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/TorchAir_development">TorchAir</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/autofusion_development">AutoFusion</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ge_development">GE 图编译与优化</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/TorchAir_development/README.md">TorchAir 进阶</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/autofusion_development/02_autofusion_principles">AutoFusion 融合原理</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ge_development/05_practice_and_troubleshooting">GE 实践与问题定位</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/TorchAir_development/04_advanced_features">TorchAir 实践</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/autofusion_development/03_practice_and_debugging">AutoFusion 实战</a></td>
+</tr>
+<tr>
+<td>📡 通信</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/hixl_development">HiXL 单边通信</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/hccl_development">集合通信</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/hixl_development">HiXL 传输优化</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/hccl_development">HCCL 算子开发</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hccl_development/slides/07_hccl_aiv_engine.pdf">HCCL AIV 引擎算子开发</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hccl_development/slides/08_troubleshooting_hccl_for_ai_clusters.pdf">AI 大集群问题定位</a></td>
+</tr>
+<tr>
+<td>📱 应用开发</td>
+<td colspan="3" align="center"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/reference_practice/yolov13_offline_inference">YOLOv13 离线推理</a></td>
+</tr>
+<tr>
+<td><a id="mainline-ai-appdev"></a>🧩 AI 应用开发</td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/reference_practice/ai_application_development">AI 应用开发实践</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/ai_application_development/rag_knowledge_base.ipynb">RAG 知识库问答</a><br><sub>文档处理、向量检索、本地模型服务、来源引用与问答验证</sub></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>🤖 CANNBot</td>
+<td><a href="https://gitcode.com/cann/cannbot-skills">CANNBot技能仓</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/README.md"> CANNBot零基础</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/README.md"> CANNBot中级</a></td>
+<td><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/README.md"> CANNBot高级</a></td>
+</tr>
+</tbody></table>
+</div><p><a id="university"></a></p>
+</section>
+<section class="source-section"><h2 id="高校教学方案专区供高校开课参考建设中">🏫 高校教学方案专区（供高校开课参考，建设中）</h2>
+<blockquote>
+<p>以<strong>原子课程为基础积木</strong>（技术栈四层 × 难度三级，135 门），支撑<strong>启航营</strong>、<strong>传统学科课程</strong>、<strong>CANN 新增课程</strong>、<strong>CANN 教材</strong>四大课程形态，覆盖从短期集训到高校学分课、从入门到专家的完整学习路径。详见 <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/README.md">CANN 课程体系总体规划</a>。</p>
+</blockquote>
+<details>
+<summary> CANN 课程总览 </summary>
+<pre><code class="language-text">┌─────────────────────────────────────────────────────────────────────────┐
+│                        原子课程（00）—— 体系基础                            │
+│              135 门积木（技术栈四层 × 难度三级）                            │
+│  ┌────────────┬────────────┬────────────┬────────────────────────────┐  │
+│  │  L1 应用层  │  L2 框架层  │  L3 加速库  │  L4 编程·编译·NPU 架构     │  │
+│  │   (44门)    │   (29门)    │   (13门)    │        (49门)              │  │
+│  └────────────┴────────────┴────────────┴────────────────────────────┘  │
+└───────────────────────────────┬─────────────────────────────────────────┘
+                                 │ 支撑（节选/教学化/拼装/系统化）
+          ┌──────────────────────┼──────────────────────┐
+          │                      │                      │
+┌─────────▼──────────┐ ┌───────▼──────────┐ ┌────────▼───────────┐
+│   启航营（01）       │ │ 传统学科课程（02）  │ │  CANN 新增课程（03）  │
+│   原子课程节选        │ │  原子课程教学化      │ │   原子课程拼装        │
+│ ┌────────────────┐  │ │ ┌────────────────┐ │ │ ┌────────────────┐  │
+│ │ 两天营 ≈14h     │  │ │ │ 计组外挂 6–8h   │ │ │ │ AI计算架构 64h  │  │
+│ │ 两周营 ≈60h     │  │ │ │ 体系结构三幕剧   │ │ │ │ 数据智能 32h    │  │
+│ │ 结业：add_rms_  │  │ │ │ 12 学科清单      │ │ │ │ 加速计算 32-48h │  │
+│ │   norm→双算子   │  │ │ └────────────────┘ │ │ │ 数据科学 24-32h │  │
+│ └────────────────┘  │ └────────────────────┘ │ │ 深度学习 32-48h │  │
+└─────────────────────┘                          │ │ 生成式 AI 32h   │  │
+                                                  │ └────────────────┘  │
+                                                  └─────────────────────┘
+                                 │
+                                 │ 系统化
+                  ┌──────────────▼──────────────┐
+                  │       教材区（04）             │
+                  │     原子课程系统化             │
+                  │ ┌──────────────────────────┐ │
+                  │ │ 教材一：Ascend C 并行程序设计│ │
+                  │ │  （↔课程三/启航营算子部分） │ │
+                  │ ├──────────────────────────┤ │
+                  │ │ 教材二：人工智能芯片与系统   │ │
+                  │ │  （↔体系结构三幕剧/课程一）  │ │
+                  │ └──────────────────────────┘ │
+                  └─────────────────────────────┘
+</code></pre>
+</details>
+<h3 id="cann-课程架构总览">CANN 课程架构总览</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">分区</th>
+<th style="text-align: left">定位</th>
+<th style="text-align: left">与原子课程关系</th>
+<th style="text-align: left">规模</th>
+<th style="text-align: left">详细大纲</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>00 原子课程</strong></td>
+<td style="text-align: left"><strong>基础积木</strong>：技术栈四层 × 难度三级的原子粒度课程</td>
+<td style="text-align: left">体系基础</td>
+<td style="text-align: left">135 门</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/00_atomic_courses/README.md">原子课程总纲</a></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>01 启航营</strong></td>
+<td style="text-align: left">短期集训：两天/两周两营递进，快速入门与实战</td>
+<td style="text-align: left">原子课程<strong>节选</strong></td>
+<td style="text-align: left">两天营 ≈14h / 两周营 ≈60h</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/01_bootcamp/README.md">启航营课程总览</a></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>02 传统学科课程</strong></td>
+<td style="text-align: left">学科融入：CANN 知识融入大学传统学分课程，换芯不换课</td>
+<td style="text-align: left">原子课程<strong>教学化</strong></td>
+<td style="text-align: left">计组 + 体系结构 + 12 学科</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/02_traditional_courses/README.md">传统学科课程目录</a></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>03 新增课程</strong></td>
+<td style="text-align: left">高校学分课：六门系统课程</td>
+<td style="text-align: left">原子课程<strong>拼装</strong></td>
+<td style="text-align: left">已排课 2 + 规划 4</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/README.md">CANN 新增课程汇总</a></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>04 教材区</strong></td>
+<td style="text-align: left">经典书籍：双教材支撑课程体系</td>
+<td style="text-align: left">原子课程<strong>系统化</strong></td>
+<td style="text-align: left">教材一 + 教材二</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/04_new_books/README.md">CANN 教材区概览</a></td>
+</tr>
+</tbody>
+</table>
+</div><details>
+<summary>00 原子课程——体系基础（135 门）</summary>
+<blockquote>
+<p>按技术栈四层（应用层/AI 框架层/加速库/编程编译 NPU 架构）× 难度三级（初级/中级/高级）组织，每门原子课可单独支撑一节课（45–90 分钟），是启航营、传统学科课程、新增课程、教材的共同内容来源。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">技术栈层</th>
+<th style="text-align: center">初级</th>
+<th style="text-align: center">中级</th>
+<th style="text-align: center">高级</th>
+<th style="text-align: center">小计</th>
+<th style="text-align: left">涵盖方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>L1 应用层</strong></td>
+<td style="text-align: center">8</td>
+<td style="text-align: center">17</td>
+<td style="text-align: center">19</td>
+<td style="text-align: center"><strong>44</strong></td>
+<td style="text-align: left">深度学习 / 计算机视觉 / 生成式 AI / 大语言模型 / 科学计算 / 推荐系统</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>L2 框架层</strong></td>
+<td style="text-align: center">7</td>
+<td style="text-align: center">11</td>
+<td style="text-align: center">11</td>
+<td style="text-align: center"><strong>29</strong></td>
+<td style="text-align: left">框架基础 / 训练技术 / 推理技术 / 图框架 / 进阶主题</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>L3 加速库</strong></td>
+<td style="text-align: center">3</td>
+<td style="text-align: center">8</td>
+<td style="text-align: center">2</td>
+<td style="text-align: center"><strong>13</strong></td>
+<td style="text-align: left">Aclnn / GE / 通信库 / C++ 并行算法 / Python 加速库</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>L4 编程·编译·NPU 架构</strong></td>
+<td style="text-align: center">5</td>
+<td style="text-align: center">30</td>
+<td style="text-align: center">14</td>
+<td style="text-align: center"><strong>49</strong></td>
+<td style="text-align: left">Ascend C / PyPTO / TileLang / PyAsc / CANNBot / NPU 架构</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>合计</strong></td>
+<td style="text-align: center"><strong>23</strong></td>
+<td style="text-align: center"><strong>66</strong></td>
+<td style="text-align: center"><strong>46</strong></td>
+<td style="text-align: center"><strong>135</strong></td>
+<td style="text-align: left">—</td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>📖 详细大纲：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/00_atomic_courses/README.md">原子课程总纲</a></p>
+</blockquote>
+</details>
+<details>
+<summary>01 启航营——短期集训（两天营 + 两周营）</summary>
+<blockquote>
+<p>面向 CANN 算子开发入门者的集中式训练营，理论与实践 1:1 配对，以真实算子开发为主线，结业即可具备 NPU 算子开发与集成能力。两营递进，结业算子同源。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">维度</th>
+<th style="text-align: left">两天营</th>
+<th style="text-align: left">两周营</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>总学时</strong></td>
+<td style="text-align: left">2 天 ≈ 14h（理论 7 + 实践 7）</td>
+<td style="text-align: left">10 个工作日 ≈ 60h（理论 20 + 实践 40）</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>结业算子</strong></td>
+<td style="text-align: left"><code>add_rms_norm</code>（矢量单算子）</td>
+<td style="text-align: left"><code>add_rms_norm</code> + <code>quant_matmul</code>（双算子）+ PyTorch 集成</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>讲数</strong></td>
+<td style="text-align: left">7 讲</td>
+<td style="text-align: left">13 讲</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>课程大纲</strong></td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/01_bootcamp/syllabus_two_days_bootcamp.md">两天营大纲</a></td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/01_bootcamp/syllabus_two_weeks_bootcamp.md">两周营大纲</a></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>讲义目录</strong></td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/standard_course/01_bootcamp/two_days_course/">two_days_course/</a></td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/standard_course/01_bootcamp/two_weeks_course/">two_weeks_course/</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>02 传统学科课程——换芯不换课</summary>
+<blockquote>
+<p>CANN/昇腾知识融入大学传统学分课程，核心原则：<strong>换芯不换课</strong>——传统课程大纲主体不动，CANN 以「单元包 / 对照案例 / 实验替换」外挂式融入，教师零改造或低改造即可采用。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">传统课程</th>
+<th style="text-align: left">融入模式</th>
+<th style="text-align: left">交付形态</th>
+<th style="text-align: left">文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>计算机组成原理</strong>（本科大二必修）</td>
+<td style="text-align: left">M2/M5 轻量融入</td>
+<td style="text-align: left">外挂式 6–8 学时</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/02_traditional_courses/computer_organization.md">computer_organization.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>计算机体系结构</strong>（本科高年级/研究生）</td>
+<td style="text-align: left">M2/M5 主讲融入</td>
+<td style="text-align: left">"AI 时代的体系结构挑战"三幕剧（3 次主讲课 × 135 分钟）</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/02_traditional_courses/computer_architecture.md">computer_architecture.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left">其他 12 学科 15 门课（并行计算/DL 系统/图像处理/编译/OS/嵌入式/数值/计算科学/数据科学/HPC 等）</td>
+<td style="text-align: left">M2–M4</td>
+<td style="text-align: left">方向性规划</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/02_traditional_courses/traditional_course_integration_plan.md">融入计划</a></td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>📖 详细大纲：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/02_traditional_courses/README.md">传统学科课程目录</a></p>
+</blockquote>
+</details>
+<details>
+<summary>03 新增课程大纲（六门高校学分课）</summary>
+<blockquote>
+<p>由原子课程拼装而成，覆盖从 AI 计算架构到行业应用的完整学习路径。每门课程单独成文，关注前后章节连续性；除大作业外每章节配双平台练习。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: center">#</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: left">学时</th>
+<th style="text-align: center">状态</th>
+<th style="text-align: left">课程大纲</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center">一</td>
+<td style="text-align: left">AI 计算与神经网络计算架构实践</td>
+<td style="text-align: left">64（16 周）</td>
+<td style="text-align: center">✅ 已排课</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/ai_computing_and_neural_network_architecture_practice/syllabus.md">课程大纲</a></td>
+</tr>
+<tr>
+<td style="text-align: center">二</td>
+<td style="text-align: left">昇腾 AI 与复杂系统数据智能</td>
+<td style="text-align: left">≈32（16 周）</td>
+<td style="text-align: center">✅ 已排课</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/ascend_ai_and_complex_system_data_intelligence/syllabus.md">课程大纲</a></td>
+</tr>
+<tr>
+<td style="text-align: center">三</td>
+<td style="text-align: left">加速计算</td>
+<td style="text-align: left">32–48</td>
+<td style="text-align: center">🆕 规划</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/accelerated_computing.md">课程大纲</a></td>
+</tr>
+<tr>
+<td style="text-align: center">四</td>
+<td style="text-align: left">数据科学</td>
+<td style="text-align: left">24–32</td>
+<td style="text-align: center">🆕 规划</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/data_science.md">课程大纲</a></td>
+</tr>
+<tr>
+<td style="text-align: center">五</td>
+<td style="text-align: left">深度学习</td>
+<td style="text-align: left">32–48</td>
+<td style="text-align: center">🆕 规划</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/deep_learning.md">课程大纲</a></td>
+</tr>
+<tr>
+<td style="text-align: center">六</td>
+<td style="text-align: left">生成式 AI</td>
+<td style="text-align: left">32</td>
+<td style="text-align: center">🆕 规划</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/03_new_courses/generative_ai.md">课程大纲</a></td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<details>
+<summary>04 教材区——双教材支撑</summary>
+<blockquote>
+<p>双教材与课程形成「教材↔课程」双载体形态，将原子课程内容按教材体例系统化组织。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">教材</th>
+<th style="text-align: left">定位</th>
+<th style="text-align: center">状态</th>
+<th style="text-align: left">对应课程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><strong>《Ascend C 并行程序设计》</strong></td>
+<td style="text-align: left">对标 PMPP——昇腾算子开发权威教材</td>
+<td style="text-align: center">✅ 已完成初稿</td>
+<td style="text-align: left">课程三（加速计算）、启航营算子部分</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>《人工智能芯片与系统》</strong></td>
+<td style="text-align: left">对标 AI Accelerators——NPU 架构与系统教材</td>
+<td style="text-align: center">🆕 规划</td>
+<td style="text-align: left">传统学科体系结构三幕剧、课程一架构部分</td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>📖 详细大纲：<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/standard_course/04_new_books/README.md">教材区概览</a></p>
+</blockquote>
+</details>
+<p><a id="course-collaboration"></a></p>
+</section>
+<section class="source-section"><h2 id="课程共建专区">🤝 课程共建专区</h2>
+<details>
+<summary>展开查看课程共建专区（13 门高校共建课程）</summary>
+<blockquote>
+<p>基于 CANN 的计算机系统核心课程系列，由高校教师与 CANN 社区共建。每门课程在本仓 <code>contrib/tutorials/</code> 下提供实践 Notebook，配套理论课程可<a href="https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&amp;__biz=MjM5OTkzMjM1Mw==&amp;scene=2&amp;album_id=4693832807398162433&amp;count=3#wechat_redirect" rel="noopener noreferrer nofollow" target="_blank">点击查看</a>。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">课程大类</th>
+<th style="text-align: left">贡献学校</th>
+<th style="text-align: left">课程</th>
+<th style="text-align: center">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">计算机组成原理与体系结构</td>
+<td style="text-align: left">华中科技大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/computer_composition_and_architecture">计算机组成原理与体系结构</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">面向昇腾智算平台的智能计算系统</td>
+<td style="text-align: left">东南大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/qwen_ops">面向国产智算平台的智能计算系统（Qwen 算子开发）</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">基于昇腾处理器的深度学习实验</td>
+<td style="text-align: left">哈尔滨工业大学（威海）</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/ascend_ai_lab">基于昇腾处理器的深度学习实验</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">《人工智能安全》项目化实践案例</td>
+<td style="text-align: left">南京信息工程大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/ai_security_nuist">《人工智能安全》项目化实践案例</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">昇腾 AI 端云协同与多模态综合实验</td>
+<td style="text-align: left">上海交通大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/ascend_multimodal_practice">昇腾 AI 端云协同与多模态综合实验</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">智能计算系统</td>
+<td style="text-align: left">北京航空航天大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/machine_learning_system">智能计算系统（机器学习系统）</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">智能计算系统</td>
+<td style="text-align: left">华南理工大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/ai_computing_embedded_system">嵌入式智能计算课程</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">人工智能开源通识</td>
+<td style="text-align: left">华东师范大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/operator_development_and_application">算子开发与应用</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">并行计算</td>
+<td style="text-align: left">北京师范大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/parallel_programming_principles_and_practice">并行编程原理与实践</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">并行计算</td>
+<td style="text-align: left">深圳职业技术大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/parallel_computing_practices_on_kunpeng_ascend">并行计算：基于鲲鹏与昇腾的实践</a></td>
+<td style="text-align: center">✅ 已迁移</td>
+</tr>
+<tr>
+<td style="text-align: left">编译原理</td>
+<td style="text-align: left">哈尔滨工业大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/pyasc_compiler_development">PyAsc 编译原理课程</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">数据结构与并行算法</td>
+<td style="text-align: left">中国科学技术大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/data_structures_compute">数据结构与算法设计（计算实践）</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+<tr>
+<td style="text-align: left">数据结构与并行算法</td>
+<td style="text-align: left">北京林业大学</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/data_structure_for_hpc">高性能计算数据结构课程</a></td>
+<td style="text-align: center">✅ 已发布</td>
+</tr>
+</tbody>
+</table>
+</div></details>
+<p><a id="competition"></a></p>
+<details>
+<summary>🏆 赛事备考专区</summary>
+<blockquote>
+<p>按赛事分类聚合所有相关内容，直接匹配赛事考点，选手无需从通用课程中自行筛选。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">赛事</th>
+<th style="text-align: left">赛事说明</th>
+<th style="text-align: left">备赛资源</th>
+<th style="text-align: left">赛事权益</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><a href="https://cannjudge.cn" rel="noopener noreferrer nofollow" target="_blank"><strong>CANNJudge 算子题库</strong></a></td>
+<td style="text-align: left">开放题库，Ascend C 算子编程在线刷题，实时评测；含历届算子赛真题</td>
+<td style="text-align: left"><a href="https://cannjudge.cn" rel="noopener noreferrer nofollow" target="_blank">算子开发练习</a> → 在线刷题<br><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development_light">Ascend C 算子开发系列</a> → 前置课程<br><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/MC2_fused_operator_development">MC2 融合算子实战</a> → 高阶练习</td>
+<td style="text-align: left">实时评测与排名等</td>
+</tr>
+<tr>
+<td style="text-align: left"><a href="https://competition.gitcode.com/competition?type=cann"><strong>CANN 大赛专区</strong></a></td>
+<td style="text-align: left">算子天梯赛 / 校园赛等各种大赛</td>
+<td style="text-align: left"><a href="https://competition.gitcode.com/competition?type=cann">大赛报名入口</a> → 报名与赛程<br><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/skills">skills 目录</a> → 竞赛提交技能与算子工程生成</td>
+<td style="text-align: left">获奖权益、人才库推荐等</td>
+</tr>
+</tbody>
+</table>
+</div><p><strong>备赛建议路径：</strong></p>
+<ol>
+<li><strong>前置学习</strong>：完成阶段一（公共基础）+ 阶段二</li>
+<li><strong>专项练习</strong>：在 <a href="https://cannjudge.cn" rel="noopener noreferrer nofollow" target="_blank">CANNJudge</a> 按考点分类刷题</li>
+<li><strong>高阶提升</strong>：学习 <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development">Ascend C 算子开发系列（算子工程版）</a></li>
+<li><strong>赛前集训</strong>：关注大赛专区公告，参加赛前培训直播</li>
+<li><strong>参赛提交</strong>：使用 <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/skills">skills/cannjudge-submit</a> 快速提交</li>
+</ol>
+</details>
+<p><a id="certification"></a></p>
+<details>
+<summary>📜 等级认证学习路径（建设中）</summary>
+<blockquote>
+<p>对应 AI Infra 工程师初/中/高三级认证体系。通识课程 + 场景方向（推理 / 训练 / 推荐 / 应用开发 / 算子 5 选 1），明确"考什么、学什么"。</p>
+</blockquote>
+</details>
+<p><a id="swanlab"></a></p>
+<details>
+<summary>🤝 SwanLab 共建案例</summary>
+<blockquote>
+<p>与 <a href="https://swanlab.cn" rel="noopener noreferrer nofollow" target="_blank">SwanLab</a> 合作共建的大模型训练实战案例，正在从 SwanLab 平台迁移至本仓 <code>contrib/tutorials/swanlab_examples/</code> 目录下。</p>
+</blockquote>
+<p><strong>适合人群</strong>：想在 NPU 上做模型微调的开发者 · 关注训练过程可视化的用户 · 医学/语音/多模态领域开发者</p>
+<p><strong>特色</strong>：每个案例均配套 SwanLab 训练可视化（loss/metrics 曲线、实验对比），迁移完成后可在 CANNLab 环境直接运行。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">类别</th>
+<th style="text-align: left">案例</th>
+<th style="text-align: left">简介</th>
+<th style="text-align: left">原始文档</th>
+<th style="text-align: center">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">深度学习入门</td>
+<td style="text-align: left">MNIST 手写数字识别</td>
+<td style="text-align: left">NPU 上 CNN 手写数字识别入门</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/swanlab_examples/mnist">查看</a></td>
+<td style="text-align: center">✅ 已上线</td>
+</tr>
+<tr>
+<td style="text-align: left">监督微调</td>
+<td style="text-align: left">数学解题模型微调</td>
+<td style="text-align: left">Qwen2.5-0.5B LoRA 数学解题微调实战</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/swanlab_examples/math_solver_qwen2.5_lora">查看</a></td>
+<td style="text-align: center">✅ 已上线</td>
+</tr>
+<tr>
+<td style="text-align: left">监督微调</td>
+<td style="text-align: left">医学模型微调</td>
+<td style="text-align: left">Qwen3 医学领域 SFT 实战</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/swanlab_examples/qwen3_medical_sft">查看</a> · <a href="https://docs.swanlab.cn/course/llm_train_course/03-sft/4.qwen3-medical-finetune/" rel="noopener noreferrer nofollow" target="_blank">原文</a></td>
+<td style="text-align: center">✅ 已上线</td>
+</tr>
+<tr>
+<td style="text-align: left">监督微调</td>
+<td style="text-align: left">其他框架微调——ms-swift</td>
+<td style="text-align: left">使用 ms-swift 框架进行微调</td>
+<td style="text-align: left"><a href="https://docs.swanlab.cn/course/llm_train_course/03-sft/8.other_frameworks/ms-swift.html" rel="noopener noreferrer nofollow" target="_blank">文档</a></td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: left">多模态</td>
+<td style="text-align: left">Qwen3-smolVLM 模型拼接微调</td>
+<td style="text-align: left">多模态模型拼接微调实战</td>
+<td style="text-align: left"><a href="https://docs.swanlab.cn/course/llm_train_course/06-multillm/2.qwen3_smolvlm_muxi/" rel="noopener noreferrer nofollow" target="_blank">文档</a></td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+<tr>
+<td style="text-align: left">音频</td>
+<td style="text-align: left">CosyVoice 微调派蒙语音</td>
+<td style="text-align: left">语音模型微调实战</td>
+<td style="text-align: left"><a href="https://docs.swanlab.cn/course/llm_train_course/07-audio/1.cosyvoice-sft/" rel="noopener noreferrer nofollow" target="_blank">文档</a></td>
+<td style="text-align: center">🚧 建设中</td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 案例持续迁移中，完成后将在 CANNLab 环境提供在线体验。</p>
+</blockquote>
+</details>
+</section>
+<section class="source-section"><h2 id="配套生态">🔗 配套生态</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left"></th>
+<th style="text-align: left">平台</th>
+<th style="text-align: left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">📖 <strong>学</strong></td>
+<td style="text-align: left"><strong>cann-learning-hub</strong>（本仓）</td>
+<td style="text-align: left">系列教程 + 快速上手 + 参考实践 + 技术博客</td>
+</tr>
+<tr>
+<td style="text-align: left">🏋️ <strong>练</strong></td>
+<td style="text-align: left"><strong><a href="https://cannjudge.cn" rel="noopener noreferrer nofollow" target="_blank">CANNJudge</a></strong></td>
+<td style="text-align: left">开放题库，Ascend C 算子编程在线刷题，实时评测</td>
+</tr>
+<tr>
+<td style="text-align: left">🔬 <strong>练</strong></td>
+<td style="text-align: left"><strong><a href="https://gitcode.com/org/cann/cannlab">CANNLab</a></strong></td>
+<td style="text-align: left">任意 CANN 代码仓一键启动 NPU 环境（初始 100 小时，积分可兑换时长）</td>
+</tr>
+<tr>
+<td style="text-align: left">🏆 <strong>赛</strong></td>
+<td style="text-align: left"><strong><a href="https://competition.gitcode.com/competition?type=cann">CANN 大赛专区</a></strong></td>
+<td style="text-align: left">官方/社区大赛报名入口</td>
+</tr>
+</tbody>
+</table>
+</div></section>
+<section class="source-section"><h2 id="技术博客">📝 技术博客</h2>
+<blockquote>
+<p>CANN 在实际业务场景中的最新技术实践与成果。大部分为真实客户实践案例，持续更新中。</p>
+</blockquote>
+<p><strong>近期精选：</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">博客</th>
+<th style="text-align: left">简介</th>
+<th style="text-align: center">时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/overlap_scheduling_throughput_optimization">Overlap Scheduling 吞吐优化</a></td>
+<td style="text-align: left">CPU 与 NPU 执行重叠，TPS 提升约 70%</td>
+<td style="text-align: center">2026.3</td>
+</tr>
+<tr>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/training/areal_async_rl_training">AReaL 全异步 RL 训练</a></td>
+<td style="text-align: left">全异步 RL + Single Controller，解耦式 Agentic RL</td>
+<td style="text-align: center">2026.3</td>
+</tr>
+<tr>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/hccl_custom_operator_aicpu_p2p">AICPU 点对点通信算子开发</a></td>
+<td style="text-align: left">基于 AICPU+TS 实现 HCCL 自定义 Send/Recv 算子</td>
+<td style="text-align: center">2026.2</td>
+</tr>
+<tr>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/npugraph_ex_third_party_framework_integration">npugraph_ex 第三方框架集成</a></td>
+<td style="text-align: left">图编译与编译缓存能力接入，降低冷启动耗时</td>
+<td style="text-align: center">2026.2</td>
+</tr>
+</tbody>
+</table>
+</div><details>
+<summary>查看全部技术博客（算子 27 / 推理 23 / 训练 4，共 54 篇）</summary>
+<div class="table-wrap"><table style="width: 100%">
+<tbody><tr><th width="35%">博客</th><th width="55%">简介</th><th width="10%">时间</th></tr>
+<tr><th colspan="3" align="left">算子</th></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/pypto_cannbot_kda_operator_delivery">PyPTO+CANNBot 7 日交付实践：KDA 算子快速实现</a></td><td>PyPTO Tensor API + CANNBot Agent，7 天完成百灵 Ling-3.0-flash KDA 融合算子开发与调优</td><td>2026.8</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/reg_vector_programming_optimization">Reg 矢量计算编程优化实践</a></td><td>ZERO/ONE 寄存器布局将 BF16 拆为两组 FP32 计算链路，向量粒度与寄存器利用率翻倍</td><td>2026.8</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/ascend950_aiv_urma_shmem_communication">昇腾950 AIV 直驱 URMA 的 SHMEM 跨 PE 通信实践</a></td><td>AIV 在 Device 侧构造 WQE，借助 URMA 与 SHMEM 完成跨 PE 远端写和通知，减少 Host 往返</td><td>2026.7</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/multi_vendor_operator_parallel_compilation">多 Vendor 自定义算子并行编译实践</a></td><td>统一调度多个独立 Vendor 子工程，并行完成算子编译、打包和产物隔离</td><td>2026.7</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/tilelang_xllm_qwen35_operator_adaptation">TileLang 与 xLLM 驱动 Qwen3.5 昇腾算子适配</a></td><td>以 TileLang Python DSL 为开发入口，结合 xLLM 完成 Qwen3.5 算子适配</td><td>2026.7</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/pypto_agent_qat_operator_development">基于 PyPTO 与 Agent，2 周完成模型 QAT 算子开发与优化</a></td><td>PyPTO 张量 API + Agent 辅助编程，2 周完成 QAT 算子功能开发、三大调优与整网接入</td><td>2026.7</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/grouped_matmul_mx_optimization">GroupedMatmul MX 量化矩阵乘深度性能优化实践</a></td><td>三种负载均衡、scalar 优化、私有格式搬运、双页表与 3-Buffer 等 GMM MX 优化实践</td><td>2026.6</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/dsa_operator_open_source_contribution">DSA 算子开源共建之路</a></td><td>围绕 DSA 长序列训练算子 FP32 支持，从需求到反向贡献 ops-transformer 社区</td><td>2026.6</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/ascend950_rmsnormquant_optimization">Ascend 950 RmsNormQuant 算子分阶段优化</a></td><td>Gamma 预加载、多核并行、寄存器数据流、Double Buffer 与二分累加优化</td><td>2026.5</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/moe_dispatch_combine_optimization">MoE Dispatch 与 Combine 算子优化</a></td><td>跨 Rank 通信去重、本地加权合并、AIV 直驱 RDMA 与多流并行</td><td>2026.5</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/mx_quantized_matmul_optimization">MX 量化矩阵乘性能优化</a></td><td>结合 SWAT、尾轮负载均衡和 UnitFlag 提升流水并行效率</td><td>2026.5</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/scalar_npu_operator_performance_optimization">Scalar 对 NPU 算子性能的影响与优化</a></td><td>从寄存器 Spill、I-Cache、指针解引用等角度分析 ScalarBound 并给出优化方法</td><td>2026.5</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/tilelang_ascend_operator_optimization">TileLang-Ascend 算子性能优化</a></td><td>流水级数、核间同步、数据切分和调试分析方面的优化方法</td><td>2026.5</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/dumptensor_operator_debugging">DumpTensor 定位算子计算异常</a></td><td>利用 DumpTensor 观察 GM、UB、L1 中间数据，逐步定位结果异常</td><td>2026.4</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/hccl_custom_operator_aicpu_p2p">AICPU 点对点通信算子开发</a></td><td>基于 AICPU+TS 实现 HCCL 自定义 Send/Recv 算子</td><td>2026.2</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/aicpu_tiling_sink">AICPU Tiling 下沉编程</a></td><td>Tiling 计算下沉到 AICPU，减少 Host 与 Device 交互</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/ascendc_rtc_compilation">Ascend C RTC 即时编译</a></td><td>运行时按 shape 即时编译，兼顾性能与迭代灵活性</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/deepxtrace_moe_slow_card_detection">DeepXTrace 快慢卡在线检测</a></td><td>MOE 推理集群轻量级快慢卡诊断，分钟级定位</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/hccl_reducescatter_high_precision_redevelopment">HCCL ReduceScatter 精度优化</a></td><td>开源 ReduceScatter 精度增强改造</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/transformer_experimental_mix_operator">MIX 算子开发贡献</a></td><td>矩阵化重构 RoPE，落地首个开源 MIX 算子</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/cross_entropy_zloss_fusion">CrossEntropyLoss 与 Zloss 融合</a></td><td>损失函数融合，MoE 场景端到端 5.2% 效率提升</td><td>2025.11</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/kernel_direct_call_programming">算子 Kernel 直调编程</a></td><td>异构混合编程，简化编译部署，降低开发门槛</td><td>2025.11</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/tilingkey_template_programming">TilingKey 模板化编程</a></td><td>统一多场景算子管理，减少 icache miss</td><td>2025.11</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/ascend_c_mmad_selection_guide">Ascend C 矩阵乘接口选型指南</a></td><td>矩阵乘 API 接口对比与选型建议</td><td>2025.10</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/ms_sanitizer">msSanitizer 异常检测工具</a></td><td>单算子异常检测，定位内存访问、数据竞争与同步问题</td><td>2025.10</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/nddma_introduction">NDDMA 多维数据搬运</a></td><td>多维 DMA 搬运与 Padding、Transpose、Broadcast、Slice 变换</td><td>2025.10</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/operator/regbase_vec_add">Regbase 编程范式</a></td><td>从向量加法理解寄存器级编程与底层性能优化</td><td>2025.10</td></tr>
+<tr><th colspan="3" align="left">推理</th></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/aot_superkernel_graph_execution">AOT SuperKernel 图执行优化</a></td><td>融合任务并减少启动、调度等待和算子间流水开销</td><td>2026.7</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/longcat_flash_lite_inference_optimization">LongCat-Flash-Lite 昇腾推理优化</a></td><td>N-gram Embedding 与 EAGLE3 投机解码，结合 SuperKernel 提升推理效率</td><td>2026.6</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/spark_model_cluster_throughput_optimization">星火大模型昇腾集群吞吐优化</a></td><td>CANN DSA 算子将长上下文 Attention 动态稀疏化，128K 场景约 4.5 倍 Decode 提升</td><td>2026.6</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/tensorflow_autofuse_recommendation_fusion">TensorFlow 与 AutoFuse 推荐模型融合</a></td><td>打通 TensorFlow 到 Ascend IR 与 AutoFuse 自动融合链路</td><td>2026.5</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/autofuse_torchinductor_deepseek_fusion">AutoFuse 与 TorchInductor 的 DeepSeek 融合</a></td><td>扩展 TorchInductor NPU Codegen，将 Loop IR 转 Ascend IR 接入 AutoFuse</td><td>2026.4</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/deepseek_v4_npu_inference_optimization">NPU DeepSeek-V4 推理优化</a></td><td>稀疏 Attention 与 mHC 结构，结合融合算子、上下文并行、量化与多流并行</td><td>2026.4</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/deepseek_v4_supernode_support">DeepSeek V4 昇腾超节点支持</a></td><td>昇腾950 与 A3 超节点适配，含融合 Kernel、多流并行、量化与自动融合</td><td>2026.4</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/sals_long_sequence_inference">SALS 长序列推理优化</a></td><td>稀疏 Token 选择、SFAA 计算、离散访存、Preload 流水和 AICPU Tiling 优化</td><td>2026.4</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/xllm_inference_performance_optimization">xLLM 大模型推理性能优化</a></td><td>图融合、多流并行、投机推理和动态负载均衡优化 Qwen/DeepSeek/ChatGLM</td><td>2026.4</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/hixl_nixl_ascend_backend">HIXL 快速适配 NIXL 昇腾后端</a></td><td>基于 NIXL 插件架构将 HIXL 点对点通信映射为昇腾后端</td><td>2026.3</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/overlap_scheduling_throughput_optimization">Overlap Scheduling 吞吐优化</a></td><td>CPU 与 NPU 执行重叠，TPS 提升约 70%</td><td>2026.3</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/hixl_fabricmem_kv_cache_transfer">HIXL FabricMem 高性能 KV Cache 传输</a></td><td>超节点 DRAM 统一编址与 HCCS/SDMA 单边传输，提供高带宽 FabricMem 通道</td><td>2026.2</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/npugraph_ex_third_party_framework_integration">npugraph_ex 第三方框架集成</a></td><td>图编译与编译缓存能力接入，降低冷启动耗时</td><td>2026.2</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/deepseek_r1_superpod_inference_optimization">DeepSeek-R1 SuperPoD 推理优化</a></td><td>全栈协同，TTFT&lt;2s、TPOT&lt;50ms，608 QPM</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/hixl_mooncake_vllm_kv_cache_pooling">HIXL、Mooncake 与 vLLM KV Cache 池化</a></td><td>KV Cache 池化 + D2D/H2H 传输，降低 TTFT</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/hixl_rl_tail_latency_optimization">HIXL RL 长尾时延优化</a></td><td>PD 分离与高效传输，缓解千卡集群长尾</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/longcat_flash_superpod_inference_optimization">LongCat-Flash SuperPod 推理优化</a></td><td>多流并发 + 控核 + SuperKernel，TPOT 10ms</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/npugraph_ex_aclgraph_graph_mode">npugraph_ex 图模式优化</a></td><td>aclGraph 图捕获与重放，减少 Host 下发</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/torch_npu_ipc">torch_npu IPC 特性</a></td><td>跨进程共享设备内存，节省显存</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/torchair_fx_pass_multi_stream">TorchAir 自定义 FX Pass</a></td><td>多流并行自动图变换，减少适配代码</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/sglang_mooncake_hixl_pd_separation_d2d">SGLang、Mooncake 与 HIXL PD 分离</a></td><td>加速 PD 分离 D2D 特性落地</td><td>2025.11</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/superkernel_inference_acceleration">SuperKernel 技术综述</a></td><td>整网编译为大算子，性能再提升 10%-20%</td><td>2025.11</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/inference/vllm_ascend_inference_optimization">vLLM-Ascend 推理优化</a></td><td>PagedAttention + 昇腾适配，提升吞吐</td><td>2025.11</td></tr>
+<tr><th colspan="3" align="left">训练</th></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/training/token_spark_rl_optimization">基于昇腾集群的词元星火 RL 优化实践</a></td><td>MoE 专家负载均衡、P/D 两阶段采样、统一 KVStore 与 Decode 动态调度，推理加速 30%</td><td>2026.9</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/training/areal_async_rl_training">AReaL 全异步 RL 训练</a></td><td>全异步 RL + Single Controller，解耦式 Agentic RL</td><td>2026.3</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/training/flashrecovery_training_fault_recovery">FlashRecovery 训练故障恢复</a></td><td>降低检查点 I/O 与回滚重算损失</td><td>2025.12</td></tr>
+<tr><td><a href="https://gitcode.com/cann/cann-learning-hub/tree/master/blogs/training/sam_speculative_decoding_rl_training">SAM 投机解码 RL 训练</a></td><td>无辅助模型 SAM 投机解码，超 35% 长尾加速</td><td>2025.12</td></tr>
+</tbody></table>
+</div></details>
+</section>
+<section class="source-section"><h2 id="科研案例">🔬 科研案例</h2>
+<blockquote>
+<p>高校教师贡献的科研实践案例，聚焦昇腾 CANN 在真实科研场景中的落地，促进高校科研经验与开源生态的交流共享。案例持续征集中，欢迎高校教师投稿。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">案例名称</th>
+<th style="text-align: left">作者 / 单位</th>
+<th style="text-align: left">案例介绍</th>
+<th style="text-align: center">发布时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><em>（待贡献）</em></td>
+<td style="text-align: left">—</td>
+<td style="text-align: left">—</td>
+<td style="text-align: center">—</td>
+</tr>
+</tbody>
+</table>
+</div><blockquote>
+<p>💡 投稿方式、案例模板与署名要求见 <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/blogs/research_cases">contrib/blogs/research_cases</a>。</p>
+</blockquote>
+</section>
+<section class="source-section"><h2 id="参与贡献">🤝 参与贡献</h2>
+<p>欢迎贡献教程、文档与案例！请阅读 <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/CONTRIBUTING.md">贡献指南</a>，并前往 <a href="https://gitcode.com/cann/community">cann/community</a> 了解社区行为准则与 CLA 签署流程。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">渠道</th>
+<th style="text-align: left">入口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">提问 / 反馈 Bug</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/issues">Issues</a></td>
+</tr>
+<tr>
+<td style="text-align: left">交流讨论</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/discussions">Discussions</a></td>
+</tr>
+<tr>
+<td style="text-align: left">技术专栏</td>
+<td style="text-align: left"><a href="https://gitcode.com/cann/cann-learning-hub/wiki">Wiki</a></td>
+</tr>
+</tbody>
+</table>
+</div></section>
+<section class="source-section"><h2 id="latest-news">🔥 Latest News</h2>
+<ul>
+<li><strong>[2026/09]</strong> 新增<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/rl_training_pipeline">大模型 RL 训练系列教程</a>，使用 verl + GRPO 完成 Qwen3-1.7B Wordle 强化学习训练</li>
+<li><strong>[2026/09]</strong> 新增<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/data_structure_for_hpc">面向高性能计算的数据结构</a>课程</li>
+<li><strong>[2026/08]</strong> 新增 <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pypto_development">PyPTO</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pyasc_operator_development">PyASC</a>、<a href="https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/README.md">CANNBot</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/TorchAir_development">TorchAir</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ge_development">GE</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/autofusion_development">AutoFusion</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/hccl_development">HCCL</a> 系列教程</li>
+<li><strong>[2026/08]</strong> 新增<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/sft_training_pipeline">大模型训练系列课程</a>（SFT 初阶）</li>
+<li><strong>[2026/07]</strong> 新增 <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development_light">Ascend C 算子开发（Kernel 直调版）</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference">大模型推理系列</a>、<a href="https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/conv_operator_development">Conv 算子实战</a></li>
+<li><strong>[2026/06]</strong> 在线体验适配 CANN 9.0.0</li>
+<li><strong>[2026/03]</strong> cann-learning-hub 首次上线</li>
+</ul>
+</section>
+<section class="source-section"><h2 id="版本与信息">📄 版本与信息</h2>
+<p><strong>已验证版本配套</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left">CANN 版本</th>
+<th style="text-align: center">验证日期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left">9.0.0</td>
+<td style="text-align: center">2026.06.30</td>
+</tr>
+</tbody>
+</table>
+</div><ul>
+<li><a href="https://gitcode.com/cann/cann-learning-hub/blob/master/CONTRIBUTING.md">贡献指南</a> · <a href="https://gitcode.com/cann/cann-learning-hub/blob/master/SECURITY.md">安全声明</a> · <a href="https://gitcode.com/cann/cann-learning-hub/tree/master/LICENSE">许可证</a> · <a href="https://gitcode.com/cann/community/tree/master/CANN/sigs/doc">所属 SIG</a></li>
+<li>问题反馈：<a href="https://gitcode.com/cann/cann-learning-hub/issues">Issues</a> · 社区互动：<a href="https://gitcode.com/cann/cann-learning-hub/discussions">Discussions</a> · 技术专栏：<a href="https://gitcode.com/cann/cann-learning-hub/wiki">Wiki</a></li>
+</ul>
+<details>
+<summary>查看目录结构</summary>
+<pre><code class="language-text">├── quick_start                  # 快速入门
+│   ├── cann_basics              # CANN 基础知识（5 门课）
+│   ├── first_custom_operator    # 第一个自定义算子
+│   ├── first_operator_api_call  # 第一个算子 API 调用
+│   ├── first_llm_inference      # 第一个大模型推理
+│   └── git_basics               # Git 基础与 GitCode 协作
+├── tutorials                    # 开发教程
+│   ├── ascendc_operator_development          # Ascend C 算子开发（工程版）
+│   ├── ascendc_operator_development_light    # Ascend C 算子开发（Kernel 直调版）
+│   ├── conv_operator_development             # Conv 算子开发
+│   ├── MC2_fused_operator_development        # MC2 融合算子
+│   ├── llm_inference                         # 大模型推理
+│   ├── sft_training_pipeline                 # SFT 训练
+│   ├── rl_training_pipeline                  # RL 训练
+│   ├── ge_development                        # GE 图引擎
+│   ├── TorchAir_development                  # TorchAir 图模式
+│   ├── autofusion_development                # AutoFusion 自动融合
+│   ├── hccl_development                      # HCCL 集合通信
+│   ├── hixl_development                      # HiXL 单边通信
+│   ├── CANNBot                               # CANNBot 算子生成
+│   ├── pyasc_operator_development            # PyASC 算子开发
+│   └── pypto_development                     # PyPTO 算子开发
+├── standard_course               # 标准课程体系
+│   ├── 00_atomic_courses         # 原子课程总纲（135 门）
+│   ├── 01_bootcamp               # 启航营
+│   ├── 02_traditional_courses    # 传统学科课程
+│   ├── 03_new_courses            # 新增课程
+│   └── 04_new_books              # 教材区
+├── reference_practice            # 参考实践
+│   └── ai_application_development # AI 应用开发实践
+│       └── rag_knowledge_base.ipynb # RAG 知识库问答
+├── blogs                         # 技术博客（算子 23 / 推理 23 / 训练 3）
+├── contrib                       # 社区贡献
+│   ├── tutorials                 # 外部教程（15+）
+│   └── blogs/research_cases      # 科研案例（高校教师投稿，含模板）
+├── skills                        # CANNBot 技能
+└── docs                          # 文档与指南
+</code></pre>
+</details>
+</section></main><aside class="side"><div class="panel promo"><h2>开启 CANN 学习之旅</h2><p>从公共基础开始，边学边练。</p><a href="#从这里开始">从这里开始 ›</a><div class="orb"></div></div><div class="panel"><h2>页面目录</h2><a href="#角色导航">角色导航</a><a href="#前置基础按需补不用先全学完">前置基础</a><a href="#从这里开始">CANN 基础第一课</a><a href="#学完基础选择一条主线">五条学习主线</a><a href="#完整课程体系查阅用">完整课程体系</a><a href="#高校教学方案专区供高校开课参考建设中">高校教学方案</a><a href="#课程共建专区">课程共建</a><a href="#competition">赛事备考</a><a href="#配套生态">配套生态</a><a href="#技术博客">技术博客</a><a href="#科研案例">科研案例</a><a href="#参与贡献">参与贡献</a><a href="#版本与信息">版本与信息</a></div><div class="panel"><h2>关于本页</h2><p>内容依据 cann-learning-hub README 整理，具体课程状态和环境要求请以仓库最新内容为准。</p><a href="https://gitcode.com/cann/cann-learning-hub">查看原始 README ↗</a></div></aside></div><div class="foot">CANN Learning Hub · 内容来源于 GitCode 开源学习仓</div></div></body></html>
