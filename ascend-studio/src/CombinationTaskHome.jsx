@@ -90,7 +90,12 @@ export function CombinationTaskHome({ onCreateTask }) {
   const [pendingKeyboardNode, setPendingKeyboardNode] = useState(null);
   const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
+  const homeRef = useRef(null);
   const canvasRef = useRef(null);
+  const ambientRef = useRef(null);
+  const ambientFrameRef = useRef(0);
+  const ambientTargetRef = useRef(null);
+  const ambientCurrentRef = useRef(null);
   const nodeRefs = useRef(new Map());
   const sourceHoverTimerRef = useRef(null);
   const targetDwellTimerRef = useRef(null);
@@ -420,6 +425,50 @@ export function CombinationTaskHome({ onCreateTask }) {
     }, TARGET_CONFIRM_DWELL);
   };
 
+  const updateAmbientPointer = (event) => {
+    if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const home = homeRef.current;
+    const glow = ambientRef.current;
+    if (!home || !glow) return;
+    const rect = home.getBoundingClientRect();
+    const next = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    ambientTargetRef.current = next;
+    if (!ambientCurrentRef.current) {
+      ambientCurrentRef.current = next;
+      glow.style.transform = `translate3d(${next.x - rect.width / 2}px, ${next.y - rect.height / 2}px, 0) translate(-50%, -50%)`;
+    }
+    glow.classList.add("is-active");
+    if (ambientFrameRef.current) return;
+
+    const follow = () => {
+      const current = ambientCurrentRef.current;
+      const target = ambientTargetRef.current;
+      const bounds = homeRef.current?.getBoundingClientRect();
+      const activeGlow = ambientRef.current;
+      if (!current || !target || !bounds || !activeGlow) {
+        ambientFrameRef.current = 0;
+        return;
+      }
+      current.x += (target.x - current.x) * 0.16;
+      current.y += (target.y - current.y) * 0.16;
+      activeGlow.style.transform = `translate3d(${current.x - bounds.width / 2}px, ${current.y - bounds.height / 2}px, 0) translate(-50%, -50%)`;
+      if (Math.hypot(target.x - current.x, target.y - current.y) > 0.35) {
+        ambientFrameRef.current = window.requestAnimationFrame(follow);
+      } else {
+        current.x = target.x;
+        current.y = target.y;
+        ambientFrameRef.current = 0;
+      }
+    };
+    ambientFrameRef.current = window.requestAnimationFrame(follow);
+  };
+
+  const handleHomePointerMove = (event) => updateAmbientPointer(event);
+
+  const handleHomePointerLeave = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) ambientRef.current?.classList.remove("is-active");
+  };
+
   const handleCanvasPointerMove = (event) => {
     pointerPositionRef.current = { clientX: event.clientX, clientY: event.clientY };
     const sourceId = activeSourceRef.current;
@@ -457,7 +506,10 @@ export function CombinationTaskHome({ onCreateTask }) {
   };
 
   const handleCanvasPointerLeave = (event) => {
-    if (!event.currentTarget.contains(event.relatedTarget)) clearPendingHover();
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      ambientRef.current?.classList.remove("is-active");
+      clearPendingHover();
+    }
   };
 
   const handleFieldPointerEnter = (event, field) => {
@@ -566,6 +618,7 @@ export function CombinationTaskHome({ onCreateTask }) {
       window.removeEventListener("keydown", handleWindowKeyDown);
       window.clearTimeout(sourceHoverTimerRef.current);
       window.clearTimeout(targetDwellTimerRef.current);
+      window.cancelAnimationFrame(ambientFrameRef.current);
     };
   }, []);
 
@@ -580,7 +633,18 @@ export function CombinationTaskHome({ onCreateTask }) {
     if (!created) setError("任务没有创建成功，请调整需求后重试。");
   };
 
-  return <section className={`combination-home${hoverSourceId ? " has-focused-field" : ""}`} aria-label="基于场景的关联探索">
+  return <section
+    ref={homeRef}
+    className={`combination-home${hoverSourceId ? " has-focused-field" : ""}`}
+    aria-label="基于场景的关联探索"
+    onPointerMove={handleHomePointerMove}
+    onPointerLeave={handleHomePointerLeave}
+  >
+    <div
+      ref={ambientRef}
+      className="combination-home__cursor-glow"
+      aria-hidden="true"
+    />
     <header className="combination-home__heading">
       <span>EXPLORE PROBLEMS AND PATHS FROM YOUR CONTEXT</span>
       <h1 className="combination-home__title">从你的场景出发，探索问题与路径</h1>
