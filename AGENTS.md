@@ -8903,4 +8903,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户再次反馈 Windows 同一链接仍有节点高度拉伸。复核发现 Mac 当前 `127.0.0.1:5196` 实际由另一个 `training-composition-publish` worktree 的 `vite preview` 提供，不能作为本工作区修复后的本机对照（H）。线上 PC 外层 HTML 已指向 `20261103-node-content-height`，但其 `updateAddress()` 保留用户旧链接中的 `rev=20261029-task-routing`，且 Pages HTML 的缓存时间为 600 秒（H）；Windows 是否实际命中旧缓存未直接读取（M）。
 - 将外层分享 URL 的 `rev` 在每次地址同步时更新为当前 Showcase revision，并把 HTML 引用与内嵌路由 revision 升至 `20261103-node-content-height-v2`，让新入口使用新的缓存键；不改学习路径节点尺寸算法、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；代码 commit / push 和 Pages 状态待本轮结束后记录。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；线上读回确认 PC 页面引用 `20261103-node-content-height-v2`，外层 `app.js` 会同步 `rev` 和 iframe `showcaseRev`，内嵌页面加载 `index-WLxVK2ZF.js` 与 `index-X5obAocZ.css`。当前 5196 预览来自别的 worktree，未将其作为本次新版视觉验收。无法读取 Windows 浏览器缓存 / 实际渲染，因此是否还存在最新版本内的布局问题仍待复核。
+- 提交 `ed31df949989718a4eae418a914335bdc6345a4a` 已推送到 `origin/main`；Pages workflow `41629866638` 成功。新版入口：`https://schihhsin.github.io/AscendCANN/ascstudio-pc/?rev=20261103-node-content-height-v2&chapter=1&pointIndex=2#chapter-1-resnet-path`。
