@@ -8679,3 +8679,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认先用独立 HTML 验证通用的 Agent 输出汇聚，并要求沿用既有 Ascend Studio 三栏结构与样式规范，不另造产品架构。新增 `agent-output-exploration/index.html` 与标识资源：左侧切换 Harness、算子开发、训练调优、推理调优四组示例；中间每组五轮策划问答；右侧按共同的节点、关系、来源记录逐步汇聚，可选择节点回看对应回答。
 - 交互是本地预设演示（L：设计假设），没有连接模型或真实训练 / NPU；输入仅支持预设问题匹配。示例内容不代表运行验证或研究结论。未更改现有 Studio 页面序列、API / Host / Application 边界。
 - 已检查内联 JS 语法，浏览器检查多轮递进与主题切换；源文件在最新远端基础上隔离提交。在线地址：`https://schihhsin.github.io/AscendCANN/agent-output-exploration/`，发布状态以实际回执为准。
+
+### 2026-11-03（学习首页轻装饰与路径关系）
+
+- 用户选择“轻装饰为主，结合基础课到主线的路径关系”：在 `cann-learning-home/index.html` 为九类角色、五门基础课和五条主线增加统一的彩色线性图标、柔和渐变和克制的几何装饰；基础课程增加知识与实践示意、主线前增加路径提示。内容架构和课程入口维持 README 导向。
+- 所有内容仍来自原 README 的 2026-11-03 快照（H），小图形为界面装饰而非额外课程或数据；不改变 GitCode 上游、页面序列或 API / Host / Application 边界。
+- 验证：桌面及 390px 窄屏预览、窄屏水平溢出检查、链接集合及页内锚点对照、`git diff --check`；提交推送 main，GitHub Pages 发布可能延迟。
