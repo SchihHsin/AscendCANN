@@ -8638,3 +8638,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新建 `cann-learning-home/index.html`，依据用户提供的 CANN GitCode 组织首页截图，采用浅色卡片、主栏与侧栏和任务入口，呈现公共基础、五条学习主线、在线实践及学习共建；提供首屏主题切换与路径筛选。
 - 内容及课程时长来自 2026-11-03 访问的 GitCode 学习仓 README（H）；页面为独立 GitHub Pages 设计原型，不改变 GitCode 仓库首页。无页面序列或 API / Host / Application 边界变更。
 - 验证：浏览器检查首屏主题切换和路径筛选，核对 README 内路径锚点；`git diff --check`。提交并推送至 main，GitHub Pages 地址为 `/AscendCANN/cann-learning-home/`。后续需随上游课程与链接更新并确认仓库自定义首页支持。
+
+### 2026-11-03（学习首页信息架构纠偏）
+
+- 用户明确：仅借用 CANN 组织首页视觉风格，内容架构须按 cann-learning-hub 原 README；上一版按组织首页重组内容不符合要求。
+- 更新 `cann-learning-home/index.html`：按原 README 顺序保留角色导航、前置基础、基础第一课、五条主线及各阶段课程、完整课程体系、高校与共建、赛事、认证、SwanLab、生态、博客、科研、贡献、新闻和版本信息；角色及主线总览改为卡片，课程表与折叠内容保留原内容及链接。
+- 内容来源为 2026-11-03 GitCode 页面渲染的 README（H，页面为该时点快照）；视觉采用 CANN 组织首页的浅灰分区、紧凑卡片、顶部导航和侧栏。未修改 GitCode 上游仓库，也不影响页面序列或 API / Host / Application 边界。
+- 验证：本地浏览器检查页面与课程内容；对照原 README 的表格、折叠项和站内锚点，执行 `git diff --check`。提交并推送 main；上游内容变动需重新同步。
