@@ -8833,3 +8833,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源：报告第 1 / 2 页来自用户指定报告（H，既有桌面截图）；双用户旅程为用户纠正后的附件及其线上同内容页面（H，1440×900 视口、整页 1440×2125）；PC 使用用户指定线上页面（H，1440×900），捕获状态为第 1 / 3 章“让学习贴合当前需要与现有基础”。未使用仓库本地另一个 5 章版本替代线上页面。此组合不改变网站页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：Report PPTX Skill 的结构校验读回 5 页、每页 1 张图；LibreOffice 导出 PDF 后逐页查看渲染图，确认原图完整、顺序正确；Python 检查 16:9 尺寸和 5 个来源链接；`git diff --check` 通过。
 - 提交 / 推送：交付提交 `15533270` 已推送至 `origin/main`。由于工作区原有改动未参与，本次通过从最新 `origin/main` 建立的隔离工作树提交。
+
+### 2026-11-03 · 报告卡片移除左侧强调线
+
+- 根据用户指出的 Report PPT Skill 规范，在 `cann-dashboard/mindstudio-agent-interview-research-report.html` 移除原声卡片、VOC 归纳条和结论提示框的左侧 accent 线。统一改为完整 1px 描边、浅色玻璃底和柔和阴影；深色原声卡片使用完整细框。保留 `.rm-now-tri` 的 CSS 三角形边线，它不是卡片强调线。
+- 设计依据：Report PPT Skill `pitfalls.md` 明确要求避免左描边 accent 卡片，改用整框柔阴影或白底；本轮沿用该规则。无内容、来源或页面序列变化，不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check`；本地桌面预览检查第 4、6 页，VOC 总结、原声卡和结论卡均以完整描边呈现；线上报告 HTTP 200、21 页结构正确，原声 / VOC 总结 / 结论样式均无 `border-left`。
+- 实现提交 `fd75e6c2` 已推送 `origin/main`；GitHub Pages workflow `41602980238` 成功。无待决事项。
