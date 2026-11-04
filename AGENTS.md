@@ -8906,3 +8906,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；线上读回确认 PC 页面引用 `20261103-node-content-height-v2`，外层 `app.js` 会同步 `rev` 和 iframe `showcaseRev`，内嵌页面加载 `index-WLxVK2ZF.js` 与 `index-X5obAocZ.css`。当前 5196 预览来自别的 worktree，未将其作为本次新版视觉验收。无法读取 Windows 浏览器缓存 / 实际渲染，因此是否还存在最新版本内的布局问题仍待复核。
 - 提交 `ed31df949989718a4eae418a914335bdc6345a4a` 已推送到 `origin/main`；Pages workflow `41629866638` 成功。新版入口：`https://schihhsin.github.io/AscendCANN/ascstudio-pc/?rev=20261103-node-content-height-v2&chapter=1&pointIndex=2#chapter-1-resnet-path`。
 - 2026-11-04 复核：在当前 worktree 根目录以 `127.0.0.1:5197` 提供静态页面，Chrome 1280×720 查看新版 PC Showcase 内嵌 `index-WLxVK2ZF.js`。学习动作节点使用 `min-height:47px`，未设固定 `height`；节点 DOM 当前自然高 59px，15 个节点文字均未换行，因此本视口下高度相同是内容所需高度相同。横排材料卡实测高度 380 / 705 / 380px，视频卡没有拉高两侧卡片。本机 `5196` 仍由另一 worktree 的旧构建提供，按钮固定为 47px，不可作为新版对照。留存新版本机预览标签与服务器供用户查看。Windows 实机本轮未取得，跨浏览器最终确认仍待用户新链接结果。无页面、数据或 API / Host / Application 边界更改；验证记录提交待本轮结束后补记。
+
+### 2026-11-03 · 组合稿封面加入知识供给与 Agent 生态主张
+
+- 用户确认封面标题为「面向人机协作开发新范式，构建昇腾开发者的知识供给与 Agent 协作生态」。在组合页首屏沿用原报告封面的视觉结构，将长标题分三行呈现；原报告源文件、其余四页和既有副标题均未改动。
+- 变更：`cann-dashboard/ascend-studio-combined-report/index.html`、`composition.json`。不影响报告 `#2`、两条旅程或 PC 原页面，也不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：内联脚本 `node --check`、组合 JSON 与标题覆盖检查、`git diff --check` 通过；Chrome 在 1600×900 与 1280×720 检查封面完整显示，线上封面截图确认新标题已生效。
+- 提交 `b2dd627864cfef189ffbe0c33015d39821d6ac51` 已推送到 `origin/main`；Pages workflow `41630892753` 成功。组合页线上地址返回 HTTP 200。
+
+### 2026-11-04 · ResNet50 节点高度复核
+
+- 变更文件：仅更新本文件的跨浏览器复核记录。业务目的：确认 2026-11-03 已发布的节点内容高度修复在当前构建中的表现，并指出旧本地预览与新构建的区别。
+- 证据：新版内嵌构建 `index-WLxVK2ZF.js` 在 Chrome 1280×720 下测量 15 个学习动作节点；它们采用自然高度与 47px 最小高度，当前文案均为单行，因而实际高度相同。横排材料卡高度为 380 / 705 / 380px。该证据属于本机浏览器实测，不代表 Windows 实机已验证。
+- 页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。验证：DOM 尺寸测量、`git diff --check`；Windows 实机待用户在新版本链接上复核。

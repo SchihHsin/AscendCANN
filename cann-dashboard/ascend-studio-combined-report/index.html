@@ -310,7 +310,7 @@ body.overview .material-frame{pointer-events:none!important}
 <body>
 <div id="deck">
   <section class="slide s-cover material-slide" data-title="封面">
-    <iframe class="material-frame" title="Ascend Studio 设计报告封面" data-src="../ascend-studio-design-report.html?t=cut#1" data-embed="report" data-target="让任务推进，也让能力成长" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write"></iframe>
+    <iframe class="material-frame" title="Ascend Studio 设计报告封面" data-src="../ascend-studio-design-report.html?t=cut#1" data-embed="report" data-target="让任务推进，也让能力成长" data-cover-title="面向人机协作开发新范式，|构建昇腾开发者的知识供给与|Agent 协作生态" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write"></iframe>
   </section>
 
   <section class="slide s-gray material-slide" data-title="趋势与现状">
@@ -400,6 +400,7 @@ function embedStyle(doc,frame){
       html.combined-embed #deck{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;display:block!important;overflow:hidden!important}
       html.combined-embed #deck>.slide:not(.combined-target){display:none!important}
       html.combined-embed #deck>.slide.combined-target{position:absolute!important;inset:0!important;width:100vw!important;height:100vh!important;scroll-snap-align:none!important;scroll-snap-stop:normal!important}
+      html.combined-embed .r-cover h1.combined-cover-title{font-size:clamp(40px,4.8vw,80px)!important;line-height:1.18!important;max-width:88vw!important}
       html.combined-embed #navDots,html.combined-embed #controls,html.combined-embed #panel,html.combined-embed #toggle,html.combined-embed #liveDialog{display:none!important}`;
   }else if(frame.dataset.embed==='journey'){
     style.textContent=`html.combined-embed,html.combined-embed body{width:100%!important;height:100%!important;min-height:0!important;margin:0!important;overflow:hidden!important;overscroll-behavior:none!important;background:#eef1f2!important}
@@ -457,6 +458,20 @@ function scaleJourneyCoordinates(doc){
   if(doc.defaultView.ResizeObserver){const observer=new doc.defaultView.ResizeObserver(fit);observer.observe(journey)}
   doc.defaultView.addEventListener('resize',fit,{passive:true});
 }
+function applyCoverTitle(target,frame){
+  const heading=target.querySelector('h1');
+  const lines=frame.dataset.coverTitle?.split('|');
+  if(!heading||!lines?.length)return;
+  const titleDoc=heading.ownerDocument;
+  heading.replaceChildren(titleDoc.createTextNode(lines[0]),titleDoc.createElement('br'));
+  const accent=titleDoc.createElement('span');
+  lines.slice(1).forEach((line,index)=>{
+    if(index)accent.appendChild(titleDoc.createElement('br'));
+    accent.appendChild(titleDoc.createTextNode(line));
+  });
+  heading.appendChild(accent);
+  heading.classList.add('combined-cover-title');
+}
 function applyMaterialEmbed(frame){
   if(frame.dataset.embedFixed==='1')return;
   try{
@@ -467,6 +482,7 @@ function applyMaterialEmbed(frame){
       const target=slides.find(s=>s.dataset.title===frame.dataset.target);
       if(!target)throw new Error('report slide not found: '+frame.dataset.target);
       target.classList.add('combined-target');
+      if(frame.dataset.coverTitle)applyCoverTitle(target,frame);
     }else if(frame.dataset.embed==='journey'){
       const target=doc.querySelector(frame.dataset.target);
       if(!target)throw new Error('journey section not found: '+frame.dataset.target);
