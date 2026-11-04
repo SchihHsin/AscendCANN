@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261103-node-content-height-v2";
+const ROUTE_REV = "20261104-demo-note-isolation-v1";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -41,7 +41,7 @@ const showcase = $("#showcase"), frame = $("#demo-frame"), cover = $("#chapter-c
 const params = new URLSearchParams(location.search);
 let currentChapter = Math.min(chapters.length - 1, Math.max(0, Number(params.get("chapter") || 1) - 1));
 let currentPoint = Math.min(chapters[currentChapter].points.length - 1, Math.max(0, Number(params.get("pointIndex") || 0)));
-let activePoint = null, menuOpen = false, loadingRevision = 0, loadedFrameHref = "", learningSyncCleanup = null;
+let activePoint = null, menuOpen = false, loadingRevision = 0, loadedFrameHref = "", learningPrefillCleanup = null;
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
@@ -111,25 +111,6 @@ function renderPointNote() {
   $("#note-next").title = nextLabel;
 }
 
-function syncLearningPointToDemo(pointIndex) {
-  if (currentChapter !== 0 || pointIndex === currentPoint || !chapters[0].points[pointIndex]) return;
-  currentPoint = pointIndex;
-  activePoint = chapters[0].points[pointIndex];
-  menuOpen = false;
-  renderPointMenu();
-  renderPointNote();
-  updateAddress("point");
-}
-
-function syncMobilePointFromDemo(pointIndex) {
-  if (currentChapter !== 2 || showcase.dataset.view !== "stage" || !Number.isInteger(pointIndex) || pointIndex < 0 || pointIndex >= chapters[2].points.length || pointIndex === currentPoint) return;
-  currentPoint = pointIndex;
-  activePoint = chapters[2].points[pointIndex];
-  renderPointMenu();
-  renderPointNote();
-  updateAddress("point");
-}
-
 function prefillLearningPrompt(doc, onlyIfBlank = true) {
   const input = doc.querySelector('textarea[aria-label="继续提问"]');
   if (!isVisible(input) || (onlyIfBlank && input.value.trim())) return false;
@@ -141,62 +122,36 @@ function prefillLearningPrompt(doc, onlyIfBlank = true) {
   return false;
 }
 
-function syncLearningPointFromDemo(doc, pointModeChanged = false) {
-  if (currentChapter !== 0 || showcase.dataset.view !== "stage") return;
-  const task = selectedTaskLabel(doc);
-  if (task === "ResNet50 离线推理初体验") {
-    const pointMode = doc.querySelector(".tw-point-mode");
-    if (pointMode?.getAttribute("aria-pressed") === "true") syncLearningPointToDemo(3);
-    else if (currentPoint !== 3 || pointModeChanged) syncLearningPointToDemo(2);
-    return;
-  }
-  if (task === "图像输入预处理路径共创" && currentPoint === 0) {
-    syncLearningPointToDemo(1);
-    requestAnimationFrame(() => prefillLearningPrompt(doc));
-  }
-}
-
-function installLearningDemoSync(doc, revision) {
-  learningSyncCleanup?.();
+function installLearningDemoPrefill(doc, revision) {
+  learningPrefillCleanup?.();
   if (currentChapter !== 0) return;
-  let syncTimer = 0, pointModeChanged = false;
-  const scheduleSync = (modeChanged = false) => {
-    pointModeChanged ||= modeChanged;
-    clearTimeout(syncTimer);
-    syncTimer = setTimeout(() => {
-      if (revision === loadingRevision) syncLearningPointFromDemo(doc, pointModeChanged);
-      pointModeChanged = false;
-    }, 160);
+  let timer = 0;
+  const tryPrefill = () => {
+    if (revision !== loadingRevision || currentPoint !== 0 || selectedTaskLabel(doc) !== "图像输入预处理路径共创") return;
+    prefillLearningPrompt(doc);
+  };
+  const schedulePrefill = () => {
+    clearTimeout(timer);
+    timer = setTimeout(tryPrefill, 160);
   };
   const handleClick = event => {
-    if (event.target.closest(".tw-point-mode")) { scheduleSync(true); return; }
-    if (event.target.closest(".new-task-home__card-summary, .new-task-home__card-continue, .new-task-home__card-chat, .task-suggestion-actions button, .new-task-button")) scheduleSync();
+    if (event.target.closest(".new-task-home__card-summary, .new-task-home__card-continue, .new-task-home__card-chat, .task-suggestion-actions button, .new-task-button")) schedulePrefill();
   };
   const handleFocus = event => {
-    if (event.target.matches('textarea[aria-label="继续提问"]') && currentPoint === 0 && selectedTaskLabel(doc) === "图像输入预处理路径共创") {
-      syncLearningPointToDemo(1);
-      requestAnimationFrame(() => prefillLearningPrompt(doc));
-    }
+    if (event.target.matches('textarea[aria-label="继续提问"]')) tryPrefill();
   };
-  const handleKeyDown = event => {
-    if (event.key === "Escape" && doc.querySelector(".tw-point-mode")?.getAttribute("aria-pressed") === "true") {
-      setTimeout(() => scheduleSync(true), 0);
-    }
-  };
-  const observer = new MutationObserver(() => scheduleSync());
+  const observer = new MutationObserver(schedulePrefill);
   doc.addEventListener("click", handleClick, true);
   doc.addEventListener("focusin", handleFocus, true);
-  doc.addEventListener("keydown", handleKeyDown, true);
   if (doc.body) observer.observe(doc.body, { childList: true, subtree: true });
-  learningSyncCleanup = () => {
-    clearTimeout(syncTimer);
+  learningPrefillCleanup = () => {
+    clearTimeout(timer);
     observer.disconnect();
     doc.removeEventListener("click", handleClick, true);
     doc.removeEventListener("focusin", handleFocus, true);
-    doc.removeEventListener("keydown", handleKeyDown, true);
-    learningSyncCleanup = null;
+    learningPrefillCleanup = null;
   };
-  scheduleSync();
+  schedulePrefill();
 }
 
 function selectedTaskLabel(doc) {
@@ -384,7 +339,7 @@ function applyPcStart(point, attempt = 0, revision = loadingRevision) {
     return;
   }
   $("#loading-state").hidden = true;
-  if (currentChapter === 0) installLearningDemoSync(doc, revision);
+  if (currentChapter === 0) installLearningDemoPrefill(doc, revision);
 }
 
 function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
@@ -408,7 +363,7 @@ function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
 }
 
 function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
-  learningSyncCleanup?.();
+  learningPrefillCleanup?.();
   const revision = ++loadingRevision;
   currentChapter = chapterIndex;
   currentPoint = pointIndex;
@@ -457,7 +412,7 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
 }
 
 function showChapterCover(index) {
-  learningSyncCleanup?.();
+  learningPrefillCleanup?.();
   loadingRevision += 1;
   currentChapter = Math.max(0, Math.min(chapters.length - 1, index));
   currentPoint = 0;
@@ -578,11 +533,6 @@ $("#menu-content").addEventListener("click", event => {
   else if (chapterButton) showChapterCover(Number(chapterButton.dataset.chapterCover));
 });
 document.addEventListener("keydown", handleShowcaseKeydown);
-
-window.addEventListener("message", event => {
-  if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
-  if (event.data?.type === "ascstudio-mini-review-step") syncMobilePointFromDemo(event.data.index);
-});
 
 renderPointMenu();
 const deepLink = location.hash.match(/^#chapter-(\d+)-([a-z0-9-]+)$/i);
