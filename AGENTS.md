@@ -8926,3 +8926,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 同步将规则写入 `ascend-studio/AGENTS.md` 与本机共享样式 Skill，覆盖 2026-10-30 的「阶段浅灰、步骤黑底」旧决定。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；线上 `/ascstudio/?task=resnet50` 返回 HTTP 200，页面已引用新 JS / CSS，线上 CSS 读回阶段节点黑底白字及状态标记规则。未取得本轮浏览器交互截图。
 - 代码提交 `c917f93c` 已推送至 `origin/main`；Pages workflow `41755421034` build / deploy 成功。线上入口：`https://schihhsin.github.io/AscendCANN/ascstudio/?task=resnet50&rev=c917f93c`。
+
+### 2026-11-04 · PC Demo 点击不再切换左下设计说明
+
+- 用户指出，点击 PC Demo 不应该让左下角说明文字变化。原因为 PC 页监听内嵌 Demo 的任务选择和学习模式切换，再联动外层当前设计点、说明文字、目录高亮及 URL；移动端 Demo 也会通过 postMessage 联动外层设计点。
+- 修改 ascstudio-pc/app.js，取消内嵌 Demo 对外层设计点的双向联动：左下说明只由外层章节目录及前后设计点导航更新。保留学习演示路径的原有输入预填；Demo 内的任务和模式仍可独立交互。更新 ROUTE_REV 与入口资源参数，确保浏览器载入新逻辑。
+- 依据：用户对点击 Demo 后说明变化的直接反馈（H）；外层监听器与说明渲染路径代码核对（M）。不改变章节 / 设计点顺序、组合稿页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：node --check ascstudio-pc/app.js、git diff --check 通过。GitHub Pages workflow 41755615141 成功；线上 PC 入口返回 HTTP 200，读回确认已引用 20261104-demo-note-isolation-v1。
+- 代码提交 c57c3b6dafab0ec985823539a5ee1d4eab3ad574 已推送至 origin/main；本条交接记录随后提交并推送。
