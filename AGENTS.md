@@ -8962,3 +8962,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认当前思维导图内容正确：只展开 Ascend Studio PC 的「学习、开发、移动续学」三大场景及各自设计点；主持人串场、测试流程等内容不放进思维导图。已发布的 Simple Mind Map 符合此范围，无需删改场景或调整页面。
 - 主持流程和任务执行说明仍保留在独立任务书中；这不改变导图结构。证据为用户本轮明确确认（H）及线上源码三分支核对（M）。
 - 本轮仅更新本文件交接记录，导图与问卷内容不变；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。文档记录已提交并推送到 `origin/main`；现有 Pages 发布继续有效，无需重新构建。
+
+### 2026-11-04 · UI 满意度改为按界面单元评分
+
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/index.html`、`questionnaire.html`、`taskbook.md`。按用户要求，任务旅程继续按学习、开发、移动续学三大场景组织；UI 满意度改按 7 个实际界面单元分别评分，每组保留 8 个维度、1–10 分，并将主动推荐首页与连线探索首页分开比较。新增独立的「知识回流 · 发布后文章预览」评分组；未体验界面可标记并从汇总中排除。Kano 仍按三场景的 16 个设计点进行成对需求分析。
+- 界面边界依据：用户明确要求按界面而非业务任务评分（H）；`ascstudio-pc/app.js` 的三大场景 / 设计点路由、`ascstudio-mini/app.js` 的移动界面路由，以及 PC Demo 构建资源中的草稿预览、渠道预览与发布后预览组件（M）。独立首页方案、学习画布、工作台、经验草稿 / 渠道预览、发布后文章和移动端构成评分范围；演示封面、讲解卡和章节目录仅作测试导航，不计产品 UI 分。
+- Simple Mind Map 保持用户确认的三个场景及 16 个设计点，不加入主持流程或满意度分支。任务书补充首页版本顺序记录，并把发布后预览列为可选体验：不强迫参与者提交，未体验可跳过。没有改变 Kano 分类、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：问卷内联脚本 `node --check`、`git diff --check` 通过；结构核对为 7 个界面组 × 8 项、16 个 Kano 设计点；Chrome 1440px 桌面截图核对问卷评分行和 Kano 卡片排版。未运行自动化测试，也未采集参与者结果。
+- 发布：内容提交 `f5fc1bb9` 已推送到 `origin/main`；GitHub Pages `pages build and deployment` 成功。线上问卷与提纲 HTTP 200，已读回 7 个界面组、UI06 发布后预览和「7 / 16」摘要。问卷：[线上地址](https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/questionnaire.html)；测试提纲：[线上地址](https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/)。
+- 未决事项：尚无实际参与者答卷；测试完成后再按界面统计 UI 分数、按场景 × 设计点汇总 Kano 分类。
