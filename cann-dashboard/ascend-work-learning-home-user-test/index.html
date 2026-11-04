@@ -160,7 +160,7 @@
       <div>
         <div class="eyebrow">探索性用户测试 · 研究方案</div>
         <h1>Ascend Studio PC 用户测试<br>三大场景 × 设计点</h1>
-        <p class="hero-copy">围绕 PC Demo 的 <strong>学习、开发、移动续学</strong> 三大场景组织测试。参与者先完成每个场景，再评价该场景的 UI 满意度，并对其中的设计点进行 Kano 需求分析。</p>
+        <p class="hero-copy">围绕 PC Demo 的 <strong>学习、开发、移动续学</strong> 三段旅程组织测试；任务旅程保留场景分组，UI 满意度按实际体验的界面单元评分，Kano 仍按 16 个设计点分析。</p>
         <div class="demo-links" aria-label="测试原型">
           <a class="demo-link" href="https://schihhsin.github.io/AscendCANN/ascstudio-pc/" target="_blank" rel="noopener noreferrer">打开 Ascend Studio PC</a>
           <a class="demo-link" href="./questionnaire.html" target="_blank" rel="noopener noreferrer">打开体验评分问卷</a>
@@ -170,9 +170,9 @@
         <div class="hero-side-label">建议安排</div>
         <div class="metrics">
           <div class="metric"><strong>8</strong><span>参与者建议数</span></div>
-          <div class="metric"><strong>110–120</strong><span>分钟 / 人</span></div>
+          <div class="metric"><strong>120–130</strong><span>分钟 / 人</span></div>
           <div class="metric"><strong>3</strong><span>用户旅程场景</span></div>
-          <div class="metric"><strong>16</strong><span>待评估设计点</span></div>
+          <div class="metric"><strong>7 / 16</strong><span>评分界面 / Kano 设计点</span></div>
         </div>
       </aside>
     </div>
@@ -279,7 +279,6 @@
               { text: "共创路径连接理解与实践" },
               { text: "框选内容，直接指着说" }
             ] },
-            { text: "场景结束后评价 UI · 8 项 × 1–10 分" }
           ]
         },
         {
@@ -291,7 +290,6 @@
               { text: "把处理过程整理成社区经验" },
               { text: "把经验带到更多平台" }
             ] },
-            { text: "场景结束后评价 UI · 8 项 × 1–10 分" }
           ]
         },
         {
@@ -305,7 +303,6 @@
               { text: "每周一条重点资讯，再补两张个性化卡片" },
               { text: "没有当前任务，也能主动发现下一点新知" }
             ] },
-            { text: "场景结束后评价 UI · 8 项 × 1–10 分" }
           ]
         }
       ];
@@ -367,7 +364,7 @@
       window.addEventListener("resize", () => mindMap.view.fit());
       window.setTimeout(() => mindMap.view.fit(), 250);
     } catch (error) {
-      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>学习贴合当前需要与现有基础：4 个设计点</li><li>在开发过程中掌握知识：5 个设计点</li><li>让学习随时继续：7 个设计点</li></ul><p>问卷按场景评价 UI，并对 16 个设计点分别进行 Kano 成对分析。<a href="./questionnaire.html">打开评分问卷</a>；完整安排见<a href="./taskbook.md">Markdown 任务书</a>。</p></div>';
+      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>学习贴合当前需要与现有基础：4 个设计点</li><li>在开发过程中掌握知识：5 个设计点</li><li>让学习随时继续：7 个设计点</li></ul><p>UI 满意度按 7 个界面单元评价；Kano 对 16 个设计点分别进行成对分析。<a href="./questionnaire.html">打开评分问卷</a>；完整安排见<a href="./taskbook.md">Markdown 任务书</a>。</p></div>';
     }
   </script>
 </body>

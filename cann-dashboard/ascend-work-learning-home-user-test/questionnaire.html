@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f5f1">
-  <meta name="description" content="Ascend Studio PC 三大场景与 16 个设计点的 UI 满意度评分和 Kano 需求问卷。">
+  <meta name="description" content="Ascend Studio PC 7 个界面单元的 UI 满意度评分和 16 个设计点的 Kano 需求问卷。">
   <title>Ascend Studio PC 评分与 Kano 需求问卷</title>
   <style>
     :root {
@@ -50,13 +50,17 @@
     .field-label { display: block; margin-bottom: 6px; color: #42494e; font-size: 12px; font-weight: 650; }
     .text-input, .select-input { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #d9dcd8; border-radius: 5px; background: #fff; color: var(--ink); }
     .text-input:focus, .select-input:focus { outline: 2px solid #adc0d0; outline-offset: 1px; }
-    .scene-rating { margin-top: 18px; padding: 19px 20px 16px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
-    .scene-rating-heading { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 11px; margin-bottom: 10px; }
+    .interface-rating { margin-top: 18px; padding: 19px 20px 16px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
+    .interface-rating-heading { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 11px; margin-bottom: 10px; }
     .scene-index { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #edf1f3; color: #4d6f8c; font-size: 11px; font-weight: 750; }
-    .scene-rating[data-scene="scene_2"] .scene-index { background: #edf1ed; color: #657f6e; }
-    .scene-rating[data-scene="scene_3"] .scene-index { background: #f1edf4; color: #8b62a3; }
-    .scene-rating-heading h3 { margin: 0; font-size: 16px; line-height: 1.35; font-weight: 680; }
-    .scene-rating-heading p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
+    .interface-rating-heading h3 { margin: 0; font-size: 16px; line-height: 1.35; font-weight: 680; }
+    .interface-rating-heading p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
+    .interface-index { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #edf1f3; color: #4d6f8c; font-size: 11px; font-weight: 750; }
+    .interface-rating-controls { display: flex; align-items: center; gap: 12px; }
+    .interface-unseen { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); font-size: 11px; white-space: nowrap; cursor: pointer; }
+    .interface-unseen input { accent-color: #4d6f8c; }
+    .interface-rating-fields { min-width: 0; margin: 0; padding: 0; border: 0; }
+    .interface-rating-fields:disabled { opacity: .45; }
     .scene-count { color: var(--muted); font-size: 11px; white-space: nowrap; }
     .rating-category { margin-top: 14px; }
     .rating-category-title { margin: 0; padding: 9px 0 3px; border-top: 1px solid var(--line); color: #444c50; font-size: 13px; font-weight: 700; }
@@ -104,7 +108,7 @@
       .rating-options { grid-template-columns: repeat(10, minmax(23px, 1fr)); gap: 3px; }
       .choice span { min-height: 32px; font-size: 11px; }
       .kano-options { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
-      .scene-rating-heading { grid-template-columns: 30px minmax(0, 1fr) auto; gap: 8px; }
+      .interface-rating-heading { grid-template-columns: 30px minmax(0, 1fr) auto; gap: 8px; }
       .scene-index { width: 28px; height: 28px; }
       .kano-options .choice span { min-height: 48px; font-size: 10px; }
     }
@@ -114,8 +118,11 @@
       .kano-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .kano-scene-heading { align-items: flex-start; }
       .kano-scene-heading .scene-count { padding-top: 4px; }
-      .scene-rating { padding: 16px 14px 13px; }
-      .scene-rating-heading h3 { font-size: 14px; }
+      .interface-rating { padding: 16px 14px 13px; }
+      .interface-rating-heading { grid-template-columns: 28px minmax(0, 1fr); }
+      .interface-rating-heading h3 { font-size: 14px; }
+      .interface-rating-controls { grid-column: 2; justify-content: space-between; }
+      .interface-index { width: 28px; height: 28px; }
       .kano-options .choice:last-child { grid-column: span 2; }
     }
     @media print {
@@ -124,9 +131,9 @@
       .wrap { width: 100%; }
       .hero { padding: 0 0 12px; }
       .back, .actions { display: none !important; }
-      .card, .scene-rating, .kano-card { box-shadow: none; }
+      .card, .interface-rating, .kano-card { box-shadow: none; }
       .card { border: 0; padding: 0; }
-      .scene-rating, .kano-card { break-inside: avoid; }
+      .interface-rating, .kano-card { break-inside: avoid; }
       .section { margin-top: 18px; }
       .choice span { min-height: 25px; }
       .privacy-note { background: #fff; }
@@ -139,7 +146,7 @@
       <a class="back" href="./">← 返回测试提纲</a>
       <div class="eyebrow">体验评分 · 需求偏好</div>
       <h1>评分与 Kano 需求问卷</h1>
-      <p class="intro">请在体验完 Ascend Studio PC 的三大场景后填写。第一部分按场景评价 UI 满意度；第二部分按场景评价 16 个设计点的需求偏好。</p>
+      <p class="intro">请在体验完 Ascend Studio PC 的三段用户旅程后填写。第一部分按 <strong>7 个界面单元</strong>评价 UI 满意度；第二部分按原型的 <strong>16 个设计点</strong>进行 Kano 需求分析。</p>
       <div class="privacy-note">每位参与者填写一次。答卷不会上传到服务器；点击“下载答卷 CSV”后，文件保存在本地。请使用参与者编号，不填写姓名。</div>
     </div>
   </header>
@@ -168,7 +175,7 @@
             </select>
           </div>
           <div>
-            <label class="field-label" for="scene-order">体验顺序</label>
+            <label class="field-label" for="scene-order">旅程体验顺序</label>
             <select class="select-input" id="scene-order" name="scene_order" required>
               <option value="">请选择</option>
               <option>学习 → 开发 → 移动续学</option>
@@ -179,6 +186,14 @@
               <option>移动续学 → 开发 → 学习</option>
             </select>
           </div>
+          <div>
+            <label class="field-label" for="home-variant-order">首页方案顺序</label>
+            <select class="select-input" id="home-variant-order" name="home_variant_order" required>
+              <option value="">请选择</option>
+              <option>主动推荐卡片 → 连线探索</option>
+              <option>连线探索 → 主动推荐卡片</option>
+            </select>
+          </div>
         </div>
       </section>
 
@@ -186,7 +201,7 @@
         <div class="section-head">
           <div class="section-kicker">第一部分 · UI 界面满意度</div>
           <h2 id="ui-heading">按刚才的实际体验打分</h2>
-          <p class="section-note">每完成一个场景，就评价刚才的 UI。1 分表示非常不满意，10 分表示非常满意；每个场景均为 8 项。</p>
+          <p class="section-note">按实际界面分别评分，不按用户旅程合并。每个界面单元 8 项，均为 1–10 分；首页两种方案分开评价。没体验到的界面请勾选“未体验”，不要猜分。</p>
         </div>
         <div id="rating-groups"></div>
       </section>
@@ -206,7 +221,7 @@
         <button class="button" type="reset">清空作答</button>
       </div>
       <p id="save-status" aria-live="polite"></p>
-      <p class="footer-note">下载文件包含三大场景的 UI 评分、16 个设计点的 Kano 原始选项与分类结果。完成后请把 CSV 交给主持人汇总。</p>
+      <p class="footer-note">下载文件包含 7 个界面单元的 UI 评分、旅程顺序、16 个设计点的 Kano 原始选项与分类结果。未体验界面会标为“未体验”，不参与评分汇总。</p>
     </form>
   </main>
   <script>
@@ -217,7 +232,7 @@
       { id: "discoverability", category: "简单易用", title: "易发现性", caption: "需要的入口、材料或功能是否容易找到" },
       { id: "layout_rationality", category: "简单易用", title: "布局合理性", caption: "区域划分与信息位置是否符合预期" },
       { id: "learnability", category: "简单易用", title: "易学性", caption: "是否容易理解页面如何使用" },
-      { id: "operability", category: "简单易用", title: "易操作性", caption: "完成刚才场景时操作是否顺手" },
+      { id: "operability", category: "简单易用", title: "易操作性", caption: "完成该界面上的操作是否顺手" },
       { id: "error_tolerance", category: "简单易用", title: "防错与容错性", caption: "是否能避免误操作，并在出错时恢复" }
     ];
 
@@ -255,6 +270,16 @@
       }
     ];
 
+    const interfaceGroups = [
+      { id: "home_recommend", code: "UI01", title: "首页 · 主动推荐卡片", caption: "评价首页主动建议方案中的推荐依据、卡片信息和继续入口。" },
+      { id: "home_connections", code: "UI02", title: "首页 · 连线探索与 Prompt", caption: "评价关系线索的浏览、选择，以及需求逐步成形和编辑的界面。" },
+      { id: "pc_workbench", code: "UI03", title: "PC 工作台 · 对话与任务材料", caption: "评价任务上下文与右侧材料/操作的共同布局；路径输入/审阅、图解、代码、示例副本和复核作为同一工作台的不同状态，不重复打分。" },
+      { id: "learning_canvas", code: "UI04", title: "学习画布 · 路径、知识点与指向提问", caption: "评价学习路径/知识材料的画布呈现、定位和框选提问交互。" },
+      { id: "community_draft", code: "UI05", title: "知识回流 · 草稿审阅与渠道预览", caption: "评价经验内容的核对、编辑、渠道选择与发布前预览。" },
+      { id: "community_published", code: "UI06", title: "知识回流 · 发布后文章预览", caption: "评价提交后展示的文章页面；这里是本地演示预览，不代表内容已真实发布。" },
+      { id: "mobile_learning", code: "UI07", title: "移动端 · 通知、短读卡与每周回访", caption: "整体评价微信消息接续、小程序知识卡/速览和回访设置，不逐个页面重复评分。" }
+    ];
+
     const ratingCategories = [
       { title: "品质美感", note: "视觉美观度、视觉舒适性" },
       { title: "简单易用", note: "信息理解性、易发现性、布局合理性、易学性、易操作性、防错与容错性" }
@@ -286,18 +311,18 @@
 
     const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[char]));
 
-    function radioOptions(name, values, className, ariaLabel) {
+    function radioOptions(name, values, className, ariaLabel, required = true) {
       return '<div class="' + escapeHtml(className) + '" role="radiogroup" aria-label="' + escapeHtml(ariaLabel) + '">' +
-        values.map(([value, label]) => '<label class="choice"><input type="radio" name="' + escapeHtml(name) + '" value="' + escapeHtml(value) + '" required><span>' + escapeHtml(value) + (label ? ' · ' + escapeHtml(label) : '') + '</span></label>').join("") +
+        values.map(([value, label]) => '<label class="choice"><input type="radio" name="' + escapeHtml(name) + '" value="' + escapeHtml(value) + '"' + (required ? ' required' : '') + '><span>' + escapeHtml(value) + (label ? ' · ' + escapeHtml(label) : '') + '</span></label>').join("") +
         '</div>';
     }
 
     const ratingGroups = document.getElementById("rating-groups");
-    ratingGroups.innerHTML = scenes.map(scene => {
+    ratingGroups.innerHTML = interfaceGroups.map((interfaceGroup, index) => {
       const categoriesHtml = ratingCategories.map(category => {
         const itemsHtml = ratingItems.filter(item => item.category === category.title).map(item =>
           '<div class="rating-row"><div class="rating-title">' + escapeHtml(item.title) + '<span class="rating-caption">' + escapeHtml(item.caption) + '</span></div>' +
-          radioOptions(scene.id + "_" + item.id, Array.from({ length: 10 }, (_, index) => [String(index + 1), ""]), "rating-options", scene.title + " · " + item.title) +
+          radioOptions("ui_" + interfaceGroup.id + "_" + item.id, Array.from({ length: 10 }, (_, score) => [String(score + 1), ""]), "rating-options", interfaceGroup.title + " · " + item.title, false) +
           '</div>'
         ).join("");
         return '<section class="rating-category" aria-label="' + escapeHtml(category.title) + '">' +
@@ -306,14 +331,28 @@
           '</section>';
       }).join("");
 
-      return '<section class="scene-rating" data-scene="' + scene.id + '" aria-labelledby="rating-heading-' + scene.id + '">' +
-        '<header class="scene-rating-heading">' +
-        '<span class="scene-index" aria-hidden="true">' + scene.number + '</span>' +
-        '<div><h3 id="rating-heading-' + scene.id + '">' + escapeHtml(scene.title) + '</h3><p>完成本场景后，按刚才的体验评分</p></div>' +
-        '<span class="scene-count">8 项</span>' +
+      return '<section class="interface-rating" data-interface="' + interfaceGroup.id + '" aria-labelledby="rating-heading-' + interfaceGroup.id + '">' +
+        '<header class="interface-rating-heading">' +
+        '<span class="interface-index" aria-hidden="true">' + String(index + 1).padStart(2, "0") + '</span>' +
+        '<div><h3 id="rating-heading-' + interfaceGroup.id + '">' + escapeHtml(interfaceGroup.title) + '</h3><p>' + escapeHtml(interfaceGroup.caption) + '</p></div>' +
+        '<div class="interface-rating-controls"><label class="interface-unseen"><input type="checkbox" name="ui_' + interfaceGroup.id + '_unexperienced" value="1" data-skip-interface="' + interfaceGroup.id + '"><span>未体验，不计分</span></label><span class="scene-count">8 项</span></div>' +
         '</header><div class="scale-labels"><span>1 · 非常不满意</span><span>10 · 非常满意</span></div>' +
-        categoriesHtml + '</section>';
+        '<fieldset class="interface-rating-fields">' + categoriesHtml + '</fieldset></section>';
     }).join("");
+
+    function syncInterfaceRating(card) {
+      const skipped = card.querySelector("[data-skip-interface]").checked;
+      const fields = card.querySelector(".interface-rating-fields");
+      fields.disabled = skipped;
+      card.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.required = !skipped;
+        if (skipped) input.checked = false;
+      });
+    }
+    ratingGroups.querySelectorAll(".interface-rating").forEach(syncInterfaceRating);
+    ratingGroups.addEventListener("change", event => {
+      if (event.target.matches("[data-skip-interface]")) syncInterfaceRating(event.target.closest(".interface-rating"));
+    });
 
     const kanoGroups = document.getElementById("kano-groups");
     kanoGroups.innerHTML = scenes.map(scene => {
@@ -344,19 +383,25 @@
       const form = document.getElementById("survey-form");
       if (!form.reportValidity()) return;
       const formData = new FormData(form);
-      const headers = ["participant_id", "role", "scenario_order", "submitted_at"];
+      const headers = ["participant_id", "role", "scenario_order", "home_variant_order", "submitted_at"];
       const values = [
         formData.get("participant_id").trim(),
         formData.get("role"),
         formData.get("scene_order"),
+        formData.get("home_variant_order"),
         new Date().toISOString()
       ];
 
-      scenes.forEach(scene => ratingItems.forEach(item => {
-        const field = scene.id + "_" + item.id;
-        headers.push(scene.code + "_" + item.id + "_score_1_to_10");
-        values.push(formData.get(field));
-      }));
+      interfaceGroups.forEach(interfaceGroup => {
+        const skipped = formData.get("ui_" + interfaceGroup.id + "_unexperienced") === "1";
+        headers.push(interfaceGroup.code + "_interface_exposure");
+        values.push(skipped ? "未体验" : "已体验");
+        ratingItems.forEach(item => {
+          const field = "ui_" + interfaceGroup.id + "_" + item.id;
+          headers.push(interfaceGroup.code + "_" + item.id + "_score_1_to_10");
+          values.push(skipped ? "未体验" : formData.get(field));
+        });
+      });
 
       scenes.forEach(scene => scene.features.forEach(feature => {
         const presentName = feature.id + "_present";
@@ -385,6 +430,7 @@
 
     document.getElementById("survey-form").addEventListener("reset", () => {
       document.getElementById("save-status").textContent = "";
+      window.setTimeout(() => ratingGroups.querySelectorAll(".interface-rating").forEach(syncInterfaceRating), 0);
     });
   </script>
 </body>
