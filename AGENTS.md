@@ -8942,3 +8942,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 测试流程从 65–70 分钟调整至 75–80 分钟，增加 10 分钟完成问卷；Simple Mind Map 中补入填写问卷环节。未改变其他页面顺序，也不涉及 API / Protocol、Host / Harness 或 Application / Task 边界。
 - 验证：内联脚本 `node --check` 通过；`git diff --check` 通过；结构核对确认 UI 共 8 项、Kano 共 8 项；本机浏览器已检查问卷分组、1–10 分选项、Kano 成对题、提纲导航和 Simple Mind Map 渲染。
 - 发布结果：代码提交 `05e53296` 已推送至 `origin/main`；GitHub Pages workflow `41774580104` 成功，问卷页与测试提纲页均返回 HTTP 200，页面内容已线上核对。本条交接记录随后的记录更新一并推送。未决事项：用户测试收集完成后再汇总各项 UI 评分与 Kano 人数分布；当前不推断总体满意度或总体需求比例。
+
+### 2026-11-04 · Kano 问题标题对齐
+
+- 用户截图指出问卷题目有错位感。复核发现 Kano 能力标题使用 `fieldset/legend` 后压在卡片边框线上，和描述、题目正文起点不一致；将外层需求卡改为带 `aria-labelledby` 的 section，并把能力标题放入卡片内容区，统一左边距。题目内层 fieldset 保留，用于成对选项的语义分组；未改题目、选项或分类规则。
+- 证据：用户提供的问卷页面截图与本机浏览器布局复核（H）；原 HTML/CSS 的 fieldset/legend 结构核对（M）。页面序列及 API / Protocol、Host / Harness、Application / Task 边界均未变化。
+- 验证：内联脚本 `node --check` 与 `git diff --check` 通过；本机浏览器复核 Kano 卡片中标题、说明、问题和选项左边缘已对齐。发布状态将在推送后补记。
