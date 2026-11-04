@@ -8955,3 +8955,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户任务按三段旅程编写；每个场景结束后单独填写 UI 满意度的 8 项（品质美感 2 项、简单易用 6 项，均为 1–10 分）。全部场景结束后按场景分组，对 16 个设计点分别做 Kano“提供 / 不提供”成对题，保留用户指定五选项及标准 A/O/M/I/R/Q 矩阵。体验顺序提供全部六种排列，尽量降低顺序影响；CSV 保留三场景分数、Kano 原始选项、分类和设计点名称，数据只由参与者本地下载。
 - 依据与边界：三大场景、标题及数量来自 `ascstudio-pc/app.js` 的章节 / 设计点目录与用户明确要求（H）；任务话术、观察项和时间分配为本轮研究方案（L，待现场用户测试验证）。目前无参与者作答结果；预设交互不等同真实模型、微信通知、社区发布或 NPU 验收。
 - 页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。验证：问卷内联脚本 `node --check`、`git diff --check` 通过；本机 1280×720 浏览器确认 MindMap 三分支与问卷 Kano 卡片标题、说明、题目和选项左边缘对齐。线上测试提纲与问卷均 HTTP 200，读回标题及三场景结构。提交 `e4eb541b` 已推送到 `origin/main`；GitHub Pages workflow `41781598923` 成功。测试提纲：`https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/`；问卷：`https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/questionnaire.html`。待决事项：现场测试结束后按场景与设计点汇总 UI 和 Kano 结果。
+
+
+### 2026-11-04 · 思维导图范围确认
+
+- 用户确认当前思维导图内容正确：只展开 Ascend Studio PC 的「学习、开发、移动续学」三大场景及各自设计点；主持人串场、测试流程等内容不放进思维导图。已发布的 Simple Mind Map 符合此范围，无需删改场景或调整页面。
+- 主持流程和任务执行说明仍保留在独立任务书中；这不改变导图结构。证据为用户本轮明确确认（H）及线上源码三分支核对（M）。
+- 本轮仅更新本文件交接记录，导图与问卷内容不变；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。文档记录已提交并推送到 `origin/main`；现有 Pages 发布继续有效，无需重新构建。
