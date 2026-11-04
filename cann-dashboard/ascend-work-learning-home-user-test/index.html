@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f5f1">
-  <meta name="description" content="Ascend Work 与 CANN 学习首页的探索性用户测试提纲、MindMap 与任务书。">
+  <meta name="description" content="Ascend Work 与 CANN 学习首页的用户测试提纲、Simple Mind Map、界面满意度与 Kano 需求问卷。">
   <title>双 Demo 用户测试 · Ascend Work × CANN 学习首页</title>
   <style>
     :root {
@@ -160,17 +160,18 @@
       <div>
         <div class="eyebrow">探索性用户测试 · 研究方案</div>
         <h1>两套 Demo 的用户测试<br>任务协作 × 学习资源</h1>
-        <p class="hero-copy">一套可直接主持的测试提纲与任务书，覆盖 <strong>Ascend Work</strong> 与 <strong>CANN 学习首页</strong>。通过真实情境观察用户如何找入口、理解材料、尝试下一步并判断结果是否可信。</p>
+        <p class="hero-copy">一套可直接主持的测试提纲与评分问卷，覆盖 <strong>Ascend Work</strong> 与 <strong>CANN 学习首页</strong>。先观察真实情境中的任务体验，再分别评价 UI 满意度与功能需求偏好。</p>
         <div class="demo-links" aria-label="测试原型">
           <a class="demo-link" href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener noreferrer">打开 Ascend Work</a>
           <a class="demo-link" href="https://schihhsin.github.io/AscendCANN/cann-learning-home/" target="_blank" rel="noopener noreferrer">打开 CANN 学习首页</a>
+          <a class="demo-link" href="./questionnaire.html" target="_blank" rel="noopener noreferrer">打开体验评分问卷</a>
         </div>
       </div>
       <aside class="hero-side" aria-label="测试安排摘要">
         <div class="hero-side-label">建议安排</div>
         <div class="metrics">
           <div class="metric"><strong>8</strong><span>参与者建议数</span></div>
-          <div class="metric"><strong>65–70</strong><span>分钟 / 人</span></div>
+          <div class="metric"><strong>75–80</strong><span>分钟 / 人</span></div>
           <div class="metric"><strong>2</strong><span>核心 Demo</span></div>
           <div class="metric"><strong>4 + 2</strong><span>核心任务 + 可选</span></div>
         </div>
@@ -184,6 +185,7 @@
       <a href="#mindmap">MindMap</a>
       <a href="#taskbook">主持提纲与任务书</a>
       <span class="spacer"></span>
+      <a class="action-button" href="./questionnaire.html" target="_blank" rel="noopener noreferrer">体验评分问卷</a>
       <a class="action-button" href="./taskbook.md" download>下载 Markdown</a>
       <button class="action-button" type="button" onclick="window.print()">打印任务书</button>
     </div>
@@ -224,7 +226,7 @@
     </section>
   </main>
 
-  <footer><div class="wrap"><span>AscendCANN · 用户研究工作材料 · 2026-11-03</span><span>本轮为小样本探索，不作总体比例推断。</span></div></footer>
+  <footer><div class="wrap"><span>AscendCANN · 用户研究工作材料 · 2026-11-04</span><span>本轮为小样本探索，不作总体比例推断。</span></div></footer>
 
   <script type="module">
     const mapTarget = document.getElementById("map-render");
@@ -275,6 +277,7 @@
             { text: "招募分组与知情同意" },
             { text: "背景访谈与边做边说" },
             { text: "任务执行与中性追问" },
+            { text: "完成后填写 UI 与 Kano 问卷" },
             { text: "复盘比较与证据整理" }
           ]
         },
@@ -367,7 +370,7 @@
       window.addEventListener("resize", () => mindMap.view.fit());
       window.setTimeout(() => mindMap.view.fit(), 250);
     } catch (error) {
-      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>共同主持流程：招募、开场、任务执行与复盘</li><li>Ascend Work：AddCustom、ResNet50、可选训练与调优探索</li><li>CANN 学习首页：学习主线、高校教学资源和可选练习方式</li><li>共同记录：完成度、用时、帮助、事实、原话与研究解释</li></ul><p>如果 CDN 暂时不可用，可直接<a href="./taskbook.md">打开 Markdown 任务书</a>；图表组件见 <a href="https://github.com/wanglin2/mind-map">Simple Mind Map</a>。</p></div>';
+      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>共同主持流程：招募、开场、任务执行、UI 评分与 Kano 问卷</li><li>Ascend Work：AddCustom、ResNet50、可选训练与调优探索</li><li>CANN 学习首页：学习主线、高校教学资源和可选练习方式</li><li>共同记录：完成度、用时、帮助、事实、原话与研究解释</li></ul><p>问卷单独位于 <a href="./questionnaire.html">体验评分与需求问卷</a>；测试任务书可从<a href="./taskbook.md">Markdown 文件</a>打开。</p></div>';
     }
   </script>
 </body>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <meta name="description" content="Ascend Work 与 CANN 学习首页的界面满意度评分和 Kano 需求问卷。">
+  <title>体验评分与需求问卷 · Ascend Work × CANN 学习首页</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f6f5f1;
+      --paper: #fff;
+      --ink: #202326;
+      --muted: #697077;
+      --line: #e5e5e0;
+      --red: #b74445;
+      --blue: #4d6f8c;
+      --green: #657f6e;
+      --shadow: 0 18px 48px rgba(36, 40, 38, .055);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font: 15px/1.65 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; }
+    a { color: inherit; }
+    .wrap { width: min(980px, calc(100% - 40px)); margin-inline: auto; }
+    .hero { padding: 35px 0 25px; }
+    .back { display: inline-block; margin-bottom: 22px; color: var(--blue); font-size: 13px; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    .eyebrow { color: var(--red); font-size: 11px; font-weight: 750; letter-spacing: .13em; }
+    h1 { margin: 10px 0 10px; font-size: clamp(32px, 5vw, 48px); line-height: 1.13; letter-spacing: -.04em; font-weight: 650; }
+    .intro { max-width: 760px; margin: 0; color: var(--muted); }
+    .intro strong { color: var(--ink); }
+    .privacy-note { margin-top: 17px; padding: 12px 15px; border: 1px solid #e8e4dc; border-radius: 7px; background: rgba(255,255,255,.65); color: #596168; font-size: 12px; }
+    main { padding: 0 0 64px; }
+    .section { margin-top: 28px; }
+    .section-head { margin: 0 0 13px; }
+    .section-kicker { color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: .12em; }
+    h2 { margin: 4px 0 4px; font-size: 23px; line-height: 1.25; letter-spacing: -.025em; font-weight: 650; }
+    .section-note { max-width: 770px; margin: 0; color: var(--muted); font-size: 13px; }
+    .card { padding: clamp(18px, 3vw, 28px); border: 1px solid #ebeae5; border-radius: 10px; background: var(--paper); box-shadow: var(--shadow); }
+    .participant-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .field-label { display: block; margin-bottom: 6px; color: #42494e; font-size: 12px; font-weight: 650; }
+    .text-input, .select-input { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #d9dcd8; border-radius: 5px; background: #fff; color: var(--ink); }
+    .text-input:focus, .select-input:focus { outline: 2px solid #adc0d0; outline-offset: 1px; }
+    .demo-rating { margin-top: 18px; padding: 19px 20px 16px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
+    .demo-rating legend { padding: 0 8px; font-size: 17px; font-weight: 650; }
+    .demo-rating[data-demo="aw"] legend { color: var(--blue); }
+    .demo-rating[data-demo="lh"] legend { color: var(--green); }
+    .rating-category { margin-top: 14px; }
+    .rating-category-title { margin: 0; padding: 9px 0 3px; border-top: 1px solid var(--line); color: #444c50; font-size: 13px; font-weight: 700; }
+    .rating-category-note { margin: 0 0 3px; color: var(--muted); font-size: 11px; }
+    .scale-labels { display: flex; justify-content: space-between; margin: 7px 1px 4px; color: var(--muted); font-size: 10px; }
+    .rating-row { display: grid; grid-template-columns: minmax(190px, 1.2fr) minmax(420px, 2fr); align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #f0f0ec; }
+    .rating-title { font-size: 13px; font-weight: 620; }
+    .rating-caption { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 400; }
+    .rating-options { display: grid; grid-template-columns: repeat(10, minmax(28px, 1fr)); gap: 5px; }
+    .choice { position: relative; display: inline-flex; min-width: 0; cursor: pointer; }
+    .choice input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .choice span { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 33px; padding: 3px; border: 1px solid #dedfda; border-radius: 5px; background: #fff; color: #555e63; font-size: 12px; line-height: 1.2; text-align: center; transition: background .12s ease, border-color .12s ease, color .12s ease; }
+    .choice:hover span { border-color: #99adbe; }
+    .choice input:checked + span { border-color: #355c7a; background: #eaf0f4; color: #244b6b; font-weight: 700; box-shadow: inset 0 0 0 1px #355c7a; }
+    .choice input:focus-visible + span { outline: 2px solid #8eaac0; outline-offset: 2px; }
+    .kano-group-title { margin: 28px 0 10px; padding: 0 0 8px; border-bottom: 1px solid var(--line); color: #414a4e; font-size: 17px; font-weight: 650; }
+    .kano-card { margin-top: 12px; padding: 17px 18px 15px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
+    .kano-card legend { padding: 0 7px; font-size: 14px; font-weight: 650; }
+    .kano-card[data-demo="aw"] legend { color: var(--blue); }
+    .kano-card[data-demo="lh"] legend { color: var(--green); }
+    .feature-desc { margin: 0 0 13px; color: var(--muted); font-size: 12px; }
+    .kano-question { margin: 13px 0 0; padding: 0; border: 0; }
+    .kano-question legend { padding: 0; margin-bottom: 7px; color: #464e53; font-size: 12px; font-weight: 650; }
+    .kano-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
+    .kano-options .choice span { min-height: 38px; padding: 6px 5px; font-size: 11px; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-top: 24px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 8px 15px; border: 1px solid #d9dcd8; border-radius: 5px; background: rgba(255,255,255,.7); color: var(--ink); font-size: 12px; font-weight: 650; cursor: pointer; }
+    .button:hover { border-color: #aeb7b9; background: #fff; }
+    .button.primary { border-color: #294b6e; background: #294b6e; color: #fff; }
+    .button.primary:hover { border-color: #1f3e5e; background: #1f3e5e; }
+    #save-status { min-height: 20px; margin: 3px 0 0; color: var(--green); font-size: 12px; }
+    .footer-note { margin-top: 18px; color: var(--muted); font-size: 11px; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 28px, 980px); }
+      .participant-grid { grid-template-columns: 1fr; }
+      .rating-row { grid-template-columns: 1fr; gap: 8px; }
+      .rating-options { grid-template-columns: repeat(10, minmax(23px, 1fr)); gap: 3px; }
+      .choice span { min-height: 32px; font-size: 11px; }
+      .kano-options { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+      .kano-options .choice span { min-height: 48px; font-size: 10px; }
+    }
+    @media (max-width: 420px) {
+      .rating-options { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .rating-options .choice span { min-height: 36px; }
+      .kano-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kano-options .choice:last-child { grid-column: span 2; }
+    }
+    @media print {
+      :root { --page: #fff; }
+      body { background: #fff; font-size: 10.5pt; }
+      .wrap { width: 100%; }
+      .hero { padding: 0 0 12px; }
+      .back, .actions { display: none !important; }
+      .card, .demo-rating, .kano-card { box-shadow: none; }
+      .card { border: 0; padding: 0; }
+      .demo-rating, .kano-card { break-inside: avoid; }
+      .section { margin-top: 18px; }
+      .choice span { min-height: 25px; }
+      .privacy-note { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <a class="back" href="./">← 返回测试提纲</a>
+      <div class="eyebrow">体验评分 · 需求偏好</div>
+      <h1>体验评分与需求问卷</h1>
+      <p class="intro">请在体验完 <strong>Ascend Work</strong> 与 <strong>CANN 学习首页</strong> 后填写。第一部分分别评价两个 Demo 的 UI；第二部分判断你对两套 Demo 中具体能力的需求偏好。</p>
+      <div class="privacy-note">每位参与者单独填写一次。问卷不会上传到服务器；点击“下载答卷 CSV”后，答卷保存在本地文件中。请用参与者编号记录，不填写姓名。</div>
+    </div>
+  </header>
+  <main class="wrap">
+    <form id="survey-form">
+      <section class="section card" aria-labelledby="participant-heading">
+        <div class="section-head">
+          <div class="section-kicker">答卷信息</div>
+          <h2 id="participant-heading">先填写参与者编号</h2>
+        </div>
+        <div class="participant-grid">
+          <div>
+            <label class="field-label" for="participant-id">参与者编号</label>
+            <input class="text-input" id="participant-id" name="participant_id" placeholder="例如 P01" required maxlength="24" autocomplete="off">
+          </div>
+          <div>
+            <label class="field-label" for="participant-role">主要工作情境</label>
+            <select class="select-input" id="participant-role" name="role" required>
+              <option value="">请选择</option>
+              <option>初次接触 CANN</option>
+              <option>大模型 / 推理应用开发</option>
+              <option>算子 / CANN 开发</option>
+              <option>高校教学 / 课程设计</option>
+              <option>其他开发或学习任务</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="demo-order">体验顺序</label>
+            <select class="select-input" id="demo-order" name="demo_order" required>
+              <option value="">请选择</option>
+              <option>Ascend Work → CANN 学习首页</option>
+              <option>CANN 学习首页 → Ascend Work</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="ui-heading">
+        <div class="section-head">
+          <div class="section-kicker">第一部分 · UI 界面满意度</div>
+          <h2 id="ui-heading">按刚才的实际体验打分</h2>
+          <p class="section-note">每个 Demo 分别评价。1 分表示非常不满意，10 分表示非常满意；请选择最符合你感受的一项。共 8 项 / Demo。</p>
+        </div>
+        <div id="rating-groups"></div>
+      </section>
+
+      <section class="section" aria-labelledby="kano-heading">
+        <div class="section-head">
+          <div class="section-kicker">第二部分 · Kano 用户需求分析</div>
+          <h2 id="kano-heading">判断这些能力对你的重要程度</h2>
+          <p class="section-note">每项能力回答两问：如果提供这项能力，你会怎样；如果不提供，你会怎样。请按自己的工作或学习需要选择，没有标准答案。五个选项的顺序与你给出的版本一致。</p>
+        </div>
+        <div id="kano-groups"></div>
+      </section>
+
+      <div class="actions">
+        <button class="button primary" id="download-csv" type="button">下载答卷 CSV</button>
+        <button class="button" type="button" onclick="window.print()">打印问卷</button>
+        <button class="button" type="reset">清空作答</button>
+      </div>
+      <p id="save-status" aria-live="polite"></p>
+      <p class="footer-note">下载文件包含 UI 评分、Kano 两问的原始选项和每项需求的 Kano 分类，方便汇总。完成后请把 CSV 交给主持人。</p>
+    </form>
+  </main>
+  <script>
+    const ratingItems = [
+      { id: "visual_appeal", category: "品质美感", title: "视觉美观度", caption: "整体视觉是否吸引、精致" },
+      { id: "visual_comfort", category: "品质美感", title: "视觉舒适性", caption: "颜色、对比与阅读是否舒适" },
+      { id: "information_clarity", category: "简单易用", title: "信息理解性", caption: "内容与页面表达是否容易理解" },
+      { id: "discoverability", category: "简单易用", title: "易发现性", caption: "需要的入口、材料或功能是否容易找到" },
+      { id: "layout_rationality", category: "简单易用", title: "布局合理性", caption: "区域划分与信息位置是否符合预期" },
+      { id: "learnability", category: "简单易用", title: "易学性", caption: "是否容易理解页面如何使用" },
+      { id: "operability", category: "简单易用", title: "易操作性", caption: "完成刚才任务时操作是否顺手" },
+      { id: "error_tolerance", category: "简单易用", title: "防错与容错性", caption: "是否能避免误操作，并在出错时恢复" }
+    ];
+
+    const kanoFeatures = [
+      { id: "aw_task_workspace", demo: "aw", title: "一个任务内整合上下文与材料", description: "左侧切换项目和任务，中间保留对话上下文，右侧查看或操作当前任务材料。" },
+      { id: "aw_addcustom_flow", demo: "aw", title: "在任务中串起理解、尝试与复核", description: "围绕 AddCustom 线索继续参数尝试、代码修改，并核对修改范围和结果。" },
+      { id: "aw_resnet_learning", demo: "aw", title: "在工作台中沿学习路径学习 ResNet50", description: "讲解、图解和练习按路径衔接，帮助理解图像推理过程。" },
+      { id: "aw_training_explore", demo: "aw", title: "逐步探索训练与调优并编辑需求", description: "从相关方向逐步选择条件，再把它们整理成可继续修改的任务需求。" },
+      { id: "lh_role_entry", demo: "lh", title: "按角色或目标发现学习入口", description: "根据新手、大模型开发、算子开发或教学等目标进入相关资源。" },
+      { id: "lh_path_compare", demo: "lh", title: "比较五条学习主线", description: "在路线卡片上比较适合人群、参考时长、学习收获和难度。" },
+      { id: "lh_teacher_resources", demo: "lh", title: "找到并展开高校课程与教学资源", description: "查看课程索引、教学课程或教学方案，判断是否适合备课。" },
+      { id: "lh_practice_options", demo: "lh", title: "比较 Notebook、CANNLab 与本地练习", description: "了解不同实践方式的条件，并选择适合自己的动手入口。" }
+    ];
+
+    const kanoOptions = [
+      ["1", "我很喜欢"],
+      ["2", "理应如此"],
+      ["3", "无所谓"],
+      ["4", "勉强接受"],
+      ["5", "我很不喜欢"]
+    ];
+
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[char]);
+
+    function radioOptions(name, values, className, ariaLabel) {
+      return `<div class="${className}" role="radiogroup" aria-label="${escapeHtml(ariaLabel)}">${values.map(([value, label]) => `<label class="choice"><input type="radio" name="${escapeHtml(name)}" value="${value}" required><span>${escapeHtml(label)}</span></label>`).join("")}</div>`;
+    }
+
+    const ratingGroups = document.getElementById("rating-groups");
+    const demos = [
+      { id: "aw", prefix: "aw", title: "Ascend Work", blurb: "任务协作与学习工作台" },
+      { id: "lh", prefix: "lh", title: "CANN 学习首页", blurb: "纵向浏览的学习资源首页" }
+    ];
+
+    const ratingCategories = [
+      { title: "品质美感", note: "视觉美观度、视觉舒适性" },
+      { title: "简单易用", note: "信息理解性、易发现性、布局合理性、易学性、易操作性、防错与容错性" }
+    ];
+
+    ratingGroups.innerHTML = demos.map(demo => `
+      <fieldset class="demo-rating" data-demo="${demo.id}">
+        <legend>${demo.title} <span style="color:#7b8388;font-size:12px;font-weight:400">${demo.blurb}</span></legend>
+        <div class="scale-labels"><span>1 · 非常不满意</span><span>10 · 非常满意</span></div>
+        ${ratingCategories.map(category => `
+          <section class="rating-category" aria-label="${category.title}">
+            <h3 class="rating-category-title">${category.title}</h3>
+            <p class="rating-category-note">${category.note}</p>
+            ${ratingItems.filter(item => item.category === category.title).map(item => `
+              <div class="rating-row">
+                <div class="rating-title">${item.title}<span class="rating-caption">${item.caption}</span></div>
+                ${radioOptions(`${demo.prefix}_${item.id}`, Array.from({ length: 10 }, (_, index) => [String(index + 1), String(index + 1)]), "rating-options", `${demo.title} · ${item.title}`)}
+              </div>`).join("")}
+          </section>`).join("")}
+      </fieldset>`).join("");
+
+    const kanoGroups = document.getElementById("kano-groups");
+    const sections = [
+      { id: "aw", title: "Ascend Work", features: kanoFeatures.filter(item => item.demo === "aw") },
+      { id: "lh", title: "CANN 学习首页", features: kanoFeatures.filter(item => item.demo === "lh") }
+    ];
+
+    kanoGroups.innerHTML = sections.map(section => `
+      <h3 class="kano-group-title">${section.title}</h3>
+      ${section.features.map((feature, index) => `
+        <fieldset class="kano-card" data-demo="${feature.demo}">
+          <legend>K${String(index + 1).padStart(2, "0")} · ${feature.title}</legend>
+          <p class="feature-desc">${feature.description}</p>
+          <fieldset class="kano-question">
+            <legend>如果这个 Demo 提供这项能力，你会怎样？</legend>
+            ${radioOptions(`${feature.id}_present`, kanoOptions, "kano-options", `${feature.title} · 提供这项能力时`)}
+          </fieldset>
+          <fieldset class="kano-question">
+            <legend>如果这个 Demo 不提供这项能力，你会怎样？</legend>
+            ${radioOptions(`${feature.id}_absent`, kanoOptions, "kano-options", `${feature.title} · 不提供这项能力时`)}
+          </fieldset>
+        </fieldset>`).join("")}`).join("");
+
+    const kanoMatrix = [
+      ["Q", "A", "A", "A", "O"],
+      ["R", "I", "I", "I", "M"],
+      ["R", "I", "I", "I", "M"],
+      ["R", "I", "I", "I", "M"],
+      ["R", "R", "R", "R", "Q"]
+    ];
+    const kanoLabels = {
+      A: "魅力型",
+      O: "期望型",
+      M: "必备型",
+      I: "无差异型",
+      R: "反向型",
+      Q: "可疑回答"
+    };
+
+    function csvCell(value) {
+      return `"${String(value ?? "").replace(/"/g, '""')}"`;
+    }
+
+    document.getElementById("download-csv").addEventListener("click", () => {
+      const form = document.getElementById("survey-form");
+      if (!form.reportValidity()) return;
+      const formData = new FormData(form);
+      const headers = ["participant_id", "role", "demo_order", "submitted_at"];
+      const values = [
+        formData.get("participant_id").trim(),
+        formData.get("role"),
+        formData.get("demo_order"),
+        new Date().toISOString()
+      ];
+
+      demos.forEach(demo => ratingItems.forEach(item => {
+        const field = `${demo.prefix}_${item.id}`;
+        headers.push(`${field}_score_1_to_10`);
+        values.push(formData.get(field));
+      }));
+
+      kanoFeatures.forEach(feature => {
+        const presentName = `${feature.id}_present`;
+        const absentName = `${feature.id}_absent`;
+        const presentValue = formData.get(presentName);
+        const absentValue = formData.get(absentName);
+        const present = Number(presentValue);
+        const absent = Number(absentValue);
+        const code = kanoMatrix[present - 1][absent - 1];
+        const answerLabel = value => kanoOptions.find(([optionValue]) => optionValue === value)?.[1] ?? value;
+        headers.push(`${feature.id}_present_answer`, `${feature.id}_absent_answer`, `${feature.id}_kano_code`, `${feature.id}_kano_category`);
+        values.push(answerLabel(presentValue), answerLabel(absentValue), code, kanoLabels[code]);
+      });
+
+      const csv = "\uFEFF" + [headers, values].map(row => row.map(csvCell).join(",")).join("\r\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const safeId = formData.get("participant_id").trim().replace(/[^\w-]+/g, "-") || "participant";
+      link.href = url;
+      link.download = `demo-usability-kano-${safeId}.csv`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      document.getElementById("save-status").textContent = `已下载 ${link.download}。请将文件交给主持人汇总。`;
+    });
+
+    document.getElementById("survey-form").addEventListener("reset", () => {
+      document.getElementById("save-status").textContent = "";
+    });
+  </script>
+</body>
+</html>

@@ -8934,3 +8934,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户对点击 Demo 后说明变化的直接反馈（H）；外层监听器与说明渲染路径代码核对（M）。不改变章节 / 设计点顺序、组合稿页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
 - 验证：node --check ascstudio-pc/app.js、git diff --check 通过。GitHub Pages workflow 41755615141 成功；线上 PC 入口返回 HTTP 200，读回确认已引用 20261104-demo-note-isolation-v1。
 - 代码提交 c57c3b6dafab0ec985823539a5ee1d4eab3ad574 已推送至 origin/main；本条交接记录随后提交并推送。
+
+### 2026-11-04 · 双 Demo 用户测试问卷
+
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/index.html`、`taskbook.md`、新增 `questionnaire.html`。业务目的：在两套 Demo 的主持流程中加入统一评分环节；UI 满意度按“品质美感”（视觉美观度、视觉舒适性）与“简单易用”（信息理解性、易发现性、布局合理性、易学性、易操作性、防错与容错性）分组，每项 1–10 分，并分别评价两个 Demo。Kano 问卷针对 8 项具体能力提供“有 / 无”成对题，选项沿用用户给出的五级表述；下载 CSV 时保存参与者编号、体验顺序、各项分数、Kano 原始选项文字与矩阵分类，数据仅在用户本地下载，不提交到服务器。
+- 证据与置信度：评分维度、尺度、选项及两个 Demo 的范围均来自用户明确要求（H）；Kano 分类按标准双向评价矩阵实现，含 A/O/M/I/R/Q（H，矩阵与编码已在页面及任务书中显式列出）；本轮尚未开展参与者作答，问卷结果不代表用户偏好结论。
+- 测试流程从 65–70 分钟调整至 75–80 分钟，增加 10 分钟完成问卷；Simple Mind Map 中补入填写问卷环节。未改变其他页面顺序，也不涉及 API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：内联脚本 `node --check` 通过；`git diff --check` 通过；结构核对确认 UI 共 8 项、Kano 共 8 项；本机浏览器已检查问卷分组、1–10 分选项、Kano 成对题、提纲导航和 Simple Mind Map 渲染。
+- 提交与 Pages 发布状态将在本次发布完成后补记。未决事项：用户测试收集完成后再汇总各项 UI 评分与 Kano 人数分布；当前不推断总体满意度或总体需求比例。
