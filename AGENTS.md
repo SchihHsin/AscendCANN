@@ -8948,3 +8948,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图指出问卷题目有错位感。复核发现 Kano 能力标题使用 `fieldset/legend` 后压在卡片边框线上，和描述、题目正文起点不一致；将外层需求卡改为带 `aria-labelledby` 的 section，并把能力标题放入卡片内容区，统一左边距。题目内层 fieldset 保留，用于成对选项的语义分组；未改题目、选项或分类规则。
 - 证据：用户提供的问卷页面截图与本机浏览器布局复核（H）；原 HTML/CSS 的 fieldset/legend 结构核对（M）。页面序列及 API / Protocol、Host / Harness、Application / Task 边界均未变化。
 - 验证：内联脚本 `node --check` 与 `git diff --check` 通过；本机浏览器复核 Kano 卡片中标题、说明、问题和选项左边缘已对齐。修正提交 `b2a8caa5` 已推送至 `origin/main`；Pages workflow `41776237295` 成功，问卷线上 HTTP 200。
+
+### 2026-11-04 · Ascend Studio PC 三大场景用户测试材料
+
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/index.html`、`questionnaire.html`、`taskbook.md`。按用户纠正，将测试总览、思维导图、任务书和问卷统一改为 PC Demo 的三大场景与 16 个设计点：学习（4 项）、开发（5 项）、移动续学（7 项）；不再按 AddCustom、ResNet50 等业务示例组织研究材料。
+- 用户任务按三段旅程编写；每个场景结束后单独填写 UI 满意度的 8 项（品质美感 2 项、简单易用 6 项，均为 1–10 分）。全部场景结束后按场景分组，对 16 个设计点分别做 Kano“提供 / 不提供”成对题，保留用户指定五选项及标准 A/O/M/I/R/Q 矩阵。体验顺序提供全部六种排列，尽量降低顺序影响；CSV 保留三场景分数、Kano 原始选项、分类和设计点名称，数据只由参与者本地下载。
+- 依据与边界：三大场景、标题及数量来自 `ascstudio-pc/app.js` 的章节 / 设计点目录与用户明确要求（H）；任务话术、观察项和时间分配为本轮研究方案（L，待现场用户测试验证）。目前无参与者作答结果；预设交互不等同真实模型、微信通知、社区发布或 NPU 验收。
+- 页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。验证、提交 / 推送及 Pages 状态将在本次发布完成后补记；待决事项是现场测试后按场景与设计点汇总 UI 和 Kano 结果。

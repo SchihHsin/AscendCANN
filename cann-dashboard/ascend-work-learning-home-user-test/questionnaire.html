@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f5f1">
-  <meta name="description" content="Ascend Work 与 CANN 学习首页的界面满意度评分和 Kano 需求问卷。">
-  <title>体验评分与需求问卷 · Ascend Work × CANN 学习首页</title>
+  <meta name="description" content="Ascend Studio PC 三大场景与 16 个设计点的 UI 满意度评分和 Kano 需求问卷。">
+  <title>Ascend Studio PC 评分与 Kano 需求问卷</title>
   <style>
     :root {
       color-scheme: light;
@@ -50,10 +50,14 @@
     .field-label { display: block; margin-bottom: 6px; color: #42494e; font-size: 12px; font-weight: 650; }
     .text-input, .select-input { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #d9dcd8; border-radius: 5px; background: #fff; color: var(--ink); }
     .text-input:focus, .select-input:focus { outline: 2px solid #adc0d0; outline-offset: 1px; }
-    .demo-rating { margin-top: 18px; padding: 19px 20px 16px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
-    .demo-rating legend { padding: 0 8px; font-size: 17px; font-weight: 650; }
-    .demo-rating[data-demo="aw"] legend { color: var(--blue); }
-    .demo-rating[data-demo="lh"] legend { color: var(--green); }
+    .scene-rating { margin-top: 18px; padding: 19px 20px 16px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
+    .scene-rating-heading { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 11px; margin-bottom: 10px; }
+    .scene-index { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #edf1f3; color: #4d6f8c; font-size: 11px; font-weight: 750; }
+    .scene-rating[data-scene="scene_2"] .scene-index { background: #edf1ed; color: #657f6e; }
+    .scene-rating[data-scene="scene_3"] .scene-index { background: #f1edf4; color: #8b62a3; }
+    .scene-rating-heading h3 { margin: 0; font-size: 16px; line-height: 1.35; font-weight: 680; }
+    .scene-rating-heading p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
+    .scene-count { color: var(--muted); font-size: 11px; white-space: nowrap; }
     .rating-category { margin-top: 14px; }
     .rating-category-title { margin: 0; padding: 9px 0 3px; border-top: 1px solid var(--line); color: #444c50; font-size: 13px; font-weight: 700; }
     .rating-category-note { margin: 0 0 3px; color: var(--muted); font-size: 11px; }
@@ -68,14 +72,22 @@
     .choice:hover span { border-color: #99adbe; }
     .choice input:checked + span { border-color: #355c7a; background: #eaf0f4; color: #244b6b; font-weight: 700; box-shadow: inset 0 0 0 1px #355c7a; }
     .choice input:focus-visible + span { outline: 2px solid #8eaac0; outline-offset: 2px; }
-    .kano-group-title { margin: 28px 0 10px; padding: 0 0 8px; border-bottom: 1px solid var(--line); color: #414a4e; font-size: 17px; font-weight: 650; }
+    .kano-scene { margin-top: 28px; }
+    .kano-scene-heading { display: flex; align-items: baseline; gap: 10px; margin: 0 0 10px; padding: 0 0 8px; border-bottom: 1px solid var(--line); color: #414a4e; }
+    .kano-scene-heading .scene-index { flex: 0 0 auto; width: 25px; height: 25px; font-size: 10px; }
+    .kano-scene-heading h3 { margin: 0; font-size: 17px; font-weight: 650; }
+    .kano-scene-heading .scene-count { margin-left: auto; }
+    .kano-scene[data-scene="scene_2"] .scene-index { background: #edf1ed; color: #657f6e; }
+    .kano-scene[data-scene="scene_3"] .scene-index { background: #f1edf4; color: #8b62a3; }
+    .kano-card-heading { display: block; margin-bottom: 6px; }
+    .kano-feature-code { display: block; margin: 0 0 3px; color: #7a8388; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+    .kano-scene[data-scene="scene_2"] .kano-feature-code { color: #657f6e; }
+    .kano-scene[data-scene="scene_3"] .kano-feature-code { color: #8b62a3; }
     .kano-card { margin-top: 12px; padding: 17px 18px 15px; border: 1px solid #e9e9e4; border-radius: 8px; background: #fff; }
-    .kano-title { margin: 0 0 8px; font-size: 14px; line-height: 1.4; font-weight: 650; }
-    .kano-card[data-demo="aw"] .kano-title { color: var(--blue); }
-    .kano-card[data-demo="lh"] .kano-title { color: var(--green); }
+    .kano-title { margin: 0; font-size: 14px; line-height: 1.4; font-weight: 650; }
     .feature-desc { margin: 0 0 13px; color: var(--muted); font-size: 12px; }
-    .kano-question { min-width: 0; margin: 13px 0 0; padding: 0; border: 0; }
-    .kano-question legend { padding: 0; margin-bottom: 7px; color: #464e53; font-size: 12px; font-weight: 650; }
+    .kano-question { min-width: 0; width: 100%; margin: 13px 0 0; padding: 0; border: 0; }
+    .kano-question legend { display: block; width: 100%; max-width: 100%; padding: 0; margin: 0 0 7px; color: #464e53; font-size: 12px; line-height: 1.4; font-weight: 650; }
     .kano-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
     .kano-options .choice span { min-height: 38px; padding: 6px 5px; font-size: 11px; }
     .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-top: 24px; }
@@ -92,12 +104,18 @@
       .rating-options { grid-template-columns: repeat(10, minmax(23px, 1fr)); gap: 3px; }
       .choice span { min-height: 32px; font-size: 11px; }
       .kano-options { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+      .scene-rating-heading { grid-template-columns: 30px minmax(0, 1fr) auto; gap: 8px; }
+      .scene-index { width: 28px; height: 28px; }
       .kano-options .choice span { min-height: 48px; font-size: 10px; }
     }
     @media (max-width: 420px) {
       .rating-options { grid-template-columns: repeat(5, minmax(0, 1fr)); }
       .rating-options .choice span { min-height: 36px; }
       .kano-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kano-scene-heading { align-items: flex-start; }
+      .kano-scene-heading .scene-count { padding-top: 4px; }
+      .scene-rating { padding: 16px 14px 13px; }
+      .scene-rating-heading h3 { font-size: 14px; }
       .kano-options .choice:last-child { grid-column: span 2; }
     }
     @media print {
@@ -106,9 +124,9 @@
       .wrap { width: 100%; }
       .hero { padding: 0 0 12px; }
       .back, .actions { display: none !important; }
-      .card, .demo-rating, .kano-card { box-shadow: none; }
+      .card, .scene-rating, .kano-card { box-shadow: none; }
       .card { border: 0; padding: 0; }
-      .demo-rating, .kano-card { break-inside: avoid; }
+      .scene-rating, .kano-card { break-inside: avoid; }
       .section { margin-top: 18px; }
       .choice span { min-height: 25px; }
       .privacy-note { background: #fff; }
@@ -120,9 +138,9 @@
     <div class="wrap">
       <a class="back" href="./">← 返回测试提纲</a>
       <div class="eyebrow">体验评分 · 需求偏好</div>
-      <h1>体验评分与需求问卷</h1>
-      <p class="intro">请在体验完 <strong>Ascend Work</strong> 与 <strong>CANN 学习首页</strong> 后填写。第一部分分别评价两个 Demo 的 UI；第二部分判断你对两套 Demo 中具体能力的需求偏好。</p>
-      <div class="privacy-note">每位参与者单独填写一次。问卷不会上传到服务器；点击“下载答卷 CSV”后，答卷保存在本地文件中。请用参与者编号记录，不填写姓名。</div>
+      <h1>评分与 Kano 需求问卷</h1>
+      <p class="intro">请在体验完 Ascend Studio PC 的三大场景后填写。第一部分按场景评价 UI 满意度；第二部分按场景评价 16 个设计点的需求偏好。</p>
+      <div class="privacy-note">每位参与者填写一次。答卷不会上传到服务器；点击“下载答卷 CSV”后，文件保存在本地。请使用参与者编号，不填写姓名。</div>
     </div>
   </header>
   <main class="wrap">
@@ -141,19 +159,24 @@
             <label class="field-label" for="participant-role">主要工作情境</label>
             <select class="select-input" id="participant-role" name="role" required>
               <option value="">请选择</option>
-              <option>初次接触 CANN</option>
+              <option>初次接触 CANN / 正在学习基础</option>
               <option>大模型 / 推理应用开发</option>
               <option>算子 / CANN 开发</option>
               <option>高校教学 / 课程设计</option>
-              <option>其他开发或学习任务</option>
+              <option>经常跨设备学习</option>
+              <option>其他开发或学习情境</option>
             </select>
           </div>
           <div>
-            <label class="field-label" for="demo-order">体验顺序</label>
-            <select class="select-input" id="demo-order" name="demo_order" required>
+            <label class="field-label" for="scene-order">体验顺序</label>
+            <select class="select-input" id="scene-order" name="scene_order" required>
               <option value="">请选择</option>
-              <option>Ascend Work → CANN 学习首页</option>
-              <option>CANN 学习首页 → Ascend Work</option>
+              <option>学习 → 开发 → 移动续学</option>
+              <option>学习 → 移动续学 → 开发</option>
+              <option>开发 → 学习 → 移动续学</option>
+              <option>开发 → 移动续学 → 学习</option>
+              <option>移动续学 → 学习 → 开发</option>
+              <option>移动续学 → 开发 → 学习</option>
             </select>
           </div>
         </div>
@@ -163,7 +186,7 @@
         <div class="section-head">
           <div class="section-kicker">第一部分 · UI 界面满意度</div>
           <h2 id="ui-heading">按刚才的实际体验打分</h2>
-          <p class="section-note">每个 Demo 分别评价。1 分表示非常不满意，10 分表示非常满意；请选择最符合你感受的一项。共 8 项 / Demo。</p>
+          <p class="section-note">每完成一个场景，就评价刚才的 UI。1 分表示非常不满意，10 分表示非常满意；每个场景均为 8 项。</p>
         </div>
         <div id="rating-groups"></div>
       </section>
@@ -172,7 +195,7 @@
         <div class="section-head">
           <div class="section-kicker">第二部分 · Kano 用户需求分析</div>
           <h2 id="kano-heading">判断这些能力对你的重要程度</h2>
-          <p class="section-note">每项能力回答两问：如果提供这项能力，你会怎样；如果不提供，你会怎样。请按自己的工作或学习需要选择，没有标准答案。五个选项的顺序与你给出的版本一致。</p>
+          <p class="section-note">每个设计点回答两问：如果提供，你会怎样；如果不提供，你会怎样。请按自己的学习或开发需要作答。共 16 组，每组使用相同的五个选项。</p>
         </div>
         <div id="kano-groups"></div>
       </section>
@@ -183,7 +206,7 @@
         <button class="button" type="reset">清空作答</button>
       </div>
       <p id="save-status" aria-live="polite"></p>
-      <p class="footer-note">下载文件包含 UI 评分、Kano 两问的原始选项和每项需求的 Kano 分类，方便汇总。完成后请把 CSV 交给主持人。</p>
+      <p class="footer-note">下载文件包含三大场景的 UI 评分、16 个设计点的 Kano 原始选项与分类结果。完成后请把 CSV 交给主持人汇总。</p>
     </form>
   </main>
   <script>
@@ -194,19 +217,47 @@
       { id: "discoverability", category: "简单易用", title: "易发现性", caption: "需要的入口、材料或功能是否容易找到" },
       { id: "layout_rationality", category: "简单易用", title: "布局合理性", caption: "区域划分与信息位置是否符合预期" },
       { id: "learnability", category: "简单易用", title: "易学性", caption: "是否容易理解页面如何使用" },
-      { id: "operability", category: "简单易用", title: "易操作性", caption: "完成刚才任务时操作是否顺手" },
+      { id: "operability", category: "简单易用", title: "易操作性", caption: "完成刚才场景时操作是否顺手" },
       { id: "error_tolerance", category: "简单易用", title: "防错与容错性", caption: "是否能避免误操作，并在出错时恢复" }
     ];
 
-    const kanoFeatures = [
-      { id: "aw_task_workspace", demo: "aw", title: "一个任务内整合上下文与材料", description: "左侧切换项目和任务，中间保留对话上下文，右侧查看或操作当前任务材料。" },
-      { id: "aw_addcustom_flow", demo: "aw", title: "在任务中串起理解、尝试与复核", description: "围绕 AddCustom 线索继续参数尝试、代码修改，并核对修改范围和结果。" },
-      { id: "aw_resnet_learning", demo: "aw", title: "在工作台中沿学习路径学习 ResNet50", description: "讲解、图解和练习按路径衔接，帮助理解图像推理过程。" },
-      { id: "aw_training_explore", demo: "aw", title: "逐步探索训练与调优并编辑需求", description: "从相关方向逐步选择条件，再把它们整理成可继续修改的任务需求。" },
-      { id: "lh_role_entry", demo: "lh", title: "按角色或目标发现学习入口", description: "根据新手、大模型开发、算子开发或教学等目标进入相关资源。" },
-      { id: "lh_path_compare", demo: "lh", title: "比较五条学习主线", description: "在路线卡片上比较适合人群、参考时长、学习收获和难度。" },
-      { id: "lh_teacher_resources", demo: "lh", title: "找到并展开高校课程与教学资源", description: "查看课程索引、教学课程或教学方案，判断是否适合备课。" },
-      { id: "lh_practice_options", demo: "lh", title: "比较 Notebook、CANNLab 与本地练习", description: "了解不同实践方式的条件，并选择适合自己的动手入口。" }
+    const scenes = [
+      {
+        id: "scene_1", code: "S1", number: "01", title: "让学习贴合当前需要与现有基础",
+        features: [
+          { id: "s1_01", title: "基于当前进度推荐下一步", description: "结合当前学习进度或开发问题，给出下一步学习建议。" },
+          { id: "s1_02", title: "和 AI 一起调整学习路径", description: "结合个人基础、目标和可用时间，共同调整学习路径。" },
+          { id: "s1_03", title: "共创路径连接理解与实践", description: "让学习路径从内容理解延伸到练习和结果核对。" },
+          { id: "s1_04", title: "框选内容，直接指着说", description: "框选学习内容中的具体区域，再通过文字或语音提出问题。" }
+        ]
+      },
+      {
+        id: "scene_2", code: "S2", number: "02", title: "在开发过程中掌握知识",
+        features: [
+          { id: "s2_01", title: "打开图解看懂判断依据", description: "从关联图解中查看问题线索和处理思路。" },
+          { id: "s2_02", title: "在示例副本里动手修改", description: "在独立的示例副本中尝试修改，同时保留原始材料用于对照。" },
+          { id: "s2_03", title: "处理完成后回流经验", description: "完成问题处理后，可以把经验整理并带回社区。" },
+          { id: "s2_04", title: "把处理过程整理成社区经验", description: "将问题背景、尝试过程和验证情况整理成可审阅的经验草稿。" },
+          { id: "s2_05", title: "把经验带到更多平台", description: "按不同平台的表达方式整理同一份经验，并预览后续分享内容。" }
+        ]
+      },
+      {
+        id: "scene_3", code: "S3", number: "03", title: "让学习随时继续",
+        features: [
+          { id: "s3_01", title: "从电脑端的一条回答，接上手机里的下一步", description: "从电脑上的回答或学习内容中保存一条知识，之后在手机上继续。" },
+          { id: "s3_02", title: "电脑端选「现在看」，微信列表收到同一条知识", description: "在电脑端选择立即查看后，手机微信会话列表收到对应知识通知。" },
+          { id: "s3_03", title: "手机短读卡，把一个知识点拆成几分钟", description: "在手机上通过简明解释、重点和理解小题完成一次短时学习。" },
+          { id: "s3_04", title: "看懂后回到电脑，理解状态也跟着回来", description: "在手机端标记理解后，电脑端同步显示状态，并可回到原任务。" },
+          { id: "s3_05", title: "把关注或存疑的内容，放进每周回访", description: "为关注或存疑的内容选择主题与接收时间，安排定期回访。" },
+          { id: "s3_06", title: "每周一条重点资讯，再补两张个性化卡片", description: "每周速览包含一条重点资讯，并结合个人关注或存疑线索补充内容。" },
+          { id: "s3_07", title: "没有当前任务，也能主动发现下一点新知", description: "通过搜索、分类或推荐继续探索，并保留感兴趣的知识线索。" }
+        ]
+      }
+    ];
+
+    const ratingCategories = [
+      { title: "品质美感", note: "视觉美观度、视觉舒适性" },
+      { title: "简单易用", note: "信息理解性、易发现性、布局合理性、易学性、易操作性、防错与容错性" }
     ];
 
     const kanoOptions = [
@@ -216,61 +267,6 @@
       ["4", "勉强接受"],
       ["5", "我很不喜欢"]
     ];
-
-    const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[char]);
-
-    function radioOptions(name, values, className, ariaLabel) {
-      return `<div class="${className}" role="radiogroup" aria-label="${escapeHtml(ariaLabel)}">${values.map(([value, label]) => `<label class="choice"><input type="radio" name="${escapeHtml(name)}" value="${value}" required><span>${escapeHtml(label)}</span></label>`).join("")}</div>`;
-    }
-
-    const ratingGroups = document.getElementById("rating-groups");
-    const demos = [
-      { id: "aw", prefix: "aw", title: "Ascend Work", blurb: "任务协作与学习工作台" },
-      { id: "lh", prefix: "lh", title: "CANN 学习首页", blurb: "纵向浏览的学习资源首页" }
-    ];
-
-    const ratingCategories = [
-      { title: "品质美感", note: "视觉美观度、视觉舒适性" },
-      { title: "简单易用", note: "信息理解性、易发现性、布局合理性、易学性、易操作性、防错与容错性" }
-    ];
-
-    ratingGroups.innerHTML = demos.map(demo => `
-      <fieldset class="demo-rating" data-demo="${demo.id}">
-        <legend>${demo.title} <span style="color:#7b8388;font-size:12px;font-weight:400">${demo.blurb}</span></legend>
-        <div class="scale-labels"><span>1 · 非常不满意</span><span>10 · 非常满意</span></div>
-        ${ratingCategories.map(category => `
-          <section class="rating-category" aria-label="${category.title}">
-            <h3 class="rating-category-title">${category.title}</h3>
-            <p class="rating-category-note">${category.note}</p>
-            ${ratingItems.filter(item => item.category === category.title).map(item => `
-              <div class="rating-row">
-                <div class="rating-title">${item.title}<span class="rating-caption">${item.caption}</span></div>
-                ${radioOptions(`${demo.prefix}_${item.id}`, Array.from({ length: 10 }, (_, index) => [String(index + 1), String(index + 1)]), "rating-options", `${demo.title} · ${item.title}`)}
-              </div>`).join("")}
-          </section>`).join("")}
-      </fieldset>`).join("");
-
-    const kanoGroups = document.getElementById("kano-groups");
-    const sections = [
-      { id: "aw", title: "Ascend Work", features: kanoFeatures.filter(item => item.demo === "aw") },
-      { id: "lh", title: "CANN 学习首页", features: kanoFeatures.filter(item => item.demo === "lh") }
-    ];
-
-    kanoGroups.innerHTML = sections.map(section => `
-      <h3 class="kano-group-title">${section.title}</h3>
-      ${section.features.map((feature, index) => `
-        <section class="kano-card" data-demo="${feature.demo}" aria-labelledby="kano-feature-${feature.demo}-${index + 1}">
-          <h3 class="kano-title" id="kano-feature-${feature.demo}-${index + 1}">K${String(index + 1).padStart(2, "0")} · ${feature.title}</h3>
-          <p class="feature-desc">${feature.description}</p>
-          <fieldset class="kano-question">
-            <legend>如果这个 Demo 提供这项能力，你会怎样？</legend>
-            ${radioOptions(`${feature.id}_present`, kanoOptions, "kano-options", `${feature.title} · 提供这项能力时`)}
-          </fieldset>
-          <fieldset class="kano-question">
-            <legend>如果这个 Demo 不提供这项能力，你会怎样？</legend>
-            ${radioOptions(`${feature.id}_absent`, kanoOptions, "kano-options", `${feature.title} · 不提供这项能力时`)}
-          </fieldset>
-        </section>`).join("")}`).join("");
 
     const kanoMatrix = [
       ["Q", "A", "A", "A", "O"],
@@ -288,40 +284,90 @@
       Q: "可疑回答"
     };
 
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[char]));
+
+    function radioOptions(name, values, className, ariaLabel) {
+      return '<div class="' + escapeHtml(className) + '" role="radiogroup" aria-label="' + escapeHtml(ariaLabel) + '">' +
+        values.map(([value, label]) => '<label class="choice"><input type="radio" name="' + escapeHtml(name) + '" value="' + escapeHtml(value) + '" required><span>' + escapeHtml(value) + (label ? ' · ' + escapeHtml(label) : '') + '</span></label>').join("") +
+        '</div>';
+    }
+
+    const ratingGroups = document.getElementById("rating-groups");
+    ratingGroups.innerHTML = scenes.map(scene => {
+      const categoriesHtml = ratingCategories.map(category => {
+        const itemsHtml = ratingItems.filter(item => item.category === category.title).map(item =>
+          '<div class="rating-row"><div class="rating-title">' + escapeHtml(item.title) + '<span class="rating-caption">' + escapeHtml(item.caption) + '</span></div>' +
+          radioOptions(scene.id + "_" + item.id, Array.from({ length: 10 }, (_, index) => [String(index + 1), ""]), "rating-options", scene.title + " · " + item.title) +
+          '</div>'
+        ).join("");
+        return '<section class="rating-category" aria-label="' + escapeHtml(category.title) + '">' +
+          '<h4 class="rating-category-title">' + escapeHtml(category.title) + '</h4>' +
+          '<p class="rating-category-note">' + escapeHtml(category.note) + '</p>' + itemsHtml +
+          '</section>';
+      }).join("");
+
+      return '<section class="scene-rating" data-scene="' + scene.id + '" aria-labelledby="rating-heading-' + scene.id + '">' +
+        '<header class="scene-rating-heading">' +
+        '<span class="scene-index" aria-hidden="true">' + scene.number + '</span>' +
+        '<div><h3 id="rating-heading-' + scene.id + '">' + escapeHtml(scene.title) + '</h3><p>完成本场景后，按刚才的体验评分</p></div>' +
+        '<span class="scene-count">8 项</span>' +
+        '</header><div class="scale-labels"><span>1 · 非常不满意</span><span>10 · 非常满意</span></div>' +
+        categoriesHtml + '</section>';
+    }).join("");
+
+    const kanoGroups = document.getElementById("kano-groups");
+    kanoGroups.innerHTML = scenes.map(scene => {
+      const featureHtml = scene.features.map(feature => {
+        const featureNumber = feature.id.split("_")[1];
+        return '<article class="kano-card" aria-labelledby="kano-feature-' + feature.id + '">' +
+          '<div class="kano-card-heading"><span class="kano-feature-code">' + scene.code + '.' + featureNumber + '</span>' +
+          '<h4 class="kano-title" id="kano-feature-' + feature.id + '">' + escapeHtml(feature.title) + '</h4></div>' +
+          '<p class="feature-desc">' + escapeHtml(feature.description) + '</p>' +
+          '<fieldset class="kano-question"><legend>如果提供这项设计点，你会怎样？</legend>' +
+          radioOptions(feature.id + "_present", kanoOptions, "kano-options", feature.title + " · 提供这项设计点时") +
+          '</fieldset><fieldset class="kano-question"><legend>如果不提供这项设计点，你会怎样？</legend>' +
+          radioOptions(feature.id + "_absent", kanoOptions, "kano-options", feature.title + " · 不提供这项设计点时") +
+          '</fieldset></article>';
+      }).join("");
+
+      return '<section class="kano-scene" data-scene="' + scene.id + '" aria-labelledby="kano-heading-' + scene.id + '">' +
+        '<header class="kano-scene-heading"><span class="scene-index" aria-hidden="true">' + scene.number + '</span>' +
+        '<h3 id="kano-heading-' + scene.id + '">' + escapeHtml(scene.title) + '</h3>' +
+        '<span class="scene-count">' + scene.features.length + ' 个设计点</span></header>' + featureHtml + '</section>';
+    }).join("");
+
     function csvCell(value) {
-      return `"${String(value ?? "").replace(/"/g, '""')}"`;
+      return '"' + String(value ?? "").replace(/"/g, '""') + '"';
     }
 
     document.getElementById("download-csv").addEventListener("click", () => {
       const form = document.getElementById("survey-form");
       if (!form.reportValidity()) return;
       const formData = new FormData(form);
-      const headers = ["participant_id", "role", "demo_order", "submitted_at"];
+      const headers = ["participant_id", "role", "scenario_order", "submitted_at"];
       const values = [
         formData.get("participant_id").trim(),
         formData.get("role"),
-        formData.get("demo_order"),
+        formData.get("scene_order"),
         new Date().toISOString()
       ];
 
-      demos.forEach(demo => ratingItems.forEach(item => {
-        const field = `${demo.prefix}_${item.id}`;
-        headers.push(`${field}_score_1_to_10`);
+      scenes.forEach(scene => ratingItems.forEach(item => {
+        const field = scene.id + "_" + item.id;
+        headers.push(scene.code + "_" + item.id + "_score_1_to_10");
         values.push(formData.get(field));
       }));
 
-      kanoFeatures.forEach(feature => {
-        const presentName = `${feature.id}_present`;
-        const absentName = `${feature.id}_absent`;
+      scenes.forEach(scene => scene.features.forEach(feature => {
+        const presentName = feature.id + "_present";
+        const absentName = feature.id + "_absent";
         const presentValue = formData.get(presentName);
         const absentValue = formData.get(absentName);
-        const present = Number(presentValue);
-        const absent = Number(absentValue);
-        const code = kanoMatrix[present - 1][absent - 1];
+        const code = kanoMatrix[Number(presentValue) - 1][Number(absentValue) - 1];
         const answerLabel = value => kanoOptions.find(([optionValue]) => optionValue === value)?.[1] ?? value;
-        headers.push(`${feature.id}_present_answer`, `${feature.id}_absent_answer`, `${feature.id}_kano_code`, `${feature.id}_kano_category`);
-        values.push(answerLabel(presentValue), answerLabel(absentValue), code, kanoLabels[code]);
-      });
+        headers.push(feature.id + "_title", feature.id + "_present_answer", feature.id + "_absent_answer", feature.id + "_kano_code", feature.id + "_kano_category");
+        values.push(feature.title, answerLabel(presentValue), answerLabel(absentValue), code, kanoLabels[code]);
+      }));
 
       const csv = "\uFEFF" + [headers, values].map(row => row.map(csvCell).join(",")).join("\r\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
@@ -329,12 +375,12 @@
       const link = document.createElement("a");
       const safeId = formData.get("participant_id").trim().replace(/[^\w-]+/g, "-") || "participant";
       link.href = url;
-      link.download = `demo-usability-kano-${safeId}.csv`;
+      link.download = "ascend-studio-pc-user-test-" + safeId + ".csv";
       document.body.append(link);
       link.click();
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-      document.getElementById("save-status").textContent = `已下载 ${link.download}。请将文件交给主持人汇总。`;
+      document.getElementById("save-status").textContent = "已下载 " + link.download + "。请将文件交给主持人汇总。";
     });
 
     document.getElementById("survey-form").addEventListener("reset", () => {
