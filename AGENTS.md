@@ -8919,3 +8919,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：仅更新本文件的跨浏览器复核记录。业务目的：确认 2026-11-03 已发布的节点内容高度修复在当前构建中的表现，并指出旧本地预览与新构建的区别。
 - 证据：新版内嵌构建 `index-WLxVK2ZF.js` 在 Chrome 1280×720 下测量 15 个学习动作节点；它们采用自然高度与 47px 最小高度，当前文案均为单行，因而实际高度相同。横排材料卡高度为 380 / 705 / 380px。该证据属于本机浏览器实测，不代表 Windows 实机已验证。
 - 页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。验证：DOM 尺寸测量、`git diff --check`；Windows 实机待用户在新版本链接上复核。
+
+### 2026-11-04 · ResNet50 阶段节点选中态统一为黑底白字
+
+- 用户截图指出阶段节点被选中后呈浅灰底白字，形成低对比；用户明确确认选中后应为黑底白字。更新 `ascend-studio/src/learning-hierarchy-canvas.css`：阶段与步骤节点统一使用近黑底、白色标题 / 摘要 / 图标 / 状态文字；完成与学习中状态用绿色 / 紫色小圆点区分。普通节点及其内容、布局不变。
+- 同步将规则写入 `ascend-studio/AGENTS.md` 与本机共享样式 Skill，覆盖 2026-10-30 的「阶段浅灰、步骤黑底」旧决定。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；线上 `/ascstudio/?task=resnet50` 返回 HTTP 200，页面已引用新 JS / CSS，线上 CSS 读回阶段节点黑底白字及状态标记规则。未取得本轮浏览器交互截图。
+- 代码提交 `c917f93c` 已推送至 `origin/main`；Pages workflow `41755421034` build / deploy 成功。线上入口：`https://schihhsin.github.io/AscendCANN/ascstudio/?task=resnet50&rev=c917f93c`。
