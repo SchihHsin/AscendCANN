@@ -9030,4 +9030,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习章节摘要增加“关联探索”，资源版本更新以确保加载新增目录点。未修改 Mini 流程或独立用户测试材料。
 - 依据：用户明确要求新点位及目标页面（H）；截图中的首页关联探索状态和嵌入 Demo 的 `home=combine` 路由（M）。不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并通过本地浏览器核对新点位进入首页关联探索。
-- 提交 / 推送：本轮更新写入 `origin/main` 后核对 GitHub Pages 发布状态。
+- 提交 / 推送：通过 GitHub Git Data API 将本次代码和交接记录写入 `origin/main`，提交 `01c95799`；Pages workflow `42027138290` build / deploy 成功，线上目录顺序和关联探索入口已读回核对。
