@@ -8998,3 +8998,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Markdown 便于直接修改问句与主题结构；Excel 继续适合访谈记录。内容遵循“不要求受访者现场执行任务”的研究版本，不增加研究发现。本次未改 Excel 或 HTML，也未影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：逐项对照 Excel，Sheet1 的 40 个问题与 Sheet2 的 41 个原版提示均完整；编号顺序无遗漏或重复，Sheet3 的 12 个字段齐全。
 - 提交 / 推送：通过基于最新 `origin/main` 的隔离工作树单独发布 Markdown 和本条交接记录，不包含主工作区其他改动。
+
+### 2026-11-05 · 增加输入框拖动布局设计点
+
+- 用户要求在 PC 材料中增加“拖动输入框”的设计点。将其放在「在开发过程中掌握知识」章节首位，先展示任务对话中的工作区布局调整，再进入图解排查；目录名称为「拖动输入框，调整对话位置」，讲解为「拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。」
+- 新点直达 Add 算子精度差异排查任务对话。复用 Studio 已有的输入框外沿拖动交互，不新增产品逻辑；更新 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 资源版本，确保浏览器加载新目录和讲解。
+- 依据：用户明确要求（H）；输入框拖动与左侧 / 底部布局切换由 Studio 源码和本地 Demo 状态核验（M）。PC 材料由 16 个增至 17 个设计点，章节仍为学习、开发、移动续学三条场景；其他用户测试材料暂未调整。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 确认目录新增 2.1 点，选择后落到 Add 算子任务对话页，左下讲解显示新文案。未运行自动化测试。Commit / push 与 Pages 状态待补记。

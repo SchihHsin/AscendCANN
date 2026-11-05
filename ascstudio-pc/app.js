@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261104-demo-note-isolation-v1";
+const ROUTE_REV = "20261105-composer-layout-design-point";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -13,8 +13,9 @@ const chapters = [
     ],
   },
   {
-    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "先按需要调整对话布局，再通过图解理解问题依据、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
+      { id: "composer-layout", title: "拖动输入框，调整对话位置", note: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", emphasis: "拖动输入框外沿", description: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", entry: "Add 算子精度差异排查 · 任务对话", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
       { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },
