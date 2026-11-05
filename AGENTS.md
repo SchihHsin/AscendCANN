@@ -8971,3 +8971,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：问卷内联脚本 `node --check`、`git diff --check` 通过；结构核对为 7 个界面组 × 8 项、16 个 Kano 设计点；Chrome 1440px 桌面截图核对问卷评分行和 Kano 卡片排版。未运行自动化测试，也未采集参与者结果。
 - 发布：内容提交 `f5fc1bb9` 已推送到 `origin/main`；GitHub Pages `pages build and deployment` 成功。线上问卷与提纲 HTTP 200，已读回 7 个界面组、UI06 发布后预览和「7 / 16」摘要。问卷：[线上地址](https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/questionnaire.html)；测试提纲：[线上地址](https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/)。
 - 未决事项：尚无实际参与者答卷；测试完成后再按界面统计 UI 分数、按场景 × 设计点汇总 Kano 分类。
+
+### 2026-11-05 · AI Coding 访谈提纲浅黄色修正
+
+- 按用户反馈将 Sheet1 正文底色从灰绿调为更明确的暖浅黄：A 列 `#FFF0B3`、B 列 `#FFF4CC`、C 列 `#FFFAE6`。表头、条件追问 / 致谢强调色以及 Sheet2 保持原样；仅调整填充色，不改访谈内容、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Artifact Tool 导出回读后比对两张表的值与公式无变化，Sheet2 表格及筛选设置保留；目标色值匹配、公式错误扫描无匹配，渲染图复核为暖浅黄。输出：`outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/AI-Coding访谈提纲.xlsx`。
+- 提交 / 推送：待提交并推送。
