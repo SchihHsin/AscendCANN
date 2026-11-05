@@ -9006,3 +9006,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求（H）；输入框拖动与左侧 / 底部布局切换由 Studio 源码和本地 Demo 状态核验（M）。PC 材料由 16 个增至 17 个设计点，章节仍为学习、开发、移动续学三条场景；其他用户测试材料暂未调整。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 确认目录新增 2.1 点，选择后落到 Add 算子任务对话页，左下讲解显示新文案。GitHub Pages workflow `42017884836` build / deploy 成功；线上 PC 入口、`app.js` 与 CSS 均 HTTP 200，脚本引用 `20261105-composer-layout-design-point` 并包含新增设计点。未运行自动化测试。
 - Commit / push：功能提交 `8310b7c8` 已推送至 `origin/main`；本交接回执随后单独提交并推送。
+
+### 2026-11-05 · 从 PC 材料移除跨设备理解状态设计点
+
+- 按用户要求，从 `ascstudio-pc/app.js` 的移动续学章节移除「看懂后回到电脑，理解状态也跟着回来」，并改写章节简介，避免继续把理解状态回传任务作为章节主张。删除后 PC 材料共 16 个设计点；小程序自身页面和独立用户测试中的该移动场景保留，因为它们不是 PC 讲解目录。
+- 为旧链接 `#chapter-3-understanding-handoff` 增加兼容跳转，刷新旧页面时落到其后的「把关注或存疑的内容，放进每周回访」；更新 `ROUTE_REV` 和 HTML 资源版本，确保浏览器加载删除后的目录与点位。
+- 依据：用户明确要求移除 PC 讲解点（H）；被移除点在小程序和用户测试材料中仍是独立移动流程（M），因此本次未修改 `ascstudio-mini/` 或用户测试材料。
+- 页面序列：移动续学章节由 7 个点变为 6 个，目录和左右翻页按数据自动重新编号；不影响其他章节，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并核对旧锚点、目录点数与本地页面跳转。
+- 提交 / 推送：本条记录和代码随本轮提交推送到 `origin/main`；Pages 发布结果将在工作流完成后回填。
