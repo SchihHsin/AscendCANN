@@ -9022,4 +9022,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 为保持点位与 Demo 场景对应，输入框点改为进入「ResNet50 离线推理初体验」的首个学习节点；本地浏览器确认该学习任务中输入框和布局区域可见。开发章节封面摘要同步移除对输入框布局的概括。
 - 依据：用户明确指定章节和相邻点位（H）；本地嵌入 Demo 中 ResNet50 学习任务的界面状态与输入区域可见性经浏览器核对（M）。不改变 Mini 流程、用户测试材料或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器打开 `#chapter-1-composer-layout` 后 URL 定位为学习章节 1.4，Demo 显示 ResNet50 学习任务与输入框。
-- 提交 / 推送：本轮改动完成后推送到 `origin/main`，并确认 Pages 发布结果。
+- 提交 / 推送：本次代码与交接记录通过 GitHub Git Data API 写入 `origin/main`，提交 `f6818273`；Pages workflow `42024990981` build / deploy 成功，线上目录顺序与 ResNet50 学习入口已读回核对。
