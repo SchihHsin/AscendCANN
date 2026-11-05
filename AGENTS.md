@@ -9031,3 +9031,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求新点位及目标页面（H）；截图中的首页关联探索状态和嵌入 Demo 的 `home=combine` 路由（M）。不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并通过本地浏览器核对新点位进入首页关联探索。
 - 提交 / 推送：通过 GitHub Git Data API 将本次代码和交接记录写入 `origin/main`，提交 `01c95799`；Pages workflow `42027138290` build / deploy 成功，线上目录顺序和关联探索入口已读回核对。
+
+### 2026-11-05 · 调整关联探索设计点文案
+
+- 按用户选择，将新增设计点改为「围绕关注主题，探索相关问题与路径」；左下讲解为「从一个关注主题开始，沿着关联线索继续探索。」保留首页 `home=combine` 起点，不改变点位顺序和章节数量。
+- 依据：用户在提供的文案方向中明确选择该表述（H）。
+- 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并检查本地及线上设计点标题、讲解与首页路由。
+- 提交 / 推送：本轮修改完成后更新 `origin/main` 并确认 Pages 部署结果。

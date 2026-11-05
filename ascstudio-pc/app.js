@@ -1,13 +1,13 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261105-related-exploration-design-point";
+const ROUTE_REV = "20261105-related-exploration-copy";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
     id: "learning", title: "让学习贴合当前需要与现有基础", cover: "从一张建议卡开始", summary: "从学习建议和关联探索出发，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
     points: [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
-      { id: "related-exploration", title: "从当前场景出发，探索问题与路径", note: "围绕当前目标和项目线索，发现相关问题与可继续的路径。", emphasis: "相关问题与可继续的路径", description: "围绕当前目标和项目线索，发现相关问题与可继续的路径。", entry: "新建任务 · 首页关联探索", home: "combine" },
+      { id: "related-exploration", title: "围绕关注主题，探索相关问题与路径", note: "从一个关注主题开始，沿着关联线索继续探索。", emphasis: "关注主题", description: "从一个关注主题开始，沿着关联线索继续探索。", entry: "新建任务 · 首页关联探索", home: "combine" },
       { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
       { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
       { id: "composer-layout", title: "拖动输入框，调整对话位置", note: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", emphasis: "拖动输入框外沿", description: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", entry: "ResNet50 离线推理初体验 · 学习任务对话", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
