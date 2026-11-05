@@ -8976,4 +8976,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户反馈将 Sheet1 正文底色从灰绿调为更明确的暖浅黄：A 列 `#FFF0B3`、B 列 `#FFF4CC`、C 列 `#FFFAE6`。表头、条件追问 / 致谢强调色以及 Sheet2 保持原样；仅调整填充色，不改访谈内容、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：Artifact Tool 导出回读后比对两张表的值与公式无变化，Sheet2 表格及筛选设置保留；目标色值匹配、公式错误扫描无匹配，渲染图复核为暖浅黄。输出：`outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/AI-Coding访谈提纲.xlsx`。
+- 提交 / 推送：提交 `89d7337c` 已推送至 `origin/main`；在基于最新远端的隔离工作树中仅发布本工作簿和本条交接记录，未混入当前工作区的其他改动。
+
+### 2026-11-05 · AI Coding 访谈提纲问题分组
+
+- 按用户确认的结构重排 Sheet1：把同一访谈主题下的内容合并到“主要内容”列，10 个主题覆盖 34 行相关问题；“问题”列仍逐行呈现，并标为“主问”或“可追问”。原有 41 项提问 / 脚本保留，学历 / 高校条件追问和致谢行仍单独呈现。Sheet2 未改。
+- 依据为现有提纲与用户确认的参考表格层级；属于执行材料结构调整，不构成新增研究发现。未更改 HTML、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Artifact Tool 导出回读核对分组标签、问题文本、条件题、Sheet2 原值 / 公式及筛选设置；公式错误扫描无匹配，已渲染检查合并单元格和主问 / 追问层级。
 - 提交 / 推送：待提交并推送。
