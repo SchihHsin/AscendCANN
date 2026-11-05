@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261105-remove-understanding-handoff-point";
+const ROUTE_REV = "20261105-learning-composer-point-order";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -9,13 +9,13 @@ const chapters = [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
       { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
       { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
+      { id: "composer-layout", title: "拖动输入框，调整对话位置", note: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", emphasis: "拖动输入框外沿", description: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", entry: "ResNet50 离线推理初体验 · 学习任务对话", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
       { id: "point-and-say", title: "框选内容，直接指着说", note: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", emphasis: "框选学习画布里的疑问区域", description: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", entry: "ResNet50 学习画布 · 图解节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
     ],
   },
   {
-    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "先按需要调整对话布局，再通过图解理解问题依据、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "围绕开发问题查看图解、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
-      { id: "composer-layout", title: "拖动输入框，调整对话位置", note: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", emphasis: "拖动输入框外沿", description: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", entry: "Add 算子精度差异排查 · 任务对话", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子" },
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
       { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },

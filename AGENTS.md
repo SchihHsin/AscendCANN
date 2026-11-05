@@ -9015,3 +9015,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 页面序列：移动续学章节由 7 个点变为 6 个，目录和左右翻页按数据自动重新编号；不影响其他章节，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器以旧锚点打开后跳到每周回访设置页；GitHub Pages workflow `42021225728` build / deploy 成功；线上 HTML 使用新资源版本，读回线上 `app.js` 确认被删标题不在设计点数据中且兼容跳转已发布。未运行自动化测试。
 - 提交 / 推送：功能与初始交接记录提交 `020cf259` 已推送到 `origin/main`；Pages 发布成功。本条最终发布回执随后随交接文档更新推送。
+
+### 2026-11-05 · 将输入框布局设计点移入学习章节
+
+- 按用户指定，将「拖动输入框，调整对话位置」从开发章节 2.1 移到学习章节「共创路径连接理解与实践」之后、「框选内容，直接指着说」之前，成为新的 1.4；原 1.4 顺延为 1.5，开发章节从 2.1「打开图解看懂判断依据」开始。学习章节 5 点、开发章节 5 点、移动续学 6 点，总数仍为 16。
+- 为保持点位与 Demo 场景对应，输入框点改为进入「ResNet50 离线推理初体验」的首个学习节点；本地浏览器确认该学习任务中输入框和布局区域可见。开发章节封面摘要同步移除对输入框布局的概括。
+- 依据：用户明确指定章节和相邻点位（H）；本地嵌入 Demo 中 ResNet50 学习任务的界面状态与输入区域可见性经浏览器核对（M）。不改变 Mini 流程、用户测试材料或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器打开 `#chapter-1-composer-layout` 后 URL 定位为学习章节 1.4，Demo 显示 ResNet50 学习任务与输入框。
+- 提交 / 推送：本轮改动完成后推送到 `origin/main`，并确认 Pages 发布结果。
