@@ -9004,4 +9004,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求在 PC 材料中增加“拖动输入框”的设计点。将其放在「在开发过程中掌握知识」章节首位，先展示任务对话中的工作区布局调整，再进入图解排查；目录名称为「拖动输入框，调整对话位置」，讲解为「拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。」
 - 新点直达 Add 算子精度差异排查任务对话。复用 Studio 已有的输入框外沿拖动交互，不新增产品逻辑；更新 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 资源版本，确保浏览器加载新目录和讲解。
 - 依据：用户明确要求（H）；输入框拖动与左侧 / 底部布局切换由 Studio 源码和本地 Demo 状态核验（M）。PC 材料由 16 个增至 17 个设计点，章节仍为学习、开发、移动续学三条场景；其他用户测试材料暂未调整。
-- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 确认目录新增 2.1 点，选择后落到 Add 算子任务对话页，左下讲解显示新文案。未运行自动化测试。Commit / push 与 Pages 状态待补记。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 确认目录新增 2.1 点，选择后落到 Add 算子任务对话页，左下讲解显示新文案。GitHub Pages workflow `42017884836` build / deploy 成功；线上 PC 入口、`app.js` 与 CSS 均 HTTP 200，脚本引用 `20261105-composer-layout-design-point` 并包含新增设计点。未运行自动化测试。
+- Commit / push：功能提交 `8310b7c8` 已推送至 `origin/main`；本交接回执随后单独提交并推送。
