@@ -9023,3 +9023,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确指定章节和相邻点位（H）；本地嵌入 Demo 中 ResNet50 学习任务的界面状态与输入区域可见性经浏览器核对（M）。不改变 Mini 流程、用户测试材料或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器打开 `#chapter-1-composer-layout` 后 URL 定位为学习章节 1.4，Demo 显示 ResNet50 学习任务与输入框。
 - 提交 / 推送：本次代码与交接记录通过 GitHub Git Data API 写入 `origin/main`，提交 `f6818273`；Pages workflow `42024990981` build / deploy 成功，线上目录顺序与 ResNet50 学习入口已读回核对。
+
+### 2026-11-05 · 在主动推荐后增加首页关联探索设计点
+
+- 按用户指定，在学习章节主动推荐卡片之后增加「从当前场景出发，探索问题与路径」，并将入口设为首页关联探索 `home=combine`，与用户截图所示「关联探索」页一致。学习章节变为 6 点，开发章节 5 点、移动续学 6 点，总数 17；后续点位由目录逻辑顺延。
+- 学习章节摘要增加“关联探索”，资源版本更新以确保加载新增目录点。未修改 Mini 流程或独立用户测试材料。
+- 依据：用户明确要求新点位及目标页面（H）；截图中的首页关联探索状态和嵌入 Demo 的 `home=combine` 路由（M）。不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并通过本地浏览器核对新点位进入首页关联探索。
+- 提交 / 推送：本轮更新写入 `origin/main` 后核对 GitHub Pages 发布状态。
