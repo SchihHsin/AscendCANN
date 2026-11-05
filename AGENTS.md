@@ -9013,5 +9013,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 为旧链接 `#chapter-3-understanding-handoff` 增加兼容跳转，刷新旧页面时落到其后的「把关注或存疑的内容，放进每周回访」；更新 `ROUTE_REV` 和 HTML 资源版本，确保浏览器加载删除后的目录与点位。
 - 依据：用户明确要求移除 PC 讲解点（H）；被移除点在小程序和用户测试材料中仍是独立移动流程（M），因此本次未修改 `ascstudio-mini/` 或用户测试材料。
 - 页面序列：移动续学章节由 7 个点变为 6 个，目录和左右翻页按数据自动重新编号；不影响其他章节，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并核对旧锚点、目录点数与本地页面跳转。
-- 提交 / 推送：本条记录和代码随本轮提交推送到 `origin/main`；Pages 发布结果将在工作流完成后回填。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器以旧锚点打开后跳到每周回访设置页；GitHub Pages workflow `42021225728` build / deploy 成功；线上 HTML 使用新资源版本，读回线上 `app.js` 确认被删标题不在设计点数据中且兼容跳转已发布。未运行自动化测试。
+- 提交 / 推送：功能与初始交接记录提交 `020cf259` 已推送到 `origin/main`；Pages 发布成功。本条最终发布回执随后随交接文档更新推送。
