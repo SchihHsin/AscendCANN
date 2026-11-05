@@ -8991,3 +8991,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 研究口径：遵循用户选定的“不要求受访者实际执行任务”版本；材料是访谈提问与研究者记录工具，不构成用户发现。记录表不据回忆声称已真实上昇腾卡、达到性能或完成端到端部署。其他 DACT 材料若仍描述 IDE / CLI 实际执行，论文使用前需统一版本口径。
 - 验证：Artifact Tool 导出并回读；确认 Sheet1 / Sheet2 / Sheet3 顺序与范围、Sheet2 原内容逐格保留、Sheet3 表头和非现场执行说明正确；公式错误扫描无匹配，三张表均已渲染检查。未修改 HTML、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 推送：本次仅发布本工作簿与本条交接记录，使用基于最新 `origin/main` 的隔离工作树，不包含当前工作区的其他改动。
+
+### 2026-11-05 · DACT 访谈提纲 Markdown 版
+
+- 新建 `outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/AI-Coding访谈提纲.md`：按主题和问题编号整理补充后的 DACT 提纲，另保留原版 AI Coding 提纲，并将 Sheet3 改排为可重复复制的 Markdown 事件记录模板。
+- Markdown 便于直接修改问句与主题结构；Excel 继续适合访谈记录。内容遵循“不要求受访者现场执行任务”的研究版本，不增加研究发现。本次未改 Excel 或 HTML，也未影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：逐项对照 Excel，Sheet1 的 40 个问题与 Sheet2 的 41 个原版提示均完整；编号顺序无遗漏或重复，Sheet3 的 12 个字段齐全。
+- 提交 / 推送：通过基于最新 `origin/main` 的隔离工作树单独发布 Markdown 和本条交接记录，不包含主工作区其他改动。
