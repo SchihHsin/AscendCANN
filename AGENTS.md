@@ -9044,3 +9044,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户希望用按住滚轮拖动替代左键拖画布时可能发生的文字选中。共享 `CanvasSurface` 捕获中键拖动并平移视口；覆盖任务自由画布、学习层级画布与 ResNet50 官方学习画布。可从空白、节点、卡片正文或文字上起拖，拖动期间禁用文字选择并显示抓取中光标；原左键行为、节点操作、卡片正文滚动、滚轮缩放保留。
 - 变更：`ascend-studio/src/shared/canvas/index.jsx`、`shared/canvas/canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并更新该子项目规则与两套 Pages 构建副本。页面顺序及 API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本机 `5198/?task=resnet50` 页面已打开，DOM 暴露新的中键拖动画布说明。代码提交 `c7775f36` 已并入并随 `d4c1e75f` 推送到 `origin/main`；Pages workflow `42347231290` build / deploy 成功。线上 `/ascstudio/` 返回 HTTP 200，引用新 JS / CSS，两个资源的 HTTP HEAD 均为 200。未对实体鼠标中键拖动做浏览器输入回放。
+
+
+### 2026-11-07 · 图解展示时收起任务内容工作区
+
+- 按用户要求，开发章节「打开图解看懂判断依据」进入 Add 算子精度差异排查任务对话后，直接展示线索解释图解；图解以居中浮层覆盖呈现，右侧任务内容工作区不打开，避免对话与工作区同时争夺演示空间。浮层可通过关闭按钮或 `Esc` 关闭并回到任务对话；关闭后工作区保持收起，进入下一设计点「在示例副本里动手修改」时再按需打开并定位示例副本。
+- 变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`。更新路由资源版本；设计点顺序、章节结构与 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 依据：用户明确要求图解打开时不要显示右侧任务内容工作区（H）；PC 材料的 AddCustom 任务路由、图解与工作区 DOM 状态由嵌入 Studio Demo 核对（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器已核对进入图解、关闭后回到对话、重新打开图解，以及切换到示例副本设计点时工作区按需恢复。线上 HTML、`app.js` 与 CSS 返回 HTTP 200，资源版本为 `20261107-diagram-focus-overlay`；GitHub Pages workflow `42351381120` build / deploy 成功。未运行自动化测试。
+- 提交 / 推送：功能提交 `580738f1` 已推送至 `origin/main`；本条交接记录单独提交并推送。
