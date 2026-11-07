@@ -9038,3 +9038,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户在提供的文案方向中明确选择该表述（H）。
 - 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并检查本地及线上设计点标题、讲解与首页路由。
 - 提交 / 推送：通过 GitHub Git Data API 将本次代码和交接记录写入 `origin/main`，提交 `7af520e1`；Pages workflow `42029205747` build / deploy 成功，线上文案、讲解与 `home=combine` 路由已读回核对。
+
+### 2026-11-07 · 共用画布支持按住鼠标滚轮拖动平移
+
+- 用户希望用按住滚轮拖动替代左键拖画布时可能发生的文字选中。共享 `CanvasSurface` 捕获中键拖动并平移视口；覆盖任务自由画布、学习层级画布与 ResNet50 官方学习画布。可从空白、节点、卡片正文或文字上起拖，拖动期间禁用文字选择并显示抓取中光标；原左键行为、节点操作、卡片正文滚动、滚轮缩放保留。
+- 变更：`ascend-studio/src/shared/canvas/index.jsx`、`shared/canvas/canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并更新该子项目规则与两套 Pages 构建副本。页面顺序及 API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本机 `5198/?task=resnet50` 页面已打开，DOM 暴露新的中键拖动画布说明。代码提交 `c7775f36` 已并入并随 `d4c1e75f` 推送到 `origin/main`；Pages workflow `42347231290` build / deploy 成功。线上 `/ascstudio/` 返回 HTTP 200，引用新 JS / CSS，两个资源的 HTTP HEAD 均为 200。未对实体鼠标中键拖动做浏览器输入回放。
