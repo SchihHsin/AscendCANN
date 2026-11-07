@@ -498,7 +498,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
       : horizontal
         ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}`
         : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
-  return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}${drawing.drawingMode ? " is-drawing" : ""}`} style={{ backgroundSize: `${Math.max(12, 20 * viewport.scale)}px ${Math.max(12, 20 * viewport.scale)}px`, backgroundPosition: `${viewport.x}px ${viewport.y}px` }} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
+  return <CanvasSurface as="div" ref={host} middlePan={{ x: viewport.x, y: viewport.y, onMove: ({ x, y }) => canvasActions.setViewport({ x, y }) }} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}${drawing.drawingMode ? " is-drawing" : ""}`} style={{ backgroundSize: `${Math.max(12, 20 * viewport.scale)}px ${Math.max(12, 20 * viewport.scale)}px`, backgroundPosition: `${viewport.x}px ${viewport.y}px` }} aria-label="可移动的学习层级与内容画布；按住鼠标滚轮拖动画布" onPointerDown={event => {
     if (drawing.drawingMode) return;
     if (event.button !== 0 || event.target.closest(canvasPanBlocked)) return;
     gesture.current = { id: "viewport", startX: event.clientX, startY: event.clientY, original: viewport };

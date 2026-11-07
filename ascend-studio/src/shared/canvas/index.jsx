@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "../../icon-system.js";
-import { forwardRef, useRef } from "react";
+import { forwardRef, useRef, useState } from "react";
 import {
   IconArrowsMinimize,
   IconChevronDown,
@@ -16,8 +16,44 @@ import { CANVAS_NODE_TYPE, normalizeCanvasStatus } from "./node-semantics.js";
 
 export { focusViewportForBounds } from "./focus-viewport.js";
 
-export const CanvasSurface = forwardRef(function CanvasSurface({ as: Element = "div", className = "", ...props }, ref) {
-  return <Element {...props} ref={ref} className={`canvas-surface ${className}`.trim()} />;
+export const CanvasSurface = forwardRef(function CanvasSurface({ as: Element = "div", className = "", middlePan, ...props }, ref) {
+  const gesture = useRef(null);
+  const [isMiddlePanning, setIsMiddlePanning] = useState(false);
+  const middlePanRef = useRef(middlePan);
+  middlePanRef.current = middlePan;
+  const beginMiddlePan = event => {
+    const options = middlePanRef.current;
+    if (event.button !== 1 || !options) return;
+    event.preventDefault();
+    event.stopPropagation();
+    gesture.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, viewport: { x: options.x, y: options.y } };
+    setIsMiddlePanning(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const moveMiddlePan = event => {
+    const drag = gesture.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    event.preventDefault();
+    event.stopPropagation();
+    middlePanRef.current?.onMove?.({ x: drag.viewport.x + event.clientX - drag.clientX, y: drag.viewport.y + event.clientY - drag.clientY });
+  };
+  const endMiddlePan = event => {
+    const drag = gesture.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    event.preventDefault();
+    event.stopPropagation();
+    gesture.current = null;
+    setIsMiddlePanning(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  };
+  const loseMiddlePanCapture = event => {
+    if (gesture.current?.pointerId === event.pointerId) {
+      gesture.current = null;
+      setIsMiddlePanning(false);
+    }
+    props.onLostPointerCapture?.(event);
+  };
+  return <Element {...props} ref={ref} className={`canvas-surface ${className}${isMiddlePanning ? " is-middle-panning" : ""}`.trim()} onPointerDownCapture={beginMiddlePan} onPointerMoveCapture={moveMiddlePan} onPointerUpCapture={endMiddlePan} onPointerCancelCapture={endMiddlePan} onLostPointerCapture={loseMiddlePanCapture} />;
 });
 
 export function CanvasToolbar({ as: Element = "div", placement = "top-right", className = "", children, ...props }) {

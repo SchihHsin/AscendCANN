@@ -432,7 +432,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const relationTop=Math.min(relationSource.y,...relationCenters.map(item=>item.y));
   const relationBottom=Math.max(relationSource.y,...relationCenters.map(item=>item.y));
   const relationExitY=treePoint.y+tree.height+32;
-  return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas goal-learning-canvas${hand?" is-hand":""}${positionEditing?" is-position-editing":""}${drawing.drawingMode?" is-drawing":""}`} style={{backgroundSize:`${Math.max(12,20*viewport.scale)}px ${Math.max(12,20*viewport.scale)}px`,backgroundPosition:`${viewport.x}px ${viewport.y}px`}} aria-label="可移动的 ResNet50 学习层级与内容画布" onPointerDown={event=>{
+  return <CanvasSurface as="div" ref={host} middlePan={{x:viewport.x,y:viewport.y,onMove:({x,y})=>canvasActions.setViewport({x,y})}} className={`learning-hierarchy-canvas goal-learning-canvas${hand?" is-hand":""}${positionEditing?" is-position-editing":""}${drawing.drawingMode?" is-drawing":""}`} style={{backgroundSize:`${Math.max(12,20*viewport.scale)}px ${Math.max(12,20*viewport.scale)}px`,backgroundPosition:`${viewport.x}px ${viewport.y}px`}} aria-label="可移动的 ResNet50 学习层级与内容画布；按住鼠标滚轮拖动画布" onPointerDown={event=>{
     if(drawing.drawingMode)return;
     if(event.button!==0||event.target.closest(canvasPanBlocked))return;
     gesture.current={id:"viewport",startX:event.clientX,startY:event.clientY,original:viewport};event.currentTarget.setPointerCapture(event.pointerId);

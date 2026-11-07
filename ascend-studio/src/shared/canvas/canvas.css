@@ -25,6 +25,8 @@
   background-size: var(--canvas-grid-size) var(--canvas-grid-size);
   background-repeat: repeat;
 }
+.canvas-surface.is-middle-panning,
+.canvas-surface.is-middle-panning * { cursor: grabbing !important; user-select: none !important; -webkit-user-select: none !important; }
 
 .canvas-toolbar {
   position: absolute;
