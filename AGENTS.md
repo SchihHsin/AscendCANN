@@ -8926,3 +8926,115 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 同步将规则写入 `ascend-studio/AGENTS.md` 与本机共享样式 Skill，覆盖 2026-10-30 的「阶段浅灰、步骤黑底」旧决定。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；线上 `/ascstudio/?task=resnet50` 返回 HTTP 200，页面已引用新 JS / CSS，线上 CSS 读回阶段节点黑底白字及状态标记规则。未取得本轮浏览器交互截图。
 - 代码提交 `c917f93c` 已推送至 `origin/main`；Pages workflow `41755421034` build / deploy 成功。线上入口：`https://schihhsin.github.io/AscendCANN/ascstudio/?task=resnet50&rev=c917f93c`。
+
+### 2026-11-04 · PC Demo 点击不再切换左下设计说明
+
+- 用户指出，点击 PC Demo 不应该让左下角说明文字变化。原因为 PC 页监听内嵌 Demo 的任务选择和学习模式切换，再联动外层当前设计点、说明文字、目录高亮及 URL；移动端 Demo 也会通过 postMessage 联动外层设计点。
+- 修改 ascstudio-pc/app.js，取消内嵌 Demo 对外层设计点的双向联动：左下说明只由外层章节目录及前后设计点导航更新。保留学习演示路径的原有输入预填；Demo 内的任务和模式仍可独立交互。更新 ROUTE_REV 与入口资源参数，确保浏览器载入新逻辑。
+- 依据：用户对点击 Demo 后说明变化的直接反馈（H）；外层监听器与说明渲染路径代码核对（M）。不改变章节 / 设计点顺序、组合稿页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：node --check ascstudio-pc/app.js、git diff --check 通过。GitHub Pages workflow 41755615141 成功；线上 PC 入口返回 HTTP 200，读回确认已引用 20261104-demo-note-isolation-v1。
+- 代码提交 c57c3b6dafab0ec985823539a5ee1d4eab3ad574 已推送至 origin/main；本条交接记录随后提交并推送。
+
+### 2026-11-04 · 双 Demo 用户测试问卷
+
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/index.html`、`taskbook.md`、新增 `questionnaire.html`。业务目的：在两套 Demo 的主持流程中加入统一评分环节；UI 满意度按“品质美感”（视觉美观度、视觉舒适性）与“简单易用”（信息理解性、易发现性、布局合理性、易学性、易操作性、防错与容错性）分组，每项 1–10 分，并分别评价两个 Demo。Kano 问卷针对 8 项具体能力提供“有 / 无”成对题，选项沿用用户给出的五级表述；下载 CSV 时保存参与者编号、体验顺序、各项分数、Kano 原始选项文字与矩阵分类，数据仅在用户本地下载，不提交到服务器。
+- 证据与置信度：评分维度、尺度、选项及两个 Demo 的范围均来自用户明确要求（H）；Kano 分类按标准双向评价矩阵实现，含 A/O/M/I/R/Q（H，矩阵与编码已在页面及任务书中显式列出）；本轮尚未开展参与者作答，问卷结果不代表用户偏好结论。
+- 测试流程从 65–70 分钟调整至 75–80 分钟，增加 10 分钟完成问卷；Simple Mind Map 中补入填写问卷环节。未改变其他页面顺序，也不涉及 API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：内联脚本 `node --check` 通过；`git diff --check` 通过；结构核对确认 UI 共 8 项、Kano 共 8 项；本机浏览器已检查问卷分组、1–10 分选项、Kano 成对题、提纲导航和 Simple Mind Map 渲染。
+- 发布结果：代码提交 `05e53296` 已推送至 `origin/main`；GitHub Pages workflow `41774580104` 成功，问卷页与测试提纲页均返回 HTTP 200，页面内容已线上核对。本条交接记录随后的记录更新一并推送。未决事项：用户测试收集完成后再汇总各项 UI 评分与 Kano 人数分布；当前不推断总体满意度或总体需求比例。
+
+### 2026-11-04 · Kano 问题标题对齐
+
+- 用户截图指出问卷题目有错位感。复核发现 Kano 能力标题使用 `fieldset/legend` 后压在卡片边框线上，和描述、题目正文起点不一致；将外层需求卡改为带 `aria-labelledby` 的 section，并把能力标题放入卡片内容区，统一左边距。题目内层 fieldset 保留，用于成对选项的语义分组；未改题目、选项或分类规则。
+- 证据：用户提供的问卷页面截图与本机浏览器布局复核（H）；原 HTML/CSS 的 fieldset/legend 结构核对（M）。页面序列及 API / Protocol、Host / Harness、Application / Task 边界均未变化。
+- 验证：内联脚本 `node --check` 与 `git diff --check` 通过；本机浏览器复核 Kano 卡片中标题、说明、问题和选项左边缘已对齐。修正提交 `b2a8caa5` 已推送至 `origin/main`；Pages workflow `41776237295` 成功，问卷线上 HTTP 200。
+
+### 2026-11-04 · Ascend Studio PC 三大场景用户测试材料
+
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/index.html`、`questionnaire.html`、`taskbook.md`。按用户纠正，将测试总览、思维导图、任务书和问卷统一改为 PC Demo 的三大场景与 16 个设计点：学习（4 项）、开发（5 项）、移动续学（7 项）；不再按 AddCustom、ResNet50 等业务示例组织研究材料。
+- 用户任务按三段旅程编写；每个场景结束后单独填写 UI 满意度的 8 项（品质美感 2 项、简单易用 6 项，均为 1–10 分）。全部场景结束后按场景分组，对 16 个设计点分别做 Kano“提供 / 不提供”成对题，保留用户指定五选项及标准 A/O/M/I/R/Q 矩阵。体验顺序提供全部六种排列，尽量降低顺序影响；CSV 保留三场景分数、Kano 原始选项、分类和设计点名称，数据只由参与者本地下载。
+- 依据与边界：三大场景、标题及数量来自 `ascstudio-pc/app.js` 的章节 / 设计点目录与用户明确要求（H）；任务话术、观察项和时间分配为本轮研究方案（L，待现场用户测试验证）。目前无参与者作答结果；预设交互不等同真实模型、微信通知、社区发布或 NPU 验收。
+- 页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。验证：问卷内联脚本 `node --check`、`git diff --check` 通过；本机 1280×720 浏览器确认 MindMap 三分支与问卷 Kano 卡片标题、说明、题目和选项左边缘对齐。线上测试提纲与问卷均 HTTP 200，读回标题及三场景结构。提交 `e4eb541b` 已推送到 `origin/main`；GitHub Pages workflow `41781598923` 成功。测试提纲：`https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/`；问卷：`https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/questionnaire.html`。待决事项：现场测试结束后按场景与设计点汇总 UI 和 Kano 结果。
+
+
+### 2026-11-04 · 思维导图范围确认
+
+- 用户确认当前思维导图内容正确：只展开 Ascend Studio PC 的「学习、开发、移动续学」三大场景及各自设计点；主持人串场、测试流程等内容不放进思维导图。已发布的 Simple Mind Map 符合此范围，无需删改场景或调整页面。
+- 主持流程和任务执行说明仍保留在独立任务书中；这不改变导图结构。证据为用户本轮明确确认（H）及线上源码三分支核对（M）。
+- 本轮仅更新本文件交接记录，导图与问卷内容不变；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。文档记录已提交并推送到 `origin/main`；现有 Pages 发布继续有效，无需重新构建。
+
+### 2026-11-04 · UI 满意度改为按界面单元评分
+
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/index.html`、`questionnaire.html`、`taskbook.md`。按用户要求，任务旅程继续按学习、开发、移动续学三大场景组织；UI 满意度改按 7 个实际界面单元分别评分，每组保留 8 个维度、1–10 分，并将主动推荐首页与连线探索首页分开比较。新增独立的「知识回流 · 发布后文章预览」评分组；未体验界面可标记并从汇总中排除。Kano 仍按三场景的 16 个设计点进行成对需求分析。
+- 界面边界依据：用户明确要求按界面而非业务任务评分（H）；`ascstudio-pc/app.js` 的三大场景 / 设计点路由、`ascstudio-mini/app.js` 的移动界面路由，以及 PC Demo 构建资源中的草稿预览、渠道预览与发布后预览组件（M）。独立首页方案、学习画布、工作台、经验草稿 / 渠道预览、发布后文章和移动端构成评分范围；演示封面、讲解卡和章节目录仅作测试导航，不计产品 UI 分。
+- Simple Mind Map 保持用户确认的三个场景及 16 个设计点，不加入主持流程或满意度分支。任务书补充首页版本顺序记录，并把发布后预览列为可选体验：不强迫参与者提交，未体验可跳过。没有改变 Kano 分类、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：问卷内联脚本 `node --check`、`git diff --check` 通过；结构核对为 7 个界面组 × 8 项、16 个 Kano 设计点；Chrome 1440px 桌面截图核对问卷评分行和 Kano 卡片排版。未运行自动化测试，也未采集参与者结果。
+- 发布：内容提交 `f5fc1bb9` 已推送到 `origin/main`；GitHub Pages `pages build and deployment` 成功。线上问卷与提纲 HTTP 200，已读回 7 个界面组、UI06 发布后预览和「7 / 16」摘要。问卷：[线上地址](https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/questionnaire.html)；测试提纲：[线上地址](https://schihhsin.github.io/AscendCANN/cann-dashboard/ascend-work-learning-home-user-test/)。
+- 未决事项：尚无实际参与者答卷；测试完成后再按界面统计 UI 分数、按场景 × 设计点汇总 Kano 分类。
+
+### 2026-11-05 · AI Coding 访谈提纲浅黄色修正
+
+- 按用户反馈将 Sheet1 正文底色从灰绿调为更明确的暖浅黄：A 列 `#FFF0B3`、B 列 `#FFF4CC`、C 列 `#FFFAE6`。表头、条件追问 / 致谢强调色以及 Sheet2 保持原样；仅调整填充色，不改访谈内容、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Artifact Tool 导出回读后比对两张表的值与公式无变化，Sheet2 表格及筛选设置保留；目标色值匹配、公式错误扫描无匹配，渲染图复核为暖浅黄。输出：`outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/AI-Coding访谈提纲.xlsx`。
+- 提交 / 推送：提交 `89d7337c` 已推送至 `origin/main`；在基于最新远端的隔离工作树中仅发布本工作簿和本条交接记录，未混入当前工作区的其他改动。
+
+### 2026-11-05 · AI Coding 访谈提纲问题分组
+
+- 按用户确认的结构重排 Sheet1：把同一访谈主题下的内容合并到“主要内容”列，10 个主题覆盖 34 行相关问题；“问题”列仍逐行呈现，并标为“主问”或“可追问”。原有 41 项提问 / 脚本保留，学历 / 高校条件追问和致谢行仍单独呈现。Sheet2 未改。
+- 依据为现有提纲与用户确认的参考表格层级；属于执行材料结构调整，不构成新增研究发现。未更改 HTML、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Artifact Tool 导出回读核对分组标签、问题文本、条件题、Sheet2 原值 / 公式及筛选设置；公式错误扫描无匹配，已渲染检查合并单元格和主问 / 追问层级。
+- 提交 / 推送：待提交并推送。
+
+### 2026-11-05 · DACT 论文访谈提纲补问
+
+- 更新 `outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/AI-Coding访谈提纲.xlsx`：Sheet1 增补 11 个问题，覆盖 AI Coding 工具与权限、真实任务环境 / 时间线 / 可回看材料、知识来源及版本、人工接手与回退、核验信号和交付责任；学习影响与学习类产品 AI 机会仍标为可选。Sheet2 保留原始提纲；Sheet3 新增 DACT 任务过程回顾记录表，以受访者回忆、口述计划或既有材料逐事件记录，不要求现场执行任务。
+- 研究口径：遵循用户选定的“不要求受访者实际执行任务”版本；材料是访谈提问与研究者记录工具，不构成用户发现。记录表不据回忆声称已真实上昇腾卡、达到性能或完成端到端部署。其他 DACT 材料若仍描述 IDE / CLI 实际执行，论文使用前需统一版本口径。
+- 验证：Artifact Tool 导出并回读；确认 Sheet1 / Sheet2 / Sheet3 顺序与范围、Sheet2 原内容逐格保留、Sheet3 表头和非现场执行说明正确；公式错误扫描无匹配，三张表均已渲染检查。未修改 HTML、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 推送：本次仅发布本工作簿与本条交接记录，使用基于最新 `origin/main` 的隔离工作树，不包含当前工作区的其他改动。
+
+### 2026-11-05 · DACT 访谈提纲 Markdown 版
+
+- 新建 `outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/AI-Coding访谈提纲.md`：按主题和问题编号整理补充后的 DACT 提纲，另保留原版 AI Coding 提纲，并将 Sheet3 改排为可重复复制的 Markdown 事件记录模板。
+- Markdown 便于直接修改问句与主题结构；Excel 继续适合访谈记录。内容遵循“不要求受访者现场执行任务”的研究版本，不增加研究发现。本次未改 Excel 或 HTML，也未影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：逐项对照 Excel，Sheet1 的 40 个问题与 Sheet2 的 41 个原版提示均完整；编号顺序无遗漏或重复，Sheet3 的 12 个字段齐全。
+- 提交 / 推送：通过基于最新 `origin/main` 的隔离工作树单独发布 Markdown 和本条交接记录，不包含主工作区其他改动。
+
+### 2026-11-05 · 增加输入框拖动布局设计点
+
+- 用户要求在 PC 材料中增加“拖动输入框”的设计点。将其放在「在开发过程中掌握知识」章节首位，先展示任务对话中的工作区布局调整，再进入图解排查；目录名称为「拖动输入框，调整对话位置」，讲解为「拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。」
+- 新点直达 Add 算子精度差异排查任务对话。复用 Studio 已有的输入框外沿拖动交互，不新增产品逻辑；更新 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 资源版本，确保浏览器加载新目录和讲解。
+- 依据：用户明确要求（H）；输入框拖动与左侧 / 底部布局切换由 Studio 源码和本地 Demo 状态核验（M）。PC 材料由 16 个增至 17 个设计点，章节仍为学习、开发、移动续学三条场景；其他用户测试材料暂未调整。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 CUA 确认目录新增 2.1 点，选择后落到 Add 算子任务对话页，左下讲解显示新文案。GitHub Pages workflow `42017884836` build / deploy 成功；线上 PC 入口、`app.js` 与 CSS 均 HTTP 200，脚本引用 `20261105-composer-layout-design-point` 并包含新增设计点。未运行自动化测试。
+- Commit / push：功能提交 `8310b7c8` 已推送至 `origin/main`；本交接回执随后单独提交并推送。
+
+### 2026-11-05 · 从 PC 材料移除跨设备理解状态设计点
+
+- 按用户要求，从 `ascstudio-pc/app.js` 的移动续学章节移除「看懂后回到电脑，理解状态也跟着回来」，并改写章节简介，避免继续把理解状态回传任务作为章节主张。删除后 PC 材料共 16 个设计点；小程序自身页面和独立用户测试中的该移动场景保留，因为它们不是 PC 讲解目录。
+- 为旧链接 `#chapter-3-understanding-handoff` 增加兼容跳转，刷新旧页面时落到其后的「把关注或存疑的内容，放进每周回访」；更新 `ROUTE_REV` 和 HTML 资源版本，确保浏览器加载删除后的目录与点位。
+- 依据：用户明确要求移除 PC 讲解点（H）；被移除点在小程序和用户测试材料中仍是独立移动流程（M），因此本次未修改 `ascstudio-mini/` 或用户测试材料。
+- 页面序列：移动续学章节由 7 个点变为 6 个，目录和左右翻页按数据自动重新编号；不影响其他章节，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器以旧锚点打开后跳到每周回访设置页；GitHub Pages workflow `42021225728` build / deploy 成功；线上 HTML 使用新资源版本，读回线上 `app.js` 确认被删标题不在设计点数据中且兼容跳转已发布。未运行自动化测试。
+- 提交 / 推送：功能与初始交接记录提交 `020cf259` 已推送到 `origin/main`；Pages 发布成功。本条最终发布回执随后随交接文档更新推送。
+
+### 2026-11-05 · 将输入框布局设计点移入学习章节
+
+- 按用户指定，将「拖动输入框，调整对话位置」从开发章节 2.1 移到学习章节「共创路径连接理解与实践」之后、「框选内容，直接指着说」之前，成为新的 1.4；原 1.4 顺延为 1.5，开发章节从 2.1「打开图解看懂判断依据」开始。学习章节 5 点、开发章节 5 点、移动续学 6 点，总数仍为 16。
+- 为保持点位与 Demo 场景对应，输入框点改为进入「ResNet50 离线推理初体验」的首个学习节点；本地浏览器确认该学习任务中输入框和布局区域可见。开发章节封面摘要同步移除对输入框布局的概括。
+- 依据：用户明确指定章节和相邻点位（H）；本地嵌入 Demo 中 ResNet50 学习任务的界面状态与输入区域可见性经浏览器核对（M）。不改变 Mini 流程、用户测试材料或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器打开 `#chapter-1-composer-layout` 后 URL 定位为学习章节 1.4，Demo 显示 ResNet50 学习任务与输入框。
+- 提交 / 推送：本次代码与交接记录通过 GitHub Git Data API 写入 `origin/main`，提交 `f6818273`；Pages workflow `42024990981` build / deploy 成功，线上目录顺序与 ResNet50 学习入口已读回核对。
+
+### 2026-11-05 · 在主动推荐后增加首页关联探索设计点
+
+- 按用户指定，在学习章节主动推荐卡片之后增加「从当前场景出发，探索问题与路径」，并将入口设为首页关联探索 `home=combine`，与用户截图所示「关联探索」页一致。学习章节变为 6 点，开发章节 5 点、移动续学 6 点，总数 17；后续点位由目录逻辑顺延。
+- 学习章节摘要增加“关联探索”，资源版本更新以确保加载新增目录点。未修改 Mini 流程或独立用户测试材料。
+- 依据：用户明确要求新点位及目标页面（H）；截图中的首页关联探索状态和嵌入 Demo 的 `home=combine` 路由（M）。不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并通过本地浏览器核对新点位进入首页关联探索。
+- 提交 / 推送：通过 GitHub Git Data API 将本次代码和交接记录写入 `origin/main`，提交 `01c95799`；Pages workflow `42027138290` build / deploy 成功，线上目录顺序和关联探索入口已读回核对。
+
+### 2026-11-05 · 调整关联探索设计点文案
+
+- 按用户选择，将新增设计点改为「围绕关注主题，探索相关问题与路径」；左下讲解为「从一个关注主题开始，沿着关联线索继续探索。」保留首页 `home=combine` 起点，不改变点位顺序和章节数量。
+- 依据：用户在提供的文案方向中明确选择该表述（H）。
+- 验证：将运行 `node --check ascstudio-pc/app.js`、`git diff --check`，并检查本地及线上设计点标题、讲解与首页路由。
+- 提交 / 推送：通过 GitHub Git Data API 将本次代码和交接记录写入 `origin/main`，提交 `7af520e1`；Pages workflow `42029205747` build / deploy 成功，线上文案、讲解与 `home=combine` 路由已读回核对。

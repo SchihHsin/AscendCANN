@@ -1,19 +1,21 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261104-demo-note-isolation-v1";
+const ROUTE_REV = "20261105-related-exploration-copy";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
-    id: "learning", title: "让学习贴合当前需要与现有基础", cover: "从一张建议卡开始", summary: "从当前进度与问题获得学习建议，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
+    id: "learning", title: "让学习贴合当前需要与现有基础", cover: "从一张建议卡开始", summary: "从学习建议和关联探索出发，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
     points: [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
+      { id: "related-exploration", title: "围绕关注主题，探索相关问题与路径", note: "从一个关注主题开始，沿着关联线索继续探索。", emphasis: "关注主题", description: "从一个关注主题开始，沿着关联线索继续探索。", entry: "新建任务 · 首页关联探索", home: "combine" },
       { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
       { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
+      { id: "composer-layout", title: "拖动输入框，调整对话位置", note: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", emphasis: "拖动输入框外沿", description: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", entry: "ResNet50 离线推理初体验 · 学习任务对话", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
       { id: "point-and-say", title: "框选内容，直接指着说", note: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", emphasis: "框选学习画布里的疑问区域", description: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", entry: "ResNet50 学习画布 · 图解节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
     ],
   },
   {
-    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "从图解理解问题依据，进入示例副本动手处理，再将经验整理并分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "围绕开发问题查看图解、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
@@ -23,12 +25,11 @@ const chapters = [
     ],
   },
   {
-    id: "mobile", title: "让学习随时继续", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、回访和自主发现，并将理解状态带回任务。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
+    id: "mobile", title: "让学习随时继续", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、安排定期回访，并主动发现新知。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
     points: [
       { id: "desktop-handoff", title: "从电脑端的一条回答，接上手机里的下一步", note: "入口就在正在处理的任务里", emphasis: "正在处理的任务里", description: "在 Agent 回答或学习内容里收下一条知识，标记感兴趣或还没弄懂，再选择即时送达或加入定期速览。", entry: "小程序 · 电脑端入口", route: "review-pending", mobile: true },
       { id: "instant-delivery", title: "电脑端选「现在看」，微信列表收到同一条知识", note: "让用户看清消息从哪里来", emphasis: "看清消息从哪里来", description: "发送后，手机微信会话列表出现带有知识标题的服务通知；手机样机与电脑端共用这一条内容。", entry: "小程序 · 即时学习", route: "review-instant", mobile: true },
       { id: "mobile-short-read", title: "手机短读卡，把一个知识点拆成几分钟", note: "把电脑上的内容整理成适合手机读的形式", emphasis: "适合手机读的形式", description: "从通知打开知识卡，用简明解释、重点和理解小题完成一次轻量学习；感兴趣或存疑也能继续保留。", entry: "小程序 · 知识短读卡", route: "wechat-notification/review", mobile: true },
-      { id: "understanding-handoff", title: "看懂后回到电脑，理解状态也跟着回来", note: "内容和理解状态跨设备接续", emphasis: "理解状态跨设备接续", description: "手机端点「我看懂了」，电脑端知识口袋同步显示「已理解」，再回到原来的任务继续处理。", entry: "小程序 · 跨设备接续", route: "review-handoff/review", mobile: true },
       { id: "weekly-review", title: "把关注或存疑的内容，放进每周回访", note: "由用户选择主题、时间和授权", emphasis: "用户选择主题、时间和授权", description: "电脑端可将知识加入定期速览；手机端再选择主题、接收时间并确认订阅。", entry: "小程序 · 定期回访设置", route: "review-weekly-settings", mobile: true },
       { id: "weekly-briefing", title: "每周一条重点资讯，再补两张个性化卡片", note: "资讯与个人学习线索放在同一份速览里", emphasis: "同一份速览里", description: "速览用一条重点资讯开场，再优先带上电脑端安排的内容，并参考感兴趣或还没弄懂的信号。", entry: "小程序 · 每周速览", route: "review-briefing", mobile: true },
       { id: "discover", title: "没有当前任务，也能主动发现下一点新知", note: "知识推荐与主动探索互相补充", emphasis: "主动探索互相补充", description: "用户可以搜索、浏览分类或从推荐知识卡继续探索；发现的兴趣与问题还能成为之后回访的线索。", entry: "小程序 · 自主探索", route: "discover", mobile: true },
@@ -537,7 +538,7 @@ document.addEventListener("keydown", handleShowcaseKeydown);
 renderPointMenu();
 const deepLink = location.hash.match(/^#chapter-(\d+)-([a-z0-9-]+)$/i);
 if (deepLink) {
-  const pointId = deepLink[2];
+  const pointId = deepLink[2] === "understanding-handoff" ? "weekly-review" : deepLink[2];
   const chapterIndex = chapters.findIndex(chapter => chapter.points.some(point => point.id === pointId));
   const pointIndex = chapterIndex >= 0 ? chapters[chapterIndex].points.findIndex(point => point.id === pointId) : -1;
   if (pointIndex >= 0) loadPoint(chapterIndex, pointIndex);
