@@ -9062,3 +9062,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求“右侧的不要打开，就只有对话”（H）；PC 材料的 AddCustom 任务路由和工作区收起控件由嵌入 Demo 源码核对（M）。不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过。源代码核对确认图解阶段仅收起已打开的任务内容工作区并等待对话区域可见，不触发任何图解或浮层。浏览器预览工具超时，未做本地可视化回放；线上 PC 页面、`app.js` HTTP 200，读回确认资源版本为 `20261110-diagram-conversation-only`，不含浮层或自动点开图解逻辑。Pages workflow `42738724906` build / deploy 成功。未运行自动化测试。
 - 提交 / 推送：功能与交接记录提交 `0836db10` 已推送至 `origin/main`；Pages 部署成功。
+
+### 2026-11-10 · 关联探索发送后生成训练学习路径
+
+- 用户要求：通过首页关联字段形成 Prompt 并发送后，右侧应呈现对应的学习路径。发送行为现创建学习任务，按目标、现象、瓶颈、指标 / 策略及验证字段，将连线顺序整理为路径草案；同类连续线索合并在同一学习节点，原始 Prompt 留在左侧对话中。
+- 依据：用户明确指定发送后的右侧结果（H）；路径由本地字段角色与已连接顺序映射为训练调优学习步骤（M），用于设计概念演示，不代表真实 AI 生成、训练诊断或 NPU 验证。主题仍是训练与调优。
+- 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`composition-learning-path.js`、`CompositionLearningPathCanvas.jsx`、对应 CSS、`useWorkbenchState.js` 与 `App.jsx`；首页 Tab 和页面序列不变，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；Chrome 1440×1000 回放从首页选择 5 个字段并发送，确认原 Prompt、学习路径草案状态及右侧 4 个按连接线索排列的学习节点。证据：`ascend-studio/evidence/20261110-composition-learning-path/`。未运行自动化测试；构建保留既有 bundle 大于 500 kB 的提示。
+- 提交 / 推送与 Pages 发布：待本轮发布后补记。

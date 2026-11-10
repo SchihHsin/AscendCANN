@@ -8,6 +8,7 @@ import {
   initialCompositionIds,
   orderedCompositionPath,
 } from "./home-composition";
+import { buildCompositionLearningPlan } from "./composition-learning-path.js";
 import "./combination-task-home.css";
 
 const nodeMap = new Map(compositionFields.map((field) => [field.id, field]));
@@ -629,7 +630,12 @@ export function CombinationTaskHome({ onCreateTask }) {
       setError("先连接或选择一些字段，再发送需求。");
       return;
     }
-    const created = onCreateTask?.({ goal, kind: "development", attachments: [], groupId: "other" });
+    const compositionPlan = buildCompositionLearningPlan({
+      fieldIds: selectedIds,
+      connectionPath: pathIds,
+      prompt: goal,
+    });
+    const created = onCreateTask?.({ goal, kind: "learning", attachments: [], groupId: "other", compositionPlan });
     if (!created) setError("任务没有创建成功，请调整需求后重试。");
   };
 
