@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "../../icon-system.js";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import {
   IconArrowsMinimize,
   IconChevronDown,
@@ -16,11 +16,58 @@ import { CANVAS_NODE_TYPE, normalizeCanvasStatus } from "./node-semantics.js";
 
 export { focusViewportForBounds } from "./focus-viewport.js";
 
+const activeCanvasSelectionGuards = new Set();
+const CANVAS_TEXT_SELECTION_ALLOWED = "input,textarea,select,[contenteditable='true'],.tc-card-content,.lh-card-content,.lh-tree-node,.lh-step-node,.lh-canvas-title";
+const CANVAS_NATIVE_INTERACTION = "button,a,input,textarea,select,[contenteditable='true'],[role='button'],.canvas-toolbar,.canvas-minimap,.tc-floating-tools,.tc-node-picker,.canvas-legacy-drawing-hit-target";
+
+function updateCanvasSelectionGuard(token, active) {
+  if (active) activeCanvasSelectionGuards.add(token);
+  else activeCanvasSelectionGuards.delete(token);
+  document.documentElement.classList.toggle("canvas-selection-disabled", activeCanvasSelectionGuards.size > 0);
+}
+
 export const CanvasSurface = forwardRef(function CanvasSurface({ as: Element = "div", className = "", middlePan, ...props }, ref) {
   const gesture = useRef(null);
+  const selectionGuard = useRef({ token: Symbol("canvas-selection-guard"), pointerId: null });
   const [isMiddlePanning, setIsMiddlePanning] = useState(false);
   const middlePanRef = useRef(middlePan);
   middlePanRef.current = middlePan;
+  const releaseSelectionGuard = pointerId => {
+    const current = selectionGuard.current;
+    if (current.pointerId === null || pointerId !== undefined && pointerId !== current.pointerId) return;
+    current.pointerId = null;
+    updateCanvasSelectionGuard(current.token, false);
+  };
+  const beginBackgroundPan = event => {
+    if (event.button !== 0) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target || target.closest(CANVAS_TEXT_SELECTION_ALLOWED) || target.closest(CANVAS_NATIVE_INTERACTION)) return;
+    // Apply the guard synchronously before the browser's default text-selection behavior runs.
+    const current = selectionGuard.current;
+    current.pointerId = event.pointerId;
+    updateCanvasSelectionGuard(current.token, true);
+  };
+  useEffect(() => {
+    let releaseTimer = 0;
+    const end = event => {
+      const current = selectionGuard.current;
+      if (current.pointerId !== event.pointerId) return;
+      const pointerId = event.pointerId;
+      window.clearTimeout(releaseTimer);
+      releaseTimer = window.setTimeout(() => releaseSelectionGuard(pointerId), 0);
+    };
+    const blur = () => releaseSelectionGuard();
+    window.addEventListener("pointerup", end, true);
+    window.addEventListener("pointercancel", end, true);
+    window.addEventListener("blur", blur);
+    return () => {
+      window.removeEventListener("pointerup", end, true);
+      window.removeEventListener("pointercancel", end, true);
+      window.removeEventListener("blur", blur);
+      window.clearTimeout(releaseTimer);
+      releaseSelectionGuard();
+    };
+  }, []);
   const beginMiddlePan = event => {
     const options = middlePanRef.current;
     if (event.button !== 1 || !options) return;
@@ -53,7 +100,7 @@ export const CanvasSurface = forwardRef(function CanvasSurface({ as: Element = "
     }
     props.onLostPointerCapture?.(event);
   };
-  return <Element {...props} ref={ref} className={`canvas-surface ${className}${isMiddlePanning ? " is-middle-panning" : ""}`.trim()} onPointerDownCapture={beginMiddlePan} onPointerMoveCapture={moveMiddlePan} onPointerUpCapture={endMiddlePan} onPointerCancelCapture={endMiddlePan} onLostPointerCapture={loseMiddlePanCapture} />;
+  return <Element {...props} ref={ref} className={`canvas-surface ${className}${isMiddlePanning ? " is-middle-panning" : ""}`.trim()} onPointerDownCapture={event => { beginMiddlePan(event); beginBackgroundPan(event); }} onPointerMoveCapture={moveMiddlePan} onPointerUpCapture={endMiddlePan} onPointerCancelCapture={endMiddlePan} onLostPointerCapture={loseMiddlePanCapture} />;
 });
 
 export function CanvasToolbar({ as: Element = "div", placement = "top-right", className = "", children, ...props }) {

@@ -28,6 +28,9 @@
 .canvas-surface.is-middle-panning,
 .canvas-surface.is-middle-panning * { cursor: grabbing !important; user-select: none !important; -webkit-user-select: none !important; }
 
+html.canvas-selection-disabled,
+html.canvas-selection-disabled * { user-select: none !important; -webkit-user-select: none !important; }
+
 .canvas-toolbar {
   position: absolute;
   z-index: 30;
