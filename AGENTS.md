@@ -9079,3 +9079,19 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户确认推荐节点（H）；`ascend-studio/src/official-learning-data.js` 中节点定义、`OfficialLearningPathCanvas.jsx` 中选择后展开相关练习卡的逻辑，以及 `OfficialLearningActivities.jsx` 中可调参数的教学形状检查（M）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；源码核对路径按钮会进入学习画布，目标节点使用 `data-official-step="learning-official-step-preprocess"`，选择后展开实践卡并检查「运行形状检查」可见。Pages workflow `42743580944` build / deploy 成功；线上设计点页和 `app.js` HTTP 200，资源版本及目标节点、练习控件定位逻辑已读回确认。
 - 提交 / 推送：功能提交 `0e9268c8` 已推送至 `origin/main`；本条发布回执随交接记录更新提交并推送。
+
+### 2026-11-10 · 示例副本设计点直接显示全部内容画布
+
+- 用户指出进入「在示例副本里动手修改」时右侧内容会闪，并明确希望直接看到任务的「全部内容」画布。此前设计点在图解页把任务工作区收起，切换到本点时先展开旧视图，再切换全部内容，形成中间状态闪现。
+- 修改 `ascstudio-pc/app.js`：在工作区仍隐藏时，直接触发已挂载的「查看本任务全部内容」按钮；Studio 的 `openCanvas` 会一次性切换为全部内容画布并展开工作区，移除展开后的 MutationObserver 与第二次点击。起点标注改为「任务内容 · 全部内容画布」。原材料和示例副本仍在同一画布中供查看、编辑和对照。`ascstudio-pc/index.html` 与脚本资源使用版本 `20261110-draft-all-content-canvas`。
+- 依据：用户明确指定起点为全部内容画布（H）；Studio 的 AddCustom 画布按钮在工作区收起时仍挂载，`openCanvas` 同次状态更新同时设置 `canvasMode` 与 `collapsed=false`，由 `ascend-studio/src/TaskWorkspace.jsx` 和 `src/useContentWorkspace.js` 核对（H）。不改变章节顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；本地 CUA 初始化超时，未能做浏览器视觉回放；尚待推送后核对 Pages 构建与线上读回。未运行自动化测试。
+- 提交 / 推送：待本轮发布后补记提交、Pages workflow 与线上核验结果。
+
+### 2026-11-10 · 关联探索发送后生成训练学习路径
+
+- 用户要求：通过首页关联字段形成 Prompt 并发送后，右侧呈现对应学习路径。发送行为创建学习任务，按目标、现象、瓶颈、指标 / 策略及验证字段，将连线顺序整理为路径草案；同类连续线索合并在同一节点，原始 Prompt 保留在左侧对话中。
+- 依据：用户明确指定发送后的结果（H）；路径由本地字段角色与连接顺序映射为训练调优学习步骤（M），属于设计概念演示，不代表真实 AI 生成、训练诊断或 NPU 验证。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`composition-learning-path.js`、`CompositionLearningPathCanvas.jsx`、对应 CSS、`useWorkbenchState.js` 与 `App.jsx`。
+- 验证：`npm run build:pages`、`git diff --check` 通过；Chrome 1440×1000 回放选择并连接 5 个训练字段后发送，确认左侧保留原 Prompt，右侧显示按线索顺序生成的 4 个学习节点。证据：`ascend-studio/evidence/20261110-composition-learning-path/`。未运行自动化测试。
+- 提交 / 推送：功能提交 `6b93e863` 合并远端更新后，以 `3d7fff6a` 合并提交推送至 `origin/main`（发布头 `5d923055`）。首次 Pages workflow `42748928960` build 成功，但 deploy 在 `syncing_files` 等待 10 分钟后超时；交接更新提交 `c3518379` 再次触发部署，workflow `42750603193` build / deploy 成功。线上 `/ascstudio/` 已引用 `index-CNMJw5jG.js`、`index-D4z6Rc_x.css`，两者均 HTTP 200。

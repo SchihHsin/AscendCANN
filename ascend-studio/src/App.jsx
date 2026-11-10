@@ -38,6 +38,7 @@ import { OfficialLearningPathCanvas } from "./OfficialLearningPathCanvas";
 import { OfficialLearningMaterial } from "./OfficialLearningMaterial";
 import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
+import { CompositionLearningPathCanvas } from "./CompositionLearningPathCanvas.jsx";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
 import { buildHomeSuggestions } from "./home-recommendations";
 import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
@@ -290,6 +291,7 @@ function App() {
   const showKnowledgePocket = mainView === "knowledge-pocket";
   const showTaskWorkspace = mainView === "task";
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
+  const [pendingCompositionPath, setPendingCompositionPath] = useState(null);
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [learningAgentAction, setLearningAgentAction] = useState(null);
   const [saveAvailable, setSaveAvailable] = useState(sessionSaveAvailable);
@@ -690,6 +692,15 @@ function App() {
     setPendingDiscoveryItem(null);
     openContent(destination.materialId, { restore: true, ...(destination.anchor ? { anchor: destination.anchor } : {}) });
   }, [pendingDiscoveryItem, selectedTask]);
+  useLayoutEffect(() => {
+    if (!pendingCompositionPath || pendingCompositionPath !== selectedTask) return;
+    setPendingCompositionPath(null);
+    learningCanvasView.actions.select("path");
+    learningCanvasView.actions.setExpanded(true);
+    workspace.actions.open("learning-path", { activate: false, restore: true, taskId: selectedTask, isMainTask: true });
+    workspace.actions.openCanvas({ mode: "free" });
+    setTaskContentsOpen(false);
+  }, [pendingCompositionPath, selectedTask]);
   const updateOverview = (patch, ownerId = selectedTask) => {
     if (Array.isArray(patch.compactIds)) {
       const ownerCanvas = ["learning", "official-learning"].includes(wb.getTask(ownerId).kind) ? learningCanvas : ownerId === IMAGE_TASK ? imageCanvas : canvas;
@@ -1344,7 +1355,11 @@ function App() {
       return target ? { id: target.id, title: target.title, relationLabel: relation.label, status: target.state?.label || target.statusLabel } : null;
     }).filter(Boolean) : [];
     const showOverview = visible && !free && !ownerMain;
-    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} canvasContent={learningCanvas} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
+    if (ownerLearning && free) {
+      const compositionPlan = wb.getTask(ownerId).compositionPlan;
+      if (compositionPlan) return <CompositionLearningPathCanvas plan={compositionPlan} />;
+      return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} canvasContent={learningCanvas} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
+    }
     if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenContent={openOfficialLearningContent} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
@@ -1617,7 +1632,7 @@ function App() {
         </div>}
         {showTaskWorkspace && !saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
         {showTaskWorkspace && workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容{workspace.state.visitedTabs.some(item => item.unread) && <span className="reopen-update-count">{workspace.state.visitedTabs.filter(item => item.unread).length} 项更新</span>}</button>}
-        {showTaskWorkspace && <span className={`proposal-badge${isPathGenerationTask && learning.state.draftPath ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
+        {showTaskWorkspace && <span className={`proposal-badge${(isPathGenerationTask && learning.state.draftPath) || task.compositionPlan ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{task.compositionPlan ? "学习路径 · 草案" : isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
         <button className="icon-button top-icon" type="button" aria-label="通知" data-menu-trigger aria-expanded={wb.menu?.name === "notifications"} onClick={(event) => openMenu("notifications", event)}><IconBell size={ICON_SIZE.heading} />{wb.notifications.length > 0 && <span className="notification-dot" />}</button>
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
@@ -1674,10 +1689,13 @@ function App() {
         </aside>
         {projectPanelOpen && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
-        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={recommendationTasks} onRecommendationAction={selectRecommendationAction} onRecommendationChat={chatAboutRecommendation} onCreateTask={({ goal, kind, attachments, groupId: requestedGroupId }) => {
+        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={recommendationTasks} onRecommendationAction={selectRecommendationAction} onRecommendationChat={chatAboutRecommendation} onCreateTask={({ goal, kind, attachments, groupId: requestedGroupId, compositionPlan }) => {
           const groupId = wb.groups.some((group) => group.id === requestedGroupId) ? requestedGroupId : kind === "learning" ? "inference" : (currentGroup?.id || "operator");
-          const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
-          if (created) { setMainView("task"); setProjectPanelOpen(false); }
+          let taskName = compositionPlan?.title || goal.slice(0, 60);
+          let suffix = 2;
+          while (wb.groups.some(group => group.tasks.includes(taskName))) taskName = `${compositionPlan?.title || goal.slice(0, 52)} · ${suffix++}`;
+          const created = wb.createTask({ name: taskName, groupId, goal, kind, attachments, compositionPlan });
+          if (created) { setMainView("task"); setProjectPanelOpen(false); if (compositionPlan) setPendingCompositionPath(taskName); }
           return created;
         }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showKnowledgePocket ? <KnowledgePocketPage items={knowledgePocket.items} selectedId={selectedPocketId} onSelect={setSelectedPocketId} onSendNow={sendPocketItemNow} onSchedule={schedulePocketItem} onSignal={setPocketSignal} onRemove={removePocketItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 自动化</span><h1 id="automations-page-title">自动化任务</h1><p>查看自动化状态，安排演示任务，或手动运行一次检查。</p></div><div className="management-page-summary"><strong>{wb.automations.filter(item => item.enabled).length}</strong><span>项已启用</span><i /><strong>{wb.automations.length}</strong><span>项任务</span></div></header>

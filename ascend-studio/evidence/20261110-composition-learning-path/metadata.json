@@ -1,0 +1,9 @@
+{
+  "title": "关联探索发送后的训练学习路径",
+  "capturedAt": "2026-11-10",
+  "screenshot": "after.png",
+  "dimensions": "1440x1000",
+  "url": "http://127.0.0.1:5193/?home=combine",
+  "stateNote": "选中提升训练吞吐、多卡收益不明显、通信等待、Profiler 时间线和对照实验后发送；右侧按关联顺序生成四个学习节点。",
+  "captureMethod": "使用本机 Chrome 无头浏览器，通过 DevTools Protocol 选择字段、提交表单并截图；未调用真实 AI、训练环境或 NPU。"
+}

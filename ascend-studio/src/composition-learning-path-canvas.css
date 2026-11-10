@@ -1,0 +1,169 @@
+.composition-learning-path {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: clamp(28px, 5vh, 56px) clamp(22px, 5vw, 72px) 36px;
+  color: #25252a;
+}
+
+.composition-learning-path__header {
+  width: min(720px, 100%);
+  margin: 0 auto 30px;
+}
+
+.composition-learning-path__header > span {
+  color: #777a83;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.composition-learning-path__header h1 {
+  margin: 8px 0 7px;
+  font-family: ui-serif, Georgia, "Songti SC", "STSong", serif;
+  font-size: clamp(22px, 2.3vw, 28px);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.composition-learning-path__header p {
+  margin: 0;
+  color: #777a83;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.composition-learning-path__steps {
+  position: relative;
+  width: min(720px, 100%);
+  display: grid;
+  gap: 0;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.composition-learning-path__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  padding-bottom: 22px;
+}
+
+.composition-learning-path__step:not(:last-child)::after {
+  position: absolute;
+  top: 42px;
+  bottom: 0;
+  left: 20px;
+  width: 1px;
+  background: #d8d8d8;
+  content: "";
+}
+
+.composition-learning-path__marker {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #e5e5e5;
+  border-radius: 50%;
+  background: #fff;
+  color: #25252a;
+  font-size: 11px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.composition-learning-path__marker.is-blue { box-shadow: inset 0 0 0 3px #e9f2ff; }
+.composition-learning-path__marker.is-coral { box-shadow: inset 0 0 0 3px #fff0ee; }
+.composition-learning-path__marker.is-teal { box-shadow: inset 0 0 0 3px #e5f7f5; }
+.composition-learning-path__marker.is-violet { box-shadow: inset 0 0 0 3px #f2ecfa; }
+.composition-learning-path__marker.is-rose { box-shadow: inset 0 0 0 3px #fcecf2; }
+
+.composition-learning-path__node {
+  min-width: 0;
+  padding: 14px 16px 13px;
+  border: 1px solid #e5e5e5;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(24 25 26 / 4%);
+}
+
+.composition-learning-path__node h2 {
+  margin: 0;
+  color: #25252a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.composition-learning-path__node p {
+  margin: 5px 0 0;
+  color: #777a83;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.composition-learning-path__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.composition-learning-path__sources span {
+  border-radius: 5px;
+  padding: 3px 7px;
+  background: #f4f5f5;
+  color: #666a73;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.composition-learning-path__sources .is-blue { background: #e9f2ff; color: #376aab; }
+.composition-learning-path__sources .is-coral { background: #fff0ee; color: #a95752; }
+.composition-learning-path__sources .is-teal { background: #e5f7f5; color: #357d75; }
+.composition-learning-path__sources .is-violet { background: #f2ecfa; color: #755aa4; }
+.composition-learning-path__sources .is-rose { background: #fcecf2; color: #a94d6d; }
+
+.composition-learning-path__footer {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 0 0 4px 56px;
+  color: #999ba2;
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  .composition-learning-path {
+    padding: 24px 16px 28px;
+  }
+
+  .composition-learning-path__header {
+    margin-bottom: 22px;
+  }
+
+  .composition-learning-path__step {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    padding-bottom: 16px;
+  }
+
+  .composition-learning-path__marker {
+    width: 34px;
+    height: 34px;
+    font-size: 10px;
+  }
+
+  .composition-learning-path__step:not(:last-child)::after {
+    top: 34px;
+    left: 16px;
+  }
+
+  .composition-learning-path__footer {
+    padding-left: 44px;
+  }
+}

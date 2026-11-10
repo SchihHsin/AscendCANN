@@ -358,7 +358,7 @@ export function useWorkbenchState() {
     }));
     return true;
   };
-  const createTask = ({ name, groupId, goal, kind, background = "", dailyMinutes = 20, attachments = [] }) => {
+  const createTask = ({ name, groupId, goal, kind, background = "", dailyMinutes = 20, attachments = [], compositionPlan = null }) => {
     const cleanGoal = String(goal || "").trim();
     const learning = kind === "learning";
     const title = String(name || (learning ? cleanGoal.slice(0, 60) : "")).trim(), group = groups.find((item) => item.id === groupId);
@@ -366,18 +366,21 @@ export function useWorkbenchState() {
     if (groups.some((item) => item.tasks.includes(title))) { notify("已有同名任务，请换一个名称"); return false; }
     setGroups((all) => all.map((item) => item.id === groupId ? { ...item, tasks: [...item.tasks, title] } : item));
     const learningProfile = learning ? {
-      goal: cleanGoal || "明确本次想学会的内容和能够完成的动作。",
-      background: String(background || "").trim(),
+      goal: String(compositionPlan?.goalTitle || cleanGoal || "明确本次想学会的内容和能够完成的动作。"),
+      background: String(background || (compositionPlan ? "由首页关联的训练线索组织学习顺序。" : "")).trim(),
       dailyMinutes: Math.max(5, Math.min(180, Number(dailyMinutes) || 20)),
     } : null;
     setMeta((all) => ({ ...all, [title]: {
       project: group.name,
       ...(learning ? { kind: "learning", learningProfile } : {}),
+      ...(compositionPlan ? { compositionPlan } : {}),
       goal: cleanGoal || "补充目标、输入材料和完成条件。",
-      question: learning
+      question: compositionPlan?.prompt || (learning
         ? `我想学习：${learningProfile.goal}\n已有基础：${learningProfile.background || "待补充"}\n每天可用时间：${learningProfile.dailyMinutes} 分钟。`
-        : cleanGoal || "开始整理这项任务的上下文。",
-      reply: learning
+        : cleanGoal || "开始整理这项任务的上下文。"),
+      reply: compositionPlan
+        ? "你把训练目标、现象与验证线索串成了需求。右侧已按连线顺序整理成学习路径草案，每个节点都对应刚才选中的线索。"
+        : learning
         ? "已建立学习任务。先确认目标、基础和可用时间，再整理学习路径；学习中产生的图解、练习和小结会保存在这个任务中。"
         : "已建立任务。可以继续补充代码、日志或具体问题，再选择下一步检查方向。当前尚无运行证据。",
       status: "waiting",

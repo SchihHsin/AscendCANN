@@ -2230,3 +2230,11 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 打开「Add 算子异常：从日志到验证」时，右侧 Format Lab 工作区默认展开。
 - 日志任务的专注布局仅在左侧项目 / 任务栏关闭时生效；用户点击图标栏重新打开任务列表后，必须恢复侧栏宽度、分隔线和点击能力。
 - 任务打开后不能把左侧导航设为永久不可见或不可点击。
+
+### 2026-11-10 · 关联探索发送后进入学习路径
+
+- 首页串联字段发送后创建学习任务，并立即在右侧学习画布展示训练调优路径草案。路径按连线顺序映射字段类别为学习动作，连续同类线索合并；左侧对话保留原始 Prompt，顶部状态为“学习路径 · 草案”。
+- 用户指定结果（H）；字段角色到步骤标题 / 说明为前端演示规则（M），不代表真实模型、训练诊断或 NPU 验证。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、`git diff --check` 通过；本地 Chrome 1440×1000 回放发送 5 个训练字段并切入右侧路径草案；截图见 `evidence/20261110-composition-learning-path/after.png`。未运行自动化测试。
+
+- 提交 / 推送与 Pages：功能提交 `6b93e863` 经合并提交 `3d7fff6a` 推送至 `origin/main`；首次 Pages workflow `42748928960` 在 `syncing_files` 超时，交接更新 `c3518379` 触发的 workflow `42750603193` build / deploy 成功。线上 `/ascstudio/` HTML 引用 `index-CNMJw5jG.js` 与 `index-D4z6Rc_x.css`，两资源均 HTTP 200。
