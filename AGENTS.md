@@ -9085,8 +9085,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出进入「在示例副本里动手修改」时右侧内容会闪，并明确希望直接看到任务的「全部内容」画布。此前设计点在图解页把任务工作区收起，切换到本点时先展开旧视图，再切换全部内容，形成中间状态闪现。
 - 修改 `ascstudio-pc/app.js`：在工作区仍隐藏时，直接触发已挂载的「查看本任务全部内容」按钮；Studio 的 `openCanvas` 会一次性切换为全部内容画布并展开工作区，移除展开后的 MutationObserver 与第二次点击。起点标注改为「任务内容 · 全部内容画布」。原材料和示例副本仍在同一画布中供查看、编辑和对照。`ascstudio-pc/index.html` 与脚本资源使用版本 `20261110-draft-all-content-canvas`。
 - 依据：用户明确指定起点为全部内容画布（H）；Studio 的 AddCustom 画布按钮在工作区收起时仍挂载，`openCanvas` 同次状态更新同时设置 `canvasMode` 与 `collapsed=false`，由 `ascend-studio/src/TaskWorkspace.jsx` 和 `src/useContentWorkspace.js` 核对（H）。不改变章节顺序或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；本地 CUA 初始化超时，未能做浏览器视觉回放；尚待推送后核对 Pages 构建与线上读回。未运行自动化测试。
-- 提交 / 推送：待本轮发布后补记提交、Pages workflow 与线上核验结果。
+- 验证：`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；本地 CUA 初始化超时，未能做浏览器视觉回放；线上 `/AscendCANN/ascstudio-pc/` 与 `app.js` HTTP 200，读回确认资源版本 `20261110-draft-all-content-canvas`、新起点文案及“先点隐藏画布按钮”的逻辑。实现提交 `4c1b0174` 已推送到 `origin/main`；该提交的 Pages 部署被更新的主线提交取消，但包含本次改动的后续主线 `def12f15` workflow `42754576327` build / deploy 成功。未运行自动化测试。
+- 提交 / 推送：实现提交 `4c1b0174` 已推送至 `origin/main`；本条交接发布回执待提交。
 
 ### 2026-11-10 · 关联探索发送后生成训练学习路径
 
