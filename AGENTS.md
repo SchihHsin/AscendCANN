@@ -9062,3 +9062,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求“右侧的不要打开，就只有对话”（H）；PC 材料的 AddCustom 任务路由和工作区收起控件由嵌入 Demo 源码核对（M）。不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过。源代码核对确认图解阶段仅收起已打开的任务内容工作区并等待对话区域可见，不触发任何图解或浮层。浏览器预览工具超时，未做本地可视化回放；线上 PC 页面、`app.js` HTTP 200，读回确认资源版本为 `20261110-diagram-conversation-only`，不含浮层或自动点开图解逻辑。Pages workflow `42738724906` build / deploy 成功。未运行自动化测试。
 - 提交 / 推送：功能与交接记录提交 `0836db10` 已推送至 `origin/main`；Pages 部署成功。
+
+
+### 2026-11-10 · 共创路径设计点定位到预处理实践节点
+
+- 用户确认将「共创路径连接理解与实践」起点改为「追踪样例预处理」。原起点「认识图像分类任务」是概念节点，没有可操作练习。新增独立 `resnet-practice` 阶段：先进入 ResNet50 目标学习路径，再选中「追踪样例预处理」节点，并等待其「运行形状检查」控件可见；`resnet-entry` 保留给输入框布局、框选提问等其他设计点。
+- 该节点的练习支持调整输出轴顺序和 batch，并查看浏览器教学示例的形状检查结果；不运行 Python、真实 ResNet50 或昇腾设备。变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`；资源版本为 `20261110-resnet-practice-entry`。未改学习路径数据、其他设计点和页面顺序，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户确认推荐节点（H）；`ascend-studio/src/official-learning-data.js` 中节点定义、`OfficialLearningPathCanvas.jsx` 中选择后展开相关练习卡的逻辑，以及 `OfficialLearningActivities.jsx` 中可调参数的教学形状检查（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；源码核对路径按钮会进入学习画布，目标节点使用 `data-official-step="learning-official-step-preprocess"`，选择后展开实践卡并检查「运行形状检查」可见。Pages 部署结果在推送后核对。
+- 提交 / 推送：本次实现和交接记录将一并提交并推送至 `origin/main`。
