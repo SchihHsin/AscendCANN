@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261110-resnet-practice-entry";
+const ROUTE_REV = "20261110-draft-all-content-canvas";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -18,7 +18,7 @@ const chapters = [
     id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "围绕开发问题查看图解、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     points: [
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
-      { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 示例工作副本编辑器", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
+      { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 全部内容画布", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
       { id: "return", title: "处理完成后回流经验", note: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", emphasis: "回到社区", description: "完成处理后出现经验整理入口，让只留在个人对话中的经验有机会回到社区。", entry: "任务完成 · 社区经验邀请", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "invite" },
       { id: "community", title: "把处理过程整理成社区经验", note: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", emphasis: "整理为草稿", description: "将问题、尝试和验证情况整理为草稿，补充后再决定是否提交。", entry: "社区经验 · 草稿审阅", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "community" },
       { id: "channels", title: "把经验带到更多平台", note: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", emphasis: "GitCode、CSDN 和抖音", description: "同一份经验可按不同平台的表达方式整理，并提供 GitCode、CSDN 和抖音等分享入口。", entry: "社区经验 · 多渠道预览", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "channels" },
@@ -250,25 +250,15 @@ function applyPcStage(point, doc) {
   }
 
   if (point.stage === "draft") {
-    const editor = doc.querySelector('textarea[aria-label="编辑当前示例代码草案"]');
-    if (isVisible(editor)) return true;
-    const fullDraft = visibleButton(doc, 'button[aria-label="打开示例工作副本完整内容"]');
-    if (fullDraft) { fullDraft.click(); return false; }
-    if (!isVisible(doc.querySelector(".task-workspace"))) {
-      const reopen = visibleButton(doc, "button", "打开内容");
-      if (reopen) { reopen.click(); return false; }
-      return false;
-    }
-    const contentOpen = visibleButton(doc, "button", "打开内容");
-    if (contentOpen) { contentOpen.click(); return false; }
-    const trigger = visibleButton(doc, ".tw-content-trigger");
-    const draftOption = visibleButton(doc, '.tw-content-option[role="menuitemradio"]', "示例工作副本");
-    if (draftOption) { draftOption.click(); return false; }
-    const pickerOption = visibleButton(doc, ".tw-material-open", "示例工作副本");
-    if (pickerOption) { pickerOption.click(); return false; }
-    const openOther = visibleButton(doc, '.tw-content-menu-foot button[role="menuitem"]', "打开其他内容");
-    if (openOther) { openOther.click(); return false; }
-    if (trigger && trigger.getAttribute("aria-expanded") !== "true") { trigger.click(); return false; }
+    const canvas = doc.querySelector(".task-canvas.is-addcustom");
+    const returnToFocus = visibleButton(doc, 'button[aria-label="返回聚焦内容"]');
+    if (isVisible(canvas) && returnToFocus) return true;
+    // The workspace can still be mounted under a hidden panel after the diagram point.
+    // Select the full canvas before reopening that panel so no intermediate view flashes.
+    const allContents = doc.querySelector('button[aria-label="查看本任务全部内容"]');
+    if (allContents) { allContents.click(); return false; }
+    const reopen = visibleButton(doc, "button.reopen-content");
+    if (reopen) { reopen.click(); return false; }
     return false;
   }
 
