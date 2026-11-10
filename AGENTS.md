@@ -9069,5 +9069,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认将「共创路径连接理解与实践」起点改为「追踪样例预处理」。原起点「认识图像分类任务」是概念节点，没有可操作练习。新增独立 `resnet-practice` 阶段：先进入 ResNet50 目标学习路径，再选中「追踪样例预处理」节点，并等待其「运行形状检查」控件可见；`resnet-entry` 保留给输入框布局、框选提问等其他设计点。
 - 该节点的练习支持调整输出轴顺序和 batch，并查看浏览器教学示例的形状检查结果；不运行 Python、真实 ResNet50 或昇腾设备。变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`；资源版本为 `20261110-resnet-practice-entry`。未改学习路径数据、其他设计点和页面顺序，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户确认推荐节点（H）；`ascend-studio/src/official-learning-data.js` 中节点定义、`OfficialLearningPathCanvas.jsx` 中选择后展开相关练习卡的逻辑，以及 `OfficialLearningActivities.jsx` 中可调参数的教学形状检查（M）。
-- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；源码核对路径按钮会进入学习画布，目标节点使用 `data-official-step="learning-official-step-preprocess"`，选择后展开实践卡并检查「运行形状检查」可见。Pages 部署结果在推送后核对。
-- 提交 / 推送：本次实现和交接记录将一并提交并推送至 `origin/main`。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；源码核对路径按钮会进入学习画布，目标节点使用 `data-official-step="learning-official-step-preprocess"`，选择后展开实践卡并检查「运行形状检查」可见。Pages workflow `42743580944` build / deploy 成功；线上设计点页和 `app.js` HTTP 200，资源版本及目标节点、练习控件定位逻辑已读回确认。
+- 提交 / 推送：功能提交 `0e9268c8` 已推送至 `origin/main`；本条发布回执随交接记录更新提交并推送。
