@@ -9095,3 +9095,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`composition-learning-path.js`、`CompositionLearningPathCanvas.jsx`、对应 CSS、`useWorkbenchState.js` 与 `App.jsx`。
 - 验证：`npm run build:pages`、`git diff --check` 通过；Chrome 1440×1000 回放选择并连接 5 个训练字段后发送，确认左侧保留原 Prompt，右侧显示按线索顺序生成的 4 个学习节点。证据：`ascend-studio/evidence/20261110-composition-learning-path/`。未运行自动化测试。
 - 提交 / 推送：功能提交 `6b93e863` 合并远端更新后，以 `3d7fff6a` 合并提交推送至 `origin/main`（发布头 `5d923055`）。首次 Pages workflow `42748928960` build 成功，但 deploy 在 `syncing_files` 等待 10 分钟后超时；交接更新提交 `c3518379` 再次触发部署，workflow `42750603193` build / deploy 成功。线上 `/ascstudio/` 已引用 `index-CNMJw5jG.js`、`index-D4z6Rc_x.css`，两者均 HTTP 200。
+
+
+### 2026-11-10 · 点阵背景拖动画布时阻止选中文字
+
+- 用户指出左键在画布点阵空白处拖动仍会选中文字，希望空白处用于平移画布，卡片正文和节点文字附近仍可进行原生文字选择。
+- 源码原因：任务画布的左键平移通过 `beginGesture` 调用 `preventDefault()`；学习层级与 ResNet50 画布虽然接管左键并设置 pointer capture，但没有在空白拖动开始时同步压制浏览器文本选区，导致行为不一致。
+- 修复：在共享 `CanvasSurface` 的捕获阶段识别左键空白起点，同步给 `html` 加临时文字选择禁用类，直到指针抬起、取消、窗口失焦或画布卸载后恢复。卡片内容、学习节点、标题和输入控件仍允许原生选字；工具按钮和小地图继续使用原有操作。中键拖动、节点点击和卡片滚动行为保留。
+- 变更文件：`ascend-studio/src/shared/canvas/index.jsx`、`ascend-studio/src/shared/canvas/canvas.css`，以及由构建同步的 `ascstudio/` 与 `ascstudio-pc/studio/` 静态产物。页面序列、API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 依据：用户明确给出的交互规则（H）；三类画布的 pointer 事件处理源码与共享样式对照（H）。
+- 验证：`npm run build:pages` 成功；构建 JS `node --check` 与 `git diff --check` 通过；线上 `/AscendCANN/ascstudio/`、脚本 `index-K501moCZ.js`、样式 `index-DTBvdPzy.css` 均 HTTP 200，线上资源包含选择保护标记。GitHub Pages workflow `42754576327` build / deploy 成功。CUA 浏览器连接连续超时，未完成真实鼠标拖动回放；构建产物及线上资源已核验。
+- 提交 / 推送：修复提交 `4d5f430a`，同步主分支提交 `78caa3f2`，发布产物提交 `def12f15`；已推送至 `origin/main`，Pages 发布成功。
