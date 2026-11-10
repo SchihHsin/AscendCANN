@@ -9053,3 +9053,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求图解打开时不要显示右侧任务内容工作区（H）；PC 材料的 AddCustom 任务路由、图解与工作区 DOM 状态由嵌入 Studio Demo 核对（M）。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器已核对进入图解、关闭后回到对话、重新打开图解，以及切换到示例副本设计点时工作区按需恢复。线上 HTML、`app.js` 与 CSS 返回 HTTP 200，资源版本为 `20261107-diagram-focus-overlay`；GitHub Pages workflow `42351381120` build / deploy 成功。未运行自动化测试。
 - 提交 / 推送：功能提交 `580738f1` 已推送至 `origin/main`；本条交接记录单独提交并推送。
+
+
+### 2026-11-10 · 图解设计点只定位到任务对话
+
+- 用户纠正上一版：不要把图解做成居中浮层；进入「打开图解看懂判断依据」设计点时只显示 Add 算子任务对话，不打开右侧任务内容工作区，也不自动触发对话里的图解按钮，留出演示者手动操作的空间。若工作区因此前操作仍处于打开状态，材料会先将其收起，再停在对话页。
+- 变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`。移除了上一版注入的图解浮层、遮罩、关闭按钮和自动打开逻辑，更新资源版本为 `20261110-diagram-conversation-only`。未改嵌入 Studio 的对话内容、按钮行为或其他设计点及页面顺序。
+- 依据：用户明确要求“右侧的不要打开，就只有对话”（H）；PC 材料的 AddCustom 任务路由和工作区收起控件由嵌入 Demo 源码核对（M）。不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过。源代码核对确认图解阶段仅收起已打开的任务内容工作区并等待对话区域可见，不触发任何图解或浮层。浏览器预览工具本轮超时，未做本地可视化回放；推送后将核对线上资源与 Pages 发布状态。
+- 提交 / 推送：本次代码与交接记录一并提交并推送至 `origin/main`；Pages 发布结果在推送后核对。

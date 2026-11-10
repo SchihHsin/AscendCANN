@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261107-diagram-focus-overlay";
+const ROUTE_REV = "20261110-diagram-conversation-only";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -42,7 +42,7 @@ const showcase = $("#showcase"), frame = $("#demo-frame"), cover = $("#chapter-c
 const params = new URLSearchParams(location.search);
 let currentChapter = Math.min(chapters.length - 1, Math.max(0, Number(params.get("chapter") || 1) - 1));
 let currentPoint = Math.min(chapters[currentChapter].points.length - 1, Math.max(0, Number(params.get("pointIndex") || 0)));
-let activePoint = null, menuOpen = false, loadingRevision = 0, loadedFrameHref = "", learningPrefillCleanup = null, diagramFocusCleanup = null, diagramFocusDoc = null, diagramFocusActivate = null;
+let activePoint = null, menuOpen = false, loadingRevision = 0, loadedFrameHref = "", learningPrefillCleanup = null;
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
@@ -167,148 +167,6 @@ function suppressDemoFocusHints(doc) {
   doc.head.append(style);
 }
 
-function enableDiagramFocus(doc, onClose = () => {}) {
-  const panel = [...doc.querySelectorAll(".ex-panel")].find(candidate => {
-    if (candidate.closest("[hidden]")) return false;
-    const rect = candidate.getBoundingClientRect();
-    const style = doc.defaultView.getComputedStyle(candidate);
-    return rect.width > 200 && rect.height > 120 && style.display !== "none" && style.visibility !== "hidden";
-  });
-  if (!panel) return false;
-  if (doc.body.classList.contains("pc-diagram-focus") && panel.classList.contains("pc-diagram-focus-panel")) return true;
-
-  let style = doc.getElementById("pc-diagram-focus-style");
-  if (!style) {
-    style = doc.createElement("style");
-    style.id = "pc-diagram-focus-style";
-    style.textContent = `
-      body.pc-diagram-focus .diagnostic-panel {
-        position: fixed !important; inset: 0 !important; z-index: 10000 !important;
-        width: auto !important; height: auto !important; max-width: none !important; max-height: none !important;
-        overflow: visible !important; padding: 0 !important; border: 0 !important; background: transparent !important;
-        box-shadow: none !important; pointer-events: none !important;
-      }
-      body.pc-diagram-focus .diagnostic-panel::before {
-        content: ""; position: fixed; inset: 0; z-index: 0;
-        background: rgb(24 27 33 / 48%); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
-        pointer-events: auto;
-      }
-      body.pc-diagram-focus .workspace-divider--conversation,
-      body.pc-diagram-focus .diagnostic-panel .tw-topbar,
-      body.pc-diagram-focus .diagnostic-panel .tw-comparison-bar,
-      body.pc-diagram-focus .diagnostic-panel .tw-history-context { display: none !important; }
-      body.pc-diagram-focus .diagnostic-panel .task-workspace,
-      body.pc-diagram-focus .diagnostic-panel .tw-stage,
-      body.pc-diagram-focus .diagnostic-panel .tw-task-body,
-      body.pc-diagram-focus .diagnostic-panel .tw-pane {
-        position: static !important; width: auto !important; height: auto !important; max-height: none !important;
-        overflow: visible !important; border: 0 !important; background: transparent !important; box-shadow: none !important;
-        visibility: hidden !important; pointer-events: none !important;
-      }
-      body.pc-diagram-focus .diagnostic-panel .pc-diagram-focus-panel {
-        position: fixed !important; top: 50% !important; left: 50% !important; right: auto !important; bottom: auto !important;
-        z-index: 1 !important; transform: translate(-50%, -50%) !important;
-        box-sizing: border-box !important; width: min(1180px, calc(100vw - 56px)) !important;
-        max-width: none !important; max-height: calc(100vh - 56px) !important; overflow: auto !important;
-        visibility: visible !important; pointer-events: auto !important;
-        border: 1px solid #e4e5e7 !important; border-radius: 16px !important; background: #fff !important;
-        box-shadow: 0 24px 80px rgb(0 0 0 / 28%) !important;
-      }
-      body.pc-diagram-focus .pc-diagram-focus-panel .ex-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
-      .pc-diagram-close {
-        display: inline-grid; place-items: center; flex: 0 0 34px; width: 34px; height: 34px; margin: 0 0 0 12px;
-        border: 1px solid #e5e5e5; border-radius: 9px; color: #666; background: #fff; font: inherit; font-size: 20px;
-        line-height: 1; cursor: pointer;
-      }
-      .pc-diagram-close:hover { color: #222; background: #f4f4f3; }
-      @media (max-width: 720px) {
-        body.pc-diagram-focus .diagnostic-panel .pc-diagram-focus-panel {
-          width: calc(100vw - 24px) !important; max-height: calc(100vh - 24px) !important;
-        }
-      }
-    `;
-    doc.head.append(style);
-  }
-
-  panel.classList.add("pc-diagram-focus-panel");
-  panel.setAttribute("role", "dialog");
-  panel.setAttribute("aria-modal", "true");
-  panel.setAttribute("aria-label", "关联图解");
-  const heading = panel.querySelector(".ex-heading");
-  if (heading && !heading.querySelector(".pc-diagram-close")) {
-    const close = doc.createElement("button");
-    close.className = "pc-diagram-close";
-    close.type = "button";
-    close.setAttribute("aria-label", "关闭图解");
-    close.title = "关闭图解，回到任务对话";
-    close.textContent = "×";
-    close.addEventListener("click", () => {
-      panel.classList.remove("pc-diagram-focus-panel");
-      panel.removeAttribute("role");
-      panel.removeAttribute("aria-modal");
-      panel.setAttribute("aria-label", "关联范围图解");
-      doc.body.classList.remove("pc-diagram-focus");
-      onClose();
-      doc.querySelector('button[aria-label="收起任务内容工作区"]')?.click();
-    });
-    heading.append(close);
-  }
-  doc.body.classList.add("pc-diagram-focus");
-  return true;
-}
-
-function installDiagramFocus(doc) {
-  if (diagramFocusCleanup && diagramFocusDoc === doc) return;
-  diagramFocusCleanup?.();
-  if (!doc?.body) return;
-  diagramFocusDoc = doc;
-  let dismissed = false, openTimer = 0;
-  const activateIfOpen = () => {
-    return activePoint?.stage === "diagram" && !dismissed ? enableDiagramFocus(doc, () => { dismissed = true; }) : false;
-  };
-  diagramFocusActivate = activateIfOpen;
-  const openFocusedDiagram = (attempt = 0) => {
-    if (activePoint?.stage !== "diagram" || dismissed) return;
-    if (activateIfOpen()) return;
-    if (isVisible(doc.querySelector('[aria-label="AddCustom 任务内容画布"]'))) {
-      const clue = visibleButton(doc, 'button[aria-label="打开线索解释完整内容"]');
-      if (clue) clue.click();
-    }
-    if (attempt < 12) openTimer = setTimeout(() => openFocusedDiagram(attempt + 1), 180);
-  };
-  const handleClick = event => {
-    const button = event.target.closest?.("button");
-    if (!button || !/图解|线索解释/.test(`${button.getAttribute("aria-label") || ""} ${button.textContent || ""}`)) return;
-    dismissed = false;
-    clearTimeout(openTimer);
-    openTimer = setTimeout(() => openFocusedDiagram(), 220);
-  };
-  const handleKeydown = event => {
-    if (event.key !== "Escape" || !doc.body.classList.contains("pc-diagram-focus")) return;
-    event.preventDefault();
-    doc.querySelector(".pc-diagram-close")?.click();
-  };
-  const observer = new MutationObserver(activateIfOpen);
-  doc.addEventListener("click", handleClick, true);
-  doc.addEventListener("keydown", handleKeydown, true);
-  observer.observe(doc.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "hidden"] });
-  diagramFocusCleanup = () => {
-    observer.disconnect();
-    clearTimeout(openTimer);
-    doc.removeEventListener("click", handleClick, true);
-    doc.removeEventListener("keydown", handleKeydown, true);
-    doc.body.classList.remove("pc-diagram-focus");
-    const panel = doc.querySelector(".pc-diagram-focus-panel");
-    panel?.classList.remove("pc-diagram-focus-panel");
-    panel?.querySelector(".pc-diagram-close")?.remove();
-    panel?.removeAttribute("role");
-    panel?.removeAttribute("aria-modal");
-    diagramFocusCleanup = null;
-    diagramFocusDoc = null;
-    diagramFocusActivate = null;
-  };
-}
-
 function isVisible(element) {
   return Boolean(element && element.getClientRects().length && !element.closest("[hidden]"));
 }
@@ -375,25 +233,9 @@ function applyPcStage(point, doc) {
   }
 
   if (point.stage === "diagram") {
-    installDiagramFocus(doc);
-    if (diagramFocusActivate?.()) return true;
-    if (isVisible(doc.querySelector('[aria-label="AddCustom 任务内容画布"]'))) {
-      const clue = visibleButton(doc, 'button[aria-label="打开线索解释完整内容"]');
-      if (clue) { clue.click(); return false; }
-    }
-    const diagramAction = knowledgeCue?.querySelector(".proactive-cue-secondary");
-    if (diagramAction && isVisible(diagramAction) && /图解/.test(diagramAction.textContent)) { diagramAction.click(); return false; }
-    const primary = knowledgeCue?.querySelector(".proactive-cue-primary");
-    if (primary && isVisible(primary) && primary.textContent.includes("看尾块处理图解")) {
-      primary.click();
-      return false;
-    }
-    if (isVisible(doc.querySelector(".ex-panel"))) return true;
-    const direct = visibleButton(doc, 'button[aria-label="打开线索解释完整内容"]') || visibleButton(doc, ".cm-code-link button", "对照图解");
-    if (direct) { direct.click(); return false; }
-    const cueExpand = knowledgeCue?.querySelector(".proactive-cue-expand");
-    if (cueExpand && isVisible(cueExpand)) { cueExpand.click(); return false; }
-    return false;
+    const collapseWorkspace = visibleButton(doc, 'button[aria-label="收起任务内容工作区"]');
+    if (collapseWorkspace) { collapseWorkspace.click(); return false; }
+    return Boolean(isVisible(doc.querySelector(".conversation-panel")) && isVisible(doc.querySelector(".assistant-response")));
   }
 
   if (point.stage === "draft") {
@@ -516,7 +358,6 @@ function applyMobileStart(point, attempt = 0, revision = loadingRevision) {
 
 function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   learningPrefillCleanup?.();
-  diagramFocusCleanup?.();
   const revision = ++loadingRevision;
   currentChapter = chapterIndex;
   currentPoint = pointIndex;
