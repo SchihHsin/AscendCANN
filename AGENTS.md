@@ -9050,7 +9050,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出「Add 算子异常：从日志到验证」打开后，左侧项目 / 任务列表无法重新唤起。源码确认专注态 CSS 同时把侧栏设为 `visibility:hidden`、`pointer-events:none`，并将其网格列宽压为 0；图标虽然仍可点击，但打开状态无法呈现。
 - 修复方式：仅在项目栏关闭时启用日志 Format Lab 专注布局；项目栏重新打开即撤掉该专注类，恢复侧栏宽度与分隔线。将日志工作区展示迁移版本升到 3，使已有浏览器首次加载此修复后也重置为默认展开的右侧工作区。
 - 依据：用户对任务默认状态及左侧任务列表可恢复性的明确要求（H）；状态与 CSS 行为由 `ascend-studio/src/App.jsx`、`useContentWorkspace.js` 和 `styles.css` 源码核对（H）。未改变任务分类、页面顺序或 API / Host / Application 边界。
-- 验证与提交 / 推送结果见本条目后续补记。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；`http://127.0.0.1:5198/?task=log-triage` 返回应用入口。CUA 浏览器读取连续超时，未完成可视回放。
+- 提交 / 推送：修复提交 `63736149`，合并远端更新提交 `5d4d5849`，已推送至 `origin/main`；随后主分支前进到 `a4d2f0c1`，包含本修复与并行工作。
+- Pages：workflow `42744398078` 构建成功，但部署在 `syncing_files` 阶段达到 10 分钟超时并取消；截至本记录更新时线上 `/ascstudio/` 仍引用旧资源 `index-CEoA8WxM.js`。需以本记录后续触发的部署再次核验，不能将线上发布记为完成。
 
 ### 2026-11-07 · 图解展示时收起任务内容工作区
 
