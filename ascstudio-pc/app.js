@@ -1,6 +1,6 @@
 const APP_URL = "./studio/";
 const MINI_URL = "../ascstudio-mini/";
-const ROUTE_REV = "20261105-related-exploration-copy";
+const ROUTE_REV = "20261110-resnet-practice-entry";
 const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
 const chapters = [
   {
@@ -9,7 +9,7 @@ const chapters = [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
       { id: "related-exploration", title: "围绕关注主题，探索相关问题与路径", note: "从一个关注主题开始，沿着关联线索继续探索。", emphasis: "关注主题", description: "从一个关注主题开始，沿着关联线索继续探索。", entry: "新建任务 · 首页关联探索", home: "combine" },
       { id: "co-create", title: "和 AI 一起调整学习路径", note: "结合个人基础和目标，和 AI 一起调整路径。", emphasis: "和 AI 一起调整路径", description: "结合个人基础和目标，和 AI 一起调整路径。", entry: "路径共创任务 · 输入框预填，等待发送", task: "图像输入预处理路径共创", group: "模型推理", stage: "path-prompt", prefill: LEARNING_PATH_PROMPT },
-      { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 第一学习节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
+      { id: "resnet-path", title: "共创路径连接理解与实践", note: "让共创路径贯通理解、练习与结果核验。", emphasis: "理解、练习与结果核验", description: "让共创路径贯通理解、练习与结果核验。", entry: "ResNet50 离线推理初体验 · 追踪样例预处理实践节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-practice" },
       { id: "composer-layout", title: "拖动输入框，调整对话位置", note: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", emphasis: "拖动输入框外沿", description: "拖动输入框外沿，在左侧对话栏与底部浮窗之间切换。", entry: "ResNet50 离线推理初体验 · 学习任务对话", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
       { id: "point-and-say", title: "框选内容，直接指着说", note: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", emphasis: "框选学习画布里的疑问区域", description: "框选学习画布里的疑问区域，再通过文字或语音直接提问。", entry: "ResNet50 学习画布 · 图解节点", task: "ResNet50 离线推理初体验", group: "模型推理", stage: "resnet-entry" },
     ],
@@ -226,6 +226,17 @@ function applyPcStage(point, doc) {
     return true;
   }
 
+  if (point.stage === "resnet-practice") {
+    const practiceNode = visibleButton(doc, '[data-official-step="learning-official-step-preprocess"]');
+    if (practiceNode) {
+      if (practiceNode.getAttribute("aria-pressed") !== "true") { practiceNode.click(); return false; }
+      return Boolean(visibleButton(doc, "button", "运行形状检查"));
+    }
+    const pathButton = visibleButton(doc, ".task-suggestion-actions button", "查看目标学习路径");
+    if (pathButton) { pathButton.click(); return false; }
+    return false;
+  }
+
   if (point.stage === "knowledge") {
     const expand = knowledgeCue?.querySelector(".proactive-cue-expand");
     if (expand && isVisible(expand)) expand.click();
@@ -233,20 +244,9 @@ function applyPcStage(point, doc) {
   }
 
   if (point.stage === "diagram") {
-    if (isVisible(doc.querySelector('[aria-label="AddCustom 任务内容画布"]'))) return true;
-    const diagramAction = knowledgeCue?.querySelector(".proactive-cue-secondary");
-    if (diagramAction && isVisible(diagramAction) && /图解/.test(diagramAction.textContent)) { diagramAction.click(); return false; }
-    const primary = knowledgeCue?.querySelector(".proactive-cue-primary");
-    if (primary && isVisible(primary) && primary.textContent.includes("看尾块处理图解")) {
-      primary.click();
-      return false;
-    }
-    if (isVisible(doc.querySelector(".ex-panel"))) return true;
-    const direct = visibleButton(doc, 'button[aria-label="打开线索解释完整内容"]') || visibleButton(doc, ".cm-code-link button", "对照图解");
-    if (direct) { direct.click(); return false; }
-    const cueExpand = knowledgeCue?.querySelector(".proactive-cue-expand");
-    if (cueExpand && isVisible(cueExpand)) { cueExpand.click(); return false; }
-    return false;
+    const collapseWorkspace = visibleButton(doc, 'button[aria-label="收起任务内容工作区"]');
+    if (collapseWorkspace) { collapseWorkspace.click(); return false; }
+    return Boolean(isVisible(doc.querySelector(".conversation-panel")) && isVisible(doc.querySelector(".assistant-response")));
   }
 
   if (point.stage === "draft") {
@@ -254,7 +254,11 @@ function applyPcStage(point, doc) {
     if (isVisible(editor)) return true;
     const fullDraft = visibleButton(doc, 'button[aria-label="打开示例工作副本完整内容"]');
     if (fullDraft) { fullDraft.click(); return false; }
-    if (!isVisible(doc.querySelector(".task-workspace"))) return false;
+    if (!isVisible(doc.querySelector(".task-workspace"))) {
+      const reopen = visibleButton(doc, "button", "打开内容");
+      if (reopen) { reopen.click(); return false; }
+      return false;
+    }
     const contentOpen = visibleButton(doc, "button", "打开内容");
     if (contentOpen) { contentOpen.click(); return false; }
     const trigger = visibleButton(doc, ".tw-content-trigger");

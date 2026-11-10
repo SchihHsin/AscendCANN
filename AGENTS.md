@@ -9051,3 +9051,29 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复方式：仅在项目栏关闭时启用日志 Format Lab 专注布局；项目栏重新打开即撤掉该专注类，恢复侧栏宽度与分隔线。将日志工作区展示迁移版本升到 3，使已有浏览器首次加载此修复后也重置为默认展开的右侧工作区。
 - 依据：用户对任务默认状态及左侧任务列表可恢复性的明确要求（H）；状态与 CSS 行为由 `ascend-studio/src/App.jsx`、`useContentWorkspace.js` 和 `styles.css` 源码核对（H）。未改变任务分类、页面顺序或 API / Host / Application 边界。
 - 验证与提交 / 推送结果见本条目后续补记。
+
+### 2026-11-07 · 图解展示时收起任务内容工作区
+
+- 按用户要求，开发章节「打开图解看懂判断依据」进入 Add 算子精度差异排查任务对话后，直接展示线索解释图解；图解以居中浮层覆盖呈现，右侧任务内容工作区不打开，避免对话与工作区同时争夺演示空间。浮层可通过关闭按钮或 `Esc` 关闭并回到任务对话；关闭后工作区保持收起，进入下一设计点「在示例副本里动手修改」时再按需打开并定位示例副本。
+- 变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`。更新路由资源版本；设计点顺序、章节结构与 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 依据：用户明确要求图解打开时不要显示右侧任务内容工作区（H）；PC 材料的 AddCustom 任务路由、图解与工作区 DOM 状态由嵌入 Studio Demo 核对（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地浏览器已核对进入图解、关闭后回到对话、重新打开图解，以及切换到示例副本设计点时工作区按需恢复。线上 HTML、`app.js` 与 CSS 返回 HTTP 200，资源版本为 `20261107-diagram-focus-overlay`；GitHub Pages workflow `42351381120` build / deploy 成功。未运行自动化测试。
+- 提交 / 推送：功能提交 `580738f1` 已推送至 `origin/main`；本条交接记录单独提交并推送。
+
+
+### 2026-11-10 · 图解设计点只定位到任务对话
+
+- 用户纠正上一版：不要把图解做成居中浮层；进入「打开图解看懂判断依据」设计点时只显示 Add 算子任务对话，不打开右侧任务内容工作区，也不自动触发对话里的图解按钮，留出演示者手动操作的空间。若工作区因此前操作仍处于打开状态，材料会先将其收起，再停在对话页。
+- 变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`。移除了上一版注入的图解浮层、遮罩、关闭按钮和自动打开逻辑，更新资源版本为 `20261110-diagram-conversation-only`。未改嵌入 Studio 的对话内容、按钮行为或其他设计点及页面顺序。
+- 依据：用户明确要求“右侧的不要打开，就只有对话”（H）；PC 材料的 AddCustom 任务路由和工作区收起控件由嵌入 Demo 源码核对（M）。不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过。源代码核对确认图解阶段仅收起已打开的任务内容工作区并等待对话区域可见，不触发任何图解或浮层。浏览器预览工具超时，未做本地可视化回放；线上 PC 页面、`app.js` HTTP 200，读回确认资源版本为 `20261110-diagram-conversation-only`，不含浮层或自动点开图解逻辑。Pages workflow `42738724906` build / deploy 成功。未运行自动化测试。
+- 提交 / 推送：功能与交接记录提交 `0836db10` 已推送至 `origin/main`；Pages 部署成功。
+
+
+### 2026-11-10 · 共创路径设计点定位到预处理实践节点
+
+- 用户确认将「共创路径连接理解与实践」起点改为「追踪样例预处理」。原起点「认识图像分类任务」是概念节点，没有可操作练习。新增独立 `resnet-practice` 阶段：先进入 ResNet50 目标学习路径，再选中「追踪样例预处理」节点，并等待其「运行形状检查」控件可见；`resnet-entry` 保留给输入框布局、框选提问等其他设计点。
+- 该节点的练习支持调整输出轴顺序和 batch，并查看浏览器教学示例的形状检查结果；不运行 Python、真实 ResNet50 或昇腾设备。变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`；资源版本为 `20261110-resnet-practice-entry`。未改学习路径数据、其他设计点和页面顺序，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户确认推荐节点（H）；`ascend-studio/src/official-learning-data.js` 中节点定义、`OfficialLearningPathCanvas.jsx` 中选择后展开相关练习卡的逻辑，以及 `OfficialLearningActivities.jsx` 中可调参数的教学形状检查（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；源码核对路径按钮会进入学习画布，目标节点使用 `data-official-step="learning-official-step-preprocess"`，选择后展开实践卡并检查「运行形状检查」可见。Pages 部署结果在推送后核对。
+- 提交 / 推送：本次实现和交接记录将一并提交并推送至 `origin/main`。
