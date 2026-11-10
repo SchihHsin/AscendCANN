@@ -9044,3 +9044,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户希望用按住滚轮拖动替代左键拖画布时可能发生的文字选中。共享 `CanvasSurface` 捕获中键拖动并平移视口；覆盖任务自由画布、学习层级画布与 ResNet50 官方学习画布。可从空白、节点、卡片正文或文字上起拖，拖动期间禁用文字选择并显示抓取中光标；原左键行为、节点操作、卡片正文滚动、滚轮缩放保留。
 - 变更：`ascend-studio/src/shared/canvas/index.jsx`、`shared/canvas/canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并更新该子项目规则与两套 Pages 构建副本。页面顺序及 API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本机 `5198/?task=resnet50` 页面已打开，DOM 暴露新的中键拖动画布说明。代码提交 `c7775f36` 已并入并随 `d4c1e75f` 推送到 `origin/main`；Pages workflow `42347231290` build / deploy 成功。线上 `/ascstudio/` 返回 HTTP 200，引用新 JS / CSS，两个资源的 HTTP HEAD 均为 200。未对实体鼠标中键拖动做浏览器输入回放。
+
+### 2026-11-10 · 日志诊断任务保持右侧默认打开并可重新唤起左侧任务列表
+
+- 用户指出「Add 算子异常：从日志到验证」打开后，左侧项目 / 任务列表无法重新唤起。源码确认专注态 CSS 同时把侧栏设为 `visibility:hidden`、`pointer-events:none`，并将其网格列宽压为 0；图标虽然仍可点击，但打开状态无法呈现。
+- 修复方式：仅在项目栏关闭时启用日志 Format Lab 专注布局；项目栏重新打开即撤掉该专注类，恢复侧栏宽度与分隔线。将日志工作区展示迁移版本升到 3，使已有浏览器首次加载此修复后也重置为默认展开的右侧工作区。
+- 依据：用户对任务默认状态及左侧任务列表可恢复性的明确要求（H）；状态与 CSS 行为由 `ascend-studio/src/App.jsx`、`useContentWorkspace.js` 和 `styles.css` 源码核对（H）。未改变任务分类、页面顺序或 API / Host / Application 边界。
+- 验证与提交 / 推送结果见本条目后续补记。

@@ -6,7 +6,7 @@ import { LOG_DIAGNOSTIC_TASK } from "./prototype-data";
 
 const ADD_CUSTOM_TASK_ID = "AddCustom 精度异常";
 const ADD_CUSTOM_CANVAS_VERSION = 5;
-const LOG_DIAGNOSTIC_WORKSPACE_VERSION = 2;
+const LOG_DIAGNOSTIC_WORKSPACE_VERSION = 3;
 
 function initialState(isMainTask, taskId, initialMaterialId) {
   const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : taskId === LOG_DIAGNOSTIC_TASK ? "log-diagnosis" : isMainTask ? "explanation" : "task-brief")), unread: false };
