@@ -9086,4 +9086,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确指定发送后的结果（H）；路径由本地字段角色与连接顺序映射为训练调优学习步骤（M），属于设计概念演示，不代表真实 AI 生成、训练诊断或 NPU 验证。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`composition-learning-path.js`、`CompositionLearningPathCanvas.jsx`、对应 CSS、`useWorkbenchState.js` 与 `App.jsx`。
 - 验证：`npm run build:pages`、`git diff --check` 通过；Chrome 1440×1000 回放选择并连接 5 个训练字段后发送，确认左侧保留原 Prompt，右侧显示按线索顺序生成的 4 个学习节点。证据：`ascend-studio/evidence/20261110-composition-learning-path/`。未运行自动化测试。
-- 提交 / 推送与 Pages 发布：功能提交 `6b93e863` 已生成；因同步远端提交导致合并中，待冲突合并及推送后补记部署结果。
+- 提交 / 推送：功能提交 `6b93e863` 合并远端更新后，以 `3d7fff6a` 合并提交推送至 `origin/main`（发布头 `5d923055`）。Pages workflow `42748928960` 的 build 成功，但 deploy 在 `syncing_files` 等待 10 分钟后超时；线上仍引用旧资源 `index-Cp473Uly.js` / `index-CMSYq5Oz.css`，新 JS 返回 HTTP 404。GitHub 连接器重跑 deploy job 被 API 以 403 拒绝；本条交接更新提交将触发一次新的 Pages 部署。
