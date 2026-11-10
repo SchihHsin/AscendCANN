@@ -9045,6 +9045,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`ascend-studio/src/shared/canvas/index.jsx`、`shared/canvas/canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并更新该子项目规则与两套 Pages 构建副本。页面顺序及 API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本机 `5198/?task=resnet50` 页面已打开，DOM 暴露新的中键拖动画布说明。代码提交 `c7775f36` 已并入并随 `d4c1e75f` 推送到 `origin/main`；Pages workflow `42347231290` build / deploy 成功。线上 `/ascstudio/` 返回 HTTP 200，引用新 JS / CSS，两个资源的 HTTP HEAD 均为 200。未对实体鼠标中键拖动做浏览器输入回放。
 
+### 2026-11-10 · 日志诊断任务保持右侧默认打开并可重新唤起左侧任务列表
+
+- 用户指出「Add 算子异常：从日志到验证」打开后，左侧项目 / 任务列表无法重新唤起。源码确认专注态 CSS 同时把侧栏设为 `visibility:hidden`、`pointer-events:none`，并将其网格列宽压为 0；图标虽然仍可点击，但打开状态无法呈现。
+- 修复方式：仅在项目栏关闭时启用日志 Format Lab 专注布局；项目栏重新打开即撤掉该专注类，恢复侧栏宽度与分隔线。将日志工作区展示迁移版本升到 3，使已有浏览器首次加载此修复后也重置为默认展开的右侧工作区。
+- 依据：用户对任务默认状态及左侧任务列表可恢复性的明确要求（H）；状态与 CSS 行为由 `ascend-studio/src/App.jsx`、`useContentWorkspace.js` 和 `styles.css` 源码核对（H）。未改变任务分类、页面顺序或 API / Host / Application 边界。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；`http://127.0.0.1:5198/?task=log-triage` 返回应用入口。CUA 浏览器读取连续超时，未完成可视回放。
+- 提交 / 推送：修复提交 `63736149`，合并远端更新提交 `5d4d5849`，已推送至 `origin/main`；随后主分支前进到 `a4d2f0c1`，包含本修复与并行工作。
+- Pages：workflow `42744398078` 构建成功，但部署在 `syncing_files` 阶段达到 10 分钟超时并取消；截至本记录更新时线上 `/ascstudio/` 仍引用旧资源 `index-CEoA8WxM.js`。需以本记录后续触发的部署再次核验，不能将线上发布记为完成。
 
 ### 2026-11-07 · 图解展示时收起任务内容工作区
 
@@ -9063,10 +9071,19 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过。源代码核对确认图解阶段仅收起已打开的任务内容工作区并等待对话区域可见，不触发任何图解或浮层。浏览器预览工具超时，未做本地可视化回放；线上 PC 页面、`app.js` HTTP 200，读回确认资源版本为 `20261110-diagram-conversation-only`，不含浮层或自动点开图解逻辑。Pages workflow `42738724906` build / deploy 成功。未运行自动化测试。
 - 提交 / 推送：功能与交接记录提交 `0836db10` 已推送至 `origin/main`；Pages 部署成功。
 
+
+### 2026-11-10 · 共创路径设计点定位到预处理实践节点
+
+- 用户确认将「共创路径连接理解与实践」起点改为「追踪样例预处理」。原起点「认识图像分类任务」是概念节点，没有可操作练习。新增独立 `resnet-practice` 阶段：先进入 ResNet50 目标学习路径，再选中「追踪样例预处理」节点，并等待其「运行形状检查」控件可见；`resnet-entry` 保留给输入框布局、框选提问等其他设计点。
+- 该节点的练习支持调整输出轴顺序和 batch，并查看浏览器教学示例的形状检查结果；不运行 Python、真实 ResNet50 或昇腾设备。变更文件：`ascstudio-pc/app.js`、`ascstudio-pc/index.html`；资源版本为 `20261110-resnet-practice-entry`。未改学习路径数据、其他设计点和页面顺序，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户确认推荐节点（H）；`ascend-studio/src/official-learning-data.js` 中节点定义、`OfficialLearningPathCanvas.jsx` 中选择后展开相关练习卡的逻辑，以及 `OfficialLearningActivities.jsx` 中可调参数的教学形状检查（M）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；源码核对路径按钮会进入学习画布，目标节点使用 `data-official-step="learning-official-step-preprocess"`，选择后展开实践卡并检查「运行形状检查」可见。Pages workflow `42743580944` build / deploy 成功；线上设计点页和 `app.js` HTTP 200，资源版本及目标节点、练习控件定位逻辑已读回确认。
+- 提交 / 推送：功能提交 `0e9268c8` 已推送至 `origin/main`；本条发布回执随交接记录更新提交并推送。
+
 ### 2026-11-10 · 关联探索发送后生成训练学习路径
 
-- 用户要求：通过首页关联字段形成 Prompt 并发送后，右侧应呈现对应的学习路径。发送行为现创建学习任务，按目标、现象、瓶颈、指标 / 策略及验证字段，将连线顺序整理为路径草案；同类连续线索合并在同一学习节点，原始 Prompt 留在左侧对话中。
-- 依据：用户明确指定发送后的右侧结果（H）；路径由本地字段角色与已连接顺序映射为训练调优学习步骤（M），用于设计概念演示，不代表真实 AI 生成、训练诊断或 NPU 验证。主题仍是训练与调优。
-- 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`composition-learning-path.js`、`CompositionLearningPathCanvas.jsx`、对应 CSS、`useWorkbenchState.js` 与 `App.jsx`；首页 Tab 和页面序列不变，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages` 与 `git diff --check` 通过；Chrome 1440×1000 回放从首页选择 5 个字段并发送，确认原 Prompt、学习路径草案状态及右侧 4 个按连接线索排列的学习节点。证据：`ascend-studio/evidence/20261110-composition-learning-path/`。未运行自动化测试；构建保留既有 bundle 大于 500 kB 的提示。
-- 提交 / 推送与 Pages 发布：待本轮发布后补记。
+- 用户要求：通过首页关联字段形成 Prompt 并发送后，右侧呈现对应学习路径。发送行为创建学习任务，按目标、现象、瓶颈、指标 / 策略及验证字段，将连线顺序整理为路径草案；同类连续线索合并在同一节点，原始 Prompt 保留在左侧对话中。
+- 依据：用户明确指定发送后的结果（H）；路径由本地字段角色与连接顺序映射为训练调优学习步骤（M），属于设计概念演示，不代表真实 AI 生成、训练诊断或 NPU 验证。页面序列及 API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`composition-learning-path.js`、`CompositionLearningPathCanvas.jsx`、对应 CSS、`useWorkbenchState.js` 与 `App.jsx`。
+- 验证：`npm run build:pages`、`git diff --check` 通过；Chrome 1440×1000 回放选择并连接 5 个训练字段后发送，确认左侧保留原 Prompt，右侧显示按线索顺序生成的 4 个学习节点。证据：`ascend-studio/evidence/20261110-composition-learning-path/`。未运行自动化测试。
+- 提交 / 推送与 Pages 发布：功能提交 `6b93e863` 已生成；因同步远端提交导致合并中，待冲突合并及推送后补记部署结果。
