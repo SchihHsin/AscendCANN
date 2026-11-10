@@ -9106,3 +9106,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确给出的交互规则（H）；三类画布的 pointer 事件处理源码与共享样式对照（H）。
 - 验证：`npm run build:pages` 成功；构建 JS `node --check` 与 `git diff --check` 通过；线上 `/AscendCANN/ascstudio/`、脚本 `index-K501moCZ.js`、样式 `index-DTBvdPzy.css` 均 HTTP 200，线上资源包含选择保护标记。GitHub Pages workflow `42754576327` build / deploy 成功。CUA 浏览器连接连续超时，未完成真实鼠标拖动回放；构建产物及线上资源已核验。
 - 提交 / 推送：修复提交 `4d5f430a`，同步主分支提交 `78caa3f2`，发布产物提交 `def12f15`；已推送至 `origin/main`，Pages 发布成功。
+
+### 2026-11-11 · 创建 Ascend Work 章节封面插画 Skill
+
+- 新增用户级 Skill `/Users/hsin/.codex/skills/ascend-chapter-cover-art/SKILL.md`，将章节封面共同风格整理为可复用的生成规则：真实透明底、3:2 宽构图、深蓝手绘描边、暖米白主体、克制的蓝与珊瑚橙点缀、轻微纸感和局部柔光；用相连的少量物件表达章节含义，画面不放标题文字、Logo 或仿真产品截图。
+- 风格根据 `ascstudio-pc/assets/cover-learning.png`、`cover-development.png`、`cover-mobile.png` 和封面布局源码提炼。三张素材均为 1536×1024 RGBA PNG；Skill 保持自动发现，适用于 Ascend Work 章节封面插画，不扩展为通用图标或图表生成。
+- 验证：skill-creator 的 `quick_validate.py` 因当前 Python 缺少 PyYAML 无法运行；使用系统 Ruby YAML parser 检查 Skill frontmatter、目录名称、UI 元数据长度与未完成占位符，均通过。未修改项目页面或章节顺序，也未涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 推送：Skill 存放于用户级 Codex skills 目录；本条仓库交接记录随本次工作提交推送。
