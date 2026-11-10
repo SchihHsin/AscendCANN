@@ -9052,7 +9052,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户对任务默认状态及左侧任务列表可恢复性的明确要求（H）；状态与 CSS 行为由 `ascend-studio/src/App.jsx`、`useContentWorkspace.js` 和 `styles.css` 源码核对（H）。未改变任务分类、页面顺序或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；`http://127.0.0.1:5198/?task=log-triage` 返回应用入口。CUA 浏览器读取连续超时，未完成可视回放。
 - 提交 / 推送：修复提交 `63736149`，合并远端更新提交 `5d4d5849`，已推送至 `origin/main`；随后主分支前进到 `a4d2f0c1`，包含本修复与并行工作。
-- Pages：workflow `42744398078` 构建成功，但部署在 `syncing_files` 阶段达到 10 分钟超时并取消；截至本记录更新时线上 `/ascstudio/` 仍引用旧资源 `index-CEoA8WxM.js`。需以本记录后续触发的部署再次核验，不能将线上发布记为完成。
+- Pages：workflow `42744398078` 的部署在 `syncing_files` 阶段达到 10 分钟超时；后续提交 `0b3ff691` 触发 workflow `42746274030`，build / deploy 成功。Pages API 状态为 `built`；线上 `/ascstudio/` 已引用新脚本 `index-Cp473Uly.js` 与样式 `index-CMSYq5Oz.css`，两资源 HEAD 均 HTTP 200。CUA 浏览器读取超时，未完成可视回放。
 
 ### 2026-11-07 · 图解展示时收起任务内容工作区
 
