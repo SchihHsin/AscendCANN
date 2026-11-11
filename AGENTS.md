@@ -9135,4 +9135,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增方向为 Ascend C 编程、将算子接入框架；为这些目标补充了相应的下层学习内容。算子原理、开发、性能、迁移和验证仍是彼此平级的学习方向，不把“理解原理”嵌进“完成开发”之下。
 - 依据：用户本轮明确要求只增加算子相关字段，不减少其余方向（H）；字段间关联、标签和示例路径是原型策划内容（M），不表示真实的兴趣算法或训练诊断。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 变更：`ascend-studio/src/home-composition.js`、`CombinationTaskHome.jsx`、`composition-learning-path.js`，以及 `ascstudio/`、`ascstudio-pc/studio/` 的发布产物。桌面预览已核对首屏 11 个字段及视觉主次。
-- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；未运行自动化测试。提交、推送与 Pages 部署回执待本轮结束后补记。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；桌面 Chrome 预览核对了 11 个首屏字段；未运行自动化测试。实现提交 `b628cceb` 已推送到 `origin/main`；Pages workflow `43063135018` build / deploy 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-DPQf2-dP.js` 与 `index-BTy5aOtO.css`，两资源均 HTTP 200。
