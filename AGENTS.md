@@ -9113,3 +9113,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 风格根据 `ascstudio-pc/assets/cover-learning.png`、`cover-development.png`、`cover-mobile.png` 和封面布局源码提炼。三张素材均为 1536×1024 RGBA PNG；Skill 保持自动发现，适用于 Ascend Work 章节封面插画，不扩展为通用图标或图表生成。
 - 验证：skill-creator 的 `quick_validate.py` 因当前 Python 缺少 PyYAML 无法运行；使用系统 Ruby YAML parser 检查 Skill frontmatter、目录名称、UI 元数据长度与未完成占位符，均通过。未修改项目页面或章节顺序，也未涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 推送：Skill 存放于用户级 Codex skills 目录；本条仓库交接记录随本次工作提交推送。
+
+### 2026-11-11 · 简化章节封面 Skill 名称
+
+- 按用户反馈，将用户级 Skill 从 `ascend-chapter-cover-art` 重命名为 `/Users/hsin/.codex/skills/ascend-cover/`；同步更新 `SKILL.md` frontmatter、标题和 `agents/openai.yaml` 显示名，Skill 的生成规范与适用范围不变。
+- 验证：Ruby YAML 解析确认 `name` 与目录名均为 `ascend-cover`，UI short description 长度合规，旧目录已移除；`git diff --check` 通过。前一条交接提交的 Pages workflow `42855910908` build 成功，deploy 因 `syncing_files` 持续约 10 分钟后超时；该运行只发布仓库文档，不影响用户级 Skill。
+- 提交 / 推送：本次更新为用户级 Skill 与仓库交接记录；交接记录随本轮提交推送。
