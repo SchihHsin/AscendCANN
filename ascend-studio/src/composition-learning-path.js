@@ -1,90 +1,81 @@
 import { compositionFields } from "./home-composition.js";
 
-const actionsByRole = {
-  issue: "理解问题现象",
-  context: "梳理训练条件",
-  metric: "建立评估基线",
-  constraint: "明确优化边界",
-  focus: "学习瓶颈定位",
-  strategy: "理解调优策略",
-  verification: "设计对照验证",
-};
-
 const fieldById = new Map(compositionFields.map(field => [field.id, field]));
 
 function unique(items) {
   return [...new Set(items)];
 }
 
+function fallbackStep(field, index) {
+  return {
+    id: field.id,
+    title: field.pathTitle || field.title,
+    description: field.pathDescription || field.hint,
+    tone: field.tone,
+    order: index,
+  };
+}
+
 export function buildCompositionLearningPlan({ fieldIds = [], connectionPath = [], prompt = "" } = {}) {
   const orderedIds = unique([...connectionPath, ...fieldIds]);
   const fields = orderedIds.map(id => fieldById.get(id)).filter(Boolean);
-  const goalField = fields.find(field => field.role === "goal");
-  const goalTitle = goalField?.title || "训练调优";
-  const selectedSteps = [];
-  fields.filter(field => field.role !== "goal").forEach(field => {
-    const previous = selectedSteps.at(-1);
-    if (previous?.role === field.role) {
-      previous.fields.push({ id: field.id, title: field.title, tone: field.tone });
-      previous.title = `${actionsByRole[field.role] || "继续探索"}：${previous.fields.map(item => item.title).join("、")}`;
-      previous.description = `${previous.description}；${field.hint}`;
-      return;
-    }
-    selectedSteps.push({
-      id: field.id,
-      role: field.role,
-      title: `${actionsByRole[field.role] || "继续探索"}：${field.title}`,
-      description: field.hint,
-      fields: [{ id: field.id, title: field.title, tone: field.tone }],
-      tone: field.tone,
-      sourceIndex: orderedIds.indexOf(field.id),
+  const topics = fields.filter(field => field.role === "topic");
+  const goals = fields.filter(field => field.role === "goal");
+  const selectedContent = new Set(fields.filter(field => field.role === "content").map(field => field.id));
+  const inferredTopicId = goals[0]?.topicId || fields.find(field => field.role === "content")?.topicId;
+  const mainTopic = topics[0] || fieldById.get(inferredTopicId);
+
+  const pathOwners = goals.length
+    ? goals
+    : topics.length
+      ? topics
+      : [fields.find(field => field.goalId && fieldById.has(field.goalId))]
+        .map(field => field ? fieldById.get(field.goalId) : null)
+        .filter(Boolean);
+
+  const defaultSteps = [];
+  const seenStepIds = new Set();
+  pathOwners.forEach(owner => {
+    (owner.defaultSteps || []).forEach(step => {
+      const stepId = step.id || `${owner.id}-${defaultSteps.length}`;
+      if (seenStepIds.has(stepId)) return;
+      seenStepIds.add(stepId);
+      defaultSteps.push(step);
     });
   });
+  const pathSteps = defaultSteps.length
+    ? defaultSteps
+    : fields.filter(field => field.role === "content").map((field, index) => fallbackStep(field, index));
 
-  const steps = [
-    {
-      id: "learning-goal",
-      title: `明确学习目标：${goalTitle}`,
-      description: goalField?.hint || "先说清希望提升的训练表现，以及想掌握的分析与优化方法。",
-      fields: goalField ? [{ id: goalField.id, title: goalField.title, tone: goalField.tone }] : [],
-      tone: goalField?.tone || "blue",
-      sourceIndex: -1,
-    },
-    ...selectedSteps,
-  ];
+  const steps = pathSteps.map((stepDefinition, index) => {
+    const source = fieldById.get(stepDefinition.id);
+    const selectedSource = source && selectedContent.has(source.id) ? source : null;
+    return {
+      id: stepDefinition.id || `learning-step-${index + 1}`,
+      title: stepDefinition.title || source?.title || "继续学习",
+      description: stepDefinition.description || source?.hint || "沿着当前方向继续探索，并通过实践核对结果。",
+      tone: stepDefinition.tone || source?.tone || "blue",
+      fields: selectedSource
+        ? [{ id: selectedSource.id, title: selectedSource.title, tone: selectedSource.tone }]
+        : [],
+    };
+  });
 
-  if (!selectedSteps.length) {
-    steps.push({
-      id: "training-basics",
-      title: "认识训练效率的关键影响因素",
-      description: "从训练循环、数据供给与设备执行过程建立调优所需的基础认识。",
-      fields: [],
-      tone: "teal",
-      sourceIndex: Number.MAX_SAFE_INTEGER - 1,
-    });
-  }
+  const goalTitle = goals.length
+    ? unique(goals.map(field => field.title)).join(" · ")
+    : mainTopic?.title || fields[0]?.title || "学习方向";
+  const linkedTopics = topics.slice(1).map(field => field.title);
+  const description = linkedTopics.length
+    ? `从${mainTopic?.title || goalTitle}开始，继续连接${linkedTopics.join("、")}，形成一条跨主题学习路径。`
+    : `沿着${goalTitle}展开，从核心概念逐步走向实践与验证。`;
 
-  if (!fields.some(field => field.role === "verification")) {
-    const measures = fields.filter(field => ["metric", "constraint", "strategy"].includes(field.role));
-    steps.push({
-      id: "contrast-validation",
-      title: "设计对照实验，检查优化效果",
-      description: measures.length
-        ? `围绕${measures.map(field => field.title).join("、")}设置可比较的训练条件，判断优化是否达到目标。`
-        : "固定训练条件，比较优化前后的指标变化，并保留精度与收敛约束。",
-      fields: [],
-      tone: "coral",
-      sourceIndex: Number.MAX_SAFE_INTEGER,
-    });
-  }
-
-  const orderedSteps = [steps[0], ...steps.slice(1).sort((a, b) => a.sourceIndex - b.sourceIndex)];
   return {
     title: `${goalTitle} · 学习路径`,
     goalTitle,
+    description,
     prompt: String(prompt || "").trim(),
     sourceFieldCount: fields.length,
     connectionPath: orderedIds,
-    steps: orderedSteps.map(({ sourceIndex, ...step }, index) => ({ ...step, number: index + 1 })),
+    steps: steps.map(({ order, ...step }, index) => ({ ...step, number: index + 1 })),
   };
 }

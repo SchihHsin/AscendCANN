@@ -1,4 +1,6 @@
-const field = (id, title, english, hint, role, tone, x, y, related = [], promptValue = title) => ({
+const step = (id, title, description, tone = "blue") => ({ id, title, description, tone });
+
+const field = (id, title, english, hint, role, tone, x, y, related = [], promptValue = title, options = {}) => ({
   id,
   title,
   english,
@@ -9,81 +11,287 @@ const field = (id, title, english, hint, role, tone, x, y, related = [], promptV
   y,
   related,
   promptValue,
+  topicId: options.topicId || null,
+  goalId: options.goalId || null,
+  defaultSteps: options.defaultSteps || [],
+  prominence: options.prominence || "related",
   size: related.length >= 4 ? "large" : related.length ? "medium" : "small",
 });
 
 export const initialCompositionIds = [
-  "training-goal",
-  "multi-card-gains",
-  "samples",
-  "device-utilization",
-  "data-loading",
-  "communication-wait",
-  "mixed-precision",
-  "model-parallel",
-  "precision",
-  "profiler",
-  "ab-experiment",
-  "training-duration",
+  "operator-topic",
+  "inference-topic",
+  "training-topic",
+  "performance-topic",
 ];
 
 export const compositionFields = [
-  // First view: a balanced set of goals, symptoms, signals, strategies and checks.
-  field("training-goal", "提升训练吞吐", "TRAINING GOAL", "提高 samples/s，缩短训练时间", "goal", "blue", 50, 13, ["samples", "training-duration", "multi-card-gains", "precision", "ab-experiment"]),
-  field("multi-card-gains", "多卡收益不明显", "LIMITED MULTI-GPU GAINS", "增加卡数后，吞吐提升没有达到预期", "issue", "coral", 22, 34, ["multi-gpu-efficiency", "device-utilization", "communication-wait", "gradient-sync"]),
-  field("samples", "samples/s", "SAMPLES PER SECOND", "训练吞吐指标", "metric", "violet", 49, 34, ["data-loading", "step-time", "training-duration", "profiler"]),
-  field("device-utilization", "设备利用率", "DEVICE UTILIZATION", "计算资源利用率", "metric", "teal", 77, 34, ["profiler", "operator-bottleneck", "hbm"]),
-  field("data-loading", "数据加载", "DATA LOADING", "I/O 吞吐与瓶颈", "focus", "teal", 16, 56, ["cpu-preprocessing", "step-time", "checkpoint"]),
-  field("communication-wait", "通信等待", "COMMUNICATION WAIT", "等待时间占比", "focus", "blue", 39, 56, ["hccl", "gradient-sync", "multi-gpu-efficiency"]),
-  field("mixed-precision", "混合精度", "MIXED PRECISION", "FP16 / BF16 训练", "strategy", "teal", 63, 56, ["loss-scale", "precision", "convergence"]),
-  field("model-parallel", "模型并行", "MODEL PARALLELISM", "张量并行与流水并行", "strategy", "violet", 85, 56, ["data-parallel", "effective-batch", "global-batch", "training-framework"]),
-  field("precision", "保持精度", "ACCURACY CONSTRAINT", "加速同时，模型精度不下降", "constraint", "teal", 22, 79, ["convergence", "mixed-precision", "ab-experiment"]),
-  field("profiler", "Profiler 时间线", "PROFILER TIMELINE", "性能分析与定位", "focus", "violet", 49, 79, ["operator-bottleneck", "training-duration", "hbm"]),
-  field("ab-experiment", "对照实验", "A/B CONTRAST EXPERIMENT", "比较不同训练配置", "verification", "coral", 77, 79, ["single-card", "training-duration", "precision"]),
-  field("training-duration", "训练时长", "TRAINING DURATION", "总时间与阶段耗时", "metric", "blue", 91, 13, ["checkpoint", "step-time", "profiler"]),
+  // A curated interest constellation: operator work is the main thread, with
+  // inference, training and performance as quieter neighboring interests.
+  field(
+    "operator-topic", "算子", "OPERATOR", "从原理、开发到性能优化继续探索", "topic", "blue", 50, 47,
+    ["operator-principles", "operator-development", "operator-optimization", "operator-porting", "operator-validation"],
+    "算子",
+    {
+      prominence: "primary",
+      defaultSteps: [
+        step("operator-semantics", "理解算子的计算语义", "从输入、输出与计算过程建立对算子的基本理解。", "blue"),
+        step("tiling-strategy", "设计 Tiling 策略", "结合数据规模与硬件执行方式组织计算任务。", "violet"),
+        step("kernel-implementation", "完成 Kernel 实现", "将计算逻辑映射为可执行的算子实现。", "teal"),
+        step("compile-validation", "编译并验证结果", "检查编译结果、正确性与关键性能表现。", "coral"),
+      ],
+    },
+  ),
+  field(
+    "inference-topic", "模型推理", "MODEL INFERENCE", "从模型适配延伸到端到端运行", "topic", "violet", 22, 27,
+    ["inference-conversion", "inference-input", "inference-run"], "模型推理",
+    {
+      defaultSteps: [
+        step("model-conversion", "准备模型转换", "理解模型格式、转换配置与运行环境之间的关系。", "violet"),
+        step("input-shape", "适配模型输入", "梳理输入数据、预处理顺序与 Shape 约束。", "teal"),
+        step("end-to-end-inference", "跑通端到端推理", "连接模型加载、推理执行与结果核对。", "blue"),
+      ],
+    },
+  ),
+  field(
+    "training-topic", "模型训练", "MODEL TRAINING", "从训练流程延伸到并行与精度策略", "topic", "teal", 79, 29,
+    ["training-flow", "parallel-strategy", "mixed-precision"], "模型训练",
+    {
+      defaultSteps: [
+        step("training-data", "组织训练数据与输入流程", "把数据供给、预处理与训练入口串成完整流程。", "teal"),
+        step("training-flow", "构建训练流程", "梳理前向、反向、优化器与检查点等关键环节。", "blue"),
+        step("parallel-strategy", "选择并行策略", "理解数据并行与模型并行的适用方式。", "violet"),
+        step("training-validation", "验证训练表现", "结合收敛、精度与吞吐评估训练过程。", "coral"),
+      ],
+    },
+  ),
+  field(
+    "performance-topic", "性能调优", "PERFORMANCE TUNING", "从性能分析连接到优化与验证", "topic", "coral", 77, 75,
+    ["performance-baseline", "profiler-analysis", "performance-improvement"], "性能调优",
+    {
+      defaultSteps: [
+        step("performance-baseline", "建立性能基线", "固定运行条件，记录吞吐、时延等关键指标。", "blue"),
+        step("profiler-analysis", "分析性能时间线", "从算子、访存与设备执行过程理解时间分布。", "violet"),
+        step("kernel-optimization", "实施针对性优化", "围绕计算与访存特征调整实现策略。", "teal"),
+        step("performance-validation", "对照验证优化结果", "比较优化前后的性能，并复核精度与稳定性。", "coral"),
+      ],
+    },
+  ),
 
-  // Deeper clues appear only around the field the user is exploring.
-  field("multi-gpu-efficiency", "多卡扩展效率", "MULTI-GPU SCALING", "随卡数增长的加速比", "issue", "coral", 68, 17, ["hccl", "gradient-sync", "single-card"]),
-  field("gradient-sync", "梯度同步", "GRADIENT SYNCHRONIZATION", "同步策略与开销", "focus", "coral", 32, 23, ["hccl", "multi-gpu-efficiency", "data-parallel"]),
-  field("hccl", "HCCL 通信", "HCCL COMMUNICATION", "集群通信性能", "focus", "blue", 91, 48, ["communication-wait", "gradient-sync", "multi-gpu-efficiency"]),
-  field("step-time", "每步耗时", "STEP TIME", "单步训练时间", "metric", "blue", 9, 68, ["data-loading", "operator-bottleneck", "training-duration"]),
-  field("cpu-preprocessing", "CPU 预处理", "CPU PREPROCESSING", "数据清洗与增强", "focus", "teal", 7, 25, ["data-loading", "samples", "checkpoint"]),
-  field("loss-scale", "loss scale", "LOSS SCALE", "动态 / 静态缩放", "strategy", "blue", 40, 19, ["mixed-precision", "convergence", "precision"]),
-  field("single-card", "单卡基线", "SINGLE CARD BASELINE", "单卡性能参考", "verification", "blue", 8, 43),
-  field("data-parallel", "数据并行", "DATA PARALLELISM", "DP 策略与扩展", "strategy", "blue", 15, 91, ["global-batch", "multi-gpu-efficiency", "effective-batch"]),
-  field("effective-batch", "有效 batch", "EFFECTIVE BATCH SIZE", "单卡实际 batch 大小", "context", "teal", 43, 91, ["global-batch", "convergence", "precision"]),
-  field("global-batch", "global batch", "GLOBAL BATCH SIZE", "全局 batch 大小", "context", "blue", 65, 91, ["effective-batch", "data-parallel", "convergence"]),
-  field("convergence", "收敛稳定性", "CONVERGENCE STABILITY", "训练是否稳定收敛", "constraint", "violet", 8, 88),
-  field("checkpoint", "checkpoint 频率", "CHECKPOINT FREQUENCY", "保存间隔与开销", "focus", "blue", 30, 91),
-  field("operator-bottleneck", "算子瓶颈", "OPERATOR BOTTLENECK", "关键算子与耗时", "focus", "teal", 76, 91, ["profiler", "step-time", "device-utilization"]),
-  field("hbm", "HBM 占用", "HBM USAGE", "显存占用与峰值", "metric", "blue", 92, 72),
-  field("training-framework", "训练框架", "TRAINING FRAMEWORK", "框架选型与特性", "context", "teal", 62, 22, ["model-parallel", "mixed-precision", "data-parallel"]),
+  // Operator learning intentions sit at the same level under the operator topic.
+  field("operator-principles", "理解算子原理", "OPERATOR PRINCIPLES", "从计算语义、数据布局到硬件执行建立理解", "goal", "violet", 0, 0,
+    ["operator-semantics", "tensor-layout", "hardware-mapping"], "理解算子原理", {
+      topicId: "operator-topic",
+      defaultSteps: [
+        step("operator-semantics", "理解计算语义与输入输出", "明确算子处理的数据、计算规则与输出关系。", "blue"),
+        step("tensor-layout", "认识数据类型与布局", "理解 Shape、数据类型与布局对执行的影响。", "teal"),
+        step("hardware-mapping", "连接计算逻辑与硬件执行", "了解计算任务如何映射到设备执行过程。", "violet"),
+      ],
+    }),
+  field("operator-development", "完成算子开发", "CUSTOM OPERATOR DEVELOPMENT", "从接口定义走到可验证的算子实现", "goal", "blue", 0, 0,
+    ["operator-interface", "tiling-strategy", "kernel-implementation", "compile-validation"], "完成自定义算子开发", {
+      topicId: "operator-topic",
+      defaultSteps: [
+        step("operator-interface", "定义算子接口与输入输出", "明确参数、张量 Shape、数据类型与输出约束。", "blue"),
+        step("tiling-strategy", "设计 Tiling 策略", "根据数据规模和硬件资源组织计算分块。", "violet"),
+        step("kernel-implementation", "编写 Kernel 实现", "将计算逻辑映射到 Ascend C 执行方式。", "teal"),
+        step("compile-validation", "编译并验证正确性", "检查构建结果、关键样例与精度表现。", "coral"),
+      ],
+    }),
+  field("operator-optimization", "优化算子性能", "OPERATOR PERFORMANCE", "围绕性能基线、时间线与实现策略展开", "goal", "teal", 0, 0,
+    ["performance-baseline", "profiler-analysis", "kernel-optimization", "performance-validation"], "优化算子性能", {
+      topicId: "operator-topic",
+      defaultSteps: [
+        step("performance-baseline", "建立算子性能基线", "在固定输入与运行条件下记录初始耗时。", "blue"),
+        step("profiler-analysis", "分析算子执行时间线", "识别计算、访存与调度相关的耗时特征。", "violet"),
+        step("kernel-optimization", "调整计算与访存策略", "依据分析结果改进 Kernel 实现。", "teal"),
+        step("performance-validation", "对照验证性能与精度", "确认优化收益并检查输出正确性。", "coral"),
+      ],
+    }),
+  field("operator-porting", "迁移与适配算子", "OPERATOR PORTING", "梳理算子接口差异并完成昇腾适配", "goal", "coral", 0, 0,
+    ["operator-api-mapping", "operator-data-adaptation", "compile-validation"], "迁移与适配算子", {
+      topicId: "operator-topic",
+      defaultSteps: [
+        step("operator-api-mapping", "梳理算子接口与计算映射", "对齐原实现中的参数、数据与计算语义。", "blue"),
+        step("operator-data-adaptation", "适配数据类型与布局", "确认昇腾侧输入格式及执行约束。", "violet"),
+        step("compile-validation", "完成编译与结果验证", "检查构建、正确性及性能表现。", "coral"),
+      ],
+    }),
+  field("operator-validation", "验证算子正确性", "OPERATOR VALIDATION", "从典型输入、边界数据到精度对比", "goal", "blue", 0, 0,
+    ["operator-test-design", "precision-comparison", "edge-case-validation"], "验证算子正确性", {
+      topicId: "operator-topic",
+      defaultSteps: [
+        step("operator-test-design", "设计代表性测试样例", "覆盖常见 Shape、数据类型与输入范围。", "blue"),
+        step("precision-comparison", "对比输出与精度", "检查关键输出并确认误差范围。", "violet"),
+        step("edge-case-validation", "验证边界输入", "确认边界条件下的结果与稳定性。", "coral"),
+      ],
+    }),
+
+  // Inference intentions and their concrete learning content.
+  field("inference-conversion", "完成模型转换", "MODEL CONVERSION", "理解模型格式、转换参数与适用范围", "goal", "violet", 0, 0,
+    ["model-format", "conversion-config", "conversion-validation"], "完成模型转换", {
+      topicId: "inference-topic",
+      defaultSteps: [
+        step("model-format", "确认模型格式与算子支持", "了解源模型结构及目标运行环境要求。", "violet"),
+        step("conversion-config", "配置模型转换", "选择合适的转换参数并生成目标模型。", "blue"),
+        step("conversion-validation", "检查转换结果", "核对转换产物与模型运行条件。", "coral"),
+      ],
+    }),
+  field("inference-input", "适配模型输入", "MODEL INPUT ADAPTATION", "梳理输入数据、预处理顺序与 Shape", "goal", "teal", 0, 0,
+    ["input-preprocessing", "input-shape", "input-dtype"], "适配模型输入", {
+      topicId: "inference-topic",
+      defaultSteps: [
+        step("input-preprocessing", "整理输入预处理流程", "确认颜色、归一化与维度顺序等步骤。", "teal"),
+        step("input-shape", "适配输入 Shape", "核对模型签名与实际输入维度。", "blue"),
+        step("input-dtype", "匹配数据类型与布局", "让输入数据符合模型执行要求。", "violet"),
+      ],
+    }),
+  field("inference-run", "跑通端到端推理", "END-TO-END INFERENCE", "从模型加载、推理执行到结果核对", "goal", "blue", 0, 0,
+    ["runtime-initialization", "inference-execution", "inference-validation"], "跑通端到端推理", {
+      topicId: "inference-topic",
+      defaultSteps: [
+        step("runtime-initialization", "准备推理运行环境", "连接模型、设备与必要的运行配置。", "blue"),
+        step("inference-execution", "执行推理并获取结果", "跑通输入到输出的完整调用流程。", "teal"),
+        step("inference-validation", "核对精度与时延", "验证推理结果及端到端运行表现。", "coral"),
+      ],
+    }),
+
+  // Training intentions and their concrete learning content.
+  field("training-flow", "构建训练流程", "TRAINING FLOW", "从数据供给、模型计算到优化器组织训练过程", "goal", "teal", 0, 0,
+    ["training-data", "forward-backward", "optimizer-schedule"], "构建训练流程", {
+      topicId: "training-topic",
+      defaultSteps: [
+        step("training-data", "组织训练数据与输入流程", "让数据读取与预处理稳定接入训练。", "teal"),
+        step("forward-backward", "串起前向与反向计算", "理解模型计算图与梯度更新过程。", "blue"),
+        step("optimizer-schedule", "配置优化器与学习率计划", "明确优化策略及训练阶段安排。", "violet"),
+      ],
+    }),
+  field("parallel-strategy", "设计并行策略", "PARALLEL STRATEGY", "从数据并行、张量并行到通信协同", "goal", "violet", 0, 0,
+    ["data-parallel", "tensor-parallel", "communication-pattern"], "设计并行策略", {
+      topicId: "training-topic",
+      defaultSteps: [
+        step("data-parallel", "理解数据并行", "明确数据切分、梯度同步与全局 Batch 关系。", "blue"),
+        step("tensor-parallel", "探索张量并行", "理解模型计算切分与通信位置。", "violet"),
+        step("communication-pattern", "梳理通信模式", "认识集合通信在训练过程中的作用。", "coral"),
+      ],
+    }),
+  field("mixed-precision", "应用混合精度", "MIXED PRECISION", "平衡计算效率与数值稳定性", "goal", "blue", 0, 0,
+    ["fp16-bf16", "loss-scaling", "training-validation"], "应用混合精度", {
+      topicId: "training-topic",
+      defaultSteps: [
+        step("fp16-bf16", "选择 FP16 或 BF16", "了解精度格式与训练计算的适用条件。", "blue"),
+        step("loss-scaling", "理解 Loss Scaling", "认识数值范围管理与缩放策略。", "violet"),
+        step("training-validation", "验证精度与训练表现", "对照损失、收敛与吞吐变化。", "coral"),
+      ],
+    }),
+
+  // Cross-cutting performance intentions.
+  field("performance-baseline", "建立性能基线", "PERFORMANCE BASELINE", "用稳定条件记录可比较的性能表现", "goal", "blue", 0, 0,
+    ["throughput-latency", "warmup-repeat", "comparison-validation"], "建立性能基线", {
+      topicId: "performance-topic",
+      defaultSteps: [
+        step("warmup-repeat", "固定运行条件并预热", "让性能采样具备可重复的运行条件。", "blue"),
+        step("throughput-latency", "记录吞吐与时延", "选择与当前目标相关的性能指标。", "violet"),
+        step("comparison-validation", "保留基线用于对照", "让后续优化可以在相同条件下比较。", "coral"),
+      ],
+    }),
+  field("profiler-analysis", "分析性能时间线", "PROFILER ANALYSIS", "理解算子执行、设备利用与访存分布", "goal", "violet", 0, 0,
+    ["operator-time-distribution", "device-utilization", "memory-access"], "分析性能时间线", {
+      topicId: "performance-topic",
+      defaultSteps: [
+        step("operator-time-distribution", "观察算子耗时分布", "识别主要计算阶段及其时间占比。", "violet"),
+        step("device-utilization", "查看设备执行状态", "理解计算单元利用与任务空隙。", "teal"),
+        step("memory-access", "分析访存特征", "观察数据搬运与存储访问模式。", "blue"),
+      ],
+    }),
+  field("performance-improvement", "优化执行效率", "PERFORMANCE IMPROVEMENT", "结合计算、访存与并行方式选择优化方向", "goal", "teal", 0, 0,
+    ["kernel-optimization", "data-pipeline", "performance-validation"], "优化执行效率", {
+      topicId: "performance-topic",
+      defaultSteps: [
+        step("kernel-optimization", "优化 Kernel 计算与访存", "依据分析结果调整执行策略。", "teal"),
+        step("data-pipeline", "检查数据供给效率", "梳理数据预处理与设备执行的衔接。", "blue"),
+        step("performance-validation", "对照验证优化结果", "比较性能变化并复核精度与稳定性。", "coral"),
+      ],
+    }),
+
+  // Concrete learning content, revealed one level deeper from each intention.
+  field("operator-semantics", "计算语义与输入输出", "OPERATOR SEMANTICS", "明确算子计算规则及输入输出关系", "content", "blue", 0, 0, [], "计算语义与输入输出", { topicId: "operator-topic", goalId: "operator-principles" }),
+  field("tensor-layout", "数据类型与布局", "TENSOR LAYOUT", "理解 Shape、数据类型与布局约束", "content", "teal", 0, 0, [], "数据类型与布局", { topicId: "operator-topic", goalId: "operator-principles" }),
+  field("hardware-mapping", "计算与硬件执行映射", "HARDWARE MAPPING", "从逻辑计算理解设备侧执行方式", "content", "violet", 0, 0, [], "计算与硬件执行映射", { topicId: "operator-topic", goalId: "operator-principles" }),
+  field("operator-interface", "算子接口与输入输出", "OPERATOR INTERFACE", "定义参数、Shape、数据类型与输出约束", "content", "blue", 0, 0, [], "定义算子接口与输入输出", { topicId: "operator-topic", goalId: "operator-development" }),
+  field("tiling-strategy", "Tiling 策略", "TILING STRATEGY", "依据数据规模与硬件资源组织计算分块", "content", "violet", 0, 0, [], "设计 Tiling 策略", { topicId: "operator-topic", goalId: "operator-development" }),
+  field("kernel-implementation", "Kernel 实现", "KERNEL IMPLEMENTATION", "把计算逻辑映射为 Ascend C 实现", "content", "teal", 0, 0, [], "编写 Kernel 实现", { topicId: "operator-topic", goalId: "operator-development" }),
+  field("compile-validation", "编译与正确性验证", "COMPILE AND VALIDATE", "检查构建结果、关键样例与精度表现", "content", "coral", 0, 0, [], "编译并验证正确性", { topicId: "operator-topic", goalId: "operator-development" }),
+  field("kernel-optimization", "计算与访存优化", "KERNEL OPTIMIZATION", "结合执行特征改进计算和访存策略", "content", "teal", 0, 0, [], "优化计算与访存策略", { topicId: "operator-topic", goalId: "operator-optimization" }),
+  field("operator-api-mapping", "算子接口映射", "OPERATOR API MAPPING", "梳理现有接口与昇腾实现间的映射", "content", "blue", 0, 0, [], "梳理算子接口与计算映射", { topicId: "operator-topic", goalId: "operator-porting" }),
+  field("operator-data-adaptation", "数据类型与布局适配", "DATA TYPE ADAPTATION", "对齐目标实现中的数据约束", "content", "violet", 0, 0, [], "适配数据类型与布局", { topicId: "operator-topic", goalId: "operator-porting" }),
+  field("operator-test-design", "算子测试样例", "OPERATOR TEST CASES", "覆盖常见 Shape、数据类型与输入范围", "content", "blue", 0, 0, [], "设计代表性测试样例", { topicId: "operator-topic", goalId: "operator-validation" }),
+  field("precision-comparison", "精度与误差对比", "PRECISION COMPARISON", "核对输出结果与误差范围", "content", "violet", 0, 0, [], "对比输出与精度", { topicId: "operator-topic", goalId: "operator-validation" }),
+  field("edge-case-validation", "边界输入验证", "EDGE CASE VALIDATION", "检查边界条件下的结果与稳定性", "content", "coral", 0, 0, [], "验证边界输入", { topicId: "operator-topic", goalId: "operator-validation" }),
+
+  field("model-format", "模型格式与算子支持", "MODEL FORMAT", "理解源模型结构及目标环境要求", "content", "violet", 0, 0, [], "确认模型格式与算子支持", { topicId: "inference-topic", goalId: "inference-conversion" }),
+  field("conversion-config", "模型转换配置", "CONVERSION CONFIG", "选择转换参数并生成目标模型", "content", "blue", 0, 0, [], "配置模型转换", { topicId: "inference-topic", goalId: "inference-conversion" }),
+  field("conversion-validation", "转换产物检查", "CONVERSION VALIDATION", "核对产物与后续运行条件", "content", "coral", 0, 0, [], "检查转换结果", { topicId: "inference-topic", goalId: "inference-conversion" }),
+  field("input-preprocessing", "输入预处理", "INPUT PREPROCESSING", "整理颜色、归一化与维度顺序", "content", "teal", 0, 0, [], "整理输入预处理流程", { topicId: "inference-topic", goalId: "inference-input" }),
+  field("input-shape", "输入 Shape", "INPUT SHAPE", "核对模型签名与实际输入维度", "content", "blue", 0, 0, [], "适配输入 Shape", { topicId: "inference-topic", goalId: "inference-input" }),
+  field("input-dtype", "输入类型与布局", "INPUT TYPE AND LAYOUT", "让输入数据符合模型执行要求", "content", "violet", 0, 0, [], "匹配数据类型与布局", { topicId: "inference-topic", goalId: "inference-input" }),
+  field("runtime-initialization", "推理运行环境", "INFERENCE RUNTIME", "连接模型、设备与必要的运行配置", "content", "blue", 0, 0, [], "准备推理运行环境", { topicId: "inference-topic", goalId: "inference-run" }),
+  field("inference-execution", "端到端推理执行", "INFERENCE EXECUTION", "跑通输入到输出的完整调用流程", "content", "teal", 0, 0, [], "执行推理并获取结果", { topicId: "inference-topic", goalId: "inference-run" }),
+  field("inference-validation", "推理精度与时延", "INFERENCE VALIDATION", "验证推理结果及端到端运行表现", "content", "coral", 0, 0, [], "核对精度与时延", { topicId: "inference-topic", goalId: "inference-run" }),
+
+  field("training-data", "训练数据与输入流程", "TRAINING DATA PIPELINE", "让数据读取与预处理接入训练流程", "content", "teal", 0, 0, [], "组织训练数据与输入流程", { topicId: "training-topic", goalId: "training-flow" }),
+  field("forward-backward", "前向与反向计算", "FORWARD AND BACKWARD", "连接模型计算图与梯度更新过程", "content", "blue", 0, 0, [], "串起前向与反向计算", { topicId: "training-topic", goalId: "training-flow" }),
+  field("optimizer-schedule", "优化器与学习率计划", "OPTIMIZER SCHEDULE", "安排优化策略与训练阶段", "content", "violet", 0, 0, [], "配置优化器与学习率计划", { topicId: "training-topic", goalId: "training-flow" }),
+  field("data-parallel", "数据并行", "DATA PARALLEL", "理解数据切分、梯度同步与全局 Batch", "content", "blue", 0, 0, [], "理解数据并行", { topicId: "training-topic", goalId: "parallel-strategy" }),
+  field("tensor-parallel", "张量并行", "TENSOR PARALLEL", "理解模型计算切分与通信位置", "content", "violet", 0, 0, [], "探索张量并行", { topicId: "training-topic", goalId: "parallel-strategy" }),
+  field("communication-pattern", "集合通信模式", "COLLECTIVE COMMUNICATION", "认识集合通信在训练过程中的作用", "content", "coral", 0, 0, [], "梳理通信模式", { topicId: "training-topic", goalId: "parallel-strategy" }),
+  field("fp16-bf16", "FP16 与 BF16", "FP16 AND BF16", "了解精度格式与训练计算的适用条件", "content", "blue", 0, 0, [], "选择 FP16 或 BF16", { topicId: "training-topic", goalId: "mixed-precision" }),
+  field("loss-scaling", "Loss Scaling", "LOSS SCALING", "认识数值范围管理与缩放策略", "content", "violet", 0, 0, [], "理解 Loss Scaling", { topicId: "training-topic", goalId: "mixed-precision" }),
+  field("training-validation", "训练收敛与吞吐", "TRAINING VALIDATION", "对照损失、收敛与吞吐变化", "content", "coral", 0, 0, [], "验证精度与训练表现", { topicId: "training-topic", goalId: "mixed-precision" }),
+
+  field("warmup-repeat", "预热与重复采样", "WARMUP AND REPEAT", "让性能采样具备可重复的运行条件", "content", "blue", 0, 0, [], "固定运行条件并预热", { topicId: "performance-topic", goalId: "performance-baseline" }),
+  field("throughput-latency", "吞吐与时延", "THROUGHPUT AND LATENCY", "选择与当前学习目标相关的性能指标", "content", "violet", 0, 0, [], "记录吞吐与时延", { topicId: "performance-topic", goalId: "performance-baseline" }),
+  field("comparison-validation", "基线对照", "BASELINE COMPARISON", "为后续优化保留可比较的参照", "content", "coral", 0, 0, [], "保留基线用于对照", { topicId: "performance-topic", goalId: "performance-baseline" }),
+  field("operator-time-distribution", "算子耗时分布", "OPERATOR TIME DISTRIBUTION", "观察主要计算阶段及其时间占比", "content", "violet", 0, 0, [], "观察算子耗时分布", { topicId: "performance-topic", goalId: "profiler-analysis" }),
+  field("device-utilization", "设备执行状态", "DEVICE EXECUTION", "理解计算单元利用与任务空隙", "content", "teal", 0, 0, [], "查看设备执行状态", { topicId: "performance-topic", goalId: "profiler-analysis" }),
+  field("memory-access", "访存特征", "MEMORY ACCESS", "观察数据搬运与存储访问模式", "content", "blue", 0, 0, [], "分析访存特征", { topicId: "performance-topic", goalId: "profiler-analysis" }),
+  field("data-pipeline", "数据供给效率", "DATA PIPELINE EFFICIENCY", "梳理预处理与设备执行的衔接", "content", "blue", 0, 0, [], "检查数据供给效率", { topicId: "performance-topic", goalId: "performance-improvement" }),
+  field("performance-validation", "性能与精度验证", "PERFORMANCE VALIDATION", "比较性能变化并复核精度与稳定性", "content", "coral", 0, 0, [], "对照验证优化结果", { topicId: "performance-topic", goalId: "performance-improvement" }),
 ];
 
-export function buildCompositionPrompt(selectedIds) {
-  if (selectedIds.length === 0) return "";
+const fieldById = new Map(compositionFields.map((item) => [item.id, item]));
 
-  const selected = new Set(selectedIds);
-  const valuesFor = (role) => compositionFields
-    .filter((item) => selected.has(item.id) && item.role === role)
-    .map((item) => item.promptValue);
-  const goal = valuesFor("goal")[0] || "提升训练效率";
-  const issues = valuesFor("issue");
-  const contexts = valuesFor("context");
-  const constraints = valuesFor("constraint");
-  const focus = valuesFor("focus");
-  const strategies = valuesFor("strategy");
-  const metrics = valuesFor("metric");
-  const verification = valuesFor("verification");
+function unique(items) {
+  return [...new Set(items)];
+}
 
-  const sentences = [`我想在昇腾上${goal}。`];
-  if (issues.length) sentences.push(`当前现象：${issues.join("、")}。`);
-  if (contexts.length) sentences.push(`训练条件包括${contexts.join("、")}。`);
-  if (constraints.length) sentences.push(`需要满足${constraints.join("、")}。`);
-  const diagnostics = [...focus, ...strategies];
-  if (diagnostics.length) sentences.push(`请重点分析${diagnostics.join("、")}。`);
-  if (metrics.length) sentences.push(`以${metrics.join("、")}衡量结果。`);
-  if (verification.length) sentences.push(`并通过${verification.join("、")}进行对照验证。`);
+export function buildCompositionPrompt(selectedIds, connectionPath = []) {
+  const orderedIds = unique([...connectionPath, ...selectedIds]);
+  const fields = orderedIds.map((id) => fieldById.get(id)).filter(Boolean);
+  if (!fields.length) return "";
+
+  const topics = fields.filter((item) => item.role === "topic");
+  const goals = fields.filter((item) => item.role === "goal");
+  const content = fields.filter((item) => item.role === "content");
+  const inferredTopicId = goals[0]?.topicId || content[0]?.topicId;
+  const mainTopic = topics[0] || fieldById.get(inferredTopicId);
+  const selectedSecondaryTopics = topics.slice(1).map((item) => item.promptValue);
+  const subject = mainTopic?.promptValue || fields[0].promptValue;
+  const sentences = [`我想围绕${subject}继续探索。`];
+
+  if (goals.length) {
+    sentences.push(`重点方向是${unique(goals.map((item) => item.promptValue)).join("、")}。`);
+  }
+  if (content.length) {
+    sentences.push(`学习内容依次包括${unique(content.map((item) => item.promptValue)).join("、")}。`);
+  } else if (goals.length) {
+    sentences.push("请沿着相关原理与实践步骤，组织成循序渐进的学习路径。");
+  } else {
+    sentences.push("请从核心概念逐步延展到实践与验证。");
+  }
+  if (selectedSecondaryTopics.length) {
+    sentences.push(`也希望了解它与${unique(selectedSecondaryTopics).join("、")}之间的关联。`);
+  }
   return sentences.join("");
 }
 

@@ -198,7 +198,7 @@ export function CombinationTaskHome({ onCreateTask }) {
   }, [connections, hoverSourceId]);
 
   useEffect(() => {
-    setDraft(buildCompositionPrompt(selectedIds));
+    setDraft(buildCompositionPrompt(selectedIds, pathIds));
   }, [connections, manuallySelected]);
 
   const captureComposition = () => ({
@@ -627,7 +627,7 @@ export function CombinationTaskHome({ onCreateTask }) {
     event.preventDefault();
     const goal = draft.trim();
     if (!goal) {
-      setError("先连接或选择一些字段，再发送需求。");
+      setError("先选择一个学习主题，再连接相关的学习内容。");
       return;
     }
     const compositionPlan = buildCompositionLearningPlan({
@@ -642,7 +642,7 @@ export function CombinationTaskHome({ onCreateTask }) {
   return <section
     ref={homeRef}
     className={`combination-home${hoverSourceId ? " has-focused-field" : ""}`}
-    aria-label="基于场景的关联探索"
+    aria-label="基于近期兴趣的关联探索"
     onPointerMove={handleHomePointerMove}
     onPointerLeave={handleHomePointerLeave}
   >
@@ -652,8 +652,8 @@ export function CombinationTaskHome({ onCreateTask }) {
       aria-hidden="true"
     />
     <header className="combination-home__heading">
-      <span>EXPLORE PROBLEMS AND PATHS FROM YOUR CONTEXT</span>
-      <h1 className="combination-home__title">从你的场景出发，探索问题与路径</h1>
+      <span>CONTINUE FROM YOUR OPERATOR EXPLORATION</span>
+      <h1 className="combination-home__title">从算子开发继续探索</h1>
     </header>
     <div
       className="combination-cloud"
@@ -682,7 +682,7 @@ export function CombinationTaskHome({ onCreateTask }) {
         return <button
           key={field.id}
           ref={(node) => { if (node) nodeRefs.current.set(field.id, node); else nodeRefs.current.delete(field.id); }}
-          className={`combination-field combination-field--${field.size} combination-field--${field.tone}${selectedSet.has(field.id) ? " is-connected" : ""}${pendingKeyboardNode === field.id || isFocused ? " is-connection-source" : ""}${hoverSourceCandidateId === field.id ? " is-connection-candidate" : ""}${hoverTargetId === field.id ? " is-connection-target" : ""}${isFocused ? " is-focus-center" : ""}${isExpanded ? " is-expanded-neighbor" : ""}${isPath ? " is-composition-path" : ""}`}
+          className={`combination-field combination-field--${field.size} combination-field--${field.tone}${field.prominence === "primary" ? " is-primary-interest" : " is-related-interest"}${selectedSet.has(field.id) ? " is-connected" : ""}${pendingKeyboardNode === field.id || isFocused ? " is-connection-source" : ""}${hoverSourceCandidateId === field.id ? " is-connection-candidate" : ""}${hoverTargetId === field.id ? " is-connection-target" : ""}${isFocused ? " is-focus-center" : ""}${isExpanded ? " is-expanded-neighbor" : ""}${isPath ? " is-composition-path" : ""}`}
           type="button"
           data-composition-field={field.id}
           aria-pressed={selectedSet.has(field.id)}
@@ -710,11 +710,11 @@ export function CombinationTaskHome({ onCreateTask }) {
     <form className="combination-composer" onSubmit={submit}>
       <IconSparkles className="combination-composer__sparkle" size={ICON_SIZE.navigation} aria-hidden="true" />
       <textarea
-        aria-label="根据连接字段生成的需求草稿"
+        aria-label="根据连接字段生成的学习 Prompt"
         value={draft}
         onChange={(event) => { setDraft(event.target.value); setError(""); }}
         onKeyDown={(event) => { if ((event.metaKey || event.ctrlKey) && event.key === "Enter") submit(event); }}
-        placeholder="连接目标、线索、条件与验证方式…"
+        placeholder="连接你想深入的主题与学习内容…"
         rows={2}
       />
       <div className="combination-composer__history" role="group" aria-label="组合操作历史">
