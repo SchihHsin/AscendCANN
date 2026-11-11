@@ -23,7 +23,10 @@ export function buildCompositionLearningPlan({ fieldIds = [], connectionPath = [
   const goals = fields.filter(field => field.role === "goal");
   const selectedContent = new Set(fields.filter(field => field.role === "content").map(field => field.id));
   const inferredTopicId = goals[0]?.topicId || fields.find(field => field.role === "content")?.topicId;
-  const mainTopic = topics[0] || fieldById.get(inferredTopicId);
+  const firstField = fields[0];
+  const mainTopic = firstField?.role === "topic"
+    ? firstField
+    : fieldById.get(firstField?.topicId || inferredTopicId) || topics[0];
 
   const pathOwners = goals.length
     ? goals
@@ -64,7 +67,9 @@ export function buildCompositionLearningPlan({ fieldIds = [], connectionPath = [
   const goalTitle = goals.length
     ? unique(goals.map(field => field.title)).join(" · ")
     : mainTopic?.title || fields[0]?.title || "学习方向";
-  const linkedTopics = topics.slice(1).map(field => field.title);
+  const linkedTopics = topics
+    .filter(field => field.id !== mainTopic?.id)
+    .map(field => field.title);
   const description = linkedTopics.length
     ? `从${mainTopic?.title || goalTitle}开始，继续连接${linkedTopics.join("、")}，形成一条跨主题学习路径。`
     : `沿着${goalTitle}展开，从核心概念逐步走向实践与验证。`;

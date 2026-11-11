@@ -38,6 +38,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Keep the learning and development recommendation pools distinct. Do not fill empty slots with recency. Recommendation actions must revalidate their task/evidence revision before routing; “先聊聊” preserves the task draft and never sends it automatically.
 - A learning transfer exercise is isolated from its base practice and retains the source summary, input dimensions, axes, and batch. Remove its home recommendation only after the current source and transfer snapshot still match a passing attempt. Browser shape calculations are not Python, model, project, or NPU validation.
 
+### 2026-11-12 · Expand the operator-interest cluster
+
+- On the association-composition home, keep model inference, model training, and performance tuning visible while expanding the operator cluster. The first screen now contains the operator topic plus seven peer learning directions, alongside those three existing cross-topic directions.
+- Keep operator principles, development, performance, migration, and validation as sibling goals. Ascend C programming and framework integration are additional sibling goals, with their own lower-level learning content. Do not nest principles under development.
+- These are curated prototype fields that make the concept of interest-led exploration discussable; they do not claim live interest inference or device validation.
+
 ## 2026-10-09 · Decorative refinement review
 
 - The user wants more decorative imagery and better overall visual craftsmanship. Material reference: `design-references/soft-glass-services-reference.png`; use ImageGen for frosted glass, translucent layers, pearl spheres and soft refracted light, with warm white/gray and restrained cool blue-violet.

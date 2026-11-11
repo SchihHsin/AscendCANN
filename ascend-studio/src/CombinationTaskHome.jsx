@@ -25,7 +25,9 @@ function satellitePosition(index, count) {
     4: [[80, 14], [89, 38], [89, 62], [80, 86]],
     5: [[80, 9], [88, 29], [92, 50], [88, 71], [80, 91]],
   };
-  return positions[count]?.[index] || [82, 50];
+  if (positions[count]) return positions[count][index] || [82, 50];
+  const angle = -Math.PI / 2 + (Math.PI * 2 * index) / Math.max(count, 1);
+  return [50 + Math.cos(angle) * 39, 50 + Math.sin(angle) * 36];
 }
 
 function pathRailPosition(index, count) {

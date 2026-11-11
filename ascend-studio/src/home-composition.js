@@ -20,17 +20,24 @@ const field = (id, title, english, hint, role, tone, x, y, related = [], promptV
 
 export const initialCompositionIds = [
   "operator-topic",
+  "operator-principles",
+  "operator-development",
+  "operator-optimization",
+  "operator-porting",
+  "operator-validation",
+  "operator-ascendc-model",
+  "operator-framework-integration",
   "inference-topic",
   "training-topic",
   "performance-topic",
 ];
 
 export const compositionFields = [
-  // A curated interest constellation: operator work is the main thread, with
-  // inference, training and performance as quieter neighboring interests.
+  // Operator work is the main interest cluster. Related goals are visible from
+  // the first screen; inference, training and tuning remain as neighboring paths.
   field(
-    "operator-topic", "算子", "OPERATOR", "从原理、开发到性能优化继续探索", "topic", "blue", 50, 47,
-    ["operator-principles", "operator-development", "operator-optimization", "operator-porting", "operator-validation"],
+    "operator-topic", "算子", "OPERATOR", "从原理、开发到性能优化继续探索", "topic", "blue", 50, 50,
+    ["operator-principles", "operator-development", "operator-optimization", "operator-porting", "operator-validation", "operator-ascendc-model", "operator-framework-integration"],
     "算子",
     {
       prominence: "primary",
@@ -43,7 +50,7 @@ export const compositionFields = [
     },
   ),
   field(
-    "inference-topic", "模型推理", "MODEL INFERENCE", "从模型适配延伸到端到端运行", "topic", "violet", 22, 27,
+    "inference-topic", "模型推理", "MODEL INFERENCE", "从模型适配延伸到端到端运行", "topic", "violet", 12, 34,
     ["inference-conversion", "inference-input", "inference-run"], "模型推理",
     {
       defaultSteps: [
@@ -54,7 +61,7 @@ export const compositionFields = [
     },
   ),
   field(
-    "training-topic", "模型训练", "MODEL TRAINING", "从训练流程延伸到并行与精度策略", "topic", "teal", 79, 29,
+    "training-topic", "模型训练", "MODEL TRAINING", "从训练流程延伸到并行与精度策略", "topic", "teal", 88, 32,
     ["training-flow", "parallel-strategy", "mixed-precision"], "模型训练",
     {
       defaultSteps: [
@@ -66,7 +73,7 @@ export const compositionFields = [
     },
   ),
   field(
-    "performance-topic", "性能调优", "PERFORMANCE TUNING", "从性能分析连接到优化与验证", "topic", "coral", 77, 75,
+    "performance-topic", "性能调优", "PERFORMANCE TUNING", "从性能分析连接到优化与验证", "topic", "coral", 88, 70,
     ["performance-baseline", "profiler-analysis", "performance-improvement"], "性能调优",
     {
       defaultSteps: [
@@ -78,19 +85,21 @@ export const compositionFields = [
     },
   ),
 
-  // Operator learning intentions sit at the same level under the operator topic.
-  field("operator-principles", "理解算子原理", "OPERATOR PRINCIPLES", "从计算语义、数据布局到硬件执行建立理解", "goal", "violet", 0, 0,
+  // Operator learning intentions are peer paths, never nested under development.
+  field("operator-principles", "理解算子原理", "OPERATOR PRINCIPLES", "从计算语义、数据布局到硬件执行建立理解", "goal", "violet", 34, 25,
     ["operator-semantics", "tensor-layout", "hardware-mapping"], "理解算子原理", {
       topicId: "operator-topic",
+      prominence: "primary",
       defaultSteps: [
         step("operator-semantics", "理解计算语义与输入输出", "明确算子处理的数据、计算规则与输出关系。", "blue"),
         step("tensor-layout", "认识数据类型与布局", "理解 Shape、数据类型与布局对执行的影响。", "teal"),
         step("hardware-mapping", "连接计算逻辑与硬件执行", "了解计算任务如何映射到设备执行过程。", "violet"),
       ],
     }),
-  field("operator-development", "完成算子开发", "CUSTOM OPERATOR DEVELOPMENT", "从接口定义走到可验证的算子实现", "goal", "blue", 0, 0,
+  field("operator-development", "完成算子开发", "CUSTOM OPERATOR DEVELOPMENT", "从接口定义走到可验证的算子实现", "goal", "blue", 50, 16,
     ["operator-interface", "tiling-strategy", "kernel-implementation", "compile-validation"], "完成自定义算子开发", {
       topicId: "operator-topic",
+      prominence: "primary",
       defaultSteps: [
         step("operator-interface", "定义算子接口与输入输出", "明确参数、张量 Shape、数据类型与输出约束。", "blue"),
         step("tiling-strategy", "设计 Tiling 策略", "根据数据规模和硬件资源组织计算分块。", "violet"),
@@ -98,9 +107,10 @@ export const compositionFields = [
         step("compile-validation", "编译并验证正确性", "检查构建结果、关键样例与精度表现。", "coral"),
       ],
     }),
-  field("operator-optimization", "优化算子性能", "OPERATOR PERFORMANCE", "围绕性能基线、时间线与实现策略展开", "goal", "teal", 0, 0,
+  field("operator-optimization", "优化算子性能", "OPERATOR PERFORMANCE", "围绕性能基线、时间线与实现策略展开", "goal", "teal", 66, 25,
     ["performance-baseline", "profiler-analysis", "kernel-optimization", "performance-validation"], "优化算子性能", {
       topicId: "operator-topic",
+      prominence: "primary",
       defaultSteps: [
         step("performance-baseline", "建立算子性能基线", "在固定输入与运行条件下记录初始耗时。", "blue"),
         step("profiler-analysis", "分析算子执行时间线", "识别计算、访存与调度相关的耗时特征。", "violet"),
@@ -108,22 +118,45 @@ export const compositionFields = [
         step("performance-validation", "对照验证性能与精度", "确认优化收益并检查输出正确性。", "coral"),
       ],
     }),
-  field("operator-porting", "迁移与适配算子", "OPERATOR PORTING", "梳理算子接口差异并完成昇腾适配", "goal", "coral", 0, 0,
+  field("operator-porting", "迁移与适配算子", "OPERATOR PORTING", "梳理算子接口差异并完成昇腾适配", "goal", "coral", 28, 51,
     ["operator-api-mapping", "operator-data-adaptation", "compile-validation"], "迁移与适配算子", {
       topicId: "operator-topic",
+      prominence: "primary",
       defaultSteps: [
         step("operator-api-mapping", "梳理算子接口与计算映射", "对齐原实现中的参数、数据与计算语义。", "blue"),
         step("operator-data-adaptation", "适配数据类型与布局", "确认昇腾侧输入格式及执行约束。", "violet"),
         step("compile-validation", "完成编译与结果验证", "检查构建、正确性及性能表现。", "coral"),
       ],
     }),
-  field("operator-validation", "验证算子正确性", "OPERATOR VALIDATION", "从典型输入、边界数据到精度对比", "goal", "blue", 0, 0,
+  field("operator-validation", "验证算子正确性", "OPERATOR VALIDATION", "从典型输入、边界数据到精度对比", "goal", "blue", 34, 77,
     ["operator-test-design", "precision-comparison", "edge-case-validation"], "验证算子正确性", {
       topicId: "operator-topic",
+      prominence: "primary",
       defaultSteps: [
         step("operator-test-design", "设计代表性测试样例", "覆盖常见 Shape、数据类型与输入范围。", "blue"),
         step("precision-comparison", "对比输出与精度", "检查关键输出并确认误差范围。", "violet"),
         step("edge-case-validation", "验证边界输入", "确认边界条件下的结果与稳定性。", "coral"),
+      ],
+    }),
+
+  field("operator-ascendc-model", "Ascend C 编程", "ASCEND C PROGRAMMING MODEL", "理解编程模型、存储层级与设备执行方式", "goal", "violet", 50, 85,
+    ["ascendc-programming-basics", "ascendc-memory-model", "ascendc-execution-model"], "学习 Ascend C 编程模型", {
+      topicId: "operator-topic",
+      prominence: "primary",
+      defaultSteps: [
+        step("ascendc-programming-basics", "认识 Ascend C 编程模型", "建立对算子程序结构与执行组织的整体认识。", "blue"),
+        step("ascendc-memory-model", "理解存储层级与数据搬运", "梳理数据在不同存储层级间的组织与流动。", "teal"),
+        step("ascendc-execution-model", "理解设备侧执行方式", "连接计算任务、并行执行与同步关系。", "violet"),
+      ],
+    }),
+  field("operator-framework-integration", "将算子接入框架", "FRAMEWORK INTEGRATION", "从接口注册走到框架侧调用", "goal", "teal", 70, 77,
+    ["framework-op-interface", "operator-registration", "framework-call-validation"], "将算子接入框架", {
+      topicId: "operator-topic",
+      prominence: "primary",
+      defaultSteps: [
+        step("framework-op-interface", "对齐框架算子接口", "确认框架调用方式与算子输入输出的映射。", "blue"),
+        step("operator-registration", "完成算子注册与构建", "将算子实现接入目标工程的构建流程。", "teal"),
+        step("framework-call-validation", "验证框架侧调用", "核对调用链、输入输出与运行结果。", "coral"),
       ],
     }),
 
@@ -228,6 +261,12 @@ export const compositionFields = [
   field("operator-test-design", "算子测试样例", "OPERATOR TEST CASES", "覆盖常见 Shape、数据类型与输入范围", "content", "blue", 0, 0, [], "设计代表性测试样例", { topicId: "operator-topic", goalId: "operator-validation" }),
   field("precision-comparison", "精度与误差对比", "PRECISION COMPARISON", "核对输出结果与误差范围", "content", "violet", 0, 0, [], "对比输出与精度", { topicId: "operator-topic", goalId: "operator-validation" }),
   field("edge-case-validation", "边界输入验证", "EDGE CASE VALIDATION", "检查边界条件下的结果与稳定性", "content", "coral", 0, 0, [], "验证边界输入", { topicId: "operator-topic", goalId: "operator-validation" }),
+  field("ascendc-programming-basics", "Ascend C 程序结构", "ASCEND C PROGRAM STRUCTURE", "认识算子程序的组成与基本执行流程", "content", "blue", 0, 0, [], "认识 Ascend C 编程模型", { topicId: "operator-topic", goalId: "operator-ascendc-model" }),
+  field("ascendc-memory-model", "存储层级与数据搬运", "MEMORY HIERARCHY", "理解设备侧存储层级与数据流动方式", "content", "teal", 0, 0, [], "理解存储层级与数据搬运", { topicId: "operator-topic", goalId: "operator-ascendc-model" }),
+  field("ascendc-execution-model", "并行执行与同步", "EXECUTION AND SYNCHRONIZATION", "了解计算任务的并行组织与同步关系", "content", "violet", 0, 0, [], "理解设备侧执行方式", { topicId: "operator-topic", goalId: "operator-ascendc-model" }),
+  field("framework-op-interface", "框架算子接口", "FRAMEWORK OPERATOR API", "确认框架侧算子调用接口与数据约束", "content", "blue", 0, 0, [], "对齐框架算子接口", { topicId: "operator-topic", goalId: "operator-framework-integration" }),
+  field("operator-registration", "算子注册与构建", "REGISTRATION AND BUILD", "将实现接入工程构建与算子注册流程", "content", "teal", 0, 0, [], "完成算子注册与构建", { topicId: "operator-topic", goalId: "operator-framework-integration" }),
+  field("framework-call-validation", "框架侧调用验证", "FRAMEWORK CALL VALIDATION", "核对输入输出映射与运行结果", "content", "coral", 0, 0, [], "验证框架侧调用", { topicId: "operator-topic", goalId: "operator-framework-integration" }),
 
   field("model-format", "模型格式与算子支持", "MODEL FORMAT", "理解源模型结构及目标环境要求", "content", "violet", 0, 0, [], "确认模型格式与算子支持", { topicId: "inference-topic", goalId: "inference-conversion" }),
   field("conversion-config", "模型转换配置", "CONVERSION CONFIG", "选择转换参数并生成目标模型", "content", "blue", 0, 0, [], "配置模型转换", { topicId: "inference-topic", goalId: "inference-conversion" }),
@@ -274,8 +313,13 @@ export function buildCompositionPrompt(selectedIds, connectionPath = []) {
   const goals = fields.filter((item) => item.role === "goal");
   const content = fields.filter((item) => item.role === "content");
   const inferredTopicId = goals[0]?.topicId || content[0]?.topicId;
-  const mainTopic = topics[0] || fieldById.get(inferredTopicId);
-  const selectedSecondaryTopics = topics.slice(1).map((item) => item.promptValue);
+  const firstField = fields[0];
+  const mainTopic = firstField?.role === "topic"
+    ? firstField
+    : fieldById.get(firstField?.topicId || inferredTopicId) || topics[0];
+  const selectedSecondaryTopics = topics
+    .filter((item) => item.id !== mainTopic?.id)
+    .map((item) => item.promptValue);
   const subject = mainTopic?.promptValue || fields[0].promptValue;
   const sentences = [`我想围绕${subject}继续探索。`];
 
