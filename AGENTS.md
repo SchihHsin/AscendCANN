@@ -9119,3 +9119,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户反馈，将用户级 Skill 从 `ascend-chapter-cover-art` 重命名为 `/Users/hsin/.codex/skills/ascend-cover/`；同步更新 `SKILL.md` frontmatter、标题和 `agents/openai.yaml` 显示名，Skill 的生成规范与适用范围不变。
 - 验证：Ruby YAML 解析确认 `name` 与目录名均为 `ascend-cover`，UI short description 长度合规，旧目录已移除；`git diff --check` 通过。前一条交接提交的 Pages workflow `42855910908` build 成功，deploy 因 `syncing_files` 持续约 10 分钟后超时；该运行只发布仓库文档，不影响用户级 Skill。
 - 提交 / 推送：本次更新为用户级 Skill 与仓库交接记录；交接记录随本轮提交推送。
+
+### 2026-11-12 · 关联探索首页按近期兴趣组织
+
+- 用户再次明确：首屏应从用户近期兴趣与既有任务出发，算子开发是主线，模型推理、模型训练、性能调优是相关延伸；不要平铺一整套通用词条，也不要把所有方向做成同等权重。此结论延续此前“父级是算子主题，原理 / 开发 / 优化是同级目标”的层级判断。
+- 首页目前以「算子」为中心主入口，周边三个跨主题方向使用更轻的节点层级；进入算子主题后再展开「理解算子原理、完成算子开发、优化算子性能、迁移与适配、验证正确性」等同级学习目标。默认没有任何连线，用户仍通过悬浮停留和鼠标操作建立关系。
+- 选择主题、目标及学习内容后，Prompt 保留选择顺序；发送后生成对应的「学习路径」，路径步骤由策划内容呈现，属于设计概念 Demo，不宣称接入真实兴趣历史或真实模型判断。此方向以用户明确反馈为依据（H），实现与静态构建为代码证据（H），不影响页面顺序及 API / Protocol、Host / Harness、Application / Task 机制边界。
+- 变更：`ascend-studio/src/CombinationTaskHome.jsx`、`CompositionLearningPathCanvas.jsx`、`combination-task-home.css`、`composition-learning-path.js`、`home-composition.js`；同步发布 `ascstudio/` 与 `ascstudio-pc/studio/` 静态资源。桌面本地预览已打开并核对主次层级、默认空连线与首屏文案。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；未运行自动化测试。GitHub Pages workflow `43057769048` build / deploy 成功；线上 `/AscendCANN/ascstudio/` HTTP 200，新 JS `index-BXPMikxE.js` 和 CSS `index-BTy5aOtO.css` 均 HTTP 200。
+- 发布提交 `54e231fe` 已推送到 `origin/main`。本条是对“兴趣主线和跨主题延伸”最新决策的持久交接；与此前“训练与调优”主题交接并存，适用时按这条更新决策组织关联探索首页。

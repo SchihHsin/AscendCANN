@@ -2238,3 +2238,10 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 验证：`npm run build:pages`、`git diff --check` 通过；本地 Chrome 1440×1000 回放发送 5 个训练字段并切入右侧路径草案；截图见 `evidence/20261110-composition-learning-path/after.png`。未运行自动化测试。
 
 - 提交 / 推送与 Pages：功能提交 `6b93e863` 经合并提交 `3d7fff6a` 推送至 `origin/main`；首次 Pages workflow `42748928960` 在 `syncing_files` 超时，交接更新 `c3518379` 触发的 workflow `42750603193` build / deploy 成功。线上 `/ascstudio/` HTML 引用 `index-CNMJw5jG.js` 与 `index-D4z6Rc_x.css`，两资源均 HTTP 200。
+
+### 2026-11-12 · 关联探索首屏的兴趣主线
+
+- 用户确认首屏从近期兴趣与已有任务出发：以算子开发作为主要兴趣线索，再推荐模型推理、模型训练、性能调优作为相关方向。不要平铺通用词条或让所有入口同权。
+- 顶层技术主题为「算子」；其下「理解算子原理 / 完成算子开发 / 优化算子性能 / 迁移与适配 / 验证正确性」是同级目标。关联跨主题作为视觉较轻的外围入口。默认无连线，用户通过悬浮停留与鼠标操作形成路径。
+- 已实现 Prompt 顺序保留与发送后学习路径生成。示例兴趣是设计策划内容，不代表真实历史判断或模型诊断。
+- 页面本地预览已核对；`npm run build:pages`、`git diff --check` 通过，未运行自动化测试。实现提交 `54e231fe` 推送 `origin/main`；Pages workflow `43057769048` build / deploy 成功，线上 `/ascstudio/` 与对应 JS / CSS 均 HTTP 200。
