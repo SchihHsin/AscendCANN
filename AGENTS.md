@@ -9150,4 +9150,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求，将用户测试材料改成可在约 50 分钟内主持的简版任务书，覆盖学习、开发中学习、移动端继续三条主线。每条包括参与者任务、主持人观察要点、完成线索和 Demo 起点链接；保留简短主持规则、流程、记录表与结束问题，去掉旧版 UI 满意度和 Kano 的长篇量表流程。
 - 核对 `ascstudio-pc/app.js` 的当前目录：学习 6 点、开发 5 点、移动端继续 6 点，共 17 点。同步更新用户测试页的简介、统计、思维导图和加载失败备用内容；移除当前页上指向旧版问卷的入口。`questionnaire.html` 文件保留，尚未更新，不属于本次简版任务书流程。
 - 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/taskbook.md`、`cann-dashboard/ascend-work-learning-home-user-test/index.html`、本文件。依据：用户要求三条主线都纳入并简化（H）；设计点数量和起点由 PC Demo 当前目录核对（H）。未改变产品页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`git diff --check` 通过；未运行自动化测试。提交、推送和 Pages 发布结果待本轮提交后补记。
+- 验证：`git diff --check` 通过；未运行自动化测试。简版页面与 Markdown 均在线上返回 HTTP 200，读回确认约 50 分钟、17 个观察点及三条主线的起点链接均已发布。GitHub Pages workflow `43149985442` build / deploy 成功。
+- 提交 / 推送：任务书提交 `1ef6b598` 已推送至 `origin/main`。本次交接结果随后单独记录并推送。
