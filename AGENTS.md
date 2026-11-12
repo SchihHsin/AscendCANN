@@ -9181,3 +9181,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与来源：用户要求第 3 页右侧显示问卷示例图（H）；功能名称与 17 项分类、频数、系数从 `/Users/hsin/Downloads/395703119_按文本_昇腾agent学习方案用户测评_6_6.xlsx` 复核，图片复用报告既有 `ascend-studio-design-report-evidence/` 示例素材。题项归类与系数沿用报告既有口径：Q / R 不计入 Better / |Worse|，并列按 M＞O＞A＞I。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。页面序列、API / Protocol、Host / Harness、Application / Task 边界均未改变。
 - 验证：逐项将 17 个题项的回答频数与 Better / |Worse| 和原始工作簿复算结果比对；17 个编号与全部截图路径存在；内联 JavaScript `node --check`、`git diff --check` 通过。1280×720 桌面预览中确认默认推荐卡截图完整显示，并点选第 14 项，右侧正确更新为手机短读卡的示例图及对应数据。提交 `c983c546` 已推送至 `origin/main`；GitHub Pages workflow `43197063205` 成功。线上报告与首页示例图均 HTTP 200，读回确认包含 17 个可选点、同步详情面板及手机短读卡截图路径。
+
+### 2026-11-12 · 调整 Kano 矩阵象限标签位置
+
+- 将第 3 页右下象限的必备型 M 标题和说明移至象限左上角，与右上线性型 O 的标签位置保持一致；不改动四象限类型、数据点、统计结果或说明文案。
+- 依据：用户明确要求线性 O 与必备 M 都放在各自象限左上角（H）。这是矩阵标签布局调整，不改变页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。验证：本地第 3 页桌面截图确认 O、M 均位于各自象限左上方；`git diff --check` 通过。提交与 GitHub Pages 发布状态在推送后补记。
