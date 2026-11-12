@@ -336,27 +336,21 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .matrix-side{display:flex;flex-direction:column;min-width:0;min-height:0;gap:.5vh}
 .matrix-stats{display:flex;justify-content:space-between;padding:.65vh .7vw;background:rgba(255,255,255,.55);border-radius:10px;font-size:var(--fs-xs);color:#626975}
 .matrix-stats b{font:700 var(--fs-h3) 'Inter',sans-serif;color:#22262f;margin-right:.2em}
-.kano-selected{flex:1;min-height:0;padding:1.05vh .9vw;display:grid;grid-template-rows:auto auto auto auto minmax(0,1fr);gap:.55vh;overflow:hidden}
-.kano-selected-head{display:flex;align-items:center;justify-content:space-between;gap:.6vw;min-width:0}
-.kano-selected-index{font:700 var(--fs-xs) 'Inter','HarmonyOS Sans SC',sans-serif;letter-spacing:.03em;color:#717985;white-space:nowrap}
-.kano-selected-badge{display:inline-flex;align-items:center;gap:.25em;padding:.26vh .58vw;border-radius:999px;background:color-mix(in srgb,var(--kc) 12%,white);color:var(--kc);font-size:var(--fs-xs);font-weight:700;white-space:nowrap}
-.kano-selected h2{font-size:var(--fs-h3);line-height:1.28;color:#20242b;max-width:100%}
-.kano-selected-description{font-size:var(--fs-xs);line-height:1.42;color:#646c78;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:0}
-.kano-selected-results{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6vw;align-items:center;min-width:0;padding:.55vh .55vw;background:rgba(243,245,248,.86);border-radius:9px}
-.kano-answer-block{min-width:0}.kano-meta-label{display:block;margin-bottom:.28vh;font-size:var(--fs-xs);color:#858d98}
-.kano-answer-counts{display:flex;flex-wrap:wrap;gap:.23vw;align-items:center}
-.kano-answer-chip{display:inline-flex;align-items:center;gap:.25em;padding:.13vh .34vw;border-radius:5px;background:#fff;color:#626a75;font:600 var(--fs-xs)/1.2 'Inter','HarmonyOS Sans SC',sans-serif;white-space:nowrap}
-.kano-answer-chip b{color:var(--kc)}
-.kano-coefficients{display:grid;grid-template-columns:auto auto;align-items:center;gap:.05vh .5vw;text-align:right;white-space:nowrap}
-.kano-coefficients>span{display:flex;flex-direction:column;align-items:flex-end;gap:.05vh}
-.kano-coefficients>span small{font-size:var(--fs-xs);color:#838a95}
-.kano-coefficients>span b{font:700 var(--fs-sm) 'Inter',sans-serif;color:#242933}
-.kano-coefficients .kano-sample{grid-column:1/-1;font-size:var(--fs-xs);color:#8b929c}
-.kano-evidence{min-height:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(48,57,70,.1);border-radius:8px;background:#f5f6f8}
-.kano-evidence img{display:block;width:100%;height:100%;min-height:0;object-fit:contain}
-.kano-evidence.is-portrait img{width:auto;max-width:100%;height:100%;object-fit:contain}
-.kano-evidence figcaption{flex:0 0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:.6em;padding:.42vh .6vw;background:rgba(255,255,255,.86);border-top:1px solid rgba(48,57,70,.08);font-size:var(--fs-xs);color:#8a919c}
-.kano-evidence figcaption b{font-weight:600;color:#555d68;text-align:right}
+.kano-explorer{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:.5vw}
+.kano-feature-list{list-style:none;min-width:0;min-height:0;overflow:auto;margin:0;padding:.25vh .2vw;display:grid;grid-auto-rows:minmax(0,1fr);gap:.12vh;border:1px solid rgba(48,57,70,.08);border-radius:9px;background:rgba(255,255,255,.48)}
+.kano-feature-list li{min-width:0;min-height:0}
+.kano-feature-row{width:100%;height:100%;min-width:0;min-height:19px;padding:.18vh .28vw;border:0;border-radius:6px;display:grid;grid-template-columns:22px minmax(0,1fr) 22px;align-items:center;gap:.28vw;background:transparent;color:#454c57;text-align:left;cursor:pointer;transition:background .12s ease,color .12s ease}
+.kano-feature-row:hover,.kano-feature-row:focus-visible,.kano-feature-row.is-active{background:rgba(91,91,214,.1);color:#272b36;outline:none}
+.kano-feature-no{font:700 var(--fs-xs) 'Inter',sans-serif;color:#7a8290}
+.kano-feature-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-xs);line-height:1.25}
+.kano-feature-type{justify-self:end;min-width:20px;padding:.1vh .2vw;border-radius:999px;background:color-mix(in srgb,var(--kc) 13%,white);color:var(--kc);font:700 var(--fs-xs) 'Inter',sans-serif;text-align:center}
+.kano-preview{position:relative;min-width:0;min-height:0;margin:0;padding:.35vh .35vw;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;border:1px solid rgba(48,57,70,.1);border-radius:9px;background:#f5f6f8}
+.kano-preview.is-empty{display:flex;align-items:center;justify-content:center}
+.kano-preview-empty{max-width:18ch;padding:.8vw;color:#8a919c;font-size:var(--fs-xs);line-height:1.5;text-align:center}
+.kano-preview img{display:block;width:100%;height:100%;min-height:0;object-fit:contain}
+.kano-preview.is-portrait img{width:auto;max-width:100%;height:100%;justify-self:center;object-fit:contain}
+.kano-preview figcaption{display:flex;align-items:center;justify-content:space-between;gap:.5em;padding:.38vh .35vw;font-size:var(--fs-xs);line-height:1.3;color:#686f7a}
+.kano-preview figcaption b{max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#424954;text-align:right}
 .k-item-leader{stroke:#5e6877;stroke-width:1.5;stroke-opacity:.55}
 .k-anchor{fill:#4d5867;stroke:white;stroke-width:1.4;opacity:.72}
 .k-point{cursor:pointer;outline:none;touch-action:manipulation}
@@ -524,17 +518,15 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </div>
 <div class='matrix-side'>
 <div class='matrix-stats'><span><b>10</b>魅力</span><span><b>3</b>线性</span><span><b>0</b>必备</span><span><b>4</b>无差异</span></div>
-<article class='kano-selected card' aria-live='polite' aria-label='所选功能的问卷结果'>
-<div class='kano-selected-head'><span class='kano-selected-index' id='kanoSelectedIndex'>设计点 01 / 17</span><span class='kano-selected-badge k-A' id='kanoSelectedBadge'>魅力型 A</span></div>
-<h2 id='kanoSelectedName'>基于当前进度推荐下一步</h2>
-<p class='kano-selected-description' id='kanoSelectedDescription'>结合当前学习进度或开发问题，给出下一步学习建议。</p>
-<div class='kano-selected-results'>
-<div class='kano-answer-block'><span class='kano-meta-label'>回答分布</span><div class='kano-answer-counts' id='kanoAnswerCounts'></div></div>
-<div class='kano-coefficients'><span><small>Better</small><b id='kanoBetter'>0.60</b></span><span><small>|Worse|</small><b id='kanoWorse'>0.40</b></span><small class='kano-sample' id='kanoSample'>有效配对 n=5/6</small></div>
+<div class='kano-explorer'>
+<ul class='kano-feature-list' id='kanoFeatureList' aria-label='17 项功能题项'></ul>
+<figure class='kano-preview is-empty' id='kanoPreview' aria-live='polite'>
+<div class='kano-preview-empty' id='kanoPreviewEmpty'>悬浮或聚焦列表中的一项功能，查看对应问卷示例</div>
+<img id='kanoEvidenceImage' alt='' hidden>
+<figcaption id='kanoPreviewCaption' hidden><span>问卷示例图</span><b id='kanoEvidenceCaption'></b></figcaption>
+</figure>
 </div>
-<figure class='kano-evidence'><img id='kanoEvidenceImage' src='ascend-studio-design-report-evidence/03-proactive-card.jpg' alt='首页主动推荐卡片示例'><figcaption><span>问卷示例图</span><b id='kanoEvidenceCaption'>首页主动推荐卡片</b></figcaption></figure>
-</article>
-<div class='matrix-note'>点选矩阵编号，右侧查看对应的题项、问卷回答与示例图。</div>
+<div class='matrix-note'>悬浮或聚焦列表项查看示例；点击矩阵编号可同步定位。</div>
 </div></div></div>
 <div class='matrix-conclusion'><b>本轮未出现主导的必备型功能。</b>更明显的信号是“提供后能增加满意度”，并非每项功能都会因缺少而引发强烈不满。</div>
 </div>
@@ -891,41 +883,52 @@ else {
 const kanoPageFeatures=[{"id":1,"name":"基于当前进度推荐下一步","description":"结合当前学习进度或开发问题，给出下一步学习建议。","type":"A","counts":{"A":2,"O":1,"M":1,"I":1,"Q":1},"better":0.6,"worse":0.4,"n":5,"tie":false,"caption":"首页主动推荐卡片","orientation":"landscape","image":"ascend-studio-design-report-evidence/03-proactive-card.jpg"},{"id":2,"name":"通过可探索的关系画布，可鼠标悬浮连线形成 Prompt","description":"在关系画布中继续探索相关问题，并通过连线形成 Prompt。","type":"A","counts":{"A":3,"O":1,"I":2},"better":0.67,"worse":0.17,"n":6,"tie":false,"caption":"关系画布与连线提问","orientation":"landscape","image":"ascend-studio-design-report-evidence/04-connected-prompt.jpg"},{"id":3,"name":"和 AI 一起调整学习路径","description":"结合个人基础、目标和可用时间，共同调整学习路径。","type":"A","counts":{"A":4,"O":1,"I":1},"better":0.83,"worse":0.17,"n":6,"tie":false,"caption":"学习路径共创","orientation":"landscape","image":"ascend-studio-design-report-evidence/05-learning-collaboration.jpg"},{"id":4,"name":"共创路径连接理解与实践","description":"让学习路径从内容理解延伸到练习和结果核对。","type":"A","counts":{"A":2,"O":1,"I":2,"Q":1},"better":0.6,"worse":0.2,"n":5,"tie":true,"caption":"学习内容与练习","orientation":"landscape","image":"ascend-studio-design-report-evidence/07-learning-practice.jpg"},{"id":5,"name":"拖动输入框，自由调整对话位置","description":"拖动输入框，按当前阅读与操作位置调整对话区域。","type":"O","counts":{"A":2,"O":2,"I":2},"better":0.67,"worse":0.33,"n":6,"tie":true,"caption":"开发问答与对话区域","orientation":"landscape","image":"ascend-studio-design-report-evidence/01-development-diagram.jpg"},{"id":6,"name":"框选内容，直接指着说","description":"框选学习内容中的具体区域，再通过文字或语音提出问题。","type":"O","counts":{"O":3,"A":1,"I":2},"better":0.67,"worse":0.5,"n":6,"tie":false,"caption":"学习内容中的提问场景","orientation":"landscape","image":"ascend-studio-design-report-evidence/07-learning-practice.jpg"},{"id":7,"name":"打开图解看懂判断依据","description":"从关联图解查看问题线索和处理思路。","type":"A","counts":{"A":3,"O":1,"M":1,"I":1},"better":0.67,"worse":0.33,"n":6,"tie":false,"caption":"问题线索与处理图解","orientation":"landscape","image":"ascend-studio-design-report-evidence/01-development-diagram.jpg"},{"id":8,"name":"在示例副本里动手修改","description":"在可编辑的示例副本中尝试修改，同时保留原始材料用于对照。","type":"A","counts":{"A":4,"O":1,"I":1},"better":0.83,"worse":0.17,"n":6,"tie":false,"caption":"可编辑示例与练习","orientation":"landscape","image":"ascend-studio-design-report-evidence/07-learning-practice.jpg"},{"id":9,"name":"处理完成后回流经验","description":"完成问题处理后，可以把经验整理并带回社区。","type":"I","counts":{"I":4,"A":1,"O":1},"better":0.33,"worse":0.17,"n":6,"tie":false,"caption":"经验回流与社区草稿","orientation":"landscape","image":"ascend-studio-design-report-evidence/02-community-draft.jpg"},{"id":10,"name":"把处理过程整理成社区经验","description":"将问题背景、尝试过程和验证情况整理成可审阅的经验草稿。","type":"A","counts":{"A":3,"O":1,"I":2},"better":0.67,"worse":0.17,"n":6,"tie":false,"caption":"社区经验草稿","orientation":"landscape","image":"ascend-studio-design-report-evidence/02-community-draft.jpg"},{"id":11,"name":"把经验带到更多平台","description":"按不同平台的表达方式整理同一份经验，并预览后续分享内容。","type":"A","counts":{"A":3,"O":1,"I":2},"better":0.67,"worse":0.17,"n":6,"tie":false,"caption":"多平台经验分享","orientation":"landscape","image":"ascend-studio-design-report-evidence/02-community-draft.jpg"},{"id":12,"name":"从电脑端的一条回答，接上手机里的下一步","description":"从电脑上的回答或学习内容中保存一条知识，之后在手机上继续。","type":"O","counts":{"A":2,"O":2,"I":2},"better":0.67,"worse":0.33,"n":6,"tie":true,"caption":"从电脑保存知识并在手机继续","orientation":"landscape","image":"ascend-studio-design-report-evidence/08-mini-desktop.jpg"},{"id":13,"name":"电脑端选“现在看”，微信列表收到同一条知识","description":"在电脑端选择立即查看后，手机微信会话列表收到对应知识通知。","type":"A","counts":{"A":4,"O":1,"R":1},"better":1.0,"worse":0.2,"n":5,"tie":false,"caption":"微信中的知识通知","orientation":"portrait","image":"ascend-studio-design-report-evidence/09-mini-notification.jpg"},{"id":14,"name":"手机短读卡，把一个知识点拆成几分钟","description":"在手机上通过简明解释、重点和理解小题完成一次短时学习。","type":"A","counts":{"A":3,"O":2,"I":1},"better":0.83,"worse":0.33,"n":6,"tie":false,"caption":"手机短读卡","orientation":"portrait","image":"ascend-studio-design-report-evidence/11-mini-knowledge.jpg"},{"id":15,"name":"把关注或存疑的内容，放进每周回访","description":"为关注或存疑的内容选择主题与接收时间，安排定期回访。","type":"I","counts":{"I":4,"A":1,"O":1},"better":0.33,"worse":0.17,"n":6,"tie":false,"caption":"移动端定期回访","orientation":"portrait","image":"ascend-studio-design-report-evidence/10-mini-briefing.jpg"},{"id":16,"name":"每周一条重点资讯，再补两张个性化卡片","description":"每周速览包含一条重点资讯，并结合个人关注或存疑线索补充内容。","type":"I","counts":{"I":3,"A":2,"O":1},"better":0.5,"worse":0.17,"n":6,"tie":false,"caption":"每周重点资讯与个性化卡片","orientation":"portrait","image":"ascend-studio-design-report-evidence/10-mini-briefing.jpg"},{"id":17,"name":"没有当前任务，也能主动发现下一点新知","description":"通过搜索、分类或推荐继续探索，并保留感兴趣的知识线索。","type":"I","counts":{"I":4,"A":1,"O":1},"better":0.33,"worse":0.17,"n":6,"tie":false,"caption":"移动端知识探索","orientation":"portrait","image":"ascend-studio-design-report-evidence/11-mini-knowledge.jpg"}];
 const kanoCategoryNames={A:'魅力型',O:'线性型',M:'必备型',I:'无差异型',R:'反向型',Q:'可疑回答'};
 const kanoSvgPoints=[...document.querySelectorAll('.k-point[data-feature]')];
-function selectKanoFeature(id){
+const kanoFeatureList=document.getElementById('kanoFeatureList');
+const kanoFeatureRows=[];
+for(const item of kanoPageFeatures){
+  const row=document.createElement('li');
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='kano-feature-row';
+  button.dataset.feature=String(item.id);
+  button.setAttribute('aria-pressed','false');
+  button.setAttribute('aria-label',String(item.id).padStart(2,'0')+' · '+item.name+'；'+kanoCategoryNames[item.type]+'；Better '+item.better.toFixed(2)+'；|Worse| '+item.worse.toFixed(2));
+  const number=document.createElement('span');number.className='kano-feature-no';number.textContent=String(item.id).padStart(2,'0');
+  const name=document.createElement('span');name.className='kano-feature-name';name.textContent=item.name;
+  name.title=item.name;
+  const type=document.createElement('span');type.className='kano-feature-type k-'+item.type;type.textContent=item.type;
+  button.append(number,name,type);row.append(button);kanoFeatureList.append(row);kanoFeatureRows.push(button);
+}
+function showKanoFeature(id,{scrollToRow=false}={}){
   const item=kanoPageFeatures.find(x=>x.id===Number(id)); if(!item)return;
   kanoSvgPoints.forEach(point=>{const active=Number(point.dataset.feature)===item.id;point.classList.toggle('is-selected',active);point.setAttribute('aria-pressed',String(active));});
-  const badge=document.getElementById('kanoSelectedBadge');
-  badge.className='kano-selected-badge k-'+item.type;
-  badge.textContent=kanoCategoryNames[item.type]+' '+item.type+(item.tie?' · 并列':'');
-  document.getElementById('kanoSelectedIndex').textContent='设计点 '+String(item.id).padStart(2,'0')+' / '+String(kanoPageFeatures.length).padStart(2,'0');
-  document.getElementById('kanoSelectedName').textContent=item.name;
-  const description=document.getElementById('kanoSelectedDescription');
-  description.textContent=item.description;
-  description.hidden=!item.description;
-  const counts=document.getElementById('kanoAnswerCounts');
-  counts.replaceChildren();
-  for(const category of ['A','O','M','I','R','Q']){
-    if(!item.counts[category])continue;
-    const chip=document.createElement('span');chip.className='kano-answer-chip k-'+category;
-    const key=document.createElement('b');key.textContent=category;
-    const count=document.createElement('span');count.textContent=item.counts[category];
-    chip.append(key,count);counts.append(chip);
-  }
-  document.getElementById('kanoBetter').textContent=item.better.toFixed(2);
-  document.getElementById('kanoWorse').textContent=item.worse.toFixed(2);
-  document.getElementById('kanoSample').textContent='有效配对 n='+item.n+'/6';
+  kanoFeatureRows.forEach(row=>{
+    const active=Number(row.dataset.feature)===item.id;
+    row.classList.toggle('is-active',active);
+    row.setAttribute('aria-pressed',String(active));
+    if(active&&scrollToRow)row.scrollIntoView({block:'nearest'});
+  });
+  const preview=document.getElementById('kanoPreview');
+  preview.classList.remove('is-empty');
   const image=document.getElementById('kanoEvidenceImage');
   image.src=item.image;image.alt='问卷中用于评价“'+item.name+'”的示例界面';
   document.getElementById('kanoEvidenceCaption').textContent=item.caption;
-  document.querySelector('.kano-evidence').classList.toggle('is-portrait',item.orientation==='portrait');
+  image.hidden=false;
+  document.getElementById('kanoPreviewEmpty').hidden=true;
+  document.getElementById('kanoPreviewCaption').hidden=false;
+  preview.classList.toggle('is-portrait',item.orientation==='portrait');
 }
 kanoSvgPoints.forEach(point=>{
-  point.addEventListener('click',event=>{event.stopPropagation();selectKanoFeature(point.dataset.feature);});
+  point.addEventListener('click',event=>{event.stopPropagation();showKanoFeature(point.dataset.feature,{scrollToRow:true});});
   point.addEventListener('keydown',event=>{
-    if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();selectKanoFeature(point.dataset.feature);}
+    if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();showKanoFeature(point.dataset.feature,{scrollToRow:true});}
   });
 });
-selectKanoFeature(1);
+kanoFeatureRows.forEach(row=>{
+  row.addEventListener('pointerenter',()=>showKanoFeature(row.dataset.feature));
+  row.addEventListener('focus',()=>showKanoFeature(row.dataset.feature));
+  row.addEventListener('click',()=>showKanoFeature(row.dataset.feature));
+});
 </script>
 </body>
 </html>
