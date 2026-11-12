@@ -9186,4 +9186,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 将第 3 页右下象限的必备型 M 标题和说明移至象限左上角，与右上线性型 O 的标签位置保持一致；不改动四象限类型、数据点、统计结果或说明文案。
 - 依据：用户明确要求线性 O 与必备 M 都放在各自象限左上角（H）。这是矩阵标签布局调整，不改变页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
-- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。验证：本地第 3 页桌面截图确认 O、M 均位于各自象限左上方；`git diff --check` 通过。提交与 GitHub Pages 发布状态在推送后补记。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。验证：本地第 3 页桌面截图确认 O、M 均位于各自象限左上方；`git diff --check` 通过。提交 `ae576e1f` 已推送至 `origin/main`；GitHub Pages workflow `43198556477` build / deploy 成功，报告链接返回 HTTP 200，线上更新时间对应本次发布。线上完整 HTML 回读遇到超时，象限坐标依据本地页面截图核验。
