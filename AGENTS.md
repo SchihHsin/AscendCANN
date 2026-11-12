@@ -9152,3 +9152,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/taskbook.md`、`cann-dashboard/ascend-work-learning-home-user-test/index.html`、本文件。依据：用户要求三条主线都纳入并简化（H）；设计点数量和起点由 PC Demo 当前目录核对（H）。未改变产品页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；未运行自动化测试。简版页面与 Markdown 均在线上返回 HTTP 200，读回确认约 50 分钟、17 个观察点及三条主线的起点链接均已发布。GitHub Pages workflow `43149985442` build / deploy 成功。
 - 提交 / 推送：任务书提交 `1ef6b598` 已推送至 `origin/main`。本次交接结果随后单独记录并推送。
+
+
+### 2026-11-12 · 昇腾 Agent 学习方案问卷分析材料
+
+- 新建 `cann-dashboard/昇腾Agent学习方案问卷分析.html`，使用 Report PPT Skill 的单文件网页演示格式，共 10 页：封面、总体判断、Kano 2×2 Better–Worse 矩阵、首页入口、个性化学习、开发中学习、社区经验草稿、移动端接续、UI 满意度、建议与 5×5 Kano 配对表方法说明。全程只分析问卷，不纳入访谈，也不显示答卷人姓名、IP 等个人信息。
+- 数据源为用户提供的 `395703119_按文本_昇腾agent学习方案用户测评_6_6.xlsx`：17 组 Kano 正反向题、6 份答卷；UI 评分 5 份有效答卷（另 1 人未体验）。主图用 2×2 展示 Better 与 |Worse|，末页附 5×5 配对评价表；类别按题项最高频归类，并列依 M＞O＞A＞I 处理。本轮 10 项魅力型、3 项线性型、4 项无差异型、无主导必备型；Better 均值 0.64、|Worse| 均值 0.24；3 项类别并列，2 个 Q 与 1 个 R 个体回答不计入系数。结论定位为小样本的描述性信号，不外推总体比例。
+- 主要判断：路径共创与可编辑示例副本的 Better 均为 0.83；框选提问的 |Worse| 为 0.50；UI 均分 9.2/10，易操作性 9.6 较高，易发现性 8.6 与布局合理性 8.8 相对低；首页主动推荐卡片 3/6、连线探索 2/6、认为两者接近 1/6。周度触达与抽象的经验回流信号较弱，具体社区草稿的反应更明确。
+- 修复封面图片被未定义 CSS 变量覆盖的问题，并补全 `#页码` 深链接恢复、hashchange 跳页和翻页 URL 同步；解决直接打开特定页仍停在上一页的行为。页面序列仅属于这份研究材料；没有改变产品 Demo 序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：内嵌 JS `node --check` 通过；Chrome 桌面视口逐页核对 10 页，确认封面背景、矩阵与方法表完整；直接刷新 `#6` 后仍落在目标页，方向键翻页后 URL 同步为 `#7`。完成后 `git diff --check`，仅暂存材料和本交接文件。
+- 提交 / 推送：问卷材料与本交接记录随本轮提交并推送至 `origin/main`；Pages 发布按提交触发并需核对发布状态。
