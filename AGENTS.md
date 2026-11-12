@@ -9173,4 +9173,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认将第二页“首页入口偏好”卡替换为覆盖全部 17 项功能的 Kano 系数均值：Better 0.64 与 |Worse| 0.24；配一行解释说明提供功能带来的满意提升更明显，缺少时的不满影响较弱。首页选择偏好仍保留在后续首页分析页。
 - 依据：Kano 正反向题源数据在 `395703119_按文本_昇腾agent学习方案用户测评_6_6.xlsx` 的 Sheet1 H:AP；Better 与 |Worse| 均值复用报告矩阵页已计算的 17 项题项均值，不新增统计口径。UI 整体评分 9.2/10 仍保留在第二张卡。本次只调整总结页的信息层级，不改页序、统计结论或 API / Protocol、Host / Harness、Application / Task 边界。
-- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。桌面预览确认三张卡现在呈现 Kano 类型分布、UI 总体均分、Kano 总体系数；内嵌 JS 和 `git diff --check` 待本轮检查，提交与 Pages 发布待本轮确认。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。桌面预览确认三张卡现在呈现 Kano 类型分布、UI 总体均分、Kano 总体系数；内嵌 JS `node --check` 与 `git diff --check` 通过。页面提交 `aa71459a` 已推送至 `origin/main`；GitHub Pages workflow `43191283859` build / deploy 成功，报告链接 HTTP 200，线上读回确认新卡内容已发布。
