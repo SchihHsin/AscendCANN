@@ -9167,4 +9167,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 在问卷分析第 3 页的 2×2 Better–Worse Kano 矩阵中，明确标出左上魅力型 A、右上线性型 O、左下无差异型 I、右下必备型 M，并为每类增加一句易读解释；类型标题与说明字号略微放大，便于演示时辨认。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。依据是用户明确要求矩阵说明四象限对应类型；分类按本报告既有 Better–Worse 轴向和均值分区展示，不改动样本、统计或结论。只影响报告页内容，不改变产品 Demo 序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：桌面预览确认四个标签与说明均位于对应象限；内嵌 JS `node --check`、`git diff --check` 通过。页面修订与本条记录随本轮推送；GitHub Pages 发布状态待本轮确认。
+- 验证：桌面预览确认四个标签与说明均位于对应象限；内嵌 JS `node --check`、`git diff --check` 通过。页面修订提交 `baa1f30c` 已推送到 `origin/main`；GitHub Pages workflow `43189399358` build / deploy 成功，报告链接返回 HTTP 200，线上读回确认四类标签、解释文字与放大后的字号均已发布。
