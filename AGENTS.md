@@ -9161,4 +9161,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 主要判断：路径共创与可编辑示例副本的 Better 均为 0.83；框选提问的 |Worse| 为 0.50；UI 均分 9.2/10，易操作性 9.6 较高，易发现性 8.6 与布局合理性 8.8 相对低；首页主动推荐卡片 3/6、连线探索 2/6、认为两者接近 1/6。周度触达与抽象的经验回流信号较弱，具体社区草稿的反应更明确。
 - 修复封面图片被未定义 CSS 变量覆盖的问题，并补全 `#页码` 深链接恢复、hashchange 跳页和翻页 URL 同步；解决直接打开特定页仍停在上一页的行为。页面序列仅属于这份研究材料；没有改变产品 Demo 序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：内嵌 JS `node --check` 通过；Chrome 桌面视口逐页核对 10 页，确认封面背景、矩阵与方法表完整；直接刷新 `#6` 后仍落在目标页，方向键翻页后 URL 同步为 `#7`。完成后 `git diff --check`，仅暂存材料和本交接文件。
-- 提交 / 推送：问卷材料与本交接记录随本轮提交并推送至 `origin/main`；Pages 发布按提交触发并需核对发布状态。
+- 提交 / 推送：问卷材料提交 `cbd03540` 已推送至 `origin/main`；GitHub Pages workflow `43187635908` build / deploy 成功，报告 URL 返回 HTTP 200。最终发布状态随本条交接更新提交并推送。
