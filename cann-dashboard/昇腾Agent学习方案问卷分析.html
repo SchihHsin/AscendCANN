@@ -441,6 +441,53 @@ body.overview #panel,body.overview #toggle{display:none!important}
 @media(max-width:1100px){.section-tabs{gap:2px}.section-tabs span{padding:.36vh .36vw}.matrix-layout{grid-template-columns:1fr;grid-template-rows:1.1fr .9fr;height:66vh}.learning-layout{grid-template-columns:1fr}.learning-hero{min-height:22vh}}
 @media(max-width:760px){.s-gray{padding:3vh 4vw}.head{margin-bottom:2vh}.section-tabs{display:none}.summary-grid,.two-panel,.community-flow,.mobile-summary,.mobile-lists,.action-layout{grid-template-columns:1fr}.report-body{overflow:auto}.matrix-layout{height:auto}.dev-grid{grid-template-columns:1fr}.summary-card,.community-card{min-height:auto}.rating-summary{grid-template-columns:1fr}}
 
+
+/* 问卷原型截图：把后续分析与第3页逐项查看的界面证据连起来 */
+.home-evidence-layout{width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:1vh}
+.home-evidence-layout>.two-panel{height:100%;min-height:0;gap:1vw}
+.home-evidence-layout .panel{padding:1.4vh 1.2vw}
+.home-evidence-layout .pref-list{gap:1vh}
+.home-evidence-layout .panel .note{margin-top:1vh!important}
+.home-evidence-shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1vw;min-height:0;align-items:stretch}
+.evidence-figure{min-width:0;min-height:0;margin:0;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;border:1px solid rgba(255,255,255,.9);border-radius:12px;background:rgba(255,255,255,.58);box-shadow:0 12px 28px -24px rgba(22,25,30,.28)}
+.evidence-figure img{display:block;width:100%;height:100%;min-height:0;object-fit:contain;background:rgba(245,246,248,.72)}
+.evidence-figure figcaption{padding:.45vh .7vw;font-size:var(--fs-xs);line-height:1.3;color:#68707b;text-align:center;background:rgba(255,255,255,.78)}
+.learning-detail{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+.learning-support{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:.6vh;min-height:0}
+.learning-evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65vw;min-height:0}
+.learning-support .evidence-figure img{max-height:17vh}
+.learning-support .caution-note{margin:0;min-height:0;padding:.6vh .8vw}
+.dev-evidence-layout{width:100%;flex:1;min-height:0;display:grid;grid-template-columns:1.22fr .78fr;gap:1vw;align-items:stretch}
+.dev-evidence-main{min-width:0;min-height:0;display:flex;flex-direction:column;gap:.8vh}
+.dev-evidence-main .dev-grid{flex:1;min-height:0}
+.dev-evidence-main .dev-card{min-width:0;padding:1.2vh 1.05vw}
+.dev-evidence-figure{align-self:stretch;min-height:0}
+.community-evidence-layout{width:100%;min-height:50vh;display:grid;grid-template-columns:1.18fr .82fr;gap:1vw;align-items:stretch}
+.community-flow{grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:.7vh;min-height:0}
+.community-flow .community-card{min-height:0;padding:.8vh 1vw}
+.community-flow .community-num{font-size:clamp(18px,2vw,28px)}
+.community-flow .community-card h2{font-size:var(--fs-h3);margin:.35vh 0}
+.community-flow .community-card p{font-size:var(--fs-xs);line-height:1.3}
+.community-flow .community-card .category-strip{margin-top:auto}
+.community-flow .community-card .coef-row{margin-top:.25vh}
+.community-evidence-figure{align-self:stretch}
+.mobile-evidence-layout{width:100%;display:grid;grid-template-columns:1.48fr 1fr;grid-template-rows:minmax(0,1fr) auto;gap:.8vh 1vw;min-height:0}
+.mobile-evidence-layout>.mobile-lists{grid-column:1;grid-row:1;min-width:0}
+.mobile-gallery{grid-column:2;grid-row:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55vw;min-height:0}
+.mobile-evidence-figure{min-height:0}
+.mobile-evidence-figure img{height:min(38vh,280px);object-fit:contain}
+.mobile-evidence-layout>.mobile-note{grid-column:1/-1;grid-row:2;margin:.2vh 0 0}
+@media(max-width:1100px){
+ .home-evidence-layout{grid-template-rows:auto auto}.home-evidence-layout>.two-panel{height:auto}
+ .dev-evidence-layout{grid-template-columns:1fr}.dev-evidence-figure{max-height:38vh}
+ .community-evidence-layout{grid-template-columns:1fr;min-height:0}.community-flow{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:none}.community-flow .community-card{min-height:28vh}
+ .mobile-evidence-layout{grid-template-columns:1fr}.mobile-evidence-layout>.mobile-lists{grid-column:1;grid-row:1}.mobile-gallery{grid-column:1;grid-row:2}.mobile-evidence-layout>.mobile-note{grid-column:1;grid-row:3}
+}
+@media(max-width:760px){
+ .home-evidence-shots,.learning-evidence-grid{grid-template-columns:1fr}.home-evidence-shots .evidence-figure{min-height:24vh}
+ .dev-evidence-layout,.community-evidence-layout{grid-template-columns:1fr}.community-evidence-layout{min-height:0}.community-flow{grid-template-columns:1fr;grid-template-rows:none}.community-flow .community-card{min-height:auto}
+ .mobile-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.mobile-evidence-figure img{height:30vh}
+}
 </style>
 </head>
 <body>
@@ -496,7 +543,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <section class='slide s-gray'>
 <div class='head'><div class='head-l'><div class='brand'><span class='ttl'>首页入口略偏向推荐卡片，探索画布仍有独立价值</span></div><div class='subttl'>昇腾 Agent 学习方案用户测评</div></div><div class='section-tabs' aria-label='当前章节'><span>01 整体判断</span><span>02 卡诺分析</span><span class='active'>03 功能反馈</span><span>04 UI评分</span><span>05 建议与方法</span></div></div>
 <div class='body-area report-body'>
-<div class='two-panel'>
+<div class='home-evidence-layout'><div class='two-panel'>
 <div class='panel card'><div class='panel-label'>首页入口偏好 · n=6</div><h2>卡片领先 1 票，差距不大</h2>
 <div class='pref-list'>
 <div class='pref-row'><div class='pref-label'><b>首页主动推荐卡片</b><span>3/6 · 50%</span></div><div class='pref-track'><i style='width:50%'></i></div><small>最多选择，但未形成压倒性偏好</small></div>
@@ -508,7 +555,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>2</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-M'><b>M</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>1</i></span><span class='cat-pill k-Q'><b>Q</b><i>1</i></span></div>
 <div class='coef-row'><span class='coef'>Better <b>0.60</b></span><span class='coef'>|Worse| <b>0.40</b></span></div>
 <p>推荐能力总体受欢迎，但缺少时的不满影响也相对明显。入口更适合让用户自己决定是否采用。</p></div>
-</div>
+</div><div class='home-evidence-shots'><figure class='evidence-figure '><img loading='lazy' src='ascend-studio-design-report-evidence/03-proactive-card.jpg' alt='Ascend Studio 新建任务页中的主动推荐卡片'><figcaption>主动推荐卡片</figcaption></figure><figure class='evidence-figure '><img loading='lazy' src='ascend-studio-design-report-evidence/04-connected-prompt.jpg' alt='Ascend Studio 关系画布与连线提问界面'><figcaption>连线探索画布</figcaption></figure></div></div>
 </div>
 <div class='foot report-foot'>数据来源：首页入口偏好题与“基于当前进度推荐下一步”卡诺题；n=6。描述性结果，不代表显著差异。</div>
 </section>
@@ -519,7 +566,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='learning-hero'><div class='eyebrow'>满意度提升 Better</div><strong>0.83</strong><h2>和 AI 共创学习路径</h2><p>结合个人基础、目标和可用时间调整学习路径。4/6 人归为魅力型，另有 1 人为线性型、1 人无差异。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>4</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>1</i></span></div><div class='coef-row'><span class='coef'>|Worse| <b>0.17</b></span></div></div>
 <div class='learning-detail'>
 <article class='feature-panel card'><div class='feature-heading'><h2>连接内容理解与实践</h2><span class='kano-badge k-A'>A / I 并列</span></div><p>让学习路径从理解内容继续到练习和结果核对。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>2</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>2</i></span><span class='cat-pill k-Q'><b>Q</b><i>1</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.60</b></span><span class='coef'>|Worse| <b>0.20</b></span></div></article>
-<div class='caution-note'><b>解读</b><span>个性化路径的信号更集中；理解与实践的连接值得保留，但当前回答更分散，适合继续验证。</span></div>
+<div class='learning-support'><div class='learning-evidence-grid'><figure class='evidence-figure '><img loading='lazy' src='ascend-studio-design-report-evidence/05-learning-collaboration.jpg' alt='Ascend Studio 中与 AI 共创学习路径的界面'><figcaption>共创学习路径</figcaption></figure><figure class='evidence-figure '><img loading='lazy' src='ascend-studio-design-report-evidence/07-learning-practice.jpg' alt='Ascend Studio 中从学习路径进入理解和练习的界面'><figcaption>理解后继续练习</figcaption></figure></div><div class='caution-note'><b>解读</b><span>个性化路径的信号更集中；理解与实践的连接值得保留，但当前回答更分散，适合继续验证。</span></div></div>
 </div></div>
 </div>
 <div class='foot report-foot'>数据来源：学习路径相关的两组正反向问卷题；n=6。理解与实践题存在 1 个 Q 回答及类别并列。</div>
@@ -527,25 +574,25 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <section class='slide s-gray'>
 <div class='head'><div class='head-l'><div class='brand'><span class='ttl'>框选提问更接近线性需求，可编辑示例更像体验加分项</span></div><div class='subttl'>昇腾 Agent 学习方案用户测评</div></div><div class='section-tabs' aria-label='当前章节'><span>01 整体判断</span><span>02 卡诺分析</span><span class='active'>03 功能反馈</span><span>04 UI评分</span><span>05 建议与方法</span></div></div>
 <div class='body-area report-body'>
-<div class='dev-intro'><b>在具体内容上提问、查看线索，再进入可编辑副本。</b><span>四项设计均获正向反馈。</span></div>
+<div class='dev-evidence-layout'><div class='dev-evidence-main'><div class='dev-intro'><b>在具体内容上提问、查看线索，再进入可编辑副本。</b><span>四项设计均获正向反馈。</span></div>
 <div class='dev-grid'>
 <article class='dev-card card'><div class='dev-top'><span class='dev-num'>01</span><span class='kano-badge k-O'>O · 线性型</span></div><h2>框选内容直接提问</h2><p>把问题锚定到具体学习内容，避免脱离上下文。</p><div class='category-strip'><span class='cat-pill k-O'><b>O</b><i>3</i></span><span class='cat-pill k-A'><b>A</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>2</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.67</b></span><span class='coef'>|Worse| <b>0.50</b></span></div></article>
 <article class='dev-card card'><div class='dev-top'><span class='dev-num'>02</span><span class='kano-badge k-A'>A · 魅力型</span></div><h2>打开图解看判断依据</h2><p>从问题线索和处理思路帮助理解回答。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>3</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-M'><b>M</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>1</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.67</b></span><span class='coef'>|Worse| <b>0.33</b></span></div></article>
 <article class='dev-card card'><div class='dev-top'><span class='dev-num'>03</span><span class='kano-badge k-A'>A · 魅力型</span></div><h2>在示例副本里动手修改</h2><p>保留原始材料，同时允许用户尝试调整。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>4</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>1</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.83</b></span><span class='coef'>|Worse| <b>0.17</b></span></div></article>
 <article class='dev-card card'><div class='dev-top'><span class='dev-num'>04</span><span class='kano-badge k-O'>O · 并列后归类</span></div><h2>拖动输入框调整位置</h2><p>让输入位置适应用户当前阅读与操作区域。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>2</i></span><span class='cat-pill k-O'><b>O</b><i>2</i></span><span class='cat-pill k-I'><b>I</b><i>2</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.67</b></span><span class='coef'>|Worse| <b>0.33</b></span></div></article>
 </div>
-<div class='dev-footer-note'>框选提问的 |Worse| 最高，提示用户在缺少上下文提问能力时更容易不满；示例副本的 Better 最高，表示提供后更容易带来额外满意度。</div>
+<div class='dev-footer-note'>框选提问的 |Worse| 最高，提示用户在缺少上下文提问能力时更容易不满；示例副本的 Better 最高，表示提供后更容易带来额外满意度。</div></div><figure class='evidence-figure dev-evidence-figure'><img loading='lazy' src='ascend-studio-design-report-evidence/01-development-diagram.jpg' alt='开发对话中查看图解并核对图像形状的界面'><figcaption>开发对话中的图解与结果核对</figcaption></figure></div>
 </div>
 <div class='foot report-foot'>数据来源：开发中学习相关的四组正反向问卷题；n=6。拖动输入框的 A / O / I 频数并列，按 M＞O＞A＞I 规则归为 O。</div>
 </section>
 <section class='slide s-gray'>
 <div class='head'><div class='head-l'><div class='brand'><span class='ttl'>具体的社区经验草稿比笼统的“经验回流”更有感知</span></div><div class='subttl'>昇腾 Agent 学习方案用户测评</div></div><div class='section-tabs' aria-label='当前章节'><span>01 整体判断</span><span>02 卡诺分析</span><span class='active'>03 功能反馈</span><span>04 UI评分</span><span>05 建议与方法</span></div></div>
 <div class='body-area report-body'>
-<div class='community-flow'>
+<div class='community-evidence-layout'><div class='community-flow'>
 <article class='community-card card'><div class='community-num'>01</div><h2>问题完成后回流经验</h2><p>4/6 人对缺少这项能力表示无所谓，说明抽象的回流说法不够具体。</p><div class='category-strip'><span class='cat-pill k-I'><b>I</b><i>4</i></span><span class='cat-pill k-A'><b>A</b><i>1</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.33</b></span><span class='coef'>|Worse| <b>0.17</b></span></div><span class='kano-badge k-I'>I · 无差异型</span></article>
 <article class='community-card card'><div class='community-num'>02</div><h2>整理成可审阅的社区经验草稿</h2><p>明确写出问题背景、尝试过程和验证情况，A 类反应最多。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>3</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>2</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.67</b></span><span class='coef'>|Worse| <b>0.17</b></span></div><span class='kano-badge k-A'>A · 魅力型</span></article>
 <article class='community-card card'><div class='community-num'>03</div><h2>把经验带到更多平台</h2><p>按不同平台的表达方式整理并预览，整体反应偏正向。</p><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>3</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-I'><b>I</b><i>2</i></span></div><div class='coef-row'><span class='coef'>Better <b>0.67</b></span><span class='coef'>|Worse| <b>0.17</b></span></div><span class='kano-badge k-A'>A · 魅力型</span></article>
-</div>
+</div><figure class='evidence-figure community-evidence-figure'><img loading='lazy' src='ascend-studio-design-report-evidence/02-community-draft.jpg' alt='Ascend Studio 将问题背景、尝试过程和验证情况整理为社区经验草稿的界面'><figcaption>社区经验草稿与发布入口</figcaption></figure></div>
 <div class='community-conclusion'><b>优先呈现可审阅、可编辑的经验草稿。</b><span>把经验整理成具体产物后，再提供发布到更多平台的选择。</span></div>
 </div>
 <div class='foot report-foot'>数据来源：经验回流、社区草稿与多平台分享三组卡诺题；n=6。</div>
@@ -558,7 +605,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='mobile-callout'><strong>0.67</strong><span>电脑保存、手机继续 Better</span><small>A / O / I 各 2 人，类别并列</small></div>
 <div class='mobile-callout muted'><strong>4/6</strong><span>对每周速览表示无所谓</span><small>每周回访与无任务探索也以 I 为主</small></div>
 </div>
-<div class='mobile-lists'>
+<div class='mobile-evidence-layout'><div class='mobile-lists'>
 <section class='mobile-list card'><h2>继续学习与短时学习</h2>
 <div class='mobile-item'><div class='mobile-main'><b>从电脑保存知识，在手机继续</b><span class='kano-badge k-O'>O</span></div><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>2</i></span><span class='cat-pill k-O'><b>O</b><i>2</i></span><span class='cat-pill k-I'><b>I</b><i>2</i></span></div><div class='coef-row'><span class='coef'>Better .67</span><span class='coef'>|Worse| .33</span></div></div>
 <div class='mobile-item'><div class='mobile-main'><b>微信通知接续知识</b><span class='kano-badge k-A'>A</span></div><div class='category-strip'><span class='cat-pill k-A'><b>A</b><i>4</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span><span class='cat-pill k-R'><b>R</b><i>1</i></span></div><div class='coef-row'><span class='coef'>Better 1.00</span><span class='coef'>|Worse| .20</span></div></div>
@@ -569,7 +616,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='mobile-item'><div class='mobile-main'><b>每周速览加入个性化卡片</b><span class='kano-badge k-I'>I</span></div><div class='category-strip'><span class='cat-pill k-I'><b>I</b><i>3</i></span><span class='cat-pill k-A'><b>A</b><i>2</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span></div></div>
 <div class='mobile-item'><div class='mobile-main'><b>没有当前任务时继续探索新知</b><span class='kano-badge k-I'>I</span></div><div class='category-strip'><span class='cat-pill k-I'><b>I</b><i>4</i></span><span class='cat-pill k-A'><b>A</b><i>1</i></span><span class='cat-pill k-O'><b>O</b><i>1</i></span></div></div>
 </section></div>
-<div class='mobile-note'>微信通知出现 1 个反向回答。建议让用户主动选择接收时机，而不是默认推送。</div>
+<div class='mobile-gallery'><figure class='evidence-figure mobile-evidence-figure'><img loading='lazy' src='ascend-studio-design-report-evidence/09-mini-notification.jpg' alt='微信中的 Ascend Studio 知识通知示例'><figcaption>微信接续</figcaption></figure><figure class='evidence-figure mobile-evidence-figure'><img loading='lazy' src='ascend-studio-design-report-evidence/10-mini-briefing.jpg' alt='Ascend Studio 每周速览界面'><figcaption>每周速览</figcaption></figure><figure class='evidence-figure mobile-evidence-figure'><img loading='lazy' src='ascend-studio-design-report-evidence/11-mini-knowledge.jpg' alt='Ascend Studio 手机端短读知识卡'><figcaption>手机短读</figcaption></figure></div><div class='mobile-note'>微信通知出现 1 个反向回答。建议让用户主动选择接收时机，而不是默认推送。</div></div>
 </div>
 <div class='foot report-foot'>数据来源：电脑与手机接续、小程序学习和定期触达相关题目；n=6。</div>
 </section>
