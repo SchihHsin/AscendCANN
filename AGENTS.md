@@ -9187,3 +9187,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将第 3 页右下象限的必备型 M 标题和说明移至象限左上角，与右上线性型 O 的标签位置保持一致；不改动四象限类型、数据点、统计结果或说明文案。
 - 依据：用户明确要求线性 O 与必备 M 都放在各自象限左上角（H）。这是矩阵标签布局调整，不改变页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。验证：本地第 3 页桌面截图确认 O、M 均位于各自象限左上方；`git diff --check` 通过。提交 `ae576e1f` 已推送至 `origin/main`；GitHub Pages workflow `43198556477` build / deploy 成功，报告链接返回 HTTP 200，线上更新时间对应本次发布。线上完整 HTML 回读遇到超时，象限坐标依据本地页面截图核验。
+
+
+### 2026-11-12 · 补齐问卷后续分析页的原型配图
+
+- 用户指出此前已同意将问卷中的原型截图补入相应后续分析页，但未实际完成。本次在第 4–8 页加入与分析题项相配的界面证据：第 4 页首页主动推荐卡片与关联探索；第 5 页共创学习路径与理解后继续练习；第 6 页开发对话中的图解与结果核对；第 7 页社区经验草稿与发布入口；第 8 页微信接续、每周速览和手机短读。
+- 图片复用 `cann-dashboard/ascend-studio-design-report-evidence/` 中已有的问卷 / 原型截图；本轮只改报告内容与布局，不改统计口径、结论或 10 页序列。截图与题项的对应以用户认可的安排及现有原型素材为依据（H）；截图表达的是方案界面，不作为用户行为或问卷结果的独立证据。API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。桌面 1280×720 预览逐页核对第 4–7 页，图片与正文对应且分析区未被遮挡；第 8 页图片布局已在本地预览确认。11 个本地图片引用均存在，2 段内嵌脚本 `node --check` 通过，`git diff --check` 通过。线上报告及新增页面使用的 9 个图片地址均返回 HTTP 200。
+- 提交 / 推送：报告提交 `cc797dee` 已推送到 `origin/main`；GitHub Pages workflow `43202223383` build / deploy 成功。报告链接：`https://schihhsin.github.io/AscendCANN/cann-dashboard/昇腾Agent学习方案问卷分析.html`。
