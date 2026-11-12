@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f5f1">
-  <meta name="description" content="Ascend Studio PC 三大场景与 16 个设计点的用户测试提纲、Simple Mind Map、UI 满意度与 Kano 需求问卷。">
+  <meta name="description" content="Ascend Studio PC 学习、开发中学习、移动端继续三条体验主线的简版用户测试任务书。">
   <title>Ascend Studio PC 用户测试 · 三大场景与设计点</title>
   <style>
     :root {
@@ -45,7 +45,7 @@
     .hero-copy strong { color: var(--ink); font-weight: 650; }
     .hero-side { border-left: 1px solid var(--line); padding: 4px 0 4px 24px; }
     .hero-side-label { color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
-    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 12px; margin-top: 14px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
     .metric strong { display: block; font-size: 25px; line-height: 1.2; letter-spacing: -.035em; font-weight: 650; }
     .metric span { color: var(--muted); font-size: 12px; }
     .demo-links { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
@@ -114,7 +114,7 @@
       .hero { padding-top: 35px; }
       .hero-grid { grid-template-columns: 1fr; gap: 24px; }
       .hero-side { border-left: 0; border-top: 1px solid var(--line); padding: 15px 0 0; }
-      .metrics { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+      .metrics { grid-template-columns: repeat(3, 1fr); gap: 10px; }
       .metric strong { font-size: 20px; }
       .jump-inner { gap: 17px; min-height: 50px; }
       .jump-nav a { font-size: 11px; }
@@ -160,19 +160,17 @@
       <div>
         <div class="eyebrow">探索性用户测试 · 研究方案</div>
         <h1>Ascend Studio PC 用户测试<br>三大场景 × 设计点</h1>
-        <p class="hero-copy">围绕 PC Demo 的 <strong>学习、开发、移动续学</strong> 三段旅程组织测试；任务旅程保留场景分组，UI 满意度按实际体验的界面单元评分，Kano 仍按 16 个设计点分析。</p>
+        <p class="hero-copy">用约 50 分钟体验 <strong>学习、开发中学习、移动端继续</strong> 三条主线，记录哪里顺畅、哪里卡住。</p>
         <div class="demo-links" aria-label="测试原型">
           <a class="demo-link" href="https://schihhsin.github.io/AscendCANN/ascstudio-pc/" target="_blank" rel="noopener noreferrer">打开 Ascend Studio PC</a>
-          <a class="demo-link" href="./questionnaire.html" target="_blank" rel="noopener noreferrer">打开体验评分问卷</a>
         </div>
       </div>
       <aside class="hero-side" aria-label="测试安排摘要">
         <div class="hero-side-label">建议安排</div>
         <div class="metrics">
-          <div class="metric"><strong>8</strong><span>参与者建议数</span></div>
-          <div class="metric"><strong>120–130</strong><span>分钟 / 人</span></div>
-          <div class="metric"><strong>3</strong><span>用户旅程场景</span></div>
-          <div class="metric"><strong>7 / 16</strong><span>评分界面 / Kano 设计点</span></div>
+          <div class="metric"><strong>50</strong><span>分钟 / 人</span></div>
+          <div class="metric"><strong>3</strong><span>体验主线</span></div>
+          <div class="metric"><strong>17</strong><span>观察点</span></div>
         </div>
       </aside>
     </div>
@@ -184,7 +182,6 @@
       <a href="#mindmap">思维导图</a>
       <a href="#taskbook">主持提纲与任务书</a>
       <span class="spacer"></span>
-      <a class="action-button" href="./questionnaire.html" target="_blank" rel="noopener noreferrer">体验评分问卷</a>
       <a class="action-button" href="./taskbook.md" download>下载 Markdown</a>
       <button class="action-button" type="button" onclick="window.print()">打印任务书</button>
     </div>
@@ -225,7 +222,7 @@
     </section>
   </main>
 
-  <footer><div class="wrap"><span>AscendCANN · 用户研究工作材料 · 2026-11-04</span><span>本轮为小样本探索，不作总体比例推断。</span></div></footer>
+  <footer><div class="wrap"><span>AscendCANN · 用户研究工作材料 · 2026-11-12</span><span>本轮为探索性测试，用于发现体验问题。</span></div></footer>
 
   <script type="module">
     const mapTarget = document.getElementById("map-render");
@@ -275,8 +272,10 @@
           text: "01 学习贴合当前需要与现有基础", color: "#4d6f8c", children: [
             { text: "设计点", children: [
               { text: "基于当前进度推荐下一步" },
+              { text: "围绕关注主题，探索相关问题与路径" },
               { text: "和 AI 一起调整学习路径" },
               { text: "共创路径连接理解与实践" },
+              { text: "拖动输入框，调整对话位置" },
               { text: "框选内容，直接指着说" }
             ] },
           ]
@@ -296,9 +295,8 @@
           text: "03 让学习随时继续", color: "#8b62a3", children: [
             { text: "设计点", children: [
               { text: "从电脑端的一条回答，接上手机里的下一步" },
-              { text: "电脑端选现在看，微信列表收到同一条知识" },
+              { text: "电脑端选「现在看」，微信列表收到同一条知识" },
               { text: "手机短读卡，把一个知识点拆成几分钟" },
-              { text: "看懂后回到电脑，理解状态也跟着回来" },
               { text: "把关注或存疑的内容，放进每周回访" },
               { text: "每周一条重点资讯，再补两张个性化卡片" },
               { text: "没有当前任务，也能主动发现下一点新知" }
@@ -364,7 +362,7 @@
       window.addEventListener("resize", () => mindMap.view.fit());
       window.setTimeout(() => mindMap.view.fit(), 250);
     } catch (error) {
-      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>学习贴合当前需要与现有基础：4 个设计点</li><li>在开发过程中掌握知识：5 个设计点</li><li>让学习随时继续：7 个设计点</li></ul><p>UI 满意度按 7 个界面单元评价；Kano 对 16 个设计点分别进行成对分析。<a href="./questionnaire.html">打开评分问卷</a>；完整安排见<a href="./taskbook.md">Markdown 任务书</a>。</p></div>';
+      mapTarget.innerHTML = '<div class="map-fallback"><p><strong>思维导图暂时未能载入。</strong>下方主持提纲与任务书仍可直接使用。</p><ul><li>学习贴合当前需要与现有基础：6 个观察点</li><li>在开发过程中掌握知识：5 个观察点</li><li>让学习随时继续：6 个观察点</li></ul><p>三条主线共 17 个观察点。完整任务见<a href="./taskbook.md">简版 Markdown 任务书</a>。</p></div>';
     }
   </script>
 </body>

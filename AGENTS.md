@@ -9144,3 +9144,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 内容依据为当前首页已呈现的角色入口、课程链接与 README 派生资料区，没有新增课程或能力承诺；改动仅限静态页面展示与客户端切换，不影响 API / Host / Application 机制边界或学习资料序列。
 - 检查：`node --check cann-learning-home/role-switcher.js`、`git diff --check` 通过；HTML 解析确认 9 个角色按钮、旧链接已转换，CSS / JS 在本地 HTTP 服务可读取。桌面 CUA 预览连续超时，未获得截图核验。
 - Commit / push 状态：代码提交 `368099bc` 已推送至 `origin/main`；GitHub Pages workflow 对该提交完成并成功，页面与新 JS/CSS 资源均通过带缓存刷新参数的 HTTPS 检查。
+
+### 2026-11-12 · 简化 Ascend Studio PC 用户测试任务书
+
+- 按用户要求，将用户测试材料改成可在约 50 分钟内主持的简版任务书，覆盖学习、开发中学习、移动端继续三条主线。每条包括参与者任务、主持人观察要点、完成线索和 Demo 起点链接；保留简短主持规则、流程、记录表与结束问题，去掉旧版 UI 满意度和 Kano 的长篇量表流程。
+- 核对 `ascstudio-pc/app.js` 的当前目录：学习 6 点、开发 5 点、移动端继续 6 点，共 17 点。同步更新用户测试页的简介、统计、思维导图和加载失败备用内容；移除当前页上指向旧版问卷的入口。`questionnaire.html` 文件保留，尚未更新，不属于本次简版任务书流程。
+- 变更文件：`cann-dashboard/ascend-work-learning-home-user-test/taskbook.md`、`cann-dashboard/ascend-work-learning-home-user-test/index.html`、本文件。依据：用户要求三条主线都纳入并简化（H）；设计点数量和起点由 PC Demo 当前目录核对（H）。未改变产品页面序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；未运行自动化测试。提交、推送和 Pages 发布结果待本轮提交后补记。
