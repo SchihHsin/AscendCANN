@@ -9195,3 +9195,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图片复用 `cann-dashboard/ascend-studio-design-report-evidence/` 中已有的问卷 / 原型截图；本轮只改报告内容与布局，不改统计口径、结论或 10 页序列。截图与题项的对应以用户认可的安排及现有原型素材为依据（H）；截图表达的是方案界面，不作为用户行为或问卷结果的独立证据。API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。桌面 1280×720 预览逐页核对第 4–7 页，图片与正文对应且分析区未被遮挡；第 8 页图片布局已在本地预览确认。11 个本地图片引用均存在，2 段内嵌脚本 `node --check` 通过，`git diff --check` 通过。线上报告及新增页面使用的 9 个图片地址均返回 HTTP 200。
 - 提交 / 推送：报告提交 `cc797dee` 已推送到 `origin/main`；GitHub Pages workflow `43202223383` build / deploy 成功。报告链接：`https://schihhsin.github.io/AscendCANN/cann-dashboard/昇腾Agent学习方案问卷分析.html`。
+
+
+### 2026-11-13 · Kano 矩阵页改为悬浮预览题项截图
+
+- 用户提出：Kano 矩阵页右侧继续显示题项列表，悬浮到某行时出现对应问卷图片。本次将“第二页”按封面后的第二张分析页理解，即当前实际 hash `#3` 的 Kano 矩阵页；右侧改为 17 项功能列表与图片预览区。悬浮或键盘聚焦列表项时更新截图，点击列表项可选中，点击矩阵编号也会同步高亮并滚动到对应列表项。
+- 列表复用报告原有 17 项题项、类别及 Better / |Worse| 计算值；截图来自 `cann-dashboard/ascend-studio-design-report-evidence/`。用户指定的交互为依据（H），不改问卷回答、统计口径、结论与报告页序，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。本地 2 段内嵌脚本 `node --check` 通过，17 项数据存在，`git diff --check` 通过；线上 HTML 返回 HTTP 200，悬浮列表与预览节点已发布，图片资源返回 HTTP 200。未完成桌面视觉 / 实际 hover 回放：本轮 CUA 检查时 Mac 处于锁定状态，未尝试绕过；线上静态发布与代码检查已核验。
+- 提交 / 推送：功能提交 `6f503baf` 已推送到 `origin/main`；GitHub Pages workflow `43251936892` build / deploy 成功。报告链接：`https://schihhsin.github.io/AscendCANN/cann-dashboard/昇腾Agent学习方案问卷分析.html#3`。
