@@ -9174,3 +9174,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认将第二页“首页入口偏好”卡替换为覆盖全部 17 项功能的 Kano 系数均值：Better 0.64 与 |Worse| 0.24；配一行解释说明提供功能带来的满意提升更明显，缺少时的不满影响较弱。首页选择偏好仍保留在后续首页分析页。
 - 依据：Kano 正反向题源数据在 `395703119_按文本_昇腾agent学习方案用户测评_6_6.xlsx` 的 Sheet1 H:AP；Better 与 |Worse| 均值复用报告矩阵页已计算的 17 项题项均值，不新增统计口径。UI 整体评分 9.2/10 仍保留在第二张卡。本次只调整总结页的信息层级，不改页序、统计结论或 API / Protocol、Host / Harness、Application / Task 边界。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。桌面预览确认三张卡现在呈现 Kano 类型分布、UI 总体均分、Kano 总体系数；内嵌 JS `node --check` 与 `git diff --check` 通过。页面提交 `aa71459a` 已推送至 `origin/main`；GitHub Pages workflow `43191283859` build / deploy 成功，报告链接 HTTP 200，线上读回确认新卡内容已发布。
+
+### 2026-11-12 · Kano 矩阵逐项关联问卷示例
+
+- 报告第 3 页现将 17 项功能分别编号并可点选；选中后，右侧同步展示对应的题项名称、问卷示例界面、Kano 回答分布、主分类、Better / |Worse| 和有效配对数。重合系数点用细线与轻微错位展示，移除原先的「×N」合并组；保留四象限说明、均值分界、总体分布和原有页序。
+- 证据与来源：用户要求第 3 页右侧显示问卷示例图（H）；功能名称与 17 项分类、频数、系数从 `/Users/hsin/Downloads/395703119_按文本_昇腾agent学习方案用户测评_6_6.xlsx` 复核，图片复用报告既有 `ascend-studio-design-report-evidence/` 示例素材。题项归类与系数沿用报告既有口径：Q / R 不计入 Better / |Worse|，并列按 M＞O＞A＞I。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。页面序列、API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- 验证：逐项将 17 个题项的回答频数与 Better / |Worse| 和原始工作簿复算结果比对；17 个编号与全部截图路径存在；内联 JavaScript `node --check`、`git diff --check` 通过。1280×720 桌面预览中确认默认推荐卡截图完整显示，并点选第 14 项，右侧正确更新为手机短读卡的示例图及对应数据。发布结果待推送后补记。
