@@ -9168,3 +9168,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 在问卷分析第 3 页的 2×2 Better–Worse Kano 矩阵中，明确标出左上魅力型 A、右上线性型 O、左下无差异型 I、右下必备型 M，并为每类增加一句易读解释；类型标题与说明字号略微放大，便于演示时辨认。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。依据是用户明确要求矩阵说明四象限对应类型；分类按本报告既有 Better–Worse 轴向和均值分区展示，不改动样本、统计或结论。只影响报告页内容，不改变产品 Demo 序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：桌面预览确认四个标签与说明均位于对应象限；内嵌 JS `node --check`、`git diff --check` 通过。页面修订提交 `baa1f30c` 已推送到 `origin/main`；GitHub Pages workflow `43189399358` build / deploy 成功，报告链接返回 HTTP 200，线上读回确认四类标签、解释文字与放大后的字号均已发布。
+
+### 2026-11-12 · 第二页统一呈现整体问卷结果
+
+- 用户确认将第二页“首页入口偏好”卡替换为覆盖全部 17 项功能的 Kano 系数均值：Better 0.64 与 |Worse| 0.24；配一行解释说明提供功能带来的满意提升更明显，缺少时的不满影响较弱。首页选择偏好仍保留在后续首页分析页。
+- 依据：Kano 正反向题源数据在 `395703119_按文本_昇腾agent学习方案用户测评_6_6.xlsx` 的 Sheet1 H:AP；Better 与 |Worse| 均值复用报告矩阵页已计算的 17 项题项均值，不新增统计口径。UI 整体评分 9.2/10 仍保留在第二张卡。本次只调整总结页的信息层级，不改页序、统计结论或 API / Protocol、Host / Harness、Application / Task 边界。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。桌面预览确认三张卡现在呈现 Kano 类型分布、UI 总体均分、Kano 总体系数；内嵌 JS 和 `git diff --check` 待本轮检查，提交与 Pages 发布待本轮确认。
