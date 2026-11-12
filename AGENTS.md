@@ -9162,3 +9162,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复封面图片被未定义 CSS 变量覆盖的问题，并补全 `#页码` 深链接恢复、hashchange 跳页和翻页 URL 同步；解决直接打开特定页仍停在上一页的行为。页面序列仅属于这份研究材料；没有改变产品 Demo 序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：内嵌 JS `node --check` 通过；Chrome 桌面视口逐页核对 10 页，确认封面背景、矩阵与方法表完整；直接刷新 `#6` 后仍落在目标页，方向键翻页后 URL 同步为 `#7`。完成后 `git diff --check`，仅暂存材料和本交接文件。
 - 提交 / 推送：问卷材料提交 `cbd03540` 已推送至 `origin/main`；GitHub Pages workflow `43187635908` build / deploy 成功，报告 URL 返回 HTTP 200。最终发布状态随本条交接更新提交并推送。
+
+### 2026-11-12 · 补全 Kano 矩阵四象限类型说明
+
+- 在问卷分析第 3 页的 2×2 Better–Worse Kano 矩阵中，明确标出左上魅力型 A、右上线性型 O、左下无差异型 I、右下必备型 M，并为每类增加一句易读解释；类型标题与说明字号略微放大，便于演示时辨认。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。依据是用户明确要求矩阵说明四象限对应类型；分类按本报告既有 Better–Worse 轴向和均值分区展示，不改动样本、统计或结论。只影响报告页内容，不改变产品 Demo 序列，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：桌面预览确认四个标签与说明均位于对应象限；内嵌 JS `node --check`、`git diff --check` 通过。页面修订与本条记录随本轮推送；GitHub Pages 发布状态待本轮确认。
