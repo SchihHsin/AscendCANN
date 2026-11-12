@@ -9136,3 +9136,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户本轮明确要求只增加算子相关字段，不减少其余方向（H）；字段间关联、标签和示例路径是原型策划内容（M），不表示真实的兴趣算法或训练诊断。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 变更：`ascend-studio/src/home-composition.js`、`CombinationTaskHome.jsx`、`composition-learning-path.js`，以及 `ascstudio/`、`ascstudio-pc/studio/` 的发布产物。桌面预览已核对首屏 11 个字段及视觉主次。
 - 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；桌面 Chrome 预览核对了 11 个首屏字段；未运行自动化测试。实现提交 `b628cceb` 已推送到 `origin/main`；Pages workflow `43063135018` build / deploy 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-DPQf2-dP.js` 与 `index-BTy5aOtO.css`，两资源均 HTTP 200。
+
+### 2026-11-12（学习首页角色内容切换）
+
+- 用户确认直接复用首页现有九个角色入口（新手开发者、大模型开发者、算子开发工程师、应用开发工程师、AI 应用开发者、推荐算法工程师、高校老师、竞赛选手、社区开发者），点击后切换页面下方内容；不再增加“个人学习”等二级角色入口。
+- 更新 `cann-learning-home/index.html`、新增 `role-switcher.js` 与 `role-switcher.css`：九个入口改为可访问的状态按钮；按现有角色对应的基础课、五条主线、教学支持、AI 应用、赛事和社区资源过滤页面内容；CANN 全栈能力地图作为各角色共用区；课程详情、资料目录和已有锚点仍可进入。
+- 内容依据为当前首页已呈现的角色入口、课程链接与 README 派生资料区，没有新增课程或能力承诺；改动仅限静态页面展示与客户端切换，不影响 API / Host / Application 机制边界或学习资料序列。
+- 检查：`node --check cann-learning-home/role-switcher.js`、`git diff --check` 通过；HTML 解析确认 9 个角色按钮、旧链接已转换，CSS / JS 在本地 HTTP 服务可读取。桌面 CUA 预览连续超时，未获得截图核验。
+- Commit / push 状态：待完成。
