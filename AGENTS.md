@@ -9143,4 +9143,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `cann-learning-home/index.html`、新增 `role-switcher.js` 与 `role-switcher.css`：九个入口改为可访问的状态按钮；按现有角色对应的基础课、五条主线、教学支持、AI 应用、赛事和社区资源过滤页面内容；CANN 全栈能力地图作为各角色共用区；课程详情、资料目录和已有锚点仍可进入。
 - 内容依据为当前首页已呈现的角色入口、课程链接与 README 派生资料区，没有新增课程或能力承诺；改动仅限静态页面展示与客户端切换，不影响 API / Host / Application 机制边界或学习资料序列。
 - 检查：`node --check cann-learning-home/role-switcher.js`、`git diff --check` 通过；HTML 解析确认 9 个角色按钮、旧链接已转换，CSS / JS 在本地 HTTP 服务可读取。桌面 CUA 预览连续超时，未获得截图核验。
-- Commit / push 状态：待完成。
+- Commit / push 状态：代码提交 `368099bc` 已推送至 `origin/main`；GitHub Pages workflow 对该提交完成并成功，页面与新 JS/CSS 资源均通过带缓存刷新参数的 HTTPS 检查。
