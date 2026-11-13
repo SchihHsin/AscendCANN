@@ -9242,3 +9242,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求扩宽象限颜色渐变，并移除虚线分界。本次将 SVG 模糊范围由 8 增至 16，删除两条 Better / |Worse| 均值虚线及其贴线数值；保留原四种底色、象限标签、均值计算、点位和点色。报告脚注改为说明渐变中心依据本轮题项均值。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。确认报告中均值虚线和阈值标签元素为 0，渐变值为 16；git diff --check 通过。无脚本变更，不影响报告序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 发布：报告提交 f7be1b25 已推送至 origin/main；Pages workflow 43354673914 build / deploy 成功。线上报告 HTTP 200，读回确认渐变范围为 16，均值虚线与贴线数值已移除。
+
+
+### 2026-11-13 · 移除 Kano 行内预览操作提示
+
+- 用户要求移除第 3 页右侧列表下方的“悬浮或聚焦题项行可展开问卷示例；点击矩阵编号同步定位。”提示。本次删除该提示及其专属样式；行内图片展开交互和矩阵编号定位保持不变。
+- 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。git diff --check 通过，搜索确认提示文本与专属样式已删除。不影响页面序列、数据或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 发布：报告和交接记录一并提交并推送 origin/main；Pages workflow 待确认。
