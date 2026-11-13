@@ -344,8 +344,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .kano-feature-type{justify-self:end;min-width:20px;padding:.1vh .2vw;border-radius:999px;background:color-mix(in srgb,var(--kc) 13%,white);color:var(--kc);font:700 var(--fs-xs) 'Inter',sans-serif;text-align:center}
 .kano-preview{position:relative;min-width:0;margin:0 .35vw .45vh;padding:.35vh .35vw .2vh;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;border:1px solid rgba(48,57,70,.1);border-radius:7px;background:rgba(255,255,255,.76)}
 .kano-preview[hidden]{display:none}
-.kano-preview img{display:block;width:100%;height:min(28vh,250px);min-height:140px;object-fit:contain}
-.kano-preview.is-portrait img{width:auto;max-width:100%;height:min(32vh,270px);min-height:160px;justify-self:center;object-fit:contain}
+.kano-preview img{display:block;width:100%;height:auto;max-height:min(46vh,520px);object-fit:contain}
+.kano-preview.is-portrait img{width:auto;max-width:100%;height:min(46vh,520px);justify-self:center;object-fit:contain}
 .kano-preview figcaption{display:flex;align-items:center;justify-content:space-between;gap:.5em;padding:.38vh .35vw;font-size:var(--fs-xs);line-height:1.3;color:#686f7a}
 .kano-preview figcaption b{max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#424954;text-align:right}
 .k-point{cursor:pointer;outline:none;touch-action:manipulation}
