@@ -9234,4 +9234,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求右侧列表与图片同列对齐；悬浮某条题项时该行增高并显示图片。本次移除并排图片预览列，为每个题项行加入隐藏图片区；悬浮、键盘聚焦或点击该行时在行内展开，切换其他行后只保留当前展开项。点击矩阵编号仍会同步展开对应题项并滚动到可见位置。
 - 图片按横竖屏方向自适应；仅首次展开时加载对应图片。题项、分数、Kano 类别、矩阵点位与渐变背景不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。两段内嵌脚本 node --check、git diff --check 通过；复核图表点击、列表 hover/focus/click 均调用同一行内展开逻辑。未改报告页序与 API / Protocol、Host / Harness、Application / Task 边界。
-- 提交 / 发布：报告和交接记录一并推送至 origin/main；Pages workflow 待确认。
+- 提交 / 发布：报告提交 e4da5dde 已推送至 origin/main；Pages workflow 43354063921 build / deploy 成功。线上报告 HTTP 200，回读确认行内预览结构已发布。
