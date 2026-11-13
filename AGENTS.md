@@ -9291,3 +9291,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求四类名称置于完整矩阵外框的四角，并指出初始列表底部有空白、要求题项之间加分割线。空白来自右侧列表容器与图表等高、紧凑题项只占据上方部分。本次将 A / O / I / M 名称及对应说明分别移至矩阵左上、右上、左下、右下角；折叠题项行均匀填满列表高度并以细线分隔，移除行间 gap。悬停展开图与离开收起行为保持不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过；静态确认四组标签坐标及左右对齐、列表行使用 `flex:1 0 auto` 且相邻项有边线。
 - 提交 / 发布：报告提交 `7eaa35fd` 已推送至 origin/main；GitHub Pages build `1365466088` 构建成功，commit 为 `7eaa35fd4418162c690ee749bb3067c6ae9408e7`。线上报告 HTTP 200，Last-Modified 为 `2026-11-13 06:53:33 GMT`；分段读回确认四角标签、列表填满高度及相邻题项分割线已发布。
+
+
+### 2026-11-13 · 删除 Kano 矩阵下方总结卡片
+
+- 用户要求删除截图中选中的“本轮未出现主导的必备型功能……”总结卡片。本次移除卡片标记和专属样式；矩阵、列表及数据脚注保留。
+- 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过，搜索确认卡片文案及 `.matrix-conclusion` 样式已清除；无数据和页面顺序变化。
+- 提交 / 发布：待提交推送并确认 Pages 发布。
