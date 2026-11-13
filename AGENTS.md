@@ -9235,3 +9235,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图片按横竖屏方向自适应；仅首次展开时加载对应图片。题项、分数、Kano 类别、矩阵点位与渐变背景不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。两段内嵌脚本 node --check、git diff --check 通过；复核图表点击、列表 hover/focus/click 均调用同一行内展开逻辑。未改报告页序与 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 发布：报告提交 e4da5dde 已推送至 origin/main；Pages workflow 43354063921 build / deploy 成功。线上报告 HTTP 200，回读确认行内预览结构已发布。
+
+
+### 2026-11-13 · 扩大 Kano 渐变并去除均值虚线
+
+- 用户要求扩宽象限颜色渐变，并移除虚线分界。本次将 SVG 模糊范围由 8 增至 16，删除两条 Better / |Worse| 均值虚线及其贴线数值；保留原四种底色、象限标签、均值计算、点位和点色。报告脚注改为说明渐变中心依据本轮题项均值。
+- 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。确认报告中均值虚线和阈值标签元素为 0，渐变值为 16；git diff --check 通过。无脚本变更，不影响报告序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 发布：报告和交接记录一并提交并推送 origin/main；Pages workflow 待确认。
