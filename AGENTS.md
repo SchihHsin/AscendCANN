@@ -9249,3 +9249,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求移除第 3 页右侧列表下方的“悬浮或聚焦题项行可展开问卷示例；点击矩阵编号同步定位。”提示。本次删除该提示及其专属样式；行内图片展开交互和矩阵编号定位保持不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。git diff --check 通过，搜索确认提示文本与专属样式已删除。不影响页面序列、数据或 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 发布：报告和交接记录先以 `ec47f5dd` 推送至 origin/main；GitHub Pages build `1364995508` 随后构建成功，commit 为 `ec47f5dd929eb0d5c11b0d87cc0aaf53b0435232`。线上报告返回 HTTP 206（分段读取），响应 `Last-Modified: 2026-11-13 02:55:53 GMT`；已检查完整 HTML 字节范围，确认提示文案及 `.matrix-note` / `.matrix-hint` 均不存在，题项列表与行内预览脚本仍在。
+
+
+### 2026-11-13 · 放大 Kano 题项预览并在离开时收起
+
+- 用户要求鼠标移开后恢复题项行高度、放大展开图片，并增加右侧列表整体高度。本次在题项行容器上监听 `pointerleave` 收起图片，键盘焦点离开时同步收起；矩阵点选仍能定位并展开对应题项。矩阵区高度由 61vh 增至 69vh；横图预览由 22vh / 190px 提至 28vh / 250px，竖图由 26vh / 210px 提至 32vh / 270px，并提高最小图片高度。
+- 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。提取两段内嵌脚本执行 `node --check`，`git diff --check` 通过；本地浏览器成功打开第 3 页并确认 17 个题项列表仍正常加载。未改报告页序、题项数据或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 发布：待提交推送并确认 Pages 发布。
