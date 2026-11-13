@@ -9218,4 +9218,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户补充希望相同分数的点至少有一点偏移。本次对完全重合的点做紧凑的小幅错位，让编号可辨，同时确保所有圆点仍完整留在原 Better/Worse 均值象限；不改问卷分数、主类别、图例或分析结论。此前线上截图仍是重合版本，因为偏移尚未发布。
 - 用户同时指出 Kano 类别颜色与均值象限底色不一致。核对后确认点颜色来自配对问卷的众数类别，象限位置来自 Better / |Worse| 均值分界，两种结果独立，确实可能不一致。尚未改颜色表达，等待用户选择保留真实类别色并用中性象限底色，或让点色随象限、类别保留在列表。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。以当前均值分界坐标核对所有错位圆点不会跨象限；`git diff --check` 通过。无脚本逻辑改动，未运行自动化测试；本轮未做浏览器截图回放。报告页序及 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 推送：待本次提交后推送 `origin/main` 并核对 Pages workflow。
+- 验证与发布：17 个点均仍完整位于原分数象限；`git diff --check` 通过。提交 `5fa01c1e` 已推送至 `origin/main`；Pages workflow `43350279675` build / deploy 成功。线上报告 HTTP 200，回读确认偏移坐标已发布。
