@@ -9283,4 +9283,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户反馈展开后图片仍偏小，希望图片宽度接近列表宽度、展开行更高。本次横图改为列表内 100% 宽、按原始比例自适应高度，最大高度提升为 `min(46vh, 520px)`；竖图高度同步提升。此前折叠行自适应、鼠标移出收起及矩阵点联动不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过；静态核对横图宽度为 100%、高度自适应并受 46vh / 520px 上限控制；未改变图片源、题项内容或报告序列。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：报告提交 `7dea927d` 已推送至 origin/main；GitHub Pages build `1365422665` 构建成功，commit 为 `7dea927d3c05166cfeea2f1c6ca6cce85a3b6107`。线上报告 HTTP 200，Last-Modified 为 `2026-11-13 06:31:52 GMT`；分段读回确认横图 `width:100%` 且高度自适应、横竖图上限均为 46vh / 520px。
