@@ -9219,3 +9219,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户同时指出 Kano 类别颜色与均值象限底色不一致。核对后确认点颜色来自配对问卷的众数类别，象限位置来自 Better / |Worse| 均值分界，两种结果独立，确实可能不一致。尚未改颜色表达，等待用户选择保留真实类别色并用中性象限底色，或让点色随象限、类别保留在列表。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。以当前均值分界坐标核对所有错位圆点不会跨象限；`git diff --check` 通过。无脚本逻辑改动，未运行自动化测试；本轮未做浏览器截图回放。报告页序及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证与发布：17 个点均仍完整位于原分数象限；`git diff --check` 通过。提交 `5fa01c1e` 已推送至 `origin/main`；Pages workflow `43350279675` build / deploy 成功。线上报告 HTTP 200，回读确认偏移坐标已发布。
+
+
+### 2026-11-13 · Kano 象限底色交界渐变
+
+- 用户确认保留现有四种象限底色，只把硬切交界改成渐变。本次在现有四个填色上应用裁切后的 SVG 高斯模糊过渡，保留原有调色、象限标签、Better / |Worse| 均值虚线和点位；均值虚线仍清晰标示精确分界。未改变问卷类别、系数或分析结论。
+- 依据：用户明确要求渐变色交界并保留现有颜色（H）；现有矩阵 SVG 坐标、均值线和颜色值（H）。页面仍展示 Kano 主类别颜色与 Better/Worse 坐标分区两种独立结果，没有重算或强行对齐分类。
+- 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。静态核对 17 个点位与上一发布版本完全相同、四个原有底色仍在、两条均值线位于渐变图层之上且保持锐利；git diff --check 通过。未运行自动化测试；本轮尚未做最终桌面截图回放。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 提交 / 发布：本次报告与交接记录一并提交并推送 origin/main；Pages workflow 待确认。
