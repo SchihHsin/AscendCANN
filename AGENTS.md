@@ -9211,3 +9211,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确的可视化要求（H）；现有题项 Better / |Worse| 数值与坐标轴范围（H）。只改变报告图的点位表达，不改页序或统计方法，不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。脚本逐一核对 17 个点的圆心与 Better / |Worse| 线性映射吻合，确认锚点和引导线已移除；两个内嵌脚本 `node --check`、`git diff --check` 通过。线上报告返回 HTTP 200，读回确认含 17 个编号点、无人工锚点 / 引导线。未完成桌面浏览器视觉回放。
 - 提交 / 推送：修复提交 `1f8091cf` 已推送到 `origin/main`；GitHub Pages workflow `43348742174` build / deploy 成功。报告链接：`https://schihhsin.github.io/AscendCANN/cann-dashboard/昇腾Agent学习方案问卷分析.html#3`。
+
+
+### 2026-11-13 · Kano 矩阵重合点轻微错开
+
+- 用户补充希望相同分数的点至少有一点偏移。本次对完全重合的点做紧凑的小幅错位，让编号可辨，同时确保所有圆点仍完整留在原 Better/Worse 均值象限；不改问卷分数、主类别、图例或分析结论。此前线上截图仍是重合版本，因为偏移尚未发布。
+- 用户同时指出 Kano 类别颜色与均值象限底色不一致。核对后确认点颜色来自配对问卷的众数类别，象限位置来自 Better / |Worse| 均值分界，两种结果独立，确实可能不一致。尚未改颜色表达，等待用户选择保留真实类别色并用中性象限底色，或让点色随象限、类别保留在列表。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、本文件。以当前均值分界坐标核对所有错位圆点不会跨象限；`git diff --check` 通过。无脚本逻辑改动，未运行自动化测试；本轮未做浏览器截图回放。报告页序及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 推送：待本次提交后推送 `origin/main` 并核对 Pages workflow。
