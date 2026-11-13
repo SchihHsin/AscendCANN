@@ -9276,4 +9276,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户澄清需要一屏显示完整的是右侧 17 项列表。未展开题项行原先至少 28px，叠加间距和内边距后，在常见 768px 高视口会略超出 64vh 列表的可用高度。本次将折叠行高度改为随视口在 20–25px 间自适应，并减少垂直内边距；悬停展开图片的行高不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过；静态核对折叠行高度使用 `clamp(20px,3.2vh,25px)`，展开预览尺寸与交互未改。报告内容、数据和页面顺序不变。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：报告提交 `0f5d178e` 已推送至 origin/main；GitHub Pages build `1365408559` 构建成功，commit 为 `0f5d178ecf2614534b3860a2fa5ed7009097933b`。线上报告分段读取返回 HTTP 206，Last-Modified 为 `2026-11-13 06:25:07 GMT`；确认折叠行高度规则、横竖图展开尺寸均已发布。
