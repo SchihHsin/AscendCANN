@@ -9248,4 +9248,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求移除第 3 页右侧列表下方的“悬浮或聚焦题项行可展开问卷示例；点击矩阵编号同步定位。”提示。本次删除该提示及其专属样式；行内图片展开交互和矩阵编号定位保持不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。git diff --check 通过，搜索确认提示文本与专属样式已删除。不影响页面序列、数据或 API / Protocol、Host / Harness、Application / Task 边界。
-- 提交 / 发布：报告和交接记录一并提交并推送 origin/main；Pages workflow 待确认。
+- 提交 / 发布：报告和交接记录先以 `ec47f5dd` 推送至 origin/main；GitHub Pages build `1364995508` 随后构建成功，commit 为 `ec47f5dd929eb0d5c11b0d87cc0aaf53b0435232`。线上报告返回 HTTP 206（分段读取），响应 `Last-Modified: 2026-11-13 02:55:53 GMT`；已检查完整 HTML 字节范围，确认提示文案及 `.matrix-note` / `.matrix-hint` 均不存在，题项列表与行内预览脚本仍在。
