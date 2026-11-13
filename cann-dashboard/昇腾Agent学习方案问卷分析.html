@@ -336,19 +336,19 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .matrix-side{display:flex;flex-direction:column;min-width:0;min-height:0;gap:.5vh}
 .matrix-stats{display:flex;justify-content:space-between;padding:.65vh .7vw;background:rgba(255,255,255,.55);border-radius:10px;font-size:var(--fs-xs);color:#626975}
 .matrix-stats b{font:700 var(--fs-h3) 'Inter',sans-serif;color:#22262f;margin-right:.2em}
-.kano-explorer{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:.5vw}
-.kano-feature-list{list-style:none;min-width:0;min-height:0;overflow:auto;margin:0;padding:.25vh .2vw;display:grid;grid-auto-rows:minmax(0,1fr);gap:.12vh;border:1px solid rgba(48,57,70,.08);border-radius:9px;background:rgba(255,255,255,.48)}
-.kano-feature-list li{min-width:0;min-height:0}
-.kano-feature-row{width:100%;height:100%;min-width:0;min-height:19px;padding:.18vh .28vw;border:0;border-radius:6px;display:grid;grid-template-columns:22px minmax(0,1fr) 22px;align-items:center;gap:.28vw;background:transparent;color:#454c57;text-align:left;cursor:pointer;transition:background .12s ease,color .12s ease}
-.kano-feature-row:hover,.kano-feature-row:focus-visible,.kano-feature-row.is-active{background:rgba(91,91,214,.1);color:#272b36;outline:none}
+.kano-explorer{flex:1;min-height:0;display:flex}
+.kano-feature-list{list-style:none;flex:1;min-width:0;min-height:0;overflow:auto;margin:0;padding:.25vh .2vw;display:flex;flex-direction:column;gap:.12vh;border:1px solid rgba(48,57,70,.08);border-radius:9px;background:rgba(255,255,255,.48)}
+.kano-feature-list li{min-width:0;min-height:0;flex:0 0 auto;overflow:hidden;border-radius:6px;background:transparent;transition:background .12s ease}
+.kano-feature-list li.is-expanded{background:rgba(91,91,214,.1)}
+.kano-feature-row{width:100%;height:auto;min-width:0;min-height:28px;padding:.4vh .28vw;border:0;border-radius:6px 6px 0 0;display:grid;grid-template-columns:22px minmax(0,1fr) 22px;align-items:center;gap:.28vw;background:transparent;color:#454c57;text-align:left;cursor:pointer;transition:color .12s ease}
+.kano-feature-row:hover,.kano-feature-row:focus-visible,.kano-feature-row.is-active{color:#272b36;outline:none}
 .kano-feature-no{font:700 var(--fs-xs) 'Inter',sans-serif;color:#7a8290}
 .kano-feature-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-xs);line-height:1.25}
 .kano-feature-type{justify-self:end;min-width:20px;padding:.1vh .2vw;border-radius:999px;background:color-mix(in srgb,var(--kc) 13%,white);color:var(--kc);font:700 var(--fs-xs) 'Inter',sans-serif;text-align:center}
-.kano-preview{position:relative;min-width:0;min-height:0;margin:0;padding:.35vh .35vw;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;border:1px solid rgba(48,57,70,.1);border-radius:9px;background:#f5f6f8}
-.kano-preview.is-empty{display:flex;align-items:center;justify-content:center}
-.kano-preview-empty{max-width:18ch;padding:.8vw;color:#8a919c;font-size:var(--fs-xs);line-height:1.5;text-align:center}
-.kano-preview img{display:block;width:100%;height:100%;min-height:0;object-fit:contain}
-.kano-preview.is-portrait img{width:auto;max-width:100%;height:100%;justify-self:center;object-fit:contain}
+.kano-preview{position:relative;min-width:0;margin:0 .35vw .45vh;padding:.35vh .35vw .2vh;overflow:hidden;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;border:1px solid rgba(48,57,70,.1);border-radius:7px;background:rgba(255,255,255,.76)}
+.kano-preview[hidden]{display:none}
+.kano-preview img{display:block;width:100%;height:min(22vh,190px);min-height:90px;object-fit:contain}
+.kano-preview.is-portrait img{width:auto;max-width:100%;height:min(26vh,210px);justify-self:center;object-fit:contain}
 .kano-preview figcaption{display:flex;align-items:center;justify-content:space-between;gap:.5em;padding:.38vh .35vw;font-size:var(--fs-xs);line-height:1.3;color:#686f7a}
 .kano-preview figcaption b{max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#424954;text-align:right}
 .k-point{cursor:pointer;outline:none;touch-action:manipulation}
@@ -518,13 +518,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='matrix-stats'><span><b>10</b>魅力</span><span><b>3</b>线性</span><span><b>0</b>必备</span><span><b>4</b>无差异</span></div>
 <div class='kano-explorer'>
 <ul class='kano-feature-list' id='kanoFeatureList' aria-label='17 项功能题项'></ul>
-<figure class='kano-preview is-empty' id='kanoPreview' aria-live='polite'>
-<div class='kano-preview-empty' id='kanoPreviewEmpty'>悬浮或聚焦列表中的一项功能，查看对应问卷示例</div>
-<img id='kanoEvidenceImage' alt='' hidden>
-<figcaption id='kanoPreviewCaption' hidden><span>问卷示例图</span><b id='kanoEvidenceCaption'></b></figcaption>
-</figure>
 </div>
-<div class='matrix-note'>悬浮或聚焦列表项查看示例；点击矩阵编号可同步定位。</div>
+<div class='matrix-note'>悬浮或聚焦题项行可展开问卷示例；点击矩阵编号同步定位。</div>
 </div></div></div>
 <div class='matrix-conclusion'><b>本轮未出现主导的必备型功能。</b>更明显的信号是“提供后能增加满意度”，并非每项功能都会因缺少而引发强烈不满。</div>
 </div>
@@ -885,36 +880,64 @@ const kanoFeatureList=document.getElementById('kanoFeatureList');
 const kanoFeatureRows=[];
 for(const item of kanoPageFeatures){
   const row=document.createElement('li');
+  row.dataset.feature=String(item.id);
   const button=document.createElement('button');
   button.type='button';
   button.className='kano-feature-row';
   button.dataset.feature=String(item.id);
   button.setAttribute('aria-pressed','false');
+  button.setAttribute('aria-expanded','false');
+  button.setAttribute('aria-controls','kanoPreview-'+item.id);
   button.setAttribute('aria-label',String(item.id).padStart(2,'0')+' · '+item.name+'；'+kanoCategoryNames[item.type]+'；Better '+item.better.toFixed(2)+'；|Worse| '+item.worse.toFixed(2));
   const number=document.createElement('span');number.className='kano-feature-no';number.textContent=String(item.id).padStart(2,'0');
   const name=document.createElement('span');name.className='kano-feature-name';name.textContent=item.name;
   name.title=item.name;
   const type=document.createElement('span');type.className='kano-feature-type k-'+item.type;type.textContent=item.type;
-  button.append(number,name,type);row.append(button);kanoFeatureList.append(row);kanoFeatureRows.push(button);
+  button.append(number,name,type);
+  const preview=document.createElement('figure');
+  preview.className='kano-preview';
+  preview.id='kanoPreview-'+item.id;
+  preview.hidden=true;
+  preview.setAttribute('aria-live','polite');
+  const image=document.createElement('img');
+  image.dataset.src=item.image;
+  image.alt='问卷中用于评价“'+item.name+'”的示例界面';
+  image.loading='lazy';
+  const caption=document.createElement('figcaption');
+  const captionLabel=document.createElement('span');captionLabel.textContent='问卷示例图';
+  const captionText=document.createElement('b');captionText.textContent=item.caption;
+  caption.append(captionLabel,captionText);
+  preview.append(image,caption);
+  row.append(button,preview);kanoFeatureList.append(row);kanoFeatureRows.push(button);
 }
 function showKanoFeature(id,{scrollToRow=false}={}){
   const item=kanoPageFeatures.find(x=>x.id===Number(id)); if(!item)return;
-  kanoSvgPoints.forEach(point=>{const active=Number(point.dataset.feature)===item.id;point.classList.toggle('is-selected',active);point.setAttribute('aria-pressed',String(active));});
-  kanoFeatureRows.forEach(row=>{
-    const active=Number(row.dataset.feature)===item.id;
-    row.classList.toggle('is-active',active);
-    row.setAttribute('aria-pressed',String(active));
-    if(active&&scrollToRow)row.scrollIntoView({block:'nearest'});
+  kanoSvgPoints.forEach(point=>{
+    const active=Number(point.dataset.feature)===item.id;
+    point.classList.toggle('is-selected',active);
+    point.setAttribute('aria-pressed',String(active));
   });
-  const preview=document.getElementById('kanoPreview');
-  preview.classList.remove('is-empty');
-  const image=document.getElementById('kanoEvidenceImage');
-  image.src=item.image;image.alt='问卷中用于评价“'+item.name+'”的示例界面';
-  document.getElementById('kanoEvidenceCaption').textContent=item.caption;
-  image.hidden=false;
-  document.getElementById('kanoPreviewEmpty').hidden=true;
-  document.getElementById('kanoPreviewCaption').hidden=false;
-  preview.classList.toggle('is-portrait',item.orientation==='portrait');
+  kanoFeatureRows.forEach(button=>{
+    const active=Number(button.dataset.feature)===item.id;
+    const row=button.closest('li');
+    button.classList.toggle('is-active',active);
+    button.setAttribute('aria-pressed',String(active));
+    button.setAttribute('aria-expanded',String(active));
+    row.classList.toggle('is-expanded',active);
+    const preview=row.querySelector('.kano-preview');
+    preview.hidden=!active;
+    if(active){
+      preview.classList.toggle('is-portrait',item.orientation==='portrait');
+      const image=preview.querySelector('img');
+      if(image.dataset.src){image.src=image.dataset.src;delete image.dataset.src;}
+      if(scrollToRow)row.scrollIntoView({block:'nearest'});
+      requestAnimationFrame(()=>{
+        const listRect=kanoFeatureList.getBoundingClientRect();
+        const previewRect=preview.getBoundingClientRect();
+        if(previewRect.bottom>listRect.bottom)kanoFeatureList.scrollTop+=previewRect.bottom-listRect.bottom+8;
+      });
+    }
+  });
 }
 kanoSvgPoints.forEach(point=>{
   point.addEventListener('click',event=>{event.stopPropagation();showKanoFeature(point.dataset.feature,{scrollToRow:true});});
@@ -922,10 +945,10 @@ kanoSvgPoints.forEach(point=>{
     if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();showKanoFeature(point.dataset.feature,{scrollToRow:true});}
   });
 });
-kanoFeatureRows.forEach(row=>{
-  row.addEventListener('pointerenter',()=>showKanoFeature(row.dataset.feature));
-  row.addEventListener('focus',()=>showKanoFeature(row.dataset.feature));
-  row.addEventListener('click',()=>showKanoFeature(row.dataset.feature));
+kanoFeatureRows.forEach(button=>{
+  button.addEventListener('pointerenter',()=>showKanoFeature(button.dataset.feature));
+  button.addEventListener('focus',()=>showKanoFeature(button.dataset.feature));
+  button.addEventListener('click',()=>showKanoFeature(button.dataset.feature));
 });
 </script>
 </body>

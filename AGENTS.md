@@ -9227,3 +9227,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确要求渐变色交界并保留现有颜色（H）；现有矩阵 SVG 坐标、均值线和颜色值（H）。页面仍展示 Kano 主类别颜色与 Better/Worse 坐标分区两种独立结果，没有重算或强行对齐分类。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。静态核对 17 个点位与上一发布版本完全相同、四个原有底色仍在、两条均值线位于渐变图层之上且保持锐利；git diff --check 通过。未运行自动化测试；本轮尚未做最终桌面截图回放。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 提交 / 发布：报告提交 23d546fe 已推送至 origin/main；Pages workflow 43353157688 build / deploy 成功。线上报告 HTTP 200，读回确认原四色、渐变滤镜与均值虚线均已发布。
+
+
+### 2026-11-13 · Kano 题项行内展开问卷图片
+
+- 用户要求右侧列表与图片同列对齐；悬浮某条题项时该行增高并显示图片。本次移除并排图片预览列，为每个题项行加入隐藏图片区；悬浮、键盘聚焦或点击该行时在行内展开，切换其他行后只保留当前展开项。点击矩阵编号仍会同步展开对应题项并滚动到可见位置。
+- 图片按横竖屏方向自适应；仅首次展开时加载对应图片。题项、分数、Kano 类别、矩阵点位与渐变背景不变。
+- 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。两段内嵌脚本 node --check、git diff --check 通过；复核图表点击、列表 hover/focus/click 均调用同一行内展开逻辑。未改报告页序与 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 发布：报告和交接记录一并推送至 origin/main；Pages workflow 待确认。
