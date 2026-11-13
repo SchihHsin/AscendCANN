@@ -9203,3 +9203,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 列表复用报告原有 17 项题项、类别及 Better / |Worse| 计算值；截图来自 `cann-dashboard/ascend-studio-design-report-evidence/`。用户指定的交互为依据（H），不改问卷回答、统计口径、结论与报告页序，也不涉及 API / Protocol、Host / Harness、Application / Task 边界。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。本地 2 段内嵌脚本 `node --check` 通过，17 项数据存在，`git diff --check` 通过；线上 HTML 返回 HTTP 200，悬浮列表与预览节点已发布，图片资源返回 HTTP 200。未完成桌面视觉 / 实际 hover 回放：本轮 CUA 检查时 Mac 处于锁定状态，未尝试绕过；线上静态发布与代码检查已核验。
 - 提交 / 推送：功能提交 `6f503baf` 已推送到 `origin/main`；GitHub Pages workflow `43251936892` build / deploy 成功。报告链接：`https://schihhsin.github.io/AscendCANN/cann-dashboard/昇腾Agent学习方案问卷分析.html#3`。
+
+
+### 2026-11-13 · Kano 图编号点保持真实分数坐标
+
+- 用户明确要求：重叠可以接受，不要把点挪离实际坐标。本次移除 Kano 矩阵编号点的人工偏移、灰色锚点和引导线；17 个编号圆的中心直接使用各自 Better / |Worse| 结果映射出的 SVG 坐标，完全重合的点按原位叠放。点的类型颜色、问卷类别和分数均未更改。
+- 依据：用户明确的可视化要求（H）；现有题项 Better / |Worse| 数值与坐标轴范围（H）。只改变报告图的点位表达，不改页序或统计方法，不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`。脚本逐一核对 17 个点的圆心与 Better / |Worse| 线性映射吻合，确认锚点和引导线已移除；两个内嵌脚本 `node --check`、`git diff --check` 通过。线上报告返回 HTTP 200，读回确认含 17 个编号点、无人工锚点 / 引导线。未完成桌面浏览器视觉回放。
+- 提交 / 推送：修复提交 `1f8091cf` 已推送到 `origin/main`；GitHub Pages workflow `43348742174` build / deploy 成功。报告链接：`https://schihhsin.github.io/AscendCANN/cann-dashboard/昇腾Agent学习方案问卷分析.html#3`。
