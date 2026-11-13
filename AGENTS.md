@@ -9297,4 +9297,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求删除截图中选中的“本轮未出现主导的必备型功能……”总结卡片。本次移除卡片标记和专属样式；矩阵、列表及数据脚注保留。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过，搜索确认卡片文案及 `.matrix-conclusion` 样式已清除；无数据和页面顺序变化。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：报告提交 `5a0fb10c` 已推送至 origin/main；GitHub Pages build `1365500406` 构建成功，commit 为 `5a0fb10c1a903531bf636eb8a3ed680007053bc8`。线上报告分段读取返回 HTTP 206，Last-Modified 为 `2026-11-13 07:09:51 GMT`；回读确认总结卡片文案及样式已移除、脚注保留。
