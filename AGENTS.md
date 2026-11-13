@@ -9262,4 +9262,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认把右侧独立统计条移到左侧矩阵图区域。本次将现有颜色图例扩展为“类别 + 点数”，显示魅力 A 10、线性 O 3、必备 M 0、无差异 I 4；移除右侧统计条，使题项列表自然增加可用高度。数量仍对应点的 Kano 分类，不表示背景象限数量；未改系数、分类或点位。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过；静态核对左侧图例有四类及原计数、右侧 `.matrix-stats` 已移除。不影响报告页序或 API / Protocol、Host / Harness、Application / Task 边界。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：报告提交 `200bade8` 已推送至 origin/main；GitHub Pages build `1365098617` 构建成功，commit 为 `200bade8f699eaa3b180a9f1f3cd38336685b84f`。线上报告 HTTP 200，Last-Modified 为 `2026-11-13 03:47:52 GMT`；读回确认四类数量已合入左侧图例、右侧 `.matrix-stats` 已移除且题项列表仍在。
