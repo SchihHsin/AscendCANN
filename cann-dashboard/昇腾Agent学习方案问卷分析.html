@@ -337,7 +337,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .kano-feature-list{list-style:none;flex:1;min-width:0;min-height:0;overflow:auto;margin:0;padding:.25vh .2vw;display:flex;flex-direction:column;gap:.12vh;border:1px solid rgba(48,57,70,.08);border-radius:9px;background:rgba(255,255,255,.48)}
 .kano-feature-list li{min-width:0;min-height:0;flex:0 0 auto;overflow:hidden;border-radius:6px;background:transparent;transition:background .12s ease}
 .kano-feature-list li.is-expanded{background:rgba(91,91,214,.1)}
-.kano-feature-row{width:100%;height:auto;min-width:0;min-height:28px;padding:.4vh .28vw;border:0;border-radius:6px 6px 0 0;display:grid;grid-template-columns:22px minmax(0,1fr) 22px;align-items:center;gap:.28vw;background:transparent;color:#454c57;text-align:left;cursor:pointer;transition:color .12s ease}
+.kano-feature-row{width:100%;height:auto;min-width:0;min-height:clamp(20px,3.2vh,25px);padding:.2vh .28vw;border:0;border-radius:6px 6px 0 0;display:grid;grid-template-columns:22px minmax(0,1fr) 22px;align-items:center;gap:.28vw;background:transparent;color:#454c57;text-align:left;cursor:pointer;transition:color .12s ease}
 .kano-feature-row:hover,.kano-feature-row:focus-visible,.kano-feature-row.is-active{color:#272b36;outline:none}
 .kano-feature-no{font:700 var(--fs-xs) 'Inter',sans-serif;color:#7a8290}
 .kano-feature-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-xs);line-height:1.25}
