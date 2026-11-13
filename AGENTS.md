@@ -9226,4 +9226,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认保留现有四种象限底色，只把硬切交界改成渐变。本次在现有四个填色上应用裁切后的 SVG 高斯模糊过渡，保留原有调色、象限标签、Better / |Worse| 均值虚线和点位；均值虚线仍清晰标示精确分界。未改变问卷类别、系数或分析结论。
 - 依据：用户明确要求渐变色交界并保留现有颜色（H）；现有矩阵 SVG 坐标、均值线和颜色值（H）。页面仍展示 Kano 主类别颜色与 Better/Worse 坐标分区两种独立结果，没有重算或强行对齐分类。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。静态核对 17 个点位与上一发布版本完全相同、四个原有底色仍在、两条均值线位于渐变图层之上且保持锐利；git diff --check 通过。未运行自动化测试；本轮尚未做最终桌面截图回放。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 提交 / 发布：本次报告与交接记录一并提交并推送 origin/main；Pages workflow 待确认。
+- 提交 / 发布：报告提交 23d546fe 已推送至 origin/main；Pages workflow 43353157688 build / deploy 成功。线上报告 HTTP 200，读回确认原四色、渐变滤镜与均值虚线均已发布。
