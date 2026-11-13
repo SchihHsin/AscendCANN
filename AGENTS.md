@@ -9255,4 +9255,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求鼠标移开后恢复题项行高度、放大展开图片，并增加右侧列表整体高度。本次在题项行容器上监听 `pointerleave` 收起图片，键盘焦点离开时同步收起；矩阵点选仍能定位并展开对应题项。矩阵区高度由 61vh 增至 69vh；横图预览由 22vh / 190px 提至 28vh / 250px，竖图由 26vh / 210px 提至 32vh / 270px，并提高最小图片高度。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。提取两段内嵌脚本执行 `node --check`，`git diff --check` 通过；本地浏览器成功打开第 3 页并确认 17 个题项列表仍正常加载。未改报告页序、题项数据或 API / Protocol、Host / Harness、Application / Task 边界。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：报告提交 `26b8e1e1` 已推送至 origin/main；GitHub Pages build `1365025884` 构建成功，commit 为 `26b8e1e1b44c5e2ff5a7c36ab972304901b88373`。线上 HTML 分段回读返回 HTTP 206，Last-Modified 为 `2026-11-13 03:10:33 GMT`；确认矩阵区高度、横竖图高度及 `pointerleave` / `blur` 收起逻辑已发布。
