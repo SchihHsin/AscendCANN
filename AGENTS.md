@@ -9380,4 +9380,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 外部开发线索仍是原型策划案例；“识别”是该卡片要展示的产品判断，不代表真实项目活动检测已接入。学习进度和第一张开发错误记录卡不变。
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 页面产物、`AGENTS.md`。根据用户明确的“识别到平台外的开发任务”表述；不影响页面序列或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；CUA 桌面回放确认收起态能直接看到识别提示、来源和问题内容。Vite 输出既有主包超过 500 KB 提示。
-- 提交 / 推送：待本轮完成后补记 commit 与 Pages 发布结果。
+- 提交 / 推送：实现提交 `f350cbf8870a3640b01055f0c6e7704e39447bdb` 已推送到 `origin/main`；GitHub Pages workflow `43808581701` 构建与部署成功。线上 `/AscendCANN/ascstudio/` 返回 HTTP 200，已更新至资源 `index-BDO2EMhw.js` 与 `index-BUrP3_ID.css`。
