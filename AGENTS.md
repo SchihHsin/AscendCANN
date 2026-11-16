@@ -9304,4 +9304,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户选择按内容区分颜色，并确认卡片背景可使用对应渐变。本次给 Kano 分类卡使用淡紫、UI 评分卡使用浅蓝、Better / |Worse| 系数卡使用紫蓝过渡；核心数字、卡片眉题与结论标题采用对应强调色，正文继续使用深灰。底部深色问卷提示条不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过；静态核对三张卡语义类、背景渐变及关键文本色值已对应，无数据或页面序列变化。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：报告提交 `acdca3d2` 已推送至 origin/main；GitHub Pages build `1373489839` 构建成功，commit 为 `acdca3d2f57aaa70aea14310f499794271eb2a2b`。线上报告 HTTP 200，Last-Modified 为 `2026-11-16 02:28:57 GMT`；分段回读确认三张卡的淡渐变、关键文本色及语义类已发布。
