@@ -9420,3 +9420,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 选中文件后保留“模型输入约定”主题和可编辑目标，在输入框中显示规则来源与提取出的环境、模型输入及验证要点；用户再明确点击“按规则生成学习路径”。文件从摘要卡移除时同步取消规则模式，示例文件不在上方重复显示附件胶囊。
 - 项目规则学习计划以当前主题作为路径标题，文件约束用于决定学习节点；本地规则提取仍是前端示例，不声称真实 AI 语义理解。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`project-rules-learning.js`、`ascstudio/index.html`、`ascstudio-pc/studio/index.html` 和对应新哈希资源。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check`、规则计划主题/节点小检查均通过；本地桌面回放打开选择器并选择 `AGENTS.md`，确认主题、规则摘要、可编辑目标和显式生成按钮均可见。发布回执后补记。
+
+### 2026-11-16 · PC 第二章封面加入开发者原声
+
+- 用户选定王鹤锦在 Agent 方案访谈中的正面评价：“这个画布效果还是很不错的，且还能交互。”（02:52:31）。将其放在 PC 材料第二章“在开发过程中掌握知识”的封面摘要下方，以简短引文和访谈署名呈现；Demo 左下角设计点说明保持原样。
+- 证据来源：用户提供的 `王鹤锦-agent方案.docx`（H，原声访谈记录）。不将这句话扩展为对开发章节所有设计点的评价；具体支持交互式图解画布。
+- 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`。不改变章节顺序、Demo 页面定位或 API / Host / Application 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 HTTP 服务可读到封面结构；部署后线上 HTML 与 `app.js` 均核对到原声内容。CUA 桌面预览两次连接超时，因此未取得浏览器截图。
+- 提交与发布：实现提交 `7d50262a` 已推送至 `origin/main`；Pages workflow `43828871386` build / deploy 成功。
