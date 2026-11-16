@@ -9469,4 +9469,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 课程检索与路径节点均来源于现有 `cann-learning-home/resources.html` 资料库；路径规划优先调用已有学习路径 Worker，并校验结果课程 ID。当前预览环境无法连通 Worker，故实现按本地目录提供明确标注的备用匹配路线及重试入口，不声称备用路线由 AI 生成。
 - 文件：`cann-learning-home/hub-search.js`、`hub-search.css`、`index.html`、`resources.html`、`role.html`。不改变学习首页、角色路线和资料库的页面序列，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check cann-learning-home/hub-search.js`、`git diff --check` 通过；本地浏览器已回放课程检索、意图分流、`/` Skill 选择、搜索结果转路径规划、关闭后回到首页及重开恢复对话。内嵌浏览器实际视口为 426px，已查看窄屏样式；未声称完成桌面视口核验。Worker 在当前预览环境不可达，模型规划调用仍待可访问环境复核。
-- 发布回执待补：提交、`origin/main` 推送和 GitHub Pages 部署确认后续记于此条。
+- 发布：实现提交 `3750e999` 已推送至 `origin/main`；GitHub Pages workflow `43838207105` 对应本次提交并成功完成。线上学习首页、助手 JS 与 CSS 均返回 HTTP 200，页面已加载新副屏与 `/` Skill 代码。当前预览环境仍无法连通学习路径 Worker，模型规划调用待在可访问环境复核。
