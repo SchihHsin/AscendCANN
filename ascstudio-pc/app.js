@@ -71,7 +71,7 @@ function updateAddress(view) {
   url.searchParams.set("rev", ROUTE_REV);
   url.searchParams.set("chapter", String(currentChapter + 1));
   url.searchParams.set("pointIndex", String(currentPoint));
-  url.hash = view === "cover" ? `chapter-${currentChapter + 1}` : `chapter-${currentChapter + 1}-${chapters[currentChapter].points[currentPoint].id}`;
+  url.hash = view === "closing" ? "closing" : view === "cover" ? `chapter-${currentChapter + 1}` : `chapter-${currentChapter + 1}-${chapters[currentChapter].points[currentPoint].id}`;
   history.replaceState(null, "", url);
 }
 
@@ -109,7 +109,7 @@ function renderPointMenu() {
     <section class="menu-chapter">
       <button class="menu-chapter-title" type="button" data-chapter-cover="${chapterIndex}"><span>${String(chapterIndex + 1).padStart(2, "0")}</span><span>${escapeHTML(chapter.title)}</span></button>
       ${chapter.points.map((point, pointIndex) => `<button class="menu-point ${chapterIndex === currentChapter && pointIndex === currentPoint ? "is-current" : ""}" type="button" data-point="${chapterIndex}:${pointIndex}"><span>${chapterIndex + 1}.${pointIndex + 1}</span><span>${escapeHTML(point.title)}</span></button>`).join("")}
-    </section>`).join("");
+    </section>`).join("") + `<button class="menu-point menu-closing-item ${showcase.dataset.view === "closing" ? "is-current" : ""}" type="button" data-closing><span>✦</span><span>整体体验反馈</span></button>`;
   $("#chapter-menu").hidden = !menuOpen;
 }
 
@@ -440,10 +440,25 @@ function showChapterCover(index) {
   buildCover();
 }
 
+function showClosingPage() {
+  learningPrefillCleanup?.();
+  loadingRevision += 1;
+  currentChapter = chapters.length - 1;
+  currentPoint = chapters[currentChapter].points.length - 1;
+  menuOpen = false;
+  showcase.dataset.view = "closing";
+  showcase.classList.remove("is-mobile");
+  $("#mobile-return").hidden = true;
+  $("#design-note").hidden = true;
+  $("#loading-state").hidden = true;
+  renderPointMenu();
+  updateAddress("closing");
+}
+
 function nextPoint() {
   if (currentPoint < chapters[currentChapter].points.length - 1) loadPoint(currentChapter, currentPoint + 1);
   else if (currentChapter < chapters.length - 1) showChapterCover(currentChapter + 1);
-  else showChapterCover(0);
+  else showClosingPage();
 }
 
 function previousPoint() {
@@ -454,6 +469,16 @@ function previousPoint() {
 function handleShowcaseKeydown(event) {
   if (event.key === "Escape" && menuOpen) { menuOpen = false; renderPointMenu(); return; }
   if (menuOpen || event.defaultPrevented) return;
+  if (showcase.dataset.view === "closing") {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      loadPoint(chapters.length - 1, chapters[chapters.length - 1].points.length - 1);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      showChapterCover(0);
+    }
+    return;
+  }
   if (showcase.dataset.view === "cover") {
     if (event.key === "Enter" || event.key === "ArrowRight") {
       if (event.key === "ArrowRight") event.preventDefault();
@@ -539,6 +564,9 @@ noteCard.addEventListener("keydown", event => {
 
 $("#cover-enter").addEventListener("click", () => loadPoint(currentChapter, 0));
 $("#cover-index").addEventListener("click", openPointMenu);
+$("#closing-back").addEventListener("click", () => loadPoint(chapters.length - 1, chapters[chapters.length - 1].points.length - 1));
+$("#closing-index").addEventListener("click", openPointMenu);
+$("#closing-home").addEventListener("click", () => showChapterCover(0));
 $("#note-next").addEventListener("click", nextPoint);
 $("#note-prev").addEventListener("click", previousPoint);
 $("#menu-close").addEventListener("click", () => { menuOpen = false; renderPointMenu(); });
@@ -549,14 +577,17 @@ $("#fullscreen-button").addEventListener("click", async () => {
 $("#menu-content").addEventListener("click", event => {
   const pointButton = event.target.closest("[data-point]");
   const chapterButton = event.target.closest("[data-chapter-cover]");
+  const closingButton = event.target.closest("[data-closing]");
   if (pointButton) { const [chapterIndex, pointIndex] = pointButton.dataset.point.split(":").map(Number); loadPoint(chapterIndex, pointIndex); }
   else if (chapterButton) showChapterCover(Number(chapterButton.dataset.chapterCover));
+  else if (closingButton) showClosingPage();
 });
 document.addEventListener("keydown", handleShowcaseKeydown);
 
 renderPointMenu();
 const deepLink = location.hash.match(/^#chapter-(\d+)-([a-z0-9-]+)$/i);
-if (deepLink) {
+if (location.hash === "#closing") showClosingPage();
+else if (deepLink) {
   const pointId = deepLink[2] === "understanding-handoff" ? "weekly-review" : deepLink[2];
   const chapterIndex = chapters.findIndex(chapter => chapter.points.some(point => point.id === pointId));
   const pointIndex = chapterIndex >= 0 ? chapters[chapterIndex].points.findIndex(point => point.id === pointId) : -1;

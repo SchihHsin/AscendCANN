@@ -9447,3 +9447,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`。引语按章节封面摘要下方的简洁列表呈现，不改变章节顺序、Demo 页面定位或 API / Host / Application 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；Pages 部署后线上 HTML 与 `app.js` 核对到三个章节的全部六条原声。CUA 桌面预览此前连接超时，未取得视觉截图。
 - 提交与发布：VOC 补齐提交 `69c6b1b3` 已推送至 `origin/main`；Pages workflow `43830613497` build / deploy 成功。
+
+### 2026-11-16 · PC 材料新增整体评价收尾页
+
+- 在移动端章节之后增加“他们这样评价这套方案”收尾页，三位用户的整体评价等权并列呈现：彭椒“这是哪个天才产品想出来的？”，王伟“我觉得挺不错的！什么时候上线！！”，徐立桂“我觉得很满足使用了”。桌面端横向三栏，窄屏转为纵向；目录新增“整体体验反馈”，并提供返回移动章节、打开目录、回到开篇的入口。支持 `#closing` 深链及左右键导航。
+- 原声按用户提供的表述呈现；不改变三章顺序、Demo 页面定位或 API / Protocol、Host / Harness、Application / Task 边界。
+- 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`、本文件。更新静态资源版本查询参数，避免命中旧缓存。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地及线上 HTML、脚本、样式均核对到收尾页结构、原声、导航和三栏布局。未取得浏览器截图。
+- 发布：实现提交 `e0b58c6f` 已推送到 `origin/main`；GitHub Pages workflow `43832850871` build / deploy 成功。
