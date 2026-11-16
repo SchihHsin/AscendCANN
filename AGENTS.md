@@ -9318,4 +9318,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户建议 Better 用绿色、|Worse| 用红色。本次将两项指标的标签和数值分别设为绿色与红色，第三张卡的浅杏色背景、标题和布局保持不变。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、`AGENTS.md`。静态核对两组指标类与色值对应；`git diff --check` 通过。数据、页面顺序及统计口径不变。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：实现提交 `db9cd0f73002aebd3911b18d08f9c792c3da63cc` 已推送至 `origin/main`；GitHub Pages workflow `43794359882` 构建与部署成功。线上报告 HTTP 200，Last-Modified 为 `2026-11-16 02:49:39 GMT`；读回确认 Better 标签与数值为绿色 `#1F7A4D`，|Worse| 标签与数值为红色 `#C2413A`。
