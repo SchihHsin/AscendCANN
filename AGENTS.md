@@ -9358,6 +9358,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/home-recommendations.js`、`NewTaskHome.jsx`、`project-rules-learning.js`、`useHomeRecommendationState.js`、`new-task-home.css`、`App.jsx`、`useWorkbenchState.js`、`CompositionLearningPathCanvas.jsx` 及两套 Pages 产物。用户指定分类和交互（H）；示例场景为设计演示（L）。不改变 API / Host / Application 层边界。
 - 验证：`npm run build:pages`、`node --check`、`git diff --check`；对项目文件章节、来源和空文本运行基本检查。CUA 浏览器连接超时，未完成鼠标可视回放。交互仍需后续用真实项目资料验证；持续对话内的项目规则快捷生成、真实历史聚合和语义解读尚未完成。
 
+### 2026-11-16 · 将学习搜索改为页内对话助手
+
+- 根据用户截图反馈，将首页首屏单行搜索框改为多行对话式输入框，底部提供“查找课程 / 规划路径”模式和发送按钮；搜索结果与规划结果均以对话回复形式显示在当前页面正文。点击“描述目标，规划学习路径”只切换规划模式并聚焦输入框；首页、路线页、资料库均不再使用遮罩弹窗，其他页面的顶栏入口展开页内助手。
+- 智能规划继续通过网页内 Skill 风格模块调用既有 AI Worker，并从当前资料库目录校验路径课程 ID；不执行本机 Codex Skill。页面序列、课程内容及 API / Protocol、Host / Harness、Application / Task 机制边界均不变。
+- 验证：`node --check cann-learning-home/hub-search.js`、`node --check cann-learning-home/learning-path-skill.js`、`git diff --check` 通过；搜索确认弹窗 / 遮罩结构已移除。GitHub Pages workflow `43827997541` 构建与部署成功；首页、路线页、资料库和助手脚本均返回 HTTP 200，线上助手脚本已包含页内对话输入实现。CUA 浏览器控制超时，未完成截图回放；Worker 调用仍未能在当前执行环境连通验证。
+- 页面提交 `332a4739` 已推送至 `origin/main`；本条交接记录随后单独提交。
+
 ### 2026-11-16 · 学习中心加入原生搜索与智能路径规划
 
 - 在首页、角色路线页和课程资料库加入统一搜索入口；首页提供快捷搜索框与智能规划入口。搜索以资料库页面内容构建客户端索引，支持课程、主线、实践、教学与社区资料检索、常用词建议、键盘快捷键和结果直达。
