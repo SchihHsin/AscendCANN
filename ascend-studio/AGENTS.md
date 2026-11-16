@@ -2283,4 +2283,5 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 ### 2026-11-16 · 项目规则选后信息精简
 
 - 移除选中文件后的“已加入”状态句和规则数量；默认只显示文件名、目录、规则详情入口及移除按钮，具体规则按需展开。学习主题与生成路径主操作不变。
-- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认精简后的默认态。提交和 Pages 发布回执后补记。
+- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认精简后的默认态。
+- 发布：实现提交 `124e9cac` 与并行 VOC 更新合并后以 `6d13d162` 推送；Pages workflow `43832009427` 成功，`/ascstudio/` 和 `/ascstudio-pc/studio/` 的新 JS / CSS 均 HTTP 200。

@@ -9432,7 +9432,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-16 · 项目规则选后信息精简
 
 - 按用户反馈移除“已加入规则”“已加入本次学习”及规则数量等状态说明。选中文件后默认只显示文件名、示例项目目录、规则详情入口和移除按钮；规则要点收在按需展开区，学习目标与明确的“按规则生成学习路径”操作保持可见。
-- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 的发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认选后默认态为单行文件信息且没有加入状态或条数说明。发布回执后补记。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 的发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认选后默认态为单行文件信息且没有加入状态或条数说明。
+- 发布回执：实现提交 `124e9cac` 与并行 VOC 更新合并后以 `6d13d162` 推送 `origin/main`；Pages workflow `43832009427` build / deploy 成功。线上 `/ascstudio/` 与 `/ascstudio-pc/studio/` 均引用 `index-Bqs4r2u9.js`、`index-C8kkkdMQ.css`，资源 HTTP 200。
 
 ### 2026-11-16 · PC 材料补齐三条体验主线的正向 VOC
 
