@@ -9428,3 +9428,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`。不改变章节顺序、Demo 页面定位或 API / Host / Application 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 HTTP 服务可读到封面结构；部署后线上 HTML 与 `app.js` 均核对到原声内容。CUA 桌面预览两次连接超时，因此未取得浏览器截图。
 - 提交与发布：实现提交 `7d50262a` 已推送至 `origin/main`；Pages workflow `43828871386` build / deploy 成功。
+
+### 2026-11-16 · 项目规则选后信息精简
+
+- 按用户反馈移除“已加入规则”“已加入本次学习”及规则数量等状态说明。选中文件后默认只显示文件名、示例项目目录、规则详情入口和移除按钮；规则要点收在按需展开区，学习目标与明确的“按规则生成学习路径”操作保持可见。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 的发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认选后默认态为单行文件信息且没有加入状态或条数说明。发布回执后补记。

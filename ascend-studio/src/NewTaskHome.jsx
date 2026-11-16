@@ -18,7 +18,7 @@ import {
   IconRoute,
   IconX,
   IconFolder,
-  IconCheck,
+  IconChevronDown,
 } from "@tabler/icons-react";
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
 import { FolderCardSurface } from "./FolderCardSurface";
@@ -86,6 +86,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
   const [projectRulesIntent, setProjectRulesIntent] = useState(false);
   const [projectRulesPickerOpen, setProjectRulesPickerOpen] = useState(false);
   const [projectRulesQuestion, setProjectRulesQuestion] = useState(null);
+  const [projectRulesDetailsOpen, setProjectRulesDetailsOpen] = useState(false);
   const [quickMenuOpen, setQuickMenuOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const fileInputRef = useRef(null);
@@ -171,6 +172,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
     const attachment = { id: `sample-rule-${sample.name}`, name: sample.name, type: "file", size: sample.size, content: sample.content, sampleRules: sample.rules, sampleFolder: sample.folder };
     setMode("learning");
     setProjectRulesIntent(true);
+    setProjectRulesDetailsOpen(false);
     setGoal(learningGoal);
     setAttachments((items) => [...items.filter((file) => !file.sampleFolder), attachment]);
     setProjectRulesPickerOpen(false);
@@ -181,6 +183,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
   const removeSampleProjectRule = (name) => {
     setAttachments((items) => items.filter((file) => file.name !== name || !file.sampleFolder));
     setProjectRulesIntent(false);
+    setProjectRulesDetailsOpen(false);
   };
 
   return (
@@ -370,11 +373,15 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
             ))}
           </div>
         )}
-        {projectRulesIntent && attachments.filter((file) => file.sampleRules).map((file) => <section className="new-task-home__rules-selected" key={file.id} aria-label="项目规则摘要">
-          <header><span><IconCheck size={ICON_SIZE.inline} aria-hidden="true" />已加入规则</span><button type="button" onClick={() => removeSampleProjectRule(file.name)} aria-label={`移除 ${file.name}`}><IconX size={ICON_SIZE.inline} /></button></header>
-          <strong><IconFileText size={ICON_SIZE.inline} aria-hidden="true" />{file.name}<small>{file.sampleFolder}</small></strong>
-          <ul>{file.sampleRules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
-          <p>这些约束会用于组织“{projectRulesQuestion?.title || "模型输入约定"}”的学习内容；生成前仍可编辑上方目标。</p>
+        {projectRulesIntent && attachments.filter((file) => file.sampleRules).map((file) => <section className="new-task-home__rules-selected" key={file.id} aria-label="项目规则文件">
+          <header>
+            <strong><IconFileText size={ICON_SIZE.inline} aria-hidden="true" />{file.name}<small>{file.sampleFolder}</small></strong>
+            <div>
+              <button className="new-task-home__rules-details-toggle" type="button" aria-expanded={projectRulesDetailsOpen} onClick={() => setProjectRulesDetailsOpen((open) => !open)}>规则详情<IconChevronDown size={ICON_SIZE.inline} aria-hidden="true" /></button>
+              <button type="button" onClick={() => removeSampleProjectRule(file.name)} aria-label={`移除 ${file.name}`}><IconX size={ICON_SIZE.inline} /></button>
+            </div>
+          </header>
+          {projectRulesDetailsOpen && <ul>{file.sampleRules.map((rule) => <li key={rule}>{rule}</li>)}</ul>}
         </section>)}
         {!projectRulesIntent && attachments.some(file => /^(agents|claude)\.md$/i.test(file.name)) && <button className="new-task-home__rules-suggestion" type="button" onClick={() => { setMode("learning"); setProjectRulesIntent(true); if (!goal.trim()) setGoal("请根据上传的项目规则，整理需要学习的内容。"); }}>根据项目规则生成学习路径 <IconArrowRight size={ICON_SIZE.inline} /></button>}
         {quickMenuOpen && (

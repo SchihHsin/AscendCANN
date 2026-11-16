@@ -2279,3 +2279,8 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 规则学习计划标题沿用当前主题；被选中的示例文件不重复显示附件胶囊，移除摘要卡会同步退出规则模式。本地样例规则是交互演示，不代表接入真实项目文件或 AI 解读。
 - 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 及规则计划主题 / 节点检查通过；桌面回放验证打开选择器并选中 `AGENTS.md` 后状态正确。
 - 发布：实现提交 `c483a236` 与并行更新合并后以 `f7b07fa9` 推送 `origin/main`；Pages workflow `43829151107` build / deploy 成功，`/ascstudio/` 与 `/ascstudio-pc/studio/` 当前资源均 HTTP 200。
+
+### 2026-11-16 · 项目规则选后信息精简
+
+- 移除选中文件后的“已加入”状态句和规则数量；默认只显示文件名、目录、规则详情入口及移除按钮，具体规则按需展开。学习主题与生成路径主操作不变。
+- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认精简后的默认态。提交和 Pages 发布回执后补记。
