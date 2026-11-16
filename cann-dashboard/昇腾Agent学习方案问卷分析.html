@@ -307,13 +307,18 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .section-tabs span{font-size:var(--fs-xs)}.eyebrow,.panel-label{font-family:'JetBrains Mono','HarmonyOS Sans SC',sans-serif;font-size:var(--fs-xs);font-weight:600;letter-spacing:.1em;color:#747c88}
 .summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2vw;min-height:0}
 .summary-card{min-height:40vh;padding:2.3vh 1.55vw;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);border-radius:17px;box-shadow:0 15px 36px -26px rgba(22,25,30,.28);display:flex;flex-direction:column}
-.summary-card.primary{background:linear-gradient(145deg,rgba(255,255,255,.84),rgba(231,229,251,.76))}
-.summary-number{font:300 clamp(46px,5.8vw,78px)/1 'Inter',sans-serif;letter-spacing:-.05em;color:#343345;margin:2.4vh 0 1.7vh}
+.summary-card-kano{--summary-accent:#7257D7;background:linear-gradient(145deg,#FCFBFF 0%,#F0EBFC 100%)}
+.summary-card-ui{--summary-accent:#3185C8;background:linear-gradient(145deg,#FBFDFF 0%,#EAF4FC 100%)}
+.summary-card-coeff{--summary-accent:#5B5BD6;background:linear-gradient(145deg,#F8F4FF 0%,#EDF5FC 100%)}
+.summary-card .eyebrow,.summary-card h2{color:var(--summary-accent)}
+.summary-number{font:300 clamp(46px,5.8vw,78px)/1 'Inter',sans-serif;letter-spacing:-.05em;color:var(--summary-accent);margin:2.4vh 0 1.7vh}
 .summary-number small{font-size:.32em;font-weight:500;letter-spacing:0;margin-left:.15em;color:#6c7180}
 .summary-metrics{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1vw;margin:2.4vh 0 1.7vh}
 .summary-metric{display:flex;flex-direction:column;gap:.35vh}
 .summary-metric span{font-size:var(--fs-xs);font-weight:700;letter-spacing:.04em;color:#747c88}
 .summary-metric strong{font:300 clamp(38px,4.4vw,58px)/1 'Inter',sans-serif;letter-spacing:-.05em;color:#343345}
+.summary-card-coeff .summary-metric:first-child span,.summary-card-coeff .summary-metric:first-child strong{color:#7257D7}
+.summary-card-coeff .summary-metric:last-child span,.summary-card-coeff .summary-metric:last-child strong{color:#3185C8}
 .summary-metrics i{height:4.2vh;width:1px;background:rgba(90,98,110,.18)}
 .summary-card h2{font-size:var(--fs-h2);line-height:1.3;margin-bottom:.9vh}.summary-card p{font-size:var(--fs-body);line-height:1.6;color:#5e646e}
 .summary-takeaway{margin-top:1.7vh;padding:1.8vh 1.6vw;border-radius:14px;background:var(--g-ink);color:#fff;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:1.2vw;font-size:var(--fs-body);line-height:1.55}
@@ -493,9 +498,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='head'><div class='head-l'><div class='brand'><span class='ttl'>整体评价积极，功能价值类型仍有差异</span></div><div class='subttl'>昇腾 Agent 学习方案用户测评</div></div><div class='section-tabs' aria-label='当前章节'><span class='active'>01 整体判断</span><span>02 卡诺分析</span><span>03 功能反馈</span><span>04 UI评分</span><span>05 建议与方法</span></div></div>
 <div class='body-area report-body'>
 <div class='summary-grid'>
-<article class='summary-card primary'><div class='eyebrow'>KANO · 17 项功能</div><div class='summary-number'>10<small>项</small></div><h2>魅力型功能最多</h2><p>另有 3 项线性型、4 项无差异型；本轮没有出现主导的必备型需求。</p></article>
-<article class='summary-card'><div class='eyebrow'>UI · 5 份有效评分</div><div class='summary-number'>9.2<small>/10</small></div><h2>整体体验评分较高</h2><p>易操作性最高（9.6）；易发现性（8.6）与布局合理性（8.8）相对低。</p></article>
-<article class='summary-card'><div class='eyebrow'>KANO · 17 项功能系数均值</div><div class='summary-metrics'><div class='summary-metric'><span>Better</span><strong>0.64</strong></div><i aria-hidden='true'></i><div class='summary-metric'><span>|Worse|</span><strong>0.24</strong></div></div><h2>提供后的满意提升更明显</h2><p>整体来看，功能带来的满意提升较明显，缺少时引发的不满影响相对较弱。</p></article>
+<article class='summary-card summary-card-kano'><div class='eyebrow'>KANO · 17 项功能</div><div class='summary-number'>10<small>项</small></div><h2>魅力型功能最多</h2><p>另有 3 项线性型、4 项无差异型；本轮没有出现主导的必备型需求。</p></article>
+<article class='summary-card summary-card-ui'><div class='eyebrow'>UI · 5 份有效评分</div><div class='summary-number'>9.2<small>/10</small></div><h2>整体体验评分较高</h2><p>易操作性最高（9.6）；易发现性（8.6）与布局合理性（8.8）相对低。</p></article>
+<article class='summary-card summary-card-coeff'><div class='eyebrow'>KANO · 17 项功能系数均值</div><div class='summary-metrics'><div class='summary-metric'><span>Better</span><strong>0.64</strong></div><i aria-hidden='true'></i><div class='summary-metric'><span>|Worse|</span><strong>0.24</strong></div></div><h2>提供后的满意提升更明显</h2><p>整体来看，功能带来的满意提升较明显，缺少时引发的不满影响相对较弱。</p></article>
 </div>
 <div class='summary-takeaway'><b>问卷提示</b><span>路径共创与可编辑示例的满意度提升最明显；内容旁提问和图解也值得优先打磨。周度触达与笼统的“经验回流”反应更弱。</span></div>
 </div>
