@@ -5,6 +5,11 @@ const LEARNING_PATH_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只�
 const chapters = [
   {
     id: "learning", title: "让学习贴合当前需要与现有基础", cover: "从一张建议卡开始", summary: "从学习建议和关联探索出发，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
+    voices: [
+      { quote: "我觉得这个在主动学习过程是比较有帮助。", source: "王伟 · 02:32" },
+      { quote: "截图可以直接去那个对话框里搜索。我感觉这个功能挺实用。", source: "郑雨豪 · 02:29" },
+      { quote: "这也挺好。嗯，这个认可。", source: "王伟 · 02:34" },
+    ],
     points: [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
       { id: "related-exploration", title: "围绕关注主题，探索相关问题与路径", note: "从一个关注主题开始，沿着关联线索继续探索。", emphasis: "关注主题", description: "从一个关注主题开始，沿着关联线索继续探索。", entry: "新建任务 · 首页关联探索", home: "combine" },
@@ -16,7 +21,10 @@ const chapters = [
   },
   {
     id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "围绕开发问题查看图解、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
-    voice: { quote: "这个画布效果还是很不错的，且还能交互。", source: "王鹤锦 · 用户访谈" },
+    voices: [
+      { quote: "就比较方便，就比较直观……我看到这个地方为什么要这么做。", source: "王伟 · 02:36–02:37" },
+      { quote: "这个画布效果还是很不错的，且还能交互。", source: "王鹤锦 · 02:52" },
+    ],
     points: [
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 全部内容画布", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
@@ -27,6 +35,9 @@ const chapters = [
   },
   {
     id: "mobile", title: "让学习随时继续", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、安排定期回访，并主动发现新知。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
+    voices: [
+      { quote: "那挺不错的，因为有时候检索这些知识其实还是要花一些时间。", source: "王伟 · 02:39" },
+    ],
     points: [
       { id: "desktop-handoff", title: "从电脑端的一条回答，接上手机里的下一步", note: "入口就在正在处理的任务里", emphasis: "正在处理的任务里", description: "在 Agent 回答或学习内容里收下一条知识，标记感兴趣或还没弄懂，再选择即时送达或加入定期速览。", entry: "小程序 · 电脑端入口", route: "review-pending", mobile: true },
       { id: "instant-delivery", title: "电脑端选「现在看」，微信列表收到同一条知识", note: "让用户看清消息从哪里来", emphasis: "看清消息从哪里来", description: "发送后，手机微信会话列表出现带有知识标题的服务通知；手机样机与电脑端共用这一条内容。", entry: "小程序 · 即时学习", route: "review-instant", mobile: true },
@@ -70,12 +81,19 @@ function buildCover() {
   $("#cover-number").textContent = String(currentChapter + 1).padStart(2, "0");
   $("#cover-title").textContent = chapter.title;
   $("#cover-description").textContent = chapter.summary;
-  const voice = $("#cover-voice");
-  voice.hidden = !chapter.voice;
-  if (chapter.voice) {
-    $("#cover-quote").textContent = `“${chapter.voice.quote}”`;
-    $("#cover-voice-source").textContent = chapter.voice.source;
+  const voices = $("#cover-voices");
+  voices.replaceChildren();
+  for (const voice of chapter.voices || []) {
+    const item = document.createElement("figure");
+    item.className = "cover-voice";
+    const quote = document.createElement("blockquote");
+    quote.textContent = `“${voice.quote}”`;
+    const source = document.createElement("figcaption");
+    source.textContent = voice.source;
+    item.append(quote, source);
+    voices.append(item);
   }
+  voices.hidden = voices.childElementCount === 0;
   updateCoverArt(chapter);
   $("#cover-enter").textContent = currentChapter === chapters.length - 1 ? "进入小程序演示" : "进入本章";
   showcase.dataset.view = "cover";
