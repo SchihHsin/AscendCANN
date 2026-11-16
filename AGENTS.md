@@ -9388,3 +9388,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 共用层级为标题图标/名称/右上角进入操作 → 元信息或状态摘要 → 细分隔线与正文。错误卡保留时间与错误次数及近期记录；平台外提问卡保留“识别到平台外的开发任务”、来源/日期/原问题及关联任务内问题；学习卡保留当前阶段、完成数与路径进度。策划示例不被描述为真实遥测。
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/new-task-home.css` 及 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。依据为用户评审后确认的“样式统一，正文各自表达”方向；不改变首页推荐分类、页面序列或 API / Host / Application 边界。
 - 验证：`npm run build:pages` 通过（Vite 保留既有主包超过 500 KB 提示），桌面 CUA 回放确认三卡共同层级与内容差异；`git diff --check` 通过。提交与 Pages 发布状态在后续行补记。
+- 发布回执：界面与发布产物提交 `c8cb88cb` 已推送至 `origin/main`；Pages workflow `43818519130` build / deploy 成功。线上 `/ascstudio/` 引用 `index-Bt2zIQpN.js` 与 `index-C-18RMrU.css`，两项资源均 HTTP 200。交接回执随后另行提交。
