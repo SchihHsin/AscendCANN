@@ -9357,3 +9357,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 首页保留一张已有高频错误卡，增加模型输入提问、外部项目算子问题和 ResNet50 学习入口。外部项目卡引导上传项目规则文件；按本地文本提取实际章节和原文片段生成右侧学习草案，空文件提示重新选择。此为基于章节和关键词的原型，并非真实 AI 语义解读或真实历史聚合。首页和任务内加号菜单收拢为上传文件 / 使用能力；首页不再常显代码、截图、文件快捷按钮。
 - 文件：`ascend-studio/src/home-recommendations.js`、`NewTaskHome.jsx`、`project-rules-learning.js`、`useHomeRecommendationState.js`、`new-task-home.css`、`App.jsx`、`useWorkbenchState.js`、`CompositionLearningPathCanvas.jsx` 及两套 Pages 产物。用户指定分类和交互（H）；示例场景为设计演示（L）。不改变 API / Host / Application 层边界。
 - 验证：`npm run build:pages`、`node --check`、`git diff --check`；对项目文件章节、来源和空文本运行基本检查。CUA 浏览器连接超时，未完成鼠标可视回放。交互仍需后续用真实项目资料验证；持续对话内的项目规则快捷生成、真实历史聚合和语义解读尚未完成。
+
+### 2026-11-16 · 学习中心加入原生搜索与智能路径规划
+
+- 在首页、角色路线页和课程资料库加入统一搜索入口；首页提供快捷搜索框与智能规划入口。搜索以资料库页面内容构建客户端索引，支持课程、主线、实践、教学与社区资料检索、常用词建议、键盘快捷键和结果直达。
+- 智能规划表单收集目标、角色、基础和学习偏好，调用学习 Demo 已有的 AI Worker，并将候选限定为资料库真实课程；响应中的资源 ID 必须通过本地目录校验，重复或虚构资源会被丢弃。`learning-path-skill.js` 是网页内的 Skill 风格规划指令与校验模块，不执行本机安装的 Codex Skill。页面已说明目标、角色与基础信息会发送给规划服务。
+- 内容来源为当前 `resources.html` 的课程与资源（H）；搜索排序与 Skill 指令为本地实现；远端 AI 结果尚未验证。未改变首页 → 角色路线 → 资料库的页面序列，也未改变 API / Protocol、Host / Harness、Application / Task 的机制边界。
+- 验证：`node --check cann-learning-home/hub-search.js`、`node --check cann-learning-home/learning-path-skill.js`、`git diff --check` 通过。GitHub Pages workflow `43800794435` 构建与部署成功；首页、角色页、资料库、搜索 JS / CSS 均返回 HTTP 200，线上首页已包含新入口。CUA 本地预览超时；执行环境无法连接现有 Worker，故未做浏览器交互与远端模型调用回放。
+- 页面代码提交 `9756c536` 已推送到 `origin/main`；本条交接记录随后单独提交。待后续在可访问 Worker 的浏览器环境验证智能规划完整调用。
