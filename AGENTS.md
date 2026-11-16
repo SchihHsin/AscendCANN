@@ -9326,3 +9326,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出 Better 与 |Worse| 已分别使用绿、红后，第三张卡没有必要继续保留浅杏底。本次将系数卡整体背景改为左淡绿至右淡红的低饱和渐变，中间过渡为近白色；标题文字调整为中性灰，指标文字仍分别为绿、红。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、`AGENTS.md`。`git diff --check` 通过；静态核对渐变方向与指标位置一致，数据、页面序列及统计口径不变。
 - 提交 / 发布：实现提交 `171ffa86dc06fbe8fcbc57de3d788aceb9f59573` 已推送至 `origin/main`；GitHub Pages workflow `43794650166` 构建与部署成功。线上报告 HTTP 200，Last-Modified 为 `2026-11-16 02:52:27 GMT`；读回确认卡片从左淡绿过渡至右淡红，Better 为绿色、|Worse| 为红色。
+
+
+### 2026-11-16 · 提高整体判断卡片文字对比
+
+- 用户指出卡片灰字过多，要求使用黑色。本次将三张卡片的说明文字与数字单位改为黑色，并将第三张卡的眉题和标题设为黑色；第一、二张的紫、蓝强调色，以及 Better 绿 / |Worse| 红保持不变。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、`AGENTS.md`。`git diff --check` 通过；静态核对灰色正文已改为黑色、语义指标色未变。数据、页面序列及统计口径不变。
+- 提交 / 发布：待提交推送并确认 Pages 发布。
