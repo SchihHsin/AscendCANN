@@ -9397,3 +9397,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/home-recommendations.js`、`ascend-studio/src/new-task-home.css` 与 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。依据为用户确认的卡片主次动作；不改变页面序列或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认按钮展开、主按钮将不含规则文件语句的主题目标填入学习输入框。次按钮打开本地文件选择器并设置规则补充意图；浏览器扩展阻止自动注入测试文件，故本轮未声称验证文件文本解析。
 - 提交和 Pages 回执随后补记。
+- 发布回执：交互提交 `67e6b73f` 已推送至 `origin/main`；Pages workflow `43823075536` build / deploy 成功。线上 `/ascstudio/` 已切换至 `index-3FK2Qbry.js` 和 `index-DY3kV-xb.css`，两项资源均 HTTP 200。交接回执随后另行提交。
