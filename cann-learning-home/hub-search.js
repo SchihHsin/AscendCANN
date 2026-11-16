@@ -8,57 +8,63 @@
     teacher: '高校老师', competition: '竞赛选手', community: '社区开发者',
   };
   let resourceIndexPromise;
-  let lastTrigger = null;
-  let searchRenderVersion = 0;
+  let currentMode = 'search';
+  let isBusy = false;
+  let requestVersion = 0;
 
-  const dialog = document.createElement('div');
-  dialog.className = 'hub-search-overlay';
-  dialog.id = 'hub-search-overlay';
-  dialog.hidden = true;
-  dialog.setAttribute('aria-hidden', 'true');
-  dialog.innerHTML = `
-    <section class="hub-search-dialog" role="dialog" aria-modal="true" aria-labelledby="hub-dialog-title">
-      <header class="hub-search-dialog-head">
-        <div><span class="eyebrow">CANN LEARNING HUB</span><h2 id="hub-dialog-title">搜索课程，或规划学习路径</h2></div>
-        <button class="hub-search-close" type="button" data-hub-close aria-label="关闭搜索">×</button>
-      </header>
-      <div class="hub-search-tabs" role="tablist" aria-label="选择搜索或智能规划">
-        <button type="button" role="tab" aria-selected="true" aria-controls="hub-search-panel-search" data-hub-tab="search">课程搜索</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="hub-search-panel-planner" data-hub-tab="planner">智能规划</button>
+  const pageMount = document.querySelector('[data-hub-assistant-mount]');
+  const isHome = Boolean(pageMount);
+  const assistantHost = isHome ? pageMount : document.createElement('section');
+  if (!isHome) {
+    assistantHost.className = 'hub-assistant-dock';
+    assistantHost.hidden = true;
+    document.querySelector('.topbar')?.insertAdjacentElement('afterend', assistantHost);
+  }
+
+  const widget = document.createElement('div');
+  widget.className = 'hub-assistant-widget';
+  widget.innerHTML = `
+    <form class="hub-chat-composer" id="hub-chat-form">
+      <label class="hub-sr-only" for="hub-chat-input">搜索课程，或描述你的学习目标</label>
+      <textarea id="hub-chat-input" rows="2" maxlength="600" placeholder="搜索课程名称，或描述你要完成的学习目标…"></textarea>
+      <div class="hub-chat-toolbar">
+        <div class="hub-chat-modes" role="group" aria-label="选择学习助手功能">
+          <button type="button" data-hub-mode="search" aria-pressed="true">查找课程</button>
+          <button type="button" data-hub-mode="planner" aria-pressed="false">规划路径</button>
+        </div>
+        <span class="hub-chat-hint"><kbd>Enter</kbd> 发送 · <kbd>Shift + Enter</kbd> 换行</span>
+        <button class="hub-chat-send" type="submit" aria-label="发送" title="发送">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V4M5.5 8.5 10 4l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
       </div>
-      <section class="hub-search-panel" id="hub-search-panel-search" data-hub-panel="search" role="tabpanel">
-        <form class="hub-search-form" id="hub-search-form">
-          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"></circle><path d="m13 13 4 4"></path></svg>
-          <input id="hub-search-query" type="search" autocomplete="off" placeholder="搜索课程、技术主题、实践或教学资料" aria-label="搜索学习资料">
-          <button type="submit">搜索</button>
-        </form>
-        <div class="hub-search-results" id="hub-search-results" aria-live="polite"></div>
-      </section>
-      <section class="hub-search-panel" id="hub-search-panel-planner" data-hub-panel="planner" role="tabpanel" hidden>
-        <p class="hub-planner-intro">告诉我你想做什么、目前的基础和学习偏好；智能规划会从学习中心现有课程中组织下一步。</p>
-        <form class="hub-planner-form" id="hub-planner-form">
-          <label class="hub-field hub-field-wide"><span>学习目标</span><input id="hub-plan-goal" required maxlength="240" placeholder="例如：从零开始开发一个 Ascend C 自定义算子"></label>
-          <label class="hub-field"><span>学习角色</span><select id="hub-plan-role"><option value="">帮我判断</option>${Object.entries(roleNames).map(([id, name]) => `<option value="${id}">${name}</option>`).join('')}</select></label>
-          <label class="hub-field"><span>当前基础</span><select id="hub-plan-level"><option>刚开始接触昇腾</option><option>会 Python 和 NumPy</option><option>有 C / C++ 基础</option><option>有模型训练或推理经验</option><option>熟悉 CANN，想学进阶实践</option></select></label>
-          <label class="hub-field hub-field-wide"><span>偏好的学习方式</span><select id="hub-plan-format"><option>课程与在线实践结合</option><option>先看课程和文档</option><option>优先选择 Notebook / CANNLab 实践</option><option>按课程状态安排，建设中的内容放到后续</option></select></label>
-          <div class="hub-planner-actions hub-field-wide"><p>目标、角色与基础信息会发送给规划服务；课程只从本资料库选择。</p><button type="submit" id="hub-plan-submit">生成学习路径 <span aria-hidden="true">→</span></button></div>
-        </form>
-        <div class="hub-plan-result" id="hub-plan-result" aria-live="polite"></div>
-      </section>
-      <footer class="hub-search-foot"><span>站内搜索检索课程与资料库内容</span><kbd>ESC</kbd><span>关闭</span></footer>
-    </section>`;
-  document.body.append(dialog);
+    </form>
+    <p class="hub-assistant-helper">可以直接搜课程名称，也可以说“从零开始开发 Ascend C 算子”来生成学习路线。</p>`;
+  assistantHost.append(widget);
 
-  const searchInput = dialog.querySelector('#hub-search-query');
-  const searchResults = dialog.querySelector('#hub-search-results');
-  const plannerForm = dialog.querySelector('#hub-planner-form');
-  const planGoal = dialog.querySelector('#hub-plan-goal');
-  const planResult = dialog.querySelector('#hub-plan-result');
-  const planButton = dialog.querySelector('#hub-plan-submit');
-  const roleSelect = dialog.querySelector('#hub-plan-role');
+  const output = document.createElement('section');
+  output.className = 'hub-assistant-output';
+  output.hidden = true;
+  output.setAttribute('aria-live', 'polite');
+  output.setAttribute('aria-label', '学习助手回复');
+  if (isHome) {
+    const hero = pageMount.closest('.hero');
+    hero?.insertAdjacentElement('afterend', output);
+  } else {
+    assistantHost.append(output);
+  }
+
+  const chatForm = widget.querySelector('#hub-chat-form');
+  const chatInput = widget.querySelector('#hub-chat-input');
+  const sendButton = widget.querySelector('.hub-chat-send');
 
   function clean(text) { return String(text || '').replace(/\s+/g, ' ').trim(); }
   function normalized(text) { return clean(text).toLocaleLowerCase().replace(/[\s\-_/·，,。]+/g, ''); }
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
 
   function buildResourceIndex() {
     if (resourceIndexPromise) return resourceIndexPromise;
@@ -118,7 +124,6 @@
         const section = heading.closest('.resource-card');
         add({ title, description: clean(heading.parentElement?.nextElementSibling?.textContent || section?.querySelector('.resource-description')?.textContent), category: titleOf(section?.closest('.resource-section')), href: heading.id ? `./resources.html#${encodeURIComponent(heading.id)}` : `./resources.html#${section?.id || 'resource-teaching-card'}` });
       });
-
       return entries;
     }).catch((error) => {
       resourceIndexPromise = null;
@@ -152,207 +157,229 @@
     return result;
   }
 
+  function setMode(mode) {
+    currentMode = mode === 'planner' ? 'planner' : 'search';
+    widget.querySelectorAll('[data-hub-mode]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.hubMode === currentMode)));
+    chatInput.placeholder = currentMode === 'planner'
+      ? '告诉我你想学什么、想完成什么，我会从课程资料中为你规划路径…'
+      : '搜索课程、技术主题或实践资料…';
+    chatInput.setAttribute('aria-label', currentMode === 'planner' ? '描述学习目标' : '搜索课程或学习资料');
+  }
+
+  function openAssistant(mode = 'search') {
+    lastTrigger = trigger || document.activeElement;
+    if (!isHome) {
+      assistantHost.hidden = false;
+      assistantHost.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setMode(mode);
+    window.setTimeout(() => chatInput.focus(), 40);
+  }
+
+  function setBusy(busy) {
+    isBusy = busy;
+    chatInput.disabled = busy;
+    sendButton.disabled = busy;
+    sendButton.setAttribute('aria-busy', String(busy));
+    widget.querySelectorAll('[data-hub-mode]').forEach((button) => { button.disabled = busy; });
+    widget.classList.toggle('is-busy', busy);
+  }
+
+  function createConversation(prompt) {
+    output.replaceChildren();
+    output.hidden = false;
+    const thread = element('div', 'hub-conversation');
+    const userMessage = element('div', 'hub-message hub-message-user');
+    userMessage.append(element('span', 'hub-message-label', '你'), element('p', '', prompt));
+    const assistantMessage = element('div', 'hub-message hub-message-assistant');
+    assistantMessage.append(element('span', 'hub-message-label', 'CANN 学习助手'));
+    const body = element('div', 'hub-message-body');
+    assistantMessage.append(body);
+    thread.append(userMessage, assistantMessage);
+    output.append(thread);
+    window.setTimeout(() => output.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 0);
+    return body;
+  }
+
+  function renderLoading(target, label) {
+    const loading = element('div', 'hub-assistant-loading');
+    loading.append(element('span'), element('span'), element('span'), element('p', '', label));
+    target.replaceChildren(loading);
+  }
+
   function makeResult(entry) {
-    const link = document.createElement('a');
-    link.className = 'hub-search-result';
+    const link = element('a', 'hub-search-result');
     link.href = entry.href;
     if (/^https:\/\//i.test(entry.href)) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-    const body = document.createElement('span');
-    body.className = 'hub-search-result-body';
-    const label = document.createElement('small');
-    label.className = 'hub-search-result-category';
-    label.textContent = entry.category;
-    const title = document.createElement('strong');
-    title.textContent = entry.title;
-    const description = document.createElement('span');
-    description.className = 'hub-search-result-description';
-    description.textContent = entry.description || '打开查看相关学习资源。';
-    body.append(label, title, description);
-    if (entry.status) {
-      const status = document.createElement('small');
-      status.className = 'hub-search-result-status';
-      status.textContent = entry.status;
-      body.append(status);
-    }
-    const arrow = document.createElement('span');
-    arrow.className = 'hub-search-result-arrow';
-    arrow.setAttribute('aria-hidden', 'true');
-    arrow.textContent = '↗';
-    link.append(body, arrow);
+    const body = element('span', 'hub-search-result-body');
+    body.append(element('small', 'hub-search-result-category', entry.category), element('strong', '', entry.title), element('span', 'hub-search-result-description', entry.description || '打开查看相关学习资源。'));
+    if (entry.status) body.append(element('small', 'hub-search-result-status', entry.status));
+    link.append(body, element('span', 'hub-search-result-arrow', '↗'));
+    link.querySelector('.hub-search-result-arrow').setAttribute('aria-hidden', 'true');
     return link;
   }
 
-  async function renderSearch(query) {
-    const renderVersion = ++searchRenderVersion;
-    if (!query) {
-      searchResults.replaceChildren();
-      const hint = document.createElement('p');
-      hint.className = 'hub-search-hint';
-      hint.textContent = '常用搜索';
-      const suggestions = document.createElement('div');
-      suggestions.className = 'hub-search-suggestions';
-      ['CANN 基础', 'Ascend C 算子开发', 'Qwen3 推理', '推荐系统', '高校教学大纲'].forEach((term) => {
-        const chip = document.createElement('button');
-        chip.type = 'button'; chip.className = 'hub-search-chip'; chip.textContent = term;
-        chip.addEventListener('click', () => { searchInput.value = term; renderSearch(term); });
-        suggestions.append(chip);
-      });
-      searchResults.append(hint, suggestions);
-      return;
-    }
-    searchResults.innerHTML = '<p class="hub-search-hint">正在检索课程和资料…</p>';
+  function showPlannerAction(target, prompt) {
+    const action = element('button', 'hub-inline-action', '用智能规划整理学习路径 →');
+    action.type = 'button';
+    action.addEventListener('click', () => {
+      chatInput.value = prompt;
+      setMode('planner');
+      chatInput.focus();
+      chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    target.append(action);
+  }
+
+  async function runSearch(prompt, version) {
+    const answer = createConversation(prompt);
+    renderLoading(answer, '正在搜索课程与资料…');
     try {
       const entries = await buildResourceIndex();
-      if (renderVersion !== searchRenderVersion) return;
-      const ranked = entries.map((entry) => ({ entry, score: score(entry, query) })).filter((item) => item.score > 0).sort((a, b) => b.score - a.score);
-      const results = ranked.slice(0, 12);
-      searchResults.replaceChildren();
-      if (!results.length) {
-        const empty = document.createElement('div');
-        empty.className = 'hub-search-empty';
-        empty.innerHTML = '<strong>没有找到匹配资料</strong><span>可以换个关键词，或让智能规划根据你的目标推荐课程顺序。</span>';
-        const planner = document.createElement('button');
-        planner.type = 'button'; planner.className = 'hub-search-empty-action'; planner.textContent = '转到智能规划 →';
-        planner.addEventListener('click', () => { planGoal.value = searchInput.value.trim(); setMode('planner'); });
-        empty.append(planner); searchResults.append(empty); return;
+      if (version !== requestVersion) return;
+      const ranked = entries.map((entry) => ({ entry, score: score(entry, prompt) })).filter((item) => item.score > 0).sort((a, b) => b.score - a.score);
+      answer.replaceChildren();
+      if (!ranked.length) {
+        answer.append(element('p', 'hub-answer-copy', '没有找到直接匹配的课程。你可以换个说法，或告诉我你的目标，我会从资料库中帮你规划学习顺序。'));
+        showPlannerAction(answer, prompt);
+        return;
       }
-      const count = document.createElement('p');
-      count.className = 'hub-search-count';
-      count.textContent = ranked.length > results.length ? `找到 ${ranked.length} 条相关资料，显示前 ${results.length} 条` : `找到 ${results.length} 条相关资料`;
-      searchResults.append(count, ...results.map(({ entry }) => makeResult(entry)));
+      const results = ranked.slice(0, 8);
+      answer.append(element('p', 'hub-answer-copy', ranked.length > results.length ? `找到 ${ranked.length} 条相关资料，先列出最相关的 ${results.length} 条。` : `找到 ${results.length} 条相关资料。`));
+      const list = element('div', 'hub-search-results');
+      results.forEach(({ entry }) => list.append(makeResult(entry)));
+      answer.append(list);
+      showPlannerAction(answer, prompt);
     } catch (error) {
-      if (renderVersion !== searchRenderVersion) return;
-      searchResults.innerHTML = '<div class="hub-search-empty"><strong>暂时无法读取资料库索引</strong><span>你仍可以打开完整资料库浏览课程。</span><a href="./resources.html#resource-preparation">打开课程与资料库 →</a></div>';
+      if (version !== requestVersion) return;
+      answer.replaceChildren(element('p', 'hub-answer-copy', '暂时无法读取课程索引，请直接浏览完整课程与资料库。'));
+      const link = element('a', 'hub-inline-action', '打开课程与资料库 →');
+      link.href = './resources.html#resource-preparation';
+      answer.append(link);
+    } finally {
+      if (version === requestVersion) setBusy(false);
     }
-  }
-
-  function setMode(mode) {
-    dialog.querySelectorAll('[data-hub-tab]').forEach((tab) => tab.setAttribute('aria-selected', String(tab.dataset.hubTab === mode)));
-    dialog.querySelectorAll('[data-hub-panel]').forEach((panel) => { panel.hidden = panel.dataset.hubPanel !== mode; });
-    if (mode === 'search') window.setTimeout(() => searchInput.focus(), 30);
-    else window.setTimeout(() => planGoal.focus(), 30);
-  }
-
-  function openDialog(mode = 'search', query = '', trigger = null) {
-    lastTrigger = trigger || document.activeElement;
-    dialog.hidden = false;
-    dialog.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('hub-search-open');
-    setMode(mode);
-    if (query) { searchInput.value = query; renderSearch(query); }
-    else if (mode === 'search') renderSearch('');
-    const selectedRole = new URLSearchParams(location.search).get('role');
-    if (selectedRole && roleNames[selectedRole]) roleSelect.value = selectedRole;
-  }
-
-  function closeDialog() {
-    dialog.hidden = true;
-    dialog.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('hub-search-open');
-    lastTrigger?.focus?.();
   }
 
   function rankForPlan(entries, query, role) {
     const queryText = `${query} ${roleNames[role] || ''}`;
-    const top = entries.map((entry) => ({ entry, score: score(entry, queryText) })).sort((a, b) => b.score - a.score).slice(0, 28).map((item) => item.entry);
-    const core = entries.filter((entry) => /CANN 基础第一课|大模型训练|大模型推理|算子开发|应用开发|推荐系统/.test(entry.title)).slice(0, 10);
-    const merged = new Map([...core, ...top].map((entry) => [entry.id, entry]));
-    return [...merged.values()].slice(0, 34);
+    const ranked = entries.map((entry) => ({ entry, score: score(entry, queryText) })).sort((a, b) => b.score - a.score).filter((item) => item.score > 0).slice(0, 24).map((item) => item.entry);
+    const core = entries.filter((entry) => /CANN 基础第一课|大模型训练|大模型推理|算子开发|应用开发|推荐系统/.test(entry.title)).slice(0, 8);
+    return [...new Map([...core, ...ranked].map((entry) => [entry.id, entry])).values()].slice(0, 32);
   }
 
-  function renderPlan(plan) {
-    planResult.replaceChildren();
-    const article = document.createElement('article');
-    article.className = 'hub-generated-plan';
-    const top = document.createElement('div'); top.className = 'hub-generated-plan-head';
-    const label = document.createElement('small'); label.textContent = 'LEARNING PATH';
-    const title = document.createElement('h3'); title.textContent = plan.title;
-    const summary = document.createElement('p'); summary.textContent = plan.summary || '按先修关系和当前课程资源整理的学习顺序。';
-    top.append(label, title, summary); article.append(top);
-    const list = document.createElement('ol'); list.className = 'hub-generated-steps';
+  function renderPlan(target, plan) {
+    const article = element('article', 'hub-generated-plan');
+    const head = element('div', 'hub-generated-plan-head');
+    head.append(element('small', '', '为你整理的学习路线'), element('h3', '', plan.title), element('p', '', plan.summary || '按目标和课程先后关系整理的学习顺序。'));
+    const list = element('ol', 'hub-generated-steps');
     plan.steps.forEach(({ resource, reason }, index) => {
-      const item = document.createElement('li');
-      const number = document.createElement('span'); number.className = 'hub-generated-step-number'; number.textContent = String(index + 1).padStart(2, '0');
-      const content = document.createElement('span'); content.className = 'hub-generated-step-content';
-      const titleText = document.createElement('strong'); titleText.textContent = resource.title;
-      const meta = document.createElement('small'); meta.textContent = `${resource.category}${resource.status ? ` · ${resource.status}` : ''}`;
-      const why = document.createElement('span'); why.textContent = reason || resource.description;
-      content.append(titleText, meta, why);
-      const link = document.createElement('a'); link.href = resource.href; link.textContent = '查看 →';
+      const item = element('li');
+      const number = element('span', 'hub-generated-step-number', String(index + 1).padStart(2, '0'));
+      const content = element('span', 'hub-generated-step-content');
+      content.append(element('strong', '', resource.title), element('small', '', `${resource.category}${resource.status ? ` · ${resource.status}` : ''}`), element('span', '', reason || resource.description));
+      const link = element('a', '', '查看 →');
+      link.href = resource.href;
       if (/^https:\/\//i.test(resource.href)) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-      item.append(number, content, link); list.append(item);
+      item.append(number, content, link);
+      list.append(item);
     });
-    article.append(list);
-    const note = document.createElement('p'); note.className = 'hub-generated-plan-note'; note.textContent = '路线由学习路径规划能力根据当前课程目录生成；打开课程可核对内容与实践状态。';
-    article.append(note); planResult.append(article);
+    article.append(head, list, element('p', 'hub-generated-plan-note', '路线只引用当前资料库中的课程；打开课程可核对原始内容与实践状态。'));
+    target.replaceChildren(article);
   }
 
-  async function generatePlan(event) {
-    event.preventDefault();
-    if (!skill) { planResult.textContent = '智能规划模块暂不可用，请使用课程搜索。'; return; }
-    const goal = clean(planGoal.value);
-    if (!goal) { planGoal.focus(); return; }
-    planButton.disabled = true;
-    planButton.textContent = '正在匹配课程…';
-    planResult.innerHTML = '<div class="hub-planner-loading"><span></span><span></span><span></span><p>正在读取课程目录并编排学习顺序</p></div>';
+  async function runPlanner(prompt, version) {
+    const answer = createConversation(prompt);
+    renderLoading(answer, '正在匹配课程并编排学习顺序…');
     try {
+      if (!skill) throw new Error('规划模块暂不可用');
       const entries = await buildResourceIndex();
-      const role = roleSelect.value;
-      const catalog = rankForPlan(entries, goal, role);
-      const request = skill.buildRequest({ goal, role: roleNames[role], level: dialog.querySelector('#hub-plan-level').value, format: dialog.querySelector('#hub-plan-format').value, resources: catalog });
+      if (version !== requestVersion) return;
+      const role = new URLSearchParams(location.search).get('role') || '';
+      const catalog = rankForPlan(entries, prompt, role);
       if (!catalog.length) throw new Error('课程目录暂不可用');
+      const request = skill.buildRequest({
+        goal: prompt,
+        role: roleNames[role] || '尚未说明，请根据目标判断',
+        level: '用户未说明；请先给出适合常见基础的路线',
+        format: '用户未指定',
+        resources: catalog,
+      });
       const controller = new AbortController();
       const timeout = window.setTimeout(() => controller.abort(), 45000);
       let response;
       try {
-        response = await fetch(request.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ system: request.system, user: request.user, max_tokens: request.max_tokens }), signal: controller.signal });
+        response = await fetch(request.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ system: request.system, user: request.user, max_tokens: request.max_tokens }),
+          signal: controller.signal,
+        });
       } finally {
         window.clearTimeout(timeout);
       }
       if (!response.ok) throw new Error(`规划服务返回 ${response.status}`);
       const payload = await response.json();
       const plan = skill.parseResponse(payload.text || payload.output || payload.content, catalog);
-      renderPlan(plan);
+      if (version !== requestVersion) return;
+      renderPlan(answer, plan);
     } catch (error) {
-      planResult.replaceChildren();
-      const message = document.createElement('div'); message.className = 'hub-search-empty';
-      const title = document.createElement('strong'); title.textContent = '暂时无法生成智能路径';
-      const copy = document.createElement('span'); copy.textContent = '课程搜索仍可使用；也可以打开对应角色路线，按资料库中的课程顺序开始。';
-      const browse = document.createElement('a'); browse.href = './resources.html#resource-path-details'; browse.textContent = '浏览五条学习主线 →';
-      message.append(title, copy, browse); planResult.append(message);
+      if (version !== requestVersion) return;
+      answer.replaceChildren(element('p', 'hub-answer-copy', '智能规划暂时没有连上。你可以继续搜索课程，或从现有学习主线开始。'));
+      const link = element('a', 'hub-inline-action', '浏览五条学习主线 →');
+      link.href = './resources.html#resource-path-details';
+      answer.append(link);
     } finally {
-      planButton.disabled = false;
-      planButton.innerHTML = '生成学习路径 <span aria-hidden="true">→</span>';
+      if (version === requestVersion) setBusy(false);
     }
+  }
+
+  async function submitPrompt(event) {
+    event.preventDefault();
+    if (isBusy) return;
+    const prompt = clean(chatInput.value);
+    if (!prompt) { chatInput.focus(); return; }
+    const version = ++requestVersion;
+    setBusy(true);
+    if (currentMode === 'planner') await runPlanner(prompt, version);
+    else await runSearch(prompt, version);
+  }
+
+  function openAssistant(mode = 'search') {
+    if (!isHome) {
+      assistantHost.hidden = false;
+      assistantHost.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setMode(mode);
+    window.setTimeout(() => chatInput.focus(), 40);
   }
 
   document.addEventListener('click', (event) => {
     const opener = event.target.closest('[data-hub-search-open]');
-    if (opener) { openDialog(opener.dataset.hubSearchMode || 'search', '', opener); return; }
-    if (event.target.closest('[data-hub-close]') || event.target === dialog) closeDialog();
-    const tab = event.target.closest('[data-hub-tab]');
-    if (tab) setMode(tab.dataset.hubTab);
-  });
-  document.addEventListener('submit', (event) => {
-    if (event.target.matches('[data-hub-search-inline]')) {
-      event.preventDefault(); const input = event.target.querySelector('input'); openDialog('search', input.value.trim(), event.submitter || input); return;
+    if (opener) {
+      openAssistant(opener.dataset.hubSearchMode || 'search');
+      return;
     }
-    if (event.target.id === 'hub-search-form') { event.preventDefault(); renderSearch(searchInput.value.trim()); return; }
-    if (event.target === plannerForm) generatePlan(event);
+    const modeButton = event.target.closest('[data-hub-mode]');
+    if (modeButton) { setMode(modeButton.dataset.hubMode); chatInput.focus(); return; }
   });
-  searchInput.addEventListener('input', () => renderSearch(searchInput.value.trim()));
+
+  chatForm.addEventListener('submit', submitPrompt);
+  chatInput.addEventListener('input', () => {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = `${Math.min(chatInput.scrollHeight, 132)}px`;
+  });
+  chatInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+      event.preventDefault();
+      chatForm.requestSubmit();
+    }
+  });
   document.addEventListener('keydown', (event) => {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openDialog('search'); }
-    if (event.key === 'Escape' && !dialog.hidden) closeDialog();
-    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-      const activeTab = event.target.closest?.('[data-hub-tab]');
-      if (activeTab) { event.preventDefault(); const mode = activeTab.dataset.hubTab === 'search' ? 'planner' : 'search'; setMode(mode); dialog.querySelector(`[data-hub-tab="${mode}"]`)?.focus(); }
-    }
-    if (event.key === 'Tab' && !dialog.hidden) {
-      const focusable = [...dialog.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), a[href]')].filter((node) => !node.closest('[hidden]'));
-      const first = focusable[0]; const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      openAssistant('search');
     }
   });
+
 })();
