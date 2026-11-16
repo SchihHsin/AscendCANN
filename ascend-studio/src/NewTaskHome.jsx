@@ -15,7 +15,6 @@ import {
   IconBrain,
   IconAffiliate,
   IconMessageCircle,
-  IconExternalLink,
   IconRoute,
   IconX,
 } from "@tabler/icons-react";
@@ -184,7 +183,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
           const externalQuestion = questionTrail ? item.questionTrail.find(question => question.context === "平台外开发") : null;
           const relatedTaskQuestionCount = questionTrail ? item.questionTrail.filter(question => question.context !== "平台外开发").length : 0;
           const errorIcons = [IconBook, IconFileText, IconBrain];
-          const Icon = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconMessageCircle : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
+          const Icon = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconBook : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
           const Motif = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconMessageCircle : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
           const expanded = expandedCardId === item.id;
           const detailsId = `home-suggestion-details-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
@@ -206,7 +205,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                 aria-label={errorLearning
                   ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次，查看错误详情`
                   : questionTrail
-                    ? `识别到平台外的开发任务：${externalQuestion?.question || "查看相关提问"}，开始学习${item.title}`
+                    ? `学习主题：${item.title}，查看相关提问或开始学习`
                     : learningProgress
                       ? `打开 ResNet50 推理学习路径，当前${item.learningProgress.currentStage}，已完成${item.learningProgress.completed}/${item.learningProgress.total}个学习动作`
                       : `${item.taskName}：${item.title}，前往任务`}
@@ -242,11 +241,11 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                     <strong title={item.title}>{item.title}</strong>
                     <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span>
                   </span>
-                  <span className="new-task-home__card-meta is-detection"><IconExternalLink size={ICON_SIZE.inline} aria-hidden="true" /><strong>识别到平台外的开发任务</strong></span>
+                  <span className="new-task-home__card-meta is-topic"><IconMessageCircle size={ICON_SIZE.inline} aria-hidden="true" /><strong>{item.activity}</strong></span>
                   <span className="new-task-home__card-body">
-                    <span className="new-task-home__external-context"><strong>{externalQuestion?.source || "自由提问"}</strong><time>{externalQuestion?.date}</time><span>{externalQuestion?.context}</span></span>
+                    <span className="new-task-home__external-context"><strong>{externalQuestion?.source || "自由提问"}</strong><time>{externalQuestion?.date}</time></span>
                     <span className="new-task-home__external-question">{externalQuestion?.question}</span>
-                    <span className="new-task-home__external-related">关联 {relatedTaskQuestionCount} 个任务内问题 · 模型输入约定</span>
+                    <span className="new-task-home__external-related">另有 {relatedTaskQuestionCount} 条相关提问</span>
                   </span>
                 </> : learningProgress ? <>
                   <span className="new-task-home__card-heading">
@@ -292,7 +291,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                   <div className="new-task-home__trail-detail" aria-label="近期提问脉络">
                     {item.questionTrail.map((question, trailIndex) => <section className="new-task-home__trail-entry" key={question.date}>
                       <span className="new-task-home__trail-entry-marker"><i aria-hidden="true" />{trailIndex < item.questionTrail.length - 1 && <b aria-hidden="true" />}</span>
-                      <div><div className="new-task-home__trail-entry-meta"><time>{question.date}</time><span>{question.source}</span><small>{question.context}</small></div><p>{question.question}</p></div>
+                      <div><div className="new-task-home__trail-entry-meta"><time>{question.date}</time><span>{question.source}</span></div><p>{question.question}</p></div>
                     </section>)}
                   </div>
                   <div className="new-task-home__trail-actions" aria-label="学习操作">

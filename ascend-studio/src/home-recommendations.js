@@ -289,7 +289,7 @@ export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = 
         { date: "11月05日", source: "AddCustom 精度异常", context: "任务内", question: "项目里的预处理和样例不同，应该先对照哪份说明？" },
       ];
       const trail = candidate({
-        task, mode, type: "question-trail", title: "模型输入约定", activity: "3 个相关问题 · 2 类场景 · 11月05日—12日",
+        task, mode, type: "question-trail", title: "模型输入约定", activity: "3 条相关提问 · 11月05日—12日",
         reason: "从任务里的输入处理，延伸到另一个项目的模型约定。",
         evidence: questionTrail.map((item, index) => evidence(`question-trail-${index}`, item.date, item.question)),
         steps: [],

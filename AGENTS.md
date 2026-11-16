@@ -9398,3 +9398,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认按钮展开、主按钮将不含规则文件语句的主题目标填入学习输入框。次按钮打开本地文件选择器并设置规则补充意图；浏览器扩展阻止自动注入测试文件，故本轮未声称验证文件文本解析。
 - 提交和 Pages 回执随后补记。
 - 发布回执：交互提交 `67e6b73f` 已推送至 `origin/main`；Pages workflow `43823075536` build / deploy 成功。线上 `/ascstudio/` 已切换至 `index-3FK2Qbry.js` 和 `index-DY3kV-xb.css`，两项资源均 HTTP 200。交接回执随后另行提交。
+
+### 2026-11-16 · 提问线索卡按学习主题呈现
+
+- 用户修正卡片叙事：不再突出“识别到平台外的开发任务”，首页此场景以学习为主。卡片标题为学习主题；元信息显示相关提问数量与时间范围，正文显示提问来源/日期及原问题，展开时间线仅保留日期、来源和问题，不显示“平台外 / 任务内”标签。
+- “开始学习”与“补充项目规则”双入口保持：前者预填可编辑学习目标，后者在同主题上增加项目规则要求。平台来源如需用于内部策划数据判断，仅作未展示的分类依据，不作为首页卖点。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/home-recommendations.js`、`ascend-studio/src/new-task-home.css` 与 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。此条更新并覆盖前条关于在卡片显式展示平台外识别提示的视觉决策；不改变页面序列或 API / Host / Application 边界。
+- 构建与脚本检查通过。桌面回放与提交 / Pages 回执随后补记。
