@@ -9462,3 +9462,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`、本文件。更新静态资源版本查询参数，避免命中旧缓存。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地及线上 HTML、脚本、样式均核对到收尾页结构、原声、导航和三栏布局。未取得浏览器截图。
 - 发布：实现提交 `e0b58c6f` 已推送到 `origin/main`；GitHub Pages workflow `43832850871` build / deploy 成功。
+
+### 2026-11-16 · 单输入学习助手与右侧对话副屏
+
+- 用户确认学习首页采用单一对话式输入；由输入意图自动分流课程检索与路径规划，输入 `/` 可调用“规划学习路径” Skill；发送后在右侧打开对话副屏，发送按钮使用纸飞机图标。搜索结果可继续转为路径规划，关闭副屏后保留对话与阅读位置。
+- 课程检索与路径节点均来源于现有 `cann-learning-home/resources.html` 资料库；路径规划优先调用已有学习路径 Worker，并校验结果课程 ID。当前预览环境无法连通 Worker，故实现按本地目录提供明确标注的备用匹配路线及重试入口，不声称备用路线由 AI 生成。
+- 文件：`cann-learning-home/hub-search.js`、`hub-search.css`、`index.html`、`resources.html`、`role.html`。不改变学习首页、角色路线和资料库的页面序列，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check cann-learning-home/hub-search.js`、`git diff --check` 通过；本地浏览器已回放课程检索、意图分流、`/` Skill 选择、搜索结果转路径规划、关闭后回到首页及重开恢复对话。内嵌浏览器实际视口为 426px，已查看窄屏样式；未声称完成桌面视口核验。Worker 在当前预览环境不可达，模型规划调用仍待可访问环境复核。
+- 发布回执待补：提交、`origin/main` 推送和 GitHub Pages 部署确认后续记于此条。
