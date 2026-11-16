@@ -9332,4 +9332,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出卡片灰字过多，要求使用黑色。本次将三张卡片的说明文字与数字单位改为黑色，并将第三张卡的眉题和标题设为黑色；第一、二张的紫、蓝强调色，以及 Better 绿 / |Worse| 红保持不变。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、`AGENTS.md`。`git diff --check` 通过；静态核对灰色正文已改为黑色、语义指标色未变。数据、页面序列及统计口径不变。
-- 提交 / 发布：待提交推送并确认 Pages 发布。
+- 提交 / 发布：实现提交 `77046518f6b49d212f66bf79b7012d63bbc1179b` 已推送至 `origin/main`；GitHub Pages workflow `43795879005` 构建与部署成功。线上报告 HTTP 200，Last-Modified 为 `2026-11-16 03:05:02 GMT`；读回确认说明文字及数字单位为黑色，第三张卡标题为黑色，Better 绿 / |Worse| 红保持。
