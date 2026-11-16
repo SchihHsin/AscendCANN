@@ -9372,4 +9372,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 近期提问内容是原型策划的连续案例，用于展示从任务内问题延伸到自由提问的推荐逻辑；不声称这些句子来自真实账号历史。学习卡的阶段和完成状态取自现有 ResNet50 本地学习状态。提问卡主操作可直接引入项目规则文件；展开后能查看完整问题来源并继续整理。
 - 文件：`ascend-studio/src/App.jsx`、`NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 对应发布产物、`AGENTS.md`。依据为用户确认的三卡方向与仓库内的学习路径数据；不影响 API / Host / Application 边界或其他页面序列。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 均通过；CUA 桌面首页确认三卡并列、首张记录样式保留、提问时间线和学习路径状态出现。构建保留 Vite 既有的主包超过 500 KB 提示。
-- 提交 / 推送：待本轮提交与 Pages 发布后补记准确 commit 和 workflow 结果。
+- 提交 / 推送：实现提交 `0b41d6253e5ede3a87c1565812ed916b60151a2a` 已推送到 `origin/main`；GitHub Pages workflow `43802583824` 构建与部署成功。首次 push 因 `main` 有两笔并行提交被拒，随后将本次实现接到最新 `main` 后成功推送，双方提交均保留。
