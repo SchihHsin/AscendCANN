@@ -9428,3 +9428,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`。不改变章节顺序、Demo 页面定位或 API / Host / Application 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 HTTP 服务可读到封面结构；部署后线上 HTML 与 `app.js` 均核对到原声内容。CUA 桌面预览两次连接超时，因此未取得浏览器截图。
 - 提交与发布：实现提交 `7d50262a` 已推送至 `origin/main`；Pages workflow `43828871386` build / deploy 成功。
+
+### 2026-11-16 · PC 材料补齐三条体验主线的正向 VOC
+
+- 用户澄清“go”是将筛出的正向原声全部放入对应材料，而非只加开发章节。三章封面现在按主题呈现访谈引语：学习线包含主动学习、截图带入对话和框选提问反馈；开发线包含理解修改原因、可交互图解反馈；移动线包含定期速览反馈。
+- 逐字稿转写写作“截图”的郑雨豪原话按原词保留，不改写成“划词”；移动端引语只对应每周速览减少检索时间，不延伸为对跨端同步的整体认可。开发线的王鹤锦原声明确支持画布效果与交互性。
+- 文件：`ascstudio-pc/index.html`、`ascstudio-pc/app.js`、`ascstudio-pc/styles.css`。引语按章节封面摘要下方的简洁列表呈现，不改变章节顺序、Demo 页面定位或 API / Host / Application 边界。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；Pages 部署后线上 HTML 与 `app.js` 核对到三个章节的全部六条原声。CUA 桌面预览此前连接超时，未取得视觉截图。
+- 提交与发布：VOC 补齐提交 `69c6b1b3` 已推送至 `origin/main`；Pages workflow `43830613497` build / deploy 成功。
