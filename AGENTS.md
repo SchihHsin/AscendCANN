@@ -9348,4 +9348,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 资料库移除首页角色筛选、教师摘要、公共基础摘要、五主线摘要、阶段列表和更多资源摘要，避免把同一组 README 内容重复铺在一页；保留课程详情、先修知识、135 门课程能力地图及原有资源状态。内容与阶段标注来自仓库原有学习资料页面，本次不新增在线能力承诺（H）。
 - 变更文件：`cann-learning-home/index.html`、`role.html`、`role-page.js`、`role-page.css`、`home.css`、`resources.html`、`library.css`、`AGENTS.md`。页面序列改为首页 → 角色路线 → 资料库；CANN 能力地图仍可从首页直接进入。没有改动 API / Host / Application 机制边界。
 - 验证：`node --check cann-learning-home/role-page.js`、`node --check cann-learning-home/capability-map.js`、`git diff --check` 均通过；静态核对首页、路线页、资料库及九个角色的页面内跳转目标均存在。尝试用 CUA 打开本地桌面预览三次均超时，本轮未完成浏览器截图核验。
-- 提交 / 推送：页面实现与本条记录一并提交并推送到 `origin/main`；GitHub Pages 发布结果在本轮结束前核验。
+- 提交 / 推送 / 发布：页面实现提交 `b385f62d` 已推送到 `origin/main`；GitHub Pages workflow `43798630706` 构建与部署成功。首页、角色页和 7 个页面 / 资源文件均返回 HTTP 200；线上资料库读回确认重复角色与阶段摘要已移除，CANN 能力地图和课程主线仍在。
