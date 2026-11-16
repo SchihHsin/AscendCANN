@@ -195,29 +195,42 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                 onClick={() => openRecommendation(item)}
               >
                 {errorLearning ? <>
-                  <span className="new-task-home__card-error-heading">
+                  <span className="new-task-home__card-heading">
                     <Icon size={ICON_SIZE.navigation} aria-hidden="true" />
                     <strong title={item.title}>{item.title}</strong>
                     <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span>
                   </span>
-                  <span className="new-task-home__card-error-count">{item.errorPeriod}出错 <strong>{item.errorCount} 次</strong></span>
-                  {!expanded && <ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
+                  <span className="new-task-home__card-meta is-error"><span>{item.errorPeriod}出错</span><strong>{item.errorCount} 次</strong></span>
+                  {!expanded && <span className="new-task-home__card-body"><ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
                     {item.errorExamples.slice(0, 2).map((example) => <li key={`${example.date}-${example.summary}`} title={`${example.date} · ${example.summary}`}><time>{example.date}</time><span aria-hidden="true">·</span><span className="new-task-home__card-error-summary">{example.summary}</span></li>)}
-                  </ul>}
+                  </ul></span>}
                 </> : questionTrail ? <>
-                  <span className="new-task-home__external-detection"><IconExternalLink size={ICON_SIZE.inline} aria-hidden="true" /><strong>识别到平台外的开发任务</strong></span>
-                  <span className="new-task-home__external-context"><strong>{externalQuestion?.source || "自由提问"}</strong><time>{externalQuestion?.date}</time><span>{externalQuestion?.context}</span></span>
-                  <span className="new-task-home__external-question">{externalQuestion?.question}</span>
-                  <span className="new-task-home__external-related">并关联到 {relatedTaskQuestionCount} 个任务内问题 · 模型输入约定</span>
-                </> : learningProgress ? <>
-                  <span className="new-task-home__learning-heading"><span><Icon size={ICON_SIZE.feature} aria-hidden="true" /><strong>ResNet50 推理学习</strong></span><small>{item.learningProgress.completed}/{item.learningProgress.total}</small></span>
-                  <span className="new-task-home__learning-current">当前 · {item.learningProgress.currentStage}</span>
-                  <span className="new-task-home__learning-route" aria-label="学习路径阶段">
-                    {item.learningPath.map((stage, stageIndex) => <span className={`new-task-home__learning-stop is-${stage.state}`} key={stage.id} title={stage.title}>
-                      <i aria-hidden="true" />{stageIndex < item.learningPath.length - 1 && <b aria-hidden="true" />}
-                    </span>)}
+                  <span className="new-task-home__card-heading">
+                    <Icon size={ICON_SIZE.navigation} aria-hidden="true" />
+                    <strong title={item.title}>{item.title}</strong>
+                    <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span>
                   </span>
-                  <span className="new-task-home__learning-labels" aria-hidden="true"><span>认识</span><span>环境</span><span>输入</span><span>执行</span><span>复盘</span></span>
+                  <span className="new-task-home__card-meta is-detection"><IconExternalLink size={ICON_SIZE.inline} aria-hidden="true" /><strong>识别到平台外的开发任务</strong></span>
+                  <span className="new-task-home__card-body">
+                    <span className="new-task-home__external-context"><strong>{externalQuestion?.source || "自由提问"}</strong><time>{externalQuestion?.date}</time><span>{externalQuestion?.context}</span></span>
+                    <span className="new-task-home__external-question">{externalQuestion?.question}</span>
+                    <span className="new-task-home__external-related">关联 {relatedTaskQuestionCount} 个任务内问题 · 模型输入约定</span>
+                  </span>
+                </> : learningProgress ? <>
+                  <span className="new-task-home__card-heading">
+                    <Icon size={ICON_SIZE.navigation} aria-hidden="true" />
+                    <strong title={item.title}>{item.title}</strong>
+                    <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span>
+                  </span>
+                  <span className="new-task-home__card-meta is-progress"><span>当前阶段</span><strong>{item.learningProgress.currentStage}</strong><small>{item.learningProgress.completed}/{item.learningProgress.total}</small></span>
+                  <span className="new-task-home__card-body is-learning-progress">
+                    <span className="new-task-home__learning-route" aria-label="学习路径阶段">
+                      {item.learningPath.map((stage, stageIndex) => <span className={`new-task-home__learning-stop is-${stage.state}`} key={stage.id} title={stage.title}>
+                        <i aria-hidden="true" />{stageIndex < item.learningPath.length - 1 && <b aria-hidden="true" />}
+                      </span>)}
+                    </span>
+                    <span className="new-task-home__learning-labels" aria-hidden="true"><span>认识</span><span>环境</span><span>输入</span><span>执行</span><span>复盘</span></span>
+                  </span>
                 </> : <>
                   <span className="new-task-home__card-context"><Icon size={ICON_SIZE.feature} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
                   <span className="new-task-home__card-activity" title={item.activity}>{["frequent-questions", "external-project-rules"].includes(item.type) ? "示例 · " : ""}{item.activity}</span>

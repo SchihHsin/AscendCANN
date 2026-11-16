@@ -9381,3 +9381,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 页面产物、`AGENTS.md`。根据用户明确的“识别到平台外的开发任务”表述；不影响页面序列或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；CUA 桌面回放确认收起态能直接看到识别提示、来源和问题内容。Vite 输出既有主包超过 500 KB 提示。
 - 提交 / 推送：实现提交 `f350cbf8870a3640b01055f0c6e7704e39447bdb` 已推送到 `origin/main`；GitHub Pages workflow `43808581701` 构建与部署成功。线上 `/AscendCANN/ascstudio/` 返回 HTTP 200，已更新至资源 `index-BDO2EMhw.js` 与 `index-BUrP3_ID.css`。
+
+### 2026-11-16 · 首页三类推荐卡共用信息框架
+
+- 用户确认统一首页三张推荐卡的通用外壳与视觉层级，以已细调的开发错误记录卡作为标题字号、间距、入口位置和状态行基准；正文根据卡片语义分别呈现，不强行套成同一种内容组件。
+- 共用层级为标题图标/名称/右上角进入操作 → 元信息或状态摘要 → 细分隔线与正文。错误卡保留时间与错误次数及近期记录；平台外提问卡保留“识别到平台外的开发任务”、来源/日期/原问题及关联任务内问题；学习卡保留当前阶段、完成数与路径进度。策划示例不被描述为真实遥测。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/new-task-home.css` 及 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。依据为用户评审后确认的“样式统一，正文各自表达”方向；不改变首页推荐分类、页面序列或 API / Host / Application 边界。
+- 验证：`npm run build:pages` 通过（Vite 保留既有主包超过 500 KB 提示），桌面 CUA 回放确认三卡共同层级与内容差异；`git diff --check` 通过。提交与 Pages 发布状态在后续行补记。
