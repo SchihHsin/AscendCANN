@@ -9405,3 +9405,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - “开始学习”与“补充项目规则”双入口保持：前者预填可编辑学习目标，后者在同主题上增加项目规则要求。平台来源如需用于内部策划数据判断，仅作未展示的分类依据，不作为首页卖点。
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/home-recommendations.js`、`ascend-studio/src/new-task-home.css` 与 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。此条更新并覆盖前条关于在卡片显式展示平台外识别提示的视觉决策；不改变页面序列或 API / Host / Application 边界。
 - 构建与脚本检查通过。桌面回放与提交 / Pages 回执随后补记。
+- 发布回执：学习主题呈现提交 `d2a61b6b` 已推送至 `origin/main`；Pages workflow `43824840827` build / deploy 成功。线上 `/ascstudio/` 引用 `index-BpILoq9E.js` 和 `index-B2-nr8zU.css`，两项资源均 HTTP 200。交接回执随后另行提交。
