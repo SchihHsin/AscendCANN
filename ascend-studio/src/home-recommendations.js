@@ -292,8 +292,8 @@ export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = 
         task, mode, type: "question-trail", title: "模型输入约定", activity: "3 个相关问题 · 2 类场景 · 11月05日—12日",
         reason: "从任务里的输入处理，延伸到另一个项目的模型约定。",
         evidence: questionTrail.map((item, index) => evidence(`question-trail-${index}`, item.date, item.question)),
-        steps: [], action: { type: "project-rules-upload" }, actionLabel: "结合项目规则",
-        prompt: "请把这几次关于模型输入约定的问题串起来，并结合我上传的项目规则整理适用的核对路径。",
+        steps: [],
+        prompt: "请把这几次关于模型输入约定的问题串起来，围绕模型输入描述与张量预处理，整理适用的学习路径。",
         priority: 129, deps: questionTrail,
       });
       trail.questionTrail = questionTrail;

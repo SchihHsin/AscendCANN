@@ -71,6 +71,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
   const [expandedCardId, setExpandedCardId] = useState(null);
   const fileInputRef = useRef(null);
   const goalRef = useRef(null);
+  const lastCardPointerTypeRef = useRef("mouse");
   const activeMode = modes.find((item) => item.id === mode) || modes[0];
   const candidates = buildHomeSuggestions({ tasks, currentTaskName, mode }).map((item, index) => ({
     ...item,
@@ -130,6 +131,24 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
     onRecommendationAction?.(item);
   };
 
+  const startLearningFromQuestionTrail = (item) => {
+    setMode("learning");
+    setProjectRulesIntent(false);
+    setGoal(item.prompt || `请围绕“${item.title}”整理学习路径。`);
+    setError("");
+    setCardExpanded(null);
+    requestAnimationFrame(() => goalRef.current?.focus());
+  };
+
+  const addProjectRulesToQuestionTrail = (item) => {
+    setMode("learning");
+    setProjectRulesIntent(true);
+    const learningGoal = item.prompt || `请围绕“${item.title}”整理学习路径。`;
+    setGoal(`${learningGoal} 请再结合我上传的项目规则，核对其中涉及的接口与约束。`);
+    setError("");
+    fileInputRef.current?.click();
+  };
+
   return (
     <section
       className="new-task-home"
@@ -174,6 +193,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
               key={item.id}
               className={`new-task-home__card new-task-home__card--${cardTone}${errorLearning ? " is-error-learning" : ""}${questionTrail ? " is-question-trail" : ""}${learningProgress ? " is-learning-progress" : ""}${expanded ? " is-expanded" : ""}`}
               onPointerEnter={(event) => { if (event.pointerType !== "touch") setCardExpanded(item.id); }}
+              onPointerDownCapture={(event) => { lastCardPointerTypeRef.current = event.pointerType; }}
               onPointerLeave={(event) => { if (event.pointerType !== "touch" && !event.currentTarget.contains(document.activeElement)) setCardExpanded(null); }}
               onFocusCapture={() => setCardExpanded(item.id)}
               onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setCardExpanded(null); }}
@@ -186,13 +206,25 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                 aria-label={errorLearning
                   ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次，查看错误详情`
                   : questionTrail
-                    ? `识别到平台外的开发任务：${externalQuestion?.question || "查看相关提问"}，并关联${relatedTaskQuestionCount}个任务内问题`
+                    ? `识别到平台外的开发任务：${externalQuestion?.question || "查看相关提问"}，开始学习${item.title}`
                     : learningProgress
                       ? `打开 ResNet50 推理学习路径，当前${item.learningProgress.currentStage}，已完成${item.learningProgress.completed}/${item.learningProgress.total}个学习动作`
                       : `${item.taskName}：${item.title}，前往任务`}
                 aria-controls={detailsId}
                 aria-expanded={expanded}
-                onClick={() => openRecommendation(item)}
+                onClick={() => {
+                  if (questionTrail) {
+                    const pointerType = lastCardPointerTypeRef.current;
+                    lastCardPointerTypeRef.current = "mouse";
+                    if (pointerType === "touch" && !expanded) {
+                      setCardExpanded(item.id);
+                      return;
+                    }
+                    startLearningFromQuestionTrail(item);
+                    return;
+                  }
+                  openRecommendation(item);
+                }}
               >
                 {errorLearning ? <>
                   <span className="new-task-home__card-heading">
@@ -263,7 +295,10 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                       <div><div className="new-task-home__trail-entry-meta"><time>{question.date}</time><span>{question.source}</span><small>{question.context}</small></div><p>{question.question}</p></div>
                     </section>)}
                   </div>
-                  <p className="new-task-home__trail-link">这条自由提问来自平台外开发场景，并与两个任务内问题都指向“模型输入约定”。上传项目规则后，可以继续对照项目里的接口与约束。</p>
+                  <div className="new-task-home__trail-actions" aria-label="学习操作">
+                    <button className="new-task-home__trail-start" type="button" onClick={() => startLearningFromQuestionTrail(item)}><IconBook size={ICON_SIZE.inline} aria-hidden="true" />开始学习</button>
+                    <button className="new-task-home__trail-rules" type="button" onClick={() => addProjectRulesToQuestionTrail(item)}><IconFileText size={ICON_SIZE.inline} aria-hidden="true" />补充项目规则</button>
+                  </div>
                 </> : learningProgress ? <>
                   <div className="new-task-home__learning-detail" aria-label="学习路径进度">
                     {item.learningPath.map(stage => <div className={`new-task-home__learning-stage is-${stage.state}`} key={stage.id}>
@@ -277,11 +312,11 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                   {item.condition && <p className="new-task-home__card-condition">适用条件：{item.condition}</p>}
                   {item.steps?.length > 0 && <ul className="new-task-home__card-steps" aria-label="建议步骤">{item.steps.slice(0, 3).map((step, stepIndex) => <li key={`${stepIndex}-${step}`}>{step}</li>)}</ul>}
                 </>}
-                <div className="new-task-home__card-buttons">
+                {!questionTrail && <div className="new-task-home__card-buttons">
                   <button className="new-task-home__card-continue" type="button" onClick={() => openRecommendation(item)}>{item.actionLabel || "查看建议"}</button>
                   {!["project-rules-upload", "continue-task"].includes(item.action?.type) && <button className="new-task-home__card-chat" type="button" onClick={() => onRecommendationChat?.(item)}>先聊聊</button>}
                   <button className="new-task-home__card-snooze" type="button" onClick={() => { snooze(item); setCardExpanded(null); }}>暂不处理</button>
-                </div>
+                </div>}
               </div>
               <Motif className="new-task-home__card-motif" size={76} stroke={1.2} aria-hidden="true" />
             </article>

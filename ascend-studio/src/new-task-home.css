@@ -195,7 +195,13 @@
 .new-task-home__trail-entry-meta > span { color: #4c5059; font-weight: 620; }
 .new-task-home__trail-entry-meta small { padding: 1px 4px; border-radius: 4px; color: #777b84; background: #f1f1f2; font-size: 8px; }
 .new-task-home__trail-entry p { margin: 2px 0 0; color: #393c43; font-size: 10px; line-height: 1.4; }
-.new-task-home__trail-link { margin: 0; padding: 6px 7px; border-radius: 6px; color: #666a73; background: #f7f6f2; font-size: 9.5px; line-height: 1.45; }
+.new-task-home__trail-actions { display: flex; min-width: 0; align-items: center; gap: 5px; margin-top: 2px; }
+.new-task-home__trail-actions button { display: inline-flex; min-width: 0; min-height: 28px; align-items: center; justify-content: center; gap: 4px; padding: 0 7px; border-radius: 7px; font: inherit; font-size: 10px; font-weight: 560; white-space: nowrap; cursor: pointer; }
+.new-task-home__trail-start { border: 1px solid #17181d; color: #fff; background: #17181d; }
+.new-task-home__trail-start:hover { border-color: #2c2e35; background: #2c2e35; }
+.new-task-home__trail-rules { border: 1px solid #e1e2e5; color: #4c5059; background: rgba(255,255,255,.92); }
+.new-task-home__trail-rules:hover { background: #f4f4f5; }
+.new-task-home__trail-actions button:focus-visible { outline: 2px solid #81899d; outline-offset: 2px; }
 .new-task-home__learning-route { display: flex; align-items: center; margin-top: 4px; }
 .new-task-home__learning-stop { position: relative; display: flex; flex: 1 1 0; align-items: center; }
 .new-task-home__learning-stop i { z-index: 1; width: 8px; height: 8px; border: 1.5px solid #c7c9ce; border-radius: 50%; background: #fff; }

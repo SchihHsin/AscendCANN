@@ -9389,3 +9389,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/new-task-home.css` 及 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。依据为用户评审后确认的“样式统一，正文各自表达”方向；不改变首页推荐分类、页面序列或 API / Host / Application 边界。
 - 验证：`npm run build:pages` 通过（Vite 保留既有主包超过 500 KB 提示），桌面 CUA 回放确认三卡共同层级与内容差异；`git diff --check` 通过。提交与 Pages 发布状态在后续行补记。
 - 发布回执：界面与发布产物提交 `c8cb88cb` 已推送至 `origin/main`；Pages workflow `43818519130` build / deploy 成功。线上 `/ascstudio/` 引用 `index-Bt2zIQpN.js` 与 `index-C-18RMrU.css`，两项资源均 HTTP 200。交接回执随后另行提交。
+
+### 2026-11-16 · 平台外提问卡的学习与规则入口
+
+- 用户确认平台外提问线索卡的主次操作：悬浮或键盘聚焦显示“开始学习”主按钮与“补充项目规则”次按钮；触屏首击展开操作区。主按钮切到学习模式，把识别主题和相关提问写入可编辑学习目标；用户仍通过“生成学习路径”明确继续，不自动发送或创建任务。次按钮进入项目规则文件选择，并把同一主题目标补充为结合项目规则核对接口与约束。
+- 收起态继续展示识别到的平台外开发、主题、原始提问和关联问题；展开态的时间脉络下直接出现双入口，移除旧的泛化“结合项目规则”操作。策划案例不声称接入真实活动检测。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/home-recommendations.js`、`ascend-studio/src/new-task-home.css` 与 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。依据为用户确认的卡片主次动作；不改变页面序列或 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认按钮展开、主按钮将不含规则文件语句的主题目标填入学习输入框。次按钮打开本地文件选择器并设置规则补充意图；浏览器扩展阻止自动注入测试文件，故本轮未声称验证文件文本解析。
+- 提交和 Pages 回执随后补记。
