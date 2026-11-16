@@ -317,7 +317,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .summary-metric{display:flex;flex-direction:column;gap:.35vh}
 .summary-metric span{font-size:var(--fs-xs);font-weight:700;letter-spacing:.04em;color:#747c88}
 .summary-metric strong{font:300 clamp(38px,4.4vw,58px)/1 'Inter',sans-serif;letter-spacing:-.05em;color:#343345}
-.summary-card-coeff .summary-metric strong{color:#C66B45}
+.summary-metric-better span,.summary-metric-better strong{color:#1F7A4D}.summary-metric-worse span,.summary-metric-worse strong{color:#C2413A}
 .summary-metrics i{height:4.2vh;width:1px;background:rgba(90,98,110,.18)}
 .summary-card h2{font-size:var(--fs-h2);line-height:1.3;margin-bottom:.9vh}.summary-card p{font-size:var(--fs-body);line-height:1.6;color:#5e646e}
 .summary-takeaway{margin-top:1.7vh;padding:1.8vh 1.6vw;border-radius:14px;background:var(--g-ink);color:#fff;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:1.2vw;font-size:var(--fs-body);line-height:1.55}
@@ -499,7 +499,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class='summary-grid'>
 <article class='summary-card summary-card-kano'><div class='eyebrow'>KANO · 17 项功能</div><div class='summary-number'>10<small>项</small></div><h2>魅力型功能最多</h2><p>另有 3 项线性型、4 项无差异型；本轮没有出现主导的必备型需求。</p></article>
 <article class='summary-card summary-card-ui'><div class='eyebrow'>UI · 5 份有效评分</div><div class='summary-number'>9.2<small>/10</small></div><h2>整体体验评分较高</h2><p>易操作性最高（9.6）；易发现性（8.6）与布局合理性（8.8）相对低。</p></article>
-<article class='summary-card summary-card-coeff'><div class='eyebrow'>KANO · 17 项功能系数均值</div><div class='summary-metrics'><div class='summary-metric'><span>Better</span><strong>0.64</strong></div><i aria-hidden='true'></i><div class='summary-metric'><span>|Worse|</span><strong>0.24</strong></div></div><h2>提供后的满意提升更明显</h2><p>整体来看，功能带来的满意提升较明显，缺少时引发的不满影响相对较弱。</p></article>
+<article class='summary-card summary-card-coeff'><div class='eyebrow'>KANO · 17 项功能系数均值</div><div class='summary-metrics'><div class='summary-metric summary-metric-better'><span>Better</span><strong>0.64</strong></div><i aria-hidden='true'></i><div class='summary-metric summary-metric-worse'><span>|Worse|</span><strong>0.24</strong></div></div><h2>提供后的满意提升更明显</h2><p>整体来看，功能带来的满意提升较明显，缺少时引发的不满影响相对较弱。</p></article>
 </div>
 <div class='summary-takeaway'><b>问卷提示</b><span>路径共创与可编辑示例的满意度提升最明显；内容旁提问和图解也值得优先打磨。周度触达与笼统的“经验回流”反应更弱。</span></div>
 </div>

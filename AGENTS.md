@@ -9312,3 +9312,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈第三张系数卡不应重复前两张的紫、蓝。本次仅将第三张卡改为浅杏色渐变和暖珊瑚强调色；Kano 淡紫卡、UI 浅蓝卡及其他文字层级保持不变。
 - 变更：cann-dashboard/昇腾Agent学习方案问卷分析.html、AGENTS.md。`git diff --check` 通过；静态核对第三卡背景与强调色均为暖色，其他两张语义色未改。
 - 提交 / 发布：报告与样式提交 `76b7e7397b3cd85109eb6dd8dfb3ddda00395d2a` 已推送至 `origin/main`；GitHub Pages workflow `43793047800` 构建成功。线上报告 HTTP 200，Last-Modified 为 `2026-11-16 02:36:03 GMT`；读回确认第三张卡为暖杏色渐变与珊瑚强调色，前两张仍分别为淡紫、浅蓝。
+
+
+### 2026-11-16 · Better 与 |Worse| 使用正负语义色
+
+- 用户建议 Better 用绿色、|Worse| 用红色。本次将两项指标的标签和数值分别设为绿色与红色，第三张卡的浅杏色背景、标题和布局保持不变。
+- 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、`AGENTS.md`。静态核对两组指标类与色值对应；`git diff --check` 通过。数据、页面顺序及统计口径不变。
+- 提交 / 发布：待提交推送并确认 Pages 发布。
