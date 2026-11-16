@@ -9365,3 +9365,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 内容来源为当前 `resources.html` 的课程与资源（H）；搜索排序与 Skill 指令为本地实现；远端 AI 结果尚未验证。未改变首页 → 角色路线 → 资料库的页面序列，也未改变 API / Protocol、Host / Harness、Application / Task 的机制边界。
 - 验证：`node --check cann-learning-home/hub-search.js`、`node --check cann-learning-home/learning-path-skill.js`、`git diff --check` 通过。GitHub Pages workflow `43800794435` 构建与部署成功；首页、角色页、资料库、搜索 JS / CSS 均返回 HTTP 200，线上首页已包含新入口。CUA 本地预览超时；执行环境无法连接现有 Worker，故未做浏览器交互与远端模型调用回放。
 - 页面代码提交 `9756c536` 已推送到 `origin/main`；本条交接记录随后单独提交。待后续在可访问 Worker 的浏览器环境验证智能规划完整调用。
+
+### 2026-11-16 · 首页推荐收为三张并改用过程呈现
+
+- 用户确认保留已经细调过的开发错误记录卡，并将首页推荐收为三张。第一张记录卡视觉与内容结构保持原样；其余推荐改为“近期提问脉络”和“ResNet50 学习路径进度”，分别用日期时间线（问题原话、所属场景）与路径阶段（完成数、当前阶段、下一阶段）呈现。
+- 近期提问内容是原型策划的连续案例，用于展示从任务内问题延伸到自由提问的推荐逻辑；不声称这些句子来自真实账号历史。学习卡的阶段和完成状态取自现有 ResNet50 本地学习状态。提问卡主操作可直接引入项目规则文件；展开后能查看完整问题来源并继续整理。
+- 文件：`ascend-studio/src/App.jsx`、`NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 对应发布产物、`AGENTS.md`。依据为用户确认的三卡方向与仓库内的学习路径数据；不影响 API / Host / Application 边界或其他页面序列。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 均通过；CUA 桌面首页确认三卡并列、首张记录样式保留、提问时间线和学习路径状态出现。构建保留 Vite 既有的主包超过 500 KB 提示。
+- 提交 / 推送：待本轮提交与 Pages 发布后补记准确 commit 和 workflow 结果。

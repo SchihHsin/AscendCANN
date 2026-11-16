@@ -1,4 +1,6 @@
 import { LEARNING_TASK } from "./learning-data";
+import { OFFICIAL_LEARNING_STAGES } from "./official-learning-data";
+import { deriveOfficialStatuses } from "./official-learning-progress";
 
 const MODES = new Set(["learning", "development"]);
 const clean = value => String(value ?? "").trim();
@@ -281,15 +283,47 @@ export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = 
     const task = tasks.find(item => item?.name === LEARNING_TASK);
     const official = tasks.find(item => item?.kind === "official-learning");
     if (task) {
-      const sample = (type, title, activity, reason, action, actionLabel, facts, priority) => candidate({
-        task, mode, type, title, activity, reason, action, actionLabel, priority,
-        evidence: facts.map((text, index) => evidence(`${type}-${index}`, "示例提问", text)),
-        steps: [], deps: facts, prompt: `请结合这些昇腾开发问题，整理“${title}”的学习线索。`,
+      const questionTrail = [
+        { date: "11月12日", source: "图像推理调试", context: "任务内", question: "预处理成 NCHW 后，怎么确认和模型输入签名一致？" },
+        { date: "11月09日", source: "自由提问", context: "项目外问题", question: "另一个项目用动态 Shape，输入描述要从哪里核对？" },
+        { date: "11月05日", source: "AddCustom 精度异常", context: "任务内", question: "项目里的预处理和样例不同，应该先对照哪份说明？" },
+      ];
+      const trail = candidate({
+        task, mode, type: "question-trail", title: "模型输入约定", activity: "3 个相关问题 · 2 类场景 · 11月05日—12日",
+        reason: "从任务里的输入处理，延伸到另一个项目的模型约定。",
+        evidence: questionTrail.map((item, index) => evidence(`question-trail-${index}`, item.date, item.question)),
+        steps: [], action: { type: "project-rules-upload" }, actionLabel: "结合项目规则",
+        prompt: "请把这几次关于模型输入约定的问题串起来，并结合我上传的项目规则整理适用的核对路径。",
+        priority: 129, deps: questionTrail,
       });
-      pool.push(sample("frequent-questions", "把模型输入问题串起来学", "近期多次询问输入 Shape 与预处理", "图像通道、维度转换和模型签名可以连起来理解。", { type: "learning-lesson", materialId: "learning-lesson" }, "查看相关学习", ["HWC 转 NCHW 的顺序怎么确定？", "输入 Shape 怎么和模型签名对齐？"], 129));
-      pool.push(sample("external-project-rules", "结合项目规则理解算子开发", "近期持续询问外部项目中的算子开发", "上传项目说明，结合问题整理适合这个项目的学习线索。", { type: "project-rules-upload" }, "选择项目文件", ["自定义算子的 tiling 参数怎么设置？", "不同输入 Shape 下如何核对边界？"], 128));
+      trail.questionTrail = questionTrail;
+      pool.push(trail);
     }
-    if (official) pool.push(candidate({ task: official, mode, type: "continue-official-learning", title: "继续 ResNet50 推理学习", activity: "示例学习任务 · 认识模型输入和预处理", reason: "打开已有学习路径，继续学习。", evidence: [evidence("learning-example", "学习任务", "ResNet50 离线推理学习路径（示例）。")], steps: [], action: { type: "continue-task" }, actionLabel: "继续学习", prompt: "继续 ResNet50 离线推理学习。", priority: 127, deps: [official.name] }));
+    if (official) {
+      const learningState = object(official.officialLearningState) ? official.officialLearningState : {};
+      const statuses = deriveOfficialStatuses(learningState);
+      const selectedNodeId = clean(learningState.selectedNodeId);
+      const currentStage = OFFICIAL_LEARNING_STAGES.find(stage => stage.children.some(node => node.id === selectedNodeId)) || OFFICIAL_LEARNING_STAGES[0];
+      const completedCount = Object.values(statuses).filter(status => status === "completed").length;
+      const learningPath = OFFICIAL_LEARNING_STAGES.map(stage => ({
+        id: stage.id,
+        title: stage.title,
+        state: stage.children.every(node => statuses[node.id] === "completed") ? "completed" : stage.id === currentStage.id ? "current" : "upcoming",
+        completed: stage.children.filter(node => statuses[node.id] === "completed").length,
+        total: stage.children.length,
+      }));
+      const suggestion = candidate({
+        task: official, mode, type: "continue-official-learning", title: "ResNet50 推理学习",
+        activity: `${completedCount}/${Object.keys(statuses).length} 个学习动作完成 · 当前：${currentStage.title}`,
+        reason: "沿着学习路径继续，从当前阶段接上图解、课程与练习。",
+        evidence: [], steps: [], action: { type: "continue-task" }, actionLabel: completedCount ? "继续学习" : "开始学习",
+        prompt: "继续 ResNet50 离线推理学习。", priority: 127,
+        deps: [official.name, learningState.selectedNodeId, learningState.started, learningState.understood, learningState.answers, learningState.checks],
+      });
+      suggestion.learningPath = learningPath;
+      suggestion.learningProgress = { completed: completedCount, total: Object.keys(statuses).length, currentStage: currentStage.title };
+      pool.push(suggestion);
+    }
   }
   for (const task of tasks) {
     if (!object(task) || !clean(task.name)) continue;
@@ -318,5 +352,5 @@ export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = 
       }
     }
   }
-  return [...unique.values()].sort((a, b) => b.priority - a.priority || Number(b.taskName === currentTaskName) - Number(a.taskName === currentTaskName) || a.taskName.localeCompare(b.taskName, "zh-CN")).slice(0, 6);
+  return [...unique.values()].sort((a, b) => b.priority - a.priority || Number(b.taskName === currentTaskName) - Number(a.taskName === currentTaskName) || a.taskName.localeCompare(b.taskName, "zh-CN")).slice(0, mode === "learning" ? 3 : 6);
 }

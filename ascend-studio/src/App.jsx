@@ -1251,6 +1251,7 @@ function App() {
       ...(details.kind === "learning" ? {
         learningState: learning.getTaskState(name) || readSession(`learning-journey:${name}`, null),
       } : {}),
+      ...(details.kind === "official-learning" ? { officialLearningState: officialLearning.state } : {}),
     };
   }));
   const saveLearningSummary = () => {

@@ -14,6 +14,8 @@ import {
   IconSparkles,
   IconBrain,
   IconAffiliate,
+  IconMessageCircle,
+  IconRoute,
   IconX,
 } from "@tabler/icons-react";
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
@@ -157,15 +159,17 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
           const index = suggestions.indexOf(item);
           const cardTone = ["rose", "sand", "blue", "sand"][index] || "rose";
           const errorLearning = item.type.startsWith("error-learning-");
+          const questionTrail = item.type === "question-trail";
+          const learningProgress = item.type === "continue-official-learning";
           const errorIcons = [IconBook, IconFileText, IconBrain];
-          const Icon = errorLearning ? errorIcons[index % errorIcons.length] : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
-          const Motif = errorLearning ? errorIcons[index % errorIcons.length] : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
+          const Icon = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconMessageCircle : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
+          const Motif = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconMessageCircle : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
           const expanded = expandedCardId === item.id;
           const detailsId = `home-suggestion-details-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
           return (
             <article
               key={item.id}
-              className={`new-task-home__card new-task-home__card--${cardTone}${errorLearning ? " is-error-learning" : ""}${expanded ? " is-expanded" : ""}`}
+              className={`new-task-home__card new-task-home__card--${cardTone}${errorLearning ? " is-error-learning" : ""}${questionTrail ? " is-question-trail" : ""}${learningProgress ? " is-learning-progress" : ""}${expanded ? " is-expanded" : ""}`}
               onPointerEnter={(event) => { if (event.pointerType !== "touch") setCardExpanded(item.id); }}
               onPointerLeave={(event) => { if (event.pointerType !== "touch" && !event.currentTarget.contains(document.activeElement)) setCardExpanded(null); }}
               onFocusCapture={() => setCardExpanded(item.id)}
@@ -174,11 +178,15 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
             >
               <FolderCardSurface />
               <button
-                className={`new-task-home__card-summary${errorLearning ? " is-error-learning" : ""}`}
+                className={`new-task-home__card-summary${errorLearning ? " is-error-learning" : ""}${questionTrail ? " is-question-trail" : ""}${learningProgress ? " is-learning-progress" : ""}`}
                 type="button"
                 aria-label={errorLearning
-                  ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次，展开查看错误详情和推荐说明`
-                  : `${item.taskName}：${item.title}，前往任务`}
+                  ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次，查看错误详情`
+                  : questionTrail
+                    ? `结合项目规则整理模型输入约定，查看${item.questionTrail.length}次相关提问`
+                    : learningProgress
+                      ? `打开 ResNet50 推理学习路径，当前${item.learningProgress.currentStage}，已完成${item.learningProgress.completed}/${item.learningProgress.total}个学习动作`
+                      : `${item.taskName}：${item.title}，前往任务`}
                 aria-controls={detailsId}
                 aria-expanded={expanded}
                 onClick={() => openRecommendation(item)}
@@ -193,6 +201,23 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                   {!expanded && <ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
                     {item.errorExamples.slice(0, 2).map((example) => <li key={`${example.date}-${example.summary}`} title={`${example.date} · ${example.summary}`}><time>{example.date}</time><span aria-hidden="true">·</span><span className="new-task-home__card-error-summary">{example.summary}</span></li>)}
                   </ul>}
+                </> : questionTrail ? <>
+                  <span className="new-task-home__trail-heading"><span><Icon size={ICON_SIZE.feature} aria-hidden="true" /><strong>近期提问脉络</strong></span><small>{item.questionTrail.length} 个问题</small></span>
+                  <span className="new-task-home__trail-topic">模型输入约定</span>
+                  <span className="new-task-home__trail-preview" aria-label="相关提问时间线">
+                    {item.questionTrail.slice(0, 2).map(question => <span className="new-task-home__trail-preview-row" key={question.date}>
+                      <time>{question.date}</time><span className="new-task-home__trail-dot" aria-hidden="true" /><span className="new-task-home__trail-preview-text">{question.question}</span>
+                    </span>)}
+                  </span>
+                </> : learningProgress ? <>
+                  <span className="new-task-home__learning-heading"><span><Icon size={ICON_SIZE.feature} aria-hidden="true" /><strong>ResNet50 推理学习</strong></span><small>{item.learningProgress.completed}/{item.learningProgress.total}</small></span>
+                  <span className="new-task-home__learning-current">当前 · {item.learningProgress.currentStage}</span>
+                  <span className="new-task-home__learning-route" aria-label="学习路径阶段">
+                    {item.learningPath.map((stage, stageIndex) => <span className={`new-task-home__learning-stop is-${stage.state}`} key={stage.id} title={stage.title}>
+                      <i aria-hidden="true" />{stageIndex < item.learningPath.length - 1 && <b aria-hidden="true" />}
+                    </span>)}
+                  </span>
+                  <span className="new-task-home__learning-labels" aria-hidden="true"><span>认识</span><span>环境</span><span>输入</span><span>执行</span><span>复盘</span></span>
                 </> : <>
                   <span className="new-task-home__card-context"><Icon size={ICON_SIZE.feature} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
                   <span className="new-task-home__card-activity" title={item.activity}>{["frequent-questions", "external-project-rules"].includes(item.type) ? "示例 · " : ""}{item.activity}</span>
@@ -218,6 +243,22 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                     <p><strong>推荐理由</strong><span>{item.recommendationReason}</span></p>
                     <p><strong>学习方向</strong><span>{item.learningDirection}</span></p>
                   </div>
+                </> : questionTrail ? <>
+                  <div className="new-task-home__trail-detail" aria-label="近期提问脉络">
+                    {item.questionTrail.map((question, trailIndex) => <section className="new-task-home__trail-entry" key={question.date}>
+                      <span className="new-task-home__trail-entry-marker"><i aria-hidden="true" />{trailIndex < item.questionTrail.length - 1 && <b aria-hidden="true" />}</span>
+                      <div><div className="new-task-home__trail-entry-meta"><time>{question.date}</time><span>{question.source}</span><small>{question.context}</small></div><p>{question.question}</p></div>
+                    </section>)}
+                  </div>
+                  <p className="new-task-home__trail-link">这些问题都落在“模型输入约定”上；上传项目规则后，可以一起对照项目里的真实接口与约束。</p>
+                </> : learningProgress ? <>
+                  <div className="new-task-home__learning-detail" aria-label="学习路径进度">
+                    {item.learningPath.map(stage => <div className={`new-task-home__learning-stage is-${stage.state}`} key={stage.id}>
+                      <span className="new-task-home__learning-stage-mark" aria-hidden="true">{stage.state === "completed" ? "✓" : stage.state === "current" ? "●" : ""}</span>
+                      <strong>{stage.title}</strong><small>{stage.completed}/{stage.total}</small>
+                    </div>)}
+                  </div>
+                  <p className="new-task-home__learning-next">当前阶段：{item.learningProgress.currentStage}。沿路径继续查看图解、课程和练习。</p>
                 </> : <>
                   {item.evidence?.length > 0 && <ul className="new-task-home__card-evidence" aria-label="推荐依据">{item.evidence.slice(0, 3).map((evidence) => <li key={evidence.id}><strong>{evidence.title}</strong>{evidence.summary && <span>{evidence.summary}</span>}{evidence.time && <time>{evidence.time}</time>}</li>)}</ul>}
                   {item.condition && <p className="new-task-home__card-condition">适用条件：{item.condition}</p>}
