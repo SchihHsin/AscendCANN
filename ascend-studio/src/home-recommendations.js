@@ -103,7 +103,7 @@ function errorLearningSuggestions(tasks) {
         deps: pattern,
       }),
       errorCount: pattern.count,
-      errorPeriod: "近 7 天",
+      errorPeriod: "示例 · 近 7 天",
       errorExamples: pattern.examples,
       recommendationReason: pattern.recommendationReason,
       learningDirection: pattern.learningDirection,
@@ -276,7 +276,21 @@ function demoSuggestions(task, mode) {
 
 export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = "learning" } = {}) {
   if (!MODES.has(mode) || !Array.isArray(tasks)) return [];
-  const pool = mode === "learning" ? errorLearningSuggestions(tasks) : [];
+  const pool = mode === "learning" ? errorLearningSuggestions(tasks).slice(0, 1) : [];
+  if (mode === "learning") {
+    const task = tasks.find(item => item?.name === LEARNING_TASK);
+    const official = tasks.find(item => item?.kind === "official-learning");
+    if (task) {
+      const sample = (type, title, activity, reason, action, actionLabel, facts, priority) => candidate({
+        task, mode, type, title, activity, reason, action, actionLabel, priority,
+        evidence: facts.map((text, index) => evidence(`${type}-${index}`, "示例提问", text)),
+        steps: [], deps: facts, prompt: `请结合这些昇腾开发问题，整理“${title}”的学习线索。`,
+      });
+      pool.push(sample("frequent-questions", "把模型输入问题串起来学", "近期多次询问输入 Shape 与预处理", "图像通道、维度转换和模型签名可以连起来理解。", { type: "learning-lesson", materialId: "learning-lesson" }, "查看相关学习", ["HWC 转 NCHW 的顺序怎么确定？", "输入 Shape 怎么和模型签名对齐？"], 129));
+      pool.push(sample("external-project-rules", "结合项目规则理解算子开发", "近期持续询问外部项目中的算子开发", "上传项目说明，结合问题整理适合这个项目的学习线索。", { type: "project-rules-upload" }, "选择项目文件", ["自定义算子的 tiling 参数怎么设置？", "不同输入 Shape 下如何核对边界？"], 128));
+    }
+    if (official) pool.push(candidate({ task: official, mode, type: "continue-official-learning", title: "继续 ResNet50 推理学习", activity: "示例学习任务 · 认识模型输入和预处理", reason: "打开已有学习路径，继续学习。", evidence: [evidence("learning-example", "学习任务", "ResNet50 离线推理学习路径（示例）。")], steps: [], action: { type: "continue-task" }, actionLabel: "继续学习", prompt: "继续 ResNet50 离线推理学习。", priority: 127, deps: [official.name] }));
+  }
   for (const task of tasks) {
     if (!object(task) || !clean(task.name)) continue;
     if (mode === "learning" && task.kind === "learning") pool.push(...learningSuggestions(task));

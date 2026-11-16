@@ -15,7 +15,7 @@ function readSnoozed() {
 export function useHomeRecommendationState(items = []) {
   const [snoozed, setSnoozed] = useState(readSnoozed);
   const visibleSuggestions = useMemo(
-    () => items.filter((item) => snoozed[item.id] !== item.revision).slice(0, 3),
+    () => items.filter((item) => snoozed[item.id] !== item.revision).slice(0, 4),
     [items, snoozed],
   );
 

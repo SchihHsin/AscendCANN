@@ -9349,3 +9349,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-learning-home/index.html`、`role.html`、`role-page.js`、`role-page.css`、`home.css`、`resources.html`、`library.css`、`AGENTS.md`。页面序列改为首页 → 角色路线 → 资料库；CANN 能力地图仍可从首页直接进入。没有改动 API / Host / Application 机制边界。
 - 验证：`node --check cann-learning-home/role-page.js`、`node --check cann-learning-home/capability-map.js`、`git diff --check` 均通过；静态核对首页、路线页、资料库及九个角色的页面内跳转目标均存在。尝试用 CUA 打开本地桌面预览三次均超时，本轮未完成浏览器截图核验。
 - 提交 / 推送 / 发布：页面实现提交 `b385f62d` 已推送到 `origin/main`；GitHub Pages workflow `43798630706` 构建与部署成功。首页、角色页和 7 个页面 / 资源文件均返回 HTTP 200；线上资料库读回确认重复角色与阶段摘要已移除，CANN 能力地图和课程主线仍在。
+
+
+### 2026-11-16 · 首页主动推荐四种昇腾开发线索
+
+- 用户确定推荐卡覆盖：平台内开发任务的高频问题、近期高频询问、平台外项目的关联提问、继续学习；实例围绕昇腾算子与模型输入，不使用画布开发问题作为用户案例。历史线索目前为明确标注的策划示例，未连接外部开发工具。
+- 首页保留一张已有高频错误卡，增加模型输入提问、外部项目算子问题和 ResNet50 学习入口。外部项目卡引导上传项目规则文件；按本地文本提取实际章节和原文片段生成右侧学习草案，空文件提示重新选择。此为基于章节和关键词的原型，并非真实 AI 语义解读或真实历史聚合。首页和任务内加号菜单收拢为上传文件 / 使用能力；首页不再常显代码、截图、文件快捷按钮。
+- 文件：`ascend-studio/src/home-recommendations.js`、`NewTaskHome.jsx`、`project-rules-learning.js`、`useHomeRecommendationState.js`、`new-task-home.css`、`App.jsx`、`useWorkbenchState.js`、`CompositionLearningPathCanvas.jsx` 及两套 Pages 产物。用户指定分类和交互（H）；示例场景为设计演示（L）。不改变 API / Host / Application 层边界。
+- 验证：`npm run build:pages`、`node --check`、`git diff --check`；对项目文件章节、来源和空文本运行基本检查。CUA 浏览器连接超时，未完成鼠标可视回放。交互仍需后续用真实项目资料验证；持续对话内的项目规则快捷生成、真实历史聚合和语义解读尚未完成。

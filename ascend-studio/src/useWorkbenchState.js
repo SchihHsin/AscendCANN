@@ -367,7 +367,7 @@ export function useWorkbenchState() {
     setGroups((all) => all.map((item) => item.id === groupId ? { ...item, tasks: [...item.tasks, title] } : item));
     const learningProfile = learning ? {
       goal: String(compositionPlan?.goalTitle || cleanGoal || "明确本次想学会的内容和能够完成的动作。"),
-      background: String(background || (compositionPlan ? "由首页关联的训练线索组织学习顺序。" : "")).trim(),
+      background: String(background || (compositionPlan?.sourceKind === "project-rules" ? "由上传的项目文件整理学习线索。" : compositionPlan ? "由首页关联的训练线索组织学习顺序。" : "")).trim(),
       dailyMinutes: Math.max(5, Math.min(180, Number(dailyMinutes) || 20)),
     } : null;
     setMeta((all) => ({ ...all, [title]: {
@@ -378,7 +378,9 @@ export function useWorkbenchState() {
       question: compositionPlan?.prompt || (learning
         ? `我想学习：${learningProfile.goal}\n已有基础：${learningProfile.background || "待补充"}\n每天可用时间：${learningProfile.dailyMinutes} 分钟。`
         : cleanGoal || "开始整理这项任务的上下文。"),
-      reply: compositionPlan
+      reply: compositionPlan?.sourceKind === "project-rules"
+        ? "已从上传的项目文件提取相关章节，在右侧整理了学习线索。可以结合文件原文继续提问。"
+        : compositionPlan
         ? "你把训练目标、现象与验证线索串成了需求。右侧已按连线顺序整理成学习路径草案，每个节点都对应刚才选中的线索。"
         : learning
         ? "已建立学习任务。先确认目标、基础和可用时间，再整理学习路径；学习中产生的图解、练习和小结会保存在这个任务中。"

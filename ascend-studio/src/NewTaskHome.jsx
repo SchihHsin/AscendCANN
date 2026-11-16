@@ -19,6 +19,7 @@ import {
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
 import { FolderCardSurface } from "./FolderCardSurface";
 import { buildHomeSuggestions } from "./home-recommendations";
+import { buildProjectRulesPlan } from "./project-rules-learning";
 import { useHomeRecommendationState } from "./useHomeRecommendationState";
 import "./new-task-home.css";
 import "./home-variants.css";
@@ -57,17 +58,15 @@ function highlightHomeCode(line) {
   return fragments.length ? fragments : line;
 }
 
-function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
+function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat, onOpenCapabilities }) {
   const [mode, setMode] = useState("learning");
   const [goal, setGoal] = useState("");
   const [error, setError] = useState("");
   const [attachments, setAttachments] = useState([]);
-  const [snippet, setSnippet] = useState("");
-  const [snippetOpen, setSnippetOpen] = useState(false);
+  const [projectRulesIntent, setProjectRulesIntent] = useState(false);
   const [quickMenuOpen, setQuickMenuOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const fileInputRef = useRef(null);
-  const imageInputRef = useRef(null);
   const goalRef = useRef(null);
   const activeMode = modes.find((item) => item.id === mode) || modes[0];
   const candidates = buildHomeSuggestions({ tasks, currentTaskName, mode }).map((item, index) => ({
@@ -85,7 +84,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
     const incomingFiles = Array.from(fileList || []);
     const incoming = await Promise.all(incomingFiles.map(async (file, index) => {
       const type = forcedType || (file.type.startsWith("image/") ? "image" : "file");
-      const content = type === "file" && codeFilePattern.test(file.name) && file.size < 131072
+      const content = type === "file" && codeFilePattern.test(file.name) && file.size <= 2 * 1024 * 1024
         ? await file.text().catch(() => "")
         : "";
       return { id: createId(), name: file.name, type, size: file.size, content, receivedOrder: attachments.length + index + 1 };
@@ -102,43 +101,30 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
     void addFiles(files, forcedType);
   };
 
-  const attachSnippet = () => {
-    const content = snippet.trim();
-    if (!content) {
-      setError("先粘贴要添加的代码片段。");
-      return;
-    }
-    setAttachments((items) => [...items, {
-      id: createId(),
-      name: `代码片段 ${items.filter((item) => item.type === "code").length + 1}.txt`,
-      type: "code",
-      size: content.length,
-      content,
-      receivedOrder: items.length + 1,
-    }]);
-    setSnippet("");
-    setSnippetOpen(false);
-    setError("");
-  };
-
   const setCardExpanded = (id) => setExpandedCardId(id);
 
   const submit = (event) => {
     event.preventDefault();
-    const cleanGoal = goal.trim();
+    const cleanGoal = goal.trim() || (projectRulesIntent ? "请结合近期昇腾开发问题和上传的项目文件，整理学习路径。" : "");
     if (!cleanGoal) {
       setError("先写下你想学习或开发的目标。");
       goalRef.current?.focus();
       return;
     }
-    const created = onCreateTask?.({ goal: cleanGoal, kind: mode, attachments });
+    const compositionPlan = projectRulesIntent ? buildProjectRulesPlan(attachments.filter(file => file.type === "file"), cleanGoal) : null;
+    if (projectRulesIntent && !compositionPlan) { setError("没有读取到文件中的文字，请选择可读取的文本或 Markdown 文件。"); return; }
+    const created = onCreateTask?.({ goal: cleanGoal, kind: mode, attachments, compositionPlan });
     if (!created) setError("任务没有创建成功，请调整目标后重试。");
   };
 
-  const openSnippet = () => {
-    setSnippetOpen((open) => !open);
-    setQuickMenuOpen(false);
-    setError("");
+  const openRecommendation = (item) => {
+    if (item.action?.type === "project-rules-upload") {
+      setProjectRulesIntent(true);
+      setGoal("请结合近期昇腾开发问题和上传的项目文件，整理学习路径。");
+      fileInputRef.current?.click();
+      return;
+    }
+    onRecommendationAction?.(item);
   };
 
   return (
@@ -156,7 +142,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
               className={"new-task-home__mode-button" + (item.id === mode ? " is-active" : "")}
               type="button"
               aria-pressed={item.id === mode}
-              onClick={() => { setMode(item.id); setError(""); setCardExpanded(null); }}
+              onClick={() => { setMode(item.id); setError(""); setCardExpanded(null); setProjectRulesIntent(false); }}
             >
               {item.id === "learning" ? <IconBook size={ICON_SIZE.feature} aria-hidden="true" /> : <IconCode size={ICON_SIZE.feature} aria-hidden="true" />}
               {item.label}
@@ -169,7 +155,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
         {suggestions.length === 0 && <p className="new-task-home__empty" role="status">目前没有需要优先处理的建议。你可以直接描述新的学习或开发目标。</p>}
         {suggestions.map((item) => {
           const index = suggestions.indexOf(item);
-          const cardTone = ["rose", "sand", "blue"][index] || "rose";
+          const cardTone = ["rose", "sand", "blue", "sand"][index] || "rose";
           const errorLearning = item.type.startsWith("error-learning-");
           const errorIcons = [IconBook, IconFileText, IconBrain];
           const Icon = errorLearning ? errorIcons[index % errorIcons.length] : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
@@ -195,7 +181,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                   : `${item.taskName}：${item.title}，前往任务`}
                 aria-controls={detailsId}
                 aria-expanded={expanded}
-                onClick={() => onRecommendationAction?.(item)}
+                onClick={() => openRecommendation(item)}
               >
                 {errorLearning ? <>
                   <span className="new-task-home__card-error-heading">
@@ -209,7 +195,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                   </ul>}
                 </> : <>
                   <span className="new-task-home__card-context"><Icon size={ICON_SIZE.feature} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
-                  <span className="new-task-home__card-activity" title={item.activity}>{item.activity}</span>
+                  <span className="new-task-home__card-activity" title={item.activity}>{["frequent-questions", "external-project-rules"].includes(item.type) ? "示例 · " : ""}{item.activity}</span>
                   <span className="new-task-home__card-title"><strong title={item.title}>建议：{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span></span>
                   <span className="new-task-home__card-reason">{item.reason}</span>
                 </>}
@@ -238,8 +224,8 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                   {item.steps?.length > 0 && <ul className="new-task-home__card-steps" aria-label="建议步骤">{item.steps.slice(0, 3).map((step, stepIndex) => <li key={`${stepIndex}-${step}`}>{step}</li>)}</ul>}
                 </>}
                 <div className="new-task-home__card-buttons">
-                  <button className="new-task-home__card-continue" type="button" onClick={() => onRecommendationAction?.(item)}>{item.actionLabel || "查看建议"}</button>
-                  <button className="new-task-home__card-chat" type="button" onClick={() => onRecommendationChat?.(item)}>先聊聊</button>
+                  <button className="new-task-home__card-continue" type="button" onClick={() => openRecommendation(item)}>{item.actionLabel || "查看建议"}</button>
+                  {!["project-rules-upload", "continue-task"].includes(item.action?.type) && <button className="new-task-home__card-chat" type="button" onClick={() => onRecommendationChat?.(item)}>先聊聊</button>}
                   <button className="new-task-home__card-snooze" type="button" onClick={() => { snooze(item); setCardExpanded(null); }}>暂不处理</button>
                 </div>
               </div>
@@ -261,21 +247,12 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
             ))}
           </div>
         )}
-        {snippetOpen && (
-          <div className="new-task-home__snippet-popover">
-            <label htmlFor="new-task-code-snippet">添加代码片段</label>
-            <textarea id="new-task-code-snippet" value={snippet} onChange={(event) => setSnippet(event.target.value)} placeholder="粘贴代码或日志片段…" rows={5} />
-            <div>
-              <button type="button" onClick={() => { setSnippetOpen(false); setSnippet(""); }}>取消</button>
-              <button type="button" className="is-primary" onClick={attachSnippet}>添加代码</button>
-            </div>
-          </div>
-        )}
+        {projectRulesIntent && <div className="new-task-home__rules-intent">已选择项目文件学习 <button type="button" onClick={() => setProjectRulesIntent(false)}>取消</button></div>}
+        {!projectRulesIntent && attachments.some(file => /^(agents|claude)\.md$/i.test(file.name)) && <button className="new-task-home__rules-suggestion" type="button" onClick={() => { setMode("learning"); setProjectRulesIntent(true); if (!goal.trim()) setGoal("请根据上传的项目规则，整理需要学习的内容。"); }}>根据项目规则生成学习路径 <IconArrowRight size={ICON_SIZE.inline} /></button>}
         {quickMenuOpen && (
           <div className="new-task-home__quick-menu" role="group" aria-label="添加上下文">
-            <button type="button" onClick={openSnippet}><IconCode size={ICON_SIZE.control} />代码片段</button>
-            <button type="button" onClick={() => { setQuickMenuOpen(false); imageInputRef.current?.click(); }}><IconPhoto size={ICON_SIZE.control} />截图</button>
-            <button type="button" onClick={() => { setQuickMenuOpen(false); fileInputRef.current?.click(); }}><IconPaperclip size={ICON_SIZE.control} />文件</button>
+            <button type="button" onClick={() => { setQuickMenuOpen(false); fileInputRef.current?.click(); }}><IconPaperclip size={ICON_SIZE.control} />上传文件</button>
+            <button type="button" onClick={() => { setQuickMenuOpen(false); onOpenCapabilities?.(); }}><IconBook size={ICON_SIZE.control} />使用能力</button>
           </div>
         )}
         <label className="new-task-home__field">
@@ -293,20 +270,16 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
         </label>
         <div className="new-task-home__toolbar">
           <div className="new-task-home__tools">
-            <button className="new-task-home__add-button" type="button" aria-label="添加上下文" title="添加上下文" aria-expanded={quickMenuOpen} onClick={() => { setQuickMenuOpen((open) => !open); setSnippetOpen(false); }}><IconPlus size={ICON_SIZE.feature} /></button>
-            <button className="new-task-home__tool-button" type="button" onClick={openSnippet}><IconCode size={ICON_SIZE.heading} />代码片段</button>
-            <button className="new-task-home__tool-button" type="button" onClick={() => imageInputRef.current?.click()}><IconPhoto size={ICON_SIZE.heading} />截图</button>
-            <button className="new-task-home__tool-button" type="button" onClick={() => fileInputRef.current?.click()}><IconPaperclip size={ICON_SIZE.heading} />文件</button>
+            <button className="new-task-home__add-button" type="button" aria-label="添加上下文" title="添加上下文" aria-expanded={quickMenuOpen} onClick={() => setQuickMenuOpen((open) => !open)}><IconPlus size={ICON_SIZE.feature} /></button>
           </div>
-          <button className="new-task-home__submit" type="submit" disabled={!goal.trim()}>
+          <button className="new-task-home__submit" type="submit" disabled={!goal.trim() || (projectRulesIntent && !attachments.length)}>
             <IconSparkles size={ICON_SIZE.heading} aria-hidden="true" />
-            <span>{activeMode.action}</span>
+            <span>{projectRulesIntent ? "生成学习路径" : activeMode.action}</span>
             <IconArrowRight size={ICON_SIZE.navigation} aria-hidden="true" />
           </button>
         </div>
         {error && <p className="new-task-home__error" role="alert">{error}</p>}
         <input ref={fileInputRef} className="new-task-home__file-input" type="file" multiple onChange={(event) => handleInputFiles(event)} aria-label="选择文件" />
-        <input ref={imageInputRef} className="new-task-home__file-input" type="file" multiple accept="image/*" onChange={(event) => handleInputFiles(event, "image")} aria-label="选择截图" />
       </form>
     </section>
   );

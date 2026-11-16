@@ -1,7 +1,7 @@
 import "./composition-learning-path-canvas.css";
 
 export function CompositionLearningPathCanvas({ plan }) {
-  return <section className="composition-learning-path canvas-surface" aria-label="根据兴趣关联生成的学习路径">
+  return <section className="composition-learning-path canvas-surface" aria-label="根据上下文生成的学习路径">
     <header className="composition-learning-path__header">
       <span>学习路径草案</span>
       <h1>从「{plan.goalTitle}」开始</h1>
@@ -19,6 +19,6 @@ export function CompositionLearningPathCanvas({ plan }) {
         </article>
       </li>)}
     </ol>
-    <footer className="composition-learning-path__footer">{plan.sourceFieldCount} 个关联线索 · {plan.steps.length} 个学习节点</footer>
+    <footer className="composition-learning-path__footer">{plan.sourceFieldCount} {plan.sourceKind === "project-rules" ? "份项目文件" : "个关联线索"} · {plan.steps.length} 个学习节点</footer>
   </section>;
 }
