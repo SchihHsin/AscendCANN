@@ -9441,6 +9441,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮前隐藏、悬浮文件名后出现。
 - 发布回执：实现提交 `a4687677` 与并行更新合并后以 `7a9f07a3` 推送 `origin/main`；Pages workflow `43833473911` build / deploy 成功。线上 `/ascstudio/` 与 `/ascstudio-pc/studio/` 使用 `index-B3k1LL7Q.js`、`index-AvNLBBeB.css`，资源 HTTP 200。
 
+### 2026-11-16 · PC 访谈原声补充身份背景
+
+- 将材料中已展示的彭椒、王伟、徐立桂、王鹤锦署名补为身份背景：彭椒为 2021实验室编程语言实验室工程师；王伟为昇腾计算基础软件开发部工程师；徐立桂为南京大学研二学生；王鹤锦为杭电研三学生。收尾页将姓名与身份分行，避免长职务出现孤字换行；章节引语、时间戳和页面序列不变。
+- 用户提供的身份信息为本次署名依据（H）。梁淼城（南京大学大四学生）目前未出现在本材料引语中，未虚构原声或新增引用。
+- 文件：`ascstudio-pc/app.js`、`index.html`、`styles.css`。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；桌面预览确认章节署名和收尾页身份行显示正常。发布回执后补记。
+
 ### 2026-11-16 · PC 材料补齐三条体验主线的正向 VOC
 
 - 用户澄清“go”是将筛出的正向原声全部放入对应材料，而非只加开发章节。三章封面现在按主题呈现访谈引语：学习线包含主动学习、截图带入对话和框选提问反馈；开发线包含理解修改原因、可交互图解反馈；移动线包含定期速览反馈。

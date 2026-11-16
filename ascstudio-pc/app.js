@@ -6,9 +6,9 @@ const chapters = [
   {
     id: "learning", title: "让学习贴合当前需要与现有基础", cover: "从一张建议卡开始", summary: "从学习建议和关联探索出发，结合个人基础共创路径，再进入内容学习与实践。", art: "./assets/cover-learning.png", artAlt: "从学习建议出发，经过路径共创进入分步学习与实践的二维线描插画",
     voices: [
-      { quote: "我觉得这个在主动学习过程是比较有帮助。", source: "王伟 · 02:32" },
+      { quote: "我觉得这个在主动学习过程是比较有帮助。", source: "王伟 · 昇腾计算基础软件开发部工程师 · 02:32" },
       { quote: "截图可以直接去那个对话框里搜索。我感觉这个功能挺实用。", source: "郑雨豪 · 02:29" },
-      { quote: "这也挺好。嗯，这个认可。", source: "王伟 · 02:34" },
+      { quote: "这也挺好。嗯，这个认可。", source: "王伟 · 昇腾计算基础软件开发部工程师 · 02:34" },
     ],
     points: [
       { id: "recommend", title: "基于当前进度推荐下一步", note: "基于用户当前进度与开发问题，推荐下一步学习。", emphasis: "推荐下一步学习", description: "基于用户当前进度与开发问题，推荐下一步学习。", entry: "新建任务 · 学习模式下的主动建议卡", home: "classic", mode: "学习", startView: "new-task", stage: "recommend" },
@@ -22,8 +22,8 @@ const chapters = [
   {
     id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "围绕开发问题查看图解、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
     voices: [
-      { quote: "就比较方便，就比较直观……我看到这个地方为什么要这么做。", source: "王伟 · 02:36–02:37" },
-      { quote: "这个画布效果还是很不错的，且还能交互。", source: "王鹤锦 · 02:52" },
+      { quote: "就比较方便，就比较直观……我看到这个地方为什么要这么做。", source: "王伟 · 昇腾计算基础软件开发部工程师 · 02:36–02:37" },
+      { quote: "这个画布效果还是很不错的，且还能交互。", source: "王鹤锦 · 杭电研三学生 · 02:52" },
     ],
     points: [
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
@@ -36,7 +36,7 @@ const chapters = [
   {
     id: "mobile", title: "让学习随时继续", cover: "把学习延伸到日常间隙", summary: "从电脑端收下知识，在手机上完成短读、安排定期回访，并主动发现新知。", art: "./assets/cover-mobile.png", artAlt: "在手机上查看学习内容、保存线索并继续学习的二维线描插画",
     voices: [
-      { quote: "那挺不错的，因为有时候检索这些知识其实还是要花一些时间。", source: "王伟 · 02:39" },
+      { quote: "那挺不错的，因为有时候检索这些知识其实还是要花一些时间。", source: "王伟 · 昇腾计算基础软件开发部工程师 · 02:39" },
     ],
     points: [
       { id: "desktop-handoff", title: "从电脑端的一条回答，接上手机里的下一步", note: "入口就在正在处理的任务里", emphasis: "正在处理的任务里", description: "在 Agent 回答或学习内容里收下一条知识，标记感兴趣或还没弄懂，再选择即时送达或加入定期速览。", entry: "小程序 · 电脑端入口", route: "review-pending", mobile: true },

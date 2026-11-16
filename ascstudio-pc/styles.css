@@ -61,7 +61,9 @@ button:focus-visible, [role="button"]:focus-visible { outline: none; }
 .closing-voice:nth-child(2) .closing-mark { color: rgba(169,116,137,.18); }
 .closing-voice:nth-child(3) .closing-mark { color: rgba(84,135,117,.19); }
 .closing-voice blockquote { position: relative; z-index: 1; display: flex; flex: 1; align-items: center; margin: 14px 0 30px; color: #272831; font: 500 clamp(23px,2.1vw,31px)/1.58 var(--serif); letter-spacing: -.02em; }
-.closing-voice figcaption { color: #535762; font-size: 13px; font-weight: 650; }
+.closing-voice figcaption { display: grid; gap: 4px; color: #535762; }
+.closing-voice figcaption strong { font-size: 13px; font-weight: 650; }
+.closing-voice figcaption span { color: #70747f; font-size: 11px; font-weight: 500; line-height: 1.4; }
 .closing-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; max-width: 1380px; width: 100%; margin: 0 auto; }
 .closing-actions { display: flex; align-items: center; gap: 25px; }
 .closing-footer .text-button { color: #666a74; }
