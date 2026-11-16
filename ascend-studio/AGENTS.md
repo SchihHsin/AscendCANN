@@ -2289,4 +2289,5 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 ### 2026-11-16 · 规则详情悬浮文件名时显示
 
 - “规则详情”按钮在指针悬浮文件名或键盘聚焦时显示；无悬停能力的触屏设备上常显。默认文件行不显示额外状态词。
-- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮显示正常。提交与部署回执后补记。
+- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮显示正常。
+- 发布：实现提交 `a4687677` 与并行更新合并后以 `7a9f07a3` 推送 `origin/main`；Pages workflow `43833473911` 成功，`/ascstudio/` 与 `/ascstudio-pc/studio/` 的 JS / CSS 均 HTTP 200。

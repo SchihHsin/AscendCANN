@@ -9438,7 +9438,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-16 · 规则详情改为文件名悬浮操作
 
 - “规则详情”操作仅在指针悬浮文件名时显示；键盘聚焦时显示，触屏设备保持常显以便操作。默认状态只保留文件名、示例目录及移除按钮。
-- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮前隐藏、悬浮文件名后出现。发布回执后补记。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮前隐藏、悬浮文件名后出现。
+- 发布回执：实现提交 `a4687677` 与并行更新合并后以 `7a9f07a3` 推送 `origin/main`；Pages workflow `43833473911` build / deploy 成功。线上 `/ascstudio/` 与 `/ascstudio-pc/studio/` 使用 `index-B3k1LL7Q.js`、`index-AvNLBBeB.css`，资源 HTTP 200。
 
 ### 2026-11-16 · PC 材料补齐三条体验主线的正向 VOC
 
