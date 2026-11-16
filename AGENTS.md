@@ -9435,6 +9435,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 的发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认选后默认态为单行文件信息且没有加入状态或条数说明。
 - 发布回执：实现提交 `124e9cac` 与并行 VOC 更新合并后以 `6d13d162` 推送 `origin/main`；Pages workflow `43832009427` build / deploy 成功。线上 `/ascstudio/` 与 `/ascstudio-pc/studio/` 均引用 `index-Bqs4r2u9.js`、`index-C8kkkdMQ.css`，资源 HTTP 200。
 
+### 2026-11-16 · 规则详情改为文件名悬浮操作
+
+- “规则详情”操作仅在指针悬浮文件名时显示；键盘聚焦时显示，触屏设备保持常显以便操作。默认状态只保留文件名、示例目录及移除按钮。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 发布产物。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮前隐藏、悬浮文件名后出现。发布回执后补记。
+
 ### 2026-11-16 · PC 材料补齐三条体验主线的正向 VOC
 
 - 用户澄清“go”是将筛出的正向原声全部放入对应材料，而非只加开发章节。三章封面现在按主题呈现访谈引语：学习线包含主动学习、截图带入对话和框选提问反馈；开发线包含理解修改原因、可交互图解反馈；移动线包含定期速览反馈。

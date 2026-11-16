@@ -2285,3 +2285,8 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 移除选中文件后的“已加入”状态句和规则数量；默认只显示文件名、目录、规则详情入口及移除按钮，具体规则按需展开。学习主题与生成路径主操作不变。
 - 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认精简后的默认态。
 - 发布：实现提交 `124e9cac` 与并行 VOC 更新合并后以 `6d13d162` 推送；Pages workflow `43832009427` 成功，`/ascstudio/` 和 `/ascstudio-pc/studio/` 的新 JS / CSS 均 HTTP 200。
+
+### 2026-11-16 · 规则详情悬浮文件名时显示
+
+- “规则详情”按钮在指针悬浮文件名或键盘聚焦时显示；无悬停能力的触屏设备上常显。默认文件行不显示额外状态词。
+- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 通过；桌面回放确认悬浮显示正常。提交与部署回执后补记。

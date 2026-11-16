@@ -375,11 +375,11 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
         )}
         {projectRulesIntent && attachments.filter((file) => file.sampleRules).map((file) => <section className="new-task-home__rules-selected" key={file.id} aria-label="项目规则文件">
           <header>
-            <strong><IconFileText size={ICON_SIZE.inline} aria-hidden="true" />{file.name}<small>{file.sampleFolder}</small></strong>
-            <div>
+            <div className="new-task-home__rules-file">
+              <strong><IconFileText size={ICON_SIZE.inline} aria-hidden="true" />{file.name}<small>{file.sampleFolder}</small></strong>
               <button className="new-task-home__rules-details-toggle" type="button" aria-expanded={projectRulesDetailsOpen} onClick={() => setProjectRulesDetailsOpen((open) => !open)}>规则详情<IconChevronDown size={ICON_SIZE.inline} aria-hidden="true" /></button>
-              <button type="button" onClick={() => removeSampleProjectRule(file.name)} aria-label={`移除 ${file.name}`}><IconX size={ICON_SIZE.inline} /></button>
             </div>
+            <button type="button" onClick={() => removeSampleProjectRule(file.name)} aria-label={`移除 ${file.name}`}><IconX size={ICON_SIZE.inline} /></button>
           </header>
           {projectRulesDetailsOpen && <ul>{file.sampleRules.map((rule) => <li key={rule}>{rule}</li>)}</ul>}
         </section>)}
