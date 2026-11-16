@@ -285,7 +285,7 @@ export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = 
     if (task) {
       const questionTrail = [
         { date: "11月12日", source: "图像推理调试", context: "任务内", question: "预处理成 NCHW 后，怎么确认和模型输入签名一致？" },
-        { date: "11月09日", source: "自由提问", context: "项目外问题", question: "另一个项目用动态 Shape，输入描述要从哪里核对？" },
+        { date: "11月09日", source: "自由提问", context: "平台外开发", question: "另一个项目用动态 Shape，输入描述要从哪里核对？" },
         { date: "11月05日", source: "AddCustom 精度异常", context: "任务内", question: "项目里的预处理和样例不同，应该先对照哪份说明？" },
       ];
       const trail = candidate({

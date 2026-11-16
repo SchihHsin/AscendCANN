@@ -15,6 +15,7 @@ import {
   IconBrain,
   IconAffiliate,
   IconMessageCircle,
+  IconExternalLink,
   IconRoute,
   IconX,
 } from "@tabler/icons-react";
@@ -161,6 +162,8 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
           const errorLearning = item.type.startsWith("error-learning-");
           const questionTrail = item.type === "question-trail";
           const learningProgress = item.type === "continue-official-learning";
+          const externalQuestion = questionTrail ? item.questionTrail.find(question => question.context === "平台外开发") : null;
+          const relatedTaskQuestionCount = questionTrail ? item.questionTrail.filter(question => question.context !== "平台外开发").length : 0;
           const errorIcons = [IconBook, IconFileText, IconBrain];
           const Icon = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconMessageCircle : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
           const Motif = errorLearning ? errorIcons[index % errorIcons.length] : questionTrail ? IconMessageCircle : learningProgress ? IconRoute : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
@@ -183,7 +186,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                 aria-label={errorLearning
                   ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次，查看错误详情`
                   : questionTrail
-                    ? `结合项目规则整理模型输入约定，查看${item.questionTrail.length}次相关提问`
+                    ? `识别到平台外的开发任务：${externalQuestion?.question || "查看相关提问"}，并关联${relatedTaskQuestionCount}个任务内问题`
                     : learningProgress
                       ? `打开 ResNet50 推理学习路径，当前${item.learningProgress.currentStage}，已完成${item.learningProgress.completed}/${item.learningProgress.total}个学习动作`
                       : `${item.taskName}：${item.title}，前往任务`}
@@ -202,13 +205,10 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                     {item.errorExamples.slice(0, 2).map((example) => <li key={`${example.date}-${example.summary}`} title={`${example.date} · ${example.summary}`}><time>{example.date}</time><span aria-hidden="true">·</span><span className="new-task-home__card-error-summary">{example.summary}</span></li>)}
                   </ul>}
                 </> : questionTrail ? <>
-                  <span className="new-task-home__trail-heading"><span><Icon size={ICON_SIZE.feature} aria-hidden="true" /><strong>近期提问脉络</strong></span><small>{item.questionTrail.length} 个问题</small></span>
-                  <span className="new-task-home__trail-topic">模型输入约定</span>
-                  <span className="new-task-home__trail-preview" aria-label="相关提问时间线">
-                    {item.questionTrail.slice(0, 2).map(question => <span className="new-task-home__trail-preview-row" key={question.date}>
-                      <time>{question.date}</time><span className="new-task-home__trail-dot" aria-hidden="true" /><span className="new-task-home__trail-preview-text">{question.question}</span>
-                    </span>)}
-                  </span>
+                  <span className="new-task-home__external-detection"><IconExternalLink size={ICON_SIZE.inline} aria-hidden="true" /><strong>识别到平台外的开发任务</strong></span>
+                  <span className="new-task-home__external-context"><strong>{externalQuestion?.source || "自由提问"}</strong><time>{externalQuestion?.date}</time><span>{externalQuestion?.context}</span></span>
+                  <span className="new-task-home__external-question">{externalQuestion?.question}</span>
+                  <span className="new-task-home__external-related">并关联到 {relatedTaskQuestionCount} 个任务内问题 · 模型输入约定</span>
                 </> : learningProgress ? <>
                   <span className="new-task-home__learning-heading"><span><Icon size={ICON_SIZE.feature} aria-hidden="true" /><strong>ResNet50 推理学习</strong></span><small>{item.learningProgress.completed}/{item.learningProgress.total}</small></span>
                   <span className="new-task-home__learning-current">当前 · {item.learningProgress.currentStage}</span>
@@ -250,7 +250,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
                       <div><div className="new-task-home__trail-entry-meta"><time>{question.date}</time><span>{question.source}</span><small>{question.context}</small></div><p>{question.question}</p></div>
                     </section>)}
                   </div>
-                  <p className="new-task-home__trail-link">这些问题都落在“模型输入约定”上；上传项目规则后，可以一起对照项目里的真实接口与约束。</p>
+                  <p className="new-task-home__trail-link">这条自由提问来自平台外开发场景，并与两个任务内问题都指向“模型输入约定”。上传项目规则后，可以继续对照项目里的接口与约束。</p>
                 </> : learningProgress ? <>
                   <div className="new-task-home__learning-detail" aria-label="学习路径进度">
                     {item.learningPath.map(stage => <div className={`new-task-home__learning-stage is-${stage.state}`} key={stage.id}>

@@ -9373,3 +9373,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/App.jsx`、`NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 对应发布产物、`AGENTS.md`。依据为用户确认的三卡方向与仓库内的学习路径数据；不影响 API / Host / Application 边界或其他页面序列。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 均通过；CUA 桌面首页确认三卡并列、首张记录样式保留、提问时间线和学习路径状态出现。构建保留 Vite 既有的主包超过 500 KB 提示。
 - 提交 / 推送：实现提交 `0b41d6253e5ede3a87c1565812ed916b60151a2a` 已推送到 `origin/main`；GitHub Pages workflow `43802583824` 构建与部署成功。首次 push 因 `main` 有两笔并行提交被拒，随后将本次实现接到最新 `main` 后成功推送，双方提交均保留。
+
+### 2026-11-16 · 强化平台外开发任务识别
+
+- 用户指出提问卡没有直观表达平台检测到其在平台外开发。将“识别到平台外的开发任务”提到收起态第一视觉层；紧接着显示自由提问的日期、场景与原问题，并指出关联的任务内问题数。展开态保留完整时间线以及结合项目规则的入口。
+- 外部开发线索仍是原型策划案例；“识别”是该卡片要展示的产品判断，不代表真实项目活动检测已接入。学习进度和第一张开发错误记录卡不变。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css`、`ascstudio/` 与 `ascstudio-pc/studio/` 页面产物、`AGENTS.md`。根据用户明确的“识别到平台外的开发任务”表述；不影响页面序列或 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check` 通过；CUA 桌面回放确认收起态能直接看到识别提示、来源和问题内容。Vite 输出既有主包超过 500 KB 提示。
+- 提交 / 推送：待本轮完成后补记 commit 与 Pages 发布结果。
