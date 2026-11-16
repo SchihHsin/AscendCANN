@@ -9406,3 +9406,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/home-recommendations.js`、`ascend-studio/src/new-task-home.css` 与 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。此条更新并覆盖前条关于在卡片显式展示平台外识别提示的视觉决策；不改变页面序列或 API / Host / Application 边界。
 - 构建与脚本检查通过。桌面回放与提交 / Pages 回执随后补记。
 - 发布回执：学习主题呈现提交 `d2a61b6b` 已推送至 `origin/main`；Pages workflow `43824840827` build / deploy 成功。线上 `/ascstudio/` 引用 `index-BpILoq9E.js` 和 `index-B2-nr8zU.css`，两项资源均 HTTP 200。交接回执随后另行提交。
+
+### 2026-11-16 · 项目规则示例选择与选后确认
+
+- “补充项目规则”改为打开应用内的示例项目文件选择器，提供 `AGENTS.md` 与 `CLAUDE.md`；关闭或点遮罩取消时不改学习主题、输入目标或附件。样例文件明确标为示例项目内容。
+- 选中文件后保留“模型输入约定”主题和可编辑目标，在输入框中显示规则来源与提取出的环境、模型输入及验证要点；用户再明确点击“按规则生成学习路径”。文件从摘要卡移除时同步取消规则模式，示例文件不在上方重复显示附件胶囊。
+- 项目规则学习计划以当前主题作为路径标题，文件约束用于决定学习节点；本地规则提取仍是前端示例，不声称真实 AI 语义理解。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 文件：`ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`、`project-rules-learning.js`、`ascstudio/index.html`、`ascstudio-pc/studio/index.html` 和对应新哈希资源。验证：`npm run build:pages`、`node --check ascend-studio/src/home-recommendations.js`、`git diff --check`、规则计划主题/节点小检查均通过；本地桌面回放打开选择器并选择 `AGENTS.md`，确认主题、规则摘要、可编辑目标和显式生成按钮均可见。发布回执后补记。

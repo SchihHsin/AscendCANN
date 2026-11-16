@@ -2272,3 +2272,9 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - “开始学习”与“补充项目规则”双入口保持：前者预填可编辑学习目标，后者在同主题上增加项目规则要求。平台来源如需用于内部策划数据判断，仅作未展示的分类依据，不作为首页卖点。
 - 文件：`ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/home-recommendations.js`、`ascend-studio/src/new-task-home.css` 与 `/ascstudio/`、`/ascstudio-pc/studio/` 发布产物。此条更新并覆盖前条关于在卡片显式展示平台外识别提示的视觉决策；不改变页面序列或 API / Host / Application 边界。
 - 本轮构建、页面回放、提交和 Pages 回执随后补记。
+
+### 2026-11-16 · 项目规则选择器与选后状态
+
+- 提问线索卡的“补充项目规则”先打开示例项目文件选择器，可选 `AGENTS.md` / `CLAUDE.md`；取消不改目标、附件或模式。选中文件后展示文件来源及关键规则摘要，保留主题目标供编辑，并要求用户明确点击“按规则生成学习路径”。
+- 规则学习计划标题沿用当前主题；被选中的示例文件不重复显示附件胶囊，移除摘要卡会同步退出规则模式。本地样例规则是交互演示，不代表接入真实项目文件或 AI 解读。
+- 验证：`npm run build:pages`、`node --check src/home-recommendations.js`、`git diff --check` 及规则计划主题 / 节点检查通过；桌面回放验证打开选择器并选中 `AGENTS.md` 后状态正确。发布回执后补记。

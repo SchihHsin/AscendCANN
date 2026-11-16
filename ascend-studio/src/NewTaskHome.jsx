@@ -17,6 +17,8 @@ import {
   IconMessageCircle,
   IconRoute,
   IconX,
+  IconFolder,
+  IconCheck,
 } from "@tabler/icons-react";
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
 import { FolderCardSurface } from "./FolderCardSurface";
@@ -36,6 +38,22 @@ const createId = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Mat
 const HOME_CODE_HIGHLIGHT_PATTERN = /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:const|auto|int|uint32_t|float|double|bool|void|Shape|PixelFormat)\b|\b(?:nullptr|true|false|RGB|NCHW|HWC)\b|\b\d+(?:\.\d+)?(?:[fFuUlL]*)\b|[A-Za-z_]\w*(?:(?:\.[A-Za-z_]\w*)|(?:::?[A-Za-z_]\w*))*?(?=\s*(?:\(|<<<))/g;
 const HOME_CODE_TYPE_TOKENS = new Set(["const", "auto", "int", "uint32_t", "float", "double", "bool", "void", "Shape", "PixelFormat"]);
 const HOME_CODE_CONSTANT_TOKENS = new Set(["nullptr", "true", "false", "RGB", "NCHW", "HWC"]);
+const sampleProjectRuleFiles = [
+  {
+    name: "AGENTS.md",
+    folder: "ascend-inference-demo",
+    size: "2.4 KB",
+    content: "# Project instructions\n\n## Environment\nUse CANN 8.0.RC3 and Ascend 910B for this project. Check the installed toolkit version before building.\n\n## Model input\nDocument input shape, layout, dtype, normalization, and resize policy before changing inference code. Keep preprocessing consistent with the model export settings.\n\n## Validation\nRun the provided sample and compare output shape and numerical tolerance with the reference before considering the change complete.",
+    rules: ["先核对 CANN 版本与目标环境", "明确输入 shape、layout、dtype 和预处理", "用样例及数值容差验证输出"],
+  },
+  {
+    name: "CLAUDE.md",
+    folder: "ascend-inference-demo",
+    size: "1.8 KB",
+    content: "# Claude project guide\n\n## Inference workflow\nStart by locating the model export configuration and its expected input contract. Explain every preprocessing step with its source.\n\n## Ascend compatibility\nCheck operator support and CANN version compatibility before suggesting code changes. Prefer the smallest reproducible example.\n\n## Verification\nShow the expected tensor shape and dtype at each boundary, then validate the final output against a known reference.",
+    rules: ["从模型导出配置确认输入约定", "检查算子支持与 CANN 兼容性", "逐个边界核对张量 shape 和 dtype"],
+  },
+];
 
 function highlightHomeCode(line) {
   const fragments = [];
@@ -66,6 +84,8 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
   const [error, setError] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [projectRulesIntent, setProjectRulesIntent] = useState(false);
+  const [projectRulesPickerOpen, setProjectRulesPickerOpen] = useState(false);
+  const [projectRulesQuestion, setProjectRulesQuestion] = useState(null);
   const [quickMenuOpen, setQuickMenuOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const fileInputRef = useRef(null);
@@ -114,7 +134,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
       goalRef.current?.focus();
       return;
     }
-    const compositionPlan = projectRulesIntent ? buildProjectRulesPlan(attachments.filter(file => file.type === "file"), cleanGoal) : null;
+    const compositionPlan = projectRulesIntent ? buildProjectRulesPlan(attachments.filter(file => file.type === "file"), cleanGoal, projectRulesQuestion?.title || "") : null;
     if (projectRulesIntent && !compositionPlan) { setError("没有读取到文件中的文字，请选择可读取的文本或 Markdown 文件。"); return; }
     const created = onCreateTask?.({ goal: cleanGoal, kind: mode, attachments, compositionPlan });
     if (!created) setError("任务没有创建成功，请调整目标后重试。");
@@ -140,12 +160,27 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
   };
 
   const addProjectRulesToQuestionTrail = (item) => {
+    setProjectRulesQuestion(item);
+    setError("");
+    setProjectRulesPickerOpen(true);
+  };
+
+  const selectSampleProjectRule = (sample) => {
+    const question = projectRulesQuestion;
+    const learningGoal = question?.prompt || `请围绕“${question?.title || "昇腾开发"}”整理学习路径。`;
+    const attachment = { id: `sample-rule-${sample.name}`, name: sample.name, type: "file", size: sample.size, content: sample.content, sampleRules: sample.rules, sampleFolder: sample.folder };
     setMode("learning");
     setProjectRulesIntent(true);
-    const learningGoal = item.prompt || `请围绕“${item.title}”整理学习路径。`;
-    setGoal(`${learningGoal} 请再结合我上传的项目规则，核对其中涉及的接口与约束。`);
+    setGoal(learningGoal);
+    setAttachments((items) => [...items.filter((file) => !file.sampleFolder), attachment]);
+    setProjectRulesPickerOpen(false);
     setError("");
-    fileInputRef.current?.click();
+    requestAnimationFrame(() => goalRef.current?.focus());
+  };
+
+  const removeSampleProjectRule = (name) => {
+    setAttachments((items) => items.filter((file) => file.name !== name || !file.sampleFolder));
+    setProjectRulesIntent(false);
   };
 
   return (
@@ -324,9 +359,9 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
       </div>
 
       <form className="new-task-home__composer" onSubmit={submit}>
-        {attachments.length > 0 && (
+        {attachments.some((item) => !item.sampleRules) && (
           <div className="new-task-home__attachments" aria-label="已添加材料">
-            {attachments.map((item) => (
+            {attachments.filter((item) => !item.sampleRules).map((item) => (
               <span className="new-task-home__attachment" key={item.id} title={item.name}>
                 {item.type === "image" ? <IconPhoto size={ICON_SIZE.inline} aria-hidden="true" /> : item.type === "code" ? <IconCode size={ICON_SIZE.inline} aria-hidden="true" /> : <IconPaperclip size={ICON_SIZE.inline} aria-hidden="true" />}
                 <span>{item.name}</span>
@@ -335,7 +370,12 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
             ))}
           </div>
         )}
-        {projectRulesIntent && <div className="new-task-home__rules-intent">已选择项目文件学习 <button type="button" onClick={() => setProjectRulesIntent(false)}>取消</button></div>}
+        {projectRulesIntent && attachments.filter((file) => file.sampleRules).map((file) => <section className="new-task-home__rules-selected" key={file.id} aria-label="项目规则摘要">
+          <header><span><IconCheck size={ICON_SIZE.inline} aria-hidden="true" />已加入规则</span><button type="button" onClick={() => removeSampleProjectRule(file.name)} aria-label={`移除 ${file.name}`}><IconX size={ICON_SIZE.inline} /></button></header>
+          <strong><IconFileText size={ICON_SIZE.inline} aria-hidden="true" />{file.name}<small>{file.sampleFolder}</small></strong>
+          <ul>{file.sampleRules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
+          <p>这些约束会用于组织“{projectRulesQuestion?.title || "模型输入约定"}”的学习内容；生成前仍可编辑上方目标。</p>
+        </section>)}
         {!projectRulesIntent && attachments.some(file => /^(agents|claude)\.md$/i.test(file.name)) && <button className="new-task-home__rules-suggestion" type="button" onClick={() => { setMode("learning"); setProjectRulesIntent(true); if (!goal.trim()) setGoal("请根据上传的项目规则，整理需要学习的内容。"); }}>根据项目规则生成学习路径 <IconArrowRight size={ICON_SIZE.inline} /></button>}
         {quickMenuOpen && (
           <div className="new-task-home__quick-menu" role="group" aria-label="添加上下文">
@@ -362,13 +402,25 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
           </div>
           <button className="new-task-home__submit" type="submit" disabled={!goal.trim() || (projectRulesIntent && !attachments.length)}>
             <IconSparkles size={ICON_SIZE.heading} aria-hidden="true" />
-            <span>{projectRulesIntent ? "生成学习路径" : activeMode.action}</span>
+            <span>{projectRulesIntent ? "按规则生成学习路径" : activeMode.action}</span>
             <IconArrowRight size={ICON_SIZE.navigation} aria-hidden="true" />
           </button>
         </div>
         {error && <p className="new-task-home__error" role="alert">{error}</p>}
         <input ref={fileInputRef} className="new-task-home__file-input" type="file" multiple onChange={(event) => handleInputFiles(event)} aria-label="选择文件" />
       </form>
+      {projectRulesPickerOpen && <div className="new-task-home__picker-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setProjectRulesPickerOpen(false); }}>
+        <section className="new-task-home__picker" role="dialog" aria-modal="true" aria-labelledby="new-task-home-picker-title">
+          <header className="new-task-home__picker-heading"><div><span className="new-task-home__picker-icon"><IconFolder size={ICON_SIZE.feature} /></span><div><h2 id="new-task-home-picker-title">选择项目规则</h2><p>选择一个文件，看看它会怎样影响学习内容</p></div></div><button type="button" onClick={() => setProjectRulesPickerOpen(false)} aria-label="关闭"><IconX size={ICON_SIZE.feature} /></button></header>
+          <div className="new-task-home__picker-location"><IconFolder size={ICON_SIZE.inline} />示例项目 <span>/</span> ascend-inference-demo</div>
+          <div className="new-task-home__picker-list" role="listbox" aria-label="项目规则文件">
+            {sampleProjectRuleFiles.map((sample) => <button className="new-task-home__picker-file" type="button" role="option" aria-selected="false" key={sample.name} onClick={() => selectSampleProjectRule(sample)}>
+              <span className="new-task-home__picker-file-icon"><IconFileText size={ICON_SIZE.feature} /></span><span className="new-task-home__picker-file-copy"><strong>{sample.name}</strong><small>Markdown 项目指引 · {sample.size}</small></span><IconArrowRight className="new-task-home__picker-file-arrow" size={ICON_SIZE.inline} />
+            </button>)}
+          </div>
+          <footer>示例文件 · 选择后会先展示提取到的规则，再由你确认生成</footer>
+        </section>
+      </div>}
     </section>
   );
 }
