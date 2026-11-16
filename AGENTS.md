@@ -9341,3 +9341,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 主动推荐下一步的卡诺分类、回答分布、Better / |Worse| 系数及解读移入“02 卡诺分析”的题项 01 展开详情，与矩阵和题项列表关联；该详情与同区题项共享交互，不增加独立卡片。
 - 变更：`cann-dashboard/昇腾Agent学习方案问卷分析.html`、`AGENTS.md`。两个内联脚本 `node --check`、`git diff --check` 通过；结构核对确认 3 项偏好结果与 2 张对应界面图同组，题项 01 展开详情含回答分布、系数及解读，图片引用存在。浏览器安全策略拒绝打开本地 `file://` 页面，未做本地截图视觉核验。页面数量、问卷数据及统计口径不变。
 - 提交 / 发布：实现提交 `a6ed7e3d2f055de67e92b951d88742d478de1fde` 已推送至 `origin/main`；GitHub Pages workflow `43797816274` 构建与部署成功。线上报告 HTTP 200，Last-Modified 为 `2026-11-16 03:23:36 GMT`；读回确认入口偏好 3 项与 A/B 截图同组，题项 01 的分布、系数及解读已并入卡诺展开详情。
+
+### 2026-11-16 · 按角色拆分学习首页与课程资料
+
+- 按两张反馈截图调整学习中心信息架构：首页只保留九类角色入口，以及 CANN 全栈能力地图、课程资料库两个去向；点击角色进入独立路线页，按角色呈现学习阶段与重点资源。完整课程内容、教学资料、赛事、社区资源保留在资料库，并通过锚点与角色路线相连。
+- 资料库移除首页角色筛选、教师摘要、公共基础摘要、五主线摘要、阶段列表和更多资源摘要，避免把同一组 README 内容重复铺在一页；保留课程详情、先修知识、135 门课程能力地图及原有资源状态。内容与阶段标注来自仓库原有学习资料页面，本次不新增在线能力承诺（H）。
+- 变更文件：`cann-learning-home/index.html`、`role.html`、`role-page.js`、`role-page.css`、`home.css`、`resources.html`、`library.css`、`AGENTS.md`。页面序列改为首页 → 角色路线 → 资料库；CANN 能力地图仍可从首页直接进入。没有改动 API / Host / Application 机制边界。
+- 验证：`node --check cann-learning-home/role-page.js`、`node --check cann-learning-home/capability-map.js`、`git diff --check` 均通过；静态核对首页、路线页、资料库及九个角色的页面内跳转目标均存在。尝试用 CUA 打开本地桌面预览三次均超时，本轮未完成浏览器截图核验。
+- 提交 / 推送：页面实现与本条记录一并提交并推送到 `origin/main`；GitHub Pages 发布结果在本轮结束前核验。
