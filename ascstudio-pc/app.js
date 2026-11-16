@@ -16,6 +16,7 @@ const chapters = [
   },
   {
     id: "development", title: "在开发过程中掌握知识", cover: "从图解理解到经验回流", summary: "围绕开发问题查看图解、动手处理，并把经验整理分享出去。", art: "./assets/cover-development.png", artAlt: "开发者围绕当前问题整理上下文、对比结果并理解原因的二维线描插画",
+    voice: { quote: "这个画布效果还是很不错的，且还能交互。", source: "王鹤锦 · 用户访谈" },
     points: [
       { id: "diagram", title: "打开图解看懂判断依据", note: "从关联图解看清排查线索与处理思路。", emphasis: "关联图解", description: "从关联图解看清排查线索与处理思路。", entry: "任务对话 · 定位尾块图解", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "diagram" },
       { id: "edit", title: "在示例副本里动手修改", note: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", emphasis: "可编辑的示例副本", description: "在可编辑的示例副本中尝试修改，原始材料继续保留，方便对照和回看。", entry: "任务内容 · 全部内容画布", task: "Add 算子精度差异排查", taskRoute: "AddCustom 精度异常", group: "CANN 自定义算子", stage: "draft" },
@@ -69,6 +70,12 @@ function buildCover() {
   $("#cover-number").textContent = String(currentChapter + 1).padStart(2, "0");
   $("#cover-title").textContent = chapter.title;
   $("#cover-description").textContent = chapter.summary;
+  const voice = $("#cover-voice");
+  voice.hidden = !chapter.voice;
+  if (chapter.voice) {
+    $("#cover-quote").textContent = `“${chapter.voice.quote}”`;
+    $("#cover-voice-source").textContent = chapter.voice.source;
+  }
   updateCoverArt(chapter);
   $("#cover-enter").textContent = currentChapter === chapters.length - 1 ? "进入小程序演示" : "进入本章";
   showcase.dataset.view = "cover";
