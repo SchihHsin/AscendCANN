@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>算子开发知识图谱 · 15 次对话</title>
+<style>
+  :root{
+    --bg:#F5F6F8;
+    --panel:#FFFFFF;
+    --ink:#1B1F26;
+    --ink-2:#4A5260;
+    --ink-3:#8A929F;
+    --line:#E6E8EC;
+    --accent:#2E6BE6;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font-family:inherit}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    height:60px;display:flex;align-items:center;gap:18px;
+    padding:0 22px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;
+  }
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand b{font-size:15px;letter-spacing:.2px}
+  .brand span{font-size:12px;color:var(--ink-3)}
+  .stats{display:flex;gap:14px;margin-left:26px;padding-left:22px;border-left:1px solid var(--line)}
+  .stat{font-size:12px;color:var(--ink-3);display:flex;align-items:baseline;gap:4px}
+  .stat i{font-style:normal;font-weight:700;color:var(--ink);font-size:14px}
+  .spacer{flex:1}
+  .tabs{display:flex;background:#EDEFF3;border-radius:10px;padding:3px}
+  .tabs button{
+    border:0;background:transparent;color:var(--ink-2);font-size:12.5px;
+    padding:6px 14px;border-radius:8px;cursor:pointer;
+  }
+  .tabs button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+  /* ---------- layout ---------- */
+  .layout{display:flex;height:calc(100vh - 60px);min-height:560px}
+  .side{
+    width:272px;flex:0 0 272px;background:var(--panel);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .side-head{padding:16px 16px 8px}
+  .side-head h2{margin:0 0 3px;font-size:13px;letter-spacing:.4px;color:var(--ink-2);font-weight:600}
+  .side-head p{margin:0;font-size:11.5px;color:var(--ink-3);line-height:1.6}
+  .search{padding:8px 14px 10px}
+  .search input{
+    width:100%;height:34px;border:1px solid var(--line);border-radius:9px;
+    padding:0 11px;font-size:12.5px;outline:none;background:#FAFBFC;color:var(--ink);
+  }
+  .search input:focus{border-color:#B9CCF7;background:#fff}
+
+  .dlg-list{flex:1;overflow-y:auto;padding:0 10px 18px;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 22px),transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 22px),transparent 100%)}
+  .dlg{
+    display:flex;gap:9px;align-items:flex-start;padding:8px 9px;border-radius:10px;
+    cursor:pointer;border:1px solid transparent;margin-bottom:2px;
+  }
+  .dlg:hover{background:#F4F6FA}
+  .dlg.on{background:#EDF2FE;border-color:#C9DAFB}
+  .dlg .no{
+    flex:0 0 22px;height:22px;border-radius:6px;background:#EDEFF3;color:var(--ink-2);
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .dlg.on .no{background:var(--accent);color:#fff}
+  .dlg .t{font-size:12.5px;line-height:1.45;color:var(--ink)}
+  .dlg .m{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+
+  .domains{padding:10px 14px 16px;border-top:1px solid var(--line)}
+  .domains h3{margin:0 0 8px;font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:.5px}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{
+    display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);
+    background:#fff;border-radius:20px;padding:3.5px 9px;font-size:11px;color:var(--ink-2);cursor:pointer;
+  }
+  .chip .dot{width:7px;height:7px;border-radius:50%}
+  .chip.on{background:#EDF2FE;border-color:#C9DAFB;color:var(--ink);font-weight:600}
+
+  /* ---------- stage ---------- */
+  .stage{flex:1;position:relative;overflow:auto;padding:14px 14px 0;transition:margin-right .26s cubic-bezier(.22,.8,.3,1)}
+  body.drawer-open .stage{margin-right:392px}
+  #map{width:100%;height:calc(100% - 46px);display:block}
+  .legend{
+    height:40px;display:flex;align-items:center;gap:16px;padding:0 6px;
+    font-size:11px;color:var(--ink-3);
+  }
+  .legend .item{display:flex;align-items:center;gap:6px}
+  .legend .ln{width:22px;height:0;border-top:1.5px solid #C3CAD6}
+  .legend .ln.dash{border-top:1.5px dashed #E2A0A8}
+  .hint{
+    position:absolute;left:26px;bottom:44px;font-size:11.5px;color:var(--ink-3);
+    background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:20px;
+    padding:5px 12px;pointer-events:none;
+  }
+
+  /* svg */
+  .island-bg{fill:#fff;stroke:var(--line)}
+  .island-title{font-size:12.5px;font-weight:700;letter-spacing:.2px}
+  .island-sub{font-size:10px;fill:var(--ink-3)}
+  .node{cursor:pointer}
+  .node rect{transition:opacity .15s, filter .15s}
+  .node text{font-size:11.5px;fill:var(--ink);pointer-events:none}
+  .node .badge{font-size:9px;fill:var(--ink-3)}
+  .node .badge-c{fill:#F0F2F5}
+  .edge{fill:none;stroke:#9FAEC4;stroke-width:1.3;opacity:0;transition:opacity .18s}
+  .edge.trade{stroke:#E7A7AF;stroke-dasharray:4 3}
+  .edge.hl{stroke-width:2}
+  .dlg-edge{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-dasharray:3 3;opacity:.75}
+  .off{opacity:.22}
+  .node.on rect{stroke-width:1.8}
+  .node.nb rect{stroke-width:2.2;stroke-opacity:1}
+  .node:hover rect{stroke-width:2;stroke-opacity:1}
+  .dim-edge{opacity:.05}
+
+  /* ---------- matrix ---------- */
+  .matrix{position:absolute;inset:62px 14px 54px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .matrix.hidden{display:none}
+  body.matrix-mode .legend{display:none}
+  body.matrix-mode #map{display:none}
+  .matrix table{border-collapse:separate;border-spacing:0;font-size:11.5px;width:100%}
+  .matrix th,.matrix td{padding:6px 8px;text-align:center;border-bottom:1px solid #F0F2F5;border-right:1px solid #F5F6F9;height:26px}
+  .matrix thead th{position:sticky;top:0;background:#FAFBFC;z-index:2;font-weight:600;color:var(--ink-2)}
+  .matrix tbody th{text-align:left;font-weight:400;color:var(--ink-2);white-space:nowrap;position:sticky;left:0;background:#fff;border-right:1px solid #EDEFF3}
+  .matrix td.cell{cursor:pointer;border-radius:5px;font-variant-numeric:tabular-nums}
+  .matrix td.cell:hover{outline:1.5px solid #9DB7F0}
+  .matrix .tot{color:var(--ink-3)}
+
+  /* ---------- drawer ---------- */
+  #drawer{
+    position:fixed;top:60px;right:0;bottom:0;width:392px;max-width:92vw;background:#fff;
+    border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(16,24,40,.08);
+    transform:translateX(102%);transition:transform .26s cubic-bezier(.22,.8,.3,1);
+    z-index:40;display:flex;flex-direction:column;
+  }
+  #drawer.open{transform:none}
+  .dw-head{padding:18px 20px 12px;border-bottom:1px solid var(--line);position:relative}
+  .dw-bar{width:30px;height:4px;border-radius:3px;margin-bottom:10px}
+  .dw-head h2{margin:0;font-size:17px;letter-spacing:.2px}
+  .dw-head .kicker{font-size:11px;color:var(--ink-3);margin-bottom:6px}
+  .dw-close{
+    position:absolute;right:14px;top:14px;width:28px;height:28px;border:1px solid var(--line);
+    background:#fff;border-radius:8px;cursor:pointer;color:var(--ink-3);font-size:15px;line-height:1;
+  }
+  .dw-body{flex:1;overflow-y:auto;padding:16px 20px 28px}
+  .dw-body h4{margin:18px 0 8px;font-size:11px;color:var(--ink-3);letter-spacing:.6px;font-weight:600}
+  .dw-body h4:first-child{margin-top:0}
+  .dw-def{font-size:13px;line-height:1.75;color:var(--ink)}
+  .dw-pit{
+    margin-top:12px;background:#FFF8F0;border:1px solid #F8DFC0;border-radius:10px;
+    padding:10px 12px;font-size:12.5px;line-height:1.7;color:#7A4A12;
+  }
+  .dw-quote{
+    margin-top:12px;border-left:3px solid #D5DCE8;padding:2px 0 2px 12px;
+    font-size:12.5px;line-height:1.7;color:var(--ink-2);
+  }
+  .dw-chip{
+    display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;
+    border-radius:8px;padding:5px 9px;font-size:11.5px;margin:0 5px 5px 0;cursor:pointer;color:var(--ink-2);
+  }
+  .dw-chip:hover{background:#F4F6FA}
+  .dw-chip .n{font-weight:700;color:var(--accent);font-size:11px}
+  .dw-chip.plain{cursor:default}
+  .dw-chip.plain:hover{background:#fff}
+  .dw-sect{font-size:12px;line-height:1.8;color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><b>算子开发知识图谱</b><span>15 次 AI 对话 · 知识点抽取</span></div>
+  <div class="stats" id="stats"></div>
+  <div class="spacer"></div>
+  <div class="tabs">
+    <button data-view="map" class="on">知识图谱</button>
+    <button data-view="matrix">覆盖矩阵</button>
+  </div>
+</header>
+
+<main class="layout">
+  <aside class="side">
+    <div class="side-head">
+      <h2>15 段对话</h2>
+      <p>点一段，看它点亮了哪些知识点</p>
+    </div>
+    <div class="search"><input id="q" placeholder="搜索知识点，如：对齐 / 同步 / 精度"></div>
+    <div class="dlg-list" id="dlgList"></div>
+    <div class="domains">
+      <h3>知识域</h3>
+      <div class="chips" id="domList"></div>
+    </div>
+  </aside>
+
+  <section class="stage">
+    <svg id="map" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="matrix hidden" id="matrix"></div>
+    <div class="hint" id="hint">点击左侧任意一段对话，看知识点的分布</div>
+    <div class="legend">
+      <div class="item"><span class="ln"></span>概念依赖（悬停知识点查看）</div>
+      <div class="item"><span class="ln dash"></span>权衡关系</div>
+      <div class="item"><span style="width:8px;height:8px;border-radius:50%;background:#EDEFF3;border:1px solid #D7DBE3"></span>角标 = 出现在几段对话</div>
+    </div>
+  </section>
+</main>
+
+<aside id="drawer">
+  <div class="dw-head">
+    <button class="dw-close" id="dwClose">×</button>
+    <div class="dw-bar" id="dwBar"></div>
+    <div class="kicker" id="dwKicker"></div>
+    <h2 id="dwTitle"></h2>
+  </div>
+  <div class="dw-body" id="dwBody"></div>
+</aside>
+
+<script>
+/* ============ 数据 ============ */
+const DOMAINS = [
+  {id:'env',   name:'环境与运行时', color:'#5B7CFA'},
+  {id:'build', name:'编译与工程',   color:'#E9A23B'},
+  {id:'data',  name:'数据与搬运',   color:'#14B8A6'},
+  {id:'sync',  name:'并发与同步',   color:'#8B5CF6'},
+  {id:'num',   name:'精度与数值',   color:'#EC4899'},
+  {id:'perf',  name:'性能与调优',   color:'#22A45D'},
+  {id:'arch',  name:'架构与模型',   color:'#64748B'},
+  {id:'ext',   name:'扩展与迁移',   color:'#0EA5E9'},
+  {id:'deploy',name:'部署与交付',   color:'#C2410C'}
+];
+
+const DIALOGUES = [
+  {n:1,  t:'容器里看不到卡',            s:'环境',   sum:'接手别人的机器，npu-smi 报 DCMI 初始化失败'},
+  {n:2,  t:'Tiling 怎么设计',           s:'方法论', sum:'shape 变化大，每个都要重调 tiling'},
+  {n:3,  t:'换了镜像编译不过',          s:'编译',   sum:'kernel_operator.h 找不到，链接又报符号未定义'},
+  {n:4,  t:'1000 个元素全 0',           s:'功能',   sum:'1024 正常、1000 全 0，静默错误'},
+  {n:5,  t:'API 到底分几层',            s:'概念',   sum:'基础 API / 高阶 API / 语言扩展分不清'},
+  {n:6,  t:'多核偶发错',                s:'并发',   sum:'ReduceSum 八核，结果时对时错'},
+  {n:7,  t:'Softmax 精度差一点',        s:'精度',   sum:'fp16 MARE 3.2e-3，fp32 完全过'},
+  {n:8,  t:'动态 shape 怎么支持',       s:'工程',   sum:'输入长度不固定，tiling 是写死的'},
+  {n:9,  t:'存量 kernel 的 SetFlag',    s:'代码',   sum:'接手代码，手写同步能不能删'},
+  {n:10, t:'带宽只有 30%',              s:'性能',   sum:'mte2 18% / vec 60%，判读不出瓶颈'},
+  {n:11, t:'算子融合能救多少',          s:'架构',   sum:'单算子都调好，整网还是慢'},
+  {n:12, t:'搬 CUDA LayerNorm',         s:'迁移',   sum:'线程模型对不上，怎么映射'},
+  {n:13, t:'Python 里调不到',           s:'部署',   sum:'算子装了，dispatcher 报 PrivateUse1'},
+  {n:14, t:'fp16/bf16/fp32 怎么选',     s:'数值',   sum:'怕精度不够，又怕性能掉了'},
+  {n:15, t:'评审被问住',                s:'原理',   sum:'为什么不能像 CUDA 一个 kernel 搞定'}
+];
+
+const NODES = [
+  // 环境与运行时
+  {id:'n1', name:'驱动固件配套', dom:'env', refs:[1],
+   def:'驱动与固件必须同版本配套，错位往往只在重负载时才暴露。',
+   pit:'Health 显示 Warning 不是装饰，它经常伪装成“算子写错了”。',
+   q:'能查到卡、能跑小算子，一上重负载就超时。'},
+  {id:'n2', name:'容器设备映射', dom:'env', refs:[1],
+   def:'四个设备节点必须由 docker run 映射进来，容器里不会自动出现。',
+   pit:'--privileged 只放开权限，不会凭空产生设备节点。',
+   q:'我 --privileged 是不是就够了？'},
+  {id:'n3', name:'管理面与算力面', dom:'env', refs:[1],
+   def:'davinci_manager 管查询复位，davinci0 才是真正跑算子的设备。',
+   pit:'缺 manager 时报的是“管理接口初始化失败”，极易误判成环境装坏。',
+   q:'这个 manager 是干嘛的？跟 davinci0 有什么区别？'},
+  {id:'n4', name:'设备节点权限', dom:'env', refs:[1],
+   def:'设备节点属 HwHiAiUser 组，容器用户不在组里就只剩 root 能用。',
+   pit:'--group-add 要用组 ID，容器里往往没有这个组名。',
+   q:'报 open /dev/davinci_manager: Permission denied'},
+  {id:'n5', name:'日志体系', dom:'env', refs:[1,13],
+   def:'plog 记 host 侧，AI Core 的崩溃在 device 侧，要用 msnpureport 导。',
+   pit:'只翻 /var/log 找不到 kernel 崩溃，是因为找错了地方。',
+   q:'那一堆 ascend 日志是干嘛的？我一直没敢删。'},
+  {id:'n6', name:'环境体检与 CI', dom:'env', refs:[1],
+   def:'按依赖顺序查：设备 → 环境变量 → OPP → 编译器，失败即退出。',
+   pit:'顺序错了就会一直在“装没装坏”上绕圈。',
+   q:'有没有一条命令能告诉我环境哪里不对？'},
+
+  // 编译与工程
+  {id:'n7', name:'两套编译器', dom:'build', refs:[3],
+   def:'op_kernel 走 ccec、op_host 走 g++，两套 ISA 两套 ABI。',
+   pit:'kernel 文件放错目标，语法能过、符号找不到。',
+   q:'为什么不能像 CUDA 一样一个 nvcc 全编了？'},
+  {id:'n8', name:'环境变量继承', dom:'build', refs:[3],
+   def:'source 只影响当前 shell，编译起的子进程不一定继承。',
+   pit:'把 include 写死成绝对路径能编过，但换机器就废。',
+   q:'我明明 source 过了，怎么还是空？'},
+  {id:'n9', name:'算子名全局唯一', dom:'build', refs:[3],
+   def:'算子类型名是全局注册键，重名会被覆盖或查到内置实现。',
+   pit:'改名前记得三处一致：REG_OP、aclnn 接口、Python 封装。',
+   q:'我算子叫 AddCustom，会跟内置 Add 撞吗？'},
+  {id:'n10', name:'OPP 安装路径', dom:'build', refs:[3,13],
+   def:'run 包默认装到用户目录，和 ASCEND_OPP_PATH 常常不是一个地方。',
+   pit:'装完必须重新 source，环境变量里缓存了路径。',
+   q:'vendors 下没有我装的那个。'},
+  {id:'n11', name:'直调调试', dom:'build', refs:[3],
+   def:'用 <<<>>> 直接调 kernel，跳过算子包安装这一整套。',
+   pit:'直调对、打包偏，多半是 tiling 参数不一致。',
+   q:'每次改一行都要重新安装，能不能不装直接跑？'},
+  {id:'n12', name:'六步开发链路', dom:'build', refs:[3],
+   def:'原型 → tiling → kernel → 编译 → 打包 → 调用，每步都有可验证的产物。',
+   pit:'不知道卡在哪一步，就会反复怀疑环境。',
+   q:'给我一条完整链路吧，我老不知道下一步该干嘛。'},
+
+  // 数据与搬运
+  {id:'n13', name:'32B 对齐', dom:'data', refs:[4,12],
+   def:'DMA 按 32 字节的块搬运，非对齐会截断或越界，而且不报错。',
+   pit:'2000 是偶数，但不是 32 的倍数——偶数和倍数不是一回事。',
+   q:'2000 不是偶数吗？偶数也不行？'},
+  {id:'n14', name:'DataCopyPad', dom:'data', refs:[4,12],
+   def:'把“搬多少字节”和“真实多长”分开，自动处理非对齐。',
+   pit:'blockLen 填的是字节数，不是元素个数。',
+   q:'是不是所有地方都换成 Pad 就行？'},
+  {id:'n15', name:'尾块与 mask', dom:'data', refs:[4,12,8],
+   def:'Pad 管“搬多少”，mask 管“算多少”，归约不能被填充值污染。',
+   pit:'逐元素算子可以不管，归约类必须管。',
+   q:'多搬进来的 24 个参与计算怎么办？'},
+  {id:'n16', name:'越界哨兵', dom:'data', refs:[4],
+   def:'输出前后各留 64 字节填魔数，跑完检查有没有被改。',
+   pit:'别用 0 当魔数，它本身就是最常见的数据。',
+   q:'怎么确认写回没踩到别人？'},
+  {id:'n17', name:'仿真 vs 真机', dom:'data', refs:[4],
+   def:'仿真验逻辑，真机验对齐、容量、同步这些硬件约束。',
+   pit:'仿真过、真机挂，先查对齐和容量，别改算法。',
+   q:'CPU 调试是对的，一上板就全 0。'},
+  {id:'n18', name:'NHWC 与 stride', dom:'data', refs:[13,12],
+   def:'布局不同会让整块数据错位，结果看起来“差不多对但有偏差”。',
+   pit:'全 1、全 0、单个 1，这三种输入比随机数好用。',
+   q:'全 1 也对不上，是格式问题？'},
+
+  // 并发与同步
+  {id:'n19', name:'TQue vs TBuf', dom:'sync', refs:[9,5],
+   def:'TQue 带同步语义，TBuf 是裸内存，同步责任在你身上。',
+   pit:'名字都带 buffer，但一个管事件，一个什么都不管。',
+   q:'这段手写的 SetFlag 能不能删？'},
+  {id:'n20', name:'EnQue/DeQue', dom:'sync', refs:[9],
+   def:'在搬运与计算之间插一对 set/wait 事件，保证顺序。',
+   pit:'它同步的是事件，不是内存屏障，不保证 cache 一致。',
+   q:'EnQue 底层到底做了什么？'},
+  {id:'n21', name:'Barrier vs Flag', dom:'sync', refs:[9],
+   def:'同一 pipe 内用屏障，跨 pipe 用事件；前者正确但慢。',
+   pit:'调试期用 PIPE_ALL 求稳，优化期换成精确事件。',
+   q:'能不能统一用 PipeBarrier？'},
+  {id:'n22', name:'eventId 资源', dom:'sync', refs:[9],
+   def:'硬件事件数量有限，框架内部也在用，撞了会互相“冒充”。',
+   pit:'症状是偶发读到旧数据，改一行无关代码就好或更差。',
+   q:'我这段用了 0 到 3，会撞吗？'},
+  {id:'n23', name:'SyncAll 与槽位', dom:'sync', refs:[6,9,11],
+   def:'所有核到齐才继续；workspace 按核独立分槽，用前清零。',
+   pit:'有核没走到同步，就会挂死，而不是报错。',
+   q:'我加了 SyncAll，怎么还是偶发错？'},
+  {id:'n24', name:'竞争的概率性', dom:'sync', refs:[6,9],
+   def:'几条流水各自推进、没有全局时钟，只有时序撞上才出错。',
+   pit:'“跑几次都过”不能算验证，要放大 shape 和核数。',
+   q:'代码是顺序写的，为什么会偶发？'},
+
+  // 精度与数值
+  {id:'n25', name:'减 max', dom:'num', refs:[7],
+   def:'先找 max、减掉、再 exp；既防溢出，也保住有效位。',
+   pit:'顺序反了，减掉的是 exp 之后的最大值，已经不是 softmax。',
+   q:'减 max 我以为只是防溢出，跟精度也有关系？'},
+  {id:'n26', name:'fp32 累加', dom:'num', refs:[7,12,14],
+   def:'累加器用 fp32，存储仍保持 fp16，只转累加器不转整块。',
+   pit:'fp16 累加会让“大数吃小数”，序列越长误差越大。',
+   q:'为什么累加一定要用 fp32？'},
+  {id:'n27', name:'RoundMode', dom:'num', refs:[7],
+   def:'fp32→fp16 用就近舍入，fp16→fp32 用 CAST_NONE。',
+   pit:'截断带来的偏差是系统性的，误差分布会明显偏一个方向。',
+   q:'RoundMode 选错会怎样？'},
+  {id:'n28', name:'MARE/MERE', dom:'num', refs:[7,14],
+   def:'一个看平均相对误差，一个看中位数，组合起来能判断误差类型。',
+   pit:'只报一个数会误导优化方向：高+低是少数点炸了。',
+   q:'MARE 和 MERE 到底在卡什么？'},
+  {id:'n29', name:'eps 与小分母', dom:'num', refs:[7],
+   def:'相对误差在分母很小时被放大，用 max(sum, eps) 兜底。',
+   pit:'sum + eps 会引入系统性偏差，尤其 sum 本身很小时。',
+   q:'误差只在输入很小那一段大。'},
+  {id:'n30', name:'分段调试', dom:'num', refs:[7],
+   def:'每一步打出来和 fp64 基准比，哪一段跳变，问题就在它的前一步。',
+   pit:'基准别用 fp32，它自己有 1e-7 误差，会掩盖小问题。',
+   q:'怎么知道是哪一步引入的误差？'},
+  {id:'n31', name:'dtype 选型', dom:'num', refs:[14,7],
+   def:'范围不够用 bf16，精度不够用 fp32，都不缺用 fp16。',
+   pit:'全局 fp32 是最省事的偷懒，也是最容易在性能上吃亏的选择。',
+   q:'我的算子该用 fp16 还是 fp32？'},
+
+  // 性能与调优
+  {id:'n32', name:'多核切分与余数', dom:'perf', refs:[2,6],
+   def:'按连续性、局部性、均衡选切分维度；余数摊到前几个核。',
+   pit:'total/blockNum 会把余数丢掉，1002 个元素就有 2 个没人算。',
+   q:'余数没人管会怎样？'},
+  {id:'n33', name:'UB 预算与 tile', dom:'perf', refs:[2,8,10],
+   def:'从 UB 容量倒推 tile，留 25% 余量，向下 32B 对齐。',
+   pit:'tile 写死 8192，换个芯片就崩。',
+   q:'tile 多大合适？我一直凭感觉。'},
+  {id:'n34', name:'队列深度双缓冲', dom:'perf', refs:[2,9,10],
+   def:'深度 2 让搬运和计算重叠，深度受 UB 容量限制。',
+   pit:'深度 1 等于没有双缓冲，搬运和计算完全串行。',
+   q:'深度调到 4 或 8 是不是流水更满？'},
+  {id:'n35', name:'木桶效应', dom:'perf', refs:[2,6,10],
+   def:'整体时间由最慢的那个核决定，不是平均值。',
+   pit:'余数全给最后一个核，会让它明显变慢，整体更慢。',
+   q:'7 号核基本没干活，这能优化吗？'},
+  {id:'n36', name:'ratio 判读', dom:'perf', refs:[10],
+   def:'mte2 低不等于搬运不是瓶颈，要看 tile 大小和并行度。',
+   pit:'两个 ratio 都低，通常是调度或同步开销。',
+   q:'这算搬运瓶颈还是计算瓶颈？'},
+  {id:'n37', name:'ablation 基线', dom:'perf', refs:[10],
+   def:'先做“只搬不算”，测出这条链路的搬运上限，再谈优化。',
+   pit:'同时改多个变量，等于什么都没测出来。',
+   q:'纯搬运能到 80%，说明什么？'},
+  {id:'n38', name:'roofline 与口径', dom:'perf', refs:[10,11],
+   def:'用实测上限当分母判断差距；小 shape 别看带宽，看延迟。',
+   pit:'大小 shape 混在一起算均值，会让优化方向跑偏。',
+   q:'70% 到 80% 这段还值得追吗？'},
+
+  // 架构与模型
+  {id:'n39', name:'host tiling', dom:'arch', refs:[15,2],
+   def:'没有线程抽象、UB 小、二进制静态展开，所以切分只能在 host 侧算好。',
+   pit:'kernel 只负责“按给定切分执行”，不决定“怎么切”。',
+   q:'为什么不能像 CUDA 一样一个 kernel 搞定？'},
+  {id:'n40', name:'AI Core 四单元', dom:'arch', refs:[15],
+   def:'Scalar 指挥，Vector 逐元素，Cube 矩阵，MTE 搬运，三条流水。',
+   pit:'Scalar 性能差但不可少，它干的是控制流。',
+   q:'Scalar 那么弱，为什么还要它？'},
+  {id:'n41', name:'UB / L1 / L0', dom:'arch', refs:[15,12],
+   def:'UB 服务 Vector，L1 与 L0A/B/C 服务 Cube，是两块独立空间。',
+   pit:'把 UB 当 L1 用来算容量，会低估占用。',
+   q:'UB 和 L1 是什么关系？L0A、L0B 又是什么？'},
+  {id:'n42', name:'API 分层', dom:'arch', refs:[5,15],
+   def:'四层：语言扩展、基础 API、高阶 API、框架接口；能用上层别下沉。',
+   pit:'一上来手写全套流水，时间会全花在同步和精度上。',
+   q:'这几个 API 到底是什么关系？'},
+  {id:'n43', name:'图模式与 GE', dom:'arch', refs:[15,11],
+   def:'GE 管多个算子怎么排，aclnn 管单个算子怎么调，OPP 是仓库。',
+   pit:'图里慢了，很难判断是算子问题还是调度问题。',
+   q:'图模式和单算子模式，对写法有影响吗？'},
+  {id:'n44', name:'CUDA 映射', dom:'arch', refs:[12],
+   def:'线程级并行换成“核 + 指令 lane”，shared memory 换成显式 UB。',
+   pit:'逐行翻译会得到一份能跑但很慢的代码。',
+   q:'映射关系到底怎么对应？'},
+
+  // 扩展与迁移
+  {id:'n45', name:'动态 shape', dom:'ext', refs:[8],
+   def:'每次调用都重算一次 tiling，kernel 不假设任何编译期常量。',
+   pit:'tile 写死，换个 shape 就错，而且只在那个 shape 上错。',
+   q:'动态 shape 到底该怎么支持？'},
+  {id:'n46', name:'shape 分档', dom:'ext', refs:[2,8],
+   def:'把连续 shape 映射到几档参数，档内取上界，边界用实测定。',
+   pit:'按 2 的幂拍档位，往往不是性能拐点。',
+   q:'常见 shape 都要覆盖，怎么排比较省事？'},
+  {id:'n47', name:'算子融合', dom:'ext', refs:[11],
+   def:'省掉中间结果的 GM 往返，收益取决于访存能减少多少。',
+   pit:'省不下访存的融合，只是在增加复杂度。',
+   q:'融合到底能救多少？值不值得投入？'},
+  {id:'n48', name:'何时拆 kernel', dom:'ext', refs:[11,15],
+   def:'中间结果放不下、单元配比差、需要可调试时，拆比融合好。',
+   pit:'融合后变慢，通常是 UB 放不下或并行度下降。',
+   q:'什么情况下应该拆，而不是融？'},
+  {id:'n49', name:'UB 生命周期', dom:'ext', refs:[12,5],
+   def:'UB 要显式分配、搬入、算完、还回，没有自动缓存这回事。',
+   pit:'忘了还就卡住，忘了搬就是空数据。',
+   q:'UB 是自动缓存吗？'},
+
+  // 部署与交付
+  {id:'n50', name:'aclnn 两段式', dom:'deploy', refs:[13,8],
+   def:'先问 workspace 多大，再执行；workspace 由调用方分配。',
+   pit:'同 shape 可以复用，别每一步都 malloc/free。',
+   q:'workspace 不是框架给的吗？'},
+  {id:'n51', name:'dispatcher 注册', dom:'deploy', refs:[13],
+   def:'报 PrivateUse1 是“没注册实现”，不是“算子没装上”。',
+   pit:'走 op-plugin 要补 schema、kernel、meta 三样，缺一个就挂。',
+   q:'算子装了，Python 里还是调不到。'},
+  {id:'n52', name:'设备异常定位', dom:'deploy', refs:[13],
+   def:'导 device 日志，看第一条 trap、PC 地址、访问的地址和长度。',
+   pit:'最后一条通常是连锁反应，别从那里开始看。',
+   q:'507015 这个码是什么意思？'},
+  {id:'n53', name:'语义 vs 数值', dom:'deploy', refs:[13],
+   def:'先排 dtype、布局、broadcast，再谈精度问题。',
+   pit:'全 1 / 全 0 / 单个 1，比随机数更能暴露位置错。',
+   q:'和 PyTorch 对不上，差了 1e-3。'},
+  {id:'n54', name:'交付清单', dom:'deploy', refs:[13,11],
+   def:'算子包、接口说明、支持矩阵、精度报告、性能数据、已知限制。',
+   pit:'漏了支持矩阵，往往上线后才发现某个 shape 不支持。',
+   q:'这个算子要交给业务团队，我交什么？'}
+];
+
+const LINKS = [
+  ['n13','n14','dep'], ['n14','n15','dep'], ['n15','n32','dep'], ['n16','n15','dep'],
+  ['n17','n13','dep'], ['n18','n53','dep'], ['n18','n15','dep'],
+  ['n19','n20','dep'], ['n20','n22','dep'], ['n20','n34','dep'], ['n21','n20','dep'],
+  ['n23','n24','dep'], ['n24','n23','dep'], ['n23','n32','dep'], ['n19','n23','dep'],
+  ['n25','n26','dep'], ['n26','n31','dep'], ['n26','n30','dep'], ['n27','n31','dep'],
+  ['n28','n30','dep'], ['n29','n28','dep'],
+  ['n32','n35','dep'], ['n33','n34','dep'], ['n33','n47','dep'], ['n33','n49','dep'],
+  ['n36','n37','dep'], ['n37','n38','dep'], ['n35','n38','dep'],
+  ['n39','n32','dep'], ['n39','n45','dep'], ['n40','n39','dep'], ['n41','n33','dep'],
+  ['n42','n19','dep'], ['n42','n39','dep'], ['n43','n47','dep'], ['n43','n48','dep'],
+  ['n44','n49','dep'], ['n44','n18','dep'],
+  ['n45','n46','dep'], ['n46','n33','dep'], ['n47','n48','dep'], ['n49','n19','dep'],
+  ['n7','n8','dep'], ['n7','n12','dep'], ['n8','n11','dep'], ['n9','n10','dep'],
+  ['n10','n50','dep'], ['n50','n51','dep'], ['n51','n53','dep'], ['n52','n5','dep'],
+  ['n5','n52','dep'], ['n54','n53','dep'], ['n1','n3','dep'], ['n3','n4','dep'], ['n2','n4','dep'],
+  ['n26','n31','trade'], ['n33','n34','trade'], ['n47','n33','trade']
+];
+
+/* ============ 基础工具 ============ */
+const domById = Object.fromEntries(DOMAINS.map(d=>[d.id,d]));
+const nodeById = Object.fromEntries(NODES.map(n=>[n.id,n]));
+const dlgByN = Object.fromEntries(DIALOGUES.map(d=>[d.n,d]));
+const $ = s=>document.querySelector(s);
+
+/* ============ 顶栏统计 ============ */
+(function(){
+  const shared = NODES.filter(n=>n.refs.length>1).length;
+  $('#stats').innerHTML = `
+    <div class="stat"><i>${DIALOGUES.length}</i>段对话</div>
+    <div class="stat"><i>${NODES.length}</i>个知识点</div>
+    <div class="stat"><i>${LINKS.length}</i>条关联</div>
+    <div class="stat"><i>${shared}</i>个跨段共享</div>`;
+})();
+
+/* ============ 侧栏 ============ */
+(function(){
+  const list = $('#dlgList');
+  DIALOGUES.forEach(d=>{
+    const cnt = NODES.filter(n=>n.refs.includes(d.n)).length;
+    const el = document.createElement('div');
+    el.className='dlg'; el.dataset.n=d.n;
+    el.innerHTML = `<div class="no">${d.n}</div>
+      <div><div class="t">${d.t}</div><div class="m">${d.s} · ${cnt} 个知识点</div></div>`;
+    el.onclick = ()=>toggleDialogue(d.n);
+    list.appendChild(el);
+  });
+
+  const dom = $('#domList');
+  DOMAINS.forEach(d=>{
+    const el = document.createElement('div');
+    el.className='chip'; el.dataset.id=d.id;
+    el.innerHTML = `<span class="dot" style="background:${d.color}"></span>${d.name}`;
+    el.onclick = ()=>toggleDomain(d.id);
+    dom.appendChild(el);
+  });
+})();
+
+/* ============ 状态 ============ */
+const state = {dlg:null, dom:null, q:''};
+
+function toggleDialogue(n){
+  state.dlg = (state.dlg===n) ? null : n;
+  if(state.dlg) state.dom = null;
+  syncSide(); render();
+  if(state.dlg){
+    const d = dlgByN[state.dlg];
+    const cnt = NODES.filter(x=>x.refs.includes(d.n));
+    openDrawerDialogue(d, cnt);
+  } else closeDrawer();
+}
+function toggleDomain(id){
+  state.dom = (state.dom===id) ? null : id;
+  if(state.dom) state.dlg = null;
+  syncSide(); render();
+  if(!state.dom) closeDrawer();
+}
+function syncSide(){
+  document.querySelectorAll('.dlg').forEach(el=>{
+    el.classList.toggle('on', Number(el.dataset.n)===state.dlg);
+  });
+  document.querySelectorAll('.chip').forEach(el=>{
+    el.classList.toggle('on', el.dataset.id===state.dom);
+  });
+}
+$('#q').addEventListener('input', e=>{
+  state.q = e.target.value.trim();
+  render();
+});
+
+/* ============ 图谱渲染 ============ */
+const NS='http://www.w3.org/2000/svg';
+const svg = $('#map');
+const byDom = {}; DOMAINS.forEach(d=>byDom[d.id]=NODES.filter(n=>n.dom===d.id));
+
+const ISL = {w:304, h:206, gx:20, gy:18, mx:26, my:24};
+const PILL = {w:136, h:34, gapX:8, gapY:6, padX:12, top:38};
+
+const pos = {};
+let edgeEls = [];
+
+function buildMap(){
+  svg.innerHTML='';
+  const gBg = document.createElementNS(NS,'g');       // 岛屿底色
+  const gEdges = document.createElementNS(NS,'g');    // 概念之间的线
+  const gIslands = document.createElementNS(NS,'g');  // 岛屿标题
+  const gNodes = document.createElementNS(NS,'g');    // 概念卡片
+  const gDlg = document.createElementNS(NS,'g');
+  gDlg.id='dlgEdges';
+  svg.append(gBg, gEdges, gIslands, gNodes, gDlg);
+
+  DOMAINS.forEach((d, di)=>{
+    const col = di % 3, row = Math.floor(di/3);
+    const x = ISL.mx + col*(ISL.w+ISL.gx);
+    const y = ISL.my + row*(ISL.h+ISL.gy);
+
+    // 岛屿背景
+    const bg = document.createElementNS(NS,'rect');
+    bg.setAttribute('x',x); bg.setAttribute('y',y);
+    bg.setAttribute('width',ISL.w); bg.setAttribute('height',ISL.h);
+    bg.setAttribute('rx',14); bg.setAttribute('class','island-bg');
+    bg.setAttribute('fill', hexA(d.color,.045));
+    bg.setAttribute('stroke', hexA(d.color,.18));
+    gBg.appendChild(bg);
+
+    // 左侧色条
+    const bar = document.createElementNS(NS,'rect');
+    bar.setAttribute('x',x); bar.setAttribute('y',y+14);
+    bar.setAttribute('width',3); bar.setAttribute('height',18);
+    bar.setAttribute('rx',2); bar.setAttribute('fill',d.color);
+    gIslands.appendChild(bar);
+
+    // 标题
+    const t = document.createElementNS(NS,'text');
+    t.setAttribute('x',x+14); t.setAttribute('y',y+27);
+    t.setAttribute('class','island-title'); t.setAttribute('fill',d.color);
+    t.textContent = d.name;
+    gIslands.appendChild(t);
+
+    const s = document.createElementNS(NS,'text');
+    s.setAttribute('x',x+ISL.w-14); s.setAttribute('y',y+27);
+    s.setAttribute('text-anchor','end');
+    s.setAttribute('class','island-sub');
+    s.textContent = byDom[d.id].length + ' 项';
+    gIslands.appendChild(s);
+
+    // 节点
+    byDom[d.id].forEach((n, i)=>{
+      const cc = i % 2, rr = Math.floor(i/2);
+      const odd = byDom[d.id].length % 2 === 1;
+      const last = i === byDom[d.id].length - 1;
+      const px = (odd && last)
+        ? x + (ISL.w - PILL.w)/2
+        : x + PILL.padX + cc*(PILL.w+PILL.gapX);
+      const py = y + PILL.top + rr*(PILL.h+PILL.gapY);
+      pos[n.id] = {x: px + PILL.w/2, y: py + PILL.h/2};
+
+      const g = document.createElementNS(NS,'g');
+      g.setAttribute('class','node'); g.dataset.id = n.id;
+
+      const rect = document.createElementNS(NS,'rect');
+      rect.setAttribute('x',px); rect.setAttribute('y',py);
+      rect.setAttribute('width',PILL.w); rect.setAttribute('height',PILL.h);
+      rect.setAttribute('rx',8);
+      rect.setAttribute('fill','#FBFCFE');
+      rect.setAttribute('stroke', d.color);
+      rect.setAttribute('stroke-opacity', .35);
+      rect.setAttribute('stroke-width', 1.2);
+      g.appendChild(rect);
+
+      const tx = document.createElementNS(NS,'text');
+      tx.setAttribute('x',px+10); tx.setAttribute('y',py+21);
+      tx.textContent = n.name;
+      g.appendChild(tx);
+
+      const badgeBg = document.createElementNS(NS,'circle');
+      badgeBg.setAttribute('cx',px+PILL.w-13); badgeBg.setAttribute('cy',py+17);
+      badgeBg.setAttribute('r',8); badgeBg.setAttribute('class','badge-c');
+      if(n.refs.length<2) badgeBg.setAttribute('opacity','0');
+      g.appendChild(badgeBg);
+
+      const bd = document.createElementNS(NS,'text');
+      bd.setAttribute('x',px+PILL.w-13); bd.setAttribute('y',py+20);
+      bd.setAttribute('text-anchor','middle');
+      bd.setAttribute('class','badge');
+      bd.textContent = n.refs.length;
+      if(n.refs.length<2) bd.setAttribute('opacity','0');
+      g.appendChild(bd);
+
+      g.addEventListener('mouseenter', ()=>hoverNode(n.id));
+      g.addEventListener('mouseleave', ()=>hoverNode(null));
+      g.addEventListener('click', ()=>openDrawerNode(n.id));
+      gNodes.appendChild(g);
+    });
+  });
+
+  // 概念之间的边
+  const seen = new Set();
+  LINKS.forEach(([a,b,t])=>{
+    const A = pos[a], B = pos[b];
+    if(!A || !B) return;
+    const p = document.createElementNS(NS,'path');
+    const dx = B.x - A.x;
+    const c1x = A.x + dx*0.35, c1y = A.y;
+    const c2x = B.x - dx*0.35, c2y = B.y;
+    p.setAttribute('d', `M ${A.x} ${A.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${B.x} ${B.y}`);
+    p.setAttribute('class','edge' + (t==='trade'?' trade':''));
+    p.dataset.a = a; p.dataset.b = b;
+    gEdges.appendChild(p);
+    edgeEls.push(p);
+  });
+}
+
+function hoverNode(id){
+  if(state.dlg || state.q || state.dom) return;
+  const nb = new Set();
+  edgeEls.forEach(e=>{
+    const hit = !!id && (e.dataset.a===id || e.dataset.b===id);
+    e.style.opacity = hit ? .95 : 0;
+    if(hit){ nb.add(e.dataset.a); nb.add(e.dataset.b); }
+  });
+  document.querySelectorAll('.node').forEach(g=>{
+    g.classList.toggle('nb', !!id && nb.has(g.dataset.id) && g.dataset.id!==id);
+  });
+}
+
+/* ============ 过滤与高亮 ============ */
+function render(){
+  const q = state.q.toLowerCase();
+  const active = new Set();
+
+  document.querySelectorAll('.node').forEach(g=>{
+    const n = nodeById[g.dataset.id];
+    let on = true;
+    if(state.dlg) on = n.refs.includes(state.dlg);
+    if(state.dom) on = on && n.dom === state.dom;
+    if(q) on = on && (n.name.toLowerCase().includes(q) || n.def.toLowerCase().includes(q));
+    g.classList.toggle('off', !on);
+    g.classList.toggle('on', on && !!(state.dlg || state.dom || q));
+    if(on && (state.dlg || state.dom || q)) active.add(n.id);
+  });
+
+  const filtering = !!(state.dlg || state.dom || q);
+  edgeEls.forEach(e=>{
+    const both = active.has(e.dataset.a) && active.has(e.dataset.b);
+    e.style.opacity = filtering ? (both ? .7 : 0) : 0;
+  });
+
+  drawDialogueEdges(active);
+  updateHint();
+}
+
+function drawDialogueEdges(active){
+  const g = document.getElementById('dlgEdges');
+  g.innerHTML = '';
+  if(!state.dlg) return;
+  const d = dlgByN[state.dlg];
+  const originY = 340;
+  const chip = document.createElementNS(NS,'rect');
+  chip.setAttribute('x',2); chip.setAttribute('y',originY-11);
+  chip.setAttribute('width',22); chip.setAttribute('height',22);
+  chip.setAttribute('rx',6); chip.setAttribute('fill','#2E6BE6');
+  g.appendChild(chip);
+
+  const num = document.createElementNS(NS,'text');
+  num.setAttribute('x',13); num.setAttribute('y',originY+5);
+  num.setAttribute('text-anchor','middle');
+  num.setAttribute('font-size','11'); num.setAttribute('font-weight','700');
+  num.setAttribute('fill','#fff');
+  num.textContent = String(d.n).padStart(2,'0');
+  g.appendChild(num);
+
+  active.forEach(id=>{
+    const p = pos[id]; if(!p) return;
+    const path = document.createElementNS(NS,'path');
+    const c1x = 22 + (p.x-22)*0.5, c1y = originY;
+    const c2x = p.x - (p.x-22)*0.18, c2y = p.y;
+    path.setAttribute('d', `M 22 ${originY} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${p.x-70} ${p.y}`);
+    path.setAttribute('class','dlg-edge');
+    path.setAttribute('opacity','.22');
+    path.setAttribute('stroke-dasharray','2 4');
+    g.appendChild(path);
+  });
+}
+
+function updateHint(){
+  const h = $('#hint');
+  if(state.dlg){
+    const d = dlgByN[state.dlg];
+    h.textContent = `第 ${d.n} 段 · ${d.t} —— 点亮 ${NODES.filter(n=>n.refs.includes(d.n)).length} 个知识点`;
+  } else if(state.dom){
+    h.textContent = `${domById[state.dom].name} · ${byDom[state.dom].length} 个知识点`;
+  } else if(state.q){
+    h.textContent = `搜索 “${state.q}”`;
+  } else {
+    h.textContent = '点击左侧任意一段对话，看知识点的分布';
+  }
+}
+
+/* ============ 抽屉 ============ */
+const drawer = $('#drawer'), dwBody = $('#dwBody');
+$('#dwClose').onclick = ()=>{ closeDrawer(); state.dlg=null; state.dom=null; syncSide(); render(); };
+
+function closeDrawer(){ drawer.classList.remove('open'); document.body.classList.remove('drawer-open'); }
+function openDrawer(){ drawer.classList.add('open'); document.body.classList.add('drawer-open'); }
+
+function openDrawerNode(id){
+  const n = nodeById[id];
+  const d = domById[n.dom];
+  $('#dwBar').style.background = d.color;
+  $('#dwKicker').textContent = d.name + ' · ' + (n.refs.length>1 ? `出现在 ${n.refs.length} 段对话` : '只出现在 1 段');
+  $('#dwTitle').textContent = n.name;
+
+  const rel = LINKS.filter(l=>l[0]===id||l[1]===id)
+      .map(l=> l[0]===id? l[1] : l[0])
+      .filter((v,i,a)=>a.indexOf(v)===i);
+
+  dwBody.innerHTML = `
+    <h4>一句话</h4>
+    <div class="dw-def">${n.def}</div>
+    <h4>常见误区</h4>
+    <div class="dw-pit">${n.pit}</div>
+    <h4>原文里的一句</h4>
+    <div class="dw-quote">“${n.q}”</div>
+    <h4>出现在</h4>
+    <div>${n.refs.map(r=>`<span class="dw-chip" data-goto="${r}"><span class="n">${r}</span>${dlgByN[r].t}</span>`).join('')}</div>
+    <h4>相关概念</h4>
+    <div>${rel.map(r=>`<span class="dw-chip" data-rel="${r}">${nodeById[r].name}</span>`).join('') || '<span class="dw-sect">暂无</span>'}</div>
+  `;
+  dwBody.querySelectorAll('[data-goto]').forEach(el=>{
+    el.onclick = ()=>{ toggleDialogue(Number(el.dataset.goto)); };
+  });
+  dwBody.querySelectorAll('[data-rel]').forEach(el=>{
+    el.onclick = ()=>{ openDrawerNode(el.dataset.rel); };
+  });
+  openDrawer();
+}
+
+function openDrawerDialogue(d, cnt){
+  $('#dwBar').style.background = '#2E6BE6';
+  $('#dwKicker').textContent = `第 ${d.n} 段对话 · ${d.s}`;
+  $('#dwTitle').textContent = d.t;
+  const byDomList = DOMAINS.map(dm=>{
+    const items = cnt.filter(n=>n.dom===dm.id);
+    if(!items.length) return '';
+    return `<h4>${dm.name}</h4><div>${items.map(n=>
+      `<span class="dw-chip" data-rel="${n.id}">${n.name}</span>`).join('')}</div>`;
+  }).join('');
+
+  dwBody.innerHTML = `
+    <h4>他当时在做什么</h4>
+    <div class="dw-def">${d.sum}</div>
+    <h4>这段涉及 ${cnt.length} 个知识点</h4>
+    ${byDomList}
+  `;
+  dwBody.querySelectorAll('[data-rel]').forEach(el=>{
+    el.onclick = ()=>openDrawerNode(el.dataset.rel);
+  });
+  openDrawer();
+}
+
+/* ============ 视图切换 ============ */
+document.querySelectorAll('.tabs button').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on', b===btn));
+    const map = btn.dataset.view==='map';
+    $('#hint').style.display = map? 'block':'none';
+    $('#matrix').classList.toggle('hidden', map);
+    document.body.classList.toggle('matrix-mode', !map);
+  };
+});
+
+/* ============ 覆盖矩阵 ============ */
+(function buildMatrix(){
+  const el = $('#matrix');
+  let head = '<tr><th style="text-align:left">对话</th>' +
+      DOMAINS.map(d=>`<th><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${d.color};margin-right:4px"></span>${d.name.replace('与','')}</th>`).join('') +
+      '<th>合计</th></tr>';
+
+  let rows = '';
+  DIALOGUES.forEach(d=>{
+    let total = 0;
+    const cells = DOMAINS.map(dm=>{
+      const items = NODES.filter(n=>n.dom===dm.id && n.refs.includes(d.n));
+      total += items.length;
+      if(!items.length) return `<td class="cell" data-d="${d.n}" data-dom="${dm.id}" style="background:#FAFBFC;color:#C9CFDA">·</td>`;
+      const a = Math.min(.14 + items.length*0.20, .82);
+      return `<td class="cell" data-d="${d.n}" data-dom="${dm.id}"
+        style="background:${hexA(dm.color,a)};color:${items.length>=2?'#fff':'#1B1F26'};font-weight:600">${items.length}</td>`;
+    }).join('');
+    rows += `<tr><th>${d.n}. ${d.t}</th>${cells}<td class="tot">${total}</td></tr>`;
+  });
+
+  el.innerHTML = `<div style="padding:10px 14px 2px;font-size:11.5px;color:#8A929F">
+      每一格 = 该段对话在该知识域涉及的知识点数，点格子可反查具体是哪几个
+    </div><table><thead>${head}</thead><tbody>${rows}</tbody></table>`;
+  el.querySelectorAll('td.cell').forEach(td=>{
+    td.onclick = ()=>{
+      const n = Number(td.dataset.d), dm = td.dataset.dom;
+      const items = NODES.filter(x=>x.dom===dm && x.refs.includes(n));
+      if(!items.length) return;
+      $('#dwBar').style.background = domById[dm].color;
+      $('#dwKicker').textContent = `第 ${n} 段 · ${domById[dm].name}`;
+      $('#dwTitle').textContent = `${items.length} 个知识点`;
+      dwBody.innerHTML = `<h4>本格内容</h4><div>${items.map(x=>
+        `<span class="dw-chip" data-rel="${x.id}">${x.name}</span>`).join('')}</div>`;
+      dwBody.querySelectorAll('[data-rel]').forEach(c=>{
+        c.onclick = ()=>openDrawerNode(c.dataset.rel);
+      });
+      openDrawer();
+    };
+  });
+})();
+
+function hexA(hex, a){
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+/* ============ 键盘与空白处 ============ */
+document.addEventListener('keydown', e=>{
+  if(e.key!=='Escape') return;
+  closeDrawer();
+  state.dlg=null; state.dom=null;
+  syncSide(); render();
+});
+svg.addEventListener('click', e=>{
+  if(e.target === svg || e.target.classList.contains('island-bg')){
+    closeDrawer();
+    state.dlg=null; state.dom=null;
+    syncSide(); render();
+  }
+});
+
+/* ============ 启动 ============ */
+buildMap();
+render();
+
+// 默认给一个轻提示：第一段对话闪烁一下
+setTimeout(()=>{
+  const first = document.querySelector('.dlg');
+  if(first) first.style.transition = 'background .4s';
+}, 300);
+</script>
+</body>
+</html>
