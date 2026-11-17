@@ -816,4 +816,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
   - 点击知识点：抽屉先给**原文**——该知识点在各段对话里出现的原话（他从问句 + 助手回答，逐字抽取，最多 3 处），再给一句话定义、常见误区、出处
   - 点击对话：开场问 + 首答原文 + 涉及知识点
   - 原文抽取方式：解析 `一个算子开发者的15次对话.md` 的逐轮结构，按对话号+轮次定位，clean 后按句号截断，未改写
+- **Bug 修复**：抽屉原来用 `transform: translateX(102%)` + CSS transition 从屏外滑入；在内嵌预览/动画不推进的环境里，transition 不跑，抽屉停在屏外（left≈视口宽+8px），表现为「点了没反应」。已改为 `display:none/flex` 即时显示，不再依赖动画
 - 预览：`cann-dashboard/算子知识网络-预览.png`、`算子知识网络-原文预览.png`
