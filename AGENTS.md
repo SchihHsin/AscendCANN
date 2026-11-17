@@ -9477,3 +9477,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图的名称为“思维导图（mind map）”，版式更具体地说是中心发散式 / 放射式思维导图（radial mind map）。来源为用户提供图片，转写内容按截图可见字样核对；有歧义处标注待核对。
 - 验证：逐图核对姓名与回答区域，检查 5 份 Markdown 的空白格式；未运行测试。没有改动页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 提交 / 推送：在基于当时最新 `origin/main` 的隔离工作树中仅提交 5 份记录和本条交接记录，并推送到 `origin/main`；主工作区已有的其他暂存、未暂存与未跟踪内容未纳入。
+
+
+### 2026-11-18 · AI Coding 访谈手记与 ASR 补充
+
+- 在 `outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/` 将梁淼城、彭椒、王鹤锦、王伟、徐立桂、郑雨豪六次访谈整理为独立 Markdown；徐立桂记录沿用该目录原有访谈手记，另补 ASR 逐字稿信息。手记优先，ASR 补充按时间标注并以转述呈现；原始 DOCX 保持不动。
+- 校订依据：用户复听确认王鹤锦访谈使用起点为 2022 年底；逐字稿语境加官方资料交叉确认 DeepSeek-V4.1-Flash、GPT-6.1 Sol、Claude Opus 5.5 / Opus 5、vLLM / vLLM Ascend、曦云C500（沐曦）、MindStudio Insight、msOpProf。对应官方来源已写入记录。`nohup` 是依据远程后台运行语境对 ASR “no halt”的推测，不伪装为听写确认。Map to Poster 的具体仓库、TestAgent 的具体产品、毕方英文名及手记词 `moss` 均保留不确定性。访谈陈述是受访者个人经历，不作为独立验证。
+- 文件：六份 `*-AI-Coding用户访谈记录.md` 和本文件。证据来源为用户提供的 FigJam / 思维导图手记、六份原始逐字稿 DOCX（`用户访谈逐字稿/ai coding访谈/`）及官方资料（H）；名称歧义和 `nohup` 推断明确标注。未影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：逐段比对逐字稿时间戳及相关内容；`git diff --check` 通过；未运行测试。提交 / 推送回执待本轮提交完成后补记。
