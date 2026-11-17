@@ -3,34 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>算子开发知识图谱 · 15 次对话</title>
+<title>算子知识网络 · 15 次对话</title>
 <style>
   :root{
-    --bg:#F5F6F8;
-    --panel:#FFFFFF;
-    --ink:#1B1F26;
-    --ink-2:#4A5260;
-    --ink-3:#8A929F;
-    --line:#E6E8EC;
-    --accent:#2E6BE6;
-    --radius:14px;
-    --shadow:0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+    --bg:#F4F5F7; --panel:#fff; --ink:#1B1F26; --ink-2:#4A5260; --ink-3:#8A929F;
+    --line:#E6E8EC; --accent:#2E6BE6; --radius:14px;
+    --graph-bg:#0E1117;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
+  body{margin:0;background:var(--bg);color:var(--ink);
     font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  button{font-family:inherit}
+    -webkit-font-smoothing:antialiased;overflow:hidden}
 
-  /* ---------- top bar ---------- */
-  .topbar{
-    height:60px;display:flex;align-items:center;gap:18px;
-    padding:0 22px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;
-  }
+  /* ---- top bar ---- */
+  .topbar{height:60px;display:flex;align-items:center;gap:18px;padding:0 22px;
+    background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+    position:relative;z-index:30}
   .brand{display:flex;align-items:baseline;gap:10px}
   .brand b{font-size:15px;letter-spacing:.2px}
   .brand span{font-size:12px;color:var(--ink-3)}
@@ -39,151 +28,124 @@
   .stat i{font-style:normal;font-weight:700;color:var(--ink);font-size:14px}
   .spacer{flex:1}
   .tabs{display:flex;background:#EDEFF3;border-radius:10px;padding:3px}
-  .tabs button{
-    border:0;background:transparent;color:var(--ink-2);font-size:12.5px;
-    padding:6px 14px;border-radius:8px;cursor:pointer;
-  }
+  .tabs button{border:0;background:transparent;color:var(--ink-2);font-size:12.5px;padding:6px 14px;border-radius:8px;cursor:pointer}
   .tabs button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
 
-  /* ---------- layout ---------- */
-  .layout{display:flex;height:calc(100vh - 60px);min-height:560px}
-  .side{
-    width:272px;flex:0 0 272px;background:var(--panel);border-right:1px solid var(--line);
-    display:flex;flex-direction:column;overflow:hidden;
-  }
+  /* ---- layout ---- */
+  .layout{display:flex;height:calc(100vh - 60px)}
+  .side{width:268px;flex:0 0 268px;background:var(--panel);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;overflow:hidden}
   .side-head{padding:16px 16px 8px}
   .side-head h2{margin:0 0 3px;font-size:13px;letter-spacing:.4px;color:var(--ink-2);font-weight:600}
   .side-head p{margin:0;font-size:11.5px;color:var(--ink-3);line-height:1.6}
   .search{padding:8px 14px 10px}
-  .search input{
-    width:100%;height:34px;border:1px solid var(--line);border-radius:9px;
-    padding:0 11px;font-size:12.5px;outline:none;background:#FAFBFC;color:var(--ink);
-  }
+  .search input{width:100%;height:34px;border:1px solid var(--line);border-radius:9px;padding:0 11px;
+    font-size:12.5px;outline:none;background:#FAFBFC;color:var(--ink)}
   .search input:focus{border-color:#B9CCF7;background:#fff}
-
   .dlg-list{flex:1;overflow-y:auto;padding:0 10px 18px;
     -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 22px),transparent 100%);
             mask-image:linear-gradient(to bottom,#000 0,#000 calc(100% - 22px),transparent 100%)}
-  .dlg{
-    display:flex;gap:9px;align-items:flex-start;padding:8px 9px;border-radius:10px;
-    cursor:pointer;border:1px solid transparent;margin-bottom:2px;
-  }
+  .dlg{display:flex;gap:9px;align-items:flex-start;padding:8px 9px;border-radius:10px;cursor:pointer;
+    border:1px solid transparent;margin-bottom:2px}
   .dlg:hover{background:#F4F6FA}
   .dlg.on{background:#EDF2FE;border-color:#C9DAFB}
-  .dlg .no{
-    flex:0 0 22px;height:22px;border-radius:6px;background:#EDEFF3;color:var(--ink-2);
-    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;
-  }
+  .dlg .no{flex:0 0 22px;height:22px;border-radius:6px;background:#EDEFF3;color:var(--ink-2);
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
   .dlg.on .no{background:var(--accent);color:#fff}
-  .dlg .t{font-size:12.5px;line-height:1.45;color:var(--ink)}
+  .dlg .t{font-size:12.5px;line-height:1.45}
   .dlg .m{font-size:10.5px;color:var(--ink-3);margin-top:2px}
-
   .domains{padding:10px 14px 16px;border-top:1px solid var(--line)}
   .domains h3{margin:0 0 8px;font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:.5px}
   .chips{display:flex;flex-wrap:wrap;gap:5px}
-  .chip{
-    display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);
-    background:#fff;border-radius:20px;padding:3.5px 9px;font-size:11px;color:var(--ink-2);cursor:pointer;
-  }
+  .chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;
+    border-radius:20px;padding:3.5px 9px;font-size:11px;color:var(--ink-2);cursor:pointer}
   .chip .dot{width:7px;height:7px;border-radius:50%}
   .chip.on{background:#EDF2FE;border-color:#C9DAFB;color:var(--ink);font-weight:600}
 
-  /* ---------- stage ---------- */
-  .stage{flex:1;position:relative;overflow:auto;padding:14px 14px 0;transition:margin-right .26s cubic-bezier(.22,.8,.3,1)}
+  /* ---- graph stage ---- */
+  .stage{flex:1;position:relative;background:radial-gradient(circle at 50% 45%, #151A23 0%, #0E1117 62%, #0B0E13 100%);overflow:hidden;
+    transition:margin-right .26s cubic-bezier(.22,.8,.3,1)}
   body.drawer-open .stage{margin-right:392px}
-  #map{width:100%;height:calc(100% - 46px);display:block}
-  .legend{
-    height:40px;display:flex;align-items:center;gap:16px;padding:0 6px;
-    font-size:11px;color:var(--ink-3);
-  }
-  .legend .item{display:flex;align-items:center;gap:6px}
-  .legend .ln{width:22px;height:0;border-top:1.5px solid #C3CAD6}
-  .legend .ln.dash{border-top:1.5px dashed #E2A0A8}
-  .hint{
-    position:absolute;left:26px;bottom:44px;font-size:11.5px;color:var(--ink-3);
-    background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:20px;
-    padding:5px 12px;pointer-events:none;
-  }
+  #graph{width:100%;height:100%;display:block;cursor:grab}
+  #graph.dragging{cursor:grabbing}
 
-  /* svg */
-  .island-bg{fill:#fff;stroke:var(--line)}
-  .island-title{font-size:12.5px;font-weight:700;letter-spacing:.2px}
-  .island-sub{font-size:10px;fill:var(--ink-3)}
-  .node{cursor:pointer}
-  .node rect{transition:opacity .15s, filter .15s}
-  .node text{font-size:11.5px;fill:var(--ink);pointer-events:none}
-  .node .badge{font-size:9px;fill:var(--ink-3)}
-  .node .badge-c{fill:#F0F2F5}
-  .edge{fill:none;stroke:#9FAEC4;stroke-width:1.3;opacity:0;transition:opacity .18s}
-  .edge.trade{stroke:#E7A7AF;stroke-dasharray:4 3}
-  .edge.hl{stroke-width:2}
-  .dlg-edge{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-dasharray:3 3;opacity:.75}
-  .off{opacity:.22}
-  .node.on rect{stroke-width:1.8}
-  .node.nb rect{stroke-width:2.2;stroke-opacity:1}
-  .node:hover rect{stroke-width:2;stroke-opacity:1}
-  .dim-edge{opacity:.05}
+  .nd{cursor:pointer}
+  .nd .dot{transition:r .15s, filter .15s}
+  .nd .lbl{font-size:9.6px;fill:#C3CCDA;pointer-events:none;paint-order:stroke;
+    stroke:#0E1117;stroke-width:2.6px;stroke-linejoin:round}
+  .nd .num{font-size:10px;font-weight:700;fill:#E8EDF5;pointer-events:none}
+  .nd.d .ring{fill:rgba(255,255,255,.03);stroke:#CBD5E1;stroke-width:1.3}
+  .nd:hover .dot{filter:brightness(1.25)}
+  .nd:hover .ring{stroke:#fff}
+  .lk{stroke:#8FA3BF;stroke-width:.9;opacity:.14;transition:opacity .15s}
+  .lk.dc{stroke-dasharray:2 3;opacity:.08;stroke-width:.9}
 
-  /* ---------- matrix ---------- */
-  .matrix{position:absolute;inset:62px 14px 54px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px}
+  /* 聚焦态 */
+  svg.focus .nd{opacity:.14}
+  svg.focus .nd.hot, svg.focus .nd.nbr{opacity:1}
+  svg.focus .lk{opacity:.03}
+  svg.focus .lk.hot{opacity:.75;stroke:#DDE6F5}
+
+  .hud{position:absolute;left:16px;bottom:14px;font-size:11px;color:#8B96A8;pointer-events:none;line-height:1.7}
+  .hud b{color:#C9D3E1;font-weight:600}
+  .ctrl{position:absolute;right:16px;top:14px;display:flex;gap:6px}
+  .ctrl button{height:28px;padding:0 11px;border-radius:8px;border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);color:#C9D3E1;font-size:11.5px;cursor:pointer;backdrop-filter:blur(6px)}
+  .ctrl button:hover{background:rgba(255,255,255,.1)}
+  .ctrl button.on{background:rgba(124,155,255,.22);border-color:rgba(124,155,255,.45);color:#E6ECFA}
+  .zoom{position:absolute;right:16px;bottom:16px;display:flex;flex-direction:column;gap:6px}
+  .zoom button{width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);color:#C9D3E1;font-size:15px;cursor:pointer;line-height:1}
+  .zoom button:hover{background:rgba(255,255,255,.1)}
+
+  /* ---- matrix ---- */
+  .matrix{position:absolute;inset:14px;overflow:auto;background:#fff;border-radius:12px;display:block}
   .matrix.hidden{display:none}
-  body.matrix-mode .legend{display:none}
-  body.matrix-mode #map{display:none}
   .matrix table{border-collapse:separate;border-spacing:0;font-size:11.5px;width:100%}
-  .matrix th,.matrix td{padding:6px 8px;text-align:center;border-bottom:1px solid #F0F2F5;border-right:1px solid #F5F6F9;height:26px}
+  .matrix th,.matrix td{padding:6px 8px;text-align:center;border-bottom:1px solid #F0F2F5;
+    border-right:1px solid #F5F6F9;height:26px}
   .matrix thead th{position:sticky;top:0;background:#FAFBFC;z-index:2;font-weight:600;color:var(--ink-2)}
-  .matrix tbody th{text-align:left;font-weight:400;color:var(--ink-2);white-space:nowrap;position:sticky;left:0;background:#fff;border-right:1px solid #EDEFF3}
+  .matrix tbody th{text-align:left;font-weight:400;color:var(--ink-2);white-space:nowrap;
+    position:sticky;left:0;background:#fff;border-right:1px solid #EDEFF3}
   .matrix td.cell{cursor:pointer;border-radius:5px;font-variant-numeric:tabular-nums}
   .matrix td.cell:hover{outline:1.5px solid #9DB7F0}
   .matrix .tot{color:var(--ink-3)}
 
-  /* ---------- drawer ---------- */
-  #drawer{
-    position:fixed;top:60px;right:0;bottom:0;width:392px;max-width:92vw;background:#fff;
-    border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(16,24,40,.08);
-    transform:translateX(102%);transition:transform .26s cubic-bezier(.22,.8,.3,1);
-    z-index:40;display:flex;flex-direction:column;
-  }
+  /* ---- drawer ---- */
+  #drawer{position:fixed;top:60px;right:0;bottom:0;width:392px;max-width:92vw;background:#fff;
+    border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(16,24,40,.10);
+    transform:translateX(102%);transition:transform .26s cubic-bezier(.22,.8,.3,1);z-index:40;
+    display:flex;flex-direction:column}
   #drawer.open{transform:none}
   .dw-head{padding:18px 20px 12px;border-bottom:1px solid var(--line);position:relative}
   .dw-bar{width:30px;height:4px;border-radius:3px;margin-bottom:10px}
   .dw-head h2{margin:0;font-size:17px;letter-spacing:.2px}
   .dw-head .kicker{font-size:11px;color:var(--ink-3);margin-bottom:6px}
-  .dw-close{
-    position:absolute;right:14px;top:14px;width:28px;height:28px;border:1px solid var(--line);
-    background:#fff;border-radius:8px;cursor:pointer;color:var(--ink-3);font-size:15px;line-height:1;
-  }
+  .dw-close{position:absolute;right:14px;top:14px;width:28px;height:28px;border:1px solid var(--line);
+    background:#fff;border-radius:8px;cursor:pointer;color:var(--ink-3);font-size:15px;line-height:1}
   .dw-body{flex:1;overflow-y:auto;padding:16px 20px 28px}
   .dw-body h4{margin:18px 0 8px;font-size:11px;color:var(--ink-3);letter-spacing:.6px;font-weight:600}
   .dw-body h4:first-child{margin-top:0}
-  .dw-def{font-size:13px;line-height:1.75;color:var(--ink)}
-  .dw-pit{
-    margin-top:12px;background:#FFF8F0;border:1px solid #F8DFC0;border-radius:10px;
-    padding:10px 12px;font-size:12.5px;line-height:1.7;color:#7A4A12;
-  }
-  .dw-quote{
-    margin-top:12px;border-left:3px solid #D5DCE8;padding:2px 0 2px 12px;
-    font-size:12.5px;line-height:1.7;color:var(--ink-2);
-  }
-  .dw-chip{
-    display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;
-    border-radius:8px;padding:5px 9px;font-size:11.5px;margin:0 5px 5px 0;cursor:pointer;color:var(--ink-2);
-  }
+  .dw-def{font-size:13px;line-height:1.75}
+  .dw-pit{margin-top:12px;background:#FFF8F0;border:1px solid #F8DFC0;border-radius:10px;
+    padding:10px 12px;font-size:12.5px;line-height:1.7;color:#7A4A12}
+  .dw-quote{margin-top:12px;border-left:3px solid #D5DCE8;padding:2px 0 2px 12px;
+    font-size:12.5px;line-height:1.7;color:var(--ink-2)}
+  .dw-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;
+    border-radius:8px;padding:5px 9px;font-size:11.5px;margin:0 5px 5px 0;cursor:pointer;color:var(--ink-2)}
   .dw-chip:hover{background:#F4F6FA}
   .dw-chip .n{font-weight:700;color:var(--accent);font-size:11px}
-  .dw-chip.plain{cursor:default}
-  .dw-chip.plain:hover{background:#fff}
   .dw-sect{font-size:12px;line-height:1.8;color:var(--ink-2)}
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="brand"><b>算子开发知识图谱</b><span>15 次 AI 对话 · 知识点抽取</span></div>
+  <div class="brand"><b>算子知识网络</b><span>15 次 AI 对话 · 知识点与关联</span></div>
   <div class="stats" id="stats"></div>
   <div class="spacer"></div>
   <div class="tabs">
-    <button data-view="map" class="on">知识图谱</button>
+    <button data-view="map" class="on">网络图</button>
     <button data-view="matrix">覆盖矩阵</button>
   </div>
 </header>
@@ -192,7 +154,7 @@
   <aside class="side">
     <div class="side-head">
       <h2>15 段对话</h2>
-      <p>点一段，看它点亮了哪些知识点</p>
+      <p>点一段，看它在网络里点亮哪一片</p>
     </div>
     <div class="search"><input id="q" placeholder="搜索知识点，如：对齐 / 同步 / 精度"></div>
     <div class="dlg-list" id="dlgList"></div>
@@ -203,13 +165,28 @@
   </aside>
 
   <section class="stage">
-    <svg id="map" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"></svg>
+    <svg id="graph" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMid meet">
+      <g id="viewport">
+        <g id="links"></g>
+        <g id="nodes"></g>
+      </g>
+    </svg>
+
+    <div class="ctrl">
+      <button id="btnRelayout">重排</button>
+      <button id="btnLabels" class="on">标签</button>
+      <button id="btnReset">重置视图</button>
+    </div>
+    <div class="zoom">
+      <button id="zIn">+</button>
+      <button id="zOut">−</button>
+    </div>
+
     <div class="matrix hidden" id="matrix"></div>
-    <div class="hint" id="hint">点击左侧任意一段对话，看知识点的分布</div>
-    <div class="legend">
-      <div class="item"><span class="ln"></span>概念依赖（悬停知识点查看）</div>
-      <div class="item"><span class="ln dash"></span>权衡关系</div>
-      <div class="item"><span style="width:8px;height:8px;border-radius:50%;background:#EDEFF3;border:1px solid #D7DBE3"></span>角标 = 出现在几段对话</div>
+
+    <div class="hud" id="hud">
+      <b>●</b> 知识点（颜色 = 知识域）　<b>○</b> 对话（数字）<br>
+      拖拽节点可以拉散，滚轮缩放，点空白处复位高亮
     </div>
   </section>
 </main>
@@ -227,15 +204,15 @@
 <script>
 /* ============ 数据 ============ */
 const DOMAINS = [
-  {id:'env',   name:'环境与运行时', color:'#5B7CFA'},
-  {id:'build', name:'编译与工程',   color:'#E9A23B'},
-  {id:'data',  name:'数据与搬运',   color:'#14B8A6'},
-  {id:'sync',  name:'并发与同步',   color:'#8B5CF6'},
-  {id:'num',   name:'精度与数值',   color:'#EC4899'},
-  {id:'perf',  name:'性能与调优',   color:'#22A45D'},
-  {id:'arch',  name:'架构与模型',   color:'#64748B'},
-  {id:'ext',   name:'扩展与迁移',   color:'#0EA5E9'},
-  {id:'deploy',name:'部署与交付',   color:'#C2410C'}
+  {id:'env',   name:'环境与运行时', color:'#7C9BFF'},
+  {id:'build', name:'编译与工程',   color:'#F2B45C'},
+  {id:'data',  name:'数据与搬运',   color:'#2DD4BF'},
+  {id:'sync',  name:'并发与同步',   color:'#A78BFA'},
+  {id:'num',   name:'精度与数值',   color:'#F472B6'},
+  {id:'perf',  name:'性能与调优',   color:'#34D399'},
+  {id:'arch',  name:'架构与模型',   color:'#94A3B8'},
+  {id:'ext',   name:'扩展与迁移',   color:'#38BDF8'},
+  {id:'deploy',name:'部署与交付',   color:'#FB923C'}
 ];
 
 const DIALOGUES = [
@@ -511,19 +488,24 @@ const LINKS = [
   ['n26','n31','trade'], ['n33','n34','trade'], ['n47','n33','trade']
 ];
 
-/* ============ 基础工具 ============ */
+
+
+/* ============ 基础 ============ */
+const NS='http://www.w3.org/2000/svg';
+const $ = s=>document.querySelector(s);
 const domById = Object.fromEntries(DOMAINS.map(d=>[d.id,d]));
 const nodeById = Object.fromEntries(NODES.map(n=>[n.id,n]));
 const dlgByN = Object.fromEntries(DIALOGUES.map(d=>[d.n,d]));
-const $ = s=>document.querySelector(s);
+const W=1000, H=720, CX=W/2, CY=H/2;
 
 /* ============ 顶栏统计 ============ */
 (function(){
   const shared = NODES.filter(n=>n.refs.length>1).length;
+  const dlinks = NODES.reduce((s,n)=>s+n.refs.length,0);
   $('#stats').innerHTML = `
     <div class="stat"><i>${DIALOGUES.length}</i>段对话</div>
     <div class="stat"><i>${NODES.length}</i>个知识点</div>
-    <div class="stat"><i>${LINKS.length}</i>条关联</div>
+    <div class="stat"><i>${LINKS.length + dlinks}</i>条关联</div>
     <div class="stat"><i>${shared}</i>个跨段共享</div>`;
 })();
 
@@ -539,7 +521,6 @@ const $ = s=>document.querySelector(s);
     el.onclick = ()=>toggleDialogue(d.n);
     list.appendChild(el);
   });
-
   const dom = $('#domList');
   DOMAINS.forEach(d=>{
     const el = document.createElement('div');
@@ -552,281 +533,432 @@ const $ = s=>document.querySelector(s);
 
 /* ============ 状态 ============ */
 const state = {dlg:null, dom:null, q:''};
+let labelsOn = true;
 
-function toggleDialogue(n){
-  state.dlg = (state.dlg===n) ? null : n;
-  if(state.dlg) state.dom = null;
-  syncSide(); render();
-  if(state.dlg){
-    const d = dlgByN[state.dlg];
-    const cnt = NODES.filter(x=>x.refs.includes(d.n));
-    openDrawerDialogue(d, cnt);
-  } else closeDrawer();
-}
-function toggleDomain(id){
-  state.dom = (state.dom===id) ? null : id;
-  if(state.dom) state.dlg = null;
-  syncSide(); render();
-  if(!state.dom) closeDrawer();
-}
-function syncSide(){
-  document.querySelectorAll('.dlg').forEach(el=>{
-    el.classList.toggle('on', Number(el.dataset.n)===state.dlg);
-  });
-  document.querySelectorAll('.chip').forEach(el=>{
-    el.classList.toggle('on', el.dataset.id===state.dom);
-  });
-}
-$('#q').addEventListener('input', e=>{
-  state.q = e.target.value.trim();
-  render();
+/* ============ 力导向网络 ============ */
+const simNodes = [], simLinks = [];
+const anchors = {};
+
+DOMAINS.forEach((d,i)=>{
+  const a = -Math.PI/2 + i*(Math.PI*2/DOMAINS.length);
+  anchors[d.id] = {x: CX + Math.cos(a)*300, y: CY + Math.sin(a)*222};
 });
 
-/* ============ 图谱渲染 ============ */
-const NS='http://www.w3.org/2000/svg';
-const svg = $('#map');
-const byDom = {}; DOMAINS.forEach(d=>byDom[d.id]=NODES.filter(n=>n.dom===d.id));
+NODES.forEach(n=>{
+  const a = anchors[n.dom];
+  const ang = Math.random()*Math.PI*2, rad = 40 + Math.random()*120;
+  simNodes.push({
+    id:n.id, kind:'c', dom:n.dom, label:n.name, ref:n,
+    x: a.x + Math.cos(ang)*rad, y: a.y + Math.sin(ang)*rad,
+    vx:0, vy:0, r:5, deg:0
+  });
+});
+DIALOGUES.forEach((d,i)=>{
+  const ang = (i/DIALOGUES.length)*Math.PI*2 - Math.PI/2;
+  simNodes.push({
+    id:'D'+d.n, kind:'d', dom:null, label:String(d.n).padStart(2,'0'), ref:d,
+    x: CX + Math.cos(ang)*330, y: CY + Math.sin(ang)*250,
+    vx:0, vy:0, r:13, deg:0
+  });
+});
 
-const ISL = {w:304, h:206, gx:20, gy:18, mx:26, my:24};
-const PILL = {w:136, h:34, gapX:8, gapY:6, padX:12, top:38};
+const byId = Object.fromEntries(simNodes.map(n=>[n.id,n]));
 
-const pos = {};
-let edgeEls = [];
+LINKS.forEach(([a,b,kind])=>simLinks.push({s:a,t:b,kind:kind==='trade'?'trade':'cc'}));
+DIALOGUES.forEach(d=>{
+  NODES.filter(n=>n.refs.includes(d.n)).forEach(n=>{
+    simLinks.push({s:'D'+d.n, t:n.id, kind:'dc'});
+  });
+});
+simLinks.forEach(l=>{ byId[l.s].deg++; byId[l.t].deg++; });
+simNodes.forEach(n=>{ if(n.kind==='c') n.r = 4.2 + Math.min(n.deg,8)*0.78; });
 
-function buildMap(){
-  svg.innerHTML='';
-  const gBg = document.createElementNS(NS,'g');       // 岛屿底色
-  const gEdges = document.createElementNS(NS,'g');    // 概念之间的线
-  const gIslands = document.createElementNS(NS,'g');  // 岛屿标题
-  const gNodes = document.createElementNS(NS,'g');    // 概念卡片
-  const gDlg = document.createElementNS(NS,'g');
-  gDlg.id='dlgEdges';
-  svg.append(gBg, gEdges, gIslands, gNodes, gDlg);
+const svg = $('#graph');
+const gLinks = $('#links');
+const gNodes = $('#nodes');
+const viewport = $('#viewport');
 
-  DOMAINS.forEach((d, di)=>{
-    const col = di % 3, row = Math.floor(di/3);
-    const x = ISL.mx + col*(ISL.w+ISL.gx);
-    const y = ISL.my + row*(ISL.h+ISL.gy);
+/* ---- DOM ---- */
+simNodes.forEach(n=>{
+  const g = document.createElementNS(NS,'g');
+  g.setAttribute('class','nd ' + (n.kind==='d'?'d':'c'));
+  g.dataset.id = n.id;
 
-    // 岛屿背景
-    const bg = document.createElementNS(NS,'rect');
-    bg.setAttribute('x',x); bg.setAttribute('y',y);
-    bg.setAttribute('width',ISL.w); bg.setAttribute('height',ISL.h);
-    bg.setAttribute('rx',14); bg.setAttribute('class','island-bg');
-    bg.setAttribute('fill', hexA(d.color,.045));
-    bg.setAttribute('stroke', hexA(d.color,.18));
-    gBg.appendChild(bg);
+  if(n.kind==='c'){
+    const color = domById[n.dom].color;
+    const halo = document.createElementNS(NS,'circle');
+    halo.setAttribute('r', n.r*2.0); halo.setAttribute('fill', color);
+    halo.setAttribute('opacity','.10'); g.appendChild(halo);
 
-    // 左侧色条
-    const bar = document.createElementNS(NS,'rect');
-    bar.setAttribute('x',x); bar.setAttribute('y',y+14);
-    bar.setAttribute('width',3); bar.setAttribute('height',18);
-    bar.setAttribute('rx',2); bar.setAttribute('fill',d.color);
-    gIslands.appendChild(bar);
+    const dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('class','dot'); dot.setAttribute('r', n.r);
+    dot.setAttribute('fill', color);
+    g.appendChild(dot);
 
-    // 标题
     const t = document.createElementNS(NS,'text');
-    t.setAttribute('x',x+14); t.setAttribute('y',y+27);
-    t.setAttribute('class','island-title'); t.setAttribute('fill',d.color);
-    t.textContent = d.name;
-    gIslands.appendChild(t);
-
-    const s = document.createElementNS(NS,'text');
-    s.setAttribute('x',x+ISL.w-14); s.setAttribute('y',y+27);
-    s.setAttribute('text-anchor','end');
-    s.setAttribute('class','island-sub');
-    s.textContent = byDom[d.id].length + ' 项';
-    gIslands.appendChild(s);
-
-    // 节点
-    byDom[d.id].forEach((n, i)=>{
-      const cc = i % 2, rr = Math.floor(i/2);
-      const odd = byDom[d.id].length % 2 === 1;
-      const last = i === byDom[d.id].length - 1;
-      const px = (odd && last)
-        ? x + (ISL.w - PILL.w)/2
-        : x + PILL.padX + cc*(PILL.w+PILL.gapX);
-      const py = y + PILL.top + rr*(PILL.h+PILL.gapY);
-      pos[n.id] = {x: px + PILL.w/2, y: py + PILL.h/2};
-
-      const g = document.createElementNS(NS,'g');
-      g.setAttribute('class','node'); g.dataset.id = n.id;
-
-      const rect = document.createElementNS(NS,'rect');
-      rect.setAttribute('x',px); rect.setAttribute('y',py);
-      rect.setAttribute('width',PILL.w); rect.setAttribute('height',PILL.h);
-      rect.setAttribute('rx',8);
-      rect.setAttribute('fill','#FBFCFE');
-      rect.setAttribute('stroke', d.color);
-      rect.setAttribute('stroke-opacity', .35);
-      rect.setAttribute('stroke-width', 1.2);
-      g.appendChild(rect);
-
-      const tx = document.createElementNS(NS,'text');
-      tx.setAttribute('x',px+10); tx.setAttribute('y',py+21);
-      tx.textContent = n.name;
-      g.appendChild(tx);
-
-      const badgeBg = document.createElementNS(NS,'circle');
-      badgeBg.setAttribute('cx',px+PILL.w-13); badgeBg.setAttribute('cy',py+17);
-      badgeBg.setAttribute('r',8); badgeBg.setAttribute('class','badge-c');
-      if(n.refs.length<2) badgeBg.setAttribute('opacity','0');
-      g.appendChild(badgeBg);
-
-      const bd = document.createElementNS(NS,'text');
-      bd.setAttribute('x',px+PILL.w-13); bd.setAttribute('y',py+20);
-      bd.setAttribute('text-anchor','middle');
-      bd.setAttribute('class','badge');
-      bd.textContent = n.refs.length;
-      if(n.refs.length<2) bd.setAttribute('opacity','0');
-      g.appendChild(bd);
-
-      g.addEventListener('mouseenter', ()=>hoverNode(n.id));
-      g.addEventListener('mouseleave', ()=>hoverNode(null));
-      g.addEventListener('click', ()=>openDrawerNode(n.id));
-      gNodes.appendChild(g);
-    });
-  });
-
-  // 概念之间的边
-  const seen = new Set();
-  LINKS.forEach(([a,b,t])=>{
-    const A = pos[a], B = pos[b];
-    if(!A || !B) return;
-    const p = document.createElementNS(NS,'path');
-    const dx = B.x - A.x;
-    const c1x = A.x + dx*0.35, c1y = A.y;
-    const c2x = B.x - dx*0.35, c2y = B.y;
-    p.setAttribute('d', `M ${A.x} ${A.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${B.x} ${B.y}`);
-    p.setAttribute('class','edge' + (t==='trade'?' trade':''));
-    p.dataset.a = a; p.dataset.b = b;
-    gEdges.appendChild(p);
-    edgeEls.push(p);
-  });
-}
-
-function hoverNode(id){
-  if(state.dlg || state.q || state.dom) return;
-  const nb = new Set();
-  edgeEls.forEach(e=>{
-    const hit = !!id && (e.dataset.a===id || e.dataset.b===id);
-    e.style.opacity = hit ? .95 : 0;
-    if(hit){ nb.add(e.dataset.a); nb.add(e.dataset.b); }
-  });
-  document.querySelectorAll('.node').forEach(g=>{
-    g.classList.toggle('nb', !!id && nb.has(g.dataset.id) && g.dataset.id!==id);
-  });
-}
-
-/* ============ 过滤与高亮 ============ */
-function render(){
-  const q = state.q.toLowerCase();
-  const active = new Set();
-
-  document.querySelectorAll('.node').forEach(g=>{
-    const n = nodeById[g.dataset.id];
-    let on = true;
-    if(state.dlg) on = n.refs.includes(state.dlg);
-    if(state.dom) on = on && n.dom === state.dom;
-    if(q) on = on && (n.name.toLowerCase().includes(q) || n.def.toLowerCase().includes(q));
-    g.classList.toggle('off', !on);
-    g.classList.toggle('on', on && !!(state.dlg || state.dom || q));
-    if(on && (state.dlg || state.dom || q)) active.add(n.id);
-  });
-
-  const filtering = !!(state.dlg || state.dom || q);
-  edgeEls.forEach(e=>{
-    const both = active.has(e.dataset.a) && active.has(e.dataset.b);
-    e.style.opacity = filtering ? (both ? .7 : 0) : 0;
-  });
-
-  drawDialogueEdges(active);
-  updateHint();
-}
-
-function drawDialogueEdges(active){
-  const g = document.getElementById('dlgEdges');
-  g.innerHTML = '';
-  if(!state.dlg) return;
-  const d = dlgByN[state.dlg];
-  const originY = 340;
-  const chip = document.createElementNS(NS,'rect');
-  chip.setAttribute('x',2); chip.setAttribute('y',originY-11);
-  chip.setAttribute('width',22); chip.setAttribute('height',22);
-  chip.setAttribute('rx',6); chip.setAttribute('fill','#2E6BE6');
-  g.appendChild(chip);
-
-  const num = document.createElementNS(NS,'text');
-  num.setAttribute('x',13); num.setAttribute('y',originY+5);
-  num.setAttribute('text-anchor','middle');
-  num.setAttribute('font-size','11'); num.setAttribute('font-weight','700');
-  num.setAttribute('fill','#fff');
-  num.textContent = String(d.n).padStart(2,'0');
-  g.appendChild(num);
-
-  active.forEach(id=>{
-    const p = pos[id]; if(!p) return;
-    const path = document.createElementNS(NS,'path');
-    const c1x = 22 + (p.x-22)*0.5, c1y = originY;
-    const c2x = p.x - (p.x-22)*0.18, c2y = p.y;
-    path.setAttribute('d', `M 22 ${originY} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${p.x-70} ${p.y}`);
-    path.setAttribute('class','dlg-edge');
-    path.setAttribute('opacity','.22');
-    path.setAttribute('stroke-dasharray','2 4');
-    g.appendChild(path);
-  });
-}
-
-function updateHint(){
-  const h = $('#hint');
-  if(state.dlg){
-    const d = dlgByN[state.dlg];
-    h.textContent = `第 ${d.n} 段 · ${d.t} —— 点亮 ${NODES.filter(n=>n.refs.includes(d.n)).length} 个知识点`;
-  } else if(state.dom){
-    h.textContent = `${domById[state.dom].name} · ${byDom[state.dom].length} 个知识点`;
-  } else if(state.q){
-    h.textContent = `搜索 “${state.q}”`;
+    t.setAttribute('class','lbl'); t.textContent = n.label;
+    g.appendChild(t);
   } else {
-    h.textContent = '点击左侧任意一段对话，看知识点的分布';
+    const ring = document.createElementNS(NS,'circle');
+    ring.setAttribute('class','ring'); ring.setAttribute('r', n.r);
+    g.appendChild(ring);
+    const num = document.createElementNS(NS,'text');
+    num.setAttribute('class','num'); num.setAttribute('text-anchor','middle');
+    num.setAttribute('y','3.6'); num.textContent = n.label;
+    g.appendChild(num);
+  }
+
+  g.addEventListener('mouseenter', ()=>focusNode(n.id));
+  g.addEventListener('mouseleave', ()=>focusNode(null));
+  g.addEventListener('click', e=>{
+    e.stopPropagation();
+    if(n.kind==='c') openDrawerNode(n.id);
+    else toggleDialogue(n.ref.n);
+  });
+  n.el = g;
+  gNodes.appendChild(g);
+});
+
+simLinks.forEach(l=>{
+  const line = document.createElementNS(NS,'line');
+  line.setAttribute('class','lk ' + (l.kind==='dc'?'dc':''));
+  if(l.kind==='trade'){ line.setAttribute('stroke','#E7A0AB'); line.setAttribute('stroke-dasharray','4 3'); }
+  l.el = line;
+  gLinks.appendChild(line);
+});
+
+/* ---- 力导向 ---- */
+const SIM = {alpha:1, running:false};
+
+function tick(){
+  simNodes.forEach(n=>{ n.fx=0; n.fy=0; });
+
+  // 斥力
+  for(let i=0;i<simNodes.length;i++){
+    const a=simNodes[i];
+    for(let j=i+1;j<simNodes.length;j++){
+      const b=simNodes[j];
+      let dx=b.x-a.x, dy=b.y-a.y;
+      let d2=dx*dx+dy*dy;
+      if(d2<0.01){ dx=(Math.random()-.5); dy=(Math.random()-.5); d2=dx*dx+dy*dy; }
+      if(d2>170000) continue;
+      const d=Math.sqrt(d2);
+      const base = (a.kind==='d'||b.kind==='d') ? 3600 : 2200;
+      const f = base/d2;
+      const ux=dx/d, uy=dy/d;
+      a.fx-=ux*f; a.fy-=uy*f;
+      b.fx+=ux*f; b.fy+=uy*f;
+      const minD = a.r + b.r + ((a.kind==='d'||b.kind==='d') ? 28 : 20);
+      if(d < minD){
+        const push=(minD-d)*0.45;
+        a.fx-=ux*push; a.fy-=uy*push;
+        b.fx+=ux*push; b.fy+=uy*push;
+      }
+    }
+  }
+  // 连线弹簧
+  simLinks.forEach(l=>{
+    const a=byId[l.s], b=byId[l.t];
+    if(!a||!b) return;
+    let dx=b.x-a.x, dy=b.y-a.y;
+    const d=Math.sqrt(dx*dx+dy*dy)||1;
+    const L = l.kind==='dc' ? 145 : (l.kind==='trade' ? 70 : 58);
+    const k = l.kind==='dc' ? 0.007 : 0.030;
+    const f=(d-L)*k;
+    const ux=dx/d, uy=dy/d;
+    a.fx+=ux*f; a.fy+=uy*f;
+    b.fx-=ux*f; b.fy-=uy*f;
+  });
+  // 聚类 + 向心
+  simNodes.forEach(n=>{
+    if(n.kind==='c'){
+      const an=anchors[n.dom];
+      n.fx += (an.x-n.x)*0.045;
+      n.fy += (an.y-n.y)*0.045;
+    }
+    if(n.kind==='c'){
+      n.fx += (CX-n.x)*0.0006;
+      n.fy += (CY-n.y)*0.0006;
+    } else {
+      const dx=n.x-CX, dy=n.y-CY, d=Math.hypot(dx,dy)||1;
+      const f=(d-330)*0.022;
+      n.fx -= dx/d*f; n.fy -= dy/d*f;
+    }
+  });
+  // 积分
+  simNodes.forEach(n=>{
+    if(n.pin) return;
+    n.vx=(n.vx+n.fx*SIM.alpha*0.6)*0.86;
+    n.vy=(n.vy+n.fy*SIM.alpha*0.6)*0.86;
+    const sp=Math.hypot(n.vx,n.vy);
+    if(sp>8){ n.vx*=8/sp; n.vy*=8/sp; }
+    n.x+=n.vx; n.y+=n.vy;
+    n.x=Math.max(36,Math.min(W-36,n.x));
+    n.y=Math.max(28,Math.min(H-28,n.y));
+  });
+  SIM.alpha*=0.984;
+  paint();
+}
+
+function paint(){
+  simNodes.forEach(n=>{
+    n.el.setAttribute('transform', `translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+    const t = n.el.querySelector('.lbl');
+    if(t){
+      const right = n.x < CX;
+      t.setAttribute('x', right ? (n.r+7) : -(n.r+7));
+      t.setAttribute('text-anchor', right ? 'start':'end');
+      t.setAttribute('y','3.4');
+      t.style.display = labelsOn ? '' : 'none';
+    }
+  });
+  simLinks.forEach(l=>{
+    const a=byId[l.s], b=byId[l.t];
+    l.el.setAttribute('x1',a.x.toFixed(1)); l.el.setAttribute('y1',a.y.toFixed(1));
+    l.el.setAttribute('x2',b.x.toFixed(1)); l.el.setAttribute('y2',b.y.toFixed(1));
+  });
+}
+
+function textW(str, fs){
+  let w=0;
+  for(const ch of str) w += /[\u4e00-\u9fa5]/.test(ch) ? fs : fs*0.58;
+  return w;
+}
+
+function placeLabels(){
+  const fs = 9.6, placed = [];
+  const obstacles = simNodes.map(n=>({x:n.x-n.r-2, y:n.y-n.r-2, w:n.r*2+4, h:n.r*2+4}));
+  const list = simNodes.filter(n=>n.kind==='c').sort((a,b)=>b.deg-a.deg);
+  list.forEach(n=>{
+    const t = n.el.querySelector('.lbl'); if(!t) return;
+    const w = textW(n.label, fs), h = fs+3;
+    const cands = [
+      {ax:'start',  dx:n.r+7,  dy:3.4},
+      {ax:'end',    dx:-(n.r+7), dy:3.4},
+      {ax:'middle', dx:0,      dy:-(n.r+7)},
+      {ax:'middle', dx:0,      dy:n.r+13}
+    ];
+    let pick=null;
+    for(const c of cands){
+      const x0 = c.ax==='start' ? n.x+c.dx : (c.ax==='end' ? n.x+c.dx-w : n.x-w/2);
+      const box = {x:x0-2, y:n.y+c.dy-fs, w:w+4, h:h};
+      const hit = placed.some(b=>!(box.x+box.w<b.x || box.x>b.x+b.w || box.y+box.h<b.y || box.y>b.y+b.h))
+               || obstacles.some(o=>!(box.x+box.w<o.x || box.x>o.x+o.w || box.y+box.h<o.y || box.y>o.y+o.h));
+      if(!hit){ pick={c,box}; break; }
+    }
+    if(pick){
+      t.setAttribute('text-anchor', pick.c.ax);
+      t.setAttribute('x', pick.c.dx);
+      t.setAttribute('y', pick.c.dy);
+      t.style.display = labelsOn ? '' : 'none';
+      placed.push(pick.box);
+    } else {
+      t.style.display='none';
+    }
+  });
+}
+
+function fitView(){
+  const xs=simNodes.map(n=>n.x), ys=simNodes.map(n=>n.y);
+  const minX=Math.min(...xs)-62, maxX=Math.max(...xs)+62;
+  const minY=Math.min(...ys)-46, maxY=Math.max(...ys)+46;
+  const k=Math.min((W-30)/(maxX-minX),(H-30)/(maxY-minY),1.2);
+  view={k, x:CX-(minX+maxX)/2*k, y:CY-(minY+maxY)/2*k};
+  applyView();
+}
+
+function loop(){
+  if(!SIM.running) return;
+  tick();
+  if(SIM.alpha<0.02){
+    SIM.running=false;
+    placeLabels();
+    fitView();
+    return;
+  }
+  requestAnimationFrame(loop);
+}
+function kick(a=1){ SIM.alpha=Math.max(SIM.alpha,a); if(!SIM.running){ SIM.running=true; requestAnimationFrame(loop);} }
+
+/* ---- 聚焦高亮 ---- */
+function focusNode(id){
+  if(state.dlg||state.q||state.dom) return;
+  if(!id){ svg.classList.remove('focus');
+    simNodes.forEach(n=>n.el.classList.remove('hot','nbr'));
+    simLinks.forEach(l=>l.el.classList.remove('hot'));
+    return; }
+  const nbr = new Set([id]);
+  simLinks.forEach(l=>{
+    const hit = l.s===id || l.t===id;
+    l.el.classList.toggle('hot', hit);
+    if(hit){ nbr.add(l.s); nbr.add(l.t); }
+  });
+  simNodes.forEach(n=>{
+    n.el.classList.toggle('hot', n.id===id);
+    n.el.classList.toggle('nbr', nbr.has(n.id) && n.id!==id);
+  });
+  svg.classList.add('focus');
+}
+
+/* ---- 过滤 ---- */
+function applyState(){
+  const q = state.q.toLowerCase();
+  const filtering = !!(state.dlg || state.dom || q);
+  const active = new Set();
+  simNodes.forEach(n=>{
+    let on = true;
+    if(state.dlg) on = n.kind==='d' ? n.ref.n===state.dlg : n.ref.refs.includes(state.dlg);
+    if(state.dom) on = on && n.dom === state.dom;
+    if(q) on = on && n.kind==='c' && (n.ref.name.toLowerCase().includes(q) || n.ref.def.toLowerCase().includes(q));
+    n.el.style.opacity = on ? 1 : .16;
+    const dot = n.el.querySelector('.dot');
+    if(dot){
+      dot.setAttribute('stroke', (filtering && on) ? 'rgba(255,255,255,.85)' : 'none');
+      dot.setAttribute('stroke-width','1.2');
+    }
+    if(on) active.add(n.id);
+  });
+  simLinks.forEach(l=>{
+    const both = active.has(l.s) && active.has(l.t);
+    l.el.style.opacity = both ? (l.kind==='dc'? .55 : .65) : .03;
+  });
+  document.querySelectorAll('.dlg').forEach(el=>el.classList.toggle('on', Number(el.dataset.n)===state.dlg));
+  document.querySelectorAll('.chip').forEach(el=>el.classList.toggle('on', el.dataset.id===state.dom));
+  const h = $('#hud');
+  if(state.dlg){
+    const d=dlgByN[state.dlg];
+    h.innerHTML = `已聚焦 <b>第 ${d.n} 段 · ${d.t}</b>，点亮 ${NODES.filter(n=>n.refs.includes(d.n)).length} 个知识点`;
+  } else if(state.dom){
+    h.innerHTML = `已聚焦 <b>${domById[state.dom].name}</b>`;
+  } else if(state.q){
+    h.innerHTML = `搜索 <b>${state.q}</b>`;
+  } else {
+    h.innerHTML = `<b>●</b> 知识点（颜色 = 知识域）　<b>○</b> 对话（数字）<br>拖拽节点可以拉散，滚轮缩放，点空白处复位高亮`;
   }
 }
 
+/* ---- 交互：拖拽 / 缩放 / 平移 ---- */
+let view = {k:1, x:0, y:0};
+function applyView(){ viewport.setAttribute('transform', `translate(${view.x},${view.y}) scale(${view.k})`); }
+
+function toSvg(evt){
+  const pt = svg.createSVGPoint();
+  pt.x = evt.clientX; pt.y = evt.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  return {x:(p.x - view.x)/view.k, y:(p.y - view.y)/view.k};
+}
+
+let dragging=null, panning=null;
+
+svg.addEventListener('pointerdown', e=>{
+  const g = e.target.closest('.nd');
+  if(g){
+    const n = byId[g.dataset.id];
+    n.pin = true; n.vx=0; n.vy=0;
+    dragging = {n, off: (()=>{const p=toSvg(e); return {x:p.x-n.x, y:p.y-n.y};})()};
+    svg.setPointerCapture(e.pointerId);
+  } else if(e.target === svg || e.target.closest('#viewport')){
+    panning = {sx:e.clientX, sy:e.clientY, vx:view.x, vy:view.y};
+    svg.classList.add('dragging');
+  }
+});
+svg.addEventListener('pointermove', e=>{
+  if(dragging){
+    const p = toSvg(e);
+    dragging.n.x = p.x - dragging.off.x;
+    dragging.n.y = p.y - dragging.off.y;
+    paint();
+  } else if(panning){
+    const s = 1000 / svg.clientWidth;
+    view.x = panning.vx + (e.clientX - panning.sx) * s;
+    view.y = panning.vy + (e.clientY - panning.sy) * s * (1000/1000);
+    applyView();
+  }
+});
+svg.addEventListener('pointerup', e=>{
+  if(dragging){ dragging.n.pin=false; kick(.35); dragging=null;
+    setTimeout(()=>{ if(!SIM.running) placeLabels(); }, 500); }
+  if(panning){ panning=null; svg.classList.remove('dragging'); }
+});
+svg.addEventListener('click', e=>{
+  if(e.target === svg || e.target.closest('#viewport') && !e.target.closest('.nd')){
+    state.dlg=null; state.dom=null; state.q=''; $('#q').value='';
+    applyState(); closeDrawer();
+  }
+});
+svg.addEventListener('wheel', e=>{
+  e.preventDefault();
+  const p = toSvg(e);
+  const factor = e.deltaY < 0 ? 1.12 : 1/1.12;
+  const k2 = Math.min(2.6, Math.max(.45, view.k*factor));
+  const sx = p.x*view.k + view.x, sy = p.y*view.k + view.y;
+  view.k = k2;
+  view.x = sx - p.x*k2;
+  view.y = sy - p.y*k2;
+  applyView();
+}, {passive:false});
+
+$('#zIn').onclick = ()=>{ view.k=Math.min(2.6,view.k*1.2); applyView(); };
+$('#zOut').onclick = ()=>{ view.k=Math.max(.45,view.k/1.2); applyView(); };
+$('#btnReset').onclick = ()=>{ view={k:1,x:0,y:0}; applyView(); };
+$('#btnRelayout').onclick = ()=>{
+  SIM.alpha=1;
+  simNodes.forEach(n=>{ n.vx=0;n.vy=0;
+    if(n.kind==='c'){
+      const a=anchors[n.dom], ang=Math.random()*Math.PI*2, rad=40+Math.random()*120;
+      n.x=a.x+Math.cos(ang)*rad; n.y=a.y+Math.sin(ang)*rad;
+    } else {
+      const ang=Math.random()*Math.PI*2;
+      n.x=CX+Math.cos(ang)*320; n.y=CY+Math.sin(ang)*240;
+    }
+  });
+  initLayout();
+};
+$('#btnLabels').onclick = e=>{
+  labelsOn = !labelsOn;
+  e.currentTarget.classList.toggle('on', labelsOn);
+  if(labelsOn) placeLabels();
+  else document.querySelectorAll('.nd.c .lbl').forEach(t=>t.style.display='none');
+};
+
+/* ============ 对话选择 ============ */
+function toggleDialogue(n){
+  state.dlg = (state.dlg===n)? null : n;
+  if(state.dlg) state.dom=null;
+  applyState();
+  if(state.dlg){
+    const d = dlgByN[state.dlg];
+    openDrawerDialogue(d, NODES.filter(x=>x.refs.includes(d.n)));
+  } else closeDrawer();
+}
+function toggleDomain(id){
+  state.dom = (state.dom===id)? null : id;
+  if(state.dom) state.dlg=null;
+  applyState();
+  if(!state.dom) closeDrawer();
+}
+$('#q').addEventListener('input', e=>{ state.q=e.target.value.trim(); applyState(); });
+
 /* ============ 抽屉 ============ */
 const drawer = $('#drawer'), dwBody = $('#dwBody');
-$('#dwClose').onclick = ()=>{ closeDrawer(); state.dlg=null; state.dom=null; syncSide(); render(); };
-
+$('#dwClose').onclick = ()=>{ closeDrawer(); state.dlg=null; state.dom=null; applyState(); };
 function closeDrawer(){ drawer.classList.remove('open'); document.body.classList.remove('drawer-open'); }
 function openDrawer(){ drawer.classList.add('open'); document.body.classList.add('drawer-open'); }
 
 function openDrawerNode(id){
-  const n = nodeById[id];
-  const d = domById[n.dom];
+  const n = nodeById[id]; const d = domById[n.dom];
   $('#dwBar').style.background = d.color;
-  $('#dwKicker').textContent = d.name + ' · ' + (n.refs.length>1 ? `出现在 ${n.refs.length} 段对话` : '只出现在 1 段');
+  $('#dwKicker').textContent = d.name + ' · ' + (n.refs.length>1? `出现在 ${n.refs.length} 段对话`:'只出现在 1 段');
   $('#dwTitle').textContent = n.name;
-
-  const rel = LINKS.filter(l=>l[0]===id||l[1]===id)
-      .map(l=> l[0]===id? l[1] : l[0])
-      .filter((v,i,a)=>a.indexOf(v)===i);
-
+  const rel = LINKS.filter(l=>l[0]===id||l[1]===id).map(l=>l[0]===id?l[1]:l[0]).filter((v,i,a)=>a.indexOf(v)===i);
   dwBody.innerHTML = `
-    <h4>一句话</h4>
-    <div class="dw-def">${n.def}</div>
-    <h4>常见误区</h4>
-    <div class="dw-pit">${n.pit}</div>
-    <h4>原文里的一句</h4>
-    <div class="dw-quote">“${n.q}”</div>
-    <h4>出现在</h4>
-    <div>${n.refs.map(r=>`<span class="dw-chip" data-goto="${r}"><span class="n">${r}</span>${dlgByN[r].t}</span>`).join('')}</div>
-    <h4>相关概念</h4>
-    <div>${rel.map(r=>`<span class="dw-chip" data-rel="${r}">${nodeById[r].name}</span>`).join('') || '<span class="dw-sect">暂无</span>'}</div>
-  `;
-  dwBody.querySelectorAll('[data-goto]').forEach(el=>{
-    el.onclick = ()=>{ toggleDialogue(Number(el.dataset.goto)); };
-  });
-  dwBody.querySelectorAll('[data-rel]').forEach(el=>{
-    el.onclick = ()=>{ openDrawerNode(el.dataset.rel); };
-  });
+    <h4>一句话</h4><div class="dw-def">${n.def}</div>
+    <h4>常见误区</h4><div class="dw-pit">${n.pit}</div>
+    <h4>原文里的一句</h4><div class="dw-quote">“${n.q}”</div>
+    <h4>出现在</h4><div>${n.refs.map(r=>`<span class="dw-chip" data-goto="${r}"><span class="n">${r}</span>${dlgByN[r].t}</span>`).join('')}</div>
+    <h4>相关概念</h4><div>${rel.map(r=>`<span class="dw-chip" data-rel="${r}">${nodeById[r].name}</span>`).join('')||'<span class="dw-sect">暂无</span>'}</div>`;
+  dwBody.querySelectorAll('[data-goto]').forEach(el=>el.onclick=()=>toggleDialogue(Number(el.dataset.goto)));
+  dwBody.querySelectorAll('[data-rel]').forEach(el=>el.onclick=()=>openDrawerNode(el.dataset.rel));
   openDrawer();
 }
 
@@ -834,22 +966,15 @@ function openDrawerDialogue(d, cnt){
   $('#dwBar').style.background = '#2E6BE6';
   $('#dwKicker').textContent = `第 ${d.n} 段对话 · ${d.s}`;
   $('#dwTitle').textContent = d.t;
-  const byDomList = DOMAINS.map(dm=>{
+  const byDom = DOMAINS.map(dm=>{
     const items = cnt.filter(n=>n.dom===dm.id);
     if(!items.length) return '';
-    return `<h4>${dm.name}</h4><div>${items.map(n=>
-      `<span class="dw-chip" data-rel="${n.id}">${n.name}</span>`).join('')}</div>`;
+    return `<h4>${dm.name}</h4><div>${items.map(n=>`<span class="dw-chip" data-rel="${n.id}">${n.name}</span>`).join('')}</div>`;
   }).join('');
-
   dwBody.innerHTML = `
-    <h4>他当时在做什么</h4>
-    <div class="dw-def">${d.sum}</div>
-    <h4>这段涉及 ${cnt.length} 个知识点</h4>
-    ${byDomList}
-  `;
-  dwBody.querySelectorAll('[data-rel]').forEach(el=>{
-    el.onclick = ()=>openDrawerNode(el.dataset.rel);
-  });
+    <h4>他当时在做什么</h4><div class="dw-def">${d.sum}</div>
+    <h4>这段涉及 ${cnt.length} 个知识点</h4>${byDom}`;
+  dwBody.querySelectorAll('[data-rel]').forEach(el=>el.onclick=()=>openDrawerNode(el.dataset.rel));
   openDrawer();
 }
 
@@ -858,83 +983,65 @@ document.querySelectorAll('.tabs button').forEach(btn=>{
   btn.onclick = ()=>{
     document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on', b===btn));
     const map = btn.dataset.view==='map';
-    $('#hint').style.display = map? 'block':'none';
+    svg.style.display = map? 'block':'none';
+    document.querySelector('.hud').style.display = map? 'block':'none';
+    document.querySelector('.ctrl').style.display = map? 'flex':'none';
+    document.querySelector('.zoom').style.display = map? 'flex':'none';
     $('#matrix').classList.toggle('hidden', map);
-    document.body.classList.toggle('matrix-mode', !map);
   };
 });
 
 /* ============ 覆盖矩阵 ============ */
-(function buildMatrix(){
+(function(){
   const el = $('#matrix');
-  let head = '<tr><th style="text-align:left">对话</th>' +
-      DOMAINS.map(d=>`<th><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${d.color};margin-right:4px"></span>${d.name.replace('与','')}</th>`).join('') +
-      '<th>合计</th></tr>';
-
-  let rows = '';
+  const head = '<tr><th style="text-align:left">对话</th>' +
+    DOMAINS.map(d=>`<th><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${d.color};margin-right:4px"></span>${d.name}</th>`).join('') +
+    '<th>合计</th></tr>';
+  let rows='';
   DIALOGUES.forEach(d=>{
-    let total = 0;
+    let total=0;
     const cells = DOMAINS.map(dm=>{
       const items = NODES.filter(n=>n.dom===dm.id && n.refs.includes(d.n));
       total += items.length;
       if(!items.length) return `<td class="cell" data-d="${d.n}" data-dom="${dm.id}" style="background:#FAFBFC;color:#C9CFDA">·</td>`;
-      const a = Math.min(.14 + items.length*0.20, .82);
-      return `<td class="cell" data-d="${d.n}" data-dom="${dm.id}"
-        style="background:${hexA(dm.color,a)};color:${items.length>=2?'#fff':'#1B1F26'};font-weight:600">${items.length}</td>`;
+      const a = Math.min(.14+items.length*0.2,.82);
+      return `<td class="cell" data-d="${d.n}" data-dom="${dm.id}" style="background:${hexA(dm.color,a)};color:${items.length>=2?'#fff':'#1B1F26'};font-weight:600">${items.length}</td>`;
     }).join('');
     rows += `<tr><th>${d.n}. ${d.t}</th>${cells}<td class="tot">${total}</td></tr>`;
   });
-
-  el.innerHTML = `<div style="padding:10px 14px 2px;font-size:11.5px;color:#8A929F">
-      每一格 = 该段对话在该知识域涉及的知识点数，点格子可反查具体是哪几个
-    </div><table><thead>${head}</thead><tbody>${rows}</tbody></table>`;
-  el.querySelectorAll('td.cell').forEach(td=>{
-    td.onclick = ()=>{
-      const n = Number(td.dataset.d), dm = td.dataset.dom;
-      const items = NODES.filter(x=>x.dom===dm && x.refs.includes(n));
-      if(!items.length) return;
-      $('#dwBar').style.background = domById[dm].color;
-      $('#dwKicker').textContent = `第 ${n} 段 · ${domById[dm].name}`;
-      $('#dwTitle').textContent = `${items.length} 个知识点`;
-      dwBody.innerHTML = `<h4>本格内容</h4><div>${items.map(x=>
-        `<span class="dw-chip" data-rel="${x.id}">${x.name}</span>`).join('')}</div>`;
-      dwBody.querySelectorAll('[data-rel]').forEach(c=>{
-        c.onclick = ()=>openDrawerNode(c.dataset.rel);
-      });
-      openDrawer();
-    };
+  el.innerHTML = `<div style="padding:10px 14px 2px;font-size:11.5px;color:#8A929F">每一格 = 该段对话在该知识域涉及的知识点数，点格子可反查</div>
+    <table><thead>${head}</thead><tbody>${rows}</tbody></table>`;
+  el.querySelectorAll('td.cell').forEach(td=>td.onclick=()=>{
+    const n=Number(td.dataset.d), dm=td.dataset.dom;
+    const items = NODES.filter(x=>x.dom===dm && x.refs.includes(n));
+    if(!items.length) return;
+    $('#dwBar').style.background = domById[dm].color;
+    $('#dwKicker').textContent = `第 ${n} 段 · ${domById[dm].name}`;
+    $('#dwTitle').textContent = `${items.length} 个知识点`;
+    dwBody.innerHTML = `<h4>本格内容</h4><div>${items.map(x=>`<span class="dw-chip" data-rel="${x.id}">${x.name}</span>`).join('')}</div>`;
+    dwBody.querySelectorAll('[data-rel]').forEach(c=>c.onclick=()=>openDrawerNode(c.dataset.rel));
+    openDrawer();
   });
 })();
 
-function hexA(hex, a){
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+function hexA(hex,a){
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
   return `rgba(${r},${g},${b},${a})`;
 }
 
-/* ============ 键盘与空白处 ============ */
-document.addEventListener('keydown', e=>{
-  if(e.key!=='Escape') return;
-  closeDrawer();
-  state.dlg=null; state.dom=null;
-  syncSide(); render();
-});
-svg.addEventListener('click', e=>{
-  if(e.target === svg || e.target.classList.contains('island-bg')){
-    closeDrawer();
-    state.dlg=null; state.dom=null;
-    syncSide(); render();
-  }
-});
-
 /* ============ 启动 ============ */
-buildMap();
-render();
+function initLayout(){
+  SIM.alpha = 1; SIM.running = false;
+  for(let i=0;i<340;i++) tick();
+  SIM.alpha = 0.02;
+  paint();
+  placeLabels();
+  fitView();
+}
 
-// 默认给一个轻提示：第一段对话闪烁一下
-setTimeout(()=>{
-  const first = document.querySelector('.dlg');
-  if(first) first.style.transition = 'background .4s';
-}, 300);
+applyView();
+initLayout();
+
 </script>
 </body>
 </html>
