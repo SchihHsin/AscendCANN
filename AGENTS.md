@@ -9470,3 +9470,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`cann-learning-home/hub-search.js`、`hub-search.css`、`index.html`、`resources.html`、`role.html`。不改变学习首页、角色路线和资料库的页面序列，也不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check cann-learning-home/hub-search.js`、`git diff --check` 通过；本地浏览器已回放课程检索、意图分流、`/` Skill 选择、搜索结果转路径规划、关闭后回到首页及重开恢复对话。内嵌浏览器实际视口为 426px，已查看窄屏样式；未声称完成桌面视口核验。Worker 在当前预览环境不可达，模型规划调用仍待可访问环境复核。
 - 发布：实现提交 `3750e999` 已推送至 `origin/main`；GitHub Pages workflow `43838207105` 对应本次提交并成功完成。线上学习首页、助手 JS 与 CSS 均返回 HTTP 200，页面已加载新副屏与 `/` Skill 代码。当前预览环境仍无法连通学习路径 Worker，模型规划调用待在可访问环境复核。
+
+### 2026-11-17 · AI Coding 访谈思维导图记录转写
+
+- 新建 `outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/` 下郑雨豪、王伟、梁淼城、彭椒、王鹤锦 5 份独立访谈 Markdown，与既有徐立桂记录放在同一目录。依据用户本轮提供的五张访谈图，按图中可见的个人信息、任务回顾、AI 参与和人工介入记录转写；不是录音逐字稿，不添加研究结论。右侧共有的提纲分支没有明确对应回答，未转写成受访者回答；空缺与疑字单独标明。
+- 图的名称为“思维导图（mind map）”，版式更具体地说是中心发散式 / 放射式思维导图（radial mind map）。来源为用户提供图片，转写内容按截图可见字样核对；有歧义处标注待核对。
+- 验证：逐图核对姓名与回答区域，检查 5 份 Markdown 的空白格式；未运行测试。没有改动页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 推送：在基于当时最新 `origin/main` 的隔离工作树中仅提交 5 份记录和本条交接记录，并推送到 `origin/main`；主工作区已有的其他暂存、未暂存与未跟踪内容未纳入。
