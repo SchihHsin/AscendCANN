@@ -795,11 +795,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-11-17（本会话）
 
-#### 一个算子开发者的 10 次 AI 对话
+#### 一个算子开发者的 15 次 AI 对话
 
-- 需求几经调整：先要求"10 个角色各一组"，后改为**同一个人**的 10 次对话；去掉画像、时间轴、阶段划分、复盘表等框架，只保留对话正文；追问不做统一逻辑推进，允许跳跃、误解、跑题、中途放弃
+- 需求几经调整：先要求"10 个角色各一组"，后改为**同一个人**的多次对话；去掉画像、时间轴、阶段划分、复盘表等框架，只保留对话正文；助手回答按真实模型输出习惯写（先结论、再原因、再验证步骤、贴代码、说边界），追问不做统一逻辑推进，允许跳跃、误解、跑题、中途放弃
+- 后续补充：原 10 段以排错为主（8 段都挂在具体错误上），增加 5 段纯知识型对话，编号混排，避免"上篇排障 / 下篇科普"的分类感
 - 技术依据：实读 `ascendc-agent-main/.claude/skills/` 下的 ascendc-debugging / ascendc-precision-debug / ascendc-npu-arch / ascendc-env-check / ascendc-api-best-practices（含 `api-datacopy.md` 的 32B 对齐与 DataCopyPad 行为）/ ascendc-operator-kernel-design
-- 新增文件：`cann-dashboard/一个算子开发者的10次对话.md`（约 636 行 / 1.5 万字）
-  - 10 段对话对应 10 个不同项目：容器看不到卡、新镜像编译、非对齐 shape、多核偶发错、FP16 精度、存量 kernel 手写 SetFlag、带宽 30%、CUDA LayerNorm 迁移、推理服务接入、架构评审
-  - 每段 10–13 轮追问，口语化；包含错误猜测（容器里装驱动、`--privileged`、写死 include 路径）、跳跃提问（看日志、eventId 数量、同卡影响）、中途放弃改方案
-- 旧版多角色文档已删除，历史见 commit `a3619910`
+- 新增文件：`cann-dashboard/一个算子开发者的15次对话.md`（约 3460 行 / 7.9 万字）
+  - 排障型 10 段：容器看不到卡、镜像编译、非对齐 shape、多核偶发错、FP16 精度、存量 kernel 手写 SetFlag、带宽 30%、CUDA LayerNorm 迁移、推理服务接入、架构评审
+  - 知识型 5 段：Tiling 设计方法论、API 分层与选型、动态 shape 支持、算子融合与图模式、fp16/bf16/fp32 选型
+  - 每段 10–15 轮，回答含对照表、代码片段、判读方法；错判/跑题/放弃方向均有保留（如"容器里装驱动""`--privileged` 就够了""先改成绝对路径 include"）
+- 旧版 10 段与多角色版本已删除，历史见 commit `a3619910`
