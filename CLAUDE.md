@@ -795,12 +795,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-11-17（本会话）
 
-#### 昇腾算子开发者 AI 对话样本（10 组）
+#### 一个算子开发者的 10 次 AI 对话
 
-- 需求：构造 10 组昇腾算子开发者可能出现的对话（含排错类与原理类），每组 1 条初始提问 + 10 条追问，记录追问过程，输出为 Markdown
+- 需求几经调整：先要求"10 个角色各一组"，后改为**同一个人**的 10 次对话；去掉画像、时间轴、阶段划分、复盘表等框架，只保留对话正文；追问不做统一逻辑推进，允许跳跃、误解、跑题、中途放弃
 - 技术依据：实读 `ascendc-agent-main/.claude/skills/` 下的 ascendc-debugging / ascendc-precision-debug / ascendc-npu-arch / ascendc-env-check / ascendc-api-best-practices（含 `api-datacopy.md` 的 32B 对齐与 DataCopyPad 行为）/ ascendc-operator-kernel-design
-- 新增文件：`cann-dashboard/昇腾算子开发者-AI对话样本10组.md`（约 2016 行 / 5.4 万字）
-  - 结构：文档说明 → 设计方法 → 角色设定 → 覆盖矩阵 → 目录 → 10 组对话 → 附录 A（跨对话共性观察）/ 附录 B（高频问句 Top 20）
-  - 每组固定五段：元信息 / 初始提问 / 追问 Q1–Q10 / 追问路径复盘表（真实意图 + 回答策略）/ 一句话观察
-  - 覆盖：环境（容器看不到卡）、编译（msopgen 工程两套编译器）、32B 对齐与尾块、多核竞争、FP16 精度、同步语义（TQue vs TBuf）、性能判读（mte2_ratio 误读）、CUDA 迁移、aclnn/PyTorch 接入、host tiling 架构原理
-- 每组"一句话观察"可直接映射到看板痛点：环境分层缺失、阶段感缺失、"不报错只出错"占大头、指标判读口径缺失、用户要清单不要知识点
+- 新增文件：`cann-dashboard/一个算子开发者的10次对话.md`（约 636 行 / 1.5 万字）
+  - 10 段对话对应 10 个不同项目：容器看不到卡、新镜像编译、非对齐 shape、多核偶发错、FP16 精度、存量 kernel 手写 SetFlag、带宽 30%、CUDA LayerNorm 迁移、推理服务接入、架构评审
+  - 每段 10–13 轮追问，口语化；包含错误猜测（容器里装驱动、`--privileged`、写死 include 路径）、跳跃提问（看日志、eventId 数量、同卡影响）、中途放弃改方案
+- 旧版多角色文档已删除，历史见 commit `a3619910`
