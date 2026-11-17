@@ -9484,4 +9484,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 在 `outputs/019fc599-4de5-77a1-9612-6cbb4caa6090/` 将梁淼城、彭椒、王鹤锦、王伟、徐立桂、郑雨豪六次访谈整理为独立 Markdown；徐立桂记录沿用该目录原有访谈手记，另补 ASR 逐字稿信息。手记优先，ASR 补充按时间标注并以转述呈现；原始 DOCX 保持不动。
 - 校订依据：用户复听确认王鹤锦访谈使用起点为 2022 年底；逐字稿语境加官方资料交叉确认 DeepSeek-V4.1-Flash、GPT-6.1 Sol、Claude Opus 5.5 / Opus 5、vLLM / vLLM Ascend、曦云C500（沐曦）、MindStudio Insight、msOpProf。对应官方来源已写入记录。`nohup` 是依据远程后台运行语境对 ASR “no halt”的推测，不伪装为听写确认。Map to Poster 的具体仓库、TestAgent 的具体产品、毕方英文名及手记词 `moss` 均保留不确定性。访谈陈述是受访者个人经历，不作为独立验证。
 - 文件：六份 `*-AI-Coding用户访谈记录.md` 和本文件。证据来源为用户提供的 FigJam / 思维导图手记、六份原始逐字稿 DOCX（`用户访谈逐字稿/ai coding访谈/`）及官方资料（H）；名称歧义和 `nohup` 推断明确标注。未影响页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：逐段比对逐字稿时间戳及相关内容；`git diff --check` 通过；未运行测试。提交 / 推送回执待本轮提交完成后补记。
+- 验证：逐段比对逐字稿时间戳及相关内容；`git diff --check` 通过；未运行测试。提交 / 推送：访谈记录与交接摘要提交 `70e7ca45` 已成功推送到 `origin/main`；本回执随后的交接更新一并提交并推送。
