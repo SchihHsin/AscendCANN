@@ -35,52 +35,52 @@
   .layout{display:flex;height:calc(100vh - 60px)}
   /* ---- floating controls ---- */
   .fsearch{position:absolute;left:16px;top:14px;z-index:6;display:flex;align-items:center;gap:8px;
-    background:rgba(20,25,33,.74);border:1px solid rgba(255,255,255,.12);border-radius:10px;
-    padding:8px 11px;backdrop-filter:blur(10px)}
-  .fsearch input{width:290px;background:transparent;border:0;outline:none;color:#E6ECF5;font-size:12.5px}
-  .fsearch input::placeholder{color:#7C8798}
+    background:rgba(255,255,255,.92);border:1px solid #E3E6EB;border-radius:10px;
+    padding:8px 11px;backdrop-filter:blur(10px);box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .fsearch input{width:290px;background:transparent;border:0;outline:none;color:#1B1F26;font-size:12.5px}
+  .fsearch input::placeholder{color:#9AA3B2}
   .fchips{position:absolute;left:16px;top:60px;z-index:6;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100vw - 420px)}
   .fchip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:20px;font-size:11px;
-    background:rgba(20,25,33,.66);border:1px solid rgba(255,255,255,.12);color:#B9C4D4;cursor:pointer;
+    background:rgba(255,255,255,.92);border:1px solid #E3E6EB;color:#4A5260;cursor:pointer;
     backdrop-filter:blur(8px)}
-  .fchip:hover{color:#E6ECF5}
-  .fchip.on{background:rgba(124,155,255,.22);border-color:rgba(124,155,255,.5);color:#EAF0FC;font-weight:600}
+  .fchip:hover{color:#1B1F26;border-color:#CBD3DF}
+  .fchip.on{background:#EDF2FE;border-color:#C9DAFB;color:#1B1F26;font-weight:600}
   .fchip .dot{width:7px;height:7px;border-radius:50%}
 
   /* ---- graph stage ---- */
-  .stage{flex:1;position:relative;background:radial-gradient(circle at 50% 45%, #151A23 0%, #0E1117 62%, #0B0E13 100%);overflow:hidden;padding-top:98px}
+  .stage{flex:1;position:relative;background:radial-gradient(circle at 50% 42%, #FFFFFF 0%, #F7F8FA 58%, #EFF1F5 100%);overflow:hidden;padding-top:98px}
   body.drawer-open .stage{margin-right:392px}
   #graph{width:100%;height:100%;display:block;cursor:grab}
   #graph.dragging{cursor:grabbing}
 
   .nd{cursor:pointer}
   .nd .dot{transition:r .15s, filter .15s}
-  .nd .lbl{font-size:9.6px;fill:#C3CCDA;pointer-events:none;paint-order:stroke;
-    stroke:#0E1117;stroke-width:2.6px;stroke-linejoin:round}
-  .nd .dlbl{font-size:9.4px;fill:#AFBCCE;font-weight:500}
-  .nd.d .ring{fill:rgba(255,255,255,.03);stroke:#CBD5E1;stroke-width:1.3}
-  .nd:hover .dot{filter:brightness(1.25)}
-  .nd:hover .ring{stroke:#fff}
-  .lk{stroke:#8FA3BF;stroke-width:.9;opacity:.14;transition:opacity .15s}
-  .lk.dc{stroke-dasharray:2 3;opacity:.08;stroke-width:.9}
+  .nd .lbl{font-size:9.6px;fill:#39414F;pointer-events:none;paint-order:stroke;
+    stroke:#F7F8FA;stroke-width:2.8px;stroke-linejoin:round}
+  .nd .dlbl{font-size:9.4px;fill:#7A8595;font-weight:500}
+  .nd.d .ring{fill:rgba(255,255,255,.85);stroke:#9AA6B8;stroke-width:1.3}
+  .nd:hover .dot{filter:saturate(1.2) brightness(.95)}
+  .nd:hover .ring{stroke:#1B1F26}
+  .lk{stroke:#A6B3C6;stroke-width:1;opacity:.5;transition:opacity .15s}
+  .lk.dc{stroke-dasharray:2 3;opacity:.3;stroke-width:.9}
 
   /* 聚焦态 */
-  svg.focus .nd{opacity:.14}
+  svg.focus .nd{opacity:.25}
   svg.focus .nd.hot, svg.focus .nd.nbr{opacity:1}
-  svg.focus .lk{opacity:.03}
+  svg.focus .lk{opacity:.05}
   svg.focus .lk.hot{opacity:.75;stroke:#DDE6F5}
 
-  .hud{position:absolute;left:16px;bottom:14px;font-size:11px;color:#8B96A8;pointer-events:none;line-height:1.7}
-  .hud b{color:#C9D3E1;font-weight:600}
+  .hud{position:absolute;left:16px;bottom:14px;font-size:11px;color:#8A929F;pointer-events:none;line-height:1.7}
+  .hud b{color:#1B1F26;font-weight:600}
   .ctrl{position:absolute;right:16px;top:14px;display:flex;gap:6px}
-  .ctrl button{height:28px;padding:0 11px;border-radius:8px;border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.05);color:#C9D3E1;font-size:11.5px;cursor:pointer;backdrop-filter:blur(6px)}
-  .ctrl button:hover{background:rgba(255,255,255,.1)}
-  .ctrl button.on{background:rgba(124,155,255,.22);border-color:rgba(124,155,255,.45);color:#E6ECFA}
+  .ctrl button{height:28px;padding:0 11px;border-radius:8px;border:1px solid #E3E6EB;
+    background:rgba(255,255,255,.92);color:#4A5260;font-size:11.5px;cursor:pointer;backdrop-filter:blur(6px)}
+  .ctrl button:hover{background:#F4F6FA;color:#1B1F26}
+  .ctrl button.on{background:#EDF2FE;border-color:#C9DAFB;color:#1B1F26}
   .zoom{position:absolute;right:16px;bottom:16px;display:flex;flex-direction:column;gap:6px}
-  .zoom button{width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.05);color:#C9D3E1;font-size:15px;cursor:pointer;line-height:1}
-  .zoom button:hover{background:rgba(255,255,255,.1)}
+  .zoom button{width:30px;height:30px;border-radius:8px;border:1px solid #E3E6EB;
+    background:rgba(255,255,255,.92);color:#4A5260;font-size:15px;cursor:pointer;line-height:1}
+  .zoom button:hover{background:#F4F6FA}
 
   /* ---- matrix ---- */
   .matrix{position:absolute;inset:98px 14px 14px;overflow:auto;background:#fff;border-radius:12px;display:block}
@@ -194,7 +194,7 @@
 
 <script>
 /* ============ 数据 ============ */
-const DOMAINS = [{id: "env", name: "环境与运行时", color: "#7C9BFF"}, {id: "build", name: "编译与工程", color: "#F2B45C"}, {id: "data", name: "数据与搬运", color: "#2DD4BF"}, {id: "sync", name: "并发与同步", color: "#A78BFA"}, {id: "num", name: "精度与数值", color: "#F472B6"}, {id: "perf", name: "性能与调优", color: "#34D399"}, {id: "arch", name: "架构与模型", color: "#94A3B8"}, {id: "ext", name: "扩展与迁移", color: "#38BDF8"}, {id: "deploy", name: "部署与交付", color: "#FB923C"}];
+const DOMAINS = [{id: "env", name: "环境与运行时", color: "#5B7CFA"}, {id: "build", name: "编译与工程", color: "#E9A23B"}, {id: "data", name: "数据与搬运", color: "#14B8A6"}, {id: "sync", name: "并发与同步", color: "#8B5CF6"}, {id: "num", name: "精度与数值", color: "#EC4899"}, {id: "perf", name: "性能与调优", color: "#22A45D"}, {id: "arch", name: "架构与模型", color: "#64748B"}, {id: "ext", name: "扩展与迁移", color: "#0EA5E9"}, {id: "deploy", name: "部署与交付", color: "#C2410C"}];
 
 const DIALOGUES = [{n: 1, t: "容器里看不到卡", short: "看不到卡", s: "环境", sum: "接手别人的机器，npu-smi 报 DCMI 初始化失败", opening: "接了图像组的预处理项目，机器是上一任留下的，8 卡 910B。CANN 我重装了一遍，npu-smi info 还是报： 是不是得重装系统？", openingA: "先别重装，这个报错我也见过不少次，八成不是系统坏了，而是**设备管理通道（DCMI）没起来**。 dcmi module initialize failed 的字面意思是：npu-smi 想通过 DCMI 接口去问驱动\"这台机器上有几张卡\"，但驱动那一侧没有响应。"}, {n: 2, t: "Tiling 怎么设计", short: "Tiling 设计", s: "方法论", sum: "shape 变化大，每个都要重调 tiling", opening: "接了个模型，batch 从 1 到 64，seq 从 128 到 8192。现在每个 shape 都要重调一遍 tiling，基本靠试，试到不崩、不慢为止。这个有没有方法，还是只能这样？", openingA: "有方法，而且\"靠试\"通常是因为把三件事混在一起试了。"}, {n: 3, t: "换了镜像编译不过", short: "编译报错", s: "编译", sum: "kernel_operator.h 找不到，链接又报符号未定义", opening: "新项目的镜像，msopgen gen 生成工程，bash build.sh 报： fatal error: kernel_operator.h: No such file or directory", openingA: "这个错很典型，先看一个变量： 如果它是空的，答案就有了——**编译器的头文件搜索路径没建立**。"}, {n: 4, t: "1000 个元素全 0", short: "全 0", s: "功能", sum: "1024 正常、1000 全 0，静默错误", opening: "{1,1024} fp16 结果全对，{1,1000} 输出全 0。不报错，不崩。", openingA: "先把两个数算出来： - 1024 × 2 字节 = 2048，是 32 的整数倍（2048 / 32 = 64） - 1000 × 2 字节 = 2000，不是 32 的整数倍（2000 / 32 = 62.5） 这不是巧合。"}, {n: 5, t: "API 到底分几层", short: "分不清 API", s: "概念", sum: "基础 API / 高阶 API / 语言扩展分不清", opening: "看文档的时候一会儿基础 API，一会儿高阶 API，还有语言扩展层、框架接口。这几个到底是什么关系？我该从哪一层开始写？", openingA: "四层，从\"最贴近硬件\"到\"最贴近业务\"，越往上越好用、越往下越可控： | 层 | 内容 | 典型东西 | 什么时候用 | |---|---|---|---| | 语言扩展层 | 修饰符、地址空间 | __global__ __aicore__ __gm__ __ubuf__ | 写 kernel 声…"}, {n: 6, t: "多核偶发错", short: "偶发错", s: "并发", sum: "ReduceSum 八核，结果时对时错", opening: "blockDim=8，结果偶发错，错的位置还不固定。重跑有时候全对。", openingA: "这个现象——**偶发 + 位置不固定**——基本可以排除\"算法写错\"（算法错会稳定复现），指向**竞争类问题**。 按概率排，三类： 1. **切分错误**：相邻核的区间重叠或漏算（这类通常是稳定错，但你如果同时有下面的问题，就会看起来随机）；"}, {n: 7, t: "Softmax 精度差一点", short: "精度差", s: "精度", sum: "fp16 MARE 3.2e-3，fp32 完全过", opening: "Softmax fp16，MARE 3.2e-3，验收线 1e-3。fp32 就完全过。", openingA: "先给结论：**这不是算法错，是数值精度问题**。判断依据就是你说的那句\"fp32 完全过\"——同一个算法，换精度就过，说明逻辑链路是对的，误差来自数值表示和运算顺序。"}, {n: 8, t: "动态 shape 怎么支持", short: "shape 不固定", s: "工程", sum: "输入长度不固定，tiling 是写死的", opening: "模型输入长度不固定，seq 从 128 到 4096 都有。我现在的 tiling 是按固定 shape 写死的，换个 shape 就错。动态 shape 到底该怎么支持？", openingA: "先说一个容易误解的点：**动态 shape 不是\"kernel 支持变长\"**。 kernel 本身不知道 shape，它只知道 tiling 参数——perCore、tileLen、tileNum。"}, {n: 9, t: "存量 kernel 的 SetFlag", short: "手写同步", s: "代码", sum: "接手代码，手写同步能不能删", opening: "接手一段代码，CopyIn 和 Compute 之间手写了 SetFlag/WaitFlag。文档里说 EnQue/DeQue 已经做同步了，这段是不是可以删？", openingA: "先别删，这里有个关键分叉：**buffer 是从 TQue 拿的，还是从 TBuf 拿的？"}, {n: 10, t: "带宽只有 30%", short: "带宽低", s: "性能", sum: "mte2 18% / vec 60%，判读不出瓶颈", opening: "elementwise 算子，实测带宽只有理论值 30%。mte2_ratio 18%、vec_ratio 60%。这算搬运瓶颈还是计算瓶颈？", openingA: "先纠正一个很常见的误读：**mte2_ratio 低，不等于\"搬运不是瓶颈\"**。 这个指标的含义是\"搬运单元在采样窗口里有百分之多少的时间是忙的\"。它低，只能说明搬运单元大部分时间在空闲——但空闲的原因可能是： 1. 没有数据可搬（上游没喂上，比如计算太慢）；"}, {n: 11, t: "算子融合能救多少", short: "整网变慢", s: "架构", sum: "单算子都调好，整网还是慢", opening: "单算子我都调过了，每个看着都还行。但整网还是慢，同事说要做算子融合。融合到底能救多少？值不值得投入？", openingA: "能救多少，取决于你的瓶颈在哪。"}, {n: 12, t: "搬 CUDA LayerNorm", short: "搬 LayerNorm", s: "迁移", sum: "线程模型对不上，怎么映射", opening: "老模型要迁，里面有我之前写的 CUDA LayerNorm：block 内 blockReduce，__syncthreads 很密。想直接搬过来。", openingA: "先给结论：**别逐行翻译，按数据流重写**。CUDA 的并行是\"线程级\"，Ascend C 是\"核 + 指令级\"，没有一一对应关系，硬翻译会得到一份能跑但很慢的代码。"}, {n: 13, t: "Python 里调不到", short: "上线调不到", s: "部署", sum: "算子装了，dispatcher 报 PrivateUse1", opening: "算子都过了，接进推理服务，Python 里报： config.ini 里有我的 vendor，nm -D 也能找到符号。那是框架的问题？", openingA: "你这个排查已经把\"算子包\"这一层排掉了，方向是对的。这个报错来自 **PyTorch 的 dispatcher**，含义很具体： > \"这个算子名我认识，但没有注册在当前 backend（PrivateUse1，也就是昇腾私有后端）的实现表里。"}, {n: 14, t: "fp16/bf16/fp32 怎么选", short: "精度选型", s: "数值", sum: "怕精度不够，又怕性能掉了", opening: "一直不太确定，我的算子该用 fp16 还是 fp32。用 fp32 怕慢，用 fp16 怕精度不够。有没有判断标准？", openingA: "有三个维度，按顺序判断，基本能定下来： | 维度 | 问题 | 影响 | |---|---|---| | 动态范围 | 数据跨度大不大 | 会不会溢出/下溢 | | 有效位 | 需要几位精度 | 累加、除法会不会失真 | | 下游敏感度 | 后面谁用它 | 误差会不会被放大 | 先看三种格式的差别：…"}, {n: 15, t: "评审被问住", short: "架构评审", s: "原理", sum: "为什么不能像 CUDA 一个 kernel 搞定", opening: "方案评审被问\"为什么非要 host tiling + kernel 两段，不能像 CUDA 一样一个 kernel 里切分\"。我当时答\"文档就这么写的\"，被追问就没词了。", openingA: "这个问题确实值得答清楚，因为它是**编程模型层面**的差异，不是风格问题。 核心原因三条，每条都是硬约束： **1. AI Core 没有线程抽象，不能动态扩并行。"}];
 
@@ -289,7 +289,7 @@ simNodes.forEach(n=>{
     const color = domById[n.dom].color;
     const halo = document.createElementNS(NS,'circle');
     halo.setAttribute('r', n.r*2.0); halo.setAttribute('fill', color);
-    halo.setAttribute('opacity','.10'); g.appendChild(halo);
+    halo.setAttribute('opacity','.12'); g.appendChild(halo);
 
     const dot = document.createElementNS(NS,'circle');
     dot.setAttribute('class','dot'); dot.setAttribute('r', n.r);
@@ -524,7 +524,7 @@ function applyState(){
     }
     if(state.onlyDlg && n.kind==='c') on = false;
 
-    n.el.style.opacity = on ? 1 : .16;
+    n.el.style.opacity = on ? 1 : .22;
     const dot = n.el.querySelector('.dot');
     if(dot){
       dot.setAttribute('stroke', (filtering && on) ? 'rgba(255,255,255,.85)' : 'none');
@@ -538,7 +538,7 @@ function applyState(){
 
   simLinks.forEach(l=>{
     const both = active.has(l.s) && active.has(l.t);
-    l.el.style.opacity = filtering ? (both ? (l.kind==='dc'? .5 : .55) : .03) : (l.kind==='dc' ? .10 : .14);
+    l.el.style.opacity = filtering ? (both ? (l.kind==='dc'? .6 : .7) : .05) : (l.kind==='dc' ? .32 : .5);
   });
 
   document.querySelectorAll('.fchip').forEach(el=>el.classList.toggle('on', el.dataset.id===state.dom));
