@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 23";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 28";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -377,4 +377,88 @@ CSS_EXTRA += r"""
 .seq2-legend .ln.dash{border-top-style:dashed;border-top-color:#2F5FA8}
 .seq2-legend .ln.dash::after{border-left-color:#2F5FA8}
 .seq2-legend .ci{width:15px;height:15px;border-radius:50%;border:1.5px solid #2F3D63;color:#2F3D63;font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;font-family:'JetBrains Mono'}
+
+/* X1 模型档位 */
+.sup-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3.2vh}
+.sup-row{display:grid;grid-template-columns:112px 1fr;gap:1vw;align-items:center}
+.sup-lab{font-size:12.4px;font-weight:800;line-height:1.2}
+.sup-lab.stu{color:#0E7C86}.sup-lab.emp{color:#4B4BA8}
+.sup-chain{display:grid;grid-template-columns:auto 1fr auto 1fr auto;align-items:center}
+.sup-node{padding:2.2vh 1vw;border-radius:10px;background:#fff;border:1px solid #E1E6ED;font-size:12px;font-weight:600;color:var(--ink);text-align:center;line-height:1.25}
+.sup-node.strong{background:rgba(75,75,168,.1);border-color:rgba(75,75,168,.35);color:#3B3B85}
+.sup-node.weak{border-style:dashed;color:var(--ink-2);font-weight:500}
+.sup-node.default{background:rgba(120,128,145,.09);border-color:rgba(120,128,145,.3);color:#4A5566}
+.sup-node.self{background:rgba(244,180,80,.14);border-color:rgba(244,180,80,.5);color:#7A5417}
+.sup-ar{position:relative;height:2px;background:#C9D0DA;margin:0 12px}
+.sup-ar::after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid #C9D0DA;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.sup-ar span{position:absolute;left:50%;top:-20px;transform:translateX(-50%);font-size:10px;color:var(--ink-3);white-space:nowrap}
+.sup-note{font-size:11.2px;color:var(--ink-2);line-height:1.5;margin-top:.4vh}
+.sup-bottom{display:grid;grid-template-columns:1fr 1fr;gap:1.4vw;margin-top:1.2vh}
+.sup-b{background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);border-radius:11px;padding:1.9vh 1vw}
+.sup-h{font-size:11.4px;color:var(--ink-2);margin-bottom:.55vh}
+.sup-h b{color:var(--ink)}
+.sup-items{display:flex;flex-direction:column;gap:.45vh}
+.sup-items span{font-size:11px;color:var(--ink-2);line-height:1.4}
+.sup-items b{color:var(--ink);font-weight:600}
+
+/* X2 工时分配 */
+.dest-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.dest-title{font-size:11.4px;color:var(--ink-2)}
+.dest{display:flex;height:21vh;min-height:120px;border-radius:11px;overflow:hidden;box-shadow:0 10px 26px -22px rgba(30,40,70,.5)}
+.dest-seg{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2em;color:#fff;min-width:0;padding:0 .5vw}
+.dest-seg b{font-family:'Inter';font-weight:300;font-size:clamp(17px,1.5vw,24px);line-height:1}
+.dest-seg span{font-size:10.4px;line-height:1.25;text-align:center;opacity:.92}
+.dest-seg.s1{background:linear-gradient(120deg,#5B6A85,#7C8AA3)}
+.dest-seg.s2{background:linear-gradient(120deg,#6B5BA8,#8A7BC4)}
+.dest-seg.s3{background:linear-gradient(120deg,#B3403A,#C9605A)}
+.dest-seg.s4{background:linear-gradient(120deg,#9AA3B2,#B8C0CC)}
+.dest-bracket{position:relative;margin-left:25%;width:70%;border-top:1px dashed #B3403A;padding-top:.6vh;font-size:10.6px;color:#8E2F35}
+.dest-quotes{display:grid;grid-template-columns:1fr;gap:1vh;max-width:118ch}
+.dest-quotes p{font-size:11.8px;color:var(--ink-2);line-height:1.55}
+.dest-quotes p b{color:var(--ink)}
+
+/* X3 评审链 */
+.rev-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.8vh}
+.rev-row{display:grid;grid-template-columns:56px 1fr;gap:1vw;align-items:center}
+.rev-lab{font-family:'JetBrains Mono';font-size:10px;color:var(--ink-3);letter-spacing:.12em}
+.rev{display:flex;align-items:center;gap:8px}
+.rev-step{padding:1.2vh 1.1vw;border-radius:10px;background:#fff;border:1px solid #E1E6ED;font-size:12.2px;font-weight:600;color:var(--ink);white-space:nowrap}
+.rev-step.dead{border-style:dashed;color:var(--ink-3);background:rgba(255,255,255,.5)}
+.rev-ar{color:#9AA3B2;font-size:14px}
+.rev-note{font-size:11.2px;color:var(--ink-2);line-height:1.5;padding-left:calc(56px + 1vw)}
+.rev-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vw;margin-top:.6vh}
+.rev-q{font-size:11px;color:var(--ink-2);line-height:1.5;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);border-radius:10px;padding:1.2vh .9vw}
+.rev-q b{color:var(--ink);font-weight:700;margin-right:.15em}
+.rev-q span{display:block;margin-top:.35em;color:#8E2F35}
+
+/* X4 任务状态 */
+.ts-wrap{flex:0 1 auto;display:grid;grid-template-columns:1fr 1.05fr;gap:2.2vw;align-items:center;margin-top:1vh}
+.ts-left,.ts-right{display:flex;flex-direction:column;gap:1vh}
+.ts-h{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:.3vh}
+.ts-list{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);border-radius:11px;overflow:hidden}
+.ts-item{display:grid;grid-template-columns:1fr auto 26px;gap:.6em;align-items:center;padding:2.3vh 1vw;border-bottom:1px solid rgba(47,61,99,.08);font-size:12px;color:var(--ink)}
+.ts-item:last-child{border-bottom:0}
+.ts-item em{font-style:normal;font-size:10.4px;color:var(--ink-3)}
+.ts-item b{font-family:'Inter';font-size:18px;color:#B3403A;font-weight:400;text-align:right}
+.ts-sub{font-size:10.6px;color:var(--ink-3);line-height:1.45}
+.ts-q{font-size:11.9px;color:var(--ink-2);line-height:1.5;padding-left:1em;position:relative}
+.ts-q::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:#9AA3B2}
+.ts-q b{color:var(--ink)}
+
+/* X5 学习窗口 */
+.win-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.8vh}
+.win-row{display:grid;grid-template-columns:40px 1fr;gap:.8vw;align-items:center}
+.win-lab{font-family:'JetBrains Mono';font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-align:right}
+.win-track{display:flex;gap:6px;height:13vh;min-height:86px}
+.win-block{border-radius:9px;display:flex;flex-direction:column;justify-content:center;padding:0 1vw;min-width:0;line-height:1.35}
+.win-block b{font-size:12px}
+.win-block span{font-size:10.4px;opacity:.85}
+.win-block.ai{background:linear-gradient(120deg,#6B5BA8,#8A7BC4);color:#fff}
+.win-block.wait{background:rgba(120,128,145,.12);border:1px dashed rgba(120,128,145,.45);color:var(--ink-2)}
+.win-block.learn{background:rgba(244,180,80,.16);border:1px solid rgba(244,180,80,.55);color:#6B4A14}
+.win-note{font-size:11.4px;color:var(--ink-2);line-height:1.5;padding-left:calc(40px + .8vw)}
+.win-note b{color:var(--ink)}
+.win-cases{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vw}
+.win-cases>div{font-size:11.2px;color:var(--ink-2);line-height:1.55}
+.win-cases b{color:var(--ink)}
 """
