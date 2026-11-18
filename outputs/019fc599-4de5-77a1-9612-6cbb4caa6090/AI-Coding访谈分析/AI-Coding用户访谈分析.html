@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Coding 用户访谈分析 | 6 位开发者的开发与学习旅程</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+
+/* ===== 设计 token ===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);  /* body=舒适阅读档；密集形式见 .pf/.pp/.up 局部回小 */
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  /* 黑底光晕（每页可被 inline 变量覆盖，实现一章一色）*/
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+/* 用户画像是高密度特殊形式：body/h3 局部冻回紧凑档，不随全局正文放大 */
+.pf,.pp,.up{--fs-h3:clamp(13px,.95vw,16px);--fs-body:clamp(12px,.82vw,15px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+/* 纵向翻页：body 作滚动容器 + 原生 scroll-snap（划时短暂两页，松手吸附到整页）*/
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+/* 滚动条：细、半透、默认隐藏，滚动时（body.scrolling）才淡入；亮/暗随 body.on-dark */
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）：缩略图网格（按当前视窗比例，不强制 16:9）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner{padding:0}
+
+/* ===== 翻页过渡（可切换）=====
+   默认 slide=纵向 scroll-snap；其余走「受控叠层」(body.ctrl)：所有页叠同位、只 .active 显示
+   TRANSITION / ?t= : slide(默认) | fade | cut | slide-h | magic */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active{opacity:1}
+body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3.4vh}
+.head-l{display:flex;flex-direction:column-reverse;gap:.8vh}  /* 小副标(.subttl)在上、大标题在下：column-reverse 反转视觉顺序，HTML 仍 .brand 在前 .subttl 在后 */
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .logo{height:clamp(19px,1.7vw,25px);width:auto;display:block;flex-shrink:0}  /* ⛔ 标题前只放 CANN logo（无合适 logo 就删掉 img 留空），绝不换成 Lucide/通用 icon */
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em}      /* 标题=结论 */
+.subttl{font-weight:300;font-size:var(--fs-sm);color:var(--ink-2)}
+/* 右上章节 Tab：横向列出整份汇报章节，当前章节用深色胶囊高亮；不再放孤立的小字页码。 */
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .6vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+/* 目录：4 章单行；3 / 5 / 6 章的完整数量路由见 components.md §18 与模板库。 */
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1120px,100%);margin:0 auto;display:grid;gap:1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.contents-slide .directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:31vh;overflow:hidden;padding:1.8vh 1.25vw 1.35vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.contents-slide .directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.contents-slide .directory-card.research{--dir:var(--c-indigo)}.contents-slide .directory-card.competitor{--dir:var(--c-blue)}.contents-slide .directory-card.persona{--dir:var(--c-teal)}.contents-slide .directory-card.roadmap{--dir:var(--c-pink)}
+.contents-slide .directory-no,.contents-slide .directory-name,.contents-slide .directory-en,.contents-slide .directory-items,.contents-slide .directory-note{position:relative;z-index:1}
+.contents-slide .directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.contents-slide .directory-name{margin-top:1.35vh;font-size:var(--fs-h2);line-height:1.2;font-weight:950;color:var(--ink);overflow-wrap:anywhere}
+.contents-slide .directory-en{margin-top:.42vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:700;color:color-mix(in srgb,var(--dir) 76%,#596575);overflow-wrap:anywhere}
+.contents-slide .directory-items{display:grid;gap:.52vh;margin-top:2.65vh}.contents-slide .directory-items span{font-size:var(--fs-body);line-height:1.36;color:var(--ink-2);overflow-wrap:anywhere}
+.contents-slide .directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir);box-shadow:0 0 12px color-mix(in srgb,var(--dir) 42%,transparent)}
+.contents-slide .directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:900;line-height:1.35;color:color-mix(in srgb,var(--dir) 72%,#465364);overflow-wrap:anywhere}
+/* padding-bottom 给绝对定位的 .foot/.ucd 留位，否则居中卡会紧贴页尾（见 pitfalls.md）*/
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+/* 居中型页（内容是个居中块、四周留白）加 .vc：JS balanceHeads() 按实际页眉高度补 padding-bottom，
+   抵消"页眉占空间、页脚(.foot/.ucd 绝对定位)不占空间"的不平衡，让内容落到整页真正正中（任意窗口都准）。
+   固定 vh 猜测值在不同页眉高度/窗口宽高比下对不上，见 pitfalls.md。
+   填满型页（旅程/VOC/画像表格等用满整页的）不加 .vc */
+.body-area.vc{padding-bottom:0}
+.card{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);padding:2.2vh 1.6vw}
+
+/* 甘特 roadmap（精调件②）：玻璃大卡 + 浮动条 + 虚线网格底纹 */
+.rm{position:relative;flex:1;min-height:0;margin-top:1vh;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:18px;box-shadow:0 12px 34px -16px rgba(30,40,70,.22),inset 0 1px 0 rgba(255,255,255,.85)}
+.rm-pad{position:absolute;top:6vh;left:3.2vw;right:3.2vw;bottom:4vh}            /* 内层容器：绝对定位的条/刻度相对它，padding 才生效 */
+.rm-pad::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%237e8696' stroke-opacity='0.18' stroke-width='1' stroke-dasharray='2,4'/%3E%3C/svg%3E");background-size:40px 40px}
+.rm-date{position:absolute;top:0;transform:translateX(-50%);font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;color:var(--ink-3);white-space:nowrap}
+.rm-now-pill{position:absolute;top:1.6%;transform:translateX(-50%);font-size:var(--fs-xs);font-weight:600;color:#fff;background:rgba(91,91,214,.92);padding:3px 11px;border-radius:9px;box-shadow:0 3px 10px rgba(60,52,137,.32);z-index:3}
+.rm-now-line{position:absolute;top:9%;height:84%;width:2px;background:linear-gradient(rgba(91,91,214,.85),rgba(91,91,214,.35));box-shadow:0 0 12px rgba(91,91,214,.5);z-index:1}
+.rm-now-tri{position:absolute;top:7.2%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid var(--accent);z-index:2}
+.rm-bar{position:absolute;height:8.5%;min-height:30px;max-height:46px;border-radius:13px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:var(--fs-body);font-weight:500;backdrop-filter:blur(2px) saturate(130%);-webkit-backdrop-filter:blur(2px) saturate(130%);z-index:2}
+.rm-bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-badge{font-size:var(--fs-xs);font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap;margin-left:10px;flex:none}
+.rm-bar.white{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.75);color:var(--ink);box-shadow:0 8px 22px rgba(30,40,70,.1),inset 0 1px 0 rgba(255,255,255,.8)}
+.rm-bar.white .rm-badge{background:var(--dark);color:#fff}
+.rm-bar.dark{background:var(--g-ink);border:1px solid rgba(255,255,255,.22);color:#fff;box-shadow:0 8px 26px rgba(20,25,35,.32),inset 0 1px 0 rgba(255,255,255,.28)}
+.rm-bar.dark .rm-badge{background:rgba(255,255,255,.92);color:var(--dark)}
+.rm-bar.accent{background:var(--g-accent);border:1px solid rgba(255,255,255,.34);color:#fff;box-shadow:0 10px 28px rgba(91,91,214,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.rm-bar.accent .rm-badge{background:#fff;color:#5B21B6}
+.rm-diamond{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:var(--g-ink);border:1px solid rgba(255,255,255,.3);border-radius:3px;box-shadow:0 5px 14px rgba(0,0,0,.22);z-index:3}
+.rm-ms{position:absolute;font-size:var(--fs-sm);font-weight:500;color:var(--ink-2)}
+
+/* 关键指标：多彩渐变胶囊 + 极细超大数字（精调件①）*/
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.4vw;flex:1;min-height:0;align-items:center}
+.stat-col{display:flex;flex-direction:column;gap:2vh}
+.stat-bar-area{position:relative}
+.stat-marks{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10.5px;color:var(--ink-3);margin-bottom:.7vh;position:relative;height:18px;align-items:flex-end}
+.stat-tri{position:absolute;font-size:9px;transform:translateX(-50%);color:var(--ink-2);bottom:0;line-height:1}
+.stat-pills{display:flex;gap:5px;height:6vh} .stat-pill{border-radius:999px;flex-shrink:0}
+.stat-num{font-family:'Inter';font-weight:200;font-size:min(8.4vw,13.8vh);line-height:.88;letter-spacing:-.04em;color:var(--ink);margin-top:.4vh}
+.stat-num .u{font-size:.35em;font-weight:300;color:var(--ink-2);margin-left:.05em}
+.stat-desc{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58;max-width:26ch}
+
+/* 竞品对照：三卡大段论述 + 图沉卡底（order:2）+ 对策深色条 */
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;flex:0 0 auto}
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.cmp-img{order:2;flex:0 0 auto;padding:0 .9vw .9vw;margin-top:auto}
+.cmp-img img{width:100%;height:auto;display:block;border-radius:9px;border:1px solid var(--line)}
+.cmp-cap{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);text-align:center;letter-spacing:.02em;margin-top:.7vh}
+.cmp-body{order:1;padding:2vh 1.4vw .8vh;flex:0 0 auto;display:flex;flex-direction:column;gap:1.7vh}
+.cmp-h{font-weight:700;font-size:var(--fs-h2);letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.cmp-h .hk{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.5vh}
+.cmp-desc{font-size:var(--fs-body);line-height:1.72;color:var(--ink-2)}
+.cmp-desc b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 60%,rgba(91,91,214,.16) 0)}
+.verdict{flex:0 0 auto;margin-top:1.6vh;display:grid;grid-template-columns:auto 1fr;gap:1.2vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.8vh 1.6vw}
+.verdict .vk{font-size:var(--fs-h3);font-weight:700;color:var(--ink);background:#fff;border-radius:12px;padding:6px 15px;white-space:nowrap}
+.verdict .vv{font-size:var(--fs-body);line-height:1.55} .verdict .vv b{font-weight:700}
+
+/* 用户画像·形式一（左栏人物 + 右四区）。⚠️ 与形式二是两套方案【二选一】，按用户输入择优 */
+.pf{--b:#385CFF;--bs:rgba(56,92,255,.1);flex:0 1 auto;min-height:0;display:grid;grid-template-columns:23% 1fr;gap:1.5vw;align-items:stretch}
+.pf-side{background:#EFEFF1;border-radius:16px;padding:1.7vh 1.2vw;display:flex;flex-direction:column;gap:.85vh;overflow:hidden}
+.pf-portrait{width:100%;aspect-ratio:1/.86;border-radius:12px;overflow:hidden;background:#fff;flex:0 0 auto}
+.pf-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-sb{border-radius:11px;padding:.95vh .9vw;flex:0 0 auto}
+.pf-sb.head{background:var(--bs);padding-top:.85vh;padding-bottom:.85vh}
+.pf-sb.head .nm{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC';font-weight:800;font-size:var(--fs-h2);color:#1a1a1a;line-height:1.2}
+.pf-sb.head .rl{font-size:var(--fs-body);color:var(--b);font-weight:600;margin-top:.1vh}
+.pf-sb.white{background:#fff}
+.pf-sb .sbh{font-size:var(--fs-xs);color:#999;font-weight:700;margin-bottom:.25vh}
+.pf-sb .sbt{font-size:var(--fs-body);color:#333;line-height:1.5}
+.pf-chips{display:flex;flex-wrap:wrap;gap:.4vw}
+.pf-chips span{font-size:var(--fs-sm);color:var(--b);background:var(--bs);border-radius:6px;padding:.4vh .65vw}
+.pf-quote{font-size:var(--fs-body);color:#333;font-weight:600;line-height:1.5;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c2c7d0}
+.pf-r{display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+.pf-row{display:grid;grid-template-columns:.82fr 1.7fr;gap:1.8vw;align-items:start}
+.pf-block{display:flex;flex-direction:column;min-width:0}
+.pf-h2{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;background:var(--b);color:#fff;border-radius:20px;padding:.3vh .9vw .3vh .3vh;font-weight:700;font-size:var(--fs-h3);margin-bottom:.8vh}
+.pf-h2 .ico{width:clamp(21px,1.8vw,27px);height:clamp(21px,1.8vw,27px);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pf-h2 .ico svg{width:56%;height:56%;display:block}
+.pf-sub{font-weight:700;font-size:var(--fs-sm);color:#333;margin:.1vh 0 .4vh .2vw}
+.pf-rings{display:flex;gap:2vw;padding-left:.3vw}
+.pf-rg{display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center;width:min(13vw,150px)}
+.pf-rg .dn{width:clamp(46px,4.4vw,62px);height:clamp(46px,4.4vw,62px);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.pf-rg .dn::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--b) 0 var(--p),#D6DAE4 0)}
+.pf-rg .dn::after{content:'';position:absolute;inset:23%;border-radius:50%;background:var(--paper)}
+.pf-rg .dn b{position:relative;z-index:1;font-weight:700;font-size:var(--fs-h3);color:#1a1a1a}
+.pf-rg .rl2{font-size:var(--fs-sm);color:#555;line-height:1.4}
+.pf-flow{display:flex;align-items:stretch;gap:.25vw}
+.pf-fc{flex:1;background:var(--bs);border-radius:10px;padding:.85vh .75vw;display:flex;flex-direction:column;gap:.35vh;min-width:0}
+.pf-fc .ft{font-weight:700;font-size:var(--fs-sm);color:var(--b)}
+.pf-fc .fl{font-size:var(--fs-xs);color:#444;line-height:1.4;display:flex;gap:.3em}
+.pf-fc .fl::before{content:'·';color:var(--b);font-weight:700;flex-shrink:0}
+.pf-fa{display:flex;align-items:center;color:var(--b);font-size:var(--fs-sm);flex-shrink:0}
+.pf-fc .fkpi{margin-top:.5vh;padding-top:.5vh;border-top:1px dashed rgba(56,92,255,.35);display:flex;flex-wrap:wrap;gap:.2em .55em;align-items:center}
+.pf-fc .fkpi .kl{font-size:var(--fs-xs);color:#999;font-weight:700;background:#fff;border-radius:4px;padding:.1vh .4vw}
+.pf-fc .fkpi b{font-size:var(--fs-xs);color:var(--b);font-weight:700}
+.pf-scs{display:grid;grid-template-columns:repeat(4,1fr);gap:.7vw}
+.pf-sc{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.9vh .75vw;display:flex;flex-direction:column;gap:.55vh}
+.pf-sc .st{font-weight:700;font-size:var(--fs-body);color:#1a1a1a}
+.pf-sc .sd{font-size:var(--fs-sm);color:#666;line-height:1.45}
+.pf-pains{display:flex;flex-direction:column;gap:.4vh}
+.pf-pain{font-size:var(--fs-body);line-height:1.5;color:#333;display:flex;gap:.5em;align-items:flex-start}
+.pf-pain::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--b);flex-shrink:0;margin-top:.55em}
+.pf-pain b{color:var(--b);font-weight:600}
+.pf-mk{flex:0 0 auto;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid #E0E3EA;background:#F6F8FC;display:flex;flex-direction:column}
+.pf-mk .bar{display:flex;align-items:center;gap:3px;padding:2px 5px;background:#EBEEF4;border-bottom:1px solid #E0E3EA;flex-shrink:0}
+.pf-mk .bar i{width:3.5px;height:3.5px;border-radius:50%;background:#C4CAD6}
+.pf-mk .bd{flex:1;padding:4px 5px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mkl{height:2.5px;border-radius:1.5px;background:#D3D8E2;display:block;flex-shrink:0}
+.mkl.b{background:var(--b)} .mkl.o{background:#E8896B}
+
+/* ============ 基调①：封面（真实素材）============ */
+.s-cover{color:#fff;background:#0c0a0b;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("cover-bg.png") center/cover no-repeat;z-index:0}   /* 换成你的封面图 */
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,8,9,.92),rgba(10,8,9,.55) 30%,rgba(10,8,9,0) 58%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.7em;font-weight:600;font-size:16px;letter-spacing:.04em;align-self:flex-start}
+.cv-huawei .petal{width:19px;height:19px;flex-shrink:0}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:60vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1vh}
+.cv-logo{display:flex}
+.cv-logo img{height:min(17vh,12vw);width:auto;display:block}  /* 深色封面用白色版 logo */
+.cv-sub{font-weight:300;font-size:min(3vw,5vh);line-height:1.1;color:rgba(255,255,255,.92)}
+.cv-lead{font-weight:300;font-size:max(15px,1.2vw);line-height:1.6;color:rgba(255,255,255,.6);max-width:36ch;margin-top:1.4vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:12px;height:12px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调③：黑底设计点（光晕 + 渐变标题字）============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:5vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.5fr 1.5fr;gap:2vw;align-items:center}  /* 设计点版式①（默认）左文右图：图占~65% */
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),72%);margin-bottom:2.6vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:28px;height:1px;background:currentColor;opacity:.7}
+.h-title{font-weight:700;font-size:min(3.5vw,6vh);line-height:1.15;letter-spacing:-.01em;margin-bottom:1.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),78%),hsl(var(--glow-h2),var(--glow-sat),72%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:200}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.75;color:rgba(255,255,255,.62);max-width:40ch;margin-bottom:4vh}
+.body b{color:#fff;font-weight:600}  /* 正文主次：默认细体 + <b> 加粗提亮 */
+.points{display:flex;flex-direction:column;gap:2.2vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1.2em;align-items:start}
+.point .dot{width:9px;height:9px;margin-top:.7em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),62%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:500;font-size:var(--fs-h3);color:#fff;margin-bottom:.4vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-sm);line-height:1.6;color:rgba(255,255,255,.5)}
+.shot{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.5);display:flex;align-items:center;justify-content:center}  /* 16:9 匹配 1920×1080 截图 */
+.shot .ph{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* 设计点版式② 上下堆叠 hero（大图型）：title+body 薄薄一条（无 kicker/无要点）+ 16:9 大图填高居中（~75-78%）*/
+.s-glow .inner.stack{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:2.6vh;align-items:stretch}
+.inner.stack .stack-head{display:grid;grid-template-columns:1.35fr 1fr;gap:3.4vw;align-items:end}
+.inner.stack .stack-head .h-title{margin-bottom:0;font-size:min(2.9vw,4.6vh);line-height:1.2}
+.inner.stack .stack-head .body{margin:0;max-width:46ch;padding-bottom:.4vh}
+.inner.stack .shot{aspect-ratio:16/9;height:100%;width:auto;max-width:100%;margin:0 auto}  /* 真 16:9、按高填满、居中、不裁 */
+.chapter-cover .inner{grid-template-columns:1fr;align-content:center}
+.cover-block{max-width:62vw}
+.ch-no{font-family:'Inter';font-weight:200;font-size:min(11vw,17vh);line-height:.9;letter-spacing:-.04em;opacity:.45;background:linear-gradient(120deg,hsl(var(--glow-h),var(--glow-sat),82%),hsl(var(--glow-h2),var(--glow-sat),70%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1vh}
+.ch-cover-title{font-weight:700;font-size:min(6vw,10vh);line-height:1.05;letter-spacing:-.01em;margin-bottom:2.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),85%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ch-cover-sub{font-weight:300;font-size:max(15px,1.2vw);line-height:1.65;color:rgba(255,255,255,.6);max-width:46ch}
+
+/* 调色面板（仅黑底章节封面显示，色值持久记忆）*/
+#panel{position:absolute;top:3.8vh;right:calc(6vw + 58px);z-index:60;width:280px;background:linear-gradient(155deg,rgba(58,58,80,.30),rgba(14,14,22,.40));backdrop-filter:blur(34px) saturate(1.7);-webkit-backdrop-filter:blur(34px) saturate(1.7);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:18px 20px;color:#fff;box-shadow:0 24px 64px -16px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+#panel h4{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:14px}
+.preset-row{display:flex;gap:6px;margin-bottom:16px}
+.preset{flex:1;height:30px;border-radius:7px;border:1px solid rgba(255,255,255,.18);cursor:pointer;transition:transform .15s}
+.preset:hover{transform:scale(1.08)}
+.ctrl{margin-bottom:13px}
+.ctrl label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.62);margin-bottom:6px;font-family:'JetBrains Mono'}
+.ctrl label .val{color:#fff}
+.ctrl input[type=range]{width:100%;height:6px;-webkit-appearance:none;border-radius:4px;outline:none;cursor:pointer;background:rgba(255,255,255,.14)}
+.ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+#toggle{position:absolute;top:3.8vh;right:6vw;z-index:61;width:46px;height:46px;border-radius:14px;background:linear-gradient(155deg,rgba(58,58,80,.4),rgba(14,14,22,.5));backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px -8px rgba(0,0,0,.5)}
+#toggle:hover{color:#fff}#toggle svg{width:22px;height:22px}
+
+/* ===== 导航 ===== */
+/* 右侧竖排导航点（鼠标到底部才显隐；亮/暗随当前页）*/
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.28);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.5);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.3)}
+body.on-dark .nav-dot.active{background:#fff}
+/* 底部居中控制栏：小而透，默认隐藏，鼠标到底部才出现 */
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.92}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
+body.overview #panel,body.overview #toggle{display:none!important}
+
+
+/* ================= 本报告自定义组件 ================= */
+.chip{display:inline-flex;align-items:center;gap:.45em;padding:.38vh .7vw;border-radius:999px;font-size:var(--fs-sm);font-weight:600;white-space:nowrap;border:1px solid transparent}
+.chip i{width:7px;height:7px;border-radius:50%;background:currentColor;display:block;flex:none}
+.chip.stu{color:#0E7C86;background:rgba(14,124,134,.09);border-color:rgba(14,124,134,.18)}
+.chip.emp{color:#4B4BA8;background:rgba(75,75,168,.09);border-color:rgba(75,75,168,.18)}
+.chip.warn{color:#A8482C;background:rgba(168,72,44,.09);border-color:rgba(168,72,44,.2)}
+.chip.mute{color:var(--ink-2);background:rgba(120,128,145,.09);border-color:rgba(120,128,145,.16)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.04em;color:var(--ink-3)}
+
+/* ---------- 受访者矩阵 ---------- */
+.mtx{width:100%;border-collapse:collapse;table-layout:fixed}
+.mtx th{font-size:var(--fs-sm);font-weight:700;color:var(--ink-3);text-align:left;padding:0 0 1.1vh;border-bottom:1px solid rgba(47,61,99,.18)}
+.mtx td{padding:1.25vh .5vw 1.25vh 0;border-bottom:1px solid rgba(47,61,99,.1);vertical-align:middle;font-size:var(--fs-sm);color:var(--ink-2);line-height:1.35}
+.mtx tr:last-child td{border-bottom:0}
+.mtx .who{font-weight:800;font-size:var(--fs-h3);color:var(--ink);display:flex;align-items:center;gap:.5em}
+.mtx .who .bar{width:4px;height:22px;border-radius:2px;background:var(--c-teal)}
+.mtx .who.e .bar{background:var(--c-indigo)}
+.mtx .task{color:var(--ink);font-weight:500}
+.mtx .pin{display:inline-block;font-size:var(--fs-xs);color:#8A5A2B;background:rgba(244,180,80,.16);border-radius:5px;padding:.18vh .4vw;margin-left:.35em}
+
+/* ---------- 证据强度 ---------- */
+.ev{display:grid;grid-template-columns:1.05fr .95fr;gap:2.4vw;align-items:center;flex:1;min-height:0}
+.ev-left{display:flex;flex-direction:column;justify-content:center;gap:1.5vh}
+.ev-kick{font-size:11.4px;color:var(--ink-3);line-height:1.45;margin-bottom:.6vh}
+.ev-tier{display:grid;grid-template-columns:52px 1fr;gap:.9vw;align-items:stretch}
+.ev-tag{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:#fff;background:var(--g-ink);border-radius:9px}
+.ev-band{border-radius:10px;padding:1.6vh 1.2vw;display:flex;flex-direction:column;justify-content:center;gap:.65vh;color:#fff;min-height:14.5vh}
+.ev-band.b1{background:var(--g-ink)}
+.ev-band.b2{background:var(--g-accent)}
+.ev-band.b3{background:linear-gradient(120deg,#9AA3B2,#C6CCD7);color:#2B303A;margin-left:5%}
+.ev-band b{font-size:clamp(13px,1vw,16px);font-weight:800;letter-spacing:.01em}
+.ev-band span{font-size:11.4px;line-height:1.45;opacity:.9}
+.ev-right{background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.85);border-radius:14px;padding:2.4vh 1.5vw;display:flex;flex-direction:column;justify-content:center;gap:1.3vh;box-shadow:0 14px 34px -26px rgba(30,40,70,.4)}
+.ev-right h4{font-size:var(--fs-h3);font-weight:800;color:var(--ink);display:flex;gap:.5em;align-items:center;margin-bottom:.4vh}
+.ev-gap{font-size:12px;line-height:1.5;color:var(--ink-2);padding-left:1.1em;position:relative}
+.ev-gap::before{content:"!";position:absolute;left:0;top:0;font-family:'JetBrains Mono';font-weight:700;color:#C4693F}
+.ev-gap b{color:var(--ink)}
+
+/* ---------- 双角色镜像对照 ---------- */
+.mir{flex:1;min-height:0;display:grid;grid-template-columns:1fr 86px 1fr;column-gap:0;row-gap:.5vh;align-content:center}
+.mir-head{border-radius:11px;padding:1.7vh 1vw;display:flex;flex-direction:column;gap:.28vh}
+.mir-head.a{background:rgba(14,124,134,.1);border:1px solid rgba(14,124,134,.22)}
+.mir-head.b{background:rgba(75,75,168,.1);border:1px solid rgba(75,75,168,.22)}
+.mir-head .n{font-size:clamp(14px,1.05vw,17px);font-weight:800;color:var(--ink)}
+.mir-head .d{font-size:var(--fs-xs);color:var(--ink-2)}
+.mir-cell{font-size:12.6px;line-height:1.4;color:var(--ink-2);padding:1.55vh 0;border-bottom:1px dashed rgba(47,61,99,.13);display:flex;align-items:center}
+.mir-cell.a{padding-right:1.2vw}
+.mir-cell.b{padding-left:1.2vw}
+.mir-cell.a{border-bottom-color:rgba(14,124,134,.2)}
+.mir-cell.b{border-bottom-color:rgba(75,75,168,.2)}
+.mir-dim{display:flex;align-items:center;justify-content:center;font-size:10.2px;font-weight:700;color:var(--ink-3);letter-spacing:.06em;text-align:center;border-bottom:1px dashed rgba(47,61,99,.13)}
+.mir-q{font-size:11.6px;font-weight:600;color:var(--ink-2);line-height:1.45;margin-top:.6vh;padding-left:0}
+.mir-q.a{border-color:#0E7C86}
+.mir-q.b{border-color:#4B4BA8}.mir-col.b .mir-q{border-color:#4B4BA8}
+
+/* ---------- 旅程（jd） ---------- */
+.jd{flex:1;min-height:0;display:grid;grid-template-columns:112px minmax(0,1fr);gap:5px}
+.jd-rail{display:grid;grid-template-rows:40px .92fr .82fr 1.85fr 1.25fr;gap:5px}
+.jd-rail>div{background:#999b9c;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:14px;line-height:1.25;padding:0 4px;flex-direction:column}
+.jd-rail .sm{font-weight:400;font-size:10.5px;opacity:.9}
+.jd-body{display:grid;grid-template-rows:40px .92fr .82fr 1.85fr 1.25fr;gap:5px;min-width:0}
+.jd-stages{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.jd-stage{position:relative;display:flex;align-items:center;justify-content:center;background:#989a9b;color:#fff;font-size:13.5px;font-weight:700;letter-spacing:.01em;clip-path:polygon(0 0,calc(100% - 13px) 0,100% 50%,calc(100% - 13px) 100%,0 100%,13px 50%);padding:0 8px 0 14px;text-align:center}
+.jd-row{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;min-height:0}
+.jd-cell{border:1.5px solid #dbdddd;background:#fff;padding:.9vh .75vw;font-size:11.6px;line-height:1.34;display:flex;flex-direction:column;justify-content:center;min-width:0;color:#3c4145}
+.jd-cell b{font-weight:600;color:#1c2023}
+.jd-cell.q{color:#5a6165;font-size:11.2px;border-style:dashed;background:rgba(255,255,255,.6)}
+.jd-doing{position:relative;border:1.5px solid #d8dada;background:#fff;overflow:hidden;min-height:0}
+.jd-seg{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);pointer-events:none}
+.jd-seg>div{border-right:1.5px solid #d6d9da}
+.jd-seg>div:last-child{border-right:0}
+.jd-svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible}
+.jd-svg .lk{fill:none;stroke:#b9bdbd;stroke-width:1.3;vector-effect:non-scaling-stroke}
+.jd-svg .vd{fill:none;stroke:#cf5048;stroke-width:2;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+.jd-tp{position:absolute;z-index:3;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:#f2fbfb;border:2px solid #b6cbcf;display:flex;align-items:center;justify-content:center;color:#0ea8a6}
+.jd-tp.red{background:#ed4f43;border-color:#f0786a;color:#fff}
+.jd-tp svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.jd-tl{position:absolute;z-index:2;font-size:10.4px;line-height:1.22;color:#454a4b;text-shadow:0 0 2px #fff,0 0 3px #fff,0 0 4px #fff}
+.jd-feel{position:relative;overflow:hidden;min-height:0;background:linear-gradient(to bottom,#eafbfc 0%,#eafafb 49%,#cdeeee 50%,#cdeeee 100%)}
+.jd-chart{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.jd-chart .ln{stroke:#9cbec0;stroke-width:1.3;fill:none;vector-effect:non-scaling-stroke}
+.jd-chart .ds{fill:none;stroke:#d5534a;stroke-width:1.8;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+.jd-dot{position:absolute;z-index:2;width:11px;height:11px;border-radius:50%;background:#12a8ab;border:1px solid #06a0a1;transform:translate(-50%,-50%)}
+.jd-dot.red{background:#ed554a;border-color:#e2463c}
+.jd-em{position:absolute;z-index:2;font-size:10.2px;line-height:1.18;color:#3f4a4b;text-shadow:0 0 3px #eafbfc,0 0 5px #eafbfc,0 0 6px #eafbfc}
+.jd-em.pain{font-size:10.8px;font-weight:600;color:#a82d29;text-shadow:0 0 3px #eafbfc,0 0 5px #eafbfc}
+.jd-em.c{text-align:center}
+/* 学习场景主题：橙 */
+.jd.learn .jd-tp:not(.red){background:#fff8ec;border-color:#e5ba84;color:#d17b24}
+.jd.learn .jd-feel{background:linear-gradient(to bottom,#fffaf0 0%,#fffaf0 49%,#ffead0 50%,#ffead0 100%)}
+.jd.learn .jd-chart .ln{stroke:#d2b69b}
+.jd.learn .jd-dot:not(.red){background:#e39443;border-color:#d27e28}
+.jd.learn .jd-dot.red,.jd.learn .jd-tp.red{background:#ed4f43;border-color:#e2463c}
+.jd-foot{display:flex;justify-content:space-between;align-items:center;margin-top:1vh;font-size:var(--fs-xs);color:var(--ink-3)}
+
+/* ---------- 痛点矩阵（旅程对照） ---------- */
+.pm{flex:1;min-height:0;display:grid;grid-template-columns:132px repeat(5,1fr);grid-template-rows:38px repeat(4,1fr);gap:7px}
+.pm-h{display:flex;align-items:center;justify-content:center;background:#989a9b;color:#fff;font-size:12.5px;font-weight:700;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%,10px 50%)}
+.pm-rl{display:flex;flex-direction:column;justify-content:center;gap:.2em;font-size:12px;font-weight:700;color:var(--ink);padding-left:0}
+.pm-rl.e{color:var(--ink)}
+.pm-rl small{font-weight:400;font-size:10.5px;color:var(--ink-3)}
+.pm-c{border-radius:10px;padding:.8vh .8vw;display:flex;flex-direction:column;gap:.3em;justify-content:center;background:rgba(240,90,104,.09);border:1px solid rgba(240,90,104,.18)}
+.pm-c.hi{background:rgba(240,90,104,.16);border-color:rgba(240,90,104,.3)}
+.pm-c .t{font-size:11.8px;font-weight:600;color:#8E2F35;line-height:1.3}
+.pm-c .s{font-size:10.4px;color:var(--ink-3);line-height:1.25}
+
+/* ---------- 时序图 ---------- */
+.seq{flex:1;min-height:0;display:flex;flex-direction:column;gap:0;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.75);border-radius:16px;padding:1.8vh 1.6vw;box-shadow:0 12px 30px -18px rgba(30,40,70,.25)}
+.seq-h{display:grid;grid-template-columns:96px repeat(4,1fr);gap:0;margin-bottom:1.2vh}
+.seq-h>div{display:flex;align-items:center;justify-content:center;gap:.4em;font-size:var(--fs-sm);font-weight:700;color:#fff;background:var(--g-ink);border-radius:9px;margin:0 4px;padding:.55vh .3vw;height:4.4vh;min-height:34px}
+.seq-h>div.p1{background:linear-gradient(120deg,#2C6E6B,#3E9B96)}
+.seq-h>div.p2{background:linear-gradient(120deg,#4B4BA8,#6E6ED6)}
+.seq-h>div.p3{background:linear-gradient(120deg,#7A6A4F,#A99270)}
+.seq-h>div.p4{background:linear-gradient(120deg,#556,#7C8794)}
+.seq-body{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.seq-lines{position:absolute;inset:0;display:grid;grid-template-columns:96px repeat(4,1fr);z-index:0;pointer-events:none}
+.seq-lines i{border-right:1px dashed rgba(120,132,150,.32)}
+.seq-lines i:first-child{border-right:0}
+.seq-lines i:last-child{border-right:0}
+.seq-ph{display:grid;grid-template-columns:96px repeat(4,1fr);align-items:center;gap:0;flex:1;min-height:0;border-top:1px dashed rgba(120,132,150,.16);position:relative;z-index:1}
+.seq-ph:first-child{border-top:0}
+.seq-no{display:flex;flex-direction:column;gap:.15em;padding-right:.7vw}
+.seq-no b{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:#8E2F35;letter-spacing:.1em}
+.seq-no span{font-size:11.5px;font-weight:700;color:var(--ink);line-height:1.25}
+.seq-note{font-size:10.2px;color:var(--ink-3);line-height:1.2;margin-top:.1em}
+.seq-arrows{grid-column:2 / 6;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;align-content:center;min-width:0}
+.ar{position:relative;height:26px;grid-column:var(--a) / var(--b)}
+.ar .bar{position:absolute;left:10px;right:14px;top:15px;height:2px;background:#8d97a5;border-radius:2px}
+.ar .bar::after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid #8d97a5;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.ar.back .bar::after{left:-1px;right:auto;border-left:0;border-right:7px solid #8d97a5}
+.ar .lb{position:absolute;left:10px;top:0;font-size:10.5px;color:#39424f;background:var(--paper);padding:0 .4em;white-space:nowrap;z-index:2;line-height:1.3}
+.ar .lb b{font-weight:700;color:#1d2330}
+.ar.key .bar{background:#22262F;height:2.5px}
+.ar.key .bar::after{border-left-color:#22262F;border-right-color:#22262F}
+.ar.key .lb{color:#1D2330;font-weight:700}
+.ar.key::before{content:"";position:absolute;left:2px;top:11px;width:8px;height:8px;background:#22262F;transform:rotate(45deg);border-radius:1px}
+.ar.mut .bar{background:#7A8AA0}
+.ar.mut .bar::after{border-left-color:#7A8AA0;border-right-color:#7A8AA0}
+.ar.mut .lb{color:#4A6076}
+
+/* ---------- 信号 → 动作 ---------- */
+.sig{flex:1;min-height:0;display:grid;grid-template-columns:1.4fr 54px 1fr;gap:1.2vw;align-items:center}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1vh 1vw;align-content:center}
+.sig-i{display:flex;gap:.75em;align-items:center;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.85);border-radius:11px;padding:1vh .8vw}
+.sig-i .ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex:none;background:rgba(240,90,104,.12);color:#B3403A}
+.sig-i .ic svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.sig-i .tx{min-width:0}
+.sig-i .tx b{display:block;font-size:12.4px;color:var(--ink);margin-bottom:.15em}
+.sig-i .tx span{font-size:11px;color:var(--ink-2);line-height:1.4;display:block}
+.sig-i .tx em{font-style:normal;color:#8E2F35}
+.sig-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4vh;color:var(--ink-3);align-self:center}
+.sig-mid svg{width:44px;height:44px;stroke:currentColor;fill:none;stroke-width:1.2}
+.sig-mid span{font-size:10px;letter-spacing:.1em;font-family:'JetBrains Mono'}
+.sig-act{display:flex;flex-direction:column;gap:1.4vh;justify-content:center}
+.act{border-radius:11px;padding:1.6vh 1vw;display:flex;flex-direction:column;justify-content:center;background:rgba(75,75,168,.09);border:1px solid rgba(75,75,168,.2)}
+.act b{display:block;font-size:13px;color:#3B3B85;margin-bottom:.25em}
+.act span{font-size:11.2px;color:var(--ink-2);line-height:1.4}
+
+/* ---------- 证据阶梯 + 散点 ---------- */
+.lad{flex:1;min-height:0;display:grid;grid-template-columns:1.02fr .98fr;gap:2vw;align-items:center}
+.lad-l{display:flex;flex-direction:column;justify-content:center;gap:1vh}
+.step{display:grid;grid-template-columns:54px 1fr;gap:.9vw;align-items:stretch}
+.step .no{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:#fff;background:var(--g-ink);border-radius:9px 0 0 9px}
+.step .bd{background:rgba(255,255,255,.66);border:1px solid rgba(47,61,99,.09);border-radius:0 9px 9px 0;padding:.9vh .9vw;box-shadow:0 8px 20px -20px rgba(30,40,70,.5)}
+.step.l2 .no{background:var(--g-accent)}
+.step.l3 .no{background:linear-gradient(120deg,#9AA3B2,#C6CCD7);color:#2B303A}
+.step b{font-size:12.8px;color:var(--ink)}
+.step p{font-size:11.2px;color:var(--ink-2);line-height:1.42;margin-top:.15em}
+.step q{font-size:11px;color:#8E2F35;display:block;margin-top:.3em;line-height:1.35}
+.scatter{position:relative;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.8);border-radius:14px;padding:1.4vh 1vw .8vh}
+.scatter svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* ---------- 恢复谱系 ---------- */
+.spec{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;align-items:end;margin-top:1vh}
+.spec-i{display:flex;flex-direction:column;align-items:center;gap:.6vh;text-align:center}
+.spec-i .n{font-family:'Inter';font-weight:300;font-size:24px;line-height:1;color:var(--ink)}
+.spec-i .bx{width:100%;border-radius:7px 7px 3px 3px;background:linear-gradient(to top,rgba(75,75,168,.16),rgba(75,75,168,.42));border:1px solid rgba(75,75,168,.25);border-bottom:0}
+.spec-i .lb{font-size:10.6px;color:var(--ink-2);line-height:1.25}
+.ind{display:grid;grid-template-columns:1fr 1fr;gap:1.4vw;margin-top:2vh}
+.ind-c{background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.85);border-radius:12px;padding:1.3vh 1.1vw}
+.ind-c b{font-size:12.6px;color:var(--ink);display:flex;align-items:center;gap:.45em}
+.ind-c p{font-size:11.4px;color:var(--ink-2);line-height:1.45;margin-top:.35em}
+.ind-c.yes{background:rgba(46,139,110,.07)}
+.ind-c.no{background:rgba(179,64,58,.06)}
+
+/* ---------- 习惯三层 ---------- */
+.lay{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.2vh}
+.lay-r{display:grid;grid-template-columns:206px 1fr;gap:1.2vw;align-items:center;height:20vh;min-height:148px;border-radius:14px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.82);padding:0 1vw;box-shadow:0 10px 28px -24px rgba(30,40,70,.5)}
+.lay-h{display:flex;flex-direction:column;gap:.32em;padding-left:.2vw}
+.lay-h b{font-size:15px;color:var(--ink)}
+.lay-h span{font-size:10px;color:var(--ink-3);font-family:'JetBrains Mono';letter-spacing:.08em}
+.lay-items{display:flex;flex-wrap:wrap;gap:.9vh .55vw}
+.lay-i{font-size:12.2px;color:var(--ink-2);line-height:1.38;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.95);border-radius:8px;padding:.85vh .8vw}
+.lay-i b{color:var(--ink);font-weight:600}
+.lay-i.q{background:rgba(14,124,134,.09);border-color:rgba(14,124,134,.18)}
+.lay-i.x{background:rgba(75,75,168,.09);border-color:rgba(75,75,168,.18)}
+.lay-i.x{background:rgba(75,75,168,.08);border-color:rgba(75,75,168,.16)}
+
+/* ---------- 知识流 ---------- */
+.kl{flex:1;min-height:0;display:grid;grid-template-columns:1.18fr .82fr;gap:2.4vw;align-items:center}
+.kl-left{display:flex;flex-direction:column;gap:1.6vh;min-width:0}
+.kl-left svg{width:100%;height:auto;display:block}
+.kl-note{font-size:11.6px;color:var(--ink-2);line-height:1.5;max-width:46em}
+.kl-right{display:flex;flex-direction:column;gap:1.2vh;min-width:0}
+.kl-cap{font-size:11.4px;color:var(--ink-2);line-height:1.5}
+.kl-cap b{color:var(--ink)}
+.kl-chips{display:flex;flex-direction:column;gap:.7vh;margin-top:.6vh;align-items:flex-start}
+.auth{display:flex;flex-direction:column;gap:.75vh}
+.auth-i{display:grid;grid-template-columns:22px 1fr;gap:.7em;align-items:center}
+.auth-i .k{font-family:'JetBrains Mono';font-size:10px;color:var(--ink-3);text-align:right}
+.auth-i .bx{border-radius:8px;padding:.85vh .9vw;font-size:11.8px;font-weight:600;color:#fff}
+.auth-i .bx small{display:block;font-weight:400;font-size:10.2px;opacity:.86;margin-top:.15em;line-height:1.3}
+.a1 .bx{background:linear-gradient(120deg,#1F4B4A,#2E6E6B)}
+.a2 .bx{background:linear-gradient(120deg,#3E4A63,#5B6A85)}
+.a3 .bx{background:linear-gradient(120deg,#7A6A4F,#9A8663)}
+.a4 .bx{background:linear-gradient(120deg,#8C3A32,#B8564A)}
+
+/* ---------- 发现账本 ---------- */
+.led{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.led-r{display:grid;grid-template-columns:52px 1fr;gap:1.1vw;padding:1.9vh 0;border-top:1px solid rgba(47,61,99,.14);align-items:start}
+.led-r:first-child{border-top:0}
+.led-n{font-family:'Inter';font-weight:200;font-size:30px;line-height:1;color:var(--ink-3)}
+.led-b h4{font-size:14.6px;font-weight:800;color:var(--ink);line-height:1.35;display:flex;align-items:center;gap:.6em;flex-wrap:wrap}
+.led-b p{font-size:11.4px;color:var(--ink-2);line-height:1.45;margin-top:.35em}
+.led-b p b{color:var(--ink);font-weight:600}
+.led-b q{font-size:11px;color:#8E2F35;quotes:none}
+.stg{font-size:9.6px;font-weight:700;letter-spacing:.06em;padding:.15em .45em;border-radius:4px}
+.stg.l2{background:rgba(75,75,168,.12);color:#3B3B85}
+.stg.l3{background:rgba(154,163,178,.2);color:#4A5566}
+
+/* ---------- 2x2 ---------- */
+.m4{flex:1;min-height:0;display:grid;grid-template-columns:.62fr 1.38fr;gap:1.8vw;align-items:center}
+.m4-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;position:relative}
+.m4-cell{position:relative;border-radius:14px;padding:1vh .9vw;overflow:hidden}
+.m4-cell.tl{background:rgba(35,207,160,.12)}
+.m4-cell.tr{background:rgba(91,91,214,.11)}
+.m4-cell.bl{background:rgba(244,180,80,.14)}
+.m4-cell.br{background:rgba(230,72,77,.1)}
+.m4-cell .ct{font-size:12px;font-weight:800;color:var(--ink);display:flex;align-items:baseline;gap:.4em;margin-bottom:.4vh}
+.m4-cell .ct small{font-size:9.6px;font-weight:500;color:var(--ink-3)}
+.note{display:block;font-size:10.8px;line-height:1.3;background:#fff;border-radius:6px;padding:.38em .55em;margin-bottom:.45vh;box-shadow:0 2px 6px -3px rgba(30,40,70,.35)}
+.note b{font-weight:600;color:var(--ink)}
+.note em{font-style:normal;font-family:'JetBrains Mono';font-size:9px;color:var(--ink-3);margin-left:.3em}
+.note::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--c-indigo);margin:0 .45em 1px 0;vertical-align:middle}
+.note.g::before{background:#2E8B6E}
+.note.a::before{background:#B3403A}
+.note.o::before{background:#B07A2A}
+.m4-y{display:flex;align-items:center;gap:.4vw;margin-bottom:.6vh}
+.ax-tag{font-size:9.6px;color:var(--ink-3);letter-spacing:.12em;font-family:'JetBrains Mono';margin-bottom:.5vh}
+.m4-y span{font-size:10px;color:var(--ink-3);font-family:'JetBrains Mono'}
+.axx{height:10px;width:100%;background:linear-gradient(to right,rgba(170,176,186,0),#aab0ba);clip-path:polygon(0 0,calc(100% - 7px) 0,100% 50%,calc(100% - 7px) 100%,0 100%)}
+.axy{width:10px;height:100%;background:linear-gradient(to top,rgba(170,176,186,0),#aab0ba);clip-path:polygon(0 100%,0 7px,50% 0,100% 7px,100% 100%)}
+
+/* ---------- 边界 ---------- */
+.bd2{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.6vw;align-items:stretch}
+.bd2-c{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.85);border-radius:14px;padding:2.6vh 1.3vw;display:flex;flex-direction:column;gap:1.05vh;min-height:36vh;justify-content:center}
+.bd2-c h4{font-size:13.4px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:.5em}
+.bd2-c li{font-size:12.2px;color:var(--ink-2);line-height:1.45;list-style:none;padding-left:1.1em;position:relative}
+.bd2-c li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.55}
+.bd2-c.ok li::before{background:#2E8B6E}
+.bd2-c.no li::before{background:#B3403A}
+.hyp{display:flex;gap:1vw;margin-top:1.4vh}
+.hyp-i{flex:1;background:rgba(244,180,80,.12);border:1px solid rgba(244,180,80,.3);border-radius:11px;padding:1vh .9vw}
+.hyp-i b{font-size:11.6px;color:#7A5417;display:block;margin-bottom:.2em}
+.hyp-i span{font-size:10.6px;color:var(--ink-2);line-height:1.35}
+
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding-bottom:2.6vh}
+.contents-directory.contents-6{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));width:min(1240px,100%);gap:.9vw}
+.contents-directory.contents-6 .directory-card{min-height:0;padding:1.5vh 1vw 1.2vh}
+.contents-directory.contents-6 .directory-no{font-size:clamp(30px,3vw,48px)}
+.contents-directory.contents-6 .directory-name{font-size:clamp(15px,1.15vw,19px);margin-top:.7vh}
+.contents-directory.contents-6 .directory-items{margin-top:1.2vh;gap:.35vh}
+.contents-directory.contents-6 .directory-items span{font-size:clamp(11.5px,.82vw,13.5px)}
+.contents-directory.contents-6 .directory-note{font-size:clamp(10.5px,.75vw,12.4px);padding-top:.9vh}
+.cx-concl{flex:0 0 auto;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.5vh 1.3vw}
+.cx-concl .ck{font-size:12.4px;font-weight:700;color:var(--ink);background:#fff;border-radius:12px;padding:5px 14px;white-space:nowrap}
+.cx-concl .cv{font-size:12.2px;line-height:1.55;color:rgba(255,255,255,.86)}
+.cx-concl .cv b{color:#fff;font-weight:700}
+
+.jd.learn .jd-em{text-shadow:0 0 3px #fffaf0,0 0 5px #fffaf0,0 0 6px #fffaf0}
+
+.trk-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:7px}
+.trk-head{display:grid;grid-template-columns:112px 1fr;gap:10px;flex:0 0 auto}
+.trk-hs{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.trk-hs span{display:flex;align-items:center;justify-content:center;background:#989a9b;color:#fff;font-size:12.2px;font-weight:700;height:30px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%,10px 50%);padding:0 8px 0 12px}
+.trk{flex:1;min-height:0;display:grid;grid-template-columns:112px 1fr;gap:10px;align-items:center;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.72);border-radius:11px;padding:0 1vw;box-shadow:0 8px 22px -20px rgba(30,40,70,.4)}
+.trk-lab{position:relative;display:flex;flex-direction:column;gap:.1em;font-size:12.4px;font-weight:800;color:var(--ink);padding-left:.95em;line-height:1.2}
+.trk-lab::before{content:"";position:absolute;left:0;top:.34em;width:6px;height:6px;border-radius:50%;background:#0E7C86}
+.trk-lab.e::before{background:#4B4BA8}
+.trk-lab small{font-size:9.4px;font-weight:400;color:var(--ink-3);font-family:'JetBrains Mono'}
+.trk-line{position:relative;height:100%}
+.trk-line::before{content:"";position:absolute;left:0;right:0;top:50%;height:1.5px;background:linear-gradient(90deg,rgba(120,132,150,.12),rgba(120,132,150,.5),rgba(120,132,150,.12))}
+.trk-pt{position:absolute;top:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#B3403A;box-shadow:0 0 0 4px rgba(179,64,58,.1);z-index:2}
+.trk-lb{position:absolute;transform:translateX(-50%);width:236px;text-align:center;font-size:11px;line-height:1.28;font-weight:600;color:#8E2F35;z-index:2}
+.trk-lb.up{bottom:calc(50% + 12px)}
+.trk-lb.dn{top:calc(50% + 12px)}
+
+.jd.learn .jd-em.pain{text-shadow:0 0 3px #ffead0,0 0 5px #ffead0}
+
+.frk-head{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:1vw;margin-bottom:.8vh}
+.frk-h{font-size:11.4px;font-weight:700;color:#fff;border-radius:8px;padding:.6vh .8vw;text-align:center}
+.frk-h.a{background:linear-gradient(120deg,#0E7C86,#2E9AA4)}
+.frk-h.b{background:linear-gradient(120deg,#4B4BA8,#6E6ED6)}
+.frk{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:1vw;align-items:center;border-top:1px solid rgba(47,61,99,.13);padding:1.5vh 0}
+.frk:first-of-type{border-top:0}
+.frk-cond b{display:block;font-size:13px;color:var(--ink);margin-bottom:.25em}
+.frk-cond span{font-size:10.6px;color:var(--ink-3);line-height:1.35}
+.frk-out{font-size:11.8px;line-height:1.4;color:var(--ink-2);padding-left:0}
+.frk-out.a{color:#2C5C60}
+.frk-out.b{color:#3F3F80}
+
+
+#deck{counter-reset:pg}
+.slide{counter-increment:pg}
+.pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 20";opacity:.8}
+
+</style>
+</head>
+<body>
+<div id="deck">
+<section class="slide s-cover">
+  <div class="cv-bg"></div>
+  <div class="cv-content">
+    <div class="cv-top">
+      <div class="cv-huawei"><svg class="petal" viewBox="0 0 24 24" fill="#E60012"><path d="M12 2c-1 4-3 6-6 7 3 1 5 3 6 7 1-4 3-6 6-7-3-1-5-3-6-7z"/></svg>HUAWEI</div>
+      <div class="cv-meta">Ascend · Developer Experience</div>
+    </div>
+    <div class="cv-center">
+      <div class="cv-kicker">AI CODING · USER RESEARCH</div>
+      <div class="cv-logo"><img src="cann-dark-logo.svg" alt="CANN"></div>
+      <div class="cv-sub">AI Coding 用户访谈分析</div>
+      <div class="cv-lead">6 位开发者 · 开发与学习两种场景 · 从任务理解、上下文准备、代码实现到验证与沉淀的过程回放</div>
+    </div>
+    <div class="cv-bot">
+      <div class="cv-ucd"><span class="sq"></span>USER RESEARCH</div>
+      <div class="cv-meta">2026 · 内部研究</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide s-gray contents-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
+  <div class="body-area"><div class="contents-directory contents-6">
+  <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">材料与边界</h2><div class="directory-en">Scope &amp; Evidence</div><div class="directory-items"><span>受访者概况</span><span>证据强度</span><span>材料缺口</span></div><div class="directory-note">先确认这批材料能撑住什么</div></article><article class="directory-card persona"><div class="directory-no">02</div><h2 class="directory-name">角色与旅程</h2><div class="directory-en">Personas &amp; Journeys</div><div class="directory-items"><span>双角色画像</span><span>四段旅程</span><span>共同骨架</span></div><div class="directory-note">看清两种人各自走的是哪条路</div></article><article class="directory-card competitor"><div class="directory-no">03</div><h2 class="directory-name">人机协作</h2><div class="directory-en">Human–AI Handoff</div><div class="directory-items"><span>分工</span><span>交接信号</span><span>验证与恢复</span></div><div class="directory-note">找到人真正被卡住的位置</div></article><article class="directory-card research"><div class="directory-no">04</div><h2 class="directory-name">习惯与偏好</h2><div class="directory-en">Habits &amp; Preferences</div><div class="directory-items"><span>明说</span><span>实做</span><span>研究者解释</span></div><div class="directory-note">把愿望、行为和推断分开</div></article><article class="directory-card persona"><div class="directory-no">05</div><h2 class="directory-name">知识与学习</h2><div class="directory-en">Knowledge &amp; Learning</div><div class="directory-items"><span>获取</span><span>可信来源</span><span>内化与沉淀</span></div><div class="directory-note">理解 AI 之后人怎么学</div></article><article class="directory-card roadmap"><div class="directory-no">06</div><h2 class="directory-name">发现与启示</h2><div class="directory-en">Findings &amp; Implications</div><div class="directory-items"><span>5 条发现</span><span>设计启发</span><span>边界</span></div><div class="directory-note">收敛成可行动的方向</div></article>
+  </div></div>
+</section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">6 位受访者：3 名学生、3 名企业工程师，全部每天使用</span></div><div class="subttl">材料与边界 · 受访者概况</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<table class="mtx">
+<colgroup><col style="width:15%"><col style="width:19%"><col style="width:16%"><col style="width:16%"><col style="width:9%"><col style="width:11%"><col style="width:14%"></colgroup>
+<thead><tr><th>受访者</th><th>身份</th><th>最近一次任务</th><th>主要工具</th><th>入口</th><th>时长 · 频率</th><th>标志性细节</th></tr></thead>
+<tbody><tr><td><div class="who e"><span class="bar"></span>王伟</div><div class="chip emp" style="margin-top:.45em"><i></i>企业</div></td><td>昇腾计算基础软件开发部工程师</td><td class="task">算子从 0 开发</td><td>Cursor · Grok · Trae</td><td>IDE</td><td>5 个月 · 每天</td><td>人工审查约 70%，与 AI 执行交替</td></tr><tr><td><div class="who e"><span class="bar"></span>郑雨豪</div><div class="chip emp" style="margin-top:.45em"><i></i>企业</div></td><td>昇腾计算基础软件开发部工程师</td><td class="task">算子开发</td><td>Cursor · Trae</td><td>IDE</td><td>半年 · 每天</td><td>一直不太信任，做完必查</td></tr><tr><td><div class="who e"><span class="bar"></span>彭椒</div><div class="chip emp" style="margin-top:.45em"><i></i>企业</div></td><td>实验室 / 测试工程师</td><td class="task">修测试脚本并跑通</td><td>OpenCode · TestAgent · 毕方</td><td>CLI · 网页</td><td>2023 起 · 每天</td><td>毕方直连服务器自动循环修正</td></tr><tr><td><div class="who"><span class="bar"></span>徐立桂</div><div class="chip stu" style="margin-top:.45em"><i></i>学生</div></td><td>南京大学 · 研二</td><td class="task">算子生成 + 昇腾知识图谱</td><td>Codex · OpenCode</td><td>客户端 · CLI</td><td>半年+ · 每天</td><td>一个窗口实现、一个窗口验收</td></tr><tr><td><div class="who"><span class="bar"></span>梁淼城</div><div class="chip stu" style="margin-top:.45em"><i></i>学生</div></td><td>南京大学 · 大四</td><td class="task">后端 Demo，改开源仓库</td><td>Codex · Claude Code</td><td>客户端 · CLI</td><td>1–1.5 年 · 每天</td><td>过度设计是最痛的点</td></tr><tr><td><div class="who"><span class="bar"></span>王鹤锦</div><div class="chip stu" style="margin-top:.45em"><i></i>学生</div></td><td>杭州电子科大 · 研三</td><td class="task">无人机跨视角定位</td><td>Claude Code · DeepSeek</td><td>CLI · 网页</td><td>2022 起 · 每天</td><td>额度不够，多 Agent 用不起</td></tr></tbody></table>
+<div style="margin-top:2.2vh;display:flex;gap:1.4vw;align-items:flex-start">
+  <div class="chip mute"><i></i>6 / 6 每天使用</div>
+  <div class="chip mute"><i></i>5 / 6 近期任务直接落在昇腾或算子场景</div>
+  <div class="chip warn"><i></i>访谈日期、访谈者均未记录</div>
+  <div style="font-size:var(--fs-sm);color:var(--ink-2);line-height:1.5">
+    研究目的：按时间还原"任务理解 → 方案形成 → 上下文准备 → 实现 → 验证 → 沉淀"，观察人、AI、资料与环境如何交替参与。<br>身份取自访谈记录；郑雨豪的记录未写身份，按用户补充归入昇腾基础软件开发部。<br>
+    材料为"思维导图手记为主 + ASR 逐字稿补充"的二次整理稿；<b>口径：手记优先，ASR 只补细节，两者冲突以手记为准。</b>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">材料能支撑"模式"，不足以支撑"比例"</span></div><div class="subttl">材料与边界 · 证据强度</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="ev">
+  <div class="ev-left">
+    <div class="ev-kick">从 6 份记录里提取的证据分三层：只有 L1、L2 进入结论，L3 单独标注为假设</div>
+    <div class="ev-tier"><div class="ev-tag">L1</div><div class="ev-band b1"><b>直接支持 · 原话 + 具体事件</b><span>每条结论都能落回一个可复述的动作——例如梁淼城判断跑偏的依据是"出现很多一两行的函数"。</span></div></div><div class="ev-tier"><div class="ev-tag">L2</div><div class="ev-band b2"><b>跨案例模式 · ≥3 人复现同一结构</b><span>上下文前置、异常信号介入、执行证据优先、恢复靠换模型、沉淀落文件。</span></div></div><div class="ev-tier"><div class="ev-tag">L3</div><div class="ev-band b3"><b>待验证假设 · 1–2 人 / 研究者推断</b><span>成本是隐性分配器、全权限等于摩擦管理、知识应落文件、Skill 应可裁剪。</span></div></div>
+  </div>
+  <div class="ev-right">
+    <h4>必须先说明的材料缺口</h4>
+    <div class="ev-gap"><b>口径冲突按"手记优先"处理</b>：梁淼城时间比例采用记录稿 5:3:1:1；ASR 转写的 3:3:2:3:1:1 属转录差异，不采用。</div>
+    <div class="ev-gap"><b>身份与元信息缺失</b>：郑雨豪记录未写身份；6 份记录均无访谈日期与访谈者。</div>
+    <div class="ev-gap"><b>多项"未记录"</b>：梁第 3 痛点、郑任务时间分配、徐学习资源与渠道等 10 项，按未记录处理，不补全。</div>
+    <div class="ev-gap"><b>全部是回顾叙述</b>：访谈不要求现场执行，未做独立核验，不能据此声称上卡成功、达到性能或完成端到端部署。</div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">学生与 AI 一起探路，企业工程师把任务交办给 AI 再验收</span></div><div class="subttl">角色与旅程 · 双角色画像</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="mir">
+  <div class="mir-head a"><div class="n">高校学生</div><div class="d">徐立桂 · 梁淼城 · 王鹤锦 ｜ 研究、课程与实习驱动的开发</div></div>
+  <div></div>
+  <div class="mir-head b"><div class="n">企业工程师</div><div class="d">王伟 · 郑雨豪 · 彭椒 ｜ 需求、指标与合入驱动的开发</div></div>
+  <div class="mir-cell a">课题、论文、课程作业、实习 demo</div><div class="mir-dim">触发</div><div class="mir-cell b">需求单、问题单、测试任务、算子开发</div><div class="mir-cell a">benchmark 对 baseline；实验有提升；能自己复现</div><div class="mir-dim">完成标准</div><div class="mir-cell b">精度 golden + 性能 baseline 双达标，过测试、能合入</div><div class="mir-cell a">自费额度、实验室无 root、租卡、远程环境</div><div class="mir-dim">资源条件</div><div class="mir-cell b">统一采购 IDE、内网 / 黄区、内部 Skill 与专家</div><div class="mir-cell a">论文、GitHub、官方文档、CSDN / 知乎</div><div class="mir-dim">知识来源</div><div class="mir-cell b">官方 API 文档、内部 wiki、组内专家、设计文档</div><div class="mir-cell a">任务触发为主，也会为"学会"刻意自己写代码</div><div class="mir-dim">学习方式</div><div class="mir-cell b">被动 7 : 主动 3，基本在任务里学</div><div class="mir-cell a">1–2 人各做模块，没有评审压力</div><div class="mir-dim">交付与协作</div><div class="mir-cell b">committer 检视、拆 PR、跨团队难复用</div>
+  <div class="mir-q a">"一个窗口实现，一个窗口验收。" —— 徐立桂</div>
+  <div></div>
+  <div class="mir-q b">"人工审查跟 AI 执行是相互交叉、交替执行的过程。" —— 王伟</div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">学生开发：先解决环境，再解决方向，最后才是代码</span></div><div class="subttl">角色与旅程 · 高校学生 · 开发场景 · 红色 = 该阶段实际痛点，与下方红色低谷一一对应</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area"><div class="jd">
+  <div class="jd-rail"><div>阶段</div><div>开发活动</div><div>思考与疑问</div><div><span>操作与交互</span><span class="sm">（触点）</span></div><div>体验感受</div></div>
+  <div class="jd-body">
+    <div class="jd-stages"><div class="jd-stage">01 定题与目标</div><div class="jd-stage">02 找资料与环境</div><div class="jd-stage">03 让 AI 出方案</div><div class="jd-stage">04 运行验证与纠偏</div><div class="jd-stage">05 交付与沉淀</div></div>
+    <div class="jd-row"><div class="jd-cell">从课题 / 实习 / 作业里切出一个能做的任务，先读论文或别人仓库</div><div class="jd-cell">申请算力（CANN Lab / 租卡 / 实验室服务器），装 CANN、跑通样例</div><div class="jd-cell">让 AI 解释目标仓库、估代码量、画架构图；确认后先建空骨架</div><div class="jd-cell">跑 benchmark / 写探针，对 baseline；跑偏就回滚上一版重来</div><div class="jd-cell">交 demo / 论文结果，把对话与结论整理进 Obsidian</div></div>
+    <div class="jd-row"><div class="jd-cell q">做到什么程度算完成？<br>导师要结果还是要方法？</div><div class="jd-cell q">环境在这台机器对不对？<br>有卡吗、版本匹配吗？</div><div class="jd-cell q">它估的代码量准吗？<br>这一层要不要我自己写？</div><div class="jd-cell q">是代码错、环境错，<br>还是我 prompt 没说清？</div><div class="jd-cell q">这套东西下次还能复现吗？<br>我真的学会了吗？</div></div>
+    <div class="jd-doing"><div class="jd-seg"><div></div><div></div><div></div><div></div><div></div></div><svg class="jd-svg" viewBox="0 0 1000 265" preserveAspectRatio="none" aria-hidden="true"><path class="lk" d="M 42.0 62.0 C 87.0 62.0, 87.0 124.0, 132.0 124.0 C 110.0 124.0, 110.0 204.0, 88.0 204.0 C 155.0 204.0, 155.0 62.0, 222.0 62.0 C 267.0 62.0, 267.0 124.0, 312.0 124.0 C 300.0 124.0, 300.0 204.0, 288.0 204.0 C 355.0 204.0, 355.0 62.0, 422.0 62.0 C 467.0 62.0, 467.0 124.0, 512.0 124.0 C 500.0 124.0, 500.0 204.0, 488.0 204.0 C 555.0 204.0, 555.0 62.0, 622.0 62.0 C 667.0 62.0, 667.0 124.0, 712.0 124.0 C 700.0 124.0, 700.0 204.0, 688.0 204.0 C 755.0 204.0, 755.0 62.0, 822.0 62.0 C 867.0 62.0, 867.0 124.0, 912.0 124.0 C 900.0 124.0, 900.0 204.0, 888.0 204.0"/><path class="vd" d="M 88.0 0 V 265"/><path class="vd" d="M 288.0 0 V 265"/><path class="vd" d="M 488.0 0 V 265"/><path class="vd" d="M 688.0 0 V 265"/><path class="vd" d="M 888.0 0 V 265"/></svg><div class="jd-tp" style="left:4.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="jd-tp" style="left:13.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 19c0-4 3-6 6-6s6 2 6 6M13 15c1-2 3-3 5-3 3 0 5 2 5 6"/></svg></div><div class="jd-tp red" style="left:8.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp" style="left:22.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8m-4-4v4"/></svg></div><div class="jd-tp" style="left:31.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-2 2M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l2-2"/></svg></div><div class="jd-tp red" style="left:28.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="jd-tp" style="left:42.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17h6M10 20h4M8 14a7 7 0 1 1 8 0l-1 2H9z"/></svg></div><div class="jd-tp" style="left:51.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5H5v15h14v-9M10 13l9-9 2 2-9 9-4 1z"/></svg></div><div class="jd-tp red" style="left:48.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tp" style="left:62.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8m-4-4v4"/></svg></div><div class="jd-tp" style="left:71.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="jd-tp red" style="left:68.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="jd-tp" style="left:82.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 18l5-6 4 3 6-9"/><path d="M17 6h3v3"/></svg></div><div class="jd-tp" style="left:91.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp red" style="left:88.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tl" style="left:0.40%;top:3.77%;width:132px">读论文 / 仓库<br>切出可做的任务</div><div class="jd-tl" style="left:9.00%;top:58.11%;width:132px">和导师、同门<br>对齐范围</div><div class="jd-tl" style="left:4.60%;top:88.30%;width:132px">目标宽泛<br>没有可验证的完成标准</div><div class="jd-tl" style="left:18.00%;top:3.77%;width:132px">申请算力、装 CANN<br>先跑通样例</div><div class="jd-tl" style="left:27.00%;top:58.11%;width:132px">查版本与环境<br>官方文档 / issue</div><div class="jd-tl" style="left:24.60%;top:88.30%;width:132px">申请不到资源<br>环境在远程，Agent 接不上</div><div class="jd-tl" style="left:38.00%;top:3.77%;width:132px">让 AI 解释仓库<br>给方案与架构图</div><div class="jd-tl" style="left:47.00%;top:58.11%;width:132px">确认方向后<br>先建一个空骨架</div><div class="jd-tl" style="left:44.60%;top:88.30%;width:132px">过度设计、跑偏<br>冒出一堆一行函数</div><div class="jd-tl" style="left:58.00%;top:3.77%;width:132px">跑 benchmark<br>对比 baseline</div><div class="jd-tl" style="left:67.00%;top:58.11%;width:132px">看报错日志<br>交给 AI 定位</div><div class="jd-tl" style="left:64.60%;top:88.30%;width:132px">缺错误样例<br>中文线索要自己搜</div><div class="jd-tl" style="left:78.00%;top:3.77%;width:132px">整理结果<br>写进报告 / 论文</div><div class="jd-tl" style="left:87.00%;top:58.11%;width:132px">把对话与结论<br>整理成 markdown</div><div class="jd-tl" style="left:84.60%;top:88.30%;width:132px">经验散在对话里<br>下次要重新问一遍</div></div>
+    <div class="jd-feel"><svg class="jd-chart" viewBox="0 0 1000 252" preserveAspectRatio="none" aria-hidden="true"><polyline class="ln" points="25.0,70.0 88.0,206.0 160.0,120.0 225.0,58.0 288.0,208.0 360.0,110.0 425.0,60.0 488.0,210.0 560.0,120.0 625.0,55.0 688.0,206.0 760.0,115.0 825.0,52.0 888.0,208.0 960.0,130.0"/><path class="ds" d="M 88.0 0 V 202.0"/><path class="ds" d="M 288.0 0 V 202.0"/><path class="ds" d="M 488.0 0 V 202.0"/><path class="ds" d="M 688.0 0 V 202.0"/><path class="ds" d="M 888.0 0 V 202.0"/></svg><span class="jd-dot" style="left:2.50%;top:27.78%"></span><span class="jd-dot red" style="left:8.80%;top:80.16%"></span><span class="jd-dot" style="left:16.00%;top:47.62%"></span><span class="jd-dot" style="left:22.50%;top:23.02%"></span><span class="jd-dot red" style="left:28.80%;top:80.16%"></span><span class="jd-dot" style="left:36.00%;top:43.65%"></span><span class="jd-dot" style="left:42.50%;top:23.81%"></span><span class="jd-dot red" style="left:48.80%;top:80.16%"></span><span class="jd-dot" style="left:56.00%;top:47.62%"></span><span class="jd-dot" style="left:62.50%;top:21.83%"></span><span class="jd-dot red" style="left:68.80%;top:80.16%"></span><span class="jd-dot" style="left:76.00%;top:45.63%"></span><span class="jd-dot" style="left:82.50%;top:20.63%"></span><span class="jd-dot red" style="left:88.80%;top:80.16%"></span><span class="jd-dot" style="left:96.00%;top:51.59%"></span><div class="jd-em c" style="left:0.20%;top:11.11%;width:150px">从课题里找到一个<br>能做的事</div><div class="jd-em pain c" style="left:3.66%;top:83.73%;width:150px">目标太宽，<br>不知道做到哪算完</div><div class="jd-em c" style="left:10.86%;top:50.40%;width:150px">对齐之后<br>范围清楚一些</div><div class="jd-em c" style="left:17.36%;top:6.35%;width:150px">拿到环境，<br>看到跑通的样例</div><div class="jd-em pain c" style="left:23.66%;top:83.73%;width:150px">没卡、没权限、<br>版本对不上</div><div class="jd-em c" style="left:30.86%;top:46.43%;width:150px">靠文档和 issue<br>凑出可用环境</div><div class="jd-em c" style="left:37.36%;top:7.14%;width:150px">AI 很快给出<br>结构和方案</div><div class="jd-em pain c" style="left:43.66%;top:83.73%;width:150px">过度设计、<br>方向越走越偏</div><div class="jd-em c" style="left:50.86%;top:50.40%;width:150px">回滚上一版<br>重新引导</div><div class="jd-em c" style="left:57.36%;top:5.16%;width:150px">第一版结果<br>接近 baseline</div><div class="jd-em pain c" style="left:63.66%;top:83.73%;width:150px">报错查不到<br>只能自己搜中文</div><div class="jd-em c" style="left:70.86%;top:48.41%;width:150px">改对了，<br>指标有提升</div><div class="jd-em c" style="left:77.36%;top:3.97%;width:150px">结果能写进<br>报告 / 论文</div><div class="jd-em pain c" style="left:83.66%;top:83.73%;width:150px">对话散落，<br>下次难复现</div><div class="jd-em c" style="left:89.33%;top:54.37%;width:150px">整理成 md<br>心里有点底</div></div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">学生学习：听得懂不等于写得出，卡在"排错被代劳"</span></div><div class="subttl">角色与旅程 · 高校学生 · 学习场景 · 红色 = 该阶段实际痛点，与下方红色低谷一一对应</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area"><div class="jd learn">
+  <div class="jd-rail"><div>阶段</div><div>开发活动</div><div>思考与疑问</div><div><span>操作与交互</span><span class="sm">（触点）</span></div><div>体验感受</div></div>
+  <div class="jd-body">
+    <div class="jd-stages"><div class="jd-stage">01 卡点或起意</div><div class="jd-stage">02 找可信资料</div><div class="jd-stage">03 让 AI 讲与追问</div><div class="jd-stage">04 自己动手写</div><div class="jd-stage">05 复现与沉淀</div></div>
+    <div class="jd-row"><div class="jd-cell">论文 / 项目里遇到不懂的机制，或想系统学一个框架</div><div class="jd-cell">翻论文、GitHub、官方文档；找不到就租卡实测</div><div class="jd-cell">让 AI 讲架构、列技术点、写一份分天学习规划</div><div class="jd-cell">按规划自己写代码，一天一个点；AI 只答疑</div><div class="jd-cell">复述 / 复现一遍，把笔记放进 Obsidian</div></div>
+    <div class="jd-row"><div class="jd-cell q">该从哪开始？<br>我要"了解"还是"会做"？</div><div class="jd-cell q">这份资料可信吗？<br>版本对不对？</div><div class="jd-cell q">它是真懂还是在编？<br>我能用自己的话讲出来吗？</div><div class="jd-cell q">为什么我写不出来？<br>是没懂还是不会调？</div><div class="jd-cell q">不看 AI 我还能做出来吗？</div></div>
+    <div class="jd-doing"><div class="jd-seg"><div></div><div></div><div></div><div></div><div></div></div><svg class="jd-svg" viewBox="0 0 1000 265" preserveAspectRatio="none" aria-hidden="true"><path class="lk" d="M 42.0 62.0 C 87.0 62.0, 87.0 124.0, 132.0 124.0 C 110.0 124.0, 110.0 204.0, 88.0 204.0 C 155.0 204.0, 155.0 62.0, 222.0 62.0 C 267.0 62.0, 267.0 124.0, 312.0 124.0 C 300.0 124.0, 300.0 204.0, 288.0 204.0 C 355.0 204.0, 355.0 62.0, 422.0 62.0 C 467.0 62.0, 467.0 124.0, 512.0 124.0 C 500.0 124.0, 500.0 204.0, 488.0 204.0 C 555.0 204.0, 555.0 62.0, 622.0 62.0 C 667.0 62.0, 667.0 124.0, 712.0 124.0 C 700.0 124.0, 700.0 204.0, 688.0 204.0 C 755.0 204.0, 755.0 62.0, 822.0 62.0 C 867.0 62.0, 867.0 124.0, 912.0 124.0 C 900.0 124.0, 900.0 204.0, 888.0 204.0"/><path class="vd" d="M 88.0 0 V 265"/><path class="vd" d="M 288.0 0 V 265"/><path class="vd" d="M 488.0 0 V 265"/><path class="vd" d="M 688.0 0 V 265"/><path class="vd" d="M 888.0 0 V 265"/></svg><div class="jd-tp" style="left:4.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17h6M10 20h4M8 14a7 7 0 1 1 8 0l-1 2H9z"/></svg></div><div class="jd-tp" style="left:13.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tp red" style="left:8.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="jd-tp" style="left:22.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp" style="left:31.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="jd-tp red" style="left:28.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-2 2M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l2-2"/></svg></div><div class="jd-tp" style="left:42.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tp" style="left:51.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5H5v15h14v-9M10 13l9-9 2 2-9 9-4 1z"/></svg></div><div class="jd-tp red" style="left:48.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp" style="left:62.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8m-4-4v4"/></svg></div><div class="jd-tp" style="left:71.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="jd-tp red" style="left:68.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="jd-tp" style="left:82.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m7 12 3.5 3.5L17 8"/></svg></div><div class="jd-tp" style="left:91.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp red" style="left:88.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tl" style="left:0.40%;top:3.77%;width:132px">遇到不懂的机制<br>或想系统学框架</div><div class="jd-tl" style="left:9.00%;top:58.11%;width:132px">问 AI：这东西<br>到底怎么跑起来的</div><div class="jd-tl" style="left:4.60%;top:88.30%;width:132px">不知道从哪开始<br>没有学习路线</div><div class="jd-tl" style="left:18.00%;top:3.77%;width:132px">翻论文、官方文档<br>和源码</div><div class="jd-tl" style="left:27.00%;top:58.11%;width:132px">搜第三方解释<br>CSDN / 知乎</div><div class="jd-tl" style="left:24.60%;top:88.30%;width:132px">资料口径不一致<br>版本对不上</div><div class="jd-tl" style="left:38.00%;top:3.77%;width:132px">让 AI 讲架构<br>列技术点</div><div class="jd-tl" style="left:47.00%;top:58.11%;width:132px">让 AI 写规划<br>一天实现一个点</div><div class="jd-tl" style="left:44.60%;top:88.30%;width:132px">讲解抽象、编函数名<br>听着懂、写不出</div><div class="jd-tl" style="left:58.00%;top:3.77%;width:132px">自己写代码<br>AI 只答疑</div><div class="jd-tl" style="left:67.00%;top:58.11%;width:132px">跑不通就调<br>看报错</div><div class="jd-tl" style="left:64.60%;top:88.30%;width:132px">排错被 AI 代劳<br>自己 debug 能力没长</div><div class="jd-tl" style="left:78.00%;top:3.77%;width:132px">复述 / 复现<br>确认学会了</div><div class="jd-tl" style="left:87.00%;top:58.11%;width:132px">笔记进 Obsidian<br>做非侵入索引</div><div class="jd-tl" style="left:84.60%;top:88.30%;width:132px">知识仍是单点<br>没有连成网</div></div>
+    <div class="jd-feel"><svg class="jd-chart" viewBox="0 0 1000 252" preserveAspectRatio="none" aria-hidden="true"><polyline class="ln" points="25.0,66.0 88.0,206.0 160.0,120.0 225.0,58.0 288.0,208.0 360.0,108.0 425.0,54.0 488.0,210.0 560.0,118.0 625.0,60.0 688.0,206.0 760.0,112.0 825.0,50.0 888.0,208.0 960.0,132.0"/><path class="ds" d="M 88.0 0 V 202.0"/><path class="ds" d="M 288.0 0 V 202.0"/><path class="ds" d="M 488.0 0 V 202.0"/><path class="ds" d="M 688.0 0 V 202.0"/><path class="ds" d="M 888.0 0 V 202.0"/></svg><span class="jd-dot" style="left:2.50%;top:26.19%"></span><span class="jd-dot red" style="left:8.80%;top:80.16%"></span><span class="jd-dot" style="left:16.00%;top:47.62%"></span><span class="jd-dot" style="left:22.50%;top:23.02%"></span><span class="jd-dot red" style="left:28.80%;top:80.16%"></span><span class="jd-dot" style="left:36.00%;top:42.86%"></span><span class="jd-dot" style="left:42.50%;top:21.43%"></span><span class="jd-dot red" style="left:48.80%;top:80.16%"></span><span class="jd-dot" style="left:56.00%;top:46.83%"></span><span class="jd-dot" style="left:62.50%;top:23.81%"></span><span class="jd-dot red" style="left:68.80%;top:80.16%"></span><span class="jd-dot" style="left:76.00%;top:44.44%"></span><span class="jd-dot" style="left:82.50%;top:19.84%"></span><span class="jd-dot red" style="left:88.80%;top:80.16%"></span><span class="jd-dot" style="left:96.00%;top:52.38%"></span><div class="jd-em c" style="left:0.20%;top:9.52%;width:150px">想学点真东西</div><div class="jd-em pain c" style="left:3.66%;top:83.73%;width:150px">不知道从哪下手</div><div class="jd-em c" style="left:10.86%;top:50.40%;width:150px">AI 给了个起点</div><div class="jd-em c" style="left:17.36%;top:6.35%;width:150px">找到论文和源码</div><div class="jd-em pain c" style="left:23.66%;top:83.73%;width:150px">资料互相矛盾</div><div class="jd-em c" style="left:30.86%;top:45.63%;width:150px">决定信代码、信实测</div><div class="jd-em c" style="left:37.36%;top:4.76%;width:150px">AI 讲得挺清楚</div><div class="jd-em pain c" style="left:43.66%;top:83.73%;width:150px">听懂了，但写不出</div><div class="jd-em c" style="left:50.86%;top:49.60%;width:150px">换个例子再问</div><div class="jd-em c" style="left:57.36%;top:7.14%;width:150px">自己写出第一段</div><div class="jd-em pain c" style="left:63.66%;top:83.73%;width:150px">报错卡住，AI 直接<br>把答案给了</div><div class="jd-em c" style="left:70.86%;top:47.22%;width:150px">照着改了，能跑</div><div class="jd-em c" style="left:77.36%;top:3.17%;width:150px">能复现，有点成就感</div><div class="jd-em pain c" style="left:83.66%;top:83.73%;width:150px">过几天又忘了</div><div class="jd-em c" style="left:89.33%;top:55.16%;width:150px">记了笔记，心里没底</div></div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">企业开发：一半时间写清上下文，一半时间验收 AI 的初版</span></div><div class="subttl">角色与旅程 · 企业工程师 · 开发场景 · 红色 = 该阶段实际痛点，与下方红色低谷一一对应</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area"><div class="jd">
+  <div class="jd-rail"><div>阶段</div><div>开发活动</div><div>思考与疑问</div><div><span>操作与交互</span><span class="sm">（触点）</span></div><div>体验感受</div></div>
+  <div class="jd-body">
+    <div class="jd-stages"><div class="jd-stage">01 需求与设计文档</div><div class="jd-stage">02 预置 API 与上下文</div><div class="jd-stage">03 AI 出初版</div><div class="jd-stage">04 精度 / 性能审查</div><div class="jd-stage">05 验收与文档回写</div></div>
+    <div class="jd-row"><div class="jd-cell">接需求单，写详细设计文档：框架限定死，细节写到大差不差</div><div class="jd-cell">把要用的 API 文档 / 链接放进详设，避免 AI 猜接口</div><div class="jd-cell">Cursor 生成初版；通读代码，用引用功能指出问题</div><div class="jd-cell">精度对 CPU golden、性能对 baseline；清理无效封装</div><div class="jd-cell">过测试标准；把改动反过来写回设计文档</div></div>
+    <div class="jd-row"><div class="jd-cell q">这次验收标准是什么？<br>精度 / 性能阈值写清了吗？</div><div class="jd-cell q">多个 API 怎么配合？<br>文档里没说怎么办？</div><div class="jd-cell q">这一版是"能跑"<br>还是"能交付"？</div><div class="jd-cell q">精度调不通，是在试错<br>还是在左右脑互搏？</div><div class="jd-cell q">committer 看得过来吗？<br>以后我还维护得动吗？</div></div>
+    <div class="jd-doing"><div class="jd-seg"><div></div><div></div><div></div><div></div><div></div></div><svg class="jd-svg" viewBox="0 0 1000 265" preserveAspectRatio="none" aria-hidden="true"><path class="lk" d="M 42.0 62.0 C 87.0 62.0, 87.0 124.0, 132.0 124.0 C 110.0 124.0, 110.0 204.0, 88.0 204.0 C 155.0 204.0, 155.0 62.0, 222.0 62.0 C 267.0 62.0, 267.0 124.0, 312.0 124.0 C 300.0 124.0, 300.0 204.0, 288.0 204.0 C 355.0 204.0, 355.0 62.0, 422.0 62.0 C 467.0 62.0, 467.0 124.0, 512.0 124.0 C 500.0 124.0, 500.0 204.0, 488.0 204.0 C 555.0 204.0, 555.0 62.0, 622.0 62.0 C 667.0 62.0, 667.0 124.0, 712.0 124.0 C 700.0 124.0, 700.0 204.0, 688.0 204.0 C 755.0 204.0, 755.0 62.0, 822.0 62.0 C 867.0 62.0, 867.0 124.0, 912.0 124.0 C 900.0 124.0, 900.0 204.0, 888.0 204.0"/><path class="vd" d="M 88.0 0 V 265"/><path class="vd" d="M 288.0 0 V 265"/><path class="vd" d="M 488.0 0 V 265"/><path class="vd" d="M 688.0 0 V 265"/><path class="vd" d="M 888.0 0 V 265"/></svg><div class="jd-tp" style="left:4.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="jd-tp" style="left:13.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp red" style="left:8.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="jd-tp" style="left:22.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-2 2M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l2-2"/></svg></div><div class="jd-tp" style="left:31.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp red" style="left:28.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="jd-tp" style="left:42.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5H5v15h14v-9M10 13l9-9 2 2-9 9-4 1z"/></svg></div><div class="jd-tp" style="left:51.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="jd-tp red" style="left:48.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tp" style="left:62.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 18l5-6 4 3 6-9"/><path d="M17 6h3v3"/></svg></div><div class="jd-tp" style="left:71.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8m-4-4v4"/></svg></div><div class="jd-tp red" style="left:68.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="jd-tp" style="left:82.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m7 12 3.5 3.5L17 8"/></svg></div><div class="jd-tp" style="left:91.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 19c0-4 3-6 6-6s6 2 6 6M13 15c1-2 3-3 5-3 3 0 5 2 5 6"/></svg></div><div class="jd-tp red" style="left:88.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tl" style="left:0.40%;top:3.77%;width:132px">接需求单<br>拆到可实现的粒度</div><div class="jd-tl" style="left:9.00%;top:58.11%;width:132px">写详细设计文档<br>几百字小作文</div><div class="jd-tl" style="left:4.60%;top:88.30%;width:150px">需求模糊<br>只拿到 10% 完成度的版本</div><div class="jd-tl" style="left:18.00%;top:3.77%;width:132px">把 API 链接<br>贴进详设</div><div class="jd-tl" style="left:27.00%;top:58.11%;width:132px">补版本、约束<br>与测试要求</div><div class="jd-tl" style="left:24.60%;top:88.30%;width:150px">单个 API 有文档<br>API 之间怎么配合没有</div><div class="jd-tl" style="left:38.00%;top:3.77%;width:132px">AI 出初版代码</div><div class="jd-tl" style="left:47.00%;top:58.11%;width:132px">通读代码<br>引用片段反馈</div><div class="jd-tl" style="left:44.60%;top:88.30%;width:132px">精度调不通<br>开始左右脑互搏</div><div class="jd-tl" style="left:58.00%;top:3.77%;width:132px">对 golden 看最大 /<br>平均相对误差</div><div class="jd-tl" style="left:67.00%;top:58.11%;width:132px">采 baseline<br>比性能</div><div class="jd-tl" style="left:64.60%;top:88.30%;width:132px">能跑但性能不达标<br>清封装又花一天</div><div class="jd-tl" style="left:78.00%;top:3.77%;width:132px">过测试标准<br>提 PR</div><div class="jd-tl" style="left:87.00%;top:58.11%;width:132px">committer 检视<br>大工程要拆多个 PR</div><div class="jd-tl" style="left:84.60%;top:88.30%;width:150px">代码可读性差<br>交接只能让 AI 再读一遍</div></div>
+    <div class="jd-feel"><svg class="jd-chart" viewBox="0 0 1000 252" preserveAspectRatio="none" aria-hidden="true"><polyline class="ln" points="25.0,64.0 88.0,206.0 160.0,118.0 225.0,56.0 288.0,208.0 360.0,110.0 425.0,52.0 488.0,210.0 560.0,116.0 625.0,58.0 688.0,206.0 760.0,112.0 825.0,50.0 888.0,208.0 960.0,130.0"/><path class="ds" d="M 88.0 0 V 202.0"/><path class="ds" d="M 288.0 0 V 202.0"/><path class="ds" d="M 488.0 0 V 202.0"/><path class="ds" d="M 688.0 0 V 202.0"/><path class="ds" d="M 888.0 0 V 202.0"/></svg><span class="jd-dot" style="left:2.50%;top:25.40%"></span><span class="jd-dot red" style="left:8.80%;top:80.16%"></span><span class="jd-dot" style="left:16.00%;top:46.83%"></span><span class="jd-dot" style="left:22.50%;top:22.22%"></span><span class="jd-dot red" style="left:28.80%;top:80.16%"></span><span class="jd-dot" style="left:36.00%;top:43.65%"></span><span class="jd-dot" style="left:42.50%;top:20.63%"></span><span class="jd-dot red" style="left:48.80%;top:80.16%"></span><span class="jd-dot" style="left:56.00%;top:46.03%"></span><span class="jd-dot" style="left:62.50%;top:23.02%"></span><span class="jd-dot red" style="left:68.80%;top:80.16%"></span><span class="jd-dot" style="left:76.00%;top:44.44%"></span><span class="jd-dot" style="left:82.50%;top:19.84%"></span><span class="jd-dot red" style="left:88.80%;top:80.16%"></span><span class="jd-dot" style="left:96.00%;top:51.59%"></span><div class="jd-em c" style="left:0.20%;top:8.73%;width:150px">需求清楚，能开工</div><div class="jd-em pain c" style="left:3.66%;top:83.73%;width:150px">文档写不细，<br>AI 就只给 10%</div><div class="jd-em c" style="left:10.86%;top:49.60%;width:150px">把框架定死，有底了</div><div class="jd-em c" style="left:17.36%;top:5.56%;width:150px">API 链接备齐</div><div class="jd-em pain c" style="left:23.66%;top:83.73%;width:150px">组合用法没人写过</div><div class="jd-em c" style="left:30.86%;top:46.43%;width:150px">只能靠试</div><div class="jd-em c" style="left:37.36%;top:3.97%;width:150px">一天出初版，挺快</div><div class="jd-em pain c" style="left:43.66%;top:83.73%;width:150px">精度不通，开始互搏</div><div class="jd-em c" style="left:50.86%;top:48.81%;width:150px">看 thought，喊停</div><div class="jd-em c" style="left:57.36%;top:6.35%;width:150px">精度过了</div><div class="jd-em pain c" style="left:63.66%;top:83.73%;width:150px">性能不达标 + 代码冗余</div><div class="jd-em c" style="left:70.86%;top:47.22%;width:150px">清理完结构，踏实</div><div class="jd-em c" style="left:77.36%;top:3.17%;width:150px">过测试，可以提</div><div class="jd-em pain c" style="left:83.66%;top:83.73%;width:150px">检视不动，只能拆 PR</div><div class="jd-em c" style="left:89.33%;top:54.37%;width:150px">回写文档，沉淀下来</div></div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">企业学习：知识从任务里来，但黄区把 AI 挡在门外</span></div><div class="subttl">角色与旅程 · 企业工程师 · 学习场景 · 红色 = 该阶段实际痛点，与下方红色低谷一一对应</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area"><div class="jd learn">
+  <div class="jd-rail"><div>阶段</div><div>开发活动</div><div>思考与疑问</div><div><span>操作与交互</span><span class="sm">（触点）</span></div><div>体验感受</div></div>
+  <div class="jd-body">
+    <div class="jd-stages"><div class="jd-stage">01 任务卡住</div><div class="jd-stage">02 找内部资料与人</div><div class="jd-stage">03 用 AI 补与试</div><div class="jd-stage">04 在任务里验证</div><div class="jd-stage">05 写成 wiki / Skill</div></div>
+    <div class="jd-row"><div class="jd-cell">需求 / 问题单里遇到新场景，被任务逼着学</div><div class="jd-cell">先看内部代码、wiki、设计文档，再问组内专家</div><div class="jd-cell">把资料丢给 AI 让它读 / 解释，或直接问 AI</div><div class="jd-cell">在真实任务里改一版、跑一遍，看结果对不对</div><div class="jd-cell">写进个人 wiki，或做成团队 Skill</div></div>
+    <div class="jd-row"><div class="jd-cell q">这个知识是"要会用"<br>还是"要知道为什么"？</div><div class="jd-cell q">内部资料 AI 拿不到，<br>怎么补？</div><div class="jd-cell q">它答的是通用经验，<br>还是我们这套系统？</div><div class="jd-cell q">跑通了，就算学会了吗？</div><div class="jd-cell q">业务一迭代，<br>这套经验还成立吗？</div></div>
+    <div class="jd-doing"><div class="jd-seg"><div></div><div></div><div></div><div></div><div></div></div><svg class="jd-svg" viewBox="0 0 1000 265" preserveAspectRatio="none" aria-hidden="true"><path class="lk" d="M 42.0 62.0 C 87.0 62.0, 87.0 124.0, 132.0 124.0 C 110.0 124.0, 110.0 204.0, 88.0 204.0 C 155.0 204.0, 155.0 62.0, 222.0 62.0 C 267.0 62.0, 267.0 124.0, 312.0 124.0 C 300.0 124.0, 300.0 204.0, 288.0 204.0 C 355.0 204.0, 355.0 62.0, 422.0 62.0 C 467.0 62.0, 467.0 124.0, 512.0 124.0 C 500.0 124.0, 500.0 204.0, 488.0 204.0 C 555.0 204.0, 555.0 62.0, 622.0 62.0 C 667.0 62.0, 667.0 124.0, 712.0 124.0 C 700.0 124.0, 700.0 204.0, 688.0 204.0 C 755.0 204.0, 755.0 62.0, 822.0 62.0 C 867.0 62.0, 867.0 124.0, 912.0 124.0 C 900.0 124.0, 900.0 204.0, 888.0 204.0"/><path class="vd" d="M 88.0 0 V 265"/><path class="vd" d="M 288.0 0 V 265"/><path class="vd" d="M 488.0 0 V 265"/><path class="vd" d="M 688.0 0 V 265"/><path class="vd" d="M 888.0 0 V 265"/></svg><div class="jd-tp" style="left:4.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="jd-tp" style="left:13.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="jd-tp red" style="left:8.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="jd-tp" style="left:22.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp" style="left:31.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 19c0-4 3-6 6-6s6 2 6 6M13 15c1-2 3-3 5-3 3 0 5 2 5 6"/></svg></div><div class="jd-tp red" style="left:28.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div class="jd-tp" style="left:42.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17h6M10 20h4M8 14a7 7 0 1 1 8 0l-1 2H9z"/></svg></div><div class="jd-tp" style="left:51.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="jd-tp red" style="left:48.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp" style="left:62.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 21h8m-4-4v4"/></svg></div><div class="jd-tp" style="left:71.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="jd-tp red" style="left:68.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div><div class="jd-tp" style="left:82.20%;top:23.40%"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div><div class="jd-tp" style="left:91.20%;top:46.79%"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 19c0-4 3-6 6-6s6 2 6 6M13 15c1-2 3-3 5-3 3 0 5 2 5 6"/></svg></div><div class="jd-tp red" style="left:88.80%;top:76.98%"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></div><div class="jd-tl" style="left:0.40%;top:3.77%;width:132px">新需求 / 新错误<br>旧经验不够用</div><div class="jd-tl" style="left:9.00%;top:58.11%;width:132px">先问 AI<br>快速问个概念</div><div class="jd-tl" style="left:4.60%;top:88.30%;width:132px">任务压着<br>没时间系统学</div><div class="jd-tl" style="left:18.00%;top:3.77%;width:132px">翻内部代码<br>wiki / 设计文档</div><div class="jd-tl" style="left:27.00%;top:58.11%;width:132px">问组内专家<br>要一条方向</div><div class="jd-tl" style="left:24.60%;top:88.30%;width:132px">黄区资料 AI 拿不到<br>只能靠人</div><div class="jd-tl" style="left:38.00%;top:3.77%;width:132px">把资料交给 AI<br>帮读、帮解释</div><div class="jd-tl" style="left:47.00%;top:58.11%;width:132px">追问原理<br>要一份总结</div><div class="jd-tl" style="left:44.60%;top:88.30%;width:132px">AI 用旧经验答<br>照它改必错</div><div class="jd-tl" style="left:58.00%;top:3.77%;width:132px">在任务里改一版<br>跑一遍</div><div class="jd-tl" style="left:67.00%;top:58.11%;width:132px">看结果 / 日志<br>对不上再调</div><div class="jd-tl" style="left:64.60%;top:88.30%;width:150px">试错被跳过<br>只记得"大概怎么回事"</div><div class="jd-tl" style="left:78.00%;top:3.77%;width:132px">写成个人 wiki<br>或团队 Skill</div><div class="jd-tl" style="left:87.00%;top:58.11%;width:132px">讲给同事<br>检验自己懂没懂</div><div class="jd-tl" style="left:84.60%;top:88.30%;width:132px">业务一迭代<br>Skill 就过期</div></div>
+    <div class="jd-feel"><svg class="jd-chart" viewBox="0 0 1000 252" preserveAspectRatio="none" aria-hidden="true"><polyline class="ln" points="25.0,68.0 88.0,206.0 160.0,122.0 225.0,60.0 288.0,208.0 360.0,112.0 425.0,54.0 488.0,210.0 560.0,116.0 625.0,56.0 688.0,206.0 760.0,110.0 825.0,50.0 888.0,208.0 960.0,132.0"/><path class="ds" d="M 88.0 0 V 202.0"/><path class="ds" d="M 288.0 0 V 202.0"/><path class="ds" d="M 488.0 0 V 202.0"/><path class="ds" d="M 688.0 0 V 202.0"/><path class="ds" d="M 888.0 0 V 202.0"/></svg><span class="jd-dot" style="left:2.50%;top:26.98%"></span><span class="jd-dot red" style="left:8.80%;top:80.16%"></span><span class="jd-dot" style="left:16.00%;top:48.41%"></span><span class="jd-dot" style="left:22.50%;top:23.81%"></span><span class="jd-dot red" style="left:28.80%;top:80.16%"></span><span class="jd-dot" style="left:36.00%;top:44.44%"></span><span class="jd-dot" style="left:42.50%;top:21.43%"></span><span class="jd-dot red" style="left:48.80%;top:80.16%"></span><span class="jd-dot" style="left:56.00%;top:46.03%"></span><span class="jd-dot" style="left:62.50%;top:22.22%"></span><span class="jd-dot red" style="left:68.80%;top:80.16%"></span><span class="jd-dot" style="left:76.00%;top:43.65%"></span><span class="jd-dot" style="left:82.50%;top:19.84%"></span><span class="jd-dot red" style="left:88.80%;top:80.16%"></span><span class="jd-dot" style="left:96.00%;top:52.38%"></span><div class="jd-em c" style="left:0.20%;top:10.32%;width:150px">新任务，有点兴奋</div><div class="jd-em pain c" style="left:3.66%;top:83.73%;width:150px">时间紧，只能现学现卖</div><div class="jd-em c" style="left:10.86%;top:51.19%;width:150px">先问 AI 顶一下</div><div class="jd-em c" style="left:17.36%;top:7.14%;width:150px">找到内部代码</div><div class="jd-em pain c" style="left:23.66%;top:83.73%;width:150px">关键资料 AI 看不到</div><div class="jd-em c" style="left:30.86%;top:47.22%;width:150px">找人问到了方向</div><div class="jd-em c" style="left:37.36%;top:4.76%;width:150px">AI 讲得比文档清楚</div><div class="jd-em pain c" style="left:43.66%;top:83.73%;width:150px">它答的是通用经验</div><div class="jd-em c" style="left:50.86%;top:48.81%;width:150px">拿真实代码去对</div><div class="jd-em c" style="left:57.36%;top:5.56%;width:150px">改完跑通了</div><div class="jd-em pain c" style="left:63.66%;top:83.73%;width:150px">只是能跑，原理说不清</div><div class="jd-em c" style="left:70.86%;top:46.43%;width:150px">再问一遍为什么</div><div class="jd-em c" style="left:77.36%;top:3.17%;width:150px">沉淀成 wiki / Skill</div><div class="jd-em pain c" style="left:83.66%;top:83.73%;width:150px">下次迭代又要重来</div><div class="jd-em c" style="left:89.33%;top:55.16%;width:150px">至少这次记住了</div></div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">四段旅程走同一条五阶段骨架，痛点落在不同环节</span></div><div class="subttl">角色与旅程 · 旅程对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area"><div class="trk-wrap"><div class="trk-head"><div></div><div class="trk-hs"><span>01 定题 / 卡点</span><span>02 上下文 / 环境</span><span>03 方案 / AI 执行</span><span>04 验证 / 纠偏</span><span>05 交付 / 沉淀</span></div></div><div class="trk"><div class="trk-lab">学生 · 开发<small>S6</small></div><div class="trk-line"><span class="trk-pt" style="left:10%"></span><span class="trk-lb up" style="left:10%">目标宽泛、没有验收标准</span><span class="trk-pt" style="left:30%"></span><span class="trk-lb dn" style="left:30%">资源申请不到、环境在远程</span><span class="trk-pt" style="left:50%"></span><span class="trk-lb up" style="left:50%">过度设计、方向跑偏</span><span class="trk-pt" style="left:70%"></span><span class="trk-lb dn" style="left:70%">缺错误样例、中文线索要自己搜</span><span class="trk-pt" style="left:90%"></span><span class="trk-lb up" style="left:90%">经验散在对话里</span></div></div><div class="trk"><div class="trk-lab">学生 · 学习<small>S7</small></div><div class="trk-line"><span class="trk-pt" style="left:10%"></span><span class="trk-lb up" style="left:10%">不知道从哪开始、没有路线</span><span class="trk-pt" style="left:30%"></span><span class="trk-lb dn" style="left:30%">资料口径不一、版本对不上</span><span class="trk-pt" style="left:50%"></span><span class="trk-lb up" style="left:50%">听懂了但写不出</span><span class="trk-pt" style="left:70%"></span><span class="trk-lb dn" style="left:70%">排错被 AI 代劳</span><span class="trk-pt" style="left:90%"></span><span class="trk-lb up" style="left:90%">知识仍是单点</span></div></div><div class="trk"><div class="trk-lab e">企业 · 开发<small>S8</small></div><div class="trk-line"><span class="trk-pt" style="left:10%"></span><span class="trk-lb up" style="left:10%">需求模糊，只拿到 10% 版本</span><span class="trk-pt" style="left:30%"></span><span class="trk-lb dn" style="left:30%">API 组合用法没有文档</span><span class="trk-pt" style="left:50%"></span><span class="trk-lb up" style="left:50%">精度调不通、左右脑互搏</span><span class="trk-pt" style="left:70%"></span><span class="trk-lb dn" style="left:70%">性能不达标 + 代码冗余</span><span class="trk-pt" style="left:90%"></span><span class="trk-lb up" style="left:90%">可读性差、交接要 AI 再读</span></div></div><div class="trk"><div class="trk-lab e">企业 · 学习<small>S9</small></div><div class="trk-line"><span class="trk-pt" style="left:10%"></span><span class="trk-lb up" style="left:10%">任务压着，没时间系统学</span><span class="trk-pt" style="left:30%"></span><span class="trk-lb dn" style="left:30%">黄区资料 AI 拿不到</span><span class="trk-pt" style="left:50%"></span><span class="trk-lb up" style="left:50%">AI 用旧经验答，照改必错</span><span class="trk-pt" style="left:70%"></span><span class="trk-lb dn" style="left:70%">试错被跳过，原理说不清</span><span class="trk-pt" style="left:90%"></span><span class="trk-lb up" style="left:90%">业务一迭代 Skill 就过期</span></div></div></div><div class="cx-concl" style="margin-top:1.6vh"><span class="ck">共同骨架</span><span class="cv">四段旅程都走"定目标 → 备上下文 → AI 执行 → 验证纠偏 → 交付沉淀"，但卡点性质不同：<b>学生卡在条件</b>（算力、环境、样例），<b>企业卡在标准与交接</b>（验收阈值、API 组合、可读性）。三个结构性缺口贯穿全程：上下文装配、过程可见、证据链。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">真正的交接发生在 6 个时刻，其中 3 个决定任务走向</span></div><div class="subttl">人机协作 · 分工与交接（以企业算子开发为典型）</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="seq">
+  <div class="seq-h"><div style="background:none;box-shadow:none"></div><div class="p1">开发者</div><div class="p2">AI Agent</div><div class="p3">资料与文档</div><div class="p4">运行环境</div></div>
+  <div class="seq-body"><div class="seq-lines"><i></i><i></i><i></i><i></i><i></i></div><div class="seq-ph"><div class="seq-no"><b>01</b><span>提出目标</span><div class="seq-note">≈15% · 1–2 天</div></div><div class="seq-arrows"><div class="ar key" style="--a:1;--b:3"><div class="bar"></div><div class="lb">给目标 + 设计文档：框架限定死，细节写到大差不差</div></div></div></div><div class="seq-ph"><div class="seq-no"><b>02</b><span>备上下文</span><div class="seq-note">人工整理</div></div><div class="seq-arrows"><div class="ar " style="--a:1;--b:4"><div class="bar"></div><div class="lb">查 API 文档、官方优化思路</div></div><div class="ar key" style="--a:1;--b:3"><div class="bar"></div><div class="lb">把链接与示例贴进详设，不让它猜接口</div></div></div></div><div class="seq-ph"><div class="seq-no"><b>03</b><span>AI 执行</span><div class="seq-note">≈10% · 约 1 天出初版</div></div><div class="seq-arrows"><div class="ar mut" style="--a:2;--b:5"><div class="bar"></div><div class="lb">读仓库、跑命令、改文件</div></div><div class="ar " style="--a:2;--b:2"><div class="bar"></div><div class="lb">返回初版 + 改动说明</div></div></div></div><div class="seq-ph"><div class="seq-no"><b>04</b><span>人工审查</span><div class="seq-note">≈70% · 与执行交替</div></div><div class="seq-arrows"><div class="ar key" style="--a:1;--b:3"><div class="bar"></div><div class="lb">引用代码段，指出具体问题</div></div><div class="ar " style="--a:2;--b:2"><div class="bar"></div><div class="lb">看 thought，判断该不该喊停</div></div></div></div><div class="seq-ph"><div class="seq-no"><b>05</b><span>运行验证</span><div class="seq-note">按需求采集</div></div><div class="seq-arrows"><div class="ar mut" style="--a:1;--b:5"><div class="bar"></div><div class="lb">跑测试 / golden / baseline</div></div><div class="ar mut" style="--a:4;--b:2"><div class="bar"></div><div class="lb">回指标与日志</div></div></div></div><div class="seq-ph"><div class="seq-no"><b>06</b><span>回写沉淀</span><div class="seq-note">随任务结束</div></div><div class="seq-arrows"><div class="ar " style="--a:1;--b:4"><div class="bar"></div><div class="lb">反过来更新设计文档，作为下次的上下文</div></div></div></div></div>
+</div>
+<div style="display:flex;gap:1.2vw;margin-top:1.6vh;align-items:center">
+  <div class="chip warn"><i></i>三个决定走向的交接</div>
+  <div style="font-size:var(--fs-sm);color:var(--ink-2);line-height:1.45;flex:1">给设计文档 → 贴 API 链接 → 引用代码段指出问题。三者都在"人把隐性的判断写成 AI 能用的形式"，而不是"人检查 AI 的产出"。</div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">人不是按检查点介入，而是被 6 类信号叫停</span></div><div class="subttl">人机协作 · 交接触发</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="sig">
+  <div class="sig-grid"><div class="sig-i"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="m9 9 6 6M17 3v6m-3-3h6M3 17h8m-4-4v8"/></svg></div><div class="tx"><b>形态信号</b><span>函数变短、封装变多、节点做得复杂</span><span style="margin-top:.2em"><em>梁淼城："出现很多一两行的函数的时候，我就知道肯定是（过度设计）"</em></span></div></div><div class="sig-i"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 17h6M10 20h4M8 14a7 7 0 1 1 8 0l-1 2H9z"/></svg></div><div class="tx"><b>思考信号</b><span>thought 里全是无效尝试</span><span style="margin-top:.2em"><em>王伟："点开他的 thought……发现那些尝试完全都不对，就让他终止"</em></span></div></div><div class="sig-i"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 18l5-6 4 3 6-9"/><path d="M17 6h3v3"/></svg></div><div class="tx"><b>指标信号</b><span>精度调不通、性能不达标</span><span style="margin-top:.2em"><em>王伟："精度都调不通，然后他就开始在那儿左右脑互搏"</em></span></div></div><div class="sig-i"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div><div class="tx"><b>语义信号</b><span>输出方向不像业务要的</span><span style="margin-top:.2em"><em>彭椒："看它的输出就感觉业务方向不对，那我会去改提示词"</em></span></div></div><div class="sig-i"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div class="tx"><b>环境信号</b><span>无权限、网络、版本不对</span><span style="margin-top:.2em"><em>王鹤锦："只有完全没有权限的时候才会卡住"；梁淼城：CANN 版本未升级</em></span></div></div><div class="sig-i"><div class="ic"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L4 20l1.3-4A8 8 0 1 1 20 12Z"/></svg></div><div class="tx"><b>意图信号</b><span>模块接错、理解偏了</span><span style="margin-top:.2em"><em>王鹤锦："我说把这个模块加上去，它就把这个模块串联进去了"</em></span></div></div></div>
+  <div class="sig-mid"><svg viewBox="0 0 24 24"><path d="M4 6h9a4 4 0 0 1 0 8H8m0 0 3-3m-3 3 3 3"/><path d="M4 18h4"/></svg><span>判断</span></div>
+  <div class="sig-act">
+    <div class="act"><b>补上下文</b><span>给日志、版本、示例、测试结果——最常见的接手动作</span></div>
+    <div class="act"><b>重写与回滚</b><span>删掉 slop、回到上一版、重写 prompt；"航母掉头很难"</span></div>
+    <div class="act"><b>换模型 / 人工接手</b><span>换更强模型再试；模型罢工则转人工排查</span></div>
+  </div>
+</div>
+<div style="display:flex;gap:1vw;margin-top:1.8vh">
+  <div class="cx-concl" style="flex:1"><span class="ck">判断门槛</span><span class="cv">"你要自己有一些知识，才知道什么时候该介入。"（王伟）——同一份代码，新手看是"能跑"，老手看是"过度设计"。</span></div>
+  <div class="cx-concl" style="flex:1"><span class="ck">经验缺口</span><span class="cv">"我自己经验不足的情况下，过度设计也难判断。"（梁淼城）——信号可观察，但判据不可移植。</span></div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">验证只认"离执行最近"的证据，来源需求随严谨度变化</span></div><div class="subttl">人机协作 · 验证与信任</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="lad">
+  <div class="lad-l">
+    <div class="step l1"><div class="no">L1</div><div class="bd"><b>执行证据：运行结果、测试通过、benchmark、golden</b>
+      <p>6 / 6 首选；"我们都是通过现有工具去做验证，这个地方是没法作假的"（王伟）</p></div></div>
+    <div class="step l2"><div class="no">L2</div><div class="bd"><b>代码证据：diff、公式实现、接口与模块组织</b>
+      <p>视责任与规模：王伟通读并清理；郑雨豪只核公式；"几千行、可读性差，不一定能看过来"（郑雨豪）</p></div></div>
+    <div class="step l3"><div class="no">L3</div><div class="bd"><b>来源证据：链接、文档、模型解释</b>
+      <p>分化最大：郑雨豪"没有中间数据就认为它是编造的"；王伟"没那闲工夫"；徐立桂"越干净越好，按需点开"</p></div></div>
+  </div>
+  <div class="scatter"><svg viewBox="0 0 520 330" preserveAspectRatio="xMidYMid meet">
+  <line x1="52" y1="286" x2="500" y2="286" stroke="#AEB6C2" stroke-width="1.2"/>
+  <line x1="52" y1="286" x2="52" y2="24" stroke="#AEB6C2" stroke-width="1.2"/>
+  <line x1="52" y1="160" x2="500" y2="160" stroke="#D6DBE3" stroke-width="1" stroke-dasharray="3 4"/>
+  <line x1="276" y1="24" x2="276" y2="286" stroke="#D6DBE3" stroke-width="1" stroke-dasharray="3 4"/>
+  <text x="58" y="306" font-size="11" fill="#7C8695">工程 / 可运行即通过</text>
+  <text x="500" y="306" font-size="11" fill="#7C8695" text-anchor="end">研究 / 需要可引用</text>
+  <text x="60" y="20" font-size="11" fill="#7C8695">来源需求 高</text>
+  <text x="60" y="278" font-size="11" fill="#7C8695">低</text>
+  <g><circle cx="115" cy="239" r="7" fill="#0E7C86" stroke="#fff" stroke-width="2"/><text x="126" y="243" font-size="11" fill="#3A424E" font-family="HarmonyOS Sans SC">王伟</text></g><g><circle cx="146" cy="258" r="7" fill="#0E7C86" stroke="#fff" stroke-width="2"/><text x="157" y="262" font-size="11" fill="#3A424E" font-family="HarmonyOS Sans SC">彭椒</text></g><g><circle cx="231" cy="200" r="7" fill="#0E7C86" stroke="#fff" stroke-width="2"/><text x="242" y="204" font-size="11" fill="#3A424E" font-family="HarmonyOS Sans SC">徐立桂</text></g><g><circle cx="285" cy="150" r="7" fill="#0E7C86" stroke="#fff" stroke-width="2"/><text x="296" y="154" font-size="11" fill="#3A424E" font-family="HarmonyOS Sans SC">王鹤锦</text></g><g><circle cx="334" cy="92" r="7" fill="#0E7C86" stroke="#fff" stroke-width="2"/><text x="345" y="96" font-size="11" fill="#3A424E" font-family="HarmonyOS Sans SC">梁淼城（看任务）</text></g><g><circle cx="204" cy="61" r="7" fill="#B3403A" stroke="#fff" stroke-width="2"/><text x="215" y="65" font-size="11" fill="#3A424E" font-family="HarmonyOS Sans SC">郑雨豪</text></g>
+</svg>
+    <div style="font-size:10.5px;color:var(--ink-3);line-height:1.4;margin-top:.6vh">坐标为依据访谈内容的定性定位，不是量表测量。</div>
+  </div>
+</div>
+<div class="cx-concl" style="margin-top:1.4vh"><span class="ck">矛盾</span><span class="cv">徐立桂说"最权威的是开发包里的头文件和动态库"，但"一般情况下我不会看代码，他给我讲一下模块组织"——<b>声称的信任依据 ≠ 实际的审查行为</b>。只做"显示来源"无法解决这种落差。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">失败后，人退回到"调度者"：5 人靠换模型与重写，1 人靠自己拆解</span></div><div class="subttl">人机协作 · 失败恢复</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div style="font-size:var(--fs-sm);color:var(--ink-2);margin-bottom:.4vh">提到该策略的受访者人数（n = 6，可多选）· 按升级顺序排列</div>
+<div class="spec"><div class="spec-i"><div class="n">4</div><div class="bx" style="height:94px"></div><div class="lb">重试</div></div><div class="spec-i"><div class="n">4</div><div class="bx" style="height:94px"></div><div class="lb">补上下文</div></div><div class="spec-i"><div class="n">3</div><div class="bx" style="height:77px"></div><div class="lb">重写 prompt</div></div><div class="spec-i"><div class="n">5</div><div class="bx" style="height:111px"></div><div class="lb">换模型</div></div><div class="spec-i"><div class="n">3</div><div class="bx" style="height:77px"></div><div class="lb">回滚上一版</div></div><div class="spec-i"><div class="n">2</div><div class="bx" style="height:60px"></div><div class="lb">拆解任务</div></div><div class="spec-i"><div class="n">2</div><div class="bx" style="height:60px"></div><div class="lb">换工具</div></div><div class="spec-i"><div class="n">5</div><div class="bx" style="height:111px"></div><div class="lb">人工接手 / 放弃</div></div></div>
+<div class="ind">
+  <div class="ind-c yes"><b>唯一能独立继续的人：徐立桂</b>
+    <p>"一开始我想一键生成一个 agent 框架，AI 显然搞不下去，那就只能一步步拆解任务……拆得越细，AI 执行越符合预期，因为他不用猜了。"——条件是有拆解能力 + 版本管理 + 权威来源排序。</p></div>
+  <div class="ind-c no"><b>其余 5 人把恢复交回给 AI</b>
+    <p>梁淼城："AI 做错的时候，我肯定也做不对。"郑雨豪："不太能自己继续，大不了再买一个新账号，自费上班。"王鹤锦："一般不自己上手，就是找问题、纠正他。"</p></div>
+</div>
+<div class="cx-concl" style="margin-top:1.6vh"><span class="ck">推论</span><span class="cv">恢复策略越集中在"换一个更强的模型"，人越难积累独立恢复能力；<b>可恢复性应作为产品能力设计，而不是留给用户的经验</b>。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">偏好、行为与解释要分开看：三处"说的"和"做的"并不一致</span></div><div class="subttl">习惯与偏好 · 三层分离</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="active">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="lay">
+  <div class="lay-r"><div class="lay-h"><b>明确表达</b><span>PREFERENCE · 原话</span></div>
+    <div class="lay-items">
+      <div class="lay-i q"><b>要可视化图解</b>（王伟、梁淼城、郑雨豪、彭椒）</div>
+      <div class="lay-i q"><b>来源给链接、别展开</b>（郑雨豪要链接，徐立桂要"越干净越好"）</div>
+      <div class="lay-i q"><b>流程要能裁剪</b>（郑雨豪：强制多子进程跑同数据集，跑一次就够）</div>
+      <div class="lay-i q"><b>知识做成 Skill</b>（梁淼城、徐立桂）</div>
+    </div></div>
+  <div class="lay-r"><div class="lay-h"><b>实际做法</b><span>BEHAVIOR · 回忆</span></div>
+    <div class="lay-items">
+      <div class="lay-i x"><b>每天用、权限基本全开</b>（6/6；彭椒、王伟、徐立桂全开）</div>
+      <div class="lay-i x"><b>多窗口 / 多会话并行</b>（王伟 2–3 个、王鹤锦、梁淼城、郑雨豪）</div>
+      <div class="lay-i x"><b>翻聊天记录找信息</b>（王伟、梁淼城、郑雨豪、彭椒，3 人明说慢）</div>
+      <div class="lay-i x"><b>手动另存</b>（彭椒存 IDE、徐立桂存 Obsidian、王伟回写文档）</div>
+      <div class="lay-i x"><b>弱模型对话、强模型写码</b>（郑雨豪、王伟、梁淼城）</div>
+    </div></div>
+  <div class="lay-r"><div class="lay-h"><b>研究者解释</b><span>INFERENCE · 推断</span></div>
+    <div class="lay-items">
+      <div class="lay-i"><b>全权限不是信任，是减少打断成本</b>——"不然要一直点 yes"（彭椒）</div>
+      <div class="lay-i"><b>多任务是默认形态，缺的是任务级视图</b>——"界面拥挤，找不到我在哪个任务"（彭椒）</div>
+      <div class="lay-i"><b>沉淀发生在文件系统，不在产品里</b>——md / 设计文档 / Skill</div>
+    </div></div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">同样的行为，在不同情境下含义不同</span></div><div class="subttl">习惯与偏好 · 差异与情境</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="active">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="frk-head"><div></div><div class="frk-h a">学生的表现</div><div class="frk-h b">企业工程师的表现</div></div>
+<div class="frk"><div class="frk-cond"><b>成本敏感</b><span>学生自费额度、企业统一采购但国外模型难报销</span></div><div class="frk-out a">用弱模型做对话、强模型写码</div><div class="frk-out b">额度决定能不能开多 Agent、要不要继续迭代</div></div><div class="frk"><div class="frk-cond"><b>环境可控</b><span>本地 IDE 逐轮交互 vs 远程服务器 / 黄区</span></div><div class="frk-out a">每轮跑完就看 diff</div><div class="frk-out b">定时轮询结果，中间过程看不到</div></div><div class="frk"><div class="frk-cond"><b>交付责任</b><span>自己的玩具 / 论文结果 vs 责任田 / committer 检视</span></div><div class="frk-out a">只看核心逻辑与接口</div><div class="frk-out b">通读、清理封装、拆成多个 PR</div></div><div class="frk"><div class="frk-cond"><b>任务严谨度</b><span>工程任务可运行即通过 vs 研究结论需要可引用</span></div><div class="frk-out a">来源基本不看</div><div class="frk-out b">没有来源就当成编造</div></div>
+<div class="cx-concl" style="margin-top:1.8vh"><span class="ck">读法</span><span class="cv">同一个行为在不同情境下含义不同：<b>"权限全开"在学生会带来探索自由，在企业会带来返工风险</b>；<b>"不看来源"在工程里是效率，在研究里是失职</b>。设计不能只按"用户偏好"排序，要先判断他处在哪种情境。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">知识从"卡点"进来，靠"离执行最近"的证据站住，最后落回文件</span></div><div class="subttl">知识与学习 · 获取、可信与沉淀</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="active">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="kl">
+  <div class="kl-left">
+    <svg viewBox="0 0 732 250" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <defs><marker id="fa" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8" fill="none" stroke="#8D97A5" stroke-width="1.4"/></marker>
+    <marker id="fb" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8" fill="none" stroke="#C4693F" stroke-width="1.4"/></marker>
+  </defs>
+  <line x1="115" y1="108" x2="162" y2="108" stroke="#8D97A5" stroke-width="1.6" marker-end="url(#fa)"/><line x1="265" y1="108" x2="312" y2="108" stroke="#8D97A5" stroke-width="1.6" marker-end="url(#fa)"/><line x1="415" y1="108" x2="462" y2="108" stroke="#8D97A5" stroke-width="1.6" marker-end="url(#fa)"/><line x1="565" y1="108" x2="612" y2="108" stroke="#8D97A5" stroke-width="1.6" marker-end="url(#fa)"/>
+  <g><circle cx="66" cy="108" r="46" fill="#1F4B4A"/><text x="66" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">触发</text><text x="66" y="122" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.78)">任务卡住 / 起意</text></g><g><circle cx="216" cy="108" r="46" fill="#3E4A63"/><text x="216" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">检索</text><text x="216" y="122" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.78)">论文 / 文档 / 人</text></g><g><circle cx="366" cy="108" r="46" fill="#7A6A4F"/><text x="366" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">可信判断</text><text x="366" y="122" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.78)">离执行多近</text></g><g><circle cx="516" cy="108" r="46" fill="#2E6E6B"/><text x="516" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">内化</text><text x="516" y="122" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.78)">自己写 / 复现</text></g><g><circle cx="666" cy="108" r="46" fill="#1F4B4A"/><text x="666" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">沉淀</text><text x="666" y="122" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.78)">md / 文档 / Skill</text></g>
+  <path d="M666 154 L666 206 Q666 222 648 222 L84 222 Q66 222 66 206 L66 154"
+        fill="none" stroke="#C4693F" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#fb)"/>
+  <text x="366" y="240" text-anchor="middle" font-size="10" fill="#B3403A">下一次任务从这里重新进来</text>
+</svg>
+    <div class="kl-note">知识不是"学完存起来"，而是在任务里被反复调用：卡点触发、检索、判断可信、自己写一遍、再落回文件。</div>
+  </div>
+  <div class="kl-right">
+    <div class="kl-cap">可信度不按"文档等级"排，而按<b>离执行有多近</b>排——六个人各自独立给出的同一条经验。</div>
+    <div class="auth">
+      <div class="auth-i a1"><div class="k">1</div><div class="bx">代码 / 头文件 / 运行输出<small>"那个毕竟是代码，所以那个是最真实的"（徐立桂）</small></div></div>
+      <div class="auth-i a2"><div class="k">2</div><div class="bx">官方文档与 API 说明<small>王伟：把 API 链接放进详设，别让它猜</small></div></div>
+      <div class="auth-i a3"><div class="k">3</div><div class="bx">第三方加工内容（CSDN / 知乎）<small>梁淼城：官方 search 偏国外，最后在 CSDN 找到</small></div></div>
+      <div class="auth-i a4"><div class="k">4</div><div class="bx">AI 生成的解释与来源<small>郑雨豪：以前给的来源"都是他自己编的"</small></div></div>
+    </div>
+    <div class="kl-chips">
+      <div class="chip warn"><i></i>三种典型失真：编函数名 / CUDA 思维写昇腾 / 旧经验套新业务</div>
+      <div class="chip mute"><i></i>获取不到 ≠ 不可信：黄区、沐曦生态、昇腾版本都会让"可信源"直接消失</div>
+    </div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">五条有证据的发现</span></div><div class="subttl">发现与启示 · 结论与证据</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area"><div class="led"><div class="led-r"><div class="led-n">1</div><div class="led-b"><h4>编码被压缩，上下文装配与验收成为主战场<span class="stg l2">跨案例模式</span></h4><p>王伟：人工审查约 70%、写文档 15%；彭椒：时间主要花在"提出目标"；王鹤锦："最耗费时间就提目标"；郑雨豪：先让 AI 出方案文档再开发。</p><p style="color:var(--ink-3)"><b>边界：</b>自报时间占比，非观测；15+10+70=95，余量未说明。</p></div></div><div class="led-r"><div class="led-n">2</div><div class="led-b"><h4>交接由可观察的异常信号触发，判据却不可移植<span class="stg l2">跨案例模式</span></h4><p>梁淼城："出现很多一两行的函数，我就知道肯定是（过度设计）"；王伟：看 thought 发现"尝试完全都不对"；徐立桂："节点搞得非常复杂，不停做哈希"。</p><p style="color:var(--ink-3)"><b>边界：</b>同一信号在新手眼里不构成信号——判据来自经验，不来自工具。</p></div></div><div class="led-r"><div class="led-n">3</div><div class="led-b"><h4>验证只认执行证据；来源需求随严谨度变化，并与审查行为脱节<span class="stg l2">跨案例模式</span></h4><p>6/6 以运行结果/测试/golden/benchmark 为准；郑雨豪要来源、王伟不看来源；徐立桂以头文件为最权威，却"一般不看代码"。</p><p style="color:var(--ink-3)"><b>边界：</b>"不看来源"不等于不需要可追溯，只说明当前的来源展示没有进入他的决策链。</p></div></div><div class="led-r"><div class="led-n">4</div><div class="led-b"><h4>失败恢复由 AI 侧完成，人的独立性以"拆解能力"为条件<span class="stg l2">跨案例模式</span></h4><p>梁淼城/郑雨豪/王鹤锦/王伟均以换模型、重写、回滚为主；徐立桂靠拆任务 + 版本管理独立推进。</p><p style="color:var(--ink-3)"><b>边界：</b>样本中仅 1 例，不能推断比例；但揭示了独立恢复的前置能力。</p></div></div><div class="led-r"><div class="led-n">5</div><div class="led-b"><h4>AI 压缩的是试错与排错，不压缩编码；学习损失集中在参数、归因与性能直觉<span class="stg l3">待验证</span></h4><p>王伟："试错是知识增长最快的一个阶段……Agent 把这一步跳过了"；郑雨豪："AI 会了，我不会"；梁淼城：排错被压缩影响日后 debug；反例：王鹤锦为学 vLLM 坚持自己写代码。</p><p style="color:var(--ink-3)"><b>边界：</b>未做前后测，无法量化损失；只能确认"损失发生在哪一段"。</p></div></div></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">设计启发：八条方向按"价值 × 成本"排优先级</span></div><div class="subttl">发现与启示 · 设计启发</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
+<div class="m4">
+  <div>
+    <h2 style="font-size:clamp(18px,1.45vw,24px);line-height:1.35;font-weight:800;color:var(--ink);margin-bottom:1.4vh">先做"上下文装配"和"验证凭据"：<br>它们同时抬高价值、压低成本</h2>
+    <p style="font-size:12.4px;color:var(--ink-2);line-height:1.6;margin-bottom:1.4vh">八条启发全部回指前五条发现，按"用户价值 × 实现成本"排优先级；每条标注依据，避免做成功能清单。</p>
+    <div class="cx-concl"><span class="ck">取舍</span><span class="cv">不做"新建知识库"：六人里已有四人把沉淀放在文件系统里，唯一想建库的人自己也承认"知识还是单点"。</span></div>
+  </div>
+  <div>
+    <div class="ax-tag">价值 高 ↑</div>
+    <div class="m4-grid">
+      <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
+        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>F3</em></span>
+        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>F1</em></span>
+        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>F5</em></span>
+      </div>
+      <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
+        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>F1</em></span>
+        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>F2</em></span>
+        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>F4</em></span>
+        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>F1</em></span>
+      </div>
+      <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
+        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>F3</em></span>
+        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>F3</em></span>
+      </div>
+      <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
+        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>F5</em></span>
+        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>F2</em></span>
+      </div>
+    </div>
+    <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">这份分析能回答什么、不能回答什么</span></div><div class="subttl">发现与启示 · 边界与假设</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
+<div class="bd2">
+  <div class="bd2-c ok"><h4>这份分析可以支撑</h4>
+    <li>过程结构：一次任务在哪些环节被切断、由谁接回</li>
+    <li>机制解释：什么信号触发介入、什么证据支撑验收</li>
+    <li>学习影响的位置：损失集中在试错、排错与参数直觉</li>
+    <li>设计优先级：哪些缺口同时抬高价值、压低成本</li>
+    <li>两类角色的差异：完成标准、资源条件、知识来源、交付压力</li>
+  </div>
+  <div class="bd2-c no"><h4>这份分析不能支撑</h4>
+    <li>比例与频次：样本 6 人、回顾式自报，不能外推总体</li>
+    <li>因果：未做对照，不能断言"AI 导致理解变浅"</li>
+    <li>真实性能：未现场观察，不能声称上卡成功或达标</li>
+    <li>跨团队普遍性：企业侧集中在同一部门，学生侧集中在三所高校</li>
+    <li>个体差异：同一角色内部差异很大（郑雨豪明显比同组更谨慎）</li>
+    <li>时效性：工具与模型迭代很快，具体工具结论会过期</li>
+  </div>
+</div>
+<div class="hyp">
+  <div class="hyp-i"><b>H1 · 成本是隐性的任务分配器</b><span>5 人提及价格/额度影响模型选择、是否多 Agent、是否继续迭代，但无人把它说成策略。</span></div>
+  <div class="hyp-i"><b>H2 · 全权限是摩擦管理而非信任</b><span>"不然要一直点 yes"是一句行为解释；需要专门测试用户对权限的真实风险感知。</span></div>
+  <div class="hyp-i"><b>H3 · 沉淀应落在文件系统</b><span>4 人已在做，郑雨豪仍希望"知识库 + AI 直接调用"；两种路径需要并行验证。</span></div>
+</div>
+<div style="margin-top:2vh;font-size:10.5px;color:var(--ink-3);line-height:1.5">材料：6 份《AI-Coding 用户访谈记录》（思维导图手记 + ASR 逐字稿补充）、DACT 访谈提纲、30 分钟精简提纲；ASR 原文另见《用户访谈观点解析》。本报告中所有引号内文字均为记录稿或 ASR 转写，非严格逐字引用。</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+</div>
+<div id="panel" style="display:none">
+  <h4>底部光晕调色</h4>
+  <div class="preset-row">
+    <div class="preset" data-p="255,85,58" style="background:linear-gradient(90deg,hsl(255,85%,58%),hsl(300,85%,58%))"></div>
+    <div class="preset" data-p="160,80,56" style="background:linear-gradient(90deg,hsl(160,80%,56%),hsl(205,80%,56%))"></div>
+    <div class="preset" data-p="30,88,58" style="background:linear-gradient(90deg,hsl(30,88%,58%),hsl(75,88%,58%))"></div>
+    <div class="preset" data-p="200,82,60" style="background:linear-gradient(90deg,hsl(200,82%,60%),hsl(245,82%,60%))"></div>
+  </div>
+  <div class="ctrl"><label>色相 HUE <span class="val" id="v-h">234</span></label><input type="range" id="s-h" min="0" max="360" value="234"></div>
+  <div class="ctrl"><label>色相跨度 GAP <span class="val" id="v-gap">57°</span></label><input type="range" id="s-gap" min="0" max="180" value="57"></div>
+  <div class="ctrl"><label>饱和度 SAT <span class="val" id="v-sat">95%</span></label><input type="range" id="s-sat" min="0" max="100" value="95"></div>
+  <div class="ctrl"><label>亮度 LIGHT <span class="val" id="v-light">40%</span></label><input type="range" id="s-light" min="20" max="80" value="40"></div>
+  <div class="ctrl"><label>扩散 SPREAD <span class="val" id="v-spread">35vh</span></label><input type="range" id="s-spread" min="20" max="90" value="35"></div>
+  <div class="ctrl"><label>彩色亮度 COLOR <span class="val" id="v-cint">0.68</span></label><input type="range" id="s-cint" min="0" max="100" value="68"></div>
+  <div class="ctrl"><label>白色亮度 WHITE <span class="val" id="v-wint">0.58</span></label><input type="range" id="s-wint" min="0" max="100" value="58"></div>
+</div>
+<button id="toggle" style="display:none" title="调色面板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="10" cy="7" r="2.4"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4"/></svg></button>
+
+<nav class="nav-dots" id="navDots"></nav>
+<!-- 底部居中控制栏（默认隐藏，鼠标移到底部才出现）-->
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 01</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+
+/* ===== 翻页过渡（可切换）：slide(默认) | fade | cut | slide-h | magic =====
+   改默认改这行兜底值；或地址加 ?t=fade / ?t=cut / ?t=slide-h / ?t=magic 临时切换、不用改代码 */
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='magic'&&cur){ magicMove(cur,nxt); return; }
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+/* Keynote 式神奇移动：相邻两页中 data-key 相同的元素 FLIP 位移/缩放（用 Web Animations API）*/
+function magicMove(cur,nxt){
+  const out={}; cur.querySelectorAll('[data-key]').forEach(el=>{out[el.dataset.key]=el.getBoundingClientRect();});
+  cur.classList.remove('active'); cur.classList.add('leaving'); nxt.classList.add('active');
+  nxt.querySelectorAll('[data-key]').forEach(el=>{
+    const o=out[el.dataset.key]; if(!o)return; const n=el.getBoundingClientRect(); if(!n.width||!n.height)return;
+    const dx=o.left-n.left, dy=o.top-n.top, sx=o.width/n.width, sy=o.height/n.height;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.02&&Math.abs(sy-1)<.02)return;
+    el.style.zIndex='3';
+    el.animate([{transformOrigin:'top left',transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')'},
+                {transformOrigin:'top left',transform:'none'}],
+               {duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).onfinish=()=>{el.style.zIndex='';};
+  });
+  const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR);
+}
+
+/* ===== 黑底光晕：每章一组色值，可调 + localStorage 持久记忆 ===== */
+const chapters={'1':{h:234,gap:57,sat:95,light:40,spread:35,cint:68,wint:58}};
+const GLOW_KEY='deck-glow-chapters';
+try{const sv=localStorage.getItem(GLOW_KEY);if(sv){const o=JSON.parse(sv);Object.keys(o).forEach(k=>{if(chapters[k])Object.assign(chapters[k],o[k]);});}}catch(e){}
+function saveChapters(){try{localStorage.setItem(GLOW_KEY,JSON.stringify(chapters));}catch(e){}}
+function curChap(){return chapters[slides[idx].dataset.chapter];}
+const S={h:'s-h',gap:'s-gap',sat:'s-sat',light:'s-light',spread:'s-spread',cint:'s-cint',wint:'s-wint'};
+const V={h:'v-h',gap:'v-gap',sat:'v-sat',light:'v-light',spread:'v-spread',cint:'v-cint',wint:'v-wint'};
+function paintSlide(s){const c=chapters[s.dataset.chapter];if(!c)return;
+  s.style.setProperty('--glow-h',c.h);s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%');s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread);s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));}
+function apply(){slides.forEach(paintSlide);saveChapters();const c=curChap();if(!c)return;
+  root.style.setProperty('--glow-h',c.h);root.style.setProperty('--glow-h2',(c.h+c.gap)%360);}
+function syncPanel(){const c=curChap();if(!c)return;
+  for(const k in S){const el=document.getElementById(S[k]),v=document.getElementById(V[k]);if(!el)continue;el.value=c[k];
+    v.textContent=(k==='sat'||k==='light')?c[k]+'%':k==='spread'?c[k]+'vh':k==='gap'?c[k]+'°':(k==='cint'||k==='wint')?(c[k]/100).toFixed(2):c[k];}}
+for(const k in S){const el=document.getElementById(S[k]);if(el)el.addEventListener('input',()=>{const c=curChap();if(!c)return;c[k]=+el.value;
+  const v=document.getElementById(V[k]);v.textContent=(k==='sat'||k==='light')?el.value+'%':k==='spread'?el.value+'vh':k==='gap'?el.value+'°':(k==='cint'||k==='wint')?(el.value/100).toFixed(2):el.value;apply();});}
+document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>{const c=curChap();if(!c)return;const[h,sat,light]=p.dataset.p.split(',').map(Number);Object.assign(c,{h,sat,light});apply();syncPanel();});
+function setPanelOpen(open){const p=document.getElementById('panel');if(p)p.style.display=open?'block':'none';}
+document.addEventListener('click',e=>{const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');if(!panel||!toggle)return;
+  if(toggle.contains(e.target)){setPanelOpen(panel.style.display!=='block');syncPanel();return;}
+  if(panel.contains(e.target))return; setPanelOpen(false);});
+
+/* ===== 纵向 scroll-snap 翻页 + 右侧点 + 控制栏 + 总览 + 全屏 ===== */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+/* 滚动条默认隐藏，滚动时淡入、停 700ms 后淡出（body 是滚动容器，事件挂 body 不是 window；wheel 兜底）*/
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');
+  if(s.dataset.chapter && s.classList.contains('chapter-cover')){ if(panel)s.appendChild(panel); if(toggle){s.appendChild(toggle);toggle.style.display='flex';} setPanelOpen(false); apply(); syncPanel(); }
+  else if(toggle){ toggle.style.display='none'; setPanelOpen(false); }
+}
+/* slide 模式：谁滚进视口 ≥55% 谁就是当前页。受控模式无滚动，不用 IO */
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){ if(document.body.classList.contains('overview'))return; const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+/* 受控模式：滚轮 / 触控板翻页（无原生滚动，需拦截 + 节流）*/
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 全屏（进入后图标变退出全屏）*/
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+/* 总览 Overview：每页包进 .slide-inner 缩放成缩略图，排网格（按当前视窗比例）*/
+function applyOverviewScale(){if(!document.body.classList.contains('overview'))return;const cellW=slides[0].getBoundingClientRect().width,scale=cellW/window.innerWidth;slides.forEach(s=>{s.style.height=(window.innerHeight*scale)+'px';const inner=s.querySelector(':scope>.slide-inner');if(inner)inner.style.transform='scale('+scale+')';});}
+function enterOverview(){slides.forEach(s=>{if(!s.querySelector(':scope>.slide-inner')){const w=document.createElement('div');w.className='slide-inner';while(s.firstChild)w.appendChild(s.firstChild);s.appendChild(w);}});document.body.classList.add('overview');requestAnimationFrame(applyOverviewScale);}
+function exitOverview(){slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});document.body.classList.remove('overview');balanceHeads();if(CTRL){setActive(idx);}else setTimeout(()=>slides[idx].scrollIntoView({block:'start',behavior:'auto'}),20);}
+function toggleOverview(){document.body.classList.contains('overview')?exitOverview():enterOverview();}
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0){idx=i;exitOverview();}}});
+addEventListener('resize',()=>{if(document.body.classList.contains('overview'))applyOverviewScale();else reanchor();balanceHeads();});
+
+/* ===== 居中型页竖向平衡：直接量"页眉下沿→内容"和"内容→页脚上沿"两个可见空白，让它们相等 =====
+   ⚠️ 别拿页眉高度当 padding-bottom（试过，会系统性补过头）：页眉的留白已经是它自己的 margin-bottom，
+   不需要重复补；真正缺的只是页脚那一截（.foot 绝对定位、不占流式空间，但视觉上离底边有自己的 inset）。
+   两个空白差是 P 的线性函数、斜率恰为 -1（justify-content:center 对称分担），所以不用试错：
+   newPad = 当前 padding-bottom + (topGap − botGap)，一步算出让两个空白相等的正确值。
+   只作用于标了 .vc 的居中型页；填满型页不动 */
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+/* 底部控制栏 / 右侧导航点各自独立显隐：移到底部出底部栏、移到右侧出右侧点，离开该区即淡出 */
+document.addEventListener('mousemove',e=>{
+  controls.classList.toggle('show', e.clientY > window.innerHeight - 120);
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
+
+window.scrollTo(0,0);
+slides.forEach(paintSlide);
+updateCurrent(0);
+if(CTRL) setActive(0);
+</script>
+</body>
+</html>
+
+</body>
+</html>
