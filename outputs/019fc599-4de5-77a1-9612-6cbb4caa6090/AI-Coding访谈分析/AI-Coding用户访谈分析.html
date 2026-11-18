@@ -617,7 +617,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 34";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 36";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -860,6 +860,34 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .std-note{font-size:11.2px;color:var(--ink-2);line-height:1.5}
 .std-note b{color:var(--ink)}
 
+/* Z2 自信地错 */
+.sp-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.sp-top{font-size:12px;color:var(--ink-3)}
+.sp-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.sp-i{padding:1.6vh 1.2vw;border-left:1px solid rgba(47,61,99,.12)}
+.sp-i:first-child{border-left:0;padding-left:0}
+.sp-no{font-family:'Inter';font-weight:200;font-size:26px;color:rgba(75,75,168,.42);line-height:1}
+.sp-k{font-size:13.4px;font-weight:800;color:var(--ink);margin:.6vh 0 .5vh}
+.sp-i p{font-size:11.2px;color:var(--ink-2);line-height:1.55}
+.sp-cmp{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:0;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);border-radius:12px;padding:2vh 1.4vw}
+.sp-side{display:flex;flex-direction:column;gap:.35vh}
+.sp-side b{font-size:12.6px}
+.sp-side span{font-size:11px;color:var(--ink-2);line-height:1.45}
+.sp-side.bad b{color:#8E2F35}
+.sp-side.good b{color:#2E6B55}
+.sp-vs{text-align:center;font-family:'JetBrains Mono';font-size:10px;color:var(--ink-3);letter-spacing:.1em}
+
+/* Z1 团队变薄 */
+.team-wrap{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:2.6vw;align-items:center}
+.team-left{display:flex;flex-direction:column;gap:.8vh;min-width:0}
+.team-left svg{width:100%;height:auto;max-height:46vh}
+.team-note{font-size:10.2px;color:var(--ink-3);line-height:1.4}
+.team-right{display:flex;flex-direction:column;gap:1.1vh;min-width:0}
+.team-q{font-size:11.4px;color:var(--ink-2);line-height:1.55;padding-left:1.2em;position:relative}
+.team-q::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:1px;background:#9AA3B2}
+.team-q b{color:var(--ink)}
+.team-more{font-size:10.6px;color:var(--ink-3);line-height:1.45;padding-top:.4vh}
+
 </style>
 </head>
 <body>
@@ -1099,6 +1127,18 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </div>
 <div class="cx-concl" style="margin-top:1.4vh"><span class="ck">矛盾</span><span class="cv">徐立桂说"最权威的是开发包里的头文件和动态库"，但"一般情况下我不会看代码，他给我讲一下模块组织"——<b>声称的信任依据 ≠ 实际的审查行为</b>。只做"显示来源"无法解决这种落差。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">AI 不会说"我不会"，它只会自信地给一个错答案</span></div><div class="subttl">人机协作 · 失败的形态</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="sp-wrap">
+  <div class="sp-top">四种"自信地错"的形态——没有一种是"报错然后停下"</div>
+  <div class="sp-row"><div class="sp-i"><div class="sp-no">01</div><div class="sp-k">自认正确</div><p>郑雨豪："他做的是错的，但<b>他认为他是对的</b>。"</p></div><div class="sp-i"><div class="sp-no">02</div><div class="sp-k">规范地过度设计</div><p>徐立桂："生成 slop，把所有事情弄得很复杂，但是<b>非常规范</b>。"</p></div><div class="sp-i"><div class="sp-no">03</div><div class="sp-k">编造后立刻认错</div><p>王鹤锦："乱编函数名……<b>一问他就检索，就又改过来了</b>。"</p></div><div class="sp-i"><div class="sp-no">04</div><div class="sp-k">反复试，不喊停</div><p>王伟："精度调不通，就开始<b>左右脑互搏</b>。"</p></div></div>
+  <div class="sp-cmp">
+    <div class="sp-side bad"><b>问 AI"你确定吗"</b><span>它仍然会说确定；追问三次，三次都通过。</span></div>
+    <div class="sp-vs">VS</div>
+    <div class="sp-side good"><b>跑一次 golden / 测试</b><span>误差一摆出来就露馅——外部证据不会被说服。</span></div>
+  </div>
+  <div class="cx-concl"><span class="ck">推论</span><span class="cv">AI 的自检信号不可信，<b>验证必须外部化</b>：跑测试、对 golden、看 diff 的形态（函数变短、封装变多、节点变复杂）。这也是为什么"看 thought"会成为一种技能。</span></div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">代码的读者变了：现在先读它的是 AI，不是人</span></div><div class="subttl">人机协作 · 评审与交接</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
 <div class="rev-wrap">
   <div class="rev-row">
@@ -1329,6 +1369,33 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="std-note"><b>王伟的旁观：</b>试错被跳过之后，"对那些 API 的用法，只是大致知道它是干什么的"——这正好是"会用"这一端要付的代价。</div>
   <div class="cx-concl"><span class="ck">设计含义</span><span class="cv">三种标准不是水平差异，而是<b>目标差异</b>。学习产品如果默认"会用就行"，就做不出"能复现"和"亲手写"需要的路径；反过来也一样。</span></div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">AI 让新人上手更快，团队的理解在变薄</span></div><div class="subttl">知识与学习 · 团队层面</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="active">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="team-wrap">
+  <div class="team-left">
+    <svg viewBox="0 0 460 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <line x1="46" y1="264" x2="446" y2="264" stroke="#AEB6C2" stroke-width="1.2"/>
+  <line x1="46" y1="20" x2="46" y2="264" stroke="#AEB6C2" stroke-width="1.2"/>
+  <text x="46" y="282" font-size="10" fill="#7C8695">入职</text>
+  <text x="446" y="282" font-size="10" fill="#7C8695" text-anchor="end">24 个月</text>
+  <text x="16" y="150" font-size="10" fill="#7C8695" text-anchor="middle" transform="rotate(-90 16 150)">独立解决问题</text>
+  <path d="M46 250 C 130 236, 210 150, 440 54" fill="none" stroke="#4B4BA8" stroke-width="2.4"/>
+  <path d="M46 250 C 100 160, 130 146, 210 140 C 310 134, 380 132, 440 130" fill="none" stroke="#C0392B" stroke-width="2.4" stroke-dasharray="6 4"/>
+  <text x="446" y="48" font-size="10.5" fill="#3B3B85" text-anchor="end">无 AI 上手：慢，但底子厚</text>
+  <text x="446" y="124" font-size="10.5" fill="#8E2F35" text-anchor="end">有 AI 上手：快，停在"会用"</text>
+  <circle cx="440" cy="130" r="4" fill="#C0392B"/>
+</svg>
+    <div class="team-note">示意图，非测量。依据王伟对"新员工"与"自己前后变化"的描述。</div>
+  </div>
+  <div class="team-right">
+    <div class="team-q"><b>王伟</b>："我刚入职的时候其实没有 AI，对原理还是有一些了解的……现在主要依赖 AI 写之后，原理还是会看，但<b>没有之前理解那么深了</b>。"</div>
+    <div class="team-q"><b>王伟</b>："对于现在入职的新员工来说，<b>原理理解比较少</b>。"</div>
+    <div class="team-q"><b>徐立桂</b>："确实对很多细节完全没有感知了，<b>越来越多东西变成黑盒</b>。"</div>
+    <div class="team-q"><b>郑雨豪</b>："<b>AI 会了，我不会。</b>"</div>
+    <div class="team-more">再加上 P20 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
+  </div>
+</div>
+<div class="cx-concl" style="margin-top:1.4vh"><span class="ck">风险</span><span class="cv">写的人、评审的人同时变薄——<b>三年后谁来判断这套实现对不对？</b>这不是个人学习习惯问题，是团队的能力结构问题。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">五条有证据的发现</span></div><div class="subttl">发现与启示 · 结论与证据</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area"><div class="led"><div class="led-r"><div class="led-n">1</div><div class="led-b"><h4>编码被压缩，"把任务写成 AI 接得住的形式"成为主战场<span class="stg l2">跨案例模式</span></h4><p>王伟：人工审查约 70%、写文档 15%，并用自沉淀的格式出详设；彭椒/王鹤锦：时间主要花在"提出目标"；徐立桂："拆得越细，AI 执行越符合预期"。</p><p style="color:var(--ink-3)"><b>边界：</b>自报时间占比，非观测；"任务写法"由四道工序归纳而来，属研究者编码。</p></div></div><div class="led-r"><div class="led-n">2</div><div class="led-b"><h4>交接由可观察的异常信号触发，判据却不可移植<span class="stg l2">跨案例模式</span></h4><p>梁淼城："出现很多一两行的函数，我就知道肯定是（过度设计）"；王伟：看 thought 发现"尝试完全都不对"；徐立桂："节点搞得非常复杂，不停做哈希"。</p><p style="color:var(--ink-3)"><b>边界：</b>同一信号在新手眼里不构成信号——判据来自经验，不来自工具。</p></div></div><div class="led-r"><div class="led-n">3</div><div class="led-b"><h4>验证只认执行证据；来源需求随严谨度变化，并与审查行为脱节<span class="stg l2">跨案例模式</span></h4><p>6/6 以运行结果/测试/golden/benchmark 为准；郑雨豪要来源、王伟不看来源；徐立桂以头文件为最权威，却"一般不看代码"。</p><p style="color:var(--ink-3)"><b>边界：</b>"不看来源"不等于不需要可追溯，只说明当前的来源展示没有进入他的决策链。</p></div></div><div class="led-r"><div class="led-n">4</div><div class="led-b"><h4>失败后没有人真正"自己接手"：差别在交办粒度，不在人机分工<span class="stg l2">跨案例模式</span></h4><p>梁淼城/郑雨豪/王鹤锦/王伟以换模型、重写、回滚为主；徐立桂收回拆解权，但拆完仍交给 AI 执行——"拆得越细，AI 执行越符合预期，因为他不用猜了"。</p><p style="color:var(--ink-3)"><b>边界：</b>样本中仅 1 例走"拆细再交办"，不能推断比例；它说明恢复能力更像"拆解能力"而非"接管能力"。</p></div></div><div class="led-r"><div class="led-n">5</div><div class="led-b"><h4>AI 压缩的是试错与排错，不压缩编码；学习损失集中在参数、归因与性能直觉<span class="stg l3">待验证</span></h4><p>王伟："试错是知识增长最快的一个阶段……Agent 把这一步跳过了"；郑雨豪："AI 会了，我不会"；梁淼城：排错被压缩影响日后 debug；反例：王鹤锦为学 vLLM 坚持自己写代码。</p><p style="color:var(--ink-3)"><b>边界：</b>未做前后测，无法量化损失；只能确认"损失发生在哪一段"。</p></div></div></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 

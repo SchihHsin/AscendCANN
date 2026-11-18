@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 34";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 36";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -563,4 +563,32 @@ CSS_EXTRA += r"""
 .std-q span{display:block;margin-top:.5em;color:var(--ink-3)}
 .std-note{font-size:11.2px;color:var(--ink-2);line-height:1.5}
 .std-note b{color:var(--ink)}
+
+/* Z2 自信地错 */
+.sp-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.sp-top{font-size:12px;color:var(--ink-3)}
+.sp-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.sp-i{padding:1.6vh 1.2vw;border-left:1px solid rgba(47,61,99,.12)}
+.sp-i:first-child{border-left:0;padding-left:0}
+.sp-no{font-family:'Inter';font-weight:200;font-size:26px;color:rgba(75,75,168,.42);line-height:1}
+.sp-k{font-size:13.4px;font-weight:800;color:var(--ink);margin:.6vh 0 .5vh}
+.sp-i p{font-size:11.2px;color:var(--ink-2);line-height:1.55}
+.sp-cmp{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:0;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);border-radius:12px;padding:2vh 1.4vw}
+.sp-side{display:flex;flex-direction:column;gap:.35vh}
+.sp-side b{font-size:12.6px}
+.sp-side span{font-size:11px;color:var(--ink-2);line-height:1.45}
+.sp-side.bad b{color:#8E2F35}
+.sp-side.good b{color:#2E6B55}
+.sp-vs{text-align:center;font-family:'JetBrains Mono';font-size:10px;color:var(--ink-3);letter-spacing:.1em}
+
+/* Z1 团队变薄 */
+.team-wrap{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:2.6vw;align-items:center}
+.team-left{display:flex;flex-direction:column;gap:.8vh;min-width:0}
+.team-left svg{width:100%;height:auto;max-height:46vh}
+.team-note{font-size:10.2px;color:var(--ink-3);line-height:1.4}
+.team-right{display:flex;flex-direction:column;gap:1.1vh;min-width:0}
+.team-q{font-size:11.4px;color:var(--ink-2);line-height:1.55;padding-left:1.2em;position:relative}
+.team-q::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:1px;background:#9AA3B2}
+.team-q b{color:var(--ink)}
+.team-more{font-size:10.6px;color:var(--ink-3);line-height:1.45;padding-top:.4vh}
 """
