@@ -114,12 +114,35 @@
     border-left:1px solid var(--line);display:none;flex-direction:column;z-index:40;
     box-shadow:-14px 0 32px rgba(15,23,42,.07)}
   #drawer.open{display:flex}
-  .drawer-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line)}
+  .drawer-head{display:none}
   .drawer-head .t{font-size:12px;font-weight:700;color:#334155}
   .drawer-head .sub{font-size:10.5px;color:#94A3B8}
   .drawer-head button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:7px;
     height:26px;padding:0 9px;font-size:11px;color:var(--ink2);cursor:pointer}
-  #insight{padding:14px 16px;border-bottom:1px solid var(--line);max-height:46vh;overflow:auto}
+  #insight{padding:9px 14px 8px;border-bottom:1px solid var(--line);flex:0 0 auto}
+  .ins-meta{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#64748B}
+  .ins-x{margin-left:2px;border:1px solid var(--line);background:#fff;border-radius:6px;height:20px;
+    padding:0 7px;font-size:10px;color:#64748B;cursor:pointer}
+  .ins-x:hover{background:#F1F5F9;color:#0F172A}
+  .ins-meta .dot{width:7px;height:7px;border-radius:50%}
+  .ins-row{display:flex;align-items:center;gap:8px;margin-top:1px}
+  .ins-title{font-size:16px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pager{display:flex;align-items:center;gap:1px;flex:0 0 auto}
+  .pager button{width:20px;height:20px;border:1px solid var(--line);background:#fff;border-radius:6px;
+    font-size:12px;color:#475569;cursor:pointer;line-height:1;padding:0}
+  .pager button:hover{background:#F1F5F9}
+  .pager span{font-size:10px;color:#94A3B8;min-width:28px;text-align:center}
+  .clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .ins-def.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+  .ins-line{display:flex;align-items:center;gap:8px;margin-top:7px;min-width:0}
+  .ins-line .l{flex:0 0 42px;font-size:10px;color:#94A3B8;letter-spacing:.2px}
+  .scroller{display:flex;gap:5px;overflow-x:auto;min-width:0;padding-bottom:1px;scrollbar-width:none;
+    mask-image:linear-gradient(to right,#000 90%,transparent 100%)}
+  .scroller::-webkit-scrollbar{display:none}
+  .scroller>*{flex:0 0 auto}
+  .more{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:20px;
+    font-size:10px;padding:2px 8px;color:#64748B;cursor:pointer}
+  .more.on{background:#F1F5F9;color:#0F172A}
   .tags{display:flex;gap:6px;margin-bottom:7px}
   .tag{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
   .tag.dom{color:#fff}
@@ -603,34 +626,46 @@ function hover(id){
 function renderInsight(){
   const box=$('#insight');
   if(!state.sel){
-    const s=SCENES.find(x=>x.id===state.scene);
-    box.innerHTML=`<div class="tags"><span class="tag w">当前场景</span></div>
-      <h2 class="ins-title">${s.name}</h2>
-      <p class="ins-def">关联对话 ${s.ds.length} 篇 · 当前粒度 ${state.gran} 档 · ${visibleNodes().length} 个节点。<br>
-      点击左侧任意节点，这里会显示它的核心结论、1-hop 关联与来源轮次。</p>`;
-    $('#dwSub').textContent=`${s.ds.length} 篇原声 · ${visibleNodes().length} 节点`;
+    const sc=SCENES.find(x=>x.id===state.scene);
+    box.innerHTML=`<div class="ins-meta"><span class="dot" style="background:#94A3B8"></span>当前场景<button class="ins-x" id="insClose">收起</button></div>
+      <div class="ins-row"><h2 class="ins-title">${sc.name}</h2></div>
+      <p class="ins-def clamp1">${sc.ds.length} 篇对话 · ${state.gran} 档粒度 · ${visibleNodes().length} 个节点，点击节点看结论与来源。</p>`;
+    $('#dwSub').textContent=`${sc.ds.length} 篇原声 · ${visibleNodes().length} 节点`;
+    const xb2=$('#insClose'); if(xb2) xb2.onclick=closeDrawer;
     return;
   }
   const n=nodeById[state.sel], d=domById[n.dom];
-  const chips=[...neighbors(n.id)].filter(id=>id!==n.id).slice(0,10)
-    .map(id=>`<button class="chip" data-node="${id}">${nodeById[id].name}</button>`).join('');
-  const src=n.turns.slice(0,8).map(t=>`<button data-src="${t.c}-${t.t}">第 ${t.c} 次 · 第 ${t.t} 轮</button>`).join('');
+  const rel=[...neighbors(n.id)].filter(id=>id!==n.id);
+  const chips=rel.map(id=>`<button class="chip" data-node="${id}">${nodeById[id].name}</button>`).join('');
+  let idx=0;
   box.innerHTML=`
-    <div class="tags">
-      <span class="tag dom" style="background:${d.color}">${d.name}</span>
-      <span class="tag w w${n.w}">${WNAME[n.w]}</span>
-      ${n.anchor?'<span class="tag w">领域锚点</span>':''}
+    <div class="ins-meta">
+      <span class="dot" style="background:${d.color}"></span>${d.name} · ${WNAME[n.w]}${n.anchor?' · 锚点':''}
+      ${n.pit?'<button class="more" id="insMore">详情</button>':''}
+      <button class="ins-x" id="insClose">收起</button>
     </div>
-    <h2 class="ins-title">${n.name}</h2>
-    <p class="ins-def">${n.def}</p>
-    ${n.pit?`<div class="ins-pit">${n.pit}</div>`:''}
-    <div class="ins-sub">1-HOP 关联（${[...neighbors(n.id)].length-1}）</div>
-    <div class="chips">${chips||'<span style="font-size:11px;color:#94A3B8">无</span>'}</div>
-    <div class="ins-sub">来源轮次（${n.turns.length}）</div>
-    <div class="src">${src||'<span style="font-size:11px;color:#94A3B8">暂无</span>'}</div>`;
+    <div class="ins-row">
+      <h2 class="ins-title">${n.name}</h2>
+      <div class="pager">
+        <button data-pg="-1">‹</button><span id="pgNum">${n.turns.length?1:0}/${n.turns.length}</span><button data-pg="1">›</button>
+      </div>
+    </div>
+    <p class="ins-def clamp1">${n.def}</p>
+    <div id="insMoreBox" hidden>
+      ${n.pit?`<div class="ins-pit">${n.pit}</div>`:''}
+      <div class="ins-line"><span class="l">关联 ${rel.length}</span><div class="scroller">${chips||'<span style="font-size:11px;color:#94A3B8">无</span>'}</div></div>
+    </div>`;
   box.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>select(b.dataset.node,{scroll:false,fly:true}));
-  box.querySelectorAll('[data-src]').forEach(b=>b.onclick=()=>{
-    const [c,t]=b.dataset.src.split('-').map(Number); scrollToRound(c,t,true);
+  const xb=$('#insClose');
+  if(xb) xb.onclick=closeDrawer;
+  const more=$('#insMore');
+  if(more) more.onclick=()=>{ const m=$('#insMoreBox'); m.hidden=!m.hidden; more.classList.toggle('on',!m.hidden); };
+  box.querySelectorAll('[data-pg]').forEach(b=>b.onclick=()=>{
+    if(!n.turns.length) return;
+    idx=(idx+Number(b.dataset.pg)+n.turns.length)%n.turns.length;
+    const t=n.turns[idx];
+    $('#pgNum').textContent=`${idx+1}/${n.turns.length}`;
+    scrollToRound(t.c,t.t,true);
   });
   $('#dwSub').textContent=`${n.name} · ${n.turns.length} 处来源`;
   openDrawer();
@@ -847,7 +882,12 @@ $('#q').addEventListener('input',e=>{
 $('#zIn').onclick=()=>{view.k=Math.min(2.8,view.k*1.2);applyView();};
 $('#zOut').onclick=()=>{view.k=Math.max(.35,view.k/1.2);applyView();};
 $('#zFit').onclick=()=>fitView(true);
-$('#dwClose').onclick=()=>{ $('#drawer').classList.remove('open'); document.body.classList.remove('drawer-open'); $('#fab').classList.add('show'); };
+function closeDrawer(){
+  $('#drawer').classList.remove('open');
+  document.body.classList.remove('drawer-open');
+  $('#fab').classList.add('show');
+}
+$('#dwClose').onclick=closeDrawer;
 $('#fab').onclick=()=>openDrawer();
 function openDrawer(){
   const wasOpen=$('#drawer').classList.contains('open');
