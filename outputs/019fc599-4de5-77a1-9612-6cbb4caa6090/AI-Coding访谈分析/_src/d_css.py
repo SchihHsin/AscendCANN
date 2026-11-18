@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 28";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 30";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -461,4 +461,37 @@ CSS_EXTRA += r"""
 .win-cases{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vw}
 .win-cases>div{font-size:11.2px;color:var(--ink-2);line-height:1.55}
 .win-cases b{color:var(--ink)}
+
+/* X6 环境门槛 */
+.env-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
+.env-top{font-size:12.4px;color:var(--ink-2);line-height:1.5}
+.env-table{display:flex;flex-direction:column}
+.env-head,.env-row{display:grid;grid-template-columns:110px 1fr 88px 92px;gap:1.2vw;align-items:center}
+.env-head{font-size:10.2px;color:var(--ink-3);font-family:'JetBrains Mono';letter-spacing:.08em;padding-bottom:.8vh;border-bottom:1px solid rgba(47,61,99,.16)}
+.env-row{padding:2.9vh 0;border-bottom:1px solid rgba(47,61,99,.1)}
+.env-row:last-child{border-bottom:0}
+.env-k{font-size:13px;font-weight:800;color:var(--ink)}
+.env-v{font-size:12.2px;color:var(--ink-2);line-height:1.5}
+.env-who{font-size:10.8px;color:var(--ink-3);text-align:center}
+.env-ai{font-size:10.8px;font-weight:700;color:#8E2F35;text-align:center;background:rgba(179,64,58,.08);border-radius:6px;padding:.45vh .4vw}
+.env-bottom{display:grid;grid-template-columns:1fr 1fr;gap:1.4vw;margin-top:.6vh}
+.env-b{font-size:11.4px;color:var(--ink-2);line-height:1.5}
+.env-b b{color:var(--ink)}
+
+/* X7 错误样例 */
+.err-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.8vh}
+.err-cols{display:grid;grid-template-columns:1fr 96px 1fr;align-items:stretch;gap:0}
+.err-col{border-radius:13px;padding:3vh 1.4vw;display:flex;flex-direction:column;gap:1.7vh}
+.err-col.have{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.85)}
+.err-col.miss{background:rgba(179,64,58,.07);border:1px solid rgba(179,64,58,.22)}
+.err-h{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:.3vh}
+.err-item{font-size:13px;color:var(--ink-2);line-height:1.4;padding-left:1em;position:relative}
+.err-item::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:#9AA3B2}
+.err-col.miss .err-item{color:#8E2F35}
+.err-col.miss .err-item::before{background:#B3403A}
+.err-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6vh;color:var(--ink-3);font-size:10px;font-family:'JetBrains Mono';letter-spacing:.12em}
+.err-mid i{font-style:normal;font-size:22px;color:#B3403A}
+.err-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
+.err-quotes>div{font-size:11.7px;color:var(--ink-2);line-height:1.5}
+.err-quotes b{color:var(--ink)}
 """
