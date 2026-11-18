@@ -65,6 +65,11 @@
   .legend .drow.off{opacity:.38}
   .legend .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
   .legend .cnt{margin-left:auto;color:#94A3B8;font-size:10.5px}
+  .legend .lines{display:flex;gap:14px;margin-top:9px;padding-top:9px;border-top:1px solid var(--line);
+    font-size:10.5px;color:#64748B}
+  .legend .lines span{display:flex;align-items:center;gap:5px}
+  .legend .lines i{width:18px;height:0;border-top:1.6px solid #C7D2E1;display:block}
+  .legend .lines i.dash{border-top:1.6px dashed #E1566F}
   .legend .sizes{display:flex;align-items:flex-end;gap:12px;margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
   .legend .sz{display:flex;flex-direction:column;align-items:center;gap:4px;color:#64748B;font-size:9.5px}
   .legend .sz i{border-radius:50%;background:#94A3B8;display:block}
@@ -85,7 +90,7 @@
   .domtitle{font-size:12.5px;font-weight:700;letter-spacing:.4px;opacity:.9}
   .edge{stroke:#C7D2E1;stroke-width:1;fill:none}
   .edge.dep{stroke:#C7D2E1}
-  .edge.trade{stroke:#F0A8B4;stroke-dasharray:4 3}
+  .edge.trade{stroke:#E1566F;stroke-dasharray:6 4}
   .edge.agg{stroke-opacity:.75}
   .node{cursor:pointer}
   .node .core{stroke:none}
@@ -501,7 +506,8 @@ function render(){
     ln.setAttribute('x1',A.x); ln.setAttribute('y1',A.y);
     ln.setAttribute('x2',B.x); ln.setAttribute('y2',B.y);
     ln.setAttribute('class','edge '+(e.kind==='trade'?'trade':'dep')+(e.count>1?' agg':''));
-    ln.setAttribute('stroke-width',(1+Math.min(e.count-1,3)*0.55).toFixed(2));
+    const wd=(e.kind==='trade'?1.7:1)+Math.min(e.count-1,3)*0.55;
+    ln.setAttribute('stroke-width',wd.toFixed(2));
     e.__el=ln; eg.appendChild(ln);
   });
 
@@ -856,7 +862,8 @@ function buildLegend(){
     DOMAINS.map(d=>`<div class="drow" data-dom="${d.id}">
       <span class="dot" style="background:${d.color}"></span>${d.name}
       <span class="cnt">${counts[d.id]||0}</span></div>`).join('')+
-    `<div class="sizes">
+    `<div class="lines"><span><i class="l solid"></i>依赖</span><span><i class="l dash"></i>权衡</span></div>
+    <div class="sizes">
       <div class="sz"><i style="width:23px;height:23px"></i>核心瓶颈</div>
       <div class="sz"><i style="width:15px;height:15px"></i>关键机制</div>
       <div class="sz"><i style="width:10px;height:10px"></i>常规</div>
