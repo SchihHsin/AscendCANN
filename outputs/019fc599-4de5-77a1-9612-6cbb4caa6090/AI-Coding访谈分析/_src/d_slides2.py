@@ -288,7 +288,8 @@ S19 = slide('''
 
 from d_s16 import S16  # 覆盖本地旧版
 
+from d_seq import Q1, Q2, Q3
 from d_s11b import S11B
 from d_s15b import S15B
 
-ALL = [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S11B, S12, S13, S14, S15, S15B, S16, S17, S18, S19]
+ALL = [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, Q1, Q2, Q3, S11B, S12, S13, S14, S15, S15B, S16, S17, S18, S19]

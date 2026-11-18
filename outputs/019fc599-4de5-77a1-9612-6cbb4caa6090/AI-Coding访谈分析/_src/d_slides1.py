@@ -54,7 +54,7 @@ S2 = '''<section class="slide s-gray contents-slide">
 </section>''' % ''.join([
     _card('01', '材料与边界', 'Scope &amp; Evidence', ['受访者概况', '证据强度', '材料缺口'], '先确认这批材料能撑住什么', 'research'),
     _card('02', '角色与旅程', 'Personas &amp; Journeys', ['双角色画像', '四段旅程', '共同骨架'], '看清两种人各自走的是哪条路', 'persona'),
-    _card('03', '人机协作', 'Human–AI Handoff', ['分工与任务写法', '交接信号', '验证与失败恢复'], '找到人真正被卡住的位置', 'competitor'),
+    _card('03', '人机协作', 'Human–AI Handoff', ['三种协作形态', '任务写法', '交接与验证'], '找到人真正被卡住的位置', 'competitor'),
     _card('04', '习惯与偏好', 'Habits &amp; Preferences', ['明说', '实做', '研究者解释'], '把愿望、行为和推断分开', 'research'),
     _card('05', '知识与学习', 'Knowledge &amp; Learning', ['获取', '可信来源', '内化与沉淀'], '理解 AI 之后人怎么学', 'persona'),
     _card('06', '发现与启示', 'Findings &amp; Implications', ['5 条发现', '设计启发', '边界'], '收敛成可行动的方向', 'roadmap'),

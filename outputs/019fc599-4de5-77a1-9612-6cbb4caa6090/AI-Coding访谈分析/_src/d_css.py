@@ -130,6 +130,10 @@ CSS_EXTRA = r"""
 .ar .bar{position:absolute;left:10px;right:14px;top:15px;height:2px;background:#8d97a5;border-radius:2px}
 .ar .bar::after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid #8d97a5;border-top:5px solid transparent;border-bottom:5px solid transparent}
 .ar.back .bar::after{left:-1px;right:auto;border-left:0;border-right:7px solid #8d97a5}
+.ar.back .lb{left:auto;right:10px;text-align:right}
+.ar.key.back .bar::after{border-right-color:#22262F;border-left-color:transparent}
+.ar.mut.back .bar::after{border-right-color:#7A8AA0;border-left-color:transparent}
+.ar.key.back::before{left:auto;right:2px}
 .ar .lb{position:absolute;left:10px;top:0;font-size:10.5px;color:#39424f;background:var(--paper);padding:0 .4em;white-space:nowrap;z-index:2;line-height:1.3}
 .ar .lb b{font-weight:700;color:#1d2330}
 .ar.key .bar{background:#22262F;height:2.5px}
@@ -317,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 21";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 23";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
