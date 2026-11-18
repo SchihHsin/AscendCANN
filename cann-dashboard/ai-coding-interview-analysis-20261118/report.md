@@ -28,7 +28,7 @@
 
 本报告按“人发起什么 → AI 或外部资源做什么 → 出现什么信号 → 谁作判断 → 如何继续”重建事件，再对照案例。未记载的动作保留为空白。访谈时间戳用于定位录音位置，不能视为任务发生时间或耗时。
 
-**证据类型**使用三种标注。**直接支持**指材料中可定位的自述。**跨案例模式**指研究者比较多名受访者后作出的解释。**待验证假设**指需要任务回放或后续研究才能确认的关系。另以**明确偏好、回忆做法、研究者解释**区分使用习惯的来源。引用统一标为“ASR 原文摘录，未复听录音”，保留原转写措辞。整理记录中的改写以转述呈现。
+**证据类型**使用三种标注。**直接支持**指材料中可定位的自述。**跨案例模式**指研究者比较多名受访者后作出的解释。**待验证假设**指需要任务回放或后续研究才能确认的关系。另以**明确偏好、回忆做法、研究者解释**区分使用习惯的来源。引用标明 ASR 来源与复听状态，用户确认的术语校订另行注明。整理记录中的改写以转述呈现。
 
 ### 受访者概况
 
@@ -222,9 +222,9 @@
 >
 > 王伟，01:37:46，ASR 原文摘录，未复听。[Q34]
 
-> “你有可能让姐能帮忙跑了一版数据，然后你后面想要做数据对比的话，你得往上翻。”
+> “你有可能让Agent帮忙跑了一版数据，然后你后面想要做数据对比的话，你得往上翻。”
 >
-> 郑雨豪，01:22:33，ASR 原文摘录，未复听。[Q36]
+> 郑雨豪，01:22:33，ASR 校订摘录。“Agent”由用户确认，未复听。[Q36]
 
 ## 五、开发过程中的知识获取、学习路径、可信来源与知识沉淀
 
@@ -418,7 +418,7 @@
 
 ## 证据回查
 
-下列原声均为对应 AI Coding ASR 的逐字摘录，本轮未复听录音。摘录保留转写中的语气词和错字，分析中的术语使用六份整理记录的校订口径。每个 Q 编号在网页中可打开原句、上下文、受访者、时间与源文件路径。完整证据数据见同目录 `evidence.json`。
+下列引文来自对应 AI Coding ASR，本轮未复听录音。Q36 中的“Agent”按用户确认校订，原始识别文本保存在证据数据与弹窗的原始话轮中。其余摘录保留转写措辞，分析中的术语使用六份整理记录的校订口径。每个 Q 编号在网页中可打开原句、上下文、受访者、时间与源文件路径。完整证据数据见同目录 `evidence.json`。
 
 - **Q01**　王伟 · 01:37:16 · 第 68 个转写话轮。来源为 [王伟-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/王伟-ai coding.docx>)。
 - **Q02**　梁淼城 · 02:12:07 · 第 204 个转写话轮。来源为 [梁同学-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/梁同学-ai coding.docx>)。
@@ -455,7 +455,7 @@
 - **Q33**　彭椒 · 01:43:20 · 第 148 个转写话轮。来源为 [彭同学-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/彭同学-ai coding.docx>)。
 - **Q34**　王伟 · 01:37:46 · 第 74 个转写话轮。来源为 [王伟-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/王伟-ai coding.docx>)。
 - **Q35**　徐立桂 · 02:39:35 · 第 379 个转写话轮。来源为 [徐同学-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/徐同学-ai coding.docx>)。
-- **Q36**　郑雨豪 · 01:22:33 · 第 38 个转写话轮。来源为 [郑雨豪-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/郑雨豪-ai coding.docx>)。
+- **Q36**　郑雨豪 · 01:22:33 · 第 38 个转写话轮。“Agent”由用户确认校订。来源为 [郑雨豪-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/郑雨豪-ai coding.docx>)。
 - **Q37**　彭椒 · 01:40:05 · 第 123 个转写话轮。来源为 [彭同学-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/彭同学-ai coding.docx>)。
 - **Q38**　王鹤锦 · 01:54:25 · 第 104 个转写话轮。来源为 [王鹤锦-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/王鹤锦-ai coding.docx>)。
 - **Q39**　王伟 · 01:53:56 · 第 208 个转写话轮。来源为 [王伟-ai coding.docx](</Users/hsin/Documents/Coding/AscendCANN/用户访谈逐字稿/ai coding访谈/王伟-ai coding.docx>)。

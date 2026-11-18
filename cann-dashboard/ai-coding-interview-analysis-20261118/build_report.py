@@ -159,8 +159,8 @@ function showEvidence(identifier) {
   content.append(textElement('p', '“' + item.quote + '”', 'raw'));
   content.append(textElement('p', '来源　' + item.source + '　话轮 ' + item.turn, 'meta'));
   const details = document.createElement('details');
-  details.append(textElement('summary', '查看所在话轮'));
-  details.append(textElement('p', item.context));
+  details.append(textElement('summary', item.raw_context ? '查看原始 ASR 话轮' : '查看所在话轮'));
+  details.append(textElement('p', item.raw_context || item.context));
   content.append(details);
   evidenceDialog.showModal();
 }
