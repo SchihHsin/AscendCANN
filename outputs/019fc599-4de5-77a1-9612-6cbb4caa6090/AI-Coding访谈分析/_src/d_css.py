@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 36";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 37";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -591,4 +591,23 @@ CSS_EXTRA += r"""
 .team-q::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:1px;background:#9AA3B2}
 .team-q b{color:var(--ink)}
 .team-more{font-size:10.6px;color:var(--ink-3);line-height:1.45;padding-top:.4vh}
+
+/* 发现地图 */
+.map-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.band{display:grid;grid-template-columns:200px 1fr;gap:1.6vw;align-items:center;padding:3.2vh 1.3vw;border-radius:13px}
+.band.l1{background:rgba(75,75,168,.07)}
+.band.l2{background:rgba(176,122,42,.09)}
+.band.l3{background:rgba(46,139,110,.08)}
+.band-h{display:flex;flex-direction:column;gap:.25em}
+.band-h b{font-size:14px;color:var(--ink)}
+.band-h span{font-size:10.6px;color:var(--ink-3)}
+.fchips{display:flex;flex-wrap:wrap;gap:.8vh .55vw}
+.fchip{display:inline-flex;align-items:center;gap:.5em;background:#fff;border:1px solid rgba(47,61,99,.09);border-radius:8px;padding:.9vh .85vw;font-size:12px;color:var(--ink);line-height:1.2}
+.fchip i{font-style:normal;font-family:'JetBrains Mono';font-size:9px;color:var(--ink-3)}
+.map-note{font-size:11.2px;color:var(--ink-2);line-height:1.55;padding-left:.2em}
+.map-note b{color:var(--ink)}
+/* 五条核心的层级标签 */
+.stg.l1{background:rgba(75,75,168,.13);color:#3B3B85}
+.stg.l2{background:rgba(176,122,42,.16);color:#7A5417}
+.stg.l3{background:rgba(46,139,110,.15);color:#256B55}
 """

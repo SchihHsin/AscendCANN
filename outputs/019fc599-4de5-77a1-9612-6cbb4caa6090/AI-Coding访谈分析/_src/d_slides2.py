@@ -294,9 +294,10 @@ from d_extra2 import X6, X7
 from d_extra3 import X8, X9
 from d_extra4 import Y1, Y2
 from d_extra5 import Z1, Z2
+from d_final import MAP, S17N
 from d_s11b import S11B
 from d_s15b import S15B
 
 ALL = [S1, S2, S3, S4, S5, X1, S6, S7, S8, S9, S10, X6,
        Q1, Q2, Q3, S11B, X2, S12, S13, Z2, X3, S14, X9,
-       S15, S15B, X4, Y1, S16, X7, X8, X5, Y2, Z1, S17, S18, S19]
+       S15, S15B, X4, Y1, S16, X7, X8, X5, Y2, Z1, MAP, S17N, S18, S19]
