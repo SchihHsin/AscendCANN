@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 30";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 32";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -494,4 +494,38 @@ CSS_EXTRA += r"""
 .err-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
 .err-quotes>div{font-size:11.7px;color:var(--ink-2);line-height:1.5}
 .err-quotes b{color:var(--ink)}
+
+/* X8 Skill 流程 */
+.skl-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.8vh}
+.skl-top{font-size:11.6px;color:var(--ink-3)}
+.skl-flow{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.skl-step{flex:1;text-align:center;padding:1.6vh .4vw;border-radius:8px;background:#fff;border:1px solid #E1E6ED;font-size:11.6px;font-weight:600;color:var(--ink);white-space:nowrap}
+.skl-step:last-of-type{background:rgba(75,75,168,.08);border-color:rgba(75,75,168,.3);color:#3B3B85}
+.skl-ar{color:#B6BEC9;font-size:12px;flex:none}
+.skl-cost{position:relative;font-size:10.6px;color:#8E2F35;padding-left:1em}
+.skl-cost::before{content:"";position:absolute;left:0;top:.45em;width:6px;height:6px;border-radius:50%;background:#B3403A}
+.skl-reacts{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
+.skl-r{display:flex;flex-direction:column;gap:.5vh;padding-top:1.2vh;border-top:1px solid rgba(47,61,99,.14)}
+.skl-r b{font-size:13.4px;color:var(--ink)}
+.skl-r span{font-size:11px;color:var(--ink-2);line-height:1.55}
+
+/* X9 失败归因 */
+.attr-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.attr-top{font-size:11.8px;color:var(--ink-3)}
+.attr-grid{display:grid;grid-template-columns:220px 56px 1fr;gap:1.2vw;align-items:center}
+.attr-fan{width:100%;height:120px;display:block}
+.attr-src{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);border-radius:11px;padding:2.4vh 1vw;text-align:center;font-size:13px;font-weight:700;color:var(--ink);line-height:1.4}
+.attr-src span{display:block;font-size:10.6px;font-weight:400;color:var(--ink-3);margin-top:.3em}
+.attr-lines{display:flex;flex-direction:column;gap:1vh}
+.attr-line{position:relative;padding:1.3vh 1.2vw;border-radius:9px;display:flex;flex-direction:column;gap:.2em}
+
+.attr-line b{font-size:12.6px}
+.attr-line span{font-size:10.8px;color:var(--ink-2)}
+.attr-line.self{background:rgba(179,64,58,.08);color:#8E2F35}
+
+.attr-line.model{background:rgba(120,128,145,.1);color:#5A6270}
+
+.attr-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
+.attr-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
+.attr-quotes b{color:var(--ink)}
 """
