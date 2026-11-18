@@ -7,7 +7,7 @@
 <style>
   :root{
     --bg:#F6F8FB; --card:#FFFFFF; --ink:#0F172A; --ink2:#64748B; --line:#E2E8F0;
-    --accent:#4A6FA5; --grid:36px;
+    --accent:#0F172A; --grid:36px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
@@ -61,7 +61,7 @@
   .legend h4{margin:0 0 8px;font-size:10.5px;letter-spacing:.6px;color:var(--ink2);font-weight:600}
   .legend .drow{display:flex;align-items:center;gap:7px;padding:4px 6px;border-radius:7px;cursor:pointer;color:#334155}
   .legend .drow:hover{background:#F1F5F9}
-  .legend .drow.on{background:#EFF6FF;font-weight:600;color:#1E3A8A}
+  .legend .drow.on{background:#F1F5F9;font-weight:600;color:#0F172A}
   .legend .drow.off{opacity:.38}
   .legend .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
   .legend .cnt{margin-left:auto;color:#94A3B8;font-size:10.5px}
@@ -94,8 +94,8 @@
   .edge.agg{stroke-opacity:.75}
   .node{cursor:pointer}
   .node .core{stroke:none}
-  .node .halo{opacity:.07;transition:opacity .18s}
-  .node:hover .halo,.node.sel .halo{opacity:.22}
+  .node .halo{opacity:0;transition:opacity .18s}
+  .node:hover .halo,.node.sel .halo{opacity:.26}
   .node.nb .halo{opacity:.14}
   .node text{font-size:9.2px;fill:#0F172A;text-anchor:middle;pointer-events:none;
     paint-order:stroke;stroke:var(--bg);stroke-width:2.6px;stroke-linejoin:round}
@@ -125,7 +125,7 @@
   .tag.dom{color:#fff}
   .tag.w{background:#F1F5F9;color:#6E7B8A}
   .tag.w3{background:#FEF3C7;color:#92400E}
-  .tag.w2{background:#E0F2FE;color:#075985}
+  .tag.w2{background:#F1F5F9;color:#334155}
   .ins-title{font-size:17px;margin:0 0 6px;letter-spacing:.2px}
   .ins-def{font-size:12.5px;line-height:1.75;color:#334155;margin:0}
   .ins-pit{margin-top:9px;background:#FFF8F0;border:1px solid #F8DFC0;border-radius:9px;
@@ -134,11 +134,11 @@
   .chips{display:flex;flex-wrap:wrap;gap:5px}
   .chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:3px 8px;font-size:10.5px;
     color:#334155;cursor:pointer}
-  .chip:hover{background:#EFF6FF;border-color:#BFDBFE;color:#1D4ED8}
+  .chip:hover{background:#F1F5F9;border-color:#CBD5E1;color:#0F172A}
   .src{display:flex;flex-wrap:wrap;gap:5px}
-  .src button{border:1px solid #DBEAFE;background:#EFF6FF;color:#1D4ED8;border-radius:7px;
+  .src button{border:1px solid #E2E8F0;background:#F1F5F9;color:#0F172A;border-radius:7px;
     font-size:10.5px;padding:4px 8px;cursor:pointer}
-  .src button:hover{background:#DBEAFE}
+  .src button:hover{background:#E2E8F0}
 
   .stream-head{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line)}
   .stream-head .t{font-size:12px;font-weight:700;color:#334155}
@@ -388,7 +388,7 @@ function buildDefs(){
   m.id='arrow'; m.setAttribute('viewBox','0 0 10 10'); m.setAttribute('refX','9');
   m.setAttribute('refY','5'); m.setAttribute('markerWidth','7'); m.setAttribute('markerHeight','7');
   m.setAttribute('orient','auto-start-reverse');
-  m.innerHTML='<path d="M0,0 L10,5 L0,10 z" fill="#4A6FA5"/>';
+  m.innerHTML='<path d="M0,0 L10,5 L0,10 z" fill="#0F172A"/>';
   defs.appendChild(m);
 }
 function renderDomains(list){
