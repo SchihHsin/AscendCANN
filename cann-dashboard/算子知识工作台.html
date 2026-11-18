@@ -88,7 +88,10 @@
   .edge.trade{stroke:#F0A8B4;stroke-dasharray:4 3}
   .edge.agg{stroke-opacity:.75}
   .node{cursor:pointer}
-  .node circle{stroke:#fff;stroke-width:1.6}
+  .node .core{stroke:none}
+  .node .halo{opacity:.13;transition:opacity .18s}
+  .node:hover .halo,.node.sel .halo{opacity:.28}
+  .node.nb .halo{opacity:.2}
   .node text{font-size:9.2px;fill:#0F172A;text-anchor:middle;pointer-events:none;
     paint-order:stroke;stroke:var(--bg);stroke-width:2.6px;stroke-linejoin:round}
   .lblbg{fill:#fff;stroke:#E2E8F0;stroke-width:1;rx:6;opacity:0;pointer-events:none;
@@ -96,8 +99,8 @@
   .node:hover .lblbg,.node.sel .lblbg{opacity:1}
   .node:hover text,.node.sel text{font-weight:700}
   .node.dim{opacity:.26}
-  .node.nb circle{stroke:#fff;stroke-width:2.2}
-  .node.sel circle{stroke:#fff;stroke-width:2.6}
+  .node.nb .core{stroke:none}
+  .node.sel .core{stroke:none}
   .eglabel{font-size:9px;fill:#64748B;text-anchor:middle;pointer-events:none;
     paint-order:stroke;stroke:var(--bg);stroke-width:2.4px}
 
@@ -455,9 +458,15 @@ function buildNodes(){
   NODES.forEach(n=>{
     const el=document.createElementNS(NS,'g');
     el.setAttribute('class','node'); el.dataset.id=n.id;
+    const halo=document.createElementNS(NS,'circle');
+    halo.setAttribute('class','halo');
+    halo.setAttribute('r',R[n.w]*1.85);
+    halo.setAttribute('fill',domById[n.dom].color);
+    el.appendChild(halo);
+
     const c=document.createElementNS(NS,'circle');
+    c.setAttribute('class','core');
     c.setAttribute('r',R[n.w]); c.setAttribute('fill',domById[n.dom].color);
-    c.setAttribute('filter','url(#softshadow)');
     el.appendChild(c);
     const bg=document.createElementNS(NS,'rect');
     bg.setAttribute('class','lblbg'); bg.setAttribute('height',15); bg.setAttribute('rx',6);
