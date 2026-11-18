@@ -229,30 +229,30 @@ S18 = slide('''
 <div class="m4">
   <div>
     <h2 style="font-size:clamp(18px,1.45vw,24px);line-height:1.35;font-weight:800;color:var(--ink);margin-bottom:1.4vh">先做"上下文装配"和"验证凭据"：<br>它们同时抬高价值、压低成本</h2>
-    <p style="font-size:12.4px;color:var(--ink-2);line-height:1.6;margin-bottom:1.4vh">八条启发全部回指前五条发现，按"用户价值 × 实现成本"排优先级；每条标注依据，避免做成功能清单。</p>
+    <p style="font-size:12.4px;color:var(--ink-2);line-height:1.6;margin-bottom:1.4vh">每条标注它回应的那一页发现（P##），按"用户价值 × 实现成本"排优先级，避免做成功能清单。</p>
     <div class="cx-concl"><span class="ck">取舍</span><span class="cv">不做"新建知识库"：六人里已有四人把沉淀放在文件系统里，唯一想建库的人自己也承认"知识还是单点"。</span></div>
   </div>
   <div>
     <div class="ax-tag">价值 高 ↑</div>
     <div class="m4-grid">
       <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
-        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>F2</em></span>
-        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>F1</em></span>
-        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>F3</em></span>
+        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P19</em></span>
+        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P31</em></span>
+        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P28</em></span>
       </div>
       <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
-        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>F1</em></span>
-        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>F2</em></span>
-        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>F4</em></span>
-        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>F2</em></span>
+        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P16</em></span>
+        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P18</em></span>
+        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P23</em></span>
+        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P27</em></span>
       </div>
       <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
-        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>F2</em></span>
-        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>F3</em></span>
+        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P19</em></span>
+        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P28</em></span>
       </div>
       <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
-        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>F5</em></span>
-        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>F5</em></span>
+        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P32</em></span>
+        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P18</em></span>
       </div>
     </div>
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>

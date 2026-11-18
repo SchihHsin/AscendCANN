@@ -627,4 +627,24 @@ CSS_EXTRA += r"""
 .perm-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw}
 .perm-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
 .perm-quotes b{color:var(--ink)}
+
+/* 现象 / 问题地图 */
+.map2{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.band2{display:grid;grid-template-columns:190px 1fr;gap:1.5vw;align-items:center;padding:2.8vh 1.2vw;border-radius:13px}
+.band2.xian{background:rgba(75,75,168,.065)}
+.band2.wen{background:rgba(179,64,58,.06)}
+.band2-h{display:flex;flex-direction:column;gap:.28em}
+.band2-h b{font-size:14px;color:var(--ink)}
+.band2-h span{font-size:10.2px;color:var(--ink-3);line-height:1.35}
+.fchips{display:flex;flex-wrap:wrap;gap:.8vh .5vw}
+.fchip{display:inline-flex;align-items:center;gap:.45em;background:#fff;border:1px solid rgba(47,61,99,.09);border-radius:8px;padding:.85vh .75vw;font-size:11.8px;color:var(--ink);line-height:1.2}
+.fchip em{font-style:normal;font-family:'JetBrains Mono';font-size:9px;color:var(--ink-3)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none}
+.dot.l1{background:#4B4BA8}.dot.l2{background:#B07A2A}.dot.l3{background:#2E8B6B}
+.map2-foot{display:flex;justify-content:space-between;align-items:center;gap:1.5vw;font-size:10.4px;color:var(--ink-3);line-height:1.5}
+.map2-lg{display:inline-flex;align-items:center;gap:.5em;white-space:nowrap}
+.map2-lg .dot{margin-left:.7em}
+.map2-lg .dot:first-child{margin-left:0}
+.stg.kind-x{background:rgba(75,75,168,.12);color:#3B3B85}
+.stg.kind-w{background:rgba(179,64,58,.1);color:#8E2F35}
 """

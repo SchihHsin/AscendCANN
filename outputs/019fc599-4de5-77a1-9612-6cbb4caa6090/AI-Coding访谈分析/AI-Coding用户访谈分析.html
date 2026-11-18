@@ -924,6 +924,26 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .perm-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
 .perm-quotes b{color:var(--ink)}
 
+/* 现象 / 问题地图 */
+.map2{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2vh}
+.band2{display:grid;grid-template-columns:190px 1fr;gap:1.5vw;align-items:center;padding:2.8vh 1.2vw;border-radius:13px}
+.band2.xian{background:rgba(75,75,168,.065)}
+.band2.wen{background:rgba(179,64,58,.06)}
+.band2-h{display:flex;flex-direction:column;gap:.28em}
+.band2-h b{font-size:14px;color:var(--ink)}
+.band2-h span{font-size:10.2px;color:var(--ink-3);line-height:1.35}
+.fchips{display:flex;flex-wrap:wrap;gap:.8vh .5vw}
+.fchip{display:inline-flex;align-items:center;gap:.45em;background:#fff;border:1px solid rgba(47,61,99,.09);border-radius:8px;padding:.85vh .75vw;font-size:11.8px;color:var(--ink);line-height:1.2}
+.fchip em{font-style:normal;font-family:'JetBrains Mono';font-size:9px;color:var(--ink-3)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none}
+.dot.l1{background:#4B4BA8}.dot.l2{background:#B07A2A}.dot.l3{background:#2E8B6B}
+.map2-foot{display:flex;justify-content:space-between;align-items:center;gap:1.5vw;font-size:10.4px;color:var(--ink-3);line-height:1.5}
+.map2-lg{display:inline-flex;align-items:center;gap:.5em;white-space:nowrap}
+.map2-lg .dot{margin-left:.7em}
+.map2-lg .dot:first-child{margin-left:0}
+.stg.kind-x{background:rgba(75,75,168,.12);color:#3B3B85}
+.stg.kind-w{background:rgba(179,64,58,.1);color:#8E2F35}
+
 </style>
 </head>
 <body>
@@ -1448,42 +1468,52 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </div>
 <div class="cx-concl" style="margin-top:1.4vh"><span class="ck">风险</span><span class="cv">写的人、评审的人同时变薄——<b>三年后谁来判断这套实现对不对？</b>这不是个人学习习惯问题，是团队的能力结构问题。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">22 条发现，按"谁能解决"分三层</span></div><div class="subttl">发现与启示 · 发现地图</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
-<div class="map-wrap">
-  <div class="band l1"><div class="band-h"><b>L1 工具层</b><span>产品可以直接改</span></div><div class="fchips"><span class="fchip">环境门槛<i>P12</i></span><span class="fchip">模型档位<i>P6</i></span><span class="fchip">任务状态<i>P27</i></span><span class="fchip">记忆缺口<i>P28</i></span><span class="fchip">Skill 形态<i>P31</i></span><span class="fchip">自信地错<i>P20</i></span></div></div><div class="band l2"><div class="band-h"><b>L2 协作层</b><span>产品与团队一起改</span></div><div class="fchips"><span class="fchip">三种协作形态<i>P13–15</i></span><span class="fchip">任务写法<i>P16</i></span><span class="fchip">隐性工时<i>P17</i></span><span class="fchip">交接信号<i>P18</i></span><span class="fchip">验证证据<i>P19</i></span><span class="fchip">权限与风险<i>P21</i></span><span class="fchip">代码读者<i>P22</i></span><span class="fchip">失败恢复<i>P23</i></span><span class="fchip">可信来源<i>P29</i></span><span class="fchip">错误样例<i>P30</i></span></div></div><div class="band l3"><div class="band-h"><b>L3 人的层</b><span>只能影响，不能替代</span></div><div class="fchips"><span class="fchip">失败归因<i>P24</i></span><span class="fchip">习惯三层<i>P25</i></span><span class="fchip">情境差异<i>P26</i></span><span class="fchip">学习窗口<i>P32</i></span><span class="fchip">学会标准<i>P33</i></span><span class="fchip">团队变薄<i>P34</i></span></div></div>
-  <div class="map-note">越往下，产品能直接做的越少；但越往下，越决定长期结果。<b>上两层是这一版能做的工作，第三层是做完之后仍然存在的风险。</b></div>
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">10 个正在发生的变化，10 个还没修的问题</span></div><div class="subttl">发现与启示 · 现象与问题</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
+<div class="map2">
+  <div class="band2 xian">
+    <div class="band2-h"><b>现象 · 正在发生什么</b><span>10 条 · 中性描述，是判断前提</span></div>
+    <div class="fchips"><span class="fchip"><i class="dot l2"></i>任务写法成为主战场<em>P16</em></span><span class="fchip"><i class="dot l2"></i>代码的读者变成 AI<em>P22</em></span><span class="fchip"><i class="dot l2"></i>三种协作形态并存<em>P13–15</em></span><span class="fchip"><i class="dot l1"></i>模型档位就高不就低<em>P6</em></span><span class="fchip"><i class="dot l2"></i>权限开到最大<em>P21</em></span><span class="fchip"><i class="dot l2"></i>可信度按离执行远近排序<em>P29</em></span><span class="fchip"><i class="dot l3"></i>学习挤进等待窗口<em>P32</em></span><span class="fchip"><i class="dot l3"></i>"学会"的标准分裂<em>P33</em></span><span class="fchip"><i class="dot l3"></i>失败归因于自己<em>P24</em></span><span class="fchip"><i class="dot l3"></i>团队的理解在变薄<em>P34</em></span></div>
+  </div>
+  <div class="band2 wen">
+    <div class="band2-h"><b>问题 · 哪里还坏着</b><span>10 条 · 有损害、有责任方</span></div>
+    <div class="fchips"><span class="fchip"><i class="dot l1"></i>开工前的环境门槛<em>P12</em></span><span class="fchip"><i class="dot l1"></i>上下文没人托管<em>P28</em></span><span class="fchip"><i class="dot l1"></i>任务状态看不见<em>P27</em></span><span class="fchip"><i class="dot l1"></i>官方 Skill 把流程当产品<em>P31</em></span><span class="fchip"><i class="dot l1"></i>AI 自信地错，自检不可信<em>P20</em></span><span class="fchip"><i class="dot l2"></i>错误样例稀缺<em>P30</em></span><span class="fchip"><i class="dot l2"></i>隐性工时不计入<em>P17</em></span><span class="fchip"><i class="dot l2"></i>交接判据依赖经验<em>P18</em></span><span class="fchip"><i class="dot l2"></i>恢复靠换模型<em>P23</em></span><span class="fchip"><i class="dot l2"></i>来源展示不进决策链<em>P19</em></span></div>
+  </div>
+  <div class="map2-foot">
+    <span>两处"读法"不算发现：偏好 ≠ 行为（P25）、同一行为在不同情境下含义不同（P26）</span>
+    <span class="map2-lg"><i class="dot l1"></i>L1 工具层<i class="dot l2"></i>L2 协作层<i class="dot l3"></i>L3 人的层</span>
+  </div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">五条核心发现：跨三层各挑一条</span></div><div class="subttl">发现与启示 · 核心结论</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area"><div class="led"><div class="led-r"><div class="led-n">1</div><div class="led-b"><h4>任务写法是唯一没有被接管的工序：定验收、配上下文、拆粒度、套格式<span class="stg l2">L2 协作层</span></h4><p>王伟用自沉淀的格式写详设、把 API 链接贴进去；徐立桂"拆得越细，AI 执行越符合预期"；彭椒与王鹤锦都说最耗时的是"提目标"。</p><p style="color:var(--ink-3)"><b>边界：</b>时间占比为自报；四道工序由研究者归纳。</p></div></div><div class="led-r"><div class="led-n">2</div><div class="led-b"><h4>AI 不会说"我不会"：失败不是报错，是自信地给一个错答案<span class="stg l1">L1 工具层</span></h4><p>郑雨豪"他做的是错的，但他认为他是对的"；徐立桂"生成 slop，非常规范"；王鹤锦"乱编函数名，一问就改过来"；王伟"左右脑互搏"。</p><p style="color:var(--ink-3)"><b>边界：</b>四人均为叙述，未做系统对照；但这解释了为什么"问它确定吗"无效。</p></div></div><div class="led-r"><div class="led-n">3</div><div class="led-b"><h4>上下文是新的工作记忆，但它只是会话的副产品<span class="stg l1">L1 工具层</span></h4><p>6/6 都有补丁：王鹤锦压缩丢记忆、郑雨豪"按目录隔离"、王伟拉进度条、梁淼城"加载很慢"、彭椒手动另存、徐立桂定期整理。</p><p style="color:var(--ink-3)"><b>边界：</b>属工具现状，随产品版本变化很快，不是用户特质。</p></div></div><div class="led-r"><div class="led-n">4</div><div class="led-b"><h4>失败恢复不是"人接管"，是重新分配控制权<span class="stg l2">L2 协作层</span></h4><p>5 人靠换模型、重写、回滚；徐立桂收回拆解权，但拆完仍交给 AI 执行——"拆得越细，AI 执行越符合预期"。</p><p style="color:var(--ink-3)"><b>边界：</b>仅 1 例走"拆细再交办"，不能推断比例。</p></div></div><div class="led-r"><div class="led-n">5</div><div class="led-b"><h4>写的人和评审的人同时变薄，是团队层面的风险<span class="stg l3">L3 人的层</span></h4><p>王伟：新员工"原理理解比较少"，自己也"没有之前理解那么深"；徐立桂"越来越多东西变成黑盒"；郑雨豪"AI 会了，我不会"；committer"都是让 AI 看的"。</p><p style="color:var(--ink-3)"><b>边界：</b>示意图为研究者建构，非测量；长期趋势需要纵向跟踪。</p></div></div></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">五条核心：三条现象，两个问题</span></div><div class="subttl">发现与启示 · 核心结论</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area"><div class="led"><div class="led-r"><div class="led-n">1</div><div class="led-b"><h4>任务写法成为主战场：定验收、配上下文、拆粒度、套格式<span class="stg kind-x">现象</span><span class="stg l2">L2</span></h4><p>王伟用自沉淀的格式写详设、把 API 链接贴进去；徐立桂"拆得越细，AI 执行越符合预期"；彭椒与王鹤锦都说最耗时的是"提目标"。</p><p style="color:var(--ink-3)"><b>边界：</b>时间占比为自报；四道工序由研究者归纳。</p></div></div><div class="led-r"><div class="led-n">2</div><div class="led-b"><h4>代码的读者变成 AI：人只核核心，评审也交给 AI<span class="stg kind-x">现象</span><span class="stg l2">L2</span></h4><p>王伟："几万行代码，你让 committer 去检视，谁都检视不了……只能拆成 10 个 PR""我感觉现在他们都是让 AI 看的"；郑雨豪"几千行、可读性差，看不完"；徐立桂"一般不看代码，让 AI 讲模块组织"。</p><p style="color:var(--ink-3)"><b>边界：</b>三人叙述，未统计评审时长；"可读性"标准分裂属推论。</p></div></div><div class="led-r"><div class="led-n">3</div><div class="led-b"><h4>学习挤进了 AI 干活的等待窗口<span class="stg kind-x">现象</span><span class="stg l3">L3</span></h4><p>王伟："AI 在干活的时候，自己去学一些东西"，被动 : 主动 ≈ 7 : 3；王鹤锦等 AI 跑实验时读论文；徐立桂后台轮询的间隙查资料。</p><p style="color:var(--ink-3)"><b>边界：</b>等待时长与学习量未测量。</p></div></div><div class="led-r"><div class="led-n">4</div><div class="led-b"><h4>上下文是新的工作记忆，却没人托管<span class="stg kind-w">问题</span><span class="stg l1">L1</span></h4><p>6/6 都在打补丁：王鹤锦压缩丢记忆、郑雨豪"按目录隔离"、王伟拉进度条、梁淼城"加载很慢"、彭椒手动另存、徐立桂定期整理。</p><p style="color:var(--ink-3)"><b>边界：</b>属工具现状，随产品版本变化很快，不是用户特质。</p></div></div><div class="led-r"><div class="led-n">5</div><div class="led-b"><h4>AI 不会说"我不会"，自检信号不可信<span class="stg kind-w">问题</span><span class="stg l1">L1</span></h4><p>郑雨豪"他做的是错的，但他认为他是对的"；徐立桂"生成 slop，非常规范"；王鹤锦"乱编函数名，一问就改过来"；王伟"左右脑互搏"。</p><p style="color:var(--ink-3)"><b>边界：</b>四人均为叙述，未做系统对照；但它解释了为什么"问它确定吗"无效。</p></div></div></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">设计启发：八条方向按"价值 × 成本"排优先级</span></div><div class="subttl">发现与启示 · 设计启发</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
 <div class="m4">
   <div>
     <h2 style="font-size:clamp(18px,1.45vw,24px);line-height:1.35;font-weight:800;color:var(--ink);margin-bottom:1.4vh">先做"上下文装配"和"验证凭据"：<br>它们同时抬高价值、压低成本</h2>
-    <p style="font-size:12.4px;color:var(--ink-2);line-height:1.6;margin-bottom:1.4vh">八条启发全部回指前五条发现，按"用户价值 × 实现成本"排优先级；每条标注依据，避免做成功能清单。</p>
+    <p style="font-size:12.4px;color:var(--ink-2);line-height:1.6;margin-bottom:1.4vh">每条标注它回应的那一页发现（P##），按"用户价值 × 实现成本"排优先级，避免做成功能清单。</p>
     <div class="cx-concl"><span class="ck">取舍</span><span class="cv">不做"新建知识库"：六人里已有四人把沉淀放在文件系统里，唯一想建库的人自己也承认"知识还是单点"。</span></div>
   </div>
   <div>
     <div class="ax-tag">价值 高 ↑</div>
     <div class="m4-grid">
       <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
-        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>F2</em></span>
-        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>F1</em></span>
-        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>F3</em></span>
+        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P19</em></span>
+        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P31</em></span>
+        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P28</em></span>
       </div>
       <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
-        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>F1</em></span>
-        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>F2</em></span>
-        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>F4</em></span>
-        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>F2</em></span>
+        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P16</em></span>
+        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P18</em></span>
+        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P23</em></span>
+        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P27</em></span>
       </div>
       <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
-        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>F2</em></span>
-        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>F3</em></span>
+        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P19</em></span>
+        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P28</em></span>
       </div>
       <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
-        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>F5</em></span>
-        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>F5</em></span>
+        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P32</em></span>
+        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P18</em></span>
       </div>
     </div>
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>
