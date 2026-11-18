@@ -76,8 +76,14 @@
           <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2.5">
             CANN 开源文档
           </h1>
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-2.5">
             CANN开源文档中心，汇聚编程指南、API参考、通信库等各类技术文档，为开发者提供一站式参考。
+          </p>
+
+          <!-- 版本状态说明（去掉了“免责声明”标签） -->
+          <p class="flex items-start gap-1.5 text-xs text-slate-500 leading-relaxed mb-6">
+            <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>本站内容基于CANN开源社区master分支的文档自动编译生成，属于持续开发版本，可能存在缺陷，仅供预览与参考。如需稳定发布文档，请查阅<a href="#stable-docs" class="text-[#0052D9] hover:underline underline-offset-2 font-medium mx-0.5">昇腾社区-CANN产品文档</a>。</span>
           </p>
 
           <!-- 实时过滤搜索框 -->
@@ -119,20 +125,6 @@
       </div>
     </div>
   </section>
-
-  <!-- 首屏版本状态提示条 -->
-  <div class="bg-[#E9F1FF] border-b border-[#D3E1FA]">
-    <div class="max-w-6xl mx-auto px-6 py-2.5 flex flex-wrap items-center justify-between gap-x-5 gap-y-1.5 text-xs">
-      <p class="flex items-start gap-2 text-slate-700 leading-relaxed">
-        <svg class="w-3.5 h-3.5 mt-px flex-shrink-0 text-[#0052D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span>本站内容基于CANN开源社区master分支的文档自动编译生成，属于持续开发版本，可能存在缺陷，仅供预览与参考。如需稳定发布文档，请查阅昇腾社区-CANN产品文档。</span>
-      </p>
-      <a href="#stable-docs" class="flex-shrink-0 whitespace-nowrap font-medium text-[#0052D9] hover:text-[#003FB0] underline decoration-transparent hover:decoration-current underline-offset-4 transition-colors flex items-center gap-1">
-        前往稳定版
-        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-      </a>
-    </div>
-  </div>
 
   <!-- 主内容区 -->
   <main class="max-w-6xl w-full mx-auto px-6 py-9 flex-1">
