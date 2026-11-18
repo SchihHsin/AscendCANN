@@ -317,5 +317,22 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 20";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 21";opacity:.8}
+
+.tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
+.tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
+.tflow-band{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.86);border-radius:16px;overflow:hidden;box-shadow:0 16px 40px -30px rgba(30,40,70,.5)}
+.tstep{padding:3.2vh 1.2vw;display:flex;flex-direction:column;gap:.9vh;border-right:1px dashed rgba(47,61,99,.16);min-width:0}
+.tstep:last-child{border-right:0}
+.tstep .no{font-family:'Inter';font-weight:200;font-size:clamp(30px,3.2vw,48px);line-height:1;color:rgba(91,91,214,.38);letter-spacing:-.02em}
+.tstep h3{font-size:clamp(13.5px,1.05vw,17px);font-weight:800;color:var(--ink);margin-top:.3vh}
+.tstep .q{font-size:11.4px;color:var(--ink-3)}
+.tstep .tev{margin-top:1.4vh;font-size:12px;color:var(--ink-2);line-height:1.6}
+.tstep .tev b{color:var(--ink);font-weight:600}
+.tstep .bad{margin-top:2.2vh;padding-top:1.2vh;border-top:1px dashed rgba(47,61,99,.16);font-size:10.6px;line-height:1.45;color:#8E2F35}
+.tflow-foot{display:grid;grid-template-columns:1.35fr 1fr;gap:1.2vw;align-items:stretch}
+.tf-quote{display:flex;flex-direction:column;gap:.7vh;justify-content:center}
+.tf-h{font-size:10.6px;font-weight:700;letter-spacing:.1em;color:var(--ink-3);font-family:'JetBrains Mono';text-transform:uppercase;margin-bottom:.2vh}
+.tf-quote p{font-size:11.4px;line-height:1.5;color:var(--ink-2)}
+.tf-quote p b{color:var(--ink);font-weight:700}
 """
