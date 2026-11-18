@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 32";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 34";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -528,4 +528,39 @@ CSS_EXTRA += r"""
 .attr-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
 .attr-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
 .attr-quotes b{color:var(--ink)}
+
+/* Y1 上下文会漏 */
+.mem-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2.6vh}
+.mem-top{font-size:12px;color:var(--ink-3)}
+.leaks{display:grid;grid-template-columns:repeat(3,1fr);gap:2vw}
+.leak{display:flex;flex-direction:column;gap:.9vh}
+.leak-d{display:flex;align-items:center;height:34px;margin-bottom:.4vh}
+.ld-b{flex:1;height:100%;border-radius:5px;background:rgba(75,75,168,.14)}
+.ld-g{position:relative;width:40px;height:100%;flex:none}
+.ld-g::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dashed #B3403A}
+.ld-g::after{content:"×";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#B3403A;font-size:15px;font-weight:700;background:var(--paper);line-height:1;padding:1px 2px}
+.leak b{font-size:13.4px;color:var(--ink)}
+.leak p{font-size:11.4px;color:var(--ink-2);line-height:1.55}
+.leak-s{font-size:10.6px;color:var(--ink-3);line-height:1.45}
+.fix-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;border-top:1px solid rgba(47,61,99,.14);padding-top:2vh}
+.fix{display:flex;flex-direction:column;gap:.4vh}
+.fix b{font-size:12px;color:#3B3B85}
+.fix span{font-size:11px;color:var(--ink-2);line-height:1.5}
+
+/* Y2 学会的标准 */
+.std-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.8vh}
+.std-axis{position:relative;height:16vh;min-height:110px}
+.std-line{position:absolute;left:4%;right:4%;top:58%;height:2px;background:linear-gradient(90deg,#D8DEE7,#8C97A5,#4B4BA8)}
+.std-pt{position:absolute;top:58%;transform:translate(-50%,-50%);width:210px;display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center}
+.std-pt b{font-size:15px;color:var(--ink);line-height:1.1}
+.std-pt span{font-size:10.6px;color:var(--ink-3)}
+.std-dot{width:13px;height:13px;border-radius:50%;background:#4B4BA8;border:2.5px solid #fff;box-shadow:0 0 0 2px rgba(75,75,168,.28);margin:.2vh 0}
+.std-pt em{font-style:normal;font-size:11px;color:var(--ink-2);line-height:1.25}
+.std-pt i{font-style:normal;font-size:10.2px;color:var(--ink-3)}
+.std-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8vw}
+.std-q{font-size:11.2px;color:var(--ink-2);line-height:1.55;border-top:1px solid rgba(47,61,99,.14);padding-top:1.2vh}
+.std-q b{color:var(--ink);font-weight:700}
+.std-q span{display:block;margin-top:.5em;color:var(--ink-3)}
+.std-note{font-size:11.2px;color:var(--ink-2);line-height:1.5}
+.std-note b{color:var(--ink)}
 """

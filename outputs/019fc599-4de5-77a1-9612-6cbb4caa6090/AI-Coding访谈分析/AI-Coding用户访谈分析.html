@@ -617,7 +617,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 32";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 34";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -824,6 +824,41 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .attr-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
 .attr-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
 .attr-quotes b{color:var(--ink)}
+
+/* Y1 上下文会漏 */
+.mem-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2.6vh}
+.mem-top{font-size:12px;color:var(--ink-3)}
+.leaks{display:grid;grid-template-columns:repeat(3,1fr);gap:2vw}
+.leak{display:flex;flex-direction:column;gap:.9vh}
+.leak-d{display:flex;align-items:center;height:34px;margin-bottom:.4vh}
+.ld-b{flex:1;height:100%;border-radius:5px;background:rgba(75,75,168,.14)}
+.ld-g{position:relative;width:40px;height:100%;flex:none}
+.ld-g::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dashed #B3403A}
+.ld-g::after{content:"×";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#B3403A;font-size:15px;font-weight:700;background:var(--paper);line-height:1;padding:1px 2px}
+.leak b{font-size:13.4px;color:var(--ink)}
+.leak p{font-size:11.4px;color:var(--ink-2);line-height:1.55}
+.leak-s{font-size:10.6px;color:var(--ink-3);line-height:1.45}
+.fix-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;border-top:1px solid rgba(47,61,99,.14);padding-top:2vh}
+.fix{display:flex;flex-direction:column;gap:.4vh}
+.fix b{font-size:12px;color:#3B3B85}
+.fix span{font-size:11px;color:var(--ink-2);line-height:1.5}
+
+/* Y2 学会的标准 */
+.std-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.8vh}
+.std-axis{position:relative;height:16vh;min-height:110px}
+.std-line{position:absolute;left:4%;right:4%;top:58%;height:2px;background:linear-gradient(90deg,#D8DEE7,#8C97A5,#4B4BA8)}
+.std-pt{position:absolute;top:58%;transform:translate(-50%,-50%);width:210px;display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center}
+.std-pt b{font-size:15px;color:var(--ink);line-height:1.1}
+.std-pt span{font-size:10.6px;color:var(--ink-3)}
+.std-dot{width:13px;height:13px;border-radius:50%;background:#4B4BA8;border:2.5px solid #fff;box-shadow:0 0 0 2px rgba(75,75,168,.28);margin:.2vh 0}
+.std-pt em{font-style:normal;font-size:11px;color:var(--ink-2);line-height:1.25}
+.std-pt i{font-style:normal;font-size:10.2px;color:var(--ink-3)}
+.std-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8vw}
+.std-q{font-size:11.2px;color:var(--ink-2);line-height:1.55;border-top:1px solid rgba(47,61,99,.14);padding-top:1.2vh}
+.std-q b{color:var(--ink);font-weight:700}
+.std-q span{display:block;margin-top:.5em;color:var(--ink-3)}
+.std-note{font-size:11.2px;color:var(--ink-2);line-height:1.5}
+.std-note b{color:var(--ink)}
 
 </style>
 </head>
@@ -1171,6 +1206,18 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </div>
 <div class="cx-concl" style="margin-top:1.6vh"><span class="ck">结论</span><span class="cv">卡住的不是并行能力，是<b>任务级的状态可见性</b>：工具都在优化"一次对话"，没人做"任务看板"。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">上下文成了新的工作记忆，但没人对它负责</span></div><div class="subttl">习惯与偏好 · 记忆的缺口</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="active">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="mem-wrap">
+  <div class="mem-top">同一段任务的历史，会在三个地方漏掉——而补漏洞的活全落在人身上</div>
+  <div class="leaks"><div class="leak"><div class="leak-d"><div class="ld-b"></div><div class="ld-g"></div><div class="ld-b"></div></div><b>压缩 / clear</b><p>王鹤锦："压缩过的对话会<b>丢失记忆</b>，clear 后也会丢失。"</p><span class="leak-s">于是靠 /btw 提问、按 Esc 回到任务</span></div><div class="leak"><div class="leak-d"><div class="ld-b"></div><div class="ld-g"></div><div class="ld-b"></div></div><b>按目录隔离</b><p>郑雨豪："会话是按<b>工作目录</b>做的，切换到其他目录，上一个会话就丢掉了。"</p><span class="leak-s">于是跨任务时手动翻、手动搬</span></div><div class="leak"><div class="leak-d"><div class="ld-b"></div><div class="ld-g"></div><div class="ld-b"></div></div><b>跨工具不共享</b><p>彭椒："OpenCode 里觉得有用的内容，会<b>手动保存在别的地方</b>（VS Code）。"</p><span class="leak-s">于是每个工具一套记忆</span></div></div>
+  <div class="fix-row">
+    <div class="fix"><b>补丁一 · 翻</b><span>王伟拉进度条、梁淼城翻聊天记录（"加载很慢"）、郑雨豪手动往上翻</span></div>
+    <div class="fix"><b>补丁二 · 另存</b><span>彭椒存进编辑器、徐立桂定期让 codex 整理进 Obsidian</span></div>
+    <div class="fix"><b>补丁三 · 定时提醒</b><span>梁淼城另开定时任务，每 2–3 小时提醒"哪条会话忘了回"</span></div>
+  </div>
+  <div class="cx-concl"><span class="ck">结论</span><span class="cv">上下文已经成了开发者的<b>工作记忆</b>，但它只是会话的副产品：<b>不可检索、不可迁移、不可交接</b>。记忆管理应该由工具承担，而不是靠人打三种补丁。</span></div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">知识从"卡点"进来，靠"离执行最近"的证据站住，最后落回文件</span></div><div class="subttl">知识与学习 · 获取、可信与沉淀</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="active">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
 <div class="kl">
   <div class="kl-left">
@@ -1266,6 +1313,21 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div><b>王伟</b>：等 AI 出初版时，"对一些感兴趣的算子，让 AI 先读代码，自己边看边理解"</div>
   </div>
   <div class="cx-concl"><span class="ck">对学习产品</span><span class="cv">不要另开一个"学习模式"——<b>要占的就是这段等待窗口</b>：把 AI 正在做的事变成可读的、可追问的，而不是让人盯着进度条。</span></div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">"学会"没有统一标准：会用 / 能复现 / 亲手写</span></div><div class="subttl">知识与学习 · 学习的标准</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="active">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="std-wrap">
+  <div class="std-axis">
+    <div class="std-line"></div>
+    <div class="std-pt" style="left:12%"><b>会用</b><span>徐立桂</span><div class="std-dot"></div><em>最重要的是学会怎么用 AI</em><i>黑盒化也无所谓</i></div><div class="std-pt" style="left:50%"><b>能复现</b><span>梁淼城</span><div class="std-dot"></div><em>看过代码、能自己复现</em><i>才算学会</i></div><div class="std-pt" style="left:88%"><b>亲手写</b><span>王鹤锦</span><div class="std-dot"></div><em>代码我自己写，AI 只指导</em><i>"算不算偷懒？"</i></div>
+  </div>
+  <div class="std-quotes">
+    <div class="std-q"><b>徐立桂</b>："最重要的是你学会<b>怎么用 AI</b>，AI 的能力肯定不会越来越弱。"<span>"确实对很多细节完全没有感知了，越来越多东西变成黑盒……不需要深究，让 AI 再写一遍。"</span></div>
+    <div class="std-q"><b>梁淼城</b>："<b>除非我看过代码、确定自己能复现</b>，我才觉得自己是学会的，不然工程开发的时候也不关心学没学会。"</div>
+    <div class="std-q"><b>王鹤锦</b>："我想学 vLLM，就让 AI 写规划，<b>代码我自己写</b>。"<span>"这些技术实现上的小问题，如果 AI 帮我做了，算不算是我偷懒了？"</span></div>
+  </div>
+  <div class="std-note"><b>王伟的旁观：</b>试错被跳过之后，"对那些 API 的用法，只是大致知道它是干什么的"——这正好是"会用"这一端要付的代价。</div>
+  <div class="cx-concl"><span class="ck">设计含义</span><span class="cv">三种标准不是水平差异，而是<b>目标差异</b>。学习产品如果默认"会用就行"，就做不出"能复现"和"亲手写"需要的路径；反过来也一样。</span></div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">五条有证据的发现</span></div><div class="subttl">发现与启示 · 结论与证据</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area"><div class="led"><div class="led-r"><div class="led-n">1</div><div class="led-b"><h4>编码被压缩，"把任务写成 AI 接得住的形式"成为主战场<span class="stg l2">跨案例模式</span></h4><p>王伟：人工审查约 70%、写文档 15%，并用自沉淀的格式出详设；彭椒/王鹤锦：时间主要花在"提出目标"；徐立桂："拆得越细，AI 执行越符合预期"。</p><p style="color:var(--ink-3)"><b>边界：</b>自报时间占比，非观测；"任务写法"由四道工序归纳而来，属研究者编码。</p></div></div><div class="led-r"><div class="led-n">2</div><div class="led-b"><h4>交接由可观察的异常信号触发，判据却不可移植<span class="stg l2">跨案例模式</span></h4><p>梁淼城："出现很多一两行的函数，我就知道肯定是（过度设计）"；王伟：看 thought 发现"尝试完全都不对"；徐立桂："节点搞得非常复杂，不停做哈希"。</p><p style="color:var(--ink-3)"><b>边界：</b>同一信号在新手眼里不构成信号——判据来自经验，不来自工具。</p></div></div><div class="led-r"><div class="led-n">3</div><div class="led-b"><h4>验证只认执行证据；来源需求随严谨度变化，并与审查行为脱节<span class="stg l2">跨案例模式</span></h4><p>6/6 以运行结果/测试/golden/benchmark 为准；郑雨豪要来源、王伟不看来源；徐立桂以头文件为最权威，却"一般不看代码"。</p><p style="color:var(--ink-3)"><b>边界：</b>"不看来源"不等于不需要可追溯，只说明当前的来源展示没有进入他的决策链。</p></div></div><div class="led-r"><div class="led-n">4</div><div class="led-b"><h4>失败后没有人真正"自己接手"：差别在交办粒度，不在人机分工<span class="stg l2">跨案例模式</span></h4><p>梁淼城/郑雨豪/王鹤锦/王伟以换模型、重写、回滚为主；徐立桂收回拆解权，但拆完仍交给 AI 执行——"拆得越细，AI 执行越符合预期，因为他不用猜了"。</p><p style="color:var(--ink-3)"><b>边界：</b>样本中仅 1 例走"拆细再交办"，不能推断比例；它说明恢复能力更像"拆解能力"而非"接管能力"。</p></div></div><div class="led-r"><div class="led-n">5</div><div class="led-b"><h4>AI 压缩的是试错与排错，不压缩编码；学习损失集中在参数、归因与性能直觉<span class="stg l3">待验证</span></h4><p>王伟："试错是知识增长最快的一个阶段……Agent 把这一步跳过了"；郑雨豪："AI 会了，我不会"；梁淼城：排错被压缩影响日后 debug；反例：王鹤锦为学 vLLM 坚持自己写代码。</p><p style="color:var(--ink-3)"><b>边界：</b>未做前后测，无法量化损失；只能确认"损失发生在哪一段"。</p></div></div></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
