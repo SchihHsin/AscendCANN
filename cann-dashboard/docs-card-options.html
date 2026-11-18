@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CANN 开源文档中心 - 卡片方案对比</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-color: #F5F7FA;
+      color: #1D2129;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .hero-grid {
+      background-image: radial-gradient(#CBD5E1 0.85px, transparent 0.85px);
+      background-size: 20px 20px;
+    }
+
+    /* 方案一 Bento 卡片交互 */
+    .bento-card {
+      background: #FFFFFF;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 4px 10px -4px rgba(0, 82, 217, 0.04);
+    }
+
+    /* 方案二 聚光灯 + 水印卡片交互 */
+    .spotlight-card {
+      position: relative;
+      background: #FFFFFF;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+    }
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(360px circle at var(--mouse-x) var(--mouse-y), rgba(0, 82, 217, 0.055), transparent 75%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .spotlight-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.07);
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+    .spotlight-card:hover .card-watermark {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+    .card-watermark {
+      opacity: 0.42;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    /* 通用文档条目微交互 */
+    .doc-link {
+      transition: all 0.15s ease;
+    }
+    .doc-link:hover {
+      background-color: #F2F6FF;
+      color: #0052D9;
+    }
+    .doc-link:hover .link-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .link-arrow {
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: all 0.15s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 顶部轻量级状态公告栏 -->
+  <div class="bg-[#FFF8EB] text-[#8C5A00] text-xs py-2 px-4 border-b border-[#F5E6C8]">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-[#F59E0B] animate-pulse"></span>
+        <span>
+          <strong>预览版本：</strong>本站内容基于 CANN 开源社区 <code class="font-mono-code bg-[#FDECC8] px-1.5 py-0.5 rounded text-[#7A4B00]">master</code> 分支自动编译生成，属于持续开发版本，仅供预览与参考。
+        </span>
+      </div>
+      <a href="#stable-docs" class="font-medium text-[#B45309] hover:text-[#78350F] underline underline-offset-2 flex items-center gap-1">
+        前往昇腾社区-CANN产品文档（稳定版）
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- 极简顶栏 -->
+  <header class="bg-white/90 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/70">
+    <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-[#0052D9] flex items-center justify-center text-white font-bold text-sm shadow-xs">
+          C
+        </div>
+        <span class="font-semibold text-base tracking-tight text-slate-900">CANN 开源文档中心</span>
+        <span class="font-mono-code text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-[#0052D9] font-medium">
+          master
+        </span>
+      </div>
+
+      <!-- 方案对比切换器（Tab） -->
+      <div class="bg-[#F5F7FA] p-1 rounded-xl flex items-center gap-1 ring-1 ring-slate-200/80" role="tablist">
+        <button
+          id="tab-bento"
+          onclick="switchLayout('bento')"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-[#0052D9] shadow-xs"
+        >
+          方案一：架构分层 Bento 布局
+        </button>
+        <button
+          id="tab-spotlight"
+          onclick="switchLayout('spotlight')"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-600 hover:text-slate-900"
+        >
+          方案二：微质感代码风矩阵
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero 检索区 -->
+  <section class="bg-white hero-grid border-b border-slate-200/60">
+    <div class="max-w-6xl mx-auto px-6 py-10 md:py-12">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2.5">
+            CANN 开源文档
+          </h1>
+          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+            CANN开源文档中心，汇聚编程指南、API参考、通信库等各类技术文档，为开发者提供一站式参考。
+          </p>
+
+          <!-- 实时过滤搜索框 -->
+          <div class="relative max-w-xl mb-3.5">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input
+              id="docSearchInput"
+              type="text"
+              placeholder="快速定位文档模块或接口（如：Ascend C、PyPTO、HCCL、ATC、故障处理）..."
+              class="w-full pl-10 pr-16 py-3 bg-[#F5F7FA] focus:bg-white text-sm text-slate-900 placeholder-slate-400 rounded-xl outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-[#0052D9] transition-all"
+            />
+            <div class="absolute inset-y-0 right-3 flex items-center gap-1.5">
+              <button id="clearSearchBtn" class="hidden text-xs text-slate-400 hover:text-slate-600 px-1.5">清除</button>
+              <kbd class="font-mono-code text-[11px] text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">/</kbd>
+            </div>
+          </div>
+
+          <!-- 高频直达胶囊 -->
+          <div class="flex flex-wrap items-center gap-1.5 text-xs">
+            <span class="text-slate-400 mr-1">高频直达：</span>
+            <button onclick="quickFilter('Ascend C')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">Ascend C</button>
+            <button onclick="quickFilter('PyPTO')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">PyPTO</button>
+            <button onclick="quickFilter('HCCL')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">HCCL通信</button>
+            <button onclick="quickFilter('调优')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">性能调优</button>
+            <button onclick="quickFilter('故障')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">故障处理</button>
+          </div>
+        </div>
+
+        <!-- 当前方案设计要点提示卡 -->
+        <div id="layoutHintBox" class="bg-[#F5F7FA] rounded-xl p-4 max-w-sm text-xs text-slate-600 leading-relaxed">
+          <div class="font-semibold text-slate-900 mb-1 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#0052D9]"></span>
+            <span id="hintTitle">当前预览：方案一 · 架构分层 Bento 布局</span>
+          </div>
+          <p id="hintDesc">通过宽卡与标准卡的尺寸对比打破平铺感：首排双宽卡突出「编程语言」与「API参考」核心链路，底部「参考」收敛为横向速查面板。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主内容区 -->
+  <main class="max-w-6xl w-full mx-auto px-6 py-9 flex-1">
+
+    <!-- 搜索无结果空状态 -->
+    <div id="emptyState" class="hidden bg-white rounded-2xl p-12 text-center">
+      <p class="text-slate-500 text-sm mb-2">未找到与 "<span id="emptyKeyword" class="font-semibold text-slate-800"></span>" 匹配的文档模块</p>
+      <button onclick="resetFilter()" class="text-xs text-[#0052D9] hover:underline font-medium">重置筛选条件</button>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- 方案一：架构分层 Bento 布局 (Architecture Bento Grid)                  -->
+    <!-- ===================================================================== -->
+    <div id="view-bento" class="space-y-6">
+      
+      <!-- 第一层：核心开发与接口（双宽卡 6:6 非对称内部分栏） -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- 1. 编程语言（主宽卡） -->
+        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-white via-white to-blue-50/40">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-[#0052D9] text-white flex items-center justify-center shadow-xs">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </span>
+                <div>
+                  <h2 class="font-bold text-base text-slate-900">编程语言</h2>
+                  <p class="text-xs text-slate-500">面向算子与计算图的多层级编程范式</p>
+                </div>
+              </div>
+              <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-blue-50 text-[#0052D9]">核心开发入口</span>
+            </div>
+
+            <!-- 极简开发路径微示意 -->
+            <div class="my-4 px-3 py-2 rounded-lg bg-[#F5F7FA] flex items-center justify-between text-[11px] text-slate-500 font-mono-code">
+              <span>Kernel 核函数 (Ascend C / PyPTO)</span>
+              <span class="text-slate-300">──▶</span>
+              <span>Graph 计算图 (图开发)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <a href="#ascend-c" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="Ascend C算子开发 编程语言">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white text-[#0052D9] font-medium">C++ / Kernel</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </div>
+              <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">Ascend C算子开发</div>
+            </a>
+
+            <a href="#pypto" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="PyPTO算子开发 编程语言 Python">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white text-indigo-600 font-medium">Python</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </div>
+              <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">PyPTO算子开发</div>
+            </a>
+
+            <a href="#graph-dev" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="图开发 编程语言">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white text-slate-600 font-medium">Graph</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </div>
+              <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">图开发</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- 2. API参考（主宽卡：两列紧凑矩阵） -->
+        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-white via-white to-indigo-50/40">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+              </span>
+              <div>
+                <h2 class="font-bold text-base text-slate-900">API参考</h2>
+                <p class="text-xs text-slate-500">全栈算子库、运行时与图引擎接口索引</p>
+              </div>
+            </div>
+            <span class="font-mono-code text-xs text-slate-400">5 Modules</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <a href="#ascend-c-api" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="Ascend C API">
+              <span>Ascend C API</span>
+              <span class="link-arrow text-[#0052D9] text-xs">→</span>
+            </a>
+            <a href="#pypto-api" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="PyPTO API">
+              <span>PyPTO API</span>
+              <span class="link-arrow text-[#0052D9] text-xs">→</span>
+            </a>
+            <a href="#op-lib" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="算子库">
+              <span>算子库</span>
+              <span class="link-arrow text-[#0052D9] text-xs">→</span>
+            </a>
+            <a href="#runtime-api" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="Runtime运行时API">
+              <span>Runtime运行时API</span>
+              <span class="link-arrow text-[#0052D9] text-xs">→</span>
+            </a>
+            <a href="#ge-api" class="doc-item doc-link sm:col-span-2 flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="GE图引擎API">
+              <span>GE图引擎API</span>
+              <span class="link-arrow text-[#0052D9] text-xs">→</span>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- 第二层：核心能力组件（3列等宽：通信库 + 调试与分析工具 + 编译器与更多） -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- 3. 通信库 -->
+        <section class="doc-category bento-card rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+              </span>
+              <h2 class="font-semibold text-base text-slate-900">通信库</h2>
+            </div>
+            <!-- 迷你节点拓扑图标装饰 -->
+            <div class="flex items-center gap-1 opacity-60">
+              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+              <span class="w-3 h-0.5 bg-cyan-300"></span>
+              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">集群集合通信、单边通信与通算融合开发</p>
+          <ul class="space-y-1.5">
+            <li class="doc-item" data-keywords="HCCL集合通信库">
+              <a href="#hccl" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>HCCL集合通信库</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="HIXL单边通信库">
+              <a href="#hixl" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>HIXL单边通信库</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="通信算子开发">
+              <a href="#comm-op" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>通信算子开发</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <!-- 4. 调试与分析工具 -->
+        <section class="doc-category bento-card rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </span>
+              <h2 class="font-semibold text-base text-slate-900">调试与分析工具</h2>
+            </div>
+            <!-- 迷你泳道色块装饰 -->
+            <div class="flex items-end gap-0.5 h-3 opacity-70">
+              <span class="w-1 h-2 bg-emerald-400 rounded-xs"></span>
+              <span class="w-1 h-3 bg-emerald-500 rounded-xs"></span>
+              <span class="w-1 h-1.5 bg-emerald-300 rounded-xs"></span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">编译转换、Profiling 性能调优与带宽压测</p>
+          <ul class="space-y-1">
+            <li class="doc-item" data-keywords="算子编译工具">
+              <a href="#op-compiler" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>算子编译工具</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="性能调优工具">
+              <a href="#profiling" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>性能调优工具</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="ATC离线模型编译工具">
+              <a href="#atc" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>ATC离线模型编译工具</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="HCCL性能测试工具">
+              <a href="#hccl-test" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>HCCL性能测试工具</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <!-- 5. 编译器 & 更多 -->
+        <div class="flex flex-col gap-6">
+          <section class="doc-category bento-card rounded-2xl p-5">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                </span>
+                <h2 class="font-semibold text-base text-slate-900">编译器</h2>
+              </div>
+              <span class="font-mono-code text-[11px] text-purple-600 bg-purple-50 px-2 py-0.5 rounded">ISA</span>
+            </div>
+            <div class="doc-item" data-keywords="PTO虚拟指令集 编译器">
+              <a href="#pto-isa" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
+                <span>PTO虚拟指令集</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="doc-category bento-card rounded-2xl p-5 flex-1">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                </span>
+                <h2 class="font-semibold text-base text-slate-900">更多</h2>
+              </div>
+              <span class="text-xs text-slate-400">场景扩展</span>
+            </div>
+            <ul class="space-y-1">
+              <li class="doc-item" data-keywords="应用开发">
+                <a href="#app-dev" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700">
+                  <span>应用开发</span>
+                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                </a>
+              </li>
+              <li class="doc-item" data-keywords="LLM DataDist开发">
+                <a href="#llm-datadist" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700">
+                  <span>LLM DataDist开发</span>
+                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                </a>
+              </li>
+              <li class="doc-item" data-keywords="DataFlow开发">
+                <a href="#dataflow" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700">
+                  <span>DataFlow开发</span>
+                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                </a>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- 第三层：参考（通栏横向速查条） -->
+      <section class="doc-category bento-card rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </span>
+            <div>
+              <h2 class="font-semibold text-base text-slate-900">参考</h2>
+              <p class="text-xs text-slate-500">日常开发排障、参数配置与底层融合规范速查</p>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 font-mono-code">Quick Reference</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+          <a href="#troubleshooting" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="故障处理">
+            <span>故障处理</span>
+            <span class="link-arrow text-[#0052D9] text-xs">→</span>
+          </a>
+          <a href="#log-ref" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="日志参考">
+            <span>日志参考</span>
+            <span class="link-arrow text-[#0052D9] text-xs">→</span>
+          </a>
+          <a href="#env-ref" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="环境变量参考">
+            <span>环境变量参考</span>
+            <span class="link-arrow text-[#0052D9] text-xs">→</span>
+          </a>
+          <a href="#fusion-ref" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="图融合和UB融合规则参考">
+            <span>图融合和UB融合规则参考</span>
+            <span class="link-arrow text-[#0052D9] text-xs">→</span>
+          </a>
+          <a href="#data-struct" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="基础数据结构和接口">
+            <span>基础数据结构和接口</span>
+            <span class="link-arrow text-[#0052D9] text-xs">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- 方案二：微质感代码风矩阵 (Code-Native Micro-Visuals + Spotlight)      -->
+    <!-- ===================================================================== -->
+    <div id="view-spotlight" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- 1. 编程语言 -->
+      <section class="doc-category spotlight-card rounded-2xl p-6">
+        <!-- 代码特征水印 -->
+        <pre class="card-watermark font-mono-code text-[10px] leading-tight text-blue-200/90 absolute right-4 top-4 select-none text-right">__global__ __aicore__
+void kernel_main() {
+  Pipe pipe;
+}</pre>
+        <div class="relative z-10">
+          <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0052D9] flex items-center justify-center mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <h2 class="font-bold text-base text-slate-900 mb-1">编程语言</h2>
+          <p class="text-xs text-slate-500 mb-4">算子核函数与计算图构建指南</p>
+          <ul class="space-y-1.5">
+            <li class="doc-item" data-keywords="Ascend C算子开发 编程语言">
+              <a href="#ascend-c" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>Ascend C算子开发</span>
+                <span class="text-[11px] font-mono-code text-blue-600 bg-blue-50/90 px-1.5 py-0.5 rounded">高性能Kernel</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="PyPTO算子开发 编程语言">
+              <a href="#pypto" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>PyPTO算子开发</span>
+                <span class="text-[11px] font-mono-code text-indigo-600 bg-indigo-50/90 px-1.5 py-0.5 rounded">Python范式</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="图开发 编程语言">
+              <a href="#graph-dev" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>图开发</span>
+                <span class="text-[11px] font-mono-code text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">IR构图</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 2. API参考 -->
+      <section class="doc-category spotlight-card rounded-2xl p-6">
+        <pre class="card-watermark font-mono-code text-[10px] leading-tight text-indigo-200/90 absolute right-4 top-4 select-none text-right">aclrtMalloc(&devPtr,
+  size, ACL_MEM_MALLOC);
+aclnnAdd(...);</pre>
+        <div class="relative z-10">
+          <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+          </div>
+          <h2 class="font-bold text-base text-slate-900 mb-1">API参考</h2>
+          <p class="text-xs text-slate-500 mb-4">全栈接口函数签名与参数定义</p>
+          <ul class="space-y-1">
+            <li class="doc-item" data-keywords="Ascend C API">
+              <a href="#ascend-c-api" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>Ascend C API</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="PyPTO API">
+              <a href="#pypto-api" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>PyPTO API</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="算子库">
+              <a href="#op-lib" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>算子库</span>
+                <span class="text-[11px] font-mono-code text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">aclnn</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="Runtime运行时API">
+              <a href="#runtime-api" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>Runtime运行时API</span>
+                <span class="text-[11px] font-mono-code text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">aclrt</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="GE图引擎API">
+              <a href="#ge-api" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>GE图引擎API</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 3. 通信库 -->
+      <section class="doc-category spotlight-card rounded-2xl p-6">
+        <!-- SVG 环形拓扑水印 -->
+        <svg class="card-watermark w-20 h-20 text-cyan-200 absolute right-4 top-3" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="40" cy="40" r="24" stroke-dasharray="4 3"/>
+          <circle cx="40" cy="16" r="4" fill="currentColor"/>
+          <circle cx="64" cy="40" r="4" fill="currentColor"/>
+          <circle cx="40" cy="64" r="4" fill="currentColor"/>
+          <circle cx="16" cy="40" r="4" fill="currentColor"/>
+        </svg>
+        <div class="relative z-10">
+          <div class="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-700 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          </div>
+          <h2 class="font-bold text-base text-slate-900 mb-1">通信库</h2>
+          <p class="text-xs text-slate-500 mb-4">多卡高速互联与通算融合开发</p>
+          <ul class="space-y-1.5">
+            <li class="doc-item" data-keywords="HCCL集合通信库">
+              <a href="#hccl" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>HCCL集合通信库</span>
+                <span class="text-[11px] font-mono-code text-cyan-700 bg-cyan-50 px-1.5 py-0.5 rounded">AllReduce</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="HIXL单边通信库">
+              <a href="#hixl" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>HIXL单边通信库</span>
+                <span class="text-[11px] font-mono-code text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">单边RDMA</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="通信算子开发">
+              <a href="#comm-op" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>通信算子开发</span>
+                <span class="text-[11px] font-mono-code text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">通算融合</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 4. 调试与分析工具 -->
+      <section class="doc-category spotlight-card rounded-2xl p-6">
+        <!-- Profiling 泳道水印 -->
+        <div class="card-watermark absolute right-5 top-5 flex flex-col gap-1.5 w-20">
+          <div class="h-1.5 w-full bg-emerald-200 rounded-full"></div>
+          <div class="h-1.5 w-14 bg-emerald-300 rounded-full self-end"></div>
+          <div class="h-1.5 w-16 bg-emerald-200 rounded-full"></div>
+          <div class="h-1.5 w-10 bg-emerald-300 rounded-full self-center"></div>
+        </div>
+        <div class="relative z-10">
+          <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h2 class="font-bold text-base text-slate-900 mb-1">调试与分析工具</h2>
+          <p class="text-xs text-slate-500 mb-4">离线模型转换与全链路性能调优</p>
+          <ul class="space-y-1">
+            <li class="doc-item" data-keywords="算子编译工具">
+              <a href="#op-compiler" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>算子编译工具</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="性能调优工具">
+              <a href="#profiling" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>性能调优工具</span>
+                <span class="text-[11px] font-mono-code text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Profiling</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="ATC离线模型编译工具">
+              <a href="#atc" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>ATC离线模型编译工具</span>
+                <span class="text-[11px] font-mono-code text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">.om转换</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="HCCL性能测试工具">
+              <a href="#hccl-test" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>HCCL性能测试工具</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 5. 参考 -->
+      <section class="doc-category spotlight-card rounded-2xl p-6">
+        <pre class="card-watermark font-mono-code text-[10px] leading-tight text-amber-200/90 absolute right-4 top-4 select-none text-right">export ASCEND_SLOG
+_PRINT_TO_STDOUT=1
+[ERROR] E19999</pre>
+        <div class="relative z-10">
+          <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </div>
+          <h2 class="font-bold text-base text-slate-900 mb-1">参考</h2>
+          <p class="text-xs text-slate-500 mb-4">错误码排障、环境变量与融合规范</p>
+          <ul class="space-y-1">
+            <li class="doc-item" data-keywords="故障处理">
+              <a href="#troubleshooting" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>故障处理</span>
+                <span class="text-[11px] font-mono-code text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">排障指南</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="日志参考">
+              <a href="#log-ref" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>日志参考</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="环境变量参考">
+              <a href="#env-ref" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>环境变量参考</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="图融合和UB融合规则参考">
+              <a href="#fusion-ref" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>图融合和UB融合规则参考</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+            <li class="doc-item" data-keywords="基础数据结构和接口">
+              <a href="#data-struct" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                <span>基础数据结构和接口</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 6. 编译器 & 更多 -->
+      <div class="flex flex-col gap-6">
+        <section class="doc-category spotlight-card rounded-2xl p-6">
+          <pre class="card-watermark font-mono-code text-[10px] leading-tight text-purple-200/90 absolute right-4 top-4 select-none text-right">MOV.V0 R1, R2
+MADD.F16 V0, V1</pre>
+          <div class="relative z-10">
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              </div>
+              <h2 class="font-bold text-base text-slate-900">编译器</h2>
+            </div>
+            <div class="doc-item" data-keywords="PTO虚拟指令集 编译器">
+              <a href="#pto-isa" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-800">
+                <span>PTO虚拟指令集</span>
+                <span class="text-[11px] font-mono-code text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded">Virtual ISA</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-category spotlight-card rounded-2xl p-6 flex-1">
+          <div class="relative z-10">
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+              </div>
+              <h2 class="font-bold text-base text-slate-900">更多</h2>
+            </div>
+            <ul class="space-y-1">
+              <li class="doc-item" data-keywords="应用开发">
+                <a href="#app-dev" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                  <span>应用开发</span>
+                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                </a>
+              </li>
+              <li class="doc-item" data-keywords="LLM DataDist开发">
+                <a href="#llm-datadist" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                  <span>LLM DataDist开发</span>
+                  <span class="text-[11px] font-mono-code text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">分离部署</span>
+                </a>
+              </li>
+              <li class="doc-item" data-keywords="DataFlow开发">
+                <a href="#dataflow" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-800">
+                  <span>DataFlow开发</span>
+                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 页脚免责声明与版权 -->
+  <footer class="bg-white border-t border-slate-200/80 mt-10">
+    <div class="max-w-6xl mx-auto px-6 py-7">
+      <div class="bg-[#F5F7FA] rounded-xl p-4 mb-5 text-xs text-slate-600 leading-relaxed">
+        <span class="font-semibold text-slate-800">免责声明：</span>
+        本站内容基于CANN开源社区master分支的文档自动编译生成，属于持续开发版本，可能存在缺陷，仅供预览与参考。如需稳定发布文档，请查阅<a href="#stable-docs" class="text-[#0052D9] hover:underline font-medium mx-1">昇腾社区-CANN产品文档</a>。
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div>Copyright © Huawei Technologies Co., Ltd.</div>
+        <div class="font-mono-code">CANN Open Source Documentation · master</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let currentLayout = 'bento';
+
+    function switchLayout(mode) {
+      currentLayout = mode;
+      const bentoView = document.getElementById('view-bento');
+      const spotlightView = document.getElementById('view-spotlight');
+      const tabBento = document.getElementById('tab-bento');
+      const tabSpotlight = document.getElementById('tab-spotlight');
+      const hintTitle = document.getElementById('hintTitle');
+      const hintDesc = document.getElementById('hintDesc');
+
+      if (mode === 'bento') {
+        bentoView.classList.remove('hidden');
+        spotlightView.classList.add('hidden');
+        tabBento.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-[#0052D9] shadow-xs';
+        tabSpotlight.className = 'px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-600 hover:text-slate-900';
+        hintTitle.textContent = '当前预览：方案一 · 架构分层 Bento 布局';
+        hintDesc.textContent = '通过宽卡与标准卡的尺寸对比打破平铺感：首排双宽卡突出「编程语言」与「API参考」核心链路，底部「参考」收敛为横向速查面板。';
+      } else {
+        bentoView.classList.add('hidden');
+        spotlightView.classList.remove('hidden');
+        tabSpotlight.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-[#0052D9] shadow-xs';
+        tabBento.className = 'px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-600 hover:text-slate-900';
+        hintTitle.textContent = '当前预览：方案二 · 微质感代码风矩阵';
+        hintDesc.textContent = '保留整齐网格秩序，为每张卡片注入专属技术水印（核函数代码、Ring拓扑、Profiling泳道）、鼠标聚光灯及条目能力标签。';
+      }
+
+      // 切换视图时同步保持当前搜索过滤状态
+      filterDocs(document.getElementById('docSearchInput').value);
+    }
+
+    // 方案二：鼠标跟随聚光灯效果
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // 实时搜索过滤（同时兼容两个视图）
+    const searchInput = document.getElementById('docSearchInput');
+    const clearBtn = document.getElementById('clearSearchBtn');
+    const emptyState = document.getElementById('emptyState');
+    const emptyKeyword = document.getElementById('emptyKeyword');
+
+    function filterDocs(query) {
+      const q = query.trim().toLowerCase();
+      clearBtn.classList.toggle('hidden', q.length === 0);
+
+      const activeContainer = currentLayout === 'bento'
+        ? document.getElementById('view-bento')
+        : document.getElementById('view-spotlight');
+
+      const categories = activeContainer.querySelectorAll('.doc-category');
+      let visibleCategories = 0;
+
+      categories.forEach(cat => {
+        const items = cat.querySelectorAll('.doc-item');
+        let hasMatch = false;
+
+        items.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          const keywords = (item.dataset.keywords || '').toLowerCase();
+          const matched = !q || text.includes(q) || keywords.includes(q);
+          item.classList.toggle('hidden', !matched);
+          if (matched) hasMatch = true;
+        });
+
+        cat.classList.toggle('hidden', !hasMatch);
+        if (hasMatch) visibleCategories++;
+      });
+
+      if (visibleCategories === 0) {
+        emptyKeyword.textContent = query;
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+
+    function quickFilter(tag) {
+      searchInput.value = tag;
+      filterDocs(tag);
+      searchInput.focus();
+    }
+
+    function resetFilter() {
+      searchInput.value = '';
+      filterDocs('');
+    }
+
+    searchInput.addEventListener('input', (e) => filterDocs(e.target.value));
+    clearBtn.addEventListener('click', resetFilter);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+      } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+        resetFilter();
+        searchInput.blur();
+      }
+    });
+  </script>
+</body>
+</html>
