@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 37";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 38";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -610,4 +610,21 @@ CSS_EXTRA += r"""
 .stg.l1{background:rgba(75,75,168,.13);color:#3B3B85}
 .stg.l2{background:rgba(176,122,42,.16);color:#7A5417}
 .stg.l3{background:rgba(46,139,110,.15);color:#256B55}
+
+/* 权限 */
+.perm-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2.2vh}
+.perm-axis{position:relative;height:26vh;min-height:180px}
+.perm-line{position:absolute;left:2%;right:2%;top:50%;height:2px;background:linear-gradient(90deg,#C9D0DA,#8C97A5)}
+.perm-pt{position:absolute;top:50%;transform:translate(-50%,-50%);width:186px;height:26vh;display:grid;grid-template-rows:1fr auto 1fr;justify-items:center;align-items:center}
+.pp-top{display:flex;flex-direction:column;align-items:center;gap:.15vh;align-self:end;padding-bottom:1.1vh}
+.pp-top b{font-size:13.4px;color:var(--ink)}
+.pp-top span{font-size:10.2px;color:var(--ink-3);white-space:nowrap}
+.perm-dot{width:12px;height:12px;border-radius:50%;background:#4B4BA8;border:2.5px solid #fff;box-shadow:0 0 0 2px rgba(75,75,168,.26)}
+.pp-ex{align-self:start;padding-top:1.1vh;font-size:10px;color:var(--ink-2);text-align:center;line-height:1.35}
+.perm-cap{position:absolute;left:0;top:0;font-size:10px;color:var(--ink-3);font-family:'JetBrains Mono';letter-spacing:.08em}
+.perm-end.l{left:1%}
+.perm-end.r{right:1%;text-align:right}
+.perm-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw}
+.perm-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
+.perm-quotes b{color:var(--ink)}
 """

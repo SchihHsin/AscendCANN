@@ -617,7 +617,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 37";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 38";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -907,6 +907,23 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .stg.l2{background:rgba(176,122,42,.16);color:#7A5417}
 .stg.l3{background:rgba(46,139,110,.15);color:#256B55}
 
+/* 权限 */
+.perm-wrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2.2vh}
+.perm-axis{position:relative;height:26vh;min-height:180px}
+.perm-line{position:absolute;left:2%;right:2%;top:50%;height:2px;background:linear-gradient(90deg,#C9D0DA,#8C97A5)}
+.perm-pt{position:absolute;top:50%;transform:translate(-50%,-50%);width:186px;height:26vh;display:grid;grid-template-rows:1fr auto 1fr;justify-items:center;align-items:center}
+.pp-top{display:flex;flex-direction:column;align-items:center;gap:.15vh;align-self:end;padding-bottom:1.1vh}
+.pp-top b{font-size:13.4px;color:var(--ink)}
+.pp-top span{font-size:10.2px;color:var(--ink-3);white-space:nowrap}
+.perm-dot{width:12px;height:12px;border-radius:50%;background:#4B4BA8;border:2.5px solid #fff;box-shadow:0 0 0 2px rgba(75,75,168,.26)}
+.pp-ex{align-self:start;padding-top:1.1vh;font-size:10px;color:var(--ink-2);text-align:center;line-height:1.35}
+.perm-cap{position:absolute;left:0;top:0;font-size:10px;color:var(--ink-3);font-family:'JetBrains Mono';letter-spacing:.08em}
+.perm-end.l{left:1%}
+.perm-end.r{right:1%;text-align:right}
+.perm-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw}
+.perm-quotes>div{font-size:11.4px;color:var(--ink-2);line-height:1.55}
+.perm-quotes b{color:var(--ink)}
+
 </style>
 </head>
 <body>
@@ -1156,6 +1173,21 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="sp-side good"><b>跑一次 golden / 测试</b><span>误差一摆出来就露馅——外部证据不会被说服。</span></div>
   </div>
   <div class="cx-concl"><span class="ck">推论</span><span class="cv">AI 的自检信号不可信，<b>验证必须外部化</b>：跑测试、对 golden、看 diff 的形态（函数变短、封装变多、节点变复杂）。这也是为什么"看 thought"会成为一种技能。</span></div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">权限开到最大，信任却没跟上</span></div><div class="subttl">人机协作 · 授权与风险</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="perm-wrap">
+  <div class="perm-axis">
+    <div class="perm-cap">授权刻度：左端需要逐条确认，右端全部放行</div>
+    <div class="perm-line"></div>
+    <div class="perm-pt" style="left:12%"><div class="pp-top"><b>梁淼城</b><span>approve for me</span></div><div class="perm-dot"></div><div class="pp-ex">运行命令要确认，<br>文件修改直接放行</div></div><div class="perm-pt" style="left:30%"><div class="pp-top"><b>王鹤锦</b><span>Auto mode</span></div><div class="perm-dot"></div><div class="pp-ex">涉昇腾 / 沐曦时<br>被强制切回手动</div></div><div class="perm-pt" style="left:50%"><div class="pp-top"><b>郑雨豪</b><span>只有删除要确认</span></div><div class="perm-dot"></div><div class="pp-ex">其他"都直接放行"</div></div><div class="perm-pt" style="left:68%"><div class="pp-top"><b>彭椒</b><span>开到最大</span></div><div class="perm-dot"></div><div class="pp-ex">"不然要一直点 yes"</div></div><div class="perm-pt" style="left:84%"><div class="pp-top"><b>徐立桂</b><span>全都给他开</span></div><div class="perm-dot"></div><div class="pp-ex">靠"一窗实现、<br>一窗验收"兜底</div></div><div class="perm-pt" style="left:96%"><div class="pp-top"><b>王伟</b><span>全部权限</span></div><div class="perm-dot"></div><div class="pp-ex">没有例外</div></div>
+  </div>
+  <div class="perm-quotes">
+    <div><b>郑雨豪</b>："我对 AI 做的事还是信任的，但<b>一直不太信任</b>，所以做完之后肯定都会检查一遍。"</div>
+    <div><b>彭椒</b>："我的基本权限是<b>开最大的</b>。"</div>
+    <div><b>梁淼城</b>："工作区里的文件修改都是<b>让他直接自己干了</b>。"</div>
+  </div>
+  <div class="cx-concl"><span class="ck">结论</span><span class="cv">授权放到最松、验收放到最紧——风险没有消失，只是<b>被挪到了后面</b>。所以用户真正需要的是"可回滚、可审计、可核验"，不是更多的确认弹窗。</span></div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">代码的读者变了：现在先读它的是 AI，不是人</span></div><div class="subttl">人机协作 · 评审与交接</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="active">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
@@ -1411,14 +1443,14 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="team-q"><b>王伟</b>："对于现在入职的新员工来说，<b>原理理解比较少</b>。"</div>
     <div class="team-q"><b>徐立桂</b>："确实对很多细节完全没有感知了，<b>越来越多东西变成黑盒</b>。"</div>
     <div class="team-q"><b>郑雨豪</b>："<b>AI 会了，我不会。</b>"</div>
-    <div class="team-more">再加上 P20 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
+    <div class="team-more">再加上 P22 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
   </div>
 </div>
 <div class="cx-concl" style="margin-top:1.4vh"><span class="ck">风险</span><span class="cv">写的人、评审的人同时变薄——<b>三年后谁来判断这套实现对不对？</b>这不是个人学习习惯问题，是团队的能力结构问题。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">21 条发现，按"谁能解决"分三层</span></div><div class="subttl">发现与启示 · 发现地图</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">22 条发现，按"谁能解决"分三层</span></div><div class="subttl">发现与启示 · 发现地图</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="active">06 发现</span></div></div><div class="body-area">
 <div class="map-wrap">
-  <div class="band l1"><div class="band-h"><b>L1 工具层</b><span>产品可以直接改</span></div><div class="fchips"><span class="fchip">环境门槛<i>P12</i></span><span class="fchip">模型档位<i>P6</i></span><span class="fchip">任务状态<i>P26</i></span><span class="fchip">记忆缺口<i>P27</i></span><span class="fchip">Skill 形态<i>P30</i></span><span class="fchip">自信地错<i>P20</i></span></div></div><div class="band l2"><div class="band-h"><b>L2 协作层</b><span>产品与团队一起改</span></div><div class="fchips"><span class="fchip">三种协作形态<i>P13–15</i></span><span class="fchip">任务写法<i>P16</i></span><span class="fchip">隐性工时<i>P17</i></span><span class="fchip">交接信号<i>P18</i></span><span class="fchip">验证证据<i>P19</i></span><span class="fchip">可信来源<i>P28</i></span><span class="fchip">代码读者<i>P21</i></span><span class="fchip">失败恢复<i>P22</i></span><span class="fchip">错误样例<i>P29</i></span></div></div><div class="band l3"><div class="band-h"><b>L3 人的层</b><span>只能影响，不能替代</span></div><div class="fchips"><span class="fchip">失败归因<i>P23</i></span><span class="fchip">习惯三层<i>P24</i></span><span class="fchip">情境差异<i>P25</i></span><span class="fchip">学习窗口<i>P31</i></span><span class="fchip">学会标准<i>P32</i></span><span class="fchip">团队变薄<i>P33</i></span></div></div>
+  <div class="band l1"><div class="band-h"><b>L1 工具层</b><span>产品可以直接改</span></div><div class="fchips"><span class="fchip">环境门槛<i>P12</i></span><span class="fchip">模型档位<i>P6</i></span><span class="fchip">任务状态<i>P27</i></span><span class="fchip">记忆缺口<i>P28</i></span><span class="fchip">Skill 形态<i>P31</i></span><span class="fchip">自信地错<i>P20</i></span></div></div><div class="band l2"><div class="band-h"><b>L2 协作层</b><span>产品与团队一起改</span></div><div class="fchips"><span class="fchip">三种协作形态<i>P13–15</i></span><span class="fchip">任务写法<i>P16</i></span><span class="fchip">隐性工时<i>P17</i></span><span class="fchip">交接信号<i>P18</i></span><span class="fchip">验证证据<i>P19</i></span><span class="fchip">权限与风险<i>P21</i></span><span class="fchip">代码读者<i>P22</i></span><span class="fchip">失败恢复<i>P23</i></span><span class="fchip">可信来源<i>P29</i></span><span class="fchip">错误样例<i>P30</i></span></div></div><div class="band l3"><div class="band-h"><b>L3 人的层</b><span>只能影响，不能替代</span></div><div class="fchips"><span class="fchip">失败归因<i>P24</i></span><span class="fchip">习惯三层<i>P25</i></span><span class="fchip">情境差异<i>P26</i></span><span class="fchip">学习窗口<i>P32</i></span><span class="fchip">学会标准<i>P33</i></span><span class="fchip">团队变薄<i>P34</i></span></div></div>
   <div class="map-note">越往下，产品能直接做的越少；但越往下，越决定长期结果。<b>上两层是这一版能做的工作，第三层是做完之后仍然存在的风险。</b></div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
@@ -1435,23 +1467,23 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="ax-tag">价值 高 ↑</div>
     <div class="m4-grid">
       <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
-        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>F3</em></span>
+        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>F2</em></span>
         <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>F1</em></span>
-        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>F5</em></span>
+        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>F3</em></span>
       </div>
       <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
         <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>F1</em></span>
         <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>F2</em></span>
         <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>F4</em></span>
-        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>F1</em></span>
+        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>F2</em></span>
       </div>
       <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
-        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>F3</em></span>
+        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>F2</em></span>
         <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>F3</em></span>
       </div>
       <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
         <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>F5</em></span>
-        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>F2</em></span>
+        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>F5</em></span>
       </div>
     </div>
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>
