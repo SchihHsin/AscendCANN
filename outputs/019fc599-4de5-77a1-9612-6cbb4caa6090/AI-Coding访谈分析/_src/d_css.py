@@ -365,4 +365,16 @@ CSS_EXTRA += r"""
 .xt-c.dim{color:var(--ink-3)}
 .cond-note{font-size:11px;color:var(--ink-2);line-height:1.5;margin-top:.6vh}
 .cond-note b{color:var(--ink)}
+
+.seq2{flex:1;min-height:0;display:flex;flex-direction:column;gap:1vh}
+.seq2>svg{width:100%;height:auto;display:block;flex:0 1 auto;min-height:0}
+.seq2-foot{display:flex;flex-direction:column;gap:.35vh}
+.seq2-legend{display:flex;flex-wrap:wrap;gap:.45vh 1.1vw;align-items:center;font-size:10.2px;color:var(--ink-2);padding-top:.6vh;border-top:1px solid rgba(47,61,99,.1)}
+.seq2-legend .li{display:inline-flex;align-items:center;gap:.4em;white-space:nowrap}
+.seq2-legend .sw{width:15px;height:9px;border-radius:3px;border:1px solid;display:inline-block}
+.seq2-legend .ln{width:20px;height:0;border-top:1.6px solid #8C97A5;display:inline-block;position:relative}
+.seq2-legend .ln::after{content:"";position:absolute;right:-1px;top:-3px;border-left:5px solid #8C97A5;border-top:3px solid transparent;border-bottom:3px solid transparent}
+.seq2-legend .ln.dash{border-top-style:dashed;border-top-color:#2F5FA8}
+.seq2-legend .ln.dash::after{border-left-color:#2F5FA8}
+.seq2-legend .ci{width:15px;height:15px;border-radius:50%;border:1.5px solid #2F3D63;color:#2F3D63;font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;font-family:'JetBrains Mono'}
 """
