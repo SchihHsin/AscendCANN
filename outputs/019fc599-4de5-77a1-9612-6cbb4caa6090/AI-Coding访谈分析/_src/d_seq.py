@@ -22,13 +22,14 @@ def _seq(rows):
     return out
 
 
-def seq_slide(title, sub, rows, note, left_chip):
+def seq_slide(title, sub, rows, cond, pos, left_chip):
     body = ('<div class="seq"><div class="seq-h"><div style="background:none;box-shadow:none"></div>%s</div>'
             '<div class="seq-body"><div class="seq-lines"><i></i><i></i><i></i><i></i><i></i></div>%s</div></div>'
-            '<div style="display:flex;gap:1.2vw;margin-top:1.6vh;align-items:center">'
-            '<div class="chip warn"><i></i>%s</div>'
-            '<div style="font-size:var(--fs-sm);color:var(--ink-2);line-height:1.45;flex:1">%s</div></div>'
-            % (''.join(LANES), _seq(rows), left_chip, note))
+            '<div class="seq-foot">'
+            '<div class="sf-row"><span class="sf-k">出现条件</span><span class="sf-v">%s</span></div>'
+            '<div class="sf-row"><span class="sf-k">人的位置</span><span class="sf-v">%s</span></div>'
+            '<div class="sf-row"><span class="sf-k">关键交接</span><span class="sf-v">%s</span></div>'
+            '</div>' % (''.join(LANES), _seq(rows), cond, pos, left_chip))
     return slide(body, title, sub, 2)
 
 
@@ -54,8 +55,9 @@ Q1 = seq_slide(
         ('06', '回写沉淀', '随任务结束', [
             (1, 3, '', '反过来更新设计文档，作为下次的上下文')]),
     ],
-    '人的位置：<b>每一轮都在</b>。审查与执行交替进行，交接靠"引用代码段 + 看 thought"这类细粒度信号。',
-    '三个决定走向的交接')
+    '环境就在本机（IDE 打开仓库，AI 能直接改文件、跑命令）；要改的是<b>结构与设计</b>，对错没有现成判据，所以人必须每轮看。',
+    '<b>每一轮都在</b>：审查与执行交替，靠"引用代码段 + 看 thought"这类细粒度信号介入。',
+    '给设计文档 → 贴 API 链接 → 引用代码段指出问题')
 
 # ---------- 02 远端闭环（彭椒 毕方 / 徐立桂 HiDevLab） ----------
 Q2 = seq_slide(
@@ -77,8 +79,9 @@ Q2 = seq_slide(
             (1, 4, 'mut', '自己再手跑一遍'),
             (1, 2, '', '通过 / 驳回，进入下一条')]),
     ],
-    '人的位置：<b>只在两端</b>。中间过程看不到，"生成慢、容易挂、界面拥挤"都在这一段被放大。',
-    '两端的两个交接')
+    '任务有<b>机器可判定的终点</b>（测试 pass / benchmark 对 baseline）；AI 能自己触达环境（毕方直连服务器，或 SSH + nohup 起后台任务）；单轮跑很久，人没必要盯。',
+    '<b>只在两端</b>：给目标、做终审。中间过程看不到，"生成慢、容易挂、界面拥挤"都在这一段被放大。',
+    '给目标 → 改提示词或换工具 → 通过 / 驳回')
 
 # ---------- 03 探索式（王鹤锦 / 梁淼城 研究 / 徐立桂 从零） ----------
 Q3 = seq_slide(
@@ -100,5 +103,6 @@ Q3 = seq_slide(
         ('06', '回到资料', '收尾', [
             (1, 3, '', '结论写回论文 / 文档，或整理进 markdown')]),
     ],
-    '人的位置：<b>在方向判断上</b>。AI 承担的是"低成本试错"，不是"替你决定做什么"。',
+    '方向本身不确定（选题、方法可行性），而验证成本很低——<b>探针 10 分钟就能看出大方向</b>，所以值得先试再定。',
+    '<b>在方向判断上</b>：AI 承担低成本试错，不替你决定做什么。方向一旦确定，就切回形态一或二。',
     '方向判断是唯一不可让渡的交接')
