@@ -792,3 +792,45 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
   - 重点补全"复现限制"：硬依赖 Linux（`/dev/davinci*` 设备节点仅 Linux+真实 NPU 才有）、昇腾 910B 物理卡、NPU 驱动/固件、aarch64 架构、Docker、claude CLI + ANTHROPIC token；Mac 只能跑 CPU 孪生或纯 `--evaluate`
 - 在线地址（AscendCANN 仓 Pages，main 根目录）：
   `https://schihhsin.github.io/AscendCANN/cann-dashboard/ascendc-agent-main/运行原理与复现指南.html`
+
+### 2026-11-17（本会话）
+
+#### 一个算子开发者的 15 次 AI 对话
+
+- 需求几经调整：先要求"10 个角色各一组"，后改为**同一个人**的多次对话；去掉画像、时间轴、阶段划分、复盘表等框架，只保留对话正文；助手回答按真实模型输出习惯写（先结论、再原因、再验证步骤、贴代码、说边界），追问不做统一逻辑推进，允许跳跃、误解、跑题、中途放弃
+- 后续补充：原 10 段以排错为主（8 段都挂在具体错误上），增加 5 段纯知识型对话，编号混排，避免"上篇排障 / 下篇科普"的分类感
+- 技术依据：实读 `ascendc-agent-main/.claude/skills/` 下的 ascendc-debugging / ascendc-precision-debug / ascendc-npu-arch / ascendc-env-check / ascendc-api-best-practices（含 `api-datacopy.md` 的 32B 对齐与 DataCopyPad 行为）/ ascendc-operator-kernel-design
+- 新增文件：`cann-dashboard/一个算子开发者的15次对话.md`（约 3460 行 / 7.9 万字）
+  - 排障型 10 段：容器看不到卡、镜像编译、非对齐 shape、多核偶发错、FP16 精度、存量 kernel 手写 SetFlag、带宽 30%、CUDA LayerNorm 迁移、推理服务接入、架构评审
+  - 知识型 5 段：Tiling 设计方法论、API 分层与选型、动态 shape 支持、算子融合与图模式、fp16/bf16/fp32 选型
+  - 每段 10–15 轮，回答含对照表、代码片段、判读方法；错判/跑题/放弃方向均有保留（如"容器里装驱动""`--privileged` 就够了""先改成绝对路径 include"）
+- 旧版 10 段与多角色版本已删除，历史见 commit `a3619910`
+
+#### 对话知识可视化：算子知识网络.html
+
+- 需求演进：卡片平铺 → 力导向网络 → 去编号挂场景名 → 全节点出原文 → **去掉左侧列表，改全屏图谱**
+- 文件：`cann-dashboard/算子知识网络.html`（单文件、无外部依赖、双击可开）
+  - 69 节点：54 知识点（圆点，颜色=知识域，大小=连接数）+ 15 段对话（空心环，标注"他的处境"）
+  - 159 条边；自写力导向；首屏同步收敛后自动取景；标签防重叠（停稳后贪心四选一）
+  - **布局**：左侧列表已移除（与图上的对话环重复），图占满全屏；搜索框 + 9 个知识域 chip 悬浮在左上，页面顶部留 98px 给这层控件
+  - **搜索**：同时匹配知识点（名称/定义）与对话（标题/场景名/摘要），HUD 显示命中数
+  - **只看对话**：把 54 个知识点压暗，只留 15 个环，便于扫读
+  - 点击知识点：抽屉先给原文（该知识点在各段对话里的原话，主来源 + 最多 2 处次级来源，次级需相似度达标），再给一句话 / 常见误区 / 出处
+  - 点击对话：开场问 + 首答原文 + 涉及知识点
+  - 原文抽取：解析 md 逐轮结构，按对话号+轮次定位，clean 后按句号截断，未改写
+- **两个已修的坑**：① 抽屉原用 transform + transition 从屏外滑入，内嵌预览里 transition 不推进导致"点了没反应"，已改 display 切换；② 顶部悬浮控件会压住节点，已用 padding-top 让出空间
+
+### 2026-11-18（本会话）
+
+#### CANN 开源文档中心 · 卡片方案对比页入库
+
+- 来源：用户提供的 `~/Downloads/gemini-code-1794977540032.html`（单文件，Tailwind CDN + Google Fonts，无本地依赖）
+- 落地路径：`cann-dashboard/docs-card-options.html`（内容与源文件逐字节一致，51,450 B）
+- 页面内容：文档中心首页卡片的两套方案对比 —— 方案一「架构分层 Bento 布局」（双宽卡突出编程语言/API 参考，底部参考速查横条）、方案二「聚光灯 + 水印卡片」；含搜索过滤、布局提示、空态
+- 在线地址：`https://schihhsin.github.io/AscendCANN/cann-dashboard/docs-card-options.html`
+
+#### 推送方式说明（重要）
+
+- 本地 `main` 与 `origin/main` 处于分叉状态：本地领先 19 个提交（含算子知识图谱、15 次对话等未推送内容），落后 1168 个提交
+- 为确保只发布这一个文件，本次提交用 `read-tree origin/main` + `update-index` + `commit-tree` 的方式直接建立在 `origin/main` 之上，再以 `git push origin <sha>:refs/heads/main` 推送；**未移动本地 main 分支，未触碰工作区里 195 个未提交改动**
+- 后续若要恢复常规 `git push`，需先处理本地 main 与远端的分叉（本地那 19 个提交仍未推送）
