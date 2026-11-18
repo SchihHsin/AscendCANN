@@ -469,7 +469,6 @@ function buildNodes(){
     el.addEventListener('pointerenter',()=>hover(n.id));
     el.addEventListener('pointerleave',()=>hover(null));
     el.addEventListener('pointerdown',e=>startDrag(e,n));
-    el.addEventListener('click',e=>{ if(!n.__dragged) select(n.id,{scroll:true}); });
     g.appendChild(el);
   });
 }
@@ -735,22 +734,28 @@ function toWorld(e){
   const r=svg.getBoundingClientRect();
   return {x:(e.clientX-r.left-view.x)/view.k, y:(e.clientY-r.top-view.y)/view.k};
 }
+let bgDown=false;
 function startDrag(e,n){
   e.stopPropagation();
-  drag={n,sx:e.clientX,sy:e.clientY}; moved=0; n.__dragged=false;
-  svg.setPointerCapture(e.pointerId);
+  bgDown=false;
+  drag={n,sx:e.clientX,sy:e.clientY,moved:0};
+  try{ svg.setPointerCapture(e.pointerId); }catch(_){}
 }
 svg.addEventListener('pointerdown',e=>{
   if(e.target.closest('.node')) return;
+  bgDown=true;
   pan={sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};
-  svg.classList.add('panning'); svg.setPointerCapture(e.pointerId);
+  svg.classList.add('panning');
+  try{ svg.setPointerCapture(e.pointerId); }catch(_){}
 });
 svg.addEventListener('pointermove',e=>{
   if(drag){
-    const p=toWorld(e); moved=Math.max(moved,Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy));
-    if(moved>4) drag.n.__dragged=true;
-    drag.n.x=p.x; drag.n.y=p.y; drag.n.vx=0; drag.n.vy=0;
-    drag.n.__el.setAttribute('transform',`translate(${p.x},${p.y})`);
+    const p=toWorld(e);
+    drag.moved=Math.max(drag.moved,Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy));
+    if(drag.moved>4){
+      drag.n.x=p.x; drag.n.y=p.y; drag.n.vx=0; drag.n.vy=0;
+      drag.n.__el.setAttribute('transform',`translate(${p.x},${p.y})`);
+    }
     return;
   }
   if(pan){
@@ -761,10 +766,14 @@ svg.addEventListener('pointermove',e=>{
 });
 svg.addEventListener('pointerup',e=>{
   if(drag){
-    const n=drag.n; drag=null;
-    const list=visibleNodes(); const links=layoutLinks(list);
-    for(let i=0;i<40;i++) step(list,links,.5);
-    render(); fitView(false);
+    const n=drag.n, wasDrag=drag.moved>5; drag=null;
+    if(!wasDrag){
+      select(n.id,{scroll:true});   // 轻点：选中并出原文
+    } else {
+      const list=visibleNodes(); const links=layoutLinks(list);
+      for(let i=0;i<40;i++) step(list,links,.5);
+      render(); fitView(false);
+    }
   }
   if(pan){ pan=null; svg.classList.remove('panning'); }
 });
@@ -783,7 +792,8 @@ svg.addEventListener('wheel',e=>{
   applyView();
 },{passive:false});
 svg.addEventListener('click',e=>{
-  if(e.target.closest('.node')) return;
+  if(!bgDown) return;          // 节点上的点击不清空选择
+  bgDown=false;
   state.sel=null; applyHighlight(); renderInsight();
 });
 
