@@ -216,8 +216,10 @@ function App() {
   const [mainView, setMainView] = useState(() => {
     const launchParams = new URLSearchParams(window.location.search);
     const taskNames = new Set(wb.groups.flatMap(group => group.tasks));
+    const launchView = launchParams.get("view");
     const launchTask = resolveTaskUrlValue(launchParams.get("task"), taskNames);
     const launchHome = launchParams.get("home");
+    if (["learning", "automations", "capabilities", "knowledge-pocket", "knowledge-graph"].includes(launchView)) return launchView;
     if (launchTask) return "task";
     if (launchParams.has("showcaseRev") && ["classic", "explore", "combine"].includes(launchHome)) return "home";
     const savedView = readSession("main-view", null);
@@ -396,12 +398,14 @@ function App() {
     }
     const address = new URL(window.location.href);
     const rawTask = address.searchParams.get("task");
+    const rawView = address.searchParams.get("view");
     const taskNames = new Set(wb.groups.flatMap(group => group.tasks));
     const addressTask = resolveTaskUrlValue(rawTask, taskNames);
     const targetTask = mainView === "task" ? selectedTask : null;
-    const urlAlreadyMatches = targetTask
+    const targetView = mainView === "knowledge-graph" ? "knowledge-graph" : null;
+    const urlAlreadyMatches = (targetTask
       ? addressTask === targetTask && rawTask === taskUrlIdentifier(targetTask)
-      : !rawTask;
+      : !rawTask) && (targetView ? rawView === targetView : !rawView);
     const routeState = { view: mainView, task: targetTask };
     const nextHistoryState = { ...(window.history.state || {}), ascendStudioRoute: routeState };
     const currentRouteState = window.history.state?.ascendStudioRoute;
@@ -416,6 +420,8 @@ function App() {
 
     if (targetTask) address.searchParams.set("task", taskUrlIdentifier(targetTask));
     else address.searchParams.delete("task");
+    if (targetView) address.searchParams.set("view", targetView);
+    else address.searchParams.delete("view");
 
     // Normalize first loads and legacy aliases in place. User navigation adds
     // history entries so Back / Forward restores the previous task or page.
@@ -426,8 +432,14 @@ function App() {
     const handlePopState = () => {
       if (new URLSearchParams(window.location.search).get("pocket-demo") === "1") return;
       const taskNames = new Set(wb.groups.flatMap(group => group.tasks));
-      const addressTask = resolveTaskUrlValue(new URLSearchParams(window.location.search).get("task"), taskNames);
+      const popParams = new URLSearchParams(window.location.search);
+      const addressView = popParams.get("view");
+      const addressTask = resolveTaskUrlValue(popParams.get("task"), taskNames);
       const routeState = window.history.state?.ascendStudioRoute;
+      if (addressView === "knowledge-graph") {
+        setMainView("knowledge-graph");
+        return;
+      }
       if (addressTask) {
         wb.selectTask(addressTask);
         setMainView("task");
