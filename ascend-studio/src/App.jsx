@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "./icon-system.js";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
 import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
 import { resolveTaskUrlValue, taskUrlIdentifier } from "./task-url";
@@ -1775,7 +1775,22 @@ function App() {
               </div>
             </article>
             </>}
-            {session.showIntro && !isMainTask && <>
+            {session.showIntro && !isMainTask && (Array.isArray(task.dialogue) && task.dialogue.length > 1 ? (
+              task.dialogue.map((round) => (
+                <Fragment key={`k-${round.r}`}>
+                  <article className="message-row user-message" data-knowledge-round={`${task.dialogueId}-${round.r}`}>
+                    <div className="message-content"><div className="message-meta">他</div><div className="user-bubble">{round.q || "（这轮直接贴了一段代码）"}</div></div>
+                  </article>
+                  <article className="message-row assistant-message" data-knowledge-round={`${task.dialogueId}-${round.r}`}>
+                    <div className="message-content">
+                      <div className="message-meta">Ascend Work · 原声</div>
+                      <div className="assistant-response">{round.a.split("\n\n").map((text, index) => <p className="message-paragraph" key={index}>{text}</p>)}</div>
+                    </div>
+                  </article>
+                </Fragment>
+              ))
+            ) : (
+              <>
               <article className="message-row user-message">
                 <div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div>
               </article>
@@ -1791,7 +1806,8 @@ function App() {
                   <div className="message-feedback"><button type="button" className="pocket-save-action" aria-label="收进知识口袋" data-tooltip="收进知识口袋" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: task.reply.split(/[。\n]/)[0].slice(0, 52) || task.title, summary: task.reply.split("\n\n")[0], content: task.reply, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} /></button></div>
                 </div>
               </article>
-            </>}
+            </>
+            ))}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
                 <div className="message-content">
