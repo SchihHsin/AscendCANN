@@ -1,0 +1,72 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#env",
+      "color": {
+        "a": 1,
+        "rgb": 6197214
+      }
+    },
+    {
+      "query": "tag:#build",
+      "color": {
+        "a": 1,
+        "rgb": 15050849
+      }
+    },
+    {
+      "query": "tag:#data",
+      "color": {
+        "a": 1,
+        "rgb": 6345413
+      }
+    },
+    {
+      "query": "tag:#sync",
+      "color": {
+        "a": 1,
+        "rgb": 8811740
+      }
+    },
+    {
+      "query": "tag:#numperf",
+      "color": {
+        "a": 1,
+        "rgb": 14706579
+      }
+    },
+    {
+      "query": "tag:#arch",
+      "color": {
+        "a": 1,
+        "rgb": 9283012
+      }
+    },
+    {
+      "query": "tag:#dialog",
+      "color": {
+        "a": 1,
+        "rgb": 988970
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.45,
+  "repelStrength": 11,
+  "linkStrength": 1,
+  "linkDistance": 110,
+  "scale": 0.9,
+  "close": false
+}
