@@ -1051,6 +1051,7 @@ function buildLegend(){
 
 /* ================= 启动 ================= */
 buildDefs(); buildNodes(); buildLegend(); renderStream(); renderInsight();
+if(!$('#drawer').classList.contains('open')) $('#fab').classList.add('show');
 syncControls();
 resize();
 relayout(140);
