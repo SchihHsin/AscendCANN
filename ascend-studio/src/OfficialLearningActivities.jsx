@@ -1,8 +1,9 @@
 import { useId } from "react";
 import { IconArrowRight, IconCheck, IconHistory, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 import { OFFICIAL_LEARNING_SOURCES } from "./official-learning-data.js";
+import { OFFICIAL_VIDEO_CHAPTERS, OFFICIAL_VIDEO_DURATION, officialVideoChapterIndex } from "./official-learning-video.js";
 
-const mmss = seconds => `00:${String(Math.floor(seconds)).padStart(2, "0")}`;
+const mmss = seconds => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
 const statusText = attempt => attempt ? attempt.passed ? "检查通过" : "需要调整" : "待检查";
 const sourceKind = type => ({ course: "官方视频课程", path: "成长路径", document: "官方文档", article: "官方文章" }[type] || "官方资料");
 
@@ -18,26 +19,49 @@ export function OfficialLesson({ node, journey, onAsk, onCopy }) {
   if (!node || !journey?.state || !journey?.actions) return null;
   const { state, actions } = journey;
   const source = sourceForLesson(node);
-  const steps = node.flow?.length ? node.flow : [node.title];
-  const duration = 45;
-  const slice = duration / steps.length;
-  const segmentIndex = Math.min(steps.length - 1, Math.floor(Math.min(state.time, duration - Number.EPSILON) / slice));
-  const focus = steps[segmentIndex];
-  const point = node.lesson?.points?.[segmentIndex] || node.lesson?.points?.[0] || node.summary;
+  const taskVideo = OFFICIAL_LEARNING_SOURCES.resnet;
+  const steps = OFFICIAL_VIDEO_CHAPTERS;
+  const duration = OFFICIAL_VIDEO_DURATION;
+  const segmentIndex = officialVideoChapterIndex(state.time);
+  const demoStepIndex = segmentIndex;
+  const chapter = steps[segmentIndex];
+  const focus = chapter.title;
+  const point = chapter.summary;
   const checkpoint = node.checkpoint;
   const currentCheck = state.checks?.[node.id];
   const answer = state.answers?.[node.id];
   return <div className="lh-player og-lesson">
-    <a className="og-official-course" href={source.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(source.id)}><span><small>官方视频课程</small><strong>{source.title}</strong></span><span>观看官方课程↗</span></a>
-    <section className="og-local-lesson" aria-label="交互图解讲解"><header><div><strong>交互图解讲解 · 45 秒</strong><span>本地讲解示例</span></div><span>{mmss(state.time)} / 00:45</span></header>
+    <section className="og-local-lesson" aria-label="ResNet50 图像推理视频"><header><div><strong>ResNet50 图像推理</strong><span>完整流程讲解 · 45 秒</span><a className="og-demo-official-link" href={taskVideo.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(taskVideo.id)}>官网课程↗</a></div><span>{mmss(state.time)} / 00:45</span></header>
+      <div className="og-demo-screen" style={{ "--og-demo-progress": `${(state.time / duration) * 100}%`, "--og-demo-cursor-x": `${[17, 43, 68, 86][demoStepIndex]}%`, "--og-demo-cursor-y": `${[39, 58, 40, 67][demoStepIndex]}%` }} aria-label={`视频画面：${focus}`}>
+        <div className="og-demo-topbar"><span className="og-demo-dot"/><span className="og-demo-dot"/><span className="og-demo-dot"/><strong>resnet50_infer.cpp</strong><small>Ascend Studio · 推理工作台</small></div>
+        <div className="og-demo-workspace">
+          <div className="og-demo-editor" aria-label="代码编辑器演示">
+            <div className="og-demo-pane-title"><span>应用代码</span><small>demo.cpp</small></div>
+            {steps.flatMap(step => step.screenLines).map((line, index) => {
+              return <div className={`og-demo-code-line${Math.floor(index / 2) === demoStepIndex ? " is-active" : ""}`} key={`${index}-${line}`}><i>{String(index + 1).padStart(2, "0")}</i><code>{line}</code></div>;
+            })}
+          </div>
+          <div className="og-demo-side">
+            <div className="og-demo-pane-title"><span>推理流程</span><small>{state.playing ? "PLAYING" : state.time >= duration ? "COMPLETE" : state.time > 0 ? "PAUSED" : "READY"}</small></div>
+            <div className="og-demo-pipeline">{steps.map((step, index) => <div className={`og-demo-pipeline-step${index === demoStepIndex ? " is-active" : ""}${index < demoStepIndex ? " is-done" : ""}`} key={step.id}><span>{index < demoStepIndex ? "✓" : String(index + 1)}</span><strong>{step.pipeline}</strong>{index < 3 && <i/>}</div>)}</div>
+            <div className="og-demo-output"><div className="og-demo-output-heading"><span>Top-3 分类结果</span></div>{demoStepIndex === 3 ? [["虎斑猫", 92], ["埃及猫", 6], ["猞猁", 2]].map(([label, value], index) => <div className="og-demo-score" key={label}><span>{label}</span><i><b style={{ width: `${value}%`, transitionDelay: `${index * 80}ms` }}/></i><code>{value}%</code></div>) : <div className="og-demo-output-waiting">{demoStepIndex === 2 ? "推理执行中，等待输出就绪…" : "完成模型执行后展示分类结果"}</div>}</div>
+          </div>
+        </div>
+        <span className="og-demo-cursor" aria-hidden="true"/>
+        <div className="og-demo-controls">
+          <button className="og-demo-transport" type="button" aria-label={state.playing ? "暂停视频讲解" : "播放视频讲解"} onClick={actions.play}>{state.playing ? <IconPlayerPause size={14} /> : <IconPlayerPlay size={14} />}</button>
+          <label className="og-sr-only" htmlFor={timeId}>视频讲解进度</label><input id={timeId} type="range" min="0" max={duration} step="0.5" value={state.time} aria-label="视频讲解进度" onChange={event => actions.seek(event.target.value)} />
+          <span>{mmss(state.time)} / 00:45</span>
+        </div>
+      </div>
       <div className="og-flow-focus" aria-live="polite"><span>当前步骤 · {segmentIndex + 1}/{steps.length}</span><strong>{focus}</strong><p>{point}</p></div>
-      <div className="og-player-controls"><button className="lh-button" type="button" aria-label={state.playing ? "暂停本地讲解" : "播放本地讲解"} onClick={actions.play}>{state.playing ? <IconPlayerPause size={15} /> : <IconPlayerPlay size={15} />}{state.playing ? "暂停" : "播放"}</button><label className="og-sr-only" htmlFor={timeId}>本地讲解进度</label><input id={timeId} type="range" min="0" max={duration} step="0.5" value={state.time} aria-label="本地讲解进度" onChange={event => actions.seek(event.target.value)} /><span>{mmss(state.time)}</span></div>
-      <div className="og-chapters" role="group" aria-label="跳到讲解步骤">{steps.map((step, index) => <button className="lh-text-button" type="button" key={`${step}-${index}`} aria-pressed={segmentIndex === index} onClick={() => actions.seek(index * slice)}><small>{mmss(index * slice)}</small>{step}</button>)}</div>
-      <button className="lh-text-button" type="button" onClick={() => onAsk?.({ nodeId: node.id, title: node.title, time: state.time, subtitle: point, focus })}>解释这段<IconArrowRight size={13} /></button>
+      <div className="og-chapters" role="group" aria-label="跳到讲解步骤">{steps.map((step, index) => <button className="lh-text-button" type="button" key={step.id} aria-pressed={segmentIndex === index} onClick={() => actions.seek(step.start)}><small>{mmss(step.start)}</small>{step.title}</button>)}</div>
+      <button className="lh-text-button" type="button" onClick={() => onAsk?.({ nodeId: node.id, title: chapter.title, time: state.time, subtitle: point, focus })}>解释这段<IconArrowRight size={13} /></button>
     </section>
-    <section className="og-lesson-body"><h3>{node.lesson?.title || node.title}</h3><p>{node.lesson?.body || node.summary}</p><ul>{(node.lesson?.points || []).map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>{node.lesson?.code && <details><summary>查看接口顺序示意</summary><pre><code>{node.lesson.code}</code></pre><button className="lh-text-button" type="button" onClick={() => onCopy?.(node.lesson.code)}>复制示意代码</button></details>}</section>
-    <button className="lh-button" type="button" aria-pressed={state.understood?.includes(node.id) || false} onClick={() => actions.understand(node.id)}>{state.understood?.includes(node.id) ? "已记录理解" : "我理解了这段内容"}</button>
-    {checkpoint && <section className="og-checkpoint"><h3>检查一下理解</h3><fieldset><legend>{checkpoint.question}</legend>{checkpoint.options.map(option => <label key={option.id}><input type="radio" name={`checkpoint-${node.id}`} value={option.id} checked={answer === option.id} onChange={() => actions.chooseAnswer(node.id, option.id)} />{option.label}</label>)}</fieldset><button className="lh-button" type="button" onClick={() => actions.checkAnswer(node.id)}>检查答案</button>{currentCheck && <div className={`lh-inline-result${currentCheck.passed && currentCheck.answer === answer ? " is-pass" : ""}`} role="status"><strong>{currentCheck.answer === answer ? currentCheck.passed ? "本次理解题通过" : "本次答案需调整" : "已选择新答案，请重新检查"}</strong><p>{currentCheck.answer === answer ? checkpoint.explanation : "检查结果只对应已提交的答案。"}</p></div>}</section>}
+    <a className="og-official-course" href={source.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(source.id)}><span><small>本节点关联资料</small><strong>{source.title}</strong></span><span>打开资料↗</span></a>
+    <section className="og-lesson-body" key={chapter.id} aria-label="当前视频同步讲解" aria-live="polite" aria-atomic="true" data-video-chapter={chapter.id}><h3>{chapter.title}</h3><p>{chapter.body}</p><ul>{chapter.points.map((item, index) => <li key={`${chapter.id}-${index}`}>{item}</li>)}</ul><details><summary>查看接口顺序示意</summary><pre><code>{chapter.code}</code></pre><button className="lh-text-button" type="button" onClick={() => onCopy?.(chapter.code)}>复制示意代码</button></details></section>
+    <button className="lh-button" type="button" aria-pressed={state.understood?.includes(node.id) || false} onClick={() => actions.understand(node.id)}>{state.understood?.includes(node.id) ? "已记录理解" : "我理解了本节点内容"}</button>
+    {checkpoint && <section className="og-checkpoint"><h3>检查本节点理解</h3><p>{node.title}</p><fieldset><legend>{checkpoint.question}</legend>{checkpoint.options.map(option => <label key={option.id}><input type="radio" name={`checkpoint-${node.id}`} value={option.id} checked={answer === option.id} onChange={() => actions.chooseAnswer(node.id, option.id)} />{option.label}</label>)}</fieldset><button className="lh-button" type="button" onClick={() => actions.checkAnswer(node.id)}>检查答案</button>{currentCheck && <div className={`lh-inline-result${currentCheck.passed && currentCheck.answer === answer ? " is-pass" : ""}`} role="status"><strong>{currentCheck.answer === answer ? currentCheck.passed ? "本次理解题通过" : "本次答案需调整" : "已选择新答案，请重新检查"}</strong><p>{currentCheck.answer === answer ? checkpoint.explanation : "检查结果只对应已提交的答案。"}</p></div>}</section>}
   </div>;
 }
 

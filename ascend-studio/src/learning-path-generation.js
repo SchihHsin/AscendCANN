@@ -14,6 +14,6 @@ export function createPathGenerationDemoDraft() {
     draftSource: "goal",
     pathChanges: proposal.changes,
     pathProposalId: proposalId,
-    notice: "AI 已整理出路径草案；请审阅建议并调整，确认前不会开始学习。",
+    notice: "路径共创中 · 正在调整；你可以直接拖动节点或继续提出修改，确认前尚未开始学习。",
   };
 }

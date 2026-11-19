@@ -6,19 +6,20 @@ const MAX_ZOOM = 1.5;
 const FIT_PADDING = 28;
 
 const initialCards = (startEmpty = false) => [
-  { id: "explanation", title: "线索解释", x: 500, y: 28, width: 360, height: 340, pinned: false, visible: false, selected: false },
-  { id: "source", title: "索引范围示例", x: 28, y: 28, width: 440, height: 350, pinned: false, visible: true, selected: false },
-  { id: "evidence", title: "现场与判断", x: 72, y: 408, width: 395, height: 270, pinned: false, visible: true, selected: false },
-  { id: "precision", title: "误差核对", x: 960, y: 28, width: 430, height: 390, pinned: false, visible: false, selected: false },
-  { id: "review", title: "复核记录", x: 960, y: 448, width: 430, height: 340, pinned: false, visible: false, selected: false },
-  { id: "draft", title: "示例工作副本", x: 500, y: 408, width: 430, height: 440, pinned: false, visible: false, selected: false },
-  { id: "parameters", title: "参数与范围策略", x: 28, y: 708, width: 340, height: 310, pinned: false, visible: false, selected: false },
-  { id: "attempts", title: "尝试记录", x: 500, y: 888, width: 340, height: 350, pinned: false, visible: false, selected: false },
-  { id: "diff", title: "示例修改预览", x: 1420, y: 28, width: 500, height: 550, pinned: false, visible: false, selected: false },
-  { id: "validation", title: "示例范围复核", x: 1420, y: 608, width: 500, height: 390, pinned: false, visible: false, selected: false },
+  { id: "explanation", title: "线索解释", x: 660, y: 28, width: 560, height: 520, pinned: false, visible: false, selected: false },
+  { id: "source", title: "索引范围示例", x: 28, y: 28, width: 620, height: 610, pinned: false, visible: true, selected: false },
+  { id: "evidence", title: "现场与判断", x: 28, y: 670, width: 560, height: 390, pinned: false, visible: true, selected: false },
+  { id: "precision", title: "误差核对", x: 660, y: 568, width: 560, height: 500, pinned: false, visible: false, selected: false },
+  { id: "review", title: "复核记录", x: 28, y: 1088, width: 600, height: 520, pinned: false, visible: false, selected: false },
+  { id: "draft", title: "示例工作副本", x: 660, y: 1088, width: 560, height: 560, pinned: false, visible: false, selected: false },
+  { id: "parameters", title: "参数与范围策略", x: 28, y: 1640, width: 560, height: 560, pinned: false, visible: false, selected: false },
+  { id: "attempts", title: "尝试记录", x: 660, y: 1680, width: 560, height: 560, pinned: false, visible: false, selected: false },
+  { id: "diff", title: "示例修改预览", x: 28, y: 2230, width: 680, height: 640, pinned: false, visible: false, selected: false },
+  { id: "validation", title: "示例范围复核", x: 740, y: 2280, width: 560, height: 560, pinned: false, visible: false, selected: false },
 ].map((card) => ({ ...card, visible: startEmpty ? false : card.visible, collapsed: false, opened: startEmpty ? false : card.visible }));
 
 const initialState = (startEmpty = false, cardDefinitions) => ({
+  layoutVersion: 2,
   cards: cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty),
   selectedCardId: null,
   lastHiddenId: null,
@@ -29,6 +30,37 @@ const initialState = (startEmpty = false, cardDefinitions) => ({
 const clampZoom = (value) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
 const isFiniteNumber = (value) => typeof value === "number" && Number.isFinite(value);
 const visibleHeight = (card) => card.collapsed ? 48 : card.height;
+
+function migrateSavedState(saved, startEmpty, cardDefinitions, storageKey) {
+  if (!saved || !Array.isArray(saved.cards) || !saved.viewport) return initialState(startEmpty, cardDefinitions);
+  const base = { ...initialState(startEmpty, cardDefinitions), ...saved };
+  if (storageKey !== "canvas-addcustom" || Number(saved.layoutVersion) >= 2) return base;
+  const source = saved.cards.find((card) => card.id === "source");
+  const evidence = saved.cards.find((card) => card.id === "evidence");
+  const sourceIsDefault = source && source.width === 440 && source.height === 350;
+  const evidenceIsDefault = evidence && evidence.width === 395 && evidence.height === 270;
+  const defaultPositions = source?.x === 28 && source?.y === 28 && evidence?.x === 72 && evidence?.y === 408;
+  return {
+    ...base,
+    layoutVersion: 2,
+    cards: base.cards.map((card) => {
+      if (card.id === "source") return { ...card, ...(sourceIsDefault ? { width: 620, height: 610 } : {}), ...(!card.opened && !card.visible ? { visible: true, opened: true } : {}) };
+      if (card.id === "evidence") return { ...card, ...(evidenceIsDefault ? { ...(defaultPositions ? { x: 28, y: 670 } : {}), width: 560, height: 390 } : {}), ...(!card.opened && !card.visible ? { ...(defaultPositions ? { x: 28, y: 670 } : {}), visible: true, opened: true } : {}) };
+      return card;
+    }),
+  };
+}
+
+function defaultCardSize(id, fallback, storageKey) {
+  if (storageKey !== "canvas-addcustom") return fallback;
+  const sizes = {
+    explanation: [560, 520], source: [620, 610], evidence: [560, 390], precision: [560, 500],
+    review: [600, 520], draft: [560, 560], parameters: [560, 560], attempts: [560, 560],
+    diff: [680, 640], validation: [560, 560],
+  };
+  const size = sizes[id];
+  return size ? { width: size[0], height: size[1] } : fallback;
+}
 
 function freePosition(card, obstacles) {
   for (let index = 0; index < 240; index += 1) {
@@ -70,7 +102,7 @@ function bringToFront(cards, id) {
 }
 
 export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey = "canvas" } = {}) {
-  const [state, setState] = useState(() => { const saved = readSession(storageKey, null); return saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions); });
+  const [state, setState] = useState(() => ({ ...migrateSavedState(readSession(storageKey, null), startEmpty, cardDefinitions, storageKey), comparing: false }));
   const current = useRef(state);
   const surfaceSize = useRef(null);
   const hiddenHistory = useRef([]);
@@ -82,7 +114,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
     taskContexts.current.set(activeStorageKey.current, { state: current.current, hidden: hiddenHistory.current, placed: placedCards.current, comparison: comparisonSnapshot.current });
     const cached = taskContexts.current.get(storageKey);
     const saved = readSession(storageKey, null);
-    current.current = cached?.state || (saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions));
+    current.current = cached?.state || { ...migrateSavedState(saved, startEmpty, cardDefinitions, storageKey), comparing: false };
     hiddenHistory.current = cached?.hidden || [];
     placedCards.current = cached?.placed || new Set(current.current.cards.filter(card => card.opened).map(card => card.id));
     comparisonSnapshot.current = cached?.comparison || null;
@@ -125,8 +157,10 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
       title: typeof definition.title === "string" && definition.title.trim() ? definition.title.trim() : "任务内容",
       x: isFiniteNumber(definition.x) ? definition.x : anchor ? anchor.x + anchor.width + 24 : 28,
       y: isFiniteNumber(definition.y) ? definition.y : anchor ? anchor.y + 24 : 28,
-      width: Math.max(220, isFiniteNumber(definition.width) ? definition.width : 420),
-      height: Math.max(140, isFiniteNumber(definition.height) ? definition.height : 300),
+      ...defaultCardSize(id, {
+        width: Math.max(220, isFiniteNumber(definition.width) ? definition.width : 420),
+        height: Math.max(140, isFiniteNumber(definition.height) ? definition.height : 300),
+      }, storageKey),
       pinned: Boolean(definition.pinned),
       visible: true,
       opened: true,

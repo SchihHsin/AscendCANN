@@ -1,0 +1,251 @@
+/* Canvas visual language adapted from the user's selected Ascend Studio reference.
+   Keep the existing learning / development node structures and interaction states. */
+.learning-hierarchy-canvas,
+.tc-stage {
+  --canvas-node-ink: #191a1b;
+  --canvas-node-line: #c6c8ca;
+  background-color: var(--canvas-surface, #f5f5f5);
+  background-image: radial-gradient(circle, var(--canvas-dot, #d9d9d9) .7px, transparent .8px);
+}
+
+.goal-learning-canvas {
+  background-color: var(--canvas-surface, #f5f5f5);
+  background-image: radial-gradient(circle, var(--canvas-dot, #d9d9d9) .7px, transparent .8px);
+}
+
+.goal-learning-canvas::before { background: none; }
+.learning-hierarchy-canvas button:focus-visible,
+.learning-hierarchy-canvas input:focus-visible,
+.learning-hierarchy-canvas textarea:focus-visible,
+.learning-hierarchy-canvas select:focus-visible,
+.lh-minimap svg:focus-visible,
+.lh-tree-grab:focus-visible,
+.task-canvas button:focus-visible,
+.task-canvas .tc-stage:focus-visible,
+.tc-mini-map svg:focus-visible {
+  outline-color: #242526;
+}
+
+.lh-canvas-title { color: #202123; }
+.lh-canvas-title > svg { color: #343637; }
+.lh-canvas-title h2 { color: #202123; }
+.lh-canvas-title.is-draft-path h2,
+.goal-learning-canvas .lh-canvas-title.is-draft-path h2 { color: #202123; }
+.lh-canvas-title p,
+.lh-canvas-title.is-draft-path p,
+.lh-tree-grab { color: #777a7c; }
+.lh-editing-state { color: #515557; }
+.lh-editing-state > span:last-child { border-left-color: #dedfe0; color: #777a7c; }
+.lh-editing-dot { background: #24a99f; box-shadow: 0 0 0 3px rgb(36 169 159 / 12%); }
+@keyframes lh-editing-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgb(36 169 159 / 13%); }
+  50% { box-shadow: 0 0 0 5px rgb(36 169 159 / 6%); }
+}
+.topbar .proposal-badge--learning-edit { border-color: #dfe1e2; background: #f7f7f6; color: #55585a; }
+.topbar .proposal-badge--learning-edit .proposal-dot { background: #24a99f; }
+
+/* Floating canvas tools stay compact and white; only their selected state is black. */
+.lh-draft-controls,
+.lh-tool-button,
+.lh-zoom-controls,
+.lh-layout-toggle {
+  border-color: #dedfe0 !important;
+  border-radius: 9px;
+  box-shadow: 0 3px 12px rgb(24 25 26 / 8%);
+  background: rgb(255 255 255 / 96%);
+}
+.lh-toolbar button { color: #4f5254; background: #fff; }
+.lh-toolbar button:hover { color: #222324; background: #f1f1f0; }
+.lh-layout-toggle button[aria-pressed="true"],
+.lh-tool-button.is-active {
+  color: #fff;
+  background: #191a1b;
+}
+.lh-layout-toggle button[aria-pressed="true"]:hover,
+.lh-tool-button.is-active:hover { color: #fff; background: #303132; }
+
+/* Branch and sequence lines remain thin and neutral, with a darker current route. */
+.lh-tree-lines path { stroke: var(--canvas-node-line); }
+.lh-tree-lines marker path { fill: #9b9ea0; }
+.lh-tree-lines .lh-stage-line,
+.lh-tree-lines .lh-child-line { stroke: #c2c4c6; }
+.lh-tree-lines .lh-child-line.is-current { stroke: #303234; stroke-width: 1.8; }
+.lh-material-lines > path { stroke: #aeb1b3; }
+.lh-material-lines circle { fill: #252728; }
+.tc-connections path { stroke: #b6b8ba; }
+.tc-connections text { fill: #686b6d; }
+
+/* White node cards use small type accents; the focused node uses black. */
+.lh-tree-node {
+  --node-accent: #248fdb;
+  --node-accent-soft: #eaf3fc;
+  border-color: #e0e1e2;
+  border-radius: 10px;
+  color: #292b2c;
+  background: #fff;
+  box-shadow: 0 4px 14px rgb(28 29 30 / 7%);
+  transition: background-color .16s ease, border-color .16s ease, box-shadow .16s ease, color .16s ease;
+}
+.lh-tree-node:hover:not(.is-selected) {
+  border-color: #c8cacc;
+  background: #fff;
+  box-shadow: 0 6px 18px rgb(28 29 30 / 9%);
+}
+.lh-tree-node strong { color: inherit; }
+.lh-tree-node small { color: #777a7c; }
+.lh-node-icon:not(.is-done) {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--node-accent);
+  background: var(--node-accent-soft);
+}
+.lh-node-icon.is-done { background: #36a879; color: #fff; }
+
+[data-learning-stage="environment"],
+[data-official-stage="learning-official-stage-environment"] {
+  --node-accent: #2787e8;
+  --node-accent-soft: #e9f2ff;
+}
+[data-learning-stage="channels"],
+[data-official-stage="learning-official-stage-input"] {
+  --node-accent: #ec7169;
+  --node-accent-soft: #fff0ee;
+}
+[data-learning-stage="practice"],
+[data-official-stage="learning-official-stage-execution"] {
+  --node-accent: #e6a12d;
+  --node-accent-soft: #fff5e3;
+}
+[data-learning-stage="check"],
+[data-official-stage="learning-official-stage-result"],
+[data-official-stage="learning-official-stage-chain"] {
+  --node-accent: #24a99f;
+  --node-accent-soft: #e5f7f5;
+}
+
+.lh-step-index {
+  align-self: center;
+  min-width: 27px;
+  padding: 2px 4px;
+  border-radius: 5px;
+  color: var(--node-accent);
+  background: var(--node-accent-soft);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.lh-tree-node.is-selected,
+.path-editing-canvas .lh-step-node.is-proposed-add.is-selected,
+.path-editing-canvas .lh-step-node.is-proposed-revise.is-selected {
+  border-color: #191a1b;
+  background: #191a1b;
+  color: #fff;
+  box-shadow: 0 6px 18px rgb(20 21 22 / 22%);
+}
+.lh-tree-node.is-selected strong { color: #fff; }
+.lh-tree-node.is-selected small { color: #d0d1d2; }
+.lh-tree-node.is-selected .og-stage-status,
+.lh-tree-node.is-selected .og-step-status { color: #fff; }
+.lh-tree-node.is-selected .og-step-status { border-color: rgb(255 255 255 / 42%); }
+.lh-tree-node.is-selected .lh-node-icon {
+  color: #fff;
+  background: transparent;
+}
+.lh-tree-node.is-selected .lh-node-icon::after {
+  position: absolute;
+  right: -1px;
+  bottom: 1px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #191a1b;
+  border-radius: 50%;
+  background: var(--node-accent);
+  content: "";
+}
+.lh-tree-node.is-selected .lh-step-index { color: #fff; background: rgb(255 255 255 / 14%); }
+.lh-tree-node.is-node-dragging { box-shadow: 0 12px 26px rgb(20 21 22 / 20%); }
+.lh-tree-node.is-agent-target:not(.is-selected) {
+  border-color: #24a99f;
+  box-shadow: 0 0 0 3px rgb(36 169 159 / 13%), 0 8px 22px rgb(28 29 30 / 12%);
+}
+.lh-tree-node.is-agent-target::after {
+  border-color: #d9e9e7;
+  color: #426b67;
+}
+.lh-tree-node.is-skipped { color: #838688; background: #f3f3f2; }
+.lh-tree-node.is-skipped small { color: #8a8c8e; }
+.lh-stage-node.is-selected .lh-node-icon { color: #fff; }
+
+/* The content cards stay light and readable while borrowing the reference's quiet depth. */
+.lh-card {
+  border-color: #e1e2e2;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgb(28 29 30 / 8%);
+}
+.lh-card-header { border-bottom-color: #ededec; background: #fff; }
+.lh-card-title { color: #282a2b; }
+.lh-card-title > svg {
+  box-sizing: content-box;
+  width: 18px;
+  height: 18px;
+  padding: 6px;
+  border-radius: 50%;
+  color: #2787e8;
+  background: #e9f2ff;
+}
+.lh-icon-button:hover { color: #252627; background: #f0f0ef; }
+.lh-button.is-primary,
+.og-personal-plan-controls .og-plan-confirm,
+.lh-goal-body .lh-button.is-primary {
+  border-color: #191a1b;
+  color: #fff;
+  background: #191a1b;
+}
+.lh-button.is-primary:hover:not(:disabled),
+.og-personal-plan-controls .og-plan-confirm:hover:not(:disabled) { background: #303132; }
+.og-plan-state { color: #606365 !important; }
+.og-plan-state > i { background: #24a99f !important; box-shadow: 0 0 0 3px rgb(36 169 159 / 12%) !important; }
+.og-stage-status.is-in-progress { color: #3e4142; }
+.og-step-status.is-in-progress { border-color: #353738; background: #f2f2f1; box-shadow: none; }
+.path-editing-canvas .lh-step-suggestion { border-color: #dedfe0; color: #55585a; background: #f5f5f4; }
+.path-editing-canvas .lh-step-node.is-proposed-add,
+.path-editing-canvas .lh-step-node.is-proposed-revise { border-color: #d6a33b; color: #4c4330; background: #fffaf0; }
+.path-editing-canvas .lh-step-node.is-proposed-add.is-selected,
+.path-editing-canvas .lh-step-node.is-proposed-revise.is-selected { color: #fff; background: #191a1b; }
+
+/* Development task cards use the same white/gray frame; only the selected header darkens. */
+.tc-card {
+  border-color: #e0e1e2;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgb(28 29 30 / 8%);
+}
+.tc-card.is-selected {
+  border-color: #252728;
+  box-shadow: 0 0 0 1px #252728, 0 7px 18px rgb(28 29 30 / 12%);
+}
+.tc-card.is-selected .tc-card-header {
+  border-bottom-color: #363839;
+  background: #191a1b;
+}
+.tc-card.is-selected .tc-card-header h3,
+.tc-card.is-selected .tc-move-handle,
+.tc-card.is-selected .tc-card-actions button,
+.tc-card.is-selected .tc-pin-label { color: #f4f4f3; }
+.tc-card.is-selected .tc-card-actions button:hover,
+.tc-card.is-selected .tc-card-actions button[aria-pressed="true"] { color: #fff; background: #383a3b; }
+.tc-card.is-selected .tc-collapse-summary { color: #d3d4d4; }
+.tc-canvas-controls > button,
+.tc-zoom-controls { border-color: #dedfe0; border-radius: 9px; box-shadow: 0 3px 12px rgb(24 25 26 / 8%); }
+.tc-canvas-controls button { color: #4f5254; }
+.tc-canvas-controls button:hover,
+.tc-canvas-controls button.is-active { color: #fff; background: #191a1b; }
+.tc-comparison-button { border-radius: 6px; }
+.tc-object-toolbar button:hover,
+.tc-object-toolbar button.is-active { color: #222324; background: #ededec; }
+.tc-object-toolbar .tc-comparison-button[aria-pressed="true"] { color: #fff; background: #191a1b; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lh-tree-node { transition: none; }
+}

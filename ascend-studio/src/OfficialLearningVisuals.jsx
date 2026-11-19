@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IconArrowDown, IconArrowRight, IconBinaryTree2, IconBraces, IconCheck, IconCpu, IconDatabase, IconDeviceDesktop, IconFileCode, IconFileTypeJpg, IconFolder, IconLayersIntersect, IconPhoto, IconServer, IconStack2 } from "@tabler/icons-react";
 import { ChannelPhoto, TensorShape } from "./LearningHierarchyCanvas";
 import { OFFICIAL_LEARNING_STAGES } from "./official-learning-data";
+import { OFFICIAL_VIDEO_CHAPTERS, officialVideoChapterIndex } from "./official-learning-video";
 
 const asset = name => `${import.meta.env.BASE_URL}assets/${name}`;
 const scoreRows = [{ title: "猫", value: 86 }, { title: "虎", value: 9 }, { title: "狗", value: 5 }];
@@ -57,11 +58,9 @@ const apiSteps = [
   { title:"读取输出与释放", api:"输出解析 / 资源清理", detail:"解释模型输出，并在退出路径清理实际创建的资源。" },
 ];
 function Execution({ node, journey }) {
-  const current = stepIndex(journey, 4);
-  const [manual, setManual] = useState(null);
-  const selected = journey.state.playing ? current : manual ?? current;
+  const selected = officialVideoChapterIndex(journey.state.time);
   const lifecycle = node.visual === "lifecycle";
-  return <><div className="og-execution"><div className="og-api-lane"><span className="og-zone-label"><IconDeviceDesktop size={15} />应用调用与数据流</span>{apiSteps.map((step, i) => <button className={i === selected ? "is-active" : ""} type="button" key={step.title} onClick={() => { setManual(i); journey.actions.seek(i * 11.25); }}><i>{lifecycle && i === 3 ? <IconCheck size={14} /> : i + 1}</i><span><strong>{step.title}</strong><code>{step.api}</code></span>{i < 3 && <IconArrowDown size={16} />}</button>)}</div><div className="og-execution-device"><div className="og-model-file"><IconDatabase size={27} /><span>模型 + 输入数据</span></div><div className={`og-execution-wire${journey.state.playing ? " is-playing" : ""}`}><i /><IconArrowDown size={28} /></div><Device active={selected === 2} /><div className="og-output-buffer"><IconLayersIntersect size={21} /><span>{lifecycle && selected === 3 ? "对应释放已创建的资源" : "输出缓冲区 → 后处理"}</span></div></div></div><div className="og-visual-explanation"><span>{String(selected + 1).padStart(2,"0")}</span>{apiSteps[selected].detail}</div></>;
+  return <><div className="og-execution"><div className="og-api-lane"><span className="og-zone-label"><IconDeviceDesktop size={15} />应用调用与数据流</span>{apiSteps.map((step, i) => <button className={i === selected ? "is-active" : ""} type="button" key={step.title} onClick={() => journey.actions.seek(OFFICIAL_VIDEO_CHAPTERS[i].start)}><i>{lifecycle && i === 3 ? <IconCheck size={14} /> : i + 1}</i><span><strong>{step.title}</strong><code>{step.api}</code></span>{i < 3 && <IconArrowDown size={16} />}</button>)}</div><div className="og-execution-device"><div className="og-model-file"><IconDatabase size={27} /><span>模型 + 输入数据</span></div><div className={`og-execution-wire${journey.state.playing ? " is-playing" : ""}`}><i /><IconArrowDown size={28} /></div><Device active={selected === 2} /><div className="og-output-buffer"><IconLayersIntersect size={21} /><span>{lifecycle && selected === 3 ? "对应释放已创建的资源" : "输出缓冲区 → 后处理"}</span></div></div></div><div className="og-visual-explanation"><span>{String(selected + 1).padStart(2,"0")}</span>{apiSteps[selected].detail}</div></>;
 }
 
 function Results({ journey }) {

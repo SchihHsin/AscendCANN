@@ -861,6 +861,7 @@ final result: passed (scoped QA)
 
 final result: blocked (参考图并排视觉比对未完成；功能实现与本地交互核验通过)
 
+
 ## 2026-10-22 · 社区经验邀请卡样式修正
 
 **目标与证据**
@@ -884,6 +885,21 @@ final result: blocked (参考图并排视觉比对未完成；功能实现与本
 final result: blocked
 
 
+## 2026-10-22 · 社区经验入口固定贴在输入区
+
+- Source visual: `evidence/20261021-community-experience/community-entry-reference.png`（1702×924）。
+- Intended implementation: `http://127.0.0.1:4174/?task=development`；入口固定在 composer 上方，完成邀请状态；1280×720 为目标核对视口。
+- Implementation capture: 未能捕获。CUA 浏览器策略拒绝访问本地 URL，并禁止替代浏览器或间接读取；实际 CSS viewport 与 deviceScaleFactor 未取得。
+- State: 仅开发任务完成后显示；滚动旧对话时入口仍固定贴在输入区。点击后邀请收起，草稿卡进入对话并在右侧打开审阅。
+- Build: `npx vite build --base=./ --outDir /tmp/ascstudio-community-validation --emptyOutDir` 通过；`git diff --check` 通过。未运行测试套件。
+- Fidelity: 来源图已打开；实现截图缺失，typography、spacing、colors、icon/copy 和滚动行为未完成对照，无法判定尺寸归一化与视觉差异。
+- Finding: 浏览器访问被策略拦截是本轮 QA blocker；实现是否与参考图吻合、固定提示在窄屏下是否遮挡内容尚未验证。需在允许的浏览器中查看当前预览后补证。
+- Change made: 邀请移出消息流并与 composer 放入同一 sticky stack；顶部圆角、底部直角，输入框面板叠在其前；生成后沿用对话草稿卡与右侧审阅面板。
+- Commit / push: 未提交或推送；待完成截图级视觉 QA。
+
+final result: blocked
+
+
 ## 2026-10-22 · 社区经验提交后文章详情
 
 **目标与来源**
@@ -903,3 +919,77 @@ final result: blocked
 - Commit `113feefe` 已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪变更未纳入本提交。
 
 final result: implementation passed; local visual review blocked by browser policy
+
+## 2026-10-22 · 首页错误记录知识推荐卡片
+
+**目标与来源**
+- Source visual: `/Users/hsin/.codex/generated_images/01a162b8-d26f-76e3-bfc9-b25ecdd4c3ad/exec-ae2900ec-eb2d-4c1d-b469-ed21f3f86824.png`（1672×941，16:9）。用户选择的内容结构为知识点、近 7 天错误次数和两条历史错误摘要；沿用 Ascend Studio 文件夹卡片和页面气质。
+- Implementation: `http://localhost:4188/`，CUA in-app browser；最终全页捕获为 1280×720 CSS viewport、1280×720 pixels、device scale 1。捕获显示在本对话工具输出中，CUA 未提供文件系统截图路径。
+- Full-view same-input comparison: 临时比较页 `http://localhost:4190/` 将源图与实时 Demo 并排放入同一视图；两侧均呈现 16:9 的 1280×720 页面并等比缩放至 640×360。卡片区域另在 1280×720 全页截图与 DOM 文本树中检查。临时比较页只供本轮 QA 使用。
+- State: 新建任务首页、学习模式选中、推荐卡片未展开、输入区为空。错误条数与日期为锚定 2026-10-22 的静态演示样例，非真实用户统计。
+
+**Fidelity review**
+- Typography: 标题 13px、错误行 11px、日期 10px；第一次捕获中的 10px / 9px 错误行过小，已提升一档。两行摘要可在卡片宽度内读到，长标题仍采用单行截断。
+- Spacing / layout: 三张文件夹卡片居中排列，保留原始文件夹轮廓、轻微旋转、上沿色条、淡化主题图标和现有输入区。卡片摘要全部露在输入框上方；输入区位置沿用 Demo 原布局。
+- Colors / tokens: 保持原有玫瑰粉、浅金、雾蓝文件夹上沿；错误次数用对应的深色强调值，条形图和任务来源色彩分类均未加入。
+- Images / icons: 沿用现有 Tabler 图标与卡片水印，无新图像素材。
+- Copy: 每卡显示一个具体知识点、明确的“近 7 天出错 N 次”及两条带日期的错误摘要；不区分错误来源。示例不指称已确认根因。
+- Interaction: CUA 点按卡片主入口后进入“学会图像输入预处理”任务；展开状态的“开始学习”CTA 也打开对应学习任务画布。
+
+**Comparison history**
+- First implementation capture found P2 polish issues: 两条错误摘要字体偏小，主箭头没有延续原卡片圆形入口。修复为 11px / 10px 文本、圆形箭头入口，并恢复三张卡片各自的书本、文档、脑图标。最终 1280×720 捕获及同视口并排比较中，卡片信息完整可见，没有剩余 P0/P1/P2 视觉问题。
+- Residual: browser console 未从 CUA 接口读取；本地生产构建成功，无页面可见错误。日期和数量仍是静态演示数据，真实任务错误汇总尚未接入。
+
+**Build / validation**
+- `node --check src/home-recommendations.js`：通过。
+- `npm run build`：通过；保留既有大于 500 kB 的 bundle 提醒。
+- `git diff --check -- ascend-studio/src/NewTaskHome.jsx ascend-studio/src/home-recommendations.js ascend-studio/src/new-task-home.css`：通过。
+- Automated tests: 未运行。
+
+final result: passed
+
+## 2026-10-23 · 学习发现 Banner 下沿渐隐
+
+- **Source visual truth:** 用户选择的方案 1：`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-bb3ed6bb-1a8e-4e58-9692-0c9c87a16e37.png`（1486×1059）；对应 Banner 素材：`src/assets/learning-discovery/discovery-banner-bg.png`（2048×768）。
+- **Implementation:** `http://127.0.0.1:8124/`，学习发现页面。CUA 截图已在本轮界面中查看，未提供可保存的文件路径；截图显示约 381×668，CSS viewport 与 device scale 未能读取。
+- **State:** 学习发现首屏与 Banner 下沿滚动位置。窄屏画面中波纹背景逐渐变淡并融入浅灰底色，未见硬横线；首屏标题、搜索和推荐课程卡仍位于渐变背景上方。
+- **Comparison:** 没有把源图和实现截图置于同一输入中，也未完成同一桌面视口对照。尝试 1440×900 视口覆盖后，截图仍是约 381px 宽的应用面板；因此不据此宣称完整视觉 QA 通过。
+- **Build / validation:** `npx vite build --base=./ --outDir /tmp/ascstudio-banner-fade-validation --emptyOutDir` 通过；隔离的最新主分支 `npm run build:pages` 通过；`git diff --check` 通过。未运行自动化测试。构建保留既有主 JS 包体积提醒。
+- **Findings:** 本轮窄屏观察未发现渐隐断层；桌面尺寸、源稿同视口对照及完整五项视觉一致性审查尚未完成。
+- **Open item:** 需要可捕获的桌面视口才能做源稿与实现图的同尺寸比较。
+
+final result: blocked
+
+## 2026-10-23 · 学习发现浅色内容图方案（用户已选）
+
+**选择与实现**
+- Source visual: `evidence/20261023-learning-discovery-selected/selected-learning-discovery.png`（1138×1382），用户选择的浅色方案。它明确了白灰页面底、浅蓝紫为主的少量强调、浅杏 / 薄荷绿辅助色、清透内容插图，以及纵向连续楼层。
+- `LearningDiscoveryPage.jsx` 与 `learning-discovery.css` 已按该方案收口：简洁标题 / 搜索区；「为你推荐」含课程、路径、知识点、认证四项；「新上架」含课程、路径、认证、知识点；「近期日程」用时间轴串起 Meetup、直播和交流活动。保留用户早先确定的侧栏顺序“新建任务 → 学习发现 → 自动化任务 → 能力库”。本稿不显示顶部 Banner 或重复的大号课程 Hero；原横幅素材仍保留在源码资产目录，但已不再被页面引用。
+- 使用 8 张浅色内容插图（9 个图片实例，含复用认证图和活动图）；课程、路径、知识点、认证和 Meetup 均用对应内容图，不使用深色装饰图。认证与活动示例仍明确标注为 Demo 内容；不表示真实认证专题或活动公告。
+
+**Visual QA**
+- Implementation: `http://127.0.0.1:8124/`，CUA in-app browser，1280×720。检查首屏及向下滚动后的新上架 / 日程区；标题随学习发现内容一起滚动，日程轴连接三条活动。页面布局、三段楼层层级及插图风格与已选稿相符。截图显示在本轮工具输出中，CUA 未提供可写入仓库的截图路径。
+- 8 种图片资源加载正常（页面 9 个 `<img>` 实例均有 naturalWidth），控制台 error / warn 为空。搜索“认证”显示 1 项推荐、1 项新上架和 0 场活动；随后清空搜索并恢复默认页面。
+- 本地静态预览此前仍在引用旧版资源路径；本轮以不清空目录的方式重建 `ascstudio/`，并重新打开演示页后完成视觉核验。构建输出仍有既有主 JS chunk 大于 500 kB 的提示；未运行自动化测试。
+- `git diff --check`：通过。未改变页面序列、路由或 API / Protocol、Host / Harness、Application / Task 边界；未接入真实课程数据、认证服务或活动日历。
+- Commit / push：未执行。共享工作区有多组其他对话的暂存、未暂存与未跟踪变更，保留其现状，不混入本轮提交或发布。
+
+final result: passed
+
+## 2026-10-23 · 任务切换后项目栏宽度保持稳定
+
+- 原因：`useWorkbenchLayout` 对学习任务使用更窄的默认栏宽。CUA 复现时从开发任务切到学习任务，列表从 286px 变为 200px；React 的收起状态并未变化，但窄幅让侧栏看起来像自动收起。
+- 修复：学习与开发任务统一使用同一响应式展开宽度。当前 1280px 预览中两类任务的项目栏均为 286px；点击收起按钮后为 18px，再点击恢复 286px。切换任务时保持打开。
+- `node --check`、目标文件 `git diff --check`、Vite Pages build 均通过；构建保留既有大包提示。没有新增或运行自动化测试。CUA 截图在本轮工具输出中查看，未落盘；没有改变页面序列或 API / Host / Application 边界。
+- 未提交或推送；共享工作区里的其他对话改动保持原样。
+
+### 更正：任务栏自动收起问题尚未修复
+
+- 上一条记录把宽度变化误当成用户报告的自动折叠；二者不是同一问题。相关默认宽度改动已撤回。当前没有完成对“展开后切换任务，列表仍保持展开”的修复；此前本地操作未复现该收起状态，需对照用户实际的切换动作继续定位。
+
+
+## 2026-10-23 · 任务切换后列表收起再次排查
+
+- 用户再次反馈：切换任务后整个左侧列表仍会收起。此前本地未复现不能作为问题不存在的证据；按“收起 → 点击图标展开 → 点击另一任务”回放，当前预览仍未复现。
+- 代码检查发现 `.sidebar-toggle::before` 的透明点击区可能与 200px 窄栏中任务行右缘重叠。将横向扩展改为仅向外侧延伸，避免任务行边缘点击误触收起按钮。该改动是风险修正，根因未证实。
+- Vite 静态构建成功，输出 CSS 已更新；浏览器连接中断，修正后的鼠标回放未完成。未运行自动化测试，未提交 / 推送；待恢复预览后继续核对。

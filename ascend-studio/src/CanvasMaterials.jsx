@@ -63,22 +63,29 @@ function LocalError({ state }) {
   return state.error ? <div className="cm-error" role="alert"><IconAlertTriangle size={14} /><span>{state.error}</span></div> : null;
 }
 
-function CodeBlock({ children, label }) {
-  return <pre className="cm-code" tabIndex={0} aria-label={label}><code>{children}</code></pre>;
+function CodeBlock({ children, label, maxLines, onExpand }) {
+  const lines = String(children || "").split("\n");
+  const omitted = Number.isFinite(maxLines) ? Math.max(0, lines.length - maxLines) : 0;
+  const code = omitted ? lines.slice(0, maxLines).join("\n") : children;
+  return omitted ? <div className="cm-code-preview"><pre className="cm-code" tabIndex={0} aria-label={label}><code>{code}</code></pre><div className="cm-code-omitted"><span>已收起其余 {omitted} 行</span><button type="button" onClick={onExpand}>放大阅读全文<IconArrowRight size={12} /></button></div></div> : <pre className="cm-code" tabIndex={0} aria-label={label}><code>{code}</code></pre>;
 }
 
 function EvidenceMaterial({ onShowCard }) {
   return <div className="cm-stack"><div className="cm-meta-line"><span>来源：本题诊断记录</span><span className="cm-tag">根因待确认</span></div><div className="cm-evidence-facts"><div><IconCheck size={15} /><span><strong>[16,32] 通过</strong><small>已记录的对照输入</small></span></div><div><IconAlertTriangle size={15} /><span><strong>[17,33] 失败</strong><small>失败与非整块输入同时出现</small></span></div><div><IconCode size={15} /><span><strong>precision mismatch</strong><small>custom_op.cpp:128</small></span></div><div><IconHistory size={15} /><span><strong>编译参数已调整</strong><small>错误位置未变，未带来新的定位信号</small></span></div></div><p className="cm-body-copy">尾块边界值得优先核对。目前仍需对照实际循环、逐元素误差和两次运行的环境条件，根因尚未确认。</p><div className="cm-actions"><button className="cm-button" type="button" onClick={() => onShowCard?.("explanation")}><IconBook size={14} />解释并试改</button><button className="cm-button" type="button" onClick={() => onShowCard?.("source")}><IconCode size={14} />只读核对</button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("precision")}>误差核对<IconArrowRight size={13} /></button></div><p className="cm-note">这里只索引已有记录，尚无真实项目或 NPU 的新增验证结果。</p></div>;
 }
 
-function LinkedCodeBlock({ text, label, explanation }) {
+function LinkedCodeBlock({ text, label, explanation, maxLines, onExpand }) {
   const focus = explanation?.state.focus || "tail";
+  const lines = String(text).split("\n");
+  const shownLines = Number.isFinite(maxLines) ? lines.slice(0, maxLines) : lines;
+  const omitted = lines.length - shownLines.length;
   return <div className="cm-linked-code" role="group" aria-label={label}>
-    {String(text).split("\n").map((line, index) => {
+    {shownLines.map((line, index) => {
       const concept = codeConcept(line);
       return concept ? <button type="button" className={"cm-code-line" + (focus === concept ? " is-focused" : "")} aria-pressed={focus === concept} title={`关联图解：${CODE_CONCEPTS[concept].label}`} key={index} onClick={() => explanation?.actions.focusConcept(concept)}><span aria-hidden="true">{index + 1}</span><code>{line || " "}</code></button>
         : <div className="cm-code-line" key={index}><span aria-hidden="true">{index + 1}</span><code>{line || " "}</code></div>;
     })}
+    {omitted > 0 && <div className="cm-code-omitted"><span>已收起其余 {omitted} 行</span><button type="button" onClick={onExpand}>放大阅读全文<IconArrowRight size={12} /></button></div>}
   </div>;
 }
 
@@ -88,7 +95,7 @@ function SourceMaterial({ flow, onShowCard, onAttachCode, explanation }) {
   const feedback = useCopy(flow.state.resetVersion);
   return <div className="cm-stack">
     <ContentToolbar label="代码阅读工具"><span className="tw-tool-context">{attachment?.name || "custom_op.cpp:128"}<small>{attachment ? "用户提供 · 只读" : "范围来源示例 · 只读"}</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(text)}><IconCopy size={13} />复制来源</button></ContentToolbar>
-    {attachment ? <CodeBlock label="用户提供的只读代码">{text}</CodeBlock> : <LinkedCodeBlock text={text} label="可选择代码行的范围来源示例" explanation={explanation} />}
+    {attachment ? <CodeBlock label="用户提供的只读代码" maxLines={presentation === "canvas" ? 16 : undefined} onExpand={() => onShowCard?.("source")}>{text}</CodeBlock> : <LinkedCodeBlock text={text} label="可选择代码行的范围来源示例" explanation={explanation} maxLines={presentation === "canvas" ? 16 : undefined} onExpand={() => onShowCard?.("source")} />}
     {!attachment && <div className="cm-code-link"><IconBook size={14} /><span><strong>{CODE_CONCEPTS[explanation?.state.focus || "tail"].label}</strong><small>{CODE_CONCEPTS[explanation?.state.focus || "tail"].note}</small></span><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail", split: true })}>对照图解<IconArrowRight size={12} /></button></div>}
     <p className="cm-note">{attachment ? "保留你提供的代码作为核对证据。试改使用独立示例工作副本，未运行附件代码。" : "来源示例用于对照索引范围，不代表真实项目文件。示例草案和真实来源分别保留。"}</p>
     <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail" })}><IconBook size={13} />解释这里</button>{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加真实代码</button>}</div>

@@ -1,6 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ExploreTaskHome } from "./ExploreTaskHome";
 import {
   IconArrowRight,
+  IconEdit as IconEditHome,
   IconBook,
   IconBulb,
   IconCode,
@@ -26,7 +28,7 @@ const modes = [
 const codeFilePattern = /\.(c|cc|cpp|cxx|h|hpp|py|js|jsx|ts|tsx|txt|log|csv|json|md|yaml|yml)$/i;
 const createId = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
+function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
   const [mode, setMode] = useState("learning");
   const [goal, setGoal] = useState("");
   const [error, setError] = useState("");
@@ -139,8 +141,10 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
         {suggestions.map((item) => {
           const index = suggestions.indexOf(item);
           const cardTone = ["rose", "sand", "blue"][index] || "rose";
-          const Icon = mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
-          const Motif = mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
+          const errorLearning = item.type.startsWith("error-learning-");
+          const errorIcons = [IconBook, IconFileText, IconBrain];
+          const Icon = errorLearning ? errorIcons[index % errorIcons.length] : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
+          const Motif = errorLearning ? errorIcons[index % errorIcons.length] : mode === "learning" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
           const expanded = expandedCardId === item.id;
           const detailsId = `home-suggestion-details-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
           return (
@@ -154,11 +158,32 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
               onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); event.currentTarget.querySelector(".new-task-home__card-summary")?.blur(); setCardExpanded(null); } }}
             >
               <FolderCardSurface />
-              <button className="new-task-home__card-summary" type="button" aria-label={`${item.taskName}：${item.title}，前往任务`} onClick={() => onRecommendationAction?.(item)}>
-                <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
-                <span className="new-task-home__card-activity" title={item.activity}>{item.activity}</span>
-                <span className="new-task-home__card-title"><strong title={item.title}>建议：{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span></span>
-                <span className="new-task-home__card-reason">{item.reason}</span>
+              <button
+                className={`new-task-home__card-summary${errorLearning ? " is-error-learning" : ""}`}
+                type="button"
+                aria-label={errorLearning
+                  ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次。${item.errorExamples.map(example => `${example.date}${example.summary}`).join("；")}`
+                  : `${item.taskName}：${item.title}，前往任务`}
+                aria-controls={detailsId}
+                aria-expanded={expanded}
+                onClick={() => onRecommendationAction?.(item)}
+              >
+                {errorLearning ? <>
+                  <span className="new-task-home__card-error-heading">
+                    <Icon size={20} stroke={1.8} aria-hidden="true" />
+                    <strong title={item.title}>{item.title}</strong>
+                    <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span>
+                  </span>
+                  <span className="new-task-home__card-error-count">{item.errorPeriod}出错 <strong>{item.errorCount} 次</strong></span>
+                  <ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
+                    {item.errorExamples.slice(0, 2).map((example) => <li key={`${example.date}-${example.summary}`} title={`${example.date} · ${example.summary}`}><time>{example.date}</time><span aria-hidden="true">·</span><span className="new-task-home__card-error-summary">{example.summary}</span></li>)}
+                  </ul>
+                </> : <>
+                  <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
+                  <span className="new-task-home__card-activity" title={item.activity}>{item.activity}</span>
+                  <span className="new-task-home__card-title"><strong title={item.title}>建议：{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span></span>
+                  <span className="new-task-home__card-reason">{item.reason}</span>
+                </>}
               </button>
               <div className="new-task-home__card-details" id={detailsId} hidden={!expanded}>
                 {item.evidence?.length > 0 && <ul className="new-task-home__card-evidence" aria-label="推荐依据">{item.evidence.slice(0, 3).map((evidence) => <li key={evidence.id}><strong>{evidence.title}</strong>{evidence.summary && <span>{evidence.summary}</span>}{evidence.time && <time>{evidence.time}</time>}</li>)}</ul>}
@@ -237,4 +262,36 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
       </form>
     </section>
   );
+}
+
+
+export function NewTaskHome(props) {
+  const readView = () => new URLSearchParams(window.location.search).get("home") === "explore" ? "explore" : "classic";
+  const [view, setView] = useState(readView);
+  useEffect(() => {
+    const sync = () => setView(readView());
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
+  const switchView = (next) => {
+    setView(next);
+    const url = new URL(window.location.href);
+    url.searchParams.set("home", next);
+    url.searchParams.delete("task");
+    window.history.replaceState(window.history.state, "", url);
+  };
+  const handleTabKey = (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? "classic" : event.key === "End" ? "explore" : view === "classic" ? "explore" : "classic";
+    switchView(next);
+    event.currentTarget.querySelector(`#home-tab-${next}`)?.focus();
+  };
+  return <section className="home-variants" aria-label="新建任务首页">
+    <div className="home-variants__tabs" role="tablist" aria-label="首页方案" onKeyDown={handleTabKey}>
+      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={13} />{label}</button>)}
+    </div>
+    <div className="home-variants__panel" role="tabpanel" id="home-panel-classic" aria-labelledby="home-tab-classic" hidden={view !== "classic"}><ClassicTaskHome {...props} /></div>
+    <div className="home-variants__panel" role="tabpanel" id="home-panel-explore" aria-labelledby="home-tab-explore" hidden={view !== "explore"}><ExploreTaskHome onCreateTask={props.onCreateTask} /></div>
+  </section>;
 }

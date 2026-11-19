@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { IconArrowRight, IconCalendarEvent, IconCircleCheck, IconSearch, IconSparkles, IconUsersGroup, IconVideo } from "@tabler/icons-react";
 import { LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_PATH_URL, OFFICIAL_LEARNING_SOURCES, OFFICIAL_LEARNING_TASK } from "./official-learning-data";
-import resnetCourseImage from "./assets/learning-discovery/resnet50-inference-course.jpg";
-import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path.jpg";
-import tensorKnowledgeImage from "./assets/learning-discovery/hwc-to-chw-knowledge.jpg";
-import ascendclCourseImage from "./assets/learning-discovery/ascendcl-quickstart-course.jpg";
-import developerPathImage from "./assets/learning-discovery/developer-growth-path.jpg";
-import certificationImage from "./assets/learning-discovery/developer-certification-prep.jpg";
-import meetupImage from "./assets/learning-discovery/inference-meetup.jpg";
+import resnetCourseImage from "./assets/learning-discovery/resnet-inference-course-light.png";
+import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path-light.png";
+import tensorKnowledgeImage from "./assets/learning-discovery/tensor-layout-conversion-light.png";
+import inputContractImage from "./assets/learning-discovery/model-input-checklist-light.png";
+import ascendclCourseImage from "./assets/learning-discovery/ascendcl-quickstart-light.png";
+import developerPathImage from "./assets/learning-discovery/developer-growth-path-light.png";
+import certificationImage from "./assets/learning-discovery/certification-preparation-light.png";
+import meetupImage from "./assets/learning-discovery/developer-meetup-light.png";
 import "./learning-discovery.css";
 
 const recommendations = [
@@ -46,15 +47,15 @@ const recommendations = [
     action: "打开知识点",
   },
   {
-    type: "学习任务",
-    title: "核对模型输入约定",
-    description: "把数据类型、布局和尺寸作为检查项，对照所选样例逐项确认。",
-    reason: "把已学概念带到输入准备环节",
-    meta: "输入准备 · 约 18 分钟",
-    image: tensorKnowledgeImage,
-    imageAlt: "模型输入准备中核对图像张量的通道布局与维度",
-    destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: "learning-official-stage-input" },
-    action: "开始下一步",
+    type: "认证",
+    title: "昇腾开发者认证准备",
+    description: "结合你正在学习的 CANN 与模型推理内容，梳理认证知识主题和下一步准备重点。",
+    reason: "与你近期的图像推理学习目标相关",
+    meta: "认证规划 · Demo 建议",
+    image: certificationImage,
+    imageAlt: "认证证书、备考笔记和学习清单",
+    followId: "certification",
+    action: "关注备考专题",
   },
 ];
 
@@ -94,8 +95,8 @@ const newItems = [
     title: "图像预处理：核对模型输入约定",
     description: "从模型签名和官方样例出发，逐项记录输入数据类型、布局与尺寸。",
     meta: "学习内容 · 输入准备",
-    image: tensorKnowledgeImage,
-    imageAlt: "图像输入的 RGB 通道与张量布局示意",
+    image: inputContractImage,
+    imageAlt: "图像输入的张量规格与核对清单示意",
     action: "打开知识点",
     destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: "learning-official-stage-input" },
   },
@@ -107,6 +108,18 @@ const events = [
   { id: "meetup-community", month: "11月", day: "19", weekday: "周四", time: "19:00", kind: "开发者交流", title: "昇腾 AI 应用开发者交流会", description: "分享模型迁移、应用调试与开发协作中的实践经验。", place: "线上 · 活动信息示例" },
 ];
 
+const chipTone = type => ({
+  "课程": "tone-course",
+  "学习路径": "tone-path",
+  "路径": "tone-path",
+  "知识点": "tone-knowledge",
+  "认证": "tone-certification",
+  "学习任务": "tone-task",
+  "Meetup": "tone-meetup",
+  "课程直播": "tone-course",
+  "开发者交流": "tone-community",
+}[type] ?? "tone-neutral");
+
 function DiscoveryCard({ item, onOpen, followed, onFollow }) {
   return (
     <article className="ld-card">
@@ -115,7 +128,7 @@ function DiscoveryCard({ item, onOpen, followed, onFollow }) {
       </div>
       <div className="ld-card-content">
         <div className="ld-card-topline">
-          <span className="ld-type-chip">{item.type}</span>
+          <span className={`ld-type-chip ${chipTone(item.type)}`}>{item.type}</span>
           {item.reason && <span className="ld-card-context">{item.reason}</span>}
         </div>
         <h3>{item.title}</h3>
@@ -153,28 +166,30 @@ export function LearningDiscoveryPage({ onOpenItem }) {
   return (
     <section className="learning-discovery" aria-label="学习发现">
       <header className="ld-header">
-        <div className="ld-heading-copy">
-          <div className="ld-eyebrow"><IconSparkles size={15} />学习与活动</div>
-          <h1>学习发现</h1>
-          <p>接着学一点，发现新内容，也看看开发者们最近在交流什么。</p>
-        </div>
-        <div className="ld-heading-tools">
-          <span className="ld-demo-note">原型示例内容</span>
-          <label className="ld-search">
-            <IconSearch size={16} />
-            <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
-          </label>
+        <div className="ld-hero-copy">
+          <div className="ld-heading-copy">
+            <div className="ld-eyebrow"><IconSparkles size={15} />学习与活动</div>
+            <h1>学习发现</h1>
+            <p>接着学一点，发现新内容，也看看开发者们最近在交流什么。</p>
+          </div>
+          <div className="ld-heading-tools">
+            <span className="ld-demo-note">展示示例内容</span>
+            <label className="ld-search">
+              <IconSearch size={16} />
+              <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
+            </label>
+          </div>
         </div>
       </header>
 
       <main className="ld-scroll" aria-label="学习发现内容">
         <section className="ld-floor ld-floor-recommended" aria-labelledby="ld-heading-recommended">
           <div className="ld-section-heading">
-            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 接着学</span><h2 id="ld-heading-recommended">为你推荐</h2><p>从课程、路径、知识点和下一步任务里，挑一个接着探索。</p></div>
+            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 接着学</span><h2 id="ld-heading-recommended">为你推荐</h2><p>从课程、路径、知识点和认证准备里，挑一个继续探索。</p></div>
             <span className="ld-section-count">{filteredRecommendations.length} 项</span>
           </div>
           <div className="ld-card-grid">
-            {filteredRecommendations.map(item => <DiscoveryCard key={item.title} item={item} onOpen={onOpenItem} />)}
+            {filteredRecommendations.map(item => <DiscoveryCard key={item.title} item={item} onOpen={onOpenItem} followed={followed.has(item.followId)} onFollow={id => toggleSet(setFollowed, id)} />)}
           </div>
           {filteredRecommendations.length === 0 && <EmptyResults />}
         </section>
@@ -203,7 +218,7 @@ export function LearningDiscoveryPage({ onOpenItem }) {
               return <article className="ld-event" key={event.id}>
                 <div className="ld-event-date"><span>{event.month}</span><strong>{event.day}</strong><small>{event.weekday}</small></div>
                 <div className="ld-event-copy">
-                  <div className="ld-event-meta"><span className="ld-type-chip">{event.kind}</span><span>{event.time}</span></div>
+                  <div className="ld-event-meta"><span className={`ld-type-chip ${chipTone(event.kind)}`}>{event.kind}</span><span>{event.time}</span></div>
                   <h3>{event.title}</h3>
                   <p>{event.description}</p>
                   <small className="ld-event-place">{event.place}</small>

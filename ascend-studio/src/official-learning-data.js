@@ -7,7 +7,7 @@ export const OFFICIAL_LEARNING_SOURCES = {
   growth: { id: "growth", title: "昇腾开发者成长路径", type: "path", url: OFFICIAL_LEARNING_PATH_URL },
   overview: { id: "overview", title: "AscendCL 概述", type: "course", url: "https://www.hiascend.com/developer/courses/detail/1676860115159470081" },
   quickstart: { id: "quickstart", title: "AscendCL 快速入门", type: "course", url: "https://www.hiascend.com/developer/courses/detail/1676864664357150722" },
-  resnet: { id: "resnet", title: "ResNet50 C&C++ 应用课程", type: "course", url: "https://www.hiascend.com/developer/courses/detail/1679410425112403970" },
+  resnet: { id: "resnet", title: "ResNet50 C&C++ 应用课程", type: "course", url: "https://www.hiascend.com/developer/courses/detail/1679410425112403970", embedUrl: "https://2b87aad812c94b3392d218f35fa6ca3f.shixizhi.huawei.com/course/1493401497873534978/application-view?courseId=1679410425112403970&appId=552627827888558080&appType=1&headershow=true" },
   python: { id: "python", title: "ResNet50 Python 应用课程", type: "course", url: "https://www.hiascend.com/zh/developer/courses/detail/1687390499876962306" },
   "image-sample": { id: "image-sample", title: "CANN 8.0 图像处理样例", type: "document", url: OFFICIAL_IMAGE_SAMPLE_URL },
   resources: { id: "resources", title: "昇腾开发者官方学习资源", type: "article", url: "https://www.hiascend.com/developer/techArticles/20230817-1?envFlag=1" },

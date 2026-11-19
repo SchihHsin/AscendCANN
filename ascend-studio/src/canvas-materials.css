@@ -25,6 +25,12 @@
 .cm-text-button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 4px 0; border: 0; border-radius: 4px; color: #8d99ae; background: transparent; font-family: inherit; font-size: 10px; line-height: 1.6; cursor: pointer; }
 .cm-text-button:hover { color: #65758f; text-decoration: underline; text-underline-offset: 3px; }
 .cm-code { margin: 0; padding: 12px; overflow: auto; max-height: 350px; border: 1px solid #e2e6e8; border-radius: 8px; color: #606a7b; background: #f7f9f8; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.9; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; scrollbar-width: thin; scrollbar-color: #d9dedf transparent; }
+.cm-code-preview { min-width: 0; }
+.cm-code-preview .cm-code { border-radius: 8px 8px 0 0; }
+.cm-code-omitted { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 9px; border: 1px solid #e2e6e8; border-top: 0; border-radius: 0 0 7px 7px; color: #898e9a; background: #fbfbfa; font-size: 10px; line-height: 1.4; }
+.cm-code-omitted > button { display: inline-flex; align-items: center; gap: 3px; flex: 0 0 auto; border: 0; padding: 2px 0; color: #737b8d; background: transparent; font: inherit; cursor: pointer; }
+.cm-code-omitted > button:hover { color: #50596d; }
+.cm-linked-code .cm-code-omitted { border-radius: 0 0 7px 7px; }
 .cm-code code { font: inherit; color: inherit; background: transparent; padding: 0; }
 .cm-code-editor { width: 100%; min-height: 302px; max-height: 580px; resize: vertical; padding: 12px; border: 1px solid #dce3e7; border-radius: 8px; outline: none; color: #606a7b; background: #fbfdfb; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.9; tab-size: 2; }
 .cm-code-editor:focus { border-color: #9aa7ba; background: #fff; }

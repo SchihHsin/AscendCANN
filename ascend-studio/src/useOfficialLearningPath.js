@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { OFFICIAL_LEARNING_STAGES, getOfficialLearningNode } from "./official-learning-data";
 import { currentInputAttempt, currentSequenceAttempt, deriveOfficialStatuses, initialOfficialProgress, restoreOfficialProgress } from "./official-learning-progress";
+import { moveOfficialLearningStep, officialPathOrder } from "./official-learning-plan";
 
 const keyFor = taskId => `learning-official-path:${taskId}`;
 const object = value => value && typeof value === "object" && !Array.isArray(value);
@@ -36,6 +37,24 @@ export function useOfficialLearningPath({ taskId, enabled = true, visible = fals
     return () => clearInterval(timer);
   }, [enabled, visible, raw.playing, raw.selectedNodeId, update]);
   const actions = useMemo(() => ({
+    startPersonalPlan: () => update(previous => {
+      if (previous.personalPlan?.status === "draft") return previous;
+      if (previous.personalPlan?.status === "confirmed") return { ...previous, personalPlanBase: previous.personalPlan, personalPlan: { ...previous.personalPlan, status: "draft" }, personalPlanUndo: [], notice: "已从已确认的个人计划建立编辑草案；官方路径和已有学习进度保持不变。" };
+      return { ...previous, personalPlan: { status: "draft", orderByStage: officialPathOrder() }, personalPlanBase: null, personalPlanUndo: [], notice: "已复制官方路径为个人计划草案；官方路径和已有学习进度保持不变。" };
+    }),
+    movePersonalPlanStep: (stageId, sourceId, targetId) => update(previous => {
+      const moved = moveOfficialLearningStep(previous.personalPlan, stageId, sourceId, targetId);
+      if (!moved) return previous;
+      const undo = [...(previous.personalPlanUndo || []), previous.personalPlan].slice(-20);
+      const source = getOfficialLearningNode(sourceId), target = getOfficialLearningNode(targetId);
+      return { ...previous, personalPlan: moved, personalPlanUndo: undo, notice: `已将「${source?.title || sourceId}」移到「${target?.title || targetId}」的位置；确认个人计划后才会用于后续学习。` };
+    }),
+    undoPersonalPlanStep: () => update(previous => {
+      const prior = previous.personalPlanUndo?.at(-1);
+      return prior ? { ...previous, personalPlan: prior, personalPlanUndo: previous.personalPlanUndo.slice(0, -1), notice: "已撤销个人计划中的上一步顺序调整。" } : previous;
+    }),
+    confirmPersonalPlan: () => update(previous => previous.personalPlan?.status === "draft" ? { ...previous, personalPlan: { ...previous.personalPlan, status: "confirmed" }, personalPlanBase: null, personalPlanUndo: [], notice: "个人学习计划已确认；官方来源路径与已记录的学习进度保持不变。" } : previous),
+    cancelPersonalPlanEdit: () => update(previous => previous.personalPlan?.status === "draft" ? { ...previous, personalPlan: previous.personalPlanBase || null, personalPlanBase: null, personalPlanUndo: [], notice: "已取消个人计划调整，官方路径与学习记录保持不变。" } : previous),
     selectNode: id => {
       const node = stepFor(id);
       if (node) update(previous => previous.selectedNodeId === node.id ? previous : { ...previous, selectedNodeId: node.id, playing: false, notice: "" });

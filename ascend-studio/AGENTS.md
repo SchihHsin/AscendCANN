@@ -10,6 +10,16 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Confirmed design decisions
 
+### Ascend Studio 核心目标与概念 Demo 原则
+
+- Ascend Studio 是体验与交互设计概念的展示、试验和讨论空间。用户以体验 / 交互设计师视角提出创新点；原型首先要让设计点可见、可感知、可操作，不需要为了证明概念而完成真实 AI、日志、训练环境、NPU 或后端集成。
+- 做设计工作时，不要让“是否接入真实历史 / 遥测”取代对交互价值的讨论，也不要将“不读取历史”写成产品优点。可用策划的示例任务和状态讲清楚交互；如果需要标明演示语境，放在不打断体验的位置即可。
+- 历史任务、已有材料、过去的选择或未完成目标可以成为概念中的探索起点。让它们带出相关方向和下一步选择；示例词条应通过上下文关系被理解，不假定每位用户都需要同一组推荐。
+- 探索画布应体现渐进下钻：当前焦点移到中心，子节点向周围扩散，关系由连线表现；动效平滑、节点位置稳定。悬浮用于预览，经过停留后仍需用户再次移动或明确选择才进入下层，不能因新布局下鼠标恰好压住子节点而自动连跳；通过路径导航保留展开来源。
+- 选择路径逐步生成可编辑 Prompt。用户可直接修改、添加或删除条件，明确发送后才继续；演示可由前端规则模拟，不要求完整工程流程。
+- 当前首页探索创新点使用“训练与调优”主题，不再用图像推理作为该方向的案例。训练效率、多卡收益、瓶颈定位、并行策略和对照实验可作为演示故事素材，不表示真实运行或诊断结果。
+- 探索页的文案层级已确认：中文主题和 Prompt 是大字，英文翻译作为上方小字；中文标题沿用之前认可的宋体衬线字形。中心焦点与周边节点视觉协调，避免凭空突出为另一套卡片组件。
+
 - The workspace has three columns: left project/task navigation, middle task conversation, and right-side judgment/evidence/actions. Do not remove the conversation or replace the project task list with a learning center.
 - Keep the left shortcuts for new task, automation tasks, and capability library, then show compact, collapsible task groups under projects.
 - Use the selected screen mock as the visual reference, then make iteration changes in HTML/CSS. Keep generated imagery for small decorative accents, not as the editable page itself.
@@ -978,6 +988,20 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 功能提交 `3a7a0163` 已推送 `origin/main`，包含社区功能源码与独立 Pages 构建；其他对话的暂存、未暂存和未跟踪改动均未纳入。
 
 
+### 2026-10-22 · 框选语音快捷键改为 Fn
+
+- 框选后的局部 composer 现在以 `Fn` 按下/松开控制语音录入；提示文案同步为 `Fn`。转写继续回填当前草稿，由用户主动发送；普通 composer 语音入口不变。
+- 变更 `src/AreaComposer.jsx`、`src/TaskWorkspace.jsx`。干净快照的源码构建与 Pages 构建通过；物理 Fn 键事件与麦克风听写仍需实际设备验证。静态 `ascstudio/` 已按当前已提交版本单独重建并推送，没有覆盖工作区内其他未提交源码。
+- 源码提交 `7f794fcf`、Pages 构建提交 `deeaf9a7` 均已推送 `origin/main`。
+
+
+### 2026-10-22 · 划区模式退出可发现性
+
+- `Esc`、再次点击工作区标题栏「退出框选」以及提示条关闭键都退出划区并清除未完成选框；窄工作区中仍显示按钮文字，模式提示说明两种主要退出方式。
+- 修改 `src/TaskWorkspace.jsx`、`src/task-workspace.css` 与 Pages 构建产物。干净快照生产构建及 Pages 构建通过；实际浏览器按键回放未做。本轮产物未包含其他对话的未提交源码。
+- 源码提交 `286d5ebf`、Pages 构建提交 `62bda99c` 已推送 `origin/main`。
+
+
 ### 2026-10-22（社区经验入口改到开发任务）
 
 - 用户明确社区经验示例应在开发任务中呈现，不放在学习任务。示例任务采用「图像推理调试」：只有隔离副本中的预处理修改应用后，示例形状复核通过，才在同一对话出现社区经验邀请。直接入口：`https://schihhsin.github.io/AscendCANN/ascstudio/?task=development`。
@@ -985,6 +1009,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更：`ascend-studio/src/App.jsx`、`community-draft-data.js`、`prototype-data.js`、`useWorkbenchState.js` 与独立 Pages 产物 `ascstudio/`。不改变正式报告页序/hash或 API / Host / Application 边界。
 - 本地浏览器 M 级核验：在「图像推理调试」中将轴顺序设为 2,0,1，应用示例副本并完成 NCHW `[1,3,224,224]` 形状复核后，邀请出现在该开发对话；生成后右侧显示问题、尝试与结果、环境、验证状态四部分草稿。隔离快照 `npm run build:pages` 和 `git diff --check` 通过；未运行测试套件。
 - 证据边界：浏览器形状规则通过不等于真实项目代码、Python、模型或 NPU 验证；草稿生成与社区提交仍为本地演示。Commit `650c7ba9` 已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪改动均保留。
+
+
+### 2026-10-22 · 框选后的区域引用可取消
+
+- 框选完成后，局部输入态可由标题栏「取消选区」按钮或 `Esc` 取消；两者都会清除区域引用和局部草稿，不发送消息。仍在框选时可按 `Esc`、再次点击「退出框选」或使用提示条关闭按钮退出。
+- 变更 `src/TaskWorkspace.jsx` 与 Pages 产物。干净最新快照的生产构建、Sites 构建准备、Pages 构建通过；没有进行真实浏览器按键回放。其他对话未提交代码保留在工作区。
+- 源码提交 `290e7add`、Pages 构建提交 `920df74b` 已推送 `origin/main`。
 
 ### 2026-10-22 · 学习发现页
 
@@ -1001,6 +1032,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建产物。隔离快照 `npm run build:pages`、工作树 `npm run build`、`git diff --check` 通过；本地 Firefox 预览截图确认彩色提示出现在开发任务对话中。未运行测试套件。
 - 功能提交 `1332f5ee` 已推送 `origin/main`；不影响正式报告页序/hash或 API / Host / Application 边界。可信度设计仍按用户要求待后续处理。
 
+
 ### 2026-10-22 · 社区经验提示回到选定的入口样式
 
 - 完成对话中的社区经验入口复用已选参考图：轻暖黄 / 淡紫渐变集中在卡片上沿并向白色淡出，标题、辅助说明和黑底白字主操作横向排布；完成状态与验证边界留在对话说明，入口不再重复提问。窄对话区按钮自然换行；社区提示出现时加深输入框投影。
@@ -1008,9 +1040,17 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 本地 CUA 在 1280×720 截图核对入口样式并点击生成，右侧草稿面板打开。由于浏览器安全策略拒绝 data URL 并排页，未完成同尺寸 side-by-side 视觉 QA，详见 `design-qa.md`（final result: blocked）。
 - 修改 `src/App.jsx`、`src/community-draft.css` 与静态 Pages 产物；不涉及报告页序/hash或 API / Host / Application 边界。
 
+
 ### 2026-10-22 · 社区经验提示样式发布回执
 
 - 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，已在 `https://schihhsin.github.io/AscendCANN/ascstudio/?task=development` 通过 1280×720 浏览器截图确认新样式已上线；其他对话的暂存、未暂存和未跟踪改动均保持原样。
+
+
+### 2026-10-22 · 社区经验入口固定在输入区
+
+- 用户确认入口应固定跟随输入框，滚动旧对话时保持可见。提示已从消息流移到 composer 上方的固定组合区；上边圆角、下边直角，沿用暖黄 / 淡紫向白色淡出的渐变与黑底白字按钮，composer 阴影压在提示前。只在开发任务成功后出现。
+- 点击生成后固定提示收起，草稿卡仍作为对话内容显示，右侧工作区打开可编辑审阅；用户主动提交。真实 AI、社区接口和 NPU 验证仍未接入。
+- 修改 `src/App.jsx`、`src/community-draft.css`、`src/styles.css`。Vite 隔离构建成功、`git diff --check` 通过；本地 CUA 被 URL 安全策略拒绝，未使用替代浏览器或间接读取，故本轮视觉核验 blocked，见 `design-qa.md`。当前源码与 Pages 尚未提交或推送；共享工作区其他对话的改动均保留。
 
 
 ### 2026-10-22 · 提交后切换社区文章预览
@@ -1028,13 +1068,172 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 桌面 1440×900 本地 Pages 包检查确认 3 个连续楼层、全部 9 张图片可加载、横向无溢出且不存在 tab / tabpanel 语义。截图和元数据在 evidence/20261022-learning-discovery/；干净快照 Pages 构建与 git diff --check 通过，未运行测试套件。
 - 不改变报告序列、页面 hash 或 API / Host / Application 边界。该 Pages 包基于最新 origin/main 隔离构建，保留其他对话工作。Commit / push 回执随后补充。
 
+### 2026-10-22 · 对话触发的 Agent 路径操作
+
+- 学习任务中的自然语言路径指令会触发本地演示 Agent 指针：从对话发送按钮出发，定位受影响节点；生成路径时依次经过主阶段；新增/跳过建议时前往对应子节点；路径内排序时先定位源节点再前往目标。节点有短暂高亮，草案仍需人工审阅/撤销/确认。
+- 支持同阶段的“把 A 移到 B 前/后”指令；方向重排保留旧的拖拽排序行为。该指针为原型中的视觉演示，不是 OS Computer Use 或真实模型调用。变更 `src/App.jsx`、`LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`learning-path-collaboration.js`、`useLearningJourney.js` 和协同测试。
+- 2026-10-22 验证：相关 Node 测试 6/6，`npm run build`、`git diff --check` 通过；本地 1280×800 CUA 验证重排与指针高亮，无浏览器错误。测试后的草案留在本地预览任务中。未提交/推送，原因是共享工作区含其它对话的未提交修改；不得重置、清理或混入这些文件。
+
 
 - 发布回执：功能提交 d7039647 已推送至 origin/main；Pages run 39728932934 成功，发布 index、JS、CSS 和内容图均返回 HTTP 200。线上 CUA 读取超时，视觉与楼层结构以本地 1440×900 生产包截图为证；未声称线上点击回放。其他对话的共享工作区改动未纳入功能提交。
 
+
+### 2026-10-22 · 路径共创演示刷新回到初始状态
+
+- 「图像输入预处理路径共创」作为可重复演示任务，刷新后恢复初始对话、3 项待审阅建议、原始节点顺序和路径画布初始视图；当它是当前选中任务时，刷新继续打开该任务。首次访问仍进入新建任务首页。
+- 只重置这项共创演示的会话与工作区快照；其他学习 / 开发任务的状态和记录继续按原有机制保存。
+- 修改 `ascend-studio/src/App.jsx`、`useLearningJourney.js`、`useLearningCanvasView.js`、`useWorkbenchState.js`、`useContentWorkspace.js`。属于 Application / Task 演示状态，不影响页面序列或 API / Host / Application 边界。
+- 验证：路径生成与协同测试 7/7；`npm run build`、目标文件 `git diff --check` 通过。CUA 实测先采纳一项，再刷新；任务保持打开且恢复为 3 项待你决定，原始顺序恢复。构建仅显示既有 bundle 体积提示。
+- Commit / push：未执行。共享工作区包含其他对话的已暂存、未暂存及未跟踪改动，且 `App.jsx`、`useLearningJourney.js` 同时承载此前未提交的共创 / Agent 指针工作；为避免把其他修改混入本次发布，本轮仅保留本地改动。
+
+### 2026-10-22 · 以学习目标变化演示路径共创
+
+- 已确认场景：用户有 Python 与 HWC→CHW 基础、每天 15 分钟，从理解概念转向能核对模型图像输入。路径共创任务原有 3 项建议仍保留；新提示追加快速回顾、减少重复轴转换、预处理顺序判断和模型输入签名核对 4 项变化。实践段按尺寸调整→归一化→顺序判断→输出复核排列；NCHW 检查放在跟练后的检查阶段，并排在保存记录之前。
+- 助手首条回复中的“填入共创演示需求”只填充并聚焦输入框，不会自动发送；目标编辑器包含 15 分钟选项。提示提交后，本地 Agent 指针按路径顺序定位相关节点；每项新增或调整仍需用户采纳 / 忽略，确认整条路径前不开始学习。不是实际 Computer Use 或模型服务。
+- 改动：`src/App.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/learning-path-collaboration.js`、`src/learning-path-collaboration.test.js`、`src/useLearningJourney.js`；本地 Pages 已构建到仓库根目录 `ascstudio/`。Application / Task 演示，不影响汇报页序或 API / Host / Application 边界。
+- 验证：协同与路径生成 Node 测试 11/11；`npm run build:pages`、`git diff --check` 通过，存在既有 bundle 大小提示。CUA 重开页面确认新提示入口显示、NCHW 节点顺序在保存节点前；本轮没有完成发送提示后指针运动的浏览器回放。
+- Commit / push 未执行：工作树有其他会话的暂存、未暂存和未跟踪改动，涉及文件也同时包含此前并行改动；本轮源码和构建产物保留在本地，不清理或混入其他工作。
+
+## 2026-10-22 · 学习发现视觉方向
+
+- 用户明确选择清透、明亮的内容图风格，并纠正强调色为蓝紫色（不是蓝青色）。学习发现使用白色与浅冷灰底，蓝紫用于楼层标识、轻交互反馈和局部强调；避免米黄色大底、青色主强调与深色内容封面。
+- 卡片图片要说明对应学习内容（课程、路径、认证、知识点、Meetup），不是抽象装饰。采用低饱和浅色场景和紫色技术结构，保证小尺寸裁切时仍能读出主题。
+- 本轮本地浏览器核对桌面卡片和日程；Pages 构建及部署成功。认证与活动仍是演示数据。
+
+### 2026-10-22 · 首页错误记录推荐卡片
+
+- 新建任务首页的三张文件夹卡片展示知识点、近 7 天出错次数和两条历史错误摘要；不在卡片上标记记录属于开发任务或学习任务。文件夹形状、既有页面构图和输入区保留。圆形箭头沿用卡片入口样式；错误次数色彩只与文件夹上沿呼应，不表示严重程度。
+- 推荐标题为编译参数校验、输入维度与 Shape、图像数据预处理。当前条数、日期和摘要是固定演示数据，不是真实用户记录或诊断结论；生产接入应汇总各类任务的真实错误记录，并保留适用版本及上下文。
+- 对应源码：`src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`。用户认可的设计目标在 `/Users/hsin/.codex/generated_images/01a162b8-d26f-76e3-bfc9-b25ecdd4c3ad/exec-ae2900ec-eb2d-4c1d-b469-ed21f3f86824.png`。
+
+### 2026-10-22 · 任务列表透明黑状态
+
+- 用户要求项目 / 任务列表的搜索框与选中状态使用有透明度的黑色，不再用灰色底。搜索框常态与聚焦、任务行悬停与选中均改为低透明度黑色；文本保持清晰黑色。
+- 修改 `ascend-studio/src/styles.css`，属于现有任务导航的局部视觉调整；不改页面顺序、交互和 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`git diff --check`；本地预览 `127.0.0.1:8123` 返回的样式包含透明黑搜索框与任务选中态；未运行测试套件。Pages workflow `39778498431` 构建与部署成功，线上入口引用 CSS `index-3UCjOMuZ.css`（HTTP 200）。功能提交 `3718898c` 已推送至 `origin/main`；其他对话改动保留。
+
+### 2026-10-22 · 画布节点移动是位置编辑
+
+- 节点拖动只改画布坐标；学习顺序、节点内容与进度保持不变。所有学习路径画布的一级、二级节点采用相同规则，连线随节点更新；位置按任务和左右/上下布局分别保存。键盘可用 Alt + 方向键微调。
+- 本轮实现于 `src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/official-learning-canvas.css` 与 `src/prototype-data.js`，坐标与连线逻辑在 `src/canvas-node-position.js`。新增坐标/连线测试。
+- 验证：`node --test src/canvas-node-position.test.js src/learning-canvas-view-state.test.js` 4/4、`npm run build`、`git diff --check` 通过；未进行浏览器指针拖动自动化实测。
+- 暂不 commit / push：共享工作区含其他对话的暂存、未暂存与未跟踪改动，发布静态产物也含并行更改。保留现状，等可安全隔离时再构建 Pages 和推送。
+
+
+### 2026-10-23 · 首页经典 / 探索双视图 Demo
+
+- 用户授权直接实现可体验 Demo，并指定右上角小 Tab 在新旧首页间切换。新增“经典 / 探索”切换，两个视图在同一次首页访问中保持挂载，切换保留各自输入；`?home=explore` 直达探索视图，`?home=classic` 直达旧版，URL 保留切换结果。没有替换既有首页或应用导航。
+- 探索首页以 6 个通用任务方向、35 个可达节点组成预设能力地图；说明词条来源，不将静态词条包装成个性化诊断。悬浮 / 键盘聚焦展示局部关联，点击才进入分支并形成草稿。训练调优主线为“训练与调优 → 提升训练效率 → 多卡收益不明显 → 定位 / 对照 / 理解并行训练”。没有使用图像推理作为新方案案例。
+- 草稿支持直接输入、编辑、移除条件、返回上一级和任务类型调整。手工编辑后继续选择不会覆盖草稿；提供明确的重新生成动作。只有“发送并开始”才调用既有任务创建，探索任务归入“其他项目”，不误放入模型推理项目；后续材料继续在任务工作区补充。当前是本地规则 Demo，未接真实模型、训练日志、性能诊断或 NPU。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`App.jsx`，新增 `ExploreTaskHome.jsx`、`home-exploration.js`、`explore-task-home.css`；发布产物仍在 `ascstudio/`。只增加首页交互及 URL 参数，不改既有汇报页序 / hash，也不改变 API / Host / Application 层边界。
+- 验证：Node 断言覆盖 35 个节点、空起点、无效分支与学习 / 开发类型；Vite build、Pages build、`git diff --check`。CUA 1280×720 复核首屏、键盘聚焦关联、训练分支、手工编辑保留、经典 / 探索切换、发送创建及任务简报；错误日志为空。已修正新壳 grid 列定位及分支与草稿遮挡。截图位于 `ascend-studio/evidence/20261023-home-exploration/`；没有声称完成移动端或实体触屏验证。
+- 发布方式：在 origin/main 的独立工作树中实施、合并最新提交、单独构建并推送，避免混入共享目录已有暂存 / 未暂存变更。构建保留既有大包体积提示；提交与线上部署回执随后补充。
+
+- 发布回执补充：功能提交 `2cccac7c`、Pages 产物提交 `f4aafffb` 已推送 `origin/main`。GitHub Actions Pages workflow `39883154116` 最终成功；线上 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=explore` 返回 HTTP 200 并引用新 JS bundle。完整交互回放使用本地预览；发布后线上浏览器截图读取超时，不记录为线上视觉核验。
+
+## 2026-10-23 · 学习发现 Banner 渐隐
+
+- 顶部配图从 Banner 中段向下逐渐淡出，最终与页面的浅灰底色 `#f7f8fc` 融合；避免下沿出现明显横线或硬切边。
+- 延续用户已确认的清透浅蓝紫方向，深色只用黑色；本次只调整背景过渡，保留标题、推荐课程、楼层顺序与交互。
+
+### 2026-10-23 · AddCustom 自由画布聚焦 / 展开
+
+- AddCustom 默认显示自由画布，其它任务保持原模式。两个动作明确区分：聚焦按钮只移动/缩放画布镜头；放大按钮在右侧完整工作区阅读同一节点。返回按钮和顶栏返回均恢复原节点、画布视口与布局。
+- 节点按内容而非统一尺寸：索引范围示例默认 620×610，现场判断 560×390；其它 AddCustom 材料按代码、解释、Diff、结果取尺寸。卡片不承载滚动；代码预览最多16行并标出省略行数，溢出节点提示在工作区阅读全文。
+- 只改 AddCustom 任务交互，不改变其它画布聚焦缩放、项目任务分组、对话和三栏布局。内容仍是浏览器算例，不是真实项目、AI、编译或 NPU 验证。
+- 隔离 Vite production build 与设计材料 HTML 解析通过，未运行测试。CUA 本地页访问遭安全策略拒绝；不使用其它浏览器或间接读取，截图级视觉核验待可访问环境补做。
+
+### 2026-10-23 · 中性灰背景统一
+
+- 用户在中性灰 / 偏冷灰比较后选择中性灰。共享基准为主画布 `#f5f5f5`、辅助面 `#f8f8f8`、选中态 `#efeff0`、边线 `#e5e5e5`。统一新建任务、探索首页、学习发现、层级学习画布、任务画布及工作区主要中性背景；点阵和环境叠色也改为中性灰。保留白色内容面、紫色强调及成功 / 提醒等语义色。
+- 变更位于 `ascend-studio/src` 的共享样式文件；仅影响视觉表面，不改变页面序列、交互、学习路径数据、API / Protocol、Host / Harness 或 Application / Task 边界。依据是用户在本轮明确选择的配色方案。
+- 验证：`npm run build`、`npm run build:pages`、本轮涉及 CSS 的 `git diff --check` 通过；构建保留现有大包体积提示。
+- Commit / push：未提交、未推送。共享工作区含大量其它对话的暂存、未暂存和未跟踪改动，当前分支相对 `origin/main` 落后 79 个提交；为避免把并行改动混入或覆盖，本轮只保留工作区改动。
+- 未决：待在不包含其他对话 WIP 的最新主分支工作树中复核合并并发布；目前完成构建验证，未完成截图级视觉回放。
+
+### 2026-10-23 · 对话气泡中性灰修正
+
+- 用户指出消息气泡仍显冷灰；将用户消息气泡底色改为共享选中灰 `#efeff0`，描边改用中性 `#e5e5e5`。相邻的执行提示、提示图标、已选下一步与悬浮底色也改用同一中性灰 token，避免聊天区域出现蓝灰小块。
+- 仅改对话区非语义中性表面，不影响成功 / 失败颜色、强调色、布局或交互。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；未提交 / 推送，仍受共享工作区与主分支落后 79 个提交的限制。
+
+### 2026-10-23 · 气泡范围澄清
+
+- 用户明确指出目标只有「用户消息」气泡。上一条提到的“任务提示”是独立的「已尝试：修改编译参数 · 错误位置未变」行；该行及相邻对话控件已恢复原样。本轮只保留用户气泡 `#f1f2f4 → var(--surface-selected)` 和描边 `var(--line)` 的调整。
+- `npm run build`、`npm run build:pages`、相关 `git diff --check` 通过；仍未提交 / 推送。
+
+### 2026-10-23 · 学习发现页浅色内容图方案
+
+- 用户选择了浅色页面方案：主体保持白 / 中性浅灰，浅蓝紫只作重点缀，辅以少量浅杏和薄荷绿；课程、学习路径、知识点、认证和 Meetup 使用清透的内容图，不使用深色装饰插图。
+- 学习发现按“为你推荐 → 新上架 → 近期日程”顺序连续向下浏览；推荐区最后一项为认证。顶部使用简洁标题与搜索，不放大 Banner 或重复的单项课程 Hero。近期活动用纵向时间轴串联。
+- 保持既定左侧入口顺序“新建任务、学习发现、自动化任务、能力库”。当前课程 / 路径入口及活动、认证专题仍是原型示例；不得当作真实报名 / 认证数据。
+- 该方向覆盖并替代学习发现之前的 Banner 主视觉；原素材可留在资产目录供回溯，不再由当前页面加载。
+
+### 2026-10-23 · 任务切换时保持项目栏展开
+
+- 用户要求：展开左侧项目 / 任务栏后，切换任务时保持展开；只有再次点击栏边的图标才收起。
+- 本地复现发现：状态没有折叠，但学习任务的默认项目栏宽度会降至 200px，开发任务则为 286px，导致列表明显变窄、像是收起。`useWorkbenchLayout` 现为学习与开发任务使用同一响应式默认宽度；显式收起仍由侧栏按钮控制，用户手动调宽的偏好仍保留。
+- CUA 本地预览核对：切换到学习共创任务和开发任务时栏保持展开，观测宽度均为 286px；点击侧栏按钮收起后，栏变为 18px；再次点击后恢复展开。没有改页面序列或 API / Host / Application 边界。
+- 验证：`node --check ascend-studio/src/useWorkbenchLayout.js`、`git diff --check -- ascend-studio/src/useWorkbenchLayout.js` 通过；Vite Pages 构建通过（`--emptyOutDir false` 保留既有产物），仅保留既有大 bundle 提示。未运行自动化测试。
+- Commit / push：未执行；保留共享工作区其它对话的暂存、未暂存和未跟踪更改。静态预览产物在 `ascstudio/` 更新。
+
+#### 2026-10-23 · 侧栏问题记录更正
+
+- 更正上一条：统一宽度只处理了切换时“变窄”的现象，并没有处理用户报告的“切换任务后列表收起”。该宽度改动已撤回；用户实际报告的问题仍待按其真实切换操作定位。当前代码中任务选择处理未显式设置 `sidebarCollapsed`，需要继续检查切换时是否发生组件重挂载或其他状态重置。
+
+
+### 2026-10-23 · 任务列表收起问题再次排查
+
+- 用户再次反馈切换任务后整个列表仍会收起。助手承认此前未复现不代表问题不存在。当前 CUA 手动按“收起 → 展开 → 点击另一任务”回放未复现；不同任务切换后侧栏状态仍展开。
+- 发现 `.sidebar-toggle::before` 点击热区向左扩 5px，在窄侧栏宽度下可能侵入任务行右侧。`styles.css` 已改为仅向上、下、右扩展，避免误触关闭；这是待复测的风险修正，尚未确认根因。
+- 以 `--emptyOutDir false` 重建本地 `ascstudio/` 成功；CUA 浏览器连接在构建期间中断，尚未做修正后的鼠标验证。未运行测试、未提交 / 推送；其他工作区改动原样保留。
+
+
+#### 2026-10-23 · 按用户步骤复测
+
+- 在 1280×720 本地预览按“侧栏收起 → 点击图标展开 → 鼠标切换另一任务”重演。切换 `Model preprocessing` / `Vision model test` 与 `Add batch dimension` 后，选中任务更新，项目栏仍为展开状态、宽度 286px。381×768 窄屏下也检查了展开列表中的任务切换，栏仍显示；这次没有复现用户所见的收起，因此不能据此声称用户问题已解决。
+- `App.jsx` 的项目任务行选择现在显式先执行 `setSidebarCollapsed(false)`，再调用任务选择；这是按既定交互增加的保护。`styles.css` 的透明伪元素热区仍保持仅向上、下、右扩展。
+- `npx vite build --base=./ --outDir ../ascstudio --emptyOutDir false` 成功；仅有既有大 bundle 提示。`git diff --check -- ascend-studio/src/App.jsx ascend-studio/src/styles.css` 通过。未运行自动化测试，未提交 / 推送，其他对话的暂存、未暂存与未跟踪改动保持原样。
+- 选择 `AddCustom 精度异常` 时曾出现整页空白，刷新后恢复；这是单独的待查异常，不把它记录成侧栏收起问题的复现。
+
+
+### 2026-10-24 · ResNet50 免登录视频演示
+
+- 用户确认这是交互方案演示，选择用自绘的录屏感动画替代登录受限的官网 iframe；界面不添加“假视频”提示，保留播放器中的官网课程外链。
+- `ascend-studio/src/OfficialLearningActivities.jsx` 在原“讲解、视频与理解检查”区域提供 45 秒可播放画面：代码编辑区、推理流程、Top-3 结果、光标 / 高亮随当前学习节点进度推进；播放、暂停、拖动时间轴和章节切换共用现有学习状态。播放器控件移入画面底部，默认视口可见。`official-learning-canvas.css` 仅补充这一区域的播放器布局与小屏规则。
+- 来源与边界：官网课程链接仍指向 `official-learning-data.js` 中的昇腾课程（H）；屏幕内的代码与结果是交互原型素材，不表示官方原片或 NPU 实测。未改变页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：`npm run build` 与 clean-main checkout 的 `npm run build:pages` 成功；`git diff --check` 通过。CUA 在 1280×720 打开 ResNet50 任务，确认 iframe 为 0、新播放器与控件各 1；点播后 00:01 前进，拖至 00:15 后当前讲解、代码高亮和推理节点同步切换；console 无错误。Vite 保留既有大 chunk 提示。
+- 源码及 Pages 产物提交 `d269f336` 已推送 `origin/main`；GitHub Pages workflow `40002518291` 的 build / deploy 均成功；线上 `/ascstudio/` index 引用的 JS、CSS 均返回 HTTP 200。
+
+### 2026-10-26 · ResNet50 全部节点内容展开
+
+- 已确认的画布交互：工具栏图标在默认单节点视图与全部 15 个节点内容卡同时展开之间切换。全部展开时按实际卡片高度拉开节点及章节间距；左右 / 上下布局、聚焦、缩放、适应路径、节点拖动和内容卡拖动继续可用。普通视图坐标与全展开节点坐标分开保存；视频不自动播放。
+- 全展开小地图展示节点卡片，当前节点卡片用画布已有的浅紫色选中边框提示；点击章节节点后镜头聚焦对应内容卡。仅影响 ResNet50 官方学习画布，不改其它任务画布。
+- 实现位于 `src/LearningCanvasToolbar.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/official-learning-canvas.css`。验证：`npm run build` 成功；画布 / 路径相关测试 17 项通过；`git diff --check` 通过。浏览器验证找到并修复“全展开且已有聚焦时切换节点导致空画布”的定位分支；因全展开的无障碍树过大，修复后截图回放超时，最终视觉确认待补。未改变页面序列或 API / Host / Application 边界。
+- 未提交 / 推送：共享工作树同时包含其他对话的暂存、未暂存与未跟踪改动，且本地分支落后远端；保留并行改动，待在可安全隔离的最新主线工作树中合并发布。
+
+### 2026-10-26 · ResNet50 全展开入口可见性
+
+- 用户在 ResNet50 画布中未找到“全部展开”；将原单独图标改为明确的文字按钮“展开全部卡片”，展开后显示“收起全部卡片”，辅助名称说明作用于所有节点内容卡片。按钮仍位于画布右上工具栏的缩放控件之后、拖动画布之前，并使用浅紫描边强调。
+- 窄画布下工具栏可换行并保留边距。`npm run build` 成功；相关视图状态与官方路径测试 5 项通过；`git diff --check` 通过。DOM 检查确认按钮文案与辅助名称；未改路径行为及其它画布。
+- 未提交 / 推送：共享工作树同时含其他对话的改动，本地 `main` 落后远端 248 个提交，暂不安全推送。
+
+### 2026-10-26 · 节点连线回到左侧主干
+
+- 用户截图指出阶段连接线穿过子节点且多条直角线重叠。恢复 `b2aff8b2` 已确认的布局规则：堆叠布局全体节点共用左侧主干，卡片以短支线和圆点接入；分列布局每组使用独立主干，阶段之间保留横向箭头。当前节点支线 / 圆点用黑色。适用于默认与全部展开的节点树；拖动位置后动态重算。
+- `npm run build`、9 项相关测试及 `git diff --check` 通过；CUA 本地预览复核两种布局。`origin/main` 已有此前正确连线提交；本地分支落后远端且含其他并行 WIP，本轮不重复提交或推送。
+
+### 2026-10-26 · 框选选区缩略图
+
+- 用户确认框选后用实际区域缩略图代替“工作区区域 · 宽 × 高 px”标签。输入区继续沿用原有 composer 样式，缩略图旁仅显示“已选区域”，保留移除按钮；缩略预览裁自当前工作区并忽略选择遮罩和 composer。
+- 实现位于 `src/AreaComposer.jsx`、`src/TaskWorkspace.jsx` 与 `src/task-workspace.css`。沿用既有语音输入、框选和取消逻辑，不改变其它工作区交互。
+- `npm run build` 成功，`git diff --check` 通过。最终拖拽视觉核验因 CUA 服务无法启动而未完成；未运行测试。
+- 发布：在最新 `origin/main` 的隔离工作树提交 `665955ed`，源码与 `/ascstudio/` Pages 产物已推送至 `main`。当前共享工作区的并行修改均保留。
+
 ## 2026-11-19 · 知识图谱作为原生视图接入
 
-- 用户要求把 cann-dashboard 的算子知识工作台「巧妙融合」进 Ascend Studio，明确不要 iframe 内嵌。实现为左栏一级导航「知识图谱」，与「学习发现」并列；点击进入原生 React 视图，复用三栏壳、项目栏与面包屑。
+- 用户要求把 cann-dashboard 的算子知识工作台“巧妙融合”进 Ascend Studio，明确不要 iframe 内嵌。实现为左栏第三个一级导航「知识图谱」，与「学习发现」并列；点击进入原生 React 视图，沿用三栏壳、项目栏与面包屑，右侧不再承载任务对话。
 - 数据从 `cann-dashboard/算子知识工作台.html` 导出为 `src/knowledge/graph.json`（74 节点 / 80 条关系 / 15 段对话 / 173 轮），页面 `src/KnowledgeGraphPage.jsx` + `src/knowledge-graph.css` 读取同一份数据；后续内容更新重跑导出，不维护第二份数据。
 - 视图能力（P1）：六域色胶囊与固定种子力导向布局、悬停高亮邻域并压暗其余、搜索压暗、场景芯片过滤、点击节点在右侧展开结论 / 误区 / 出处（含原声片段）。六域色作为内容语义色保留，外壳、字体、圆角与间距沿用 Ascend Studio token。
-- 入口支持 `#knowledge` 深链；离开该视图时清除 hash。深链只覆盖「进入图谱」，尚未实现按节点定位。
+- 入口支持 `#knowledge` 深链；离开该视图时清除 hash。深链只覆盖“进入图谱”，尚未实现按节点定位。
 - 后续（未实现）：粒度滑块与边聚合、时间轴回放、多选路径与剧本导出、诊断面板「相关知识」跳转定位。
