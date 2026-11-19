@@ -659,4 +659,7 @@ CSS_EXTRA += r"""
 .pf-mk .bub{height:9px;border-radius:5px;background:#D3D8E2;display:block}
 .pf-mk .bub.r{background:rgba(91,91,214,.28);align-self:flex-end}
 .pf-mk .bub.l{align-self:flex-start}
+
+.pf-sb.head{display:flex;flex-direction:column;align-items:flex-start;gap:.25vh}
+.pf-sb.head .nm{white-space:nowrap}
 """
