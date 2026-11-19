@@ -173,12 +173,10 @@
   #stream{flex:1;overflow-y:auto;padding:6px 12px 40px}
 
   .grpw{position:relative}
-  .grp{position:sticky;top:-6px;z-index:3;display:flex;align-items:center;gap:6px;
-    margin:0 -6px 2px;padding:9px 12px 7px;background:#FFFFFF;
-    border-bottom:1px solid var(--line);box-shadow:0 -10px 0 #fff,0 3px 8px rgba(15,23,42,.05);
-    font-size:11px;color:#334155;font-weight:600}
-  .grp-n{color:#94A3B8;font-weight:500}
-  .grp-r{margin-left:auto;color:#94A3B8;font-weight:500;font-size:10px}
+  .grpdiv{height:1px;background:var(--line);margin:16px 8px 10px}
+  .grpw:first-child .grpdiv{display:none}
+  .crumb{flex:1;min-width:0;font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;padding:0 8px;text-align:left}
   .round{padding:10px 8px;border-radius:10px;margin-bottom:2px;border:1px solid transparent}
   .round:hover{background:#FAFBFC}
   .round.pulse{animation:pulse 1.8s ease}
@@ -265,6 +263,7 @@
   <div id="insight"></div>
   <div class="stream-head">
     <div class="t">对话原文</div>
+    <div class="crumb" id="crumb">—</div>
     <select id="dlgFilter"></select>
   </div>
   <div id="stream"></div>
@@ -789,14 +788,11 @@ function renderStream(){
   let last=null, wrap=null;
   list.forEach(r=>{
     if(r.c!==last){
-      const total=ROUNDS.filter(x=>x.c===r.c).length;
       wrap=document.createElement('div');
-      wrap.className='grpw';
+      wrap.className='grpw'; wrap.dataset.c=r.c;
       frag.appendChild(wrap);
-      const h=document.createElement('div');
-      h.className='grp';
-      h.innerHTML=`${dlgByN[r.c].t}<span class="grp-r">1–${total} 轮</span>`;
-      wrap.appendChild(h); last=r.c;
+      const dv=document.createElement('div'); dv.className='grpdiv';
+      wrap.appendChild(dv); last=r.c;
     }
     const el=document.createElement('div');
     el.className='round'; el.id=`r-${r.c}-${r.r}`;
@@ -811,8 +807,26 @@ function renderStream(){
     wrap.appendChild(el);
   });
   box.appendChild(frag);
+  requestAnimationFrame(updateCrumb);
 }
 $('#dlgFilter').onchange=()=>renderStream();
+
+let crumbTick=false;
+function updateCrumb(){
+  const box=$('#stream'), el=$('#crumb');
+  if(!box||!el) return;
+  const wraps=[...box.querySelectorAll('.grpw')];
+  if(!wraps.length){ el.textContent='—'; return; }
+  const line=box.getBoundingClientRect().top+10;
+  let cur=wraps[0];
+  for(const w of wraps){ if(w.getBoundingClientRect().top<=line) cur=w; else break; }
+  const d=dlgByN[Number(cur.dataset.c)];
+  el.textContent=d?d.t:'—';
+}
+$('#stream').addEventListener('scroll',()=>{
+  if(crumbTick) return; crumbTick=true;
+  requestAnimationFrame(()=>{ updateCrumb(); crumbTick=false; });
+});
 
 function scrollToRound(c,t,pulse){
   const el=document.getElementById(`r-${c}-${t}`);
