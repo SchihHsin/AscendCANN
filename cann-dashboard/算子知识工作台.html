@@ -88,18 +88,19 @@
 
   /* ---------- svg ---------- */
   .glow{opacity:0;transition:opacity .28s}
-  .domtitle{font-size:12.5px;font-weight:700;letter-spacing:.4px;opacity:.9}
+  .domtitle{font-size:12.5px;font-weight:700;letter-spacing:.4px;opacity:.9;
+    paint-order:stroke;stroke:#F6F8FB;stroke-width:5px;stroke-linejoin:round}
   .edge{stroke:#C7D2E1;stroke-width:1;fill:none}
   .edge.dep{stroke:#C7D2E1}
   .edge.trade{stroke:#E1566F;stroke-dasharray:6 4}
   .edge.agg{stroke-opacity:.75}
   .node{cursor:pointer}
-  .node .core{stroke:none}
-  .node .halo{opacity:.14;transition:opacity .18s}
-  .node:hover .halo,.node.sel .halo{opacity:.34}
-  .node.nb .halo{opacity:.14}
-  .node text{font-size:9.2px;fill:#0F172A;text-anchor:middle;pointer-events:none;
-    paint-order:stroke;stroke:var(--bg);stroke-width:2.6px;stroke-linejoin:round}
+  .cap{stroke:none}
+  .caphalo{opacity:.18;transition:opacity .18s}
+  .node:hover .caphalo,.node.sel .caphalo{opacity:.34}
+  .node.nb .caphalo{opacity:.26}
+  .node text{fill:#0F172A;text-anchor:middle;pointer-events:none}
+  .node:hover .cap{filter:brightness(1.04)}
   .lblbg{fill:#fff;stroke:#E2E8F0;stroke-width:1;rx:6;opacity:0;pointer-events:none;
     filter:drop-shadow(0 3px 8px rgba(15,23,42,.14))}
   .node:hover .lblbg,.node.sel .lblbg{opacity:1}
@@ -170,6 +171,7 @@
     padding:4px 6px;background:#fff;color:#334155;max-width:190px}
   #stream{flex:1;overflow-y:auto;padding:6px 12px 40px}
 
+  .grpw{position:relative}
   .grp{position:sticky;top:-6px;z-index:3;display:flex;align-items:center;gap:6px;
     margin:0 -6px 2px;padding:9px 12px 7px;background:#FFFFFF;
     border-bottom:1px solid var(--line);box-shadow:0 -10px 0 #fff,0 3px 8px rgba(15,23,42,.05);
@@ -218,10 +220,10 @@
       <defs id="defs"></defs>
       <g id="viewport">
         <g id="glows"></g>
-        <g id="domtitles"></g>
         <g id="edges"></g>
         <g id="eglabels"></g>
         <g id="nodes"></g>
+        <g id="domtitles"></g>
       </g>
     </svg>
 
@@ -357,10 +359,15 @@ function step(list,links,alpha){
       let dx=b.x-a.x, dy=b.y-a.y, d2=dx*dx+dy*dy;
       if(d2<1){dx=.6;dy=.6;d2=1;}
       if(d2>90000) continue;
-      const d=Math.sqrt(d2), f=2800/d2, ux=dx/d, uy=dy/d;
+      const d=Math.sqrt(d2), f=3200/d2, ux=dx/d, uy=dy/d;
       a.fx-=ux*f; a.fy-=uy*f; b.fx+=ux*f; b.fy+=uy*f;
-      const min=a.__r+b.__r+9;
-      if(d<min){const p=(min-d)*.5; a.fx-=ux*p; a.fy-=uy*p; b.fx+=ux*p; b.fy+=uy*p;}
+      const pad=10;
+      const ox=(a.__w+b.__w)/2+pad-Math.abs(dx);
+      const oy=(a.__h+b.__h)/2+pad-Math.abs(dy);
+      if(ox>0&&oy>0){
+        if(ox<oy){ const p=ox*0.5*(dx>=0?1:-1); a.fx-=p; b.fx+=p; }
+        else     { const p=oy*0.5*(dy>=0?1:-1); a.fy-=p; b.fy+=p; }
+      }
     }
   }
   links.forEach(([a,b])=>{
@@ -375,8 +382,8 @@ function step(list,links,alpha){
   list.forEach(n=>{
     const d=domById[n.dom];
     if(n.anchor){ n.x=d.cx; n.y=d.cy; n.vx=0; n.vy=0; return; }
-    n.fx+=(d.cx-n.x)*0.05;
-    n.fy+=(d.cy-n.y)*0.05;
+    n.fx+=(d.cx-n.x)*0.08;
+    n.fy+=(d.cy-n.y)*0.08;
     n.fx+=(W.x/2-n.x)*0.0012;
     n.fy+=(W.y/2-n.y)*0.0012;
   });
@@ -390,12 +397,41 @@ function step(list,links,alpha){
     n.y=Math.max(80,Math.min(W.y-60,n.y));
   });
 }
-function relayout(steps=120){
+function separate(list,iters=220){
+  const pad=9;
+  for(let k=0;k<iters;k++){
+    let moved=false;
+    for(let i=0;i<list.length;i++){
+      const a=list[i];
+      for(let j=i+1;j<list.length;j++){
+        const b=list[j];
+        let dx=b.x-a.x, dy=b.y-a.y;
+        const ox=(a.__w+b.__w)/2+pad-Math.abs(dx);
+        const oy=(a.__h+b.__h)/2+pad-Math.abs(dy);
+        if(ox<=0||oy<=0) continue;
+        if(ox<oy){
+          const p=ox*0.5*(dx>=0?1:-1);
+          a.x-=p; b.x+=p;
+        } else {
+          const p=oy*0.5*(dy>=0?1:-1);
+          a.y-=p; b.y+=p;
+        }
+        moved=true;
+      }
+    }
+    if(!moved) break;
+  }
+}
+function relayout(steps=160){
   const list=visibleNodes();
-  list.forEach(n=>{ n.__r=R[n.w]; });
   initPositions(list);
   const links=layoutLinks(list);
   for(let k=0;k<steps;k++) step(list,links,1-k/steps);
+  separate(list);
+  list.forEach(n=>{
+    n.x=Math.max(n.__w/2+20,Math.min(W.x-n.__w/2-20,n.x));
+    n.y=Math.max(n.__h/2+40,Math.min(W.y-n.__h/2-20,n.y));
+  });
   render();
 }
 
@@ -490,28 +526,44 @@ function buildEdges(visSet){
 let measureCtx=document.createElement('canvas').getContext('2d');
 function textW(t,fs=9.8){ measureCtx.font=fs+'px "PingFang SC",sans-serif'; return measureCtx.measureText(t).width; }
 
+const CAP={3:{h:25,fs:10,pad:11,fw:700},2:{h:21,fs:9.4,pad:10,fw:600},
+            1:{h:19,fs:8.8,pad:9,fw:500},0:{h:17,fs:8.4,pad:8,fw:500}};
+function capSize(n){
+  const c=CAP[n.w];
+  return {w:Math.ceil(textW(n.name,c.fs)+c.pad*2),h:c.h,fs:c.fs,fw:c.fw};
+}
 function buildNodes(){
   const g=$('#nodes');
   NODES.forEach(n=>{
+    const size=capSize(n);
+    n.__w=size.w; n.__h=size.h;
     const el=document.createElementNS(NS,'g');
     el.setAttribute('class','node'); el.dataset.id=n.id;
-    const halo=document.createElementNS(NS,'circle');
-    halo.setAttribute('class','halo');
-    halo.setAttribute('r',R[n.w]*1.85);
+
+    const halo=document.createElementNS(NS,'rect');
+    halo.setAttribute('class','caphalo');
+    halo.setAttribute('x',-(size.w/2+5)); halo.setAttribute('y',-(size.h/2+4));
+    halo.setAttribute('width',size.w+10); halo.setAttribute('height',size.h+8);
+    halo.setAttribute('rx',(size.h+8)/2);
     halo.setAttribute('fill',domById[n.dom].color);
     el.appendChild(halo);
 
-    const c=document.createElementNS(NS,'circle');
-    c.setAttribute('class','core');
-    c.setAttribute('r',R[n.w]); c.setAttribute('fill',domById[n.dom].color);
-    el.appendChild(c);
-    const bg=document.createElementNS(NS,'rect');
-    bg.setAttribute('class','lblbg'); bg.setAttribute('height',15); bg.setAttribute('rx',6);
-    el.appendChild(bg);
+    const cap=document.createElementNS(NS,'rect');
+    cap.setAttribute('class','cap');
+    cap.setAttribute('x',-size.w/2); cap.setAttribute('y',-size.h/2);
+    cap.setAttribute('width',size.w); cap.setAttribute('height',size.h);
+    cap.setAttribute('rx',size.h/2);
+    cap.setAttribute('fill',domById[n.dom].color);
+    el.appendChild(cap);
+
     const t=document.createElementNS(NS,'text');
-    t.setAttribute('y',R[n.w]+12); t.textContent=n.name;
+    t.setAttribute('y',size.fs*0.36);
+    t.setAttribute('font-size',size.fs);
+    t.setAttribute('font-weight',size.fw);
+    t.textContent=n.name;
     el.appendChild(t);
-    n.__el=el; n.__c=c; n.__t=t; n.__bg=bg;
+
+    n.__el=el;
     el.addEventListener('pointerenter',()=>hover(n.id));
     el.addEventListener('pointerleave',()=>hover(null));
     el.addEventListener('pointerdown',e=>startDrag(e,n));
@@ -525,7 +577,6 @@ function render(){
 
   // 节点位置与尺寸
   list.forEach(n=>{
-    n.__c.setAttribute('r',R[n.w]);
     n.__el.setAttribute('transform',`translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
   });
 
@@ -543,7 +594,6 @@ function render(){
     e.__el=ln; eg.appendChild(ln);
   });
 
-  placeLabels(list);
   renderDomains(list);
   applyHighlight();
 }
@@ -697,14 +747,17 @@ function renderStream(){
 
   const list=ROUNDS.filter(r=>sceneSet.has(r.c)&&(!only||r.c===only));
   const frag=document.createDocumentFragment();
-  let last=null;
+  let last=null, wrap=null;
   list.forEach(r=>{
     if(r.c!==last){
       const total=ROUNDS.filter(x=>x.c===r.c).length;
+      wrap=document.createElement('div');
+      wrap.className='grpw';
+      frag.appendChild(wrap);
       const h=document.createElement('div');
       h.className='grp';
       h.innerHTML=`${dlgByN[r.c].t}<span class="grp-r">1–${total} 轮</span>`;
-      frag.appendChild(h); last=r.c;
+      wrap.appendChild(h); last=r.c;
     }
     const el=document.createElement('div');
     el.className='round'; el.id=`r-${r.c}-${r.r}`;
@@ -716,7 +769,7 @@ function renderStream(){
       ${chips?`<div class="chips">${chips}</div>`:''}`;
     el.querySelectorAll('.tx').forEach(t=>t.onclick=()=>t.classList.toggle('open'));
     el.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>onChip(b.dataset.node));
-    frag.appendChild(el);
+    wrap.appendChild(el);
   });
   box.appendChild(frag);
 }
@@ -761,10 +814,11 @@ function onChip(id){
 function fitView(animate){
   const list=visibleNodes();
   if(!list.length) return;
-  const xs=list.map(n=>n.x), ys=list.map(n=>n.y);
-  const pad=70;
-  const minX=Math.min(...xs)-pad, maxX=Math.max(...xs)+pad;
-  const minY=Math.min(...ys)-pad, maxY=Math.max(...ys)+pad;
+  const pad=40;
+  const minX=Math.min(...list.map(n=>n.x-n.__w/2))-pad;
+  const maxX=Math.max(...list.map(n=>n.x+n.__w/2))+pad;
+  const minY=Math.min(...list.map(n=>n.y-n.__h/2))-pad;
+  const maxY=Math.max(...list.map(n=>n.y+n.__h/2))+pad;
   const w=$('#stage').clientWidth, h=$('#stage').clientHeight;
   const k=Math.min(w/(maxX-minX), h/(maxY-minY), 1.6);
   const tx=w/2-((minX+maxX)/2)*k, ty=h/2-((minY+maxY)/2)*k;
