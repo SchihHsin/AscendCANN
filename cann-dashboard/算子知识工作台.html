@@ -928,7 +928,13 @@ function renderInsight(){
 function renderStream(){
   const box=$('#stream'); box.innerHTML='';
   const sel=$('#dlgFilter');
-  const ds=SCENES.find(s=>s.id===state.scene).ds;
+  const dsAll=SCENES.find(s=>s.id===state.scene).ds;
+  let ds=dsAll;
+  if(state.sel && !state.q){
+    const set=new Set(nodeById[state.sel].turns.map(t=>t.c));
+    const sub=dsAll.filter(c=>set.has(c));
+    if(sub.length) ds=sub;
+  }
   const cur=sel.value;
   sel.innerHTML='';
   const all=document.createElement('option'); all.value='all'; all.textContent=`全部（${ds.length} 篇）`;
@@ -941,7 +947,8 @@ function renderStream(){
   const only=sel.value==='all'?null:Number(sel.value);
 
   const q=state.q.toLowerCase();
-  let list=ROUNDS.filter(r=>sceneSet.has(r.c)&&(!only||r.c===only));
+  const scope=new Set(ds);
+  let list=ROUNDS.filter(r=>scope.has(r.c)&&(!only||r.c===only));
   if(q) list=list.filter(r=>roundHit(r,q));
   const frag=document.createDocumentFragment();
   if(q){
@@ -1012,6 +1019,7 @@ function scrollToFirstTurn(id){
 /* ================= 选择 / 展开 ================= */
 function select(id,opts={}){
   state.sel=id;
+  renderStream();
   applyHighlight();
   renderInsight();
   if(opts.scroll!==false) scrollToFirstTurn(id);
@@ -1134,7 +1142,7 @@ svg.addEventListener('wheel',e=>{
 svg.addEventListener('click',e=>{
   if(!bgDown) return;          // 节点上的点击不清空选择
   bgDown=false;
-  state.sel=null; applyHighlight(); renderInsight();
+  state.sel=null; renderStream(); applyHighlight(); renderInsight();
 });
 
 /* ================= 控件 ================= */
@@ -1204,7 +1212,7 @@ function openDrawer(){
 document.addEventListener('keydown',e=>{
   if(e.key==='/'&&document.activeElement!==$('#q')){e.preventDefault();$('#q').focus();}
   if(e.key==='Escape' && state.picking){ state.picking=false; renderPathBar(); return; }
-  if(e.key==='Escape'){ state.sel=null; applyHighlight(); renderInsight(); }
+  if(e.key==='Escape'){ state.sel=null; renderStream(); applyHighlight(); renderInsight(); }
   if(e.key==='0'){ fitView(true); }
 });
 
