@@ -716,7 +716,7 @@ function applyHighlight(){
     glows.forEach(g=>g.style.opacity=0);
     AGG.forEach(e=>{
       const on=HITS?(HITS.has(e.a)||HITS.has(e.b)):true;
-      e.__el.setAttribute('stroke-opacity',on?'1':'0');
+      e.__el.setAttribute('stroke-opacity',on?'1':'.08');
     });
     document.querySelectorAll('.eglabel').forEach(e=>e.remove());
     AGG.forEach(e=>{ e.__el.setAttribute('stroke-opacity','1'); e.__el.removeAttribute('marker-end'); });
@@ -737,7 +737,7 @@ function applyHighlight(){
   const eg=$('#eglabels'); eg.innerHTML='';
   AGG.forEach(e=>{
     const hit=e.a===focus||e.b===focus;
-    e.__el.setAttribute('stroke-opacity',hit?'1':'.12');
+    e.__el.setAttribute('stroke-opacity',hit?'1':'.07');
     if(hit){ e.__el.setAttribute('marker-end','url(#arrow)'); }
     else e.__el.removeAttribute('marker-end');
     if(hit && e.count>1){
