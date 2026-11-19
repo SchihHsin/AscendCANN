@@ -366,10 +366,16 @@ CSS_EXTRA += r"""
 .cond-note{font-size:11px;color:var(--ink-2);line-height:1.5;margin-top:.6vh}
 .cond-note b{color:var(--ink)}
 
-.seq2{flex:1;min-height:0;display:flex;flex-direction:column;gap:1vh}
-.seq2>svg{width:100%;height:auto;display:block;flex:0 1 auto;min-height:0}
-.seq2-foot{display:flex;flex-direction:column;gap:.35vh}
-.seq2-legend{display:flex;flex-wrap:wrap;gap:.45vh 1.1vw;align-items:center;font-size:10.2px;color:var(--ink-2);padding-top:.6vh;border-top:1px solid rgba(47,61,99,.1)}
+.seq2{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(240px,20vw,310px);gap:1.8vw}
+.seq2-main{min-width:0;min-height:0;display:flex;align-items:center}
+.seq2-main>svg{width:100%;height:100%;display:block}
+.seq2-rail{display:flex;flex-direction:column;gap:1.6vh;padding-left:1.3vw;border-left:1px solid rgba(47,61,99,.12);min-height:0;justify-content:center}
+.sr-k{font-family:'JetBrains Mono';font-size:9.2px;letter-spacing:.14em;color:var(--ink-3);margin-bottom:.4em}
+.sr-v{font-size:11.2px;line-height:1.55;color:var(--ink-2)}
+.sr-i .sr-v b{color:var(--ink)}
+.sr-lg{margin-top:.6vh;display:flex;flex-direction:column;gap:.5vh}
+.sr-note{font-size:9.2px;color:var(--ink-3);line-height:1.4}
+.seq2-legend{display:flex;flex-wrap:wrap;gap:.5vh .8vw;align-items:center;font-size:9.6px;color:var(--ink-2)}
 .seq2-legend .li{display:inline-flex;align-items:center;gap:.4em;white-space:nowrap}
 .seq2-legend .sw{width:15px;height:9px;border-radius:3px;border:1px solid;display:inline-block}
 .seq2-legend .ln{width:20px;height:0;border-top:1.6px solid #8C97A5;display:inline-block;position:relative}

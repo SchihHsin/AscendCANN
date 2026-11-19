@@ -128,25 +128,26 @@ def render(spec):
 
 
 def legend(spec):
-    li = ''.join('<span class="li"><i class="sw" style="background:%s;border-color:%s"></i>%s</span>'
-                 % (p['color'], p['color'], esc(p['label'])) for p in spec['participants'])
-    return ('<div class="seq2-legend">%s'
-            '<span class="li"><i class="ln"></i>消息方向（发起方 → 接收方）</span>'
-            '<span class="li"><i class="ci">E</i>事件起点（白底、发起方色）</span>'
+    parts = ''.join('<span class="li"><i class="sw" style="background:%s;border-color:%s"></i>%s</span>'
+                    % (p['color'], p['color'], esc(p['label'])) for p in spec['participants'])
+    return ('<div class="seq2-legend">%s</div>'
+            '<div class="seq2-legend"><span class="li"><i class="ln"></i>消息方向</span>'
+            '<span class="li"><i class="ci">E</i>事件起点</span>'
             '<span class="li"><i class="sw" style="background:#fff;border-color:#8C97A5"></i>本地动作</span>'
             '<span class="li"><i class="sw" style="background:%s;border-color:%s"></i>需人裁定</span>'
-            '<span class="li"><i class="ln dash"></i>回退 / 换方向</span>'
-            '<span class="li" style="color:#8E9AAA">阶段带与"人主导 / AI 主导"由事件顺序推导</span>'
-            '</div>' % (li, GOLD, GOLD))
+            '<span class="li"><i class="ln dash"></i>回退 / 换方向</span></div>' % (parts, GOLD, GOLD))
 
 
 def seq_slide(spec, sub, cond, pos, key):
-    body = ('<div class="seq2">' + render(spec) +
-            '<div class="seq2-foot">'
-            '<div class="sf-row"><span class="sf-k">出现条件</span><span class="sf-v">%s</span></div>'
-            '<div class="sf-row"><span class="sf-k">人的位置</span><span class="sf-v">%s</span></div>'
-            '<div class="sf-row"><span class="sf-k">关键交接</span><span class="sf-v">%s</span></div>'
-            '</div>' % (cond, pos, key) + legend(spec) + '</div>')
+    body = ('<div class="seq2">'
+            '<div class="seq2-main">' + render(spec) + '</div>'
+            '<aside class="seq2-rail">'
+            '<div class="sr-i"><div class="sr-k">出现条件</div><div class="sr-v">%s</div></div>'
+            '<div class="sr-i"><div class="sr-k">人的位置</div><div class="sr-v">%s</div></div>'
+            '<div class="sr-i"><div class="sr-k">关键交接</div><div class="sr-v">%s</div></div>'
+            '<div class="sr-lg">%s</div>'
+            '<div class="sr-note">阶段带与“人主导 / AI 主导”由事件顺序推导</div>'
+            '</aside></div>' % (cond, pos, key, legend(spec)))
     return slide(body, spec['title'], sub, 2)
 
 
