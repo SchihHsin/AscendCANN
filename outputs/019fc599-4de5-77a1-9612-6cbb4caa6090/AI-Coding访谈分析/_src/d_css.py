@@ -757,7 +757,7 @@ CSS_EXTRA += r"""
 .up-note.r{background:linear-gradient(180deg,#FFB9AE,#FFE3DD)}
 .up-note.b{background:linear-gradient(180deg,#A9C3F5,#DCE8FB)}
 .up-note.g{background:linear-gradient(180deg,#A8DCC4,#DDF3E8)}
-.up-card.span2 .up-note{width:calc(33.33% - .34vw)}
+.up-card.span2 .up-note{width:calc(50% - .25vw)}
 .up-dots{display:flex;flex-direction:column;gap:1.9vh}
 .up-dots .row{display:flex;justify-content:space-between;align-items:center;font-size:9.8px;color:var(--ink-2)}
 .up-dots .d{display:inline-flex;gap:3px}
