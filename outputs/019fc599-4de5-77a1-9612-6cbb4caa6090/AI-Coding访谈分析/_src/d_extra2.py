@@ -23,7 +23,7 @@ X6 = slide('''
   </div>
   <div class="env-bottom">
     <div class="env-b"><b>结果一：</b>任务还没开始，先花掉半天到几天。徐立桂要申请环境，王鹤锦要租卡，梁淼城要排查版本。</div>
-    <div class="env-b"><b>结果二：</b>环境在哪，决定了用哪种协作形态——本机就逐轮看，远端就只能给目标、等结果。</div>
+    <div class="env-b"><b>结果二：</b>环境在哪，决定了用哪种协作形态——本机就每轮都看，远端就只能给目标、等结果。</div>
   </div>
   <div class="cx-concl"><span class="ck">结论</span><span class="cv">这是唯一一个<b>"模型再强也变不出来"</b>的环节。所以它既决定任务能不能开始，也决定人和 AI 怎么分工。</span></div>
 </div>''' % _rows,
