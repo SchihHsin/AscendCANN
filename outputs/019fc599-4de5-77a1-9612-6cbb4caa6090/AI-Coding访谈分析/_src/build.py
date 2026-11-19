@@ -36,6 +36,43 @@ html = '''<!DOCTYPE html>
 </html>
 ''' % (style, CSS_EXTRA, '\n\n'.join(ALL), tail)
 
+# 给每页加 id="pN"，并注入 #pN 深链跳转
+_parts = html.split('<section class="slide')
+html = _parts[0]
+for _i, _seg in enumerate(_parts[1:], start=1):
+    html += '<section id="p%d" class="slide' % _i + _seg
+
+DEEPLINK = """
+<script>
+(function(){
+  function goto(){
+    var m=(location.hash||'').match(/^#p(\\d+)$/);
+    if(!m) return;
+    var el=document.getElementById('p'+m[1]);
+    if(!el) return;
+    var h=document.documentElement, t=el.offsetTop, ob=h.style.scrollBehavior;
+    h.style.scrollBehavior='auto';
+    h.scrollTop=t;
+    window.scrollTo(0,t);
+    h.style.scrollBehavior=ob;
+  }
+  window.addEventListener('load', function(){ setTimeout(goto, 0); });
+  window.addEventListener('hashchange', goto);
+})();
+</script>
+"""
+html = html.replace('</body>', DEEPLINK + '</body>')
+
+# 运行时初始化时的 scrollTo(0,0) 也要尊重 #pN（body 是滚动容器）
+_boot = ("var _m=(location.hash||'').match(/^#p(\\d+)$/),"
+         "_el=_m&&document.getElementById('p'+_m[1]);"
+         "if(_el){var _h=document.documentElement;_h.style.scrollBehavior='auto';_h.scrollTop=_el.offsetTop;}"
+         "else{window.scrollTo(0,0);}")
+if 'window.scrollTo(0,0);' in html:
+    html = html.replace('window.scrollTo(0,0);', _boot, 1)
+else:
+    print('WARN: boot scrollTo not found')
+
 out = pathlib.Path(__file__).resolve().parent.parent / 'AI-Coding用户访谈分析.html'
 out.write_text(html, encoding='utf-8')
 print('written', out, len(html))
