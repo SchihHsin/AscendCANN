@@ -652,9 +652,13 @@ function render(){
   const eg=$('#edges'); eg.innerHTML='';
   AGG.forEach(e=>{
     const A=nodeById[e.a],B=nodeById[e.b];
+    const dx=B.x-A.x, dy=B.y-A.y, L=Math.hypot(dx,dy)||1;
+    const ux=dx/L, uy=dy/L;
+    const ta=Math.min((A.__w/2+3)/Math.max(Math.abs(ux),1e-6),(A.__h/2+3)/Math.max(Math.abs(uy),1e-6));
+    const tb=Math.min((B.__w/2+3)/Math.max(Math.abs(ux),1e-6),(B.__h/2+3)/Math.max(Math.abs(uy),1e-6));
     const ln=document.createElementNS(NS,'line');
-    ln.setAttribute('x1',A.x); ln.setAttribute('y1',A.y);
-    ln.setAttribute('x2',B.x); ln.setAttribute('y2',B.y);
+    ln.setAttribute('x1',A.x+ux*ta); ln.setAttribute('y1',A.y+uy*ta);
+    ln.setAttribute('x2',B.x-ux*tb); ln.setAttribute('y2',B.y-uy*tb);
     ln.setAttribute('class','edge '+(e.kind==='trade'?'trade':'dep')+(e.count>1?' agg':''));
     const wd=(e.kind==='trade'?1.7:1)+Math.min(e.count-1,3)*0.55;
     ln.setAttribute('stroke-width',wd.toFixed(2));
@@ -712,7 +716,7 @@ function applyHighlight(){
     glows.forEach(g=>g.style.opacity=0);
     AGG.forEach(e=>{
       const on=HITS?(HITS.has(e.a)||HITS.has(e.b)):true;
-      e.__el.setAttribute('stroke-opacity',on?'1':'.06');
+      e.__el.setAttribute('stroke-opacity',on?'1':'0');
     });
     document.querySelectorAll('.eglabel').forEach(e=>e.remove());
     AGG.forEach(e=>{ e.__el.setAttribute('stroke-opacity','1'); e.__el.removeAttribute('marker-end'); });
