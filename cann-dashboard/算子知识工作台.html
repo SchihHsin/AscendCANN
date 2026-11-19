@@ -494,12 +494,15 @@ function visibleNode(n){
 function visibleNodes(){ return NODES.filter(visibleNode); }
 
 /* ================= 布局 ================= */
+let __seed=1;
+function rnd(){ __seed=(__seed*1664525+1013904223)>>>0; return __seed/4294967296; }
 function initPositions(list){
+  __seed=20260901;   // 固定种子：同一链接每次打开布局一致
   list.forEach(n=>{
     if(typeof n.vx!=='number'){ n.vx=0; n.vy=0; }
     if(typeof n.x==='number' && isFinite(n.x)) return;
     const d=domById[n.dom];
-    const a=Math.random()*Math.PI*2, r=30+Math.random()*110;
+    const a=rnd()*Math.PI*2, r=30+rnd()*110;
     n.x=d.cx+Math.cos(a)*r; n.y=d.cy+Math.sin(a)*r;
   });
 }
@@ -1397,6 +1400,35 @@ $('#tlPlay').onclick=()=>{
 NODES.forEach(n=>{ n.firstSeen=firstSeen(n); });
 buildDefs(); buildNodes(); buildLegend(); renderStream(); renderInsight();
 renderPathBar(); tlLabel();
+
+/* 深链：?scene=s4&q=OOM&node=n13&tl=60&path=n13,n16&playbook=1 */
+function applyDeepLink(){
+  const P=new URLSearchParams(location.search);
+  if(P.has('scene')){
+    const id=P.get('scene');
+    if(SCENES.some(x=>x.id===id)) setScene(id);
+  }
+  if(P.has('q')){
+    const v=P.get('q');
+    const el=$('#q'); el.value=v; state.q=v.trim();
+    syncQClear(); renderStream(); relayout();
+    const hits=visibleNodes().filter(matchQ);
+    fitView(true, hits.length?hits:null);
+    const rs=ROUNDS.filter(r=>sceneSet.has(r.c)&&roundHit(r,state.q.toLowerCase()));
+    $('#hint').textContent=`搜索“${state.q}” · 命中 ${hits.length} 个知识点 · ${rs.length} 轮原文（其余已淡化）`;
+    if(rs.length){ openDrawer(); setTimeout(()=>scrollToRound(rs[0].c,rs[0].r,false),120); }
+  }
+  if(P.has('tl')) setTl(+P.get('tl'));
+  if(P.has('path')){
+    state.path=P.get('path').split(',').filter(id=>nodeById[id]);
+    renderBadges(); renderPathBar(); render();
+  }
+  if(P.has('node')){
+    const id=P.get('node');
+    if(nodeById[id]) select(id,{scroll:false});
+  }
+  if(P.get('playbook')==='1') openPlaybook();
+}
 if(!$('#drawer').classList.contains('open')) $('#fab').classList.add('show');
 syncControls();
 resize();
@@ -1404,6 +1436,7 @@ relayout(140);
 ready=true;
 resize();
 fitView(false);
+applyDeepLink();
 window.addEventListener('resize',()=>{ resize(); render(); });
 new ResizeObserver(()=>{ resize(); render(); }).observe($('#stage'));
 </script>
