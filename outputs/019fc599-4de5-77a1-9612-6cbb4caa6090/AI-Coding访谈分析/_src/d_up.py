@@ -35,7 +35,7 @@ def _wall(label, items, span=''):
             % (span, label, _notes(items)))
 
 
-def persona(av, name, role, fields, bio, tags, cards, problems, fixes, quote, title, sub):
+def persona(av, name, role, fields, bio, tags, cards, problems, fixes, quotes, title, sub):
     side = ''.join('<div class="up-f"><b>%s</b><span>%s</span></div>' % (k, v) for k, v in fields)
     tag_html = ''.join('<div class="up-tag">%s</div>' % t for t in tags)
     body = '''
@@ -51,13 +51,13 @@ def persona(av, name, role, fields, bio, tags, cards, problems, fixes, quote, ti
     __CARDS__
     __PROBLEMS__
     __FIXES__
-    <div class="up-quote">__QUOTE__</div>
+    <div class="up-quotes">__QUOTE__</div>
   </div>
 </div>'''
     body = (body.replace('__AV__', av).replace('__NAME__', name).replace('__ROLE__', role)
             .replace('__FIELDS__', side).replace('__BIO__', bio).replace('__TAGS__', tag_html)
             .replace('__CARDS__', cards).replace('__PROBLEMS__', problems).replace('__FIXES__', fixes)
-            .replace('__QUOTE__', quote))
+            .replace('__QUOTE__', ''.join('<div class="up-q"><b>&ldquo;%s&rdquo;</b><span>—— %s</span></div>' % (t, w) for t, w in quotes)))
     return slide(body, title, sub, 1)
 
 
@@ -71,7 +71,9 @@ P_STU = persona(
     _dots([('编码', 4), ('环境', 2), ('调试', 3), ('领域', 2), ('复现', 3), ('多 Agent', 2), ('检索', 3)]),
     _wall('问题', [('r', '环境在远程，Agent 接不上'), ('r', '同一个错下次还会踩'), ('y', '额度见底就换便宜模型'), ('r', '会话一长，上下文就丢')], 'span2'),
     _wall('解法', [('g', '环境一键就绪 + 可回滚'), ('g', '验收标准模板：什么叫做完'), ('b', '错误样例库：这么写会怎么错'), ('b', '会话检索：跨会话找回')], 'span2'),
-    '"最耗费时间的就提目标，第二个是给他补上下文。" —— 王鹤锦',
+    [('一个窗口实现，一个窗口验收。', '徐立桂'),
+     ('最耗费时间的就提目标，第二个是给他补上下文。', '王鹤锦'),
+     ('工作区里的文件修改都是让他直接自己干了。', '梁淼城')],
     '高校学生：一边学一边做，完成标准是"能复现"', '角色与旅程 · 画像一（学生）')
 
 P_EMP = persona(
@@ -84,6 +86,8 @@ P_EMP = persona(
     _dots([('编码', 3), ('环境', 2), ('调试', 2), ('领域', 1), ('工具链', 3), ('Review', 2), ('检索', 2)]),
     _wall('问题', [('r', 'API 之间怎么配合没人写'), ('r', '精度调不通，AI 左右脑互搏'), ('r', '清理 AI 封装又花一天'), ('r', '需求一变，前面的活白做')], 'span2'),
     _wall('解法', [('g', '详设模板 + API 链接预置'), ('b', '交接信号：该不该喊停'), ('g', '可回滚 + 可审计的授权'), ('b', '需求澄清清单：先问再写')], 'span2'),
-    '"人工审查跟 AI 执行是相互交叉、交替执行的过程。" —— 王伟',
+    [('他做的是错的，但他认为他是对的。', '郑雨豪'),
+     ('人工审查跟 AI 执行是相互交叉、交替执行的过程。', '王伟'),
+     ('动不动容易挂，人一多就不行。', '彭椒')],
     '企业新员工：靠 AI 补经验，但完成标准仍是"过测试、能检视"',
     '角色与旅程 · 画像二（企业新员工）｜ 注：记录未含入职年限，此处按 AI 使用 < 1 年定义')

@@ -766,7 +766,9 @@ CSS_EXTRA += r"""
 .up-chips{display:flex;flex-wrap:wrap;gap:.4vh .3vw;margin-top:.2vh}
 .up-chips span{font-size:9.2px;color:var(--ink-2);background:#F1F3F6;border-radius:4px;padding:.2vh .35vw}
 
-.up-quote{grid-column:1/-1;padding-top:1.2vh;border-top:1px solid rgba(47,61,99,.14);font-size:11.4px;line-height:1.5;color:var(--ink-2)}
+.up-quotes{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:1.8vw;padding-top:1.6vh;border-top:1px solid rgba(47,61,99,.14)}
+.up-q b{display:block;font-size:12.4px;line-height:1.55;color:var(--ink);font-weight:600}
+.up-q span{display:block;margin-top:.5em;font-size:10.4px;color:var(--ink-3);letter-spacing:.02em}
 
 /* 平台忠诚 */
 .loy{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2.4vh}
