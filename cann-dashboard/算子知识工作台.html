@@ -523,6 +523,7 @@ function renderDomains(list){
     t.setAttribute('x',mx); t.setAttribute('y',Math.min(...members.map(n=>n.y))-38);
     t.setAttribute('text-anchor','middle'); t.setAttribute('class','domtitle');
     t.setAttribute('fill',d.color); t.textContent=d.name;
+    t.dataset.dom=d.id;
     tg.appendChild(t);
   });
 }
@@ -716,6 +717,10 @@ function applyHighlight(){
   });
   if(!focus){
     glows.forEach(g=>g.style.opacity=0);
+    const hitDoms=HITS?new Set([...HITS].map(id=>nodeById[id].dom)):null;
+    document.querySelectorAll('#domtitles .domtitle').forEach(t=>{
+      t.style.opacity = !hitDoms ? .9 : (hitDoms.has(t.dataset.dom) ? .9 : .16);
+    });
     AGG.forEach(e=>{
       const on=HITS?(HITS.has(e.a)||HITS.has(e.b)):true;
       e.__el.setAttribute('stroke-opacity',on?'1':'.06');
@@ -724,6 +729,7 @@ function applyHighlight(){
     AGG.forEach(e=>{ e.__el.setAttribute('stroke-opacity','1'); e.__el.removeAttribute('marker-end'); });
     return;
   }
+  document.querySelectorAll('#domtitles .domtitle').forEach(t=>{ t.style.opacity=.9; });
   const nb=neighbors(focus);
   const focusDom=nodeById[focus].dom;
   const nbDoms=new Set([...nb].map(id=>nodeById[id].dom));
