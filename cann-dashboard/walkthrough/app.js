@@ -16,7 +16,7 @@ const chapters = [
     id: "locate",
     title: "把一条报错读到能动手",
     summary: "从搜索定位知识点，在节点卡里拿到结论与误区，再回到原文与对话轴上核对上下文。",
-    art: "", artAlt: "",
+    art: "./assets/chapter-1.png", artAlt: "搜索 OOM 时的图谱：命中节点亮起，其余压暗",
     points: [
       { id: "search", title: "搜索点亮而不是筛掉", note: "搜索时全图不散，只把无关节点压暗，位置感还在。",
         emphasis: "只把无关节点压暗", stage: "search", query: { q: "OOM" } },
@@ -32,7 +32,7 @@ const chapters = [
     id: "organize",
     title: "把 74 个点排成一张能读的图",
     summary: "用内置名字的胶囊、四档填充、父子虚线和项目切换，让密集的知识点有层次可循。",
-    art: "", artAlt: "",
+    art: "./assets/chapter-2.png", artAlt: "74 个知识点排成的知识图谱全景",
     points: [
       { id: "capsule", title: "名字写在节点里", note: "名字直接写在节点里，不再挂一圈外部标签。",
         emphasis: "写在节点里", stage: "none", query: {} },
@@ -48,7 +48,7 @@ const chapters = [
     id: "produce",
     title: "让结论可以带走",
     summary: "把几个知识点串成路径，生成带出处与误区的剧本，导出成可以发给同事的 Markdown。",
-    art: "", artAlt: "",
+    art: "./assets/chapter-3.png", artAlt: "三条路径展开成右侧的排查剧本",
     points: [
       { id: "path", title: "把点串成路径", note: "按 Shift 连续点选，几个节点串成一条路径。",
         emphasis: "串成一条路径", stage: "path", query: { path: "n13,n16,n25" } },
