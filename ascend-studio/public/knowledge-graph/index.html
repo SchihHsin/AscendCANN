@@ -134,94 +134,63 @@
   .eglabel{font-size:9px;fill:#64748B;text-anchor:middle;pointer-events:none;
     paint-order:stroke;stroke:var(--bg);stroke-width:2.4px}
 
-  /* ---------- drawer ---------- */
-  #drawer{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:94vw;background:var(--card);
-    border-left:1px solid var(--line);display:none;flex-direction:column;z-index:40;
-    box-shadow:-14px 0 32px rgba(15,23,42,.07)}
+  /* ---------- drawer (Ascend Work Chat Style) ---------- */
+  #drawer{position:fixed;top:0;right:0;bottom:0;width:430px;max-width:94vw;background:#FFFFFF;
+    border-left:1px solid #E8E9EC;display:none;flex-direction:column;z-index:40;
+    box-shadow:-12px 0 32px rgba(15,23,42,.06)}
   #drawer.open{display:flex}
-  .drawer-head{display:none}
-  .drawer-head .t{font-size:12px;font-weight:700;color:#334155}
-  .drawer-head .sub{font-size:10.5px;color:#94A3B8}
-  .drawer-head button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:7px;
-    height:26px;padding:0 9px;font-size:11px;color:var(--ink2);cursor:pointer}
-  #insight{padding:9px 14px 8px;border-bottom:1px solid var(--line);flex:0 0 auto}
-  .ins-meta{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#64748B}
-  .ins-x{margin-left:2px;width:22px;height:22px;padding:0;display:flex;align-items:center;justify-content:center;
-    border:1px solid var(--line);background:#fff;border-radius:6px;font-size:15px;line-height:1;
-    color:#64748B;cursor:pointer}
-  .ins-x:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
-  .ins-meta.solo .ins-x{margin-left:auto}
-  .ins-meta .dot{width:7px;height:7px;border-radius:50%}
-  .ins-row{display:flex;align-items:center;gap:8px;margin-top:1px}
-  .ins-title{font-size:16px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .pager{display:flex;align-items:center;gap:1px;flex:0 0 auto}
-  .pager button{width:20px;height:20px;border:1px solid var(--line);background:#fff;border-radius:6px;
-    font-size:12px;color:#475569;cursor:pointer;line-height:1;padding:0}
-  .pager button:hover{background:#F1F5F9}
-  .pager span{font-size:10px;color:#94A3B8;min-width:28px;text-align:center}
-  .clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-  .ins-def.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin:0}
-  .ins-line{display:flex;align-items:center;gap:8px;margin-top:7px;min-width:0}
-  .ins-line .l{flex:0 0 42px;font-size:10px;color:#94A3B8;letter-spacing:.2px}
-  .scroller{display:flex;gap:5px;overflow-x:auto;min-width:0;padding-bottom:1px;scrollbar-width:none;
-    mask-image:linear-gradient(to right,#000 90%,transparent 100%)}
-  .scroller::-webkit-scrollbar{display:none}
-  .scroller>*{flex:0 0 auto}
-  .more{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:20px;
-    font-size:10px;padding:2px 8px;color:#64748B;cursor:pointer}
-  .more.on{background:#F1F5F9;color:#0F172A}
-  .tags{display:flex;gap:6px;margin-bottom:7px}
-  .tag{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
-  .tag.dom{color:#fff}
-  .tag.w{background:#F1F5F9;color:#8DA5C4}
-  .tag.w3{background:#FEF3C7;color:#92400E}
-  .tag.w2{background:#F1F5F9;color:#334155}
-  .ins-title{font-size:17px;margin:0 0 6px;letter-spacing:.2px}
-  .ins-def{font-size:12.5px;line-height:1.75;color:#334155;margin:0}
-  .ins-pit{margin-top:9px;background:#FFF8F0;border:1px solid #F8DFC0;border-radius:9px;
-    padding:8px 10px;font-size:11.5px;line-height:1.7;color:#7A4A12}
-  .ins-sub{margin:12px 0 6px;font-size:10px;letter-spacing:.6px;color:#94A3B8;font-weight:600}
-  .chips{display:flex;flex-wrap:wrap;gap:5px}
-  .chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:3px 8px;font-size:10.5px;
-    color:#334155;cursor:pointer}
-  .chip:hover{background:#F1F5F9;border-color:#CBD5E1;color:#0F172A}
-  .src{display:flex;flex-wrap:wrap;gap:5px}
-  .src button{border:1px solid #E2E8F0;background:#F1F5F9;color:#0F172A;border-radius:7px;
-    font-size:10.5px;padding:4px 8px;cursor:pointer}
-  .src button:hover{background:#E2E8F0}
+  #insight{display:none}
+  .stream-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid #F0F1F4;background:#FFFFFF;flex:0 0 auto}
+  .stream-head .t{font-size:12px;font-weight:700;color:#18191F;flex-shrink:0}
+  .stream-head .crumb{flex:1;min-width:0;font-size:11px;color:#8B8E95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stream-head select{font-size:11px;border:1px solid #E5E7EB;border-radius:8px;padding:4px 8px;background:#FAFAFA;color:#334155;max-width:150px;outline:none}
+  .stream-close{width:24px;height:24px;border:1px solid #E5E7EB;background:#FFFFFF;border-radius:7px;font-size:15px;line-height:1;color:#64748B;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .stream-close:hover{background:#F1F5F9;color:#0F172A}
 
-  .stream-head{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line)}
-  .stream-head .t{font-size:12px;font-weight:700;color:#334155}
-  .stream-head select{margin-left:auto;font-size:11px;border:1px solid var(--line);border-radius:7px;
-    padding:4px 6px;background:#fff;color:#334155;max-width:190px}
-  #stream{flex:1;overflow-y:auto;padding:6px 12px 40px}
-
+  #stream{flex:1;overflow-y:auto;padding:14px 16px 24px;background:#FFFFFF}
   .grpw{position:relative}
-  .grpdiv{height:1px;background:var(--line);margin:16px 8px 10px}
+  .grpdiv{height:1px;background:#F1F2F4;margin:18px 0 14px}
   .grpw:first-child .grpdiv{display:none}
-  .crumb{flex:1;min-width:0;font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;
-    text-overflow:ellipsis;padding:0 8px;text-align:left}
-  .round{padding:10px 8px;border-radius:10px;margin-bottom:2px;border:1px solid transparent}
-  .round:hover{background:#FAFBFC}
+
+  .round{padding:8px 6px;border-radius:12px;margin-bottom:14px;transition:background .2s}
   .round.pulse{animation:pulse 1.8s ease}
   @keyframes pulse{
-    0%{background:#DBEAFE;box-shadow:0 0 0 0 rgba(37,99,235,.35)}
-    55%{background:#EFF6FF;box-shadow:0 0 0 7px rgba(37,99,235,0)}
+    0%{background:#EEF2FF;box-shadow:0 0 0 0 rgba(79,70,229,.25)}
+    55%{background:#F5F7FF;box-shadow:0 0 0 6px rgba(79,70,229,0)}
     100%{background:transparent;box-shadow:none}
   }
-  .round-top{display:flex;align-items:center;gap:6px;font-size:10px;color:#94A3B8;margin-bottom:6px}
-  .round-top .rd{color:#8DA5C4;font-weight:700}
-  .qa{display:flex;gap:8px;margin-bottom:6px}
-  .who{flex:0 0 32px;height:18px;border-radius:5px;background:#F1F5F9;color:#8DA5C4;font-size:9.5px;
-    display:flex;align-items:center;justify-content:center;margin-top:2px}
-  .who.a{background:#EFF6FF;color:#1D4ED8}
-  .qa .tx{font-size:12px;line-height:1.72;color:#334155;flex:1;
-    display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
-  .qa .tx.open{-webkit-line-clamp:unset;display:block}
-  .round .chips{margin-top:7px}
+
+  /* User Bubble (Right-aligned, soft gray) */
+  .msg-user-wrap{display:flex;flex-direction:column;align-items:flex-end;margin-bottom:12px}
+  .msg-role-r{font-size:11px;color:#8B8E95;margin-bottom:5px;padding-right:2px}
+  .msg-bubble{background:#F1F2F4;color:#18191F;border-radius:14px;padding:11px 14px;font-size:13px;line-height:1.65;max-width:90%;word-break:break-word}
+
+  /* Assistant Prose (Left-aligned, open on white) */
+  .msg-asst-wrap{display:flex;flex-direction:column;align-items:flex-start}
+  .msg-role-l{font-size:11.5px;color:#8B8E95;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .msg-role-l .rd-pill{font-size:10px;color:#94A3B8;background:#F8FAFC;border:1px solid #ECEEF2;border-radius:999px;padding:1px 6px}
+  .msg-prose{font-size:13.5px;line-height:1.72;color:#1F2329;width:100%;word-break:break-word}
+
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  .chip{border:1px solid #E5E7EB;background:#FAFAFA;border-radius:999px;padding:3px 9px;font-size:11px;color:#475569;cursor:pointer;transition:all .15s}
+  .chip:hover{background:#F1F5F9;border-color:#CBD5E1;color:#0F172A}
+
+  /* Bottom Floating Composer */
+  .composer-dock{flex:0 0 auto;padding:6px 14px 14px;background:linear-gradient(to top,#FFFFFF 80%,rgba(255,255,255,0));position:relative}
+  .composer-box{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:18px;padding:10px 12px 8px;box-shadow:0 6px 24px rgba(15,23,42,.08);transition:border-color .15s}
+  .composer-box:focus-within{border-color:#CBD5E1}
+  .composer-input{width:100%;border:0;outline:none;resize:none;font-family:inherit;font-size:13px;line-height:1.5;color:#18191F;background:transparent;min-height:24px;max-height:84px}
+  .composer-input::placeholder{color:#9CA3AF}
+  .composer-bar{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .composer-left{display:flex;align-items:center;gap:8px}
+  .cmp-btn{border:0;background:transparent;color:#6B7280;font-size:16px;width:26px;height:26px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .cmp-btn:hover{background:#F3F4F6;color:#18191F}
+  .cmp-model{font-size:11.5px;color:#4B5563;background:#F8FAFC;border:1px solid #E5E7EB;border-radius:999px;padding:3px 10px;display:flex;align-items:center;gap:4px;cursor:default}
+  .cmp-send{width:30px;height:30px;border-radius:50%;border:0;background:#18191F;color:#FFFFFF;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:opacity .15s}
+  .cmp-send:hover{opacity:.85}
 
   .empty{padding:24px 16px;font-size:12px;color:#94A3B8;line-height:1.8}
-  .searchbar{padding:10px 10px 8px;font-size:11px;color:#64748B}
+  .searchbar{padding:4px 6px 10px;font-size:11.5px;color:#64748B;display:flex;align-items:center;justify-content:space-between}
   .searchbar b{color:#0F172A}
   mark{background:#FEF08A;color:inherit;border-radius:2px;padding:0 1px}
 
@@ -351,17 +320,26 @@
 </main>
 
 <aside id="drawer">
-  <div class="drawer-head">
-    <div><div class="t">原声溯源</div><div class="sub" id="dwSub">—</div></div>
-    <button id="dwClose">收起</button>
-  </div>
   <div id="insight"></div>
   <div class="stream-head">
     <div class="t">对话原文</div>
     <div class="crumb" id="crumb">—</div>
     <select id="dlgFilter"></select>
+    <button class="stream-close" id="dwClose" title="收起">×</button>
   </div>
   <div id="stream"></div>
+  <div class="composer-dock">
+    <div class="composer-box">
+      <textarea id="drawerComposerInput" class="composer-input" rows="1" placeholder="继续提问，或输入关键字检索原声与节点…"></textarea>
+      <div class="composer-bar">
+        <div class="composer-left">
+          <button type="button" class="cmp-btn" id="drawerResetQ" title="清空检索">+</button>
+          <span class="cmp-model">⚡ Ascend Knowledge · 15篇</span>
+        </div>
+        <button type="button" class="cmp-send" id="drawerSendBtn" title="检索/定位">↑</button>
+      </div>
+    </div>
+  </div>
 </aside>
 
 <aside id="playbook" hidden>
@@ -880,51 +858,7 @@ function hover(id){
 
 /* ================= 抽屉内容 ================= */
 function renderInsight(){
-  const box=$('#insight');
-  if(!state.sel){
-    const sc=SCENES.find(x=>x.id===state.scene);
-    box.innerHTML=`<div class="ins-meta solo"><span class="dot" style="background:#94A3B8"></span>当前项目<button class="ins-x" id="insClose" title="收起">×</button></div>
-      <div class="ins-row"><h2 class="ins-title">${sc.name}</h2></div>
-      <p class="ins-def clamp1">${sc.ds.length} 篇对话 · ${state.gran} 档粒度 · ${visibleNodes().length} 个节点，点击节点看结论与来源。</p>`;
-    $('#dwSub').textContent=`${sc.ds.length} 篇原声 · ${visibleNodes().length} 节点`;
-    const xb2=$('#insClose'); if(xb2) xb2.onclick=closeDrawer;
-    return;
-  }
-  const n=nodeById[state.sel], d=domById[n.dom];
-  const rel=[...neighbors(n.id)].filter(id=>id!==n.id);
-  const chips=rel.map(id=>`<button class="chip" data-node="${id}">${nodeById[id].name}</button>`).join('');
-  let idx=0;
-  box.innerHTML=`
-    <div class="ins-meta">
-      <span class="dot" style="background:${d.color}"></span>${d.name} · ${WNAME[n.w]}${n.anchor?' · 锚点':''}
-      ${n.pit?'<button class="more" id="insMore">详情</button>':''}
-      <button class="ins-x" id="insClose" title="收起">×</button>
-    </div>
-    <div class="ins-row">
-      <h2 class="ins-title">${n.name}</h2>
-      <div class="pager">
-        <button data-pg="-1">‹</button><span id="pgNum">${n.turns.length?1:0}/${n.turns.length}</span><button data-pg="1">›</button>
-      </div>
-    </div>
-    <p class="ins-def clamp1">${n.def}</p>
-    <div id="insMoreBox" hidden>
-      ${n.pit?`<div class="ins-pit">${n.pit}</div>`:''}
-      <div class="ins-line"><span class="l">关联 ${rel.length}</span><div class="scroller">${chips||'<span style="font-size:11px;color:#94A3B8">无</span>'}</div></div>
-    </div>`;
-  box.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>select(b.dataset.node,{scroll:false,fly:true}));
-  const xb=$('#insClose');
-  if(xb) xb.onclick=closeDrawer;
-  const more=$('#insMore');
-  if(more) more.onclick=()=>{ const m=$('#insMoreBox'); m.hidden=!m.hidden; more.classList.toggle('on',!m.hidden); };
-  box.querySelectorAll('[data-pg]').forEach(b=>b.onclick=()=>{
-    if(!n.turns.length) return;
-    idx=(idx+Number(b.dataset.pg)+n.turns.length)%n.turns.length;
-    const t=n.turns[idx];
-    $('#pgNum').textContent=`${idx+1}/${n.turns.length}`;
-    scrollToRound(t.c,t.t,true);
-  });
-  $('#dwSub').textContent=`${n.name} · ${n.turns.length} 处来源`;
-  openDrawer();
+  if(state.sel) openDrawer();
 }
 
 /* ================= 对话原文 ================= */
@@ -973,11 +907,15 @@ function renderStream(){
     el.className='round'; el.id=`r-${r.c}-${r.r}`;
     const chips=r.nodes.map(id=>`<button class="chip" data-node="${id}">${nodeById[id].name}</button>`).join('');
     el.innerHTML=`
-      <div class="round-top"><span class="rd">第 ${r.r} 轮</span></div>
-      <div class="qa q"><span class="who">他</span><div class="tx">${hl(r.q,q)}</div></div>
-      <div class="qa a"><span class="who a">助手</span><div class="tx">${hl(r.a,q)}</div></div>
-      ${chips?`<div class="chips">${chips}</div>`:''}`;
-    el.querySelectorAll('.tx').forEach(t=>t.onclick=()=>t.classList.toggle('open'));
+      <div class="msg-user-wrap">
+        <div class="msg-role-r">你</div>
+        <div class="msg-bubble">${hl(r.q,q)}</div>
+      </div>
+      <div class="msg-asst-wrap">
+        <div class="msg-role-l"><span>Ascend Work · 原声溯源</span><span class="rd-pill">第 ${r.r} 轮</span></div>
+        <div class="msg-prose">${hl(r.a,q)}</div>
+        ${chips?`<div class="chips">${chips}</div>`:''}
+      </div>`;
     el.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>onChip(b.dataset.node));
     wrap.appendChild(el);
   });
@@ -985,6 +923,21 @@ function renderStream(){
   requestAnimationFrame(updateCrumb);
 }
 $('#dlgFilter').onchange=()=>renderStream();
+(function(){
+  const inp=$('#drawerComposerInput'), btn=$('#drawerSendBtn'), rst=$('#drawerResetQ');
+  if(!inp) return;
+  function runQuery(){
+    state.q=inp.value.trim();
+    const topQ=$('#q'); if(topQ) topQ.value=state.q;
+    renderStream();
+    if(typeof render==='function') render();
+  }
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); runQuery(); }
+  });
+  if(btn) btn.onclick=runQuery;
+  if(rst) rst.onclick=()=>{ inp.value=''; runQuery(); };
+})();
 
 let crumbTick=false;
 function updateCrumb(){
