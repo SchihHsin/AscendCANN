@@ -693,7 +693,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 46";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 45";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -1408,7 +1408,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <section id="p2" class="slide s-gray contents-slide">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
   <div class="body-area"><div class="contents-directory contents-4">
-  <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">过程</h2><div class="directory-en">Process &amp; Evidence</div><div class="directory-range">P1–10</div><div class="directory-items"><span>材料与边界</span><span>两张画像</span><span>双坐标与四张时序图</span></div><div class="directory-note">先看我们是怎么看到的</div></article><article class="directory-card persona"><div class="directory-no">02</div><h2 class="directory-name">发现</h2><div class="directory-en">Findings</div><div class="directory-range">P11–40</div><div class="directory-items"><span>前提 / 交办 / 执行</span><span>验收 / 出错 / 沉淀</span><span>贯穿全程的四条</span></div><div class="directory-note">22 条，沿任务链条排</div></article><article class="directory-card competitor"><div class="directory-no">03</div><h2 class="directory-name">归因</h2><div class="directory-en">Root Cause</div><div class="directory-range">P41–44</div><div class="directory-items"><span>阶段 × 三层全景</span><span>L1 / L2 / L3 根因</span></div><div class="directory-note">从 22 条现象挖出三层病根</div></article><article class="directory-card roadmap"><div class="directory-no">04</div><h2 class="directory-name">设计</h2><div class="directory-en">Design</div><div class="directory-range">P45–46</div><div class="directory-items"><span>价值 × 成本</span><span>边界与缺口</span></div><div class="directory-note">从发现推到可行动</div></article>
+  <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">过程</h2><div class="directory-en">Process &amp; Evidence</div><div class="directory-range">P1–10</div><div class="directory-items"><span>材料与边界</span><span>两张画像</span><span>双坐标与四张时序图</span></div><div class="directory-note">先看我们是怎么看到的</div></article><article class="directory-card persona"><div class="directory-no">02</div><h2 class="directory-name">发现</h2><div class="directory-en">Findings</div><div class="directory-range">P11–40</div><div class="directory-items"><span>前提 / 交办 / 执行</span><span>验收 / 出错 / 沉淀</span><span>贯穿全程的四条</span></div><div class="directory-note">22 条，沿任务链条排</div></article><article class="directory-card competitor"><div class="directory-no">03</div><h2 class="directory-name">归因</h2><div class="directory-en">Root Cause</div><div class="directory-range">P41–44</div><div class="directory-items"><span>阶段 × 三层全景</span><span>L1 / L2 / L3 根因</span></div><div class="directory-note">从 22 条现象挖出三层病根</div></article><article class="directory-card roadmap"><div class="directory-no">04</div><h2 class="directory-name">设计</h2><div class="directory-en">Design</div><div class="directory-range">P45</div><div class="directory-items"><span>价值 × 成本</span><span>八条行动方向</span></div><div class="directory-note">从发现推到可行动</div></article>
   </div></div>
 </section>
 
@@ -2468,31 +2468,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>
   </div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
-
-<section id="p46" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">这份分析能回答什么、不能回答什么</span></div><div class="subttl">发现与启示 · 边界与假设</div></div><div class="section-tabs" aria-label="当前章节"><span data-jump="p1" class="">01 过程</span><span data-jump="p11" class="">02 发现</span><span data-jump="p41" class="">03 归因</span><span data-jump="p45" class="active">04 设计</span></div></div><div class="body-area">
-<div class="bd2">
-  <div class="bd2-c ok"><h4>这份分析可以支撑</h4>
-    <li>过程结构：一次任务在哪些环节被切断、由谁接回</li>
-    <li>机制解释：什么信号触发介入、什么证据支撑验收</li>
-    <li>学习影响的位置：损失集中在试错、排错与参数直觉</li>
-    <li>设计优先级：哪些缺口同时抬高价值、压低成本</li>
-    <li>两类角色的差异：完成标准、资源条件、知识来源、交付压力</li>
-  </div>
-  <div class="bd2-c no"><h4>这份分析不能支撑</h4>
-    <li>比例与频次：样本 6 人、回顾式自报，不能外推总体</li>
-    <li>因果：未做对照，不能断言"AI 导致理解变浅"</li>
-    <li>真实性能：未现场观察，不能声称上卡成功或达标</li>
-    <li>跨团队普遍性：企业侧集中在同一部门，学生侧集中在三所高校</li>
-    <li>个体差异：同一角色内部差异很大（郑雨豪明显比同组更谨慎）</li>
-    <li>时效性：工具与模型迭代很快，具体工具结论会过期</li>
-  </div>
-</div>
-<div class="hyp">
-  <div class="hyp-i"><b>H1 · 成本是隐性的任务分配器</b><span>5 人提及价格/额度影响模型选择、是否多 Agent、是否继续迭代，但无人把它说成策略。</span></div>
-  <div class="hyp-i"><b>H2 · 全权限是摩擦管理而非信任</b><span>"不然要一直点 yes"是一句行为解释；需要专门测试用户对权限的真实风险感知。</span></div>
-  <div class="hyp-i"><b>H3 · 沉淀应落在文件系统</b><span>4 人已在做，郑雨豪仍希望"知识库 + AI 直接调用"；两种路径需要并行验证。</span></div>
-</div>
-<div style="margin-top:2vh;font-size:10.5px;color:var(--ink-3);line-height:1.5">材料：6 份《AI-Coding 用户访谈记录》（思维导图手记 + ASR 逐字稿补充）、DACT 访谈提纲、30 分钟精简提纲；ASR 原文另见《用户访谈观点解析》。本报告中所有引号内文字均为记录稿或 ASR 转写，非严格逐字引用。</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 </div>
 <div id="panel" style="display:none">
   <h4>底部光晕调色</h4>
