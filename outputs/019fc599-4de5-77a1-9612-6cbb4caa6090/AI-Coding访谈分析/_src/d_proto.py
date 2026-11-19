@@ -28,10 +28,9 @@ for i in range(1, 4):
     _grid += '<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s"/>' % (X0, gy, X0 + PW, gy, GRID)
 
 _QUAD = [
-    ('k-Q2', 26, 62, 'start', '只让它试', '用得少，但愿意信'),
-    ('k-Q1', 914, 62, 'end', '放手', '干得多，也敢放手'),
-    ('k-Q3', 26, 442, 'start', '自己写', '用得少，也不太信'),
-    ('k-Q4', 914, 442, 'end', '审查', '干得多，每一步都要查'),
+    ('k-Q1', 812, 116, 'start', '放手', '干得多，也敢放手'),
+    ('k-Q4', 676, 292, 'start', '审查', '干得多，每一步都要查'),
+    ('k-Q3', 322, 400, 'middle', '自己写，偶尔让它试', '用得少，也不太信'),
 ]
 _qlab = ''
 for cls, x, y, anchor, t, note in _QUAD:
@@ -74,7 +73,7 @@ for a, b, col in CLUSTERS:
 SCATTER = '''
 <div class="proto">
   <div class="k-panel">
-  <svg class="k-svg" viewBox="0 0 940 520" preserveAspectRatio="xMidYMid meet">
+  <svg class="k-svg" viewBox="90 22 860 500" preserveAspectRatio="xMidYMid meet">
     <g class="k-gridg">%s</g>
     <line class="k-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>
     <line class="k-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>
