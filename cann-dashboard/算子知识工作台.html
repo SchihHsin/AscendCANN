@@ -257,7 +257,8 @@
     display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
   .dock>*{pointer-events:auto}
   .pathbar{display:flex;align-items:center;gap:6px;max-width:min(760px,90vw);overflow-x:auto;
-    padding:7px 10px;border-radius:12px;background:rgba(255,255,255,.97);border:1px solid var(--line);
+    padding:7px 10px;border-radius:999px;background:var(--glass-bg);border:1px solid var(--glass-border);
+    backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
     box-shadow:0 8px 28px rgba(15,23,42,.10);scrollbar-width:none}
   .pathbar[hidden]{display:none}
   .pathbar::-webkit-scrollbar{display:none}
@@ -282,8 +283,10 @@
   .pick-hint button{border:1px solid var(--line);background:#fff;border-radius:999px;
     padding:2px 9px;font-size:10px;color:#475569;cursor:pointer}
   /* 时间轴 */
-  .tl{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:12px;
-    background:rgba(255,255,255,.97);border:1px solid var(--line);box-shadow:0 8px 28px rgba(15,23,42,.08)}
+  .tl{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;
+    background:var(--glass-bg);border:1px solid var(--glass-border);
+    backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+    box-shadow:0 8px 28px rgba(15,23,42,.08)}
   .tl button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;
     font-size:9px;color:#334155;cursor:pointer;padding:0}
   .tl button:hover{background:#F1F5F9}
