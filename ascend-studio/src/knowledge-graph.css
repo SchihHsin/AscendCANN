@@ -265,3 +265,8 @@
 .workspace-grid.is-knowledge-graph .kg-page { grid-column: 2 / -1; }
 
 .workspace-grid.is-standalone-view > .kg-page { grid-column: 2 / -1; grid-row: 1; }
+
+.knowledge-entry { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: #45464c; font-size: 11.5px; cursor: pointer; }
+.knowledge-entry:hover { background: var(--surface-subtle); }
+.kg-overlay { position: fixed; inset: 58px 0 0 0; z-index: 60; background: var(--surface); overflow: auto; }
+.kg-overlay-close { position: fixed; right: 22px; top: 70px; z-index: 61; width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #666; font-size: 18px; line-height: 1; cursor: pointer; }

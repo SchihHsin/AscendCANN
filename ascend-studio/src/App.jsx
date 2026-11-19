@@ -41,6 +41,7 @@ import { NewTaskHome } from "./NewTaskHome";
 import { CompositionLearningPathCanvas } from "./CompositionLearningPathCanvas.jsx";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
 import { KnowledgeTaskGraph } from "./KnowledgeTaskGraph";
+import { KnowledgeGraphPage } from "./KnowledgeGraphPage";
 import { buildHomeSuggestions } from "./home-recommendations";
 import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
@@ -86,6 +87,7 @@ import {
   IconSend,
   IconShieldCheck,
   IconSparkles,
+  IconAffiliate,
   IconSettingsAutomation,
   IconThumbDown,
   IconThumbUp,
@@ -236,6 +238,7 @@ function App() {
     window.history.replaceState(window.history.state, "", url);
   }, []);
   useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
+  const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [knowledgePocket, setKnowledgePocket] = useState(readKnowledgePocket);
   const [selectedPocketId, setSelectedPocketId] = useState("");
   useEffect(() => {
@@ -1636,6 +1639,7 @@ function App() {
         </div>}
         {showTaskWorkspace && !saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
         {showTaskWorkspace && workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容{workspace.state.visitedTabs.some(item => item.unread) && <span className="reopen-update-count">{workspace.state.visitedTabs.filter(item => item.unread).length} 项更新</span>}</button>}
+        {showTaskWorkspace && <button className="knowledge-entry" type="button" onClick={() => setKnowledgeOpen(true)}><IconAffiliate size={ICON_SIZE.control} /><span>知识图谱</span></button>}
         {showTaskWorkspace && <span className={`proposal-badge${(isPathGenerationTask && learning.state.draftPath) || task.compositionPlan ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{task.compositionPlan ? "学习路径 · 草案" : isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
         <button className="icon-button top-icon" type="button" aria-label="通知" data-menu-trigger aria-expanded={wb.menu?.name === "notifications"} onClick={(event) => openMenu("notifications", event)}><IconBell size={ICON_SIZE.heading} />{wb.notifications.length > 0 && <span className="notification-dot" />}</button>
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
@@ -1908,7 +1912,13 @@ function App() {
 
       <WorkbenchDialogs dialog={wb.dialog} onClose={wb.closeDialog} groups={wb.groups} taskName={selectedTask} taskGoal={task.goal} onCreateTask={wb.createTask} onAttachCode={wb.attachCode} history={session.history} onRestoreConversation={wb.restoreConversation} modelOptions={modelOptions} selectedModel={wb.selectedModel} onSelectModel={wb.chooseModel} attempts={wb.attempts} onAddAttempt={(entry) => wb.addRecord({ ...entry, kind: "attempt", isDemo: false })} evidenceDetail={wb.dialogData} copyText={wb.dialogData.text || ""} />
       {toast && <div className="toast-message" role="status">{toast}</div>}
-    </main>
+          {knowledgeOpen && (
+        <div className="kg-overlay" role="dialog" aria-modal="true" aria-label="知识图谱">
+          <button className="kg-overlay-close" type="button" onClick={() => setKnowledgeOpen(false)} aria-label="关闭知识图谱">×</button>
+          <KnowledgeGraphPage />
+        </div>
+      )}
+</main>
   );
 }
 
