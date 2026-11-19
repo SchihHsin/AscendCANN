@@ -617,7 +617,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 38";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 39";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -944,6 +944,18 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .stg.kind-x{background:rgba(75,75,168,.12);color:#3B3B85}
 .stg.kind-w{background:rgba(179,64,58,.1);color:#8E2F35}
 
+/* persona 场景缩略图（无截图时的示意） */
+.pf-mk.mk-term .bd{background:#22262F;border-radius:4px;padding:5px 6px;gap:3px;justify-content:center}
+.pf-mk.mk-term .mkl{background:rgba(255,255,255,.22)}
+.pf-mk.mk-term .mkl.g{background:#45D65A}
+.pf-mk.mk-term .mkl.w{background:rgba(255,255,255,.4)}
+.pf-mk.mk-doc .bd{padding:6px 7px;gap:3px}
+.pf-mk.mk-doc .mkl.b{background:#8FA6C8}
+.pf-mk.mk-chat .bd{gap:4px;justify-content:center}
+.pf-mk .bub{height:9px;border-radius:5px;background:#D3D8E2;display:block}
+.pf-mk .bub.r{background:rgba(91,91,214,.28);align-self:flex-end}
+.pf-mk .bub.l{align-self:flex-start}
+
 </style>
 </head>
 <body>
@@ -1005,15 +1017,68 @@ body.overview #panel,body.overview #toggle{display:none!important}
   </div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">学生与 AI 一起探路，企业工程师把任务交办给 AI 再验收</span></div><div class="subttl">角色与旅程 · 双角色画像</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
-<div class="mir">
-  <div class="mir-head a"><div class="n">高校学生</div><div class="d">徐立桂 · 梁淼城 · 王鹤锦 ｜ 研究、课程与实习驱动的开发</div></div>
-  <div></div>
-  <div class="mir-head b"><div class="n">企业工程师</div><div class="d">王伟 · 郑雨豪 · 彭椒 ｜ 需求、指标与合入驱动的开发</div></div>
-  <div class="mir-cell a">课题、论文、课程作业、实习 demo</div><div class="mir-dim">触发</div><div class="mir-cell b">需求单、问题单、测试任务、算子开发</div><div class="mir-cell a">benchmark 对 baseline；实验有提升；能自己复现</div><div class="mir-dim">完成标准</div><div class="mir-cell b">精度 golden + 性能 baseline 双达标，过测试、能合入</div><div class="mir-cell a">自费额度、实验室无 root、租卡、远程环境</div><div class="mir-dim">资源条件</div><div class="mir-cell b">统一采购 IDE、内网 / 黄区、内部 Skill 与专家</div><div class="mir-cell a">论文、GitHub、官方文档、CSDN / 知乎</div><div class="mir-dim">知识来源</div><div class="mir-cell b">官方 API 文档、内部 wiki、组内专家、设计文档</div><div class="mir-cell a">任务触发为主，也会为"学会"刻意自己写代码</div><div class="mir-dim">学习方式</div><div class="mir-cell b">被动 7 : 主动 3，基本在任务里学</div><div class="mir-cell a">1–2 人各做模块，没有评审压力</div><div class="mir-dim">交付与协作</div><div class="mir-cell b">committer 检视、拆 PR、跨团队难复用</div>
-  <div class="mir-q a">"一个窗口实现，一个窗口验收。" —— 徐立桂</div>
-  <div></div>
-  <div class="mir-q b">"人工审查跟 AI 执行是相互交叉、交替执行的过程。" —— 王伟</div>
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">高校学生：一边学一边做，完成标准是"能复现"</span></div><div class="subttl">角色与旅程 · 画像一（学生）</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="pf">
+  <div class="pf-side">
+    <div class="pf-portrait"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSLog4znnYDlj4zogqnljIXjgIHnqb/mqZnoibLov57luL3ooavjgIHmi7/nnYDnrJTorrDmnKznmoTlpKflrabnlJ/mj5LnlLvlpLTlg48iPgo8ZGVmcz48Y2xpcFBhdGggaWQ9ImN1dCI+PGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iOTAiLz48L2NsaXBQYXRoPjwvZGVmcz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2N1dCkiPgo8cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2ZmZjBkYiIvPjxjaXJjbGUgY3g9IjE0MiIgY3k9IjI1IiByPSI2NiIgZmlsbD0iI2ZmZTFiNSIvPjxjaXJjbGUgY3g9IjIzIiBjeT0iMTQ1IiByPSI0OCIgZmlsbD0iI2ZmZGZiMSIgb3BhY2l0eT0iLjYyIi8+CjwhLS0gaGFpciBhcm91bmQgZmFjZSAtLT4KPHBhdGggZD0iTTQ5IDg0Yy02LTIwLTItNDQgMTEtNTYgMTItMTQgNDQtMTggNjItNSAxNyAxMCAyNyAzMiAxNyA2NGwtMTAgMjBINTd6IiBmaWxsPSIjM2MzOTQzIi8+CjwhLS0gYmFja3BhY2sgbWFpbiBjYW52YXMgYW5kIHNob3VsZGVyIHN0cmFwcyAtLT4KPHBhdGggZD0iTTI3IDE4MWMyLTM2IDE5LTYxIDQ3LTY4bDE2IDcgMTctN2MzMCAxMCA0NCAzMyA0OCA2OCIgZmlsbD0iI2VmOTIzYyIvPgo8cGF0aCBkPSJNNDggMTI1Yy05IDEyLTEzIDI4LTEzIDU2aDE2YzAtMTkgNC0zNSAxMi00N3pNMTMyIDEyNmM5IDEyIDEzIDI4IDEzIDU1aC0xNmMwLTE5LTQtMzUtMTItNDd6IiBmaWxsPSIjNTI0YTUwIi8+CjxwYXRoIGQ9Ik04MCAxMDNoMjB2MjZsLTEwIDExLTEwLTExeiIgZmlsbD0iI2RhYTA4MCIvPgo8cGF0aCBkPSJNNzEgMTE1bDE5IDI1IDIwLTI1IDEwIDgtMzAgMzctMjktMzZ6IiBmaWxsPSIjZmZmNGU3Ii8+CjwhLS0gZWFycyBhbmQgZmFjZSAtLT4KPGVsbGlwc2UgY3g9IjU0IiBjeT0iODgiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiNlOWFiOGUiLz48ZWxsaXBzZSBjeD0iMTI2IiBjeT0iODgiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiNlOWFiOGUiLz4KPGVsbGlwc2UgY3g9IjkwIiBjeT0iNzgiIHJ4PSIzNiIgcnk9IjQ0IiBmaWxsPSIjZjFiYTlkIi8+CjxwYXRoIGQ9Ik01MyA3M2MtNS0yNSAwLTQ3IDE2LTU0IDIxLTEyIDQ1LTUgNTkgMTAgOCAxMCAxMSAyNyA2IDQyLTctOC05LTE2LTEyLTI0LTE0IDctMjEgOS0zNCAxMC04IDktMjEgMTQtMzUgMTYiIGZpbGw9IiMzYzM5NDMiLz4KPHBhdGggZD0iTTU4IDU2YzEwLTUgMTctMTIgMTktMTlNOTUgMzFjNyAxMCAxNyAxNCAyOCAxNSIgc3Ryb2tlPSIjNTU1MDVjIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8IS0tIGdsYXNzZXMgLS0+CjxyZWN0IHg9IjU4IiB5PSI3NSIgd2lkdGg9IjI4IiBoZWlnaHQ9IjI0IiByeD0iMTEiIGZpbGw9IiNmZmZkZjgiIGZpbGwtb3BhY2l0eT0iLjE1IiBzdHJva2U9IiM1NTRjNTAiIHN0cm9rZS13aWR0aD0iMi42Ii8+CjxyZWN0IHg9Ijk1IiB5PSI3NSIgd2lkdGg9IjI4IiBoZWlnaHQ9IjI0IiByeD0iMTEiIGZpbGw9IiNmZmZkZjgiIGZpbGwtb3BhY2l0eT0iLjE1IiBzdHJva2U9IiM1NTRjNTAiIHN0cm9rZS13aWR0aD0iMi42Ii8+CjxwYXRoIGQ9Ik04NiA4M3E1LTMgOSAwTTU4IDgxbC02LTNtNzEgMyA3LTQiIHN0cm9rZT0iIzU1NGM1MCIgc3Ryb2tlLXdpZHRoPSIyLjQiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iNzQiIGN5PSI4NiIgcj0iMi42IiBmaWxsPSIjMmQzNDM5Ii8+PGNpcmNsZSBjeD0iMTA4IiBjeT0iODYiIHI9IjIuNiIgZmlsbD0iIzJkMzQzOSIvPgo8cGF0aCBkPSJNOTEgODlsLTMgMTAgNSAxIiBzdHJva2U9IiNkOTk0NzgiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik04MiAxMDlxOSA2IDE4LTEiIHN0cm9rZT0iI2FhNjk1ZiIgc3Ryb2tlLXdpZHRoPSIyLjciIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNNDggMTcxYzctMjAgMTAtMzUgMjItNDhsMjAgMjYgMTktMjZjMTMgMTQgMTggMjggMjIgNDgiIGZpbGw9IiNlNzg0MmMiLz4KPHBhdGggZD0iTTY1IDEyN2MwIDE1IDEwIDIyIDI1IDM3bTI0LTM3YzAgMTUtMTEgMjgtMjQgMzciIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2VmYWI2NCIgc3Ryb2tlLXdpZHRoPSIzIi8+CjwhLS0gb3BlbiBib29rIHN0dWRlbnQgZW1ibGVtIC0tPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4OSAxNTEpIj48cGF0aCBkPSJNLTE2LTNjNy0zIDEzLTIgMTYgMSA1LTQgMTEtNCAxNy0ydjE5Yy03LTItMTItMS0xNyAzLTQtNC0xMC01LTE2LTN6IiBmaWxsPSIjZmZmOWViIiBzdHJva2U9IiM5NTU2MjkiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0wLTJ2MjBNLTEyIDRsNy0xTTUgNGw3LTFNLTEyIDlsNy0xTTUgOWw3LTEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2NkOWQ3MCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48L2c+CjwvZz48L3N2Zz4=" alt=""></div>
+    <div class="pf-sb head"><div class="nm">高校学生</div><div class="rl">课题 / 论文 / 实习 demo 驱动</div></div>
+    <div class="pf-chips"><span>自费额度</span><span>无 root</span><span>租卡 / 远程环境</span><span>Codex · Claude Code</span><span>导师与同门</span></div>
+    <div class="pf-sb white"><div class="sbh">核心职责</div><div class="sbt">把课题、课程或实习里的任务做成能交的东西：跑通、有结果、能写进报告或论文。</div></div>
+    <div class="pf-sb white"><div class="sbh">代表受访者</div><div class="sbt">徐立桂（南大研二）· 梁淼城（南大四）· 王鹤锦（杭电研三）</div></div>
+    <div class="pf-quote">"一个窗口实现，一个窗口验收。" —— 徐立桂</div>
+  </div>
+  <div class="pf-r">
+    <div class="pf-row">
+      <div class="pf-block">
+        <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg></span>什么时候找 AI</div>
+        <div class="pf-pains"><div class="pf-pain">遇到不懂的机制，想让 AI 先讲清楚</div><div class="pf-pain">想快速验证一个方向可不可行</div><div class="pf-pain">改开源仓库、复刻别人的项目</div><div class="pf-pain">赶 demo、交作业，需要先跑起来</div></div>
+      </div>
+      <div class="pf-block">
+        <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12.5 3 3 5-6"/></svg></span>怎么算做完</div>
+        <div class="pf-pains"><div class="pf-pain">benchmark 对 baseline</div><div class="pf-pain">实验有提升，且能自己复现</div><div class="pf-pain">不是"跑过一次"，是"下次还能做出来"</div></div>
+      </div>
+    </div>
+    <div class="pf-block">
+      <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg></span>典型场景与工具</div>
+      <div class="pf-scs"><div class="pf-sc"><div class="pf-mk mk-code"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl b" style="width:46%"></span><span class="mkl" style="width:78%"></span><span class="mkl" style="width:62%"></span><span class="mkl b" style="width:30%"></span></div></div><div class="st">复现开源项目</div><div class="sd">Codex · 仓库</div></div><div class="pf-sc"><div class="pf-mk mk-term"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl g" style="width:56%"></span><span class="mkl w" style="width:82%"></span><span class="mkl w" style="width:40%"></span><span class="mkl g" style="width:68%"></span></div></div><div class="st">算子生成</div><div class="sd">HiDevLab · CANN 9.1.0</div></div><div class="pf-sc"><div class="pf-mk mk-doc"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl b" style="width:38%"></span><span class="mkl" style="width:90%"></span><span class="mkl" style="width:84%"></span><span class="mkl" style="width:70%"></span></div></div><div class="st">论文选题</div><div class="sd">Codex · 文献</div></div><div class="pf-sc"><div class="pf-mk mk-chat"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="bub l" style="width:66%"></span><span class="bub r" style="width:52%"></span><span class="bub l" style="width:44%"></span></div></div><div class="st">课程与作业</div><div class="sd">Claude Code</div></div></div>
+    </div>
+    <div class="pf-block">
+      <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3 20h18z"/><path d="M12 10v4M12 17h.01"/></svg></span>核心痛点</div>
+      <div class="pf-pains"><div class="pf-pain">算力申请不到，环境在远程，Agent 接不上</div><div class="pf-pain">目标宽泛，没有可验证的完成标准</div><div class="pf-pain">过度设计、跑偏，缺判据</div><div class="pf-pain">缺错误样例，中文线索要自己搜</div><div class="pf-pain">额度不够，多 Agent 用不起</div></div>
+    </div>
+  </div>
+</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">企业工程师：为指标与合入写代码，完成标准是"过测试、能检视"</span></div><div class="subttl">角色与旅程 · 画像二（企业）</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
+<div class="pf">
+  <div class="pf-side">
+    <div class="pf-portrait"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI5MCIgY3k9IjkwIiByPSI5MCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIGZpbGw9IiNlOGYxZjIiLz48cGF0aCBkPSJNLTggMTgyYzMtNDMgMjItNjcgNjEtNzZsMzggOSAzNy05YzM3IDkgNTcgMzEgNjAgNzYiIGZpbGw9IiM2NjgxOGIiLz48cGF0aCBkPSJNNTIgMTI1YzggMTIgMjIgMjIgMzggMjcgMTktNSAyOS0xNSAzOS0yN2wtNy0xNy0zMyAxLTMwLTJ6IiBmaWxsPSIjZjlmYmZiIi8+PHBhdGggZD0iTTY1IDEyMmwyNSAyMiAyNS0yMi00LTI2SDY4eiIgZmlsbD0iI2Q4OWY3YiIvPjxlbGxpcHNlIGN4PSI4OSIgY3k9Ijc4IiByeD0iNDciIHJ5PSI1NiIgZmlsbD0iI2U1YjE4YyIvPjxwYXRoIGQ9Ik00MyA3M1EzOCAyMCA4OCAyMmMzMS01IDUzIDE4IDQ3IDU0bC03LTEwLTQtMjFxLTI3IDE3LTY3IDE0TDUwIDc4eiIgZmlsbD0iIzI3M2I0OSIvPjxwYXRoIGQ9Ik02MyA3OWgxNW0yMyAwaDE1IiBzdHJva2U9IiMyNTM1NDQiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSI4MiIgcj0iMi42IiBmaWxsPSIjMjYzNTQ0Ii8+PGNpcmNsZSBjeD0iMTA3IiBjeT0iODIiIHI9IjIuNiIgZmlsbD0iIzI2MzU0NCIvPjxwYXRoIGQ9Ik04NCA5OXE2IDQgMTIgMG0tMjEgMTJxMTUgMTEgMzAgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYWQ3MDVkIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Im0zOSAxNjggMTgtNTAgMzQgMjggMzEtMjggMjAgNTAiIGZpbGw9IiM0YzZkN2EiLz48L2c+PC9zdmc+" alt=""></div>
+    <div class="pf-sb head"><div class="nm">企业工程师</div><div class="rl">需求 / 指标 / 合入驱动</div></div>
+    <div class="pf-chips"><span>算子开发</span><span>精度 + 性能</span><span>内部 Skill</span><span>黄区</span><span>committer 检视</span></div>
+    <div class="pf-sb white"><div class="sbh">核心职责</div><div class="sbt">把需求单做成能合入的东西：精度过 golden、性能对 baseline、代码能被检视。</div></div>
+    <div class="pf-sb white"><div class="sbh">代表受访者</div><div class="sbt">王伟（昇腾基础软件）· 郑雨豪 · 彭椒</div></div>
+    <div class="pf-quote">"人工审查跟 AI 执行是相互交叉、交替执行的过程。" —— 王伟</div>
+  </div>
+  <div class="pf-r">
+    <div class="pf-row">
+      <div class="pf-block">
+        <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg></span>什么时候找 AI</div>
+        <div class="pf-pains"><div class="pf-pain">接需求，先写详细设计文档</div><div class="pf-pain">精度调不通，需要看 thought 判断方向</div><div class="pf-pain">写测试用例、修测试脚本</div><div class="pf-pain">功能做完后清理 AI 写的封装</div></div>
+      </div>
+      <div class="pf-block">
+        <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12.5 3 3 5-6"/></svg></span>怎么算做完</div>
+        <div class="pf-pains"><div class="pf-pain">精度：对 CPU golden 的最大 / 平均相对误差</div><div class="pf-pain">性能：对 baseline 达标</div><div class="pf-pain">测试通过，且能过 committer 检视</div></div>
+      </div>
+    </div>
+    <div class="pf-block">
+      <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg></span>典型场景与工具</div>
+      <div class="pf-scs"><div class="pf-sc"><div class="pf-mk mk-code"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl b" style="width:46%"></span><span class="mkl" style="width:78%"></span><span class="mkl" style="width:62%"></span><span class="mkl b" style="width:30%"></span></div></div><div class="st">算子开发</div><div class="sd">Cursor · 详设 + API 链接</div></div><div class="pf-sc"><div class="pf-mk mk-term"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl g" style="width:56%"></span><span class="mkl w" style="width:82%"></span><span class="mkl w" style="width:40%"></span><span class="mkl g" style="width:68%"></span></div></div><div class="st">测试脚本</div><div class="sd">毕方 · 直连服务器</div></div><div class="pf-sc"><div class="pf-mk mk-chat"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="bub l" style="width:66%"></span><span class="bub r" style="width:52%"></span><span class="bub l" style="width:44%"></span></div></div><div class="st">问题单 / Issue</div><div class="sd">Trae</div></div><div class="pf-sc"><div class="pf-mk mk-doc"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl b" style="width:38%"></span><span class="mkl" style="width:90%"></span><span class="mkl" style="width:84%"></span><span class="mkl" style="width:70%"></span></div></div><div class="st">精度调优</div><div class="sd">MindStudio Insight · msOpProf</div></div></div>
+    </div>
+    <div class="pf-block">
+      <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#5B5BD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3 20h18z"/><path d="M12 10v4M12 17h.01"/></svg></span>核心痛点</div>
+      <div class="pf-pains"><div class="pf-pain">需求模糊，"只给一个完成度 10% 的版本"</div><div class="pf-pain">单个 API 有文档，API 之间怎么配合没有</div><div class="pf-pain">精度调不通，AI 开始"左右脑互搏"</div><div class="pf-pain">能跑但性能不达标，清封装又花一天</div><div class="pf-pain">可读性差，大工程要拆 10 个 PR 才能检视</div></div>
+    </div>
+  </div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">最强模型不是标配：学生用额度换，企业用自费换</span></div><div class="subttl">角色与旅程 · 资源条件</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 材料</span><span class="active">02 角色</span><span class="">03 协作</span><span class="">04 习惯</span><span class="">05 知识</span><span class="">06 发现</span></div></div><div class="body-area">
@@ -1463,7 +1528,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="team-q"><b>王伟</b>："对于现在入职的新员工来说，<b>原理理解比较少</b>。"</div>
     <div class="team-q"><b>徐立桂</b>："确实对很多细节完全没有感知了，<b>越来越多东西变成黑盒</b>。"</div>
     <div class="team-q"><b>郑雨豪</b>："<b>AI 会了，我不会。</b>"</div>
-    <div class="team-more">再加上 P22 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
+    <div class="team-more">再加上 P23 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
   </div>
 </div>
 <div class="cx-concl" style="margin-top:1.4vh"><span class="ck">风险</span><span class="cv">写的人、评审的人同时变薄——<b>三年后谁来判断这套实现对不对？</b>这不是个人学习习惯问题，是团队的能力结构问题。</span></div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
@@ -1472,14 +1537,14 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <div class="map2">
   <div class="band2 xian">
     <div class="band2-h"><b>现象 · 正在发生什么</b><span>10 条 · 中性描述，是判断前提</span></div>
-    <div class="fchips"><span class="fchip"><i class="dot l2"></i>任务写法成为主战场<em>P16</em></span><span class="fchip"><i class="dot l2"></i>代码的读者变成 AI<em>P22</em></span><span class="fchip"><i class="dot l2"></i>三种协作形态并存<em>P13–15</em></span><span class="fchip"><i class="dot l1"></i>模型档位就高不就低<em>P6</em></span><span class="fchip"><i class="dot l2"></i>权限开到最大<em>P21</em></span><span class="fchip"><i class="dot l2"></i>可信度按离执行远近排序<em>P29</em></span><span class="fchip"><i class="dot l3"></i>学习挤进等待窗口<em>P32</em></span><span class="fchip"><i class="dot l3"></i>"学会"的标准分裂<em>P33</em></span><span class="fchip"><i class="dot l3"></i>失败归因于自己<em>P24</em></span><span class="fchip"><i class="dot l3"></i>团队的理解在变薄<em>P34</em></span></div>
+    <div class="fchips"><span class="fchip"><i class="dot l2"></i>任务写法成为主战场<em>P17</em></span><span class="fchip"><i class="dot l2"></i>代码的读者变成 AI<em>P23</em></span><span class="fchip"><i class="dot l2"></i>三种协作形态并存<em>P14–15</em></span><span class="fchip"><i class="dot l1"></i>模型档位就高不就低<em>P7</em></span><span class="fchip"><i class="dot l2"></i>权限开到最大<em>P22</em></span><span class="fchip"><i class="dot l2"></i>可信度按离执行远近排序<em>P30</em></span><span class="fchip"><i class="dot l3"></i>学习挤进等待窗口<em>P33</em></span><span class="fchip"><i class="dot l3"></i>"学会"的标准分裂<em>P34</em></span><span class="fchip"><i class="dot l3"></i>失败归因于自己<em>P25</em></span><span class="fchip"><i class="dot l3"></i>团队的理解在变薄<em>P35</em></span></div>
   </div>
   <div class="band2 wen">
     <div class="band2-h"><b>问题 · 哪里还坏着</b><span>10 条 · 有损害、有责任方</span></div>
-    <div class="fchips"><span class="fchip"><i class="dot l1"></i>开工前的环境门槛<em>P12</em></span><span class="fchip"><i class="dot l1"></i>上下文没人托管<em>P28</em></span><span class="fchip"><i class="dot l1"></i>任务状态看不见<em>P27</em></span><span class="fchip"><i class="dot l1"></i>官方 Skill 把流程当产品<em>P31</em></span><span class="fchip"><i class="dot l1"></i>AI 自信地错，自检不可信<em>P20</em></span><span class="fchip"><i class="dot l2"></i>错误样例稀缺<em>P30</em></span><span class="fchip"><i class="dot l2"></i>隐性工时不计入<em>P17</em></span><span class="fchip"><i class="dot l2"></i>交接判据依赖经验<em>P18</em></span><span class="fchip"><i class="dot l2"></i>恢复靠换模型<em>P23</em></span><span class="fchip"><i class="dot l2"></i>来源展示不进决策链<em>P19</em></span></div>
+    <div class="fchips"><span class="fchip"><i class="dot l1"></i>开工前的环境门槛<em>P13</em></span><span class="fchip"><i class="dot l1"></i>上下文没人托管<em>P29</em></span><span class="fchip"><i class="dot l1"></i>任务状态看不见<em>P28</em></span><span class="fchip"><i class="dot l1"></i>官方 Skill 把流程当产品<em>P32</em></span><span class="fchip"><i class="dot l1"></i>AI 自信地错，自检不可信<em>P21</em></span><span class="fchip"><i class="dot l2"></i>错误样例稀缺<em>P31</em></span><span class="fchip"><i class="dot l2"></i>隐性工时不计入<em>P18</em></span><span class="fchip"><i class="dot l2"></i>交接判据依赖经验<em>P19</em></span><span class="fchip"><i class="dot l2"></i>恢复靠换模型<em>P24</em></span><span class="fchip"><i class="dot l2"></i>来源展示不进决策链<em>P20</em></span></div>
   </div>
   <div class="map2-foot">
-    <span>两处"读法"不算发现：偏好 ≠ 行为（P25）、同一行为在不同情境下含义不同（P26）</span>
+    <span>两处"读法"不算发现：偏好 ≠ 行为（P26）、同一行为在不同情境下含义不同（P27）</span>
     <span class="map2-lg"><i class="dot l1"></i>L1 工具层<i class="dot l2"></i>L2 协作层<i class="dot l3"></i>L3 人的层</span>
   </div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
@@ -1497,23 +1562,23 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="ax-tag">价值 高 ↑</div>
     <div class="m4-grid">
       <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
-        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P19</em></span>
-        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P31</em></span>
-        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P28</em></span>
+        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P20</em></span>
+        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P32</em></span>
+        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P29</em></span>
       </div>
       <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
-        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P16</em></span>
-        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P18</em></span>
-        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P23</em></span>
-        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P27</em></span>
+        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P17</em></span>
+        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P19</em></span>
+        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P24</em></span>
+        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P28</em></span>
       </div>
       <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
-        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P19</em></span>
-        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P28</em></span>
+        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P20</em></span>
+        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P29</em></span>
       </div>
       <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
-        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P32</em></span>
-        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P18</em></span>
+        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P33</em></span>
+        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P19</em></span>
       </div>
     </div>
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>

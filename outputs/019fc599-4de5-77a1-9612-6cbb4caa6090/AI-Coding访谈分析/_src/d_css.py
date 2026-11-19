@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 38";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 39";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -647,4 +647,16 @@ CSS_EXTRA += r"""
 .map2-lg .dot:first-child{margin-left:0}
 .stg.kind-x{background:rgba(75,75,168,.12);color:#3B3B85}
 .stg.kind-w{background:rgba(179,64,58,.1);color:#8E2F35}
+
+/* persona 场景缩略图（无截图时的示意） */
+.pf-mk.mk-term .bd{background:#22262F;border-radius:4px;padding:5px 6px;gap:3px;justify-content:center}
+.pf-mk.mk-term .mkl{background:rgba(255,255,255,.22)}
+.pf-mk.mk-term .mkl.g{background:#45D65A}
+.pf-mk.mk-term .mkl.w{background:rgba(255,255,255,.4)}
+.pf-mk.mk-doc .bd{padding:6px 7px;gap:3px}
+.pf-mk.mk-doc .mkl.b{background:#8FA6C8}
+.pf-mk.mk-chat .bd{gap:4px;justify-content:center}
+.pf-mk .bub{height:9px;border-radius:5px;background:#D3D8E2;display:block}
+.pf-mk .bub.r{background:rgba(91,91,214,.28);align-self:flex-end}
+.pf-mk .bub.l{align-self:flex-start}
 """
