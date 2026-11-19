@@ -299,7 +299,7 @@
 <header class="topbar">
   <div class="brand"><b>算子开发知识工作台</b></div>
   <div class="scenebar">
-    <span class="scenes-tag">场景</span>
+    <span class="scenes-tag">项目</span>
     <div class="scenes" id="scenes"></div>
   </div>
   <div class="rightwrap">
@@ -416,7 +416,7 @@ function resize(){
 }
 const svg=$('#graph');
 
-/* ================= 场景 ================= */
+/* ================= 项目 ================= */
 const sceneSet=new Set(SCENES[0].ds);
 (function buildScenes(){
   const box=$('#scenes');
@@ -484,7 +484,7 @@ function visibleNode(n){
     if(state.gran===1) return n.anchor;
     if(n.w < {2:3,3:2,4:1,5:0}[state.gran]) return false;
     if(state.domain && n.dom!==state.domain) return false;
-    return true;  // 搜索时跨场景，保留全部节点只做淡化
+    return true;  // 搜索时跨项目，保留全部节点只做淡化
   }
   if(state.gran===1) return n.anchor && inScene(n) && (!state.domain||n.dom===state.domain);
   if(n.w < {2:3,3:2,4:1,5:0}[state.gran]) return false;
@@ -880,7 +880,7 @@ function renderInsight(){
   const box=$('#insight');
   if(!state.sel){
     const sc=SCENES.find(x=>x.id===state.scene);
-    box.innerHTML=`<div class="ins-meta solo"><span class="dot" style="background:#94A3B8"></span>当前场景<button class="ins-x" id="insClose" title="收起">×</button></div>
+    box.innerHTML=`<div class="ins-meta solo"><span class="dot" style="background:#94A3B8"></span>当前项目<button class="ins-x" id="insClose" title="收起">×</button></div>
       <div class="ins-row"><h2 class="ins-title">${sc.name}</h2></div>
       <p class="ins-def clamp1">${sc.ds.length} 篇对话 · ${state.gran} 档粒度 · ${visibleNodes().length} 个节点，点击节点看结论与来源。</p>`;
     $('#dwSub').textContent=`${sc.ds.length} 篇原声 · ${visibleNodes().length} 节点`;
