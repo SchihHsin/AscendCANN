@@ -321,7 +321,7 @@ CSS_EXTRA += r"""
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 39";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 40";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -767,4 +767,23 @@ CSS_EXTRA += r"""
 .up-chips span{font-size:9.2px;color:var(--ink-2);background:#F1F3F6;border-radius:4px;padding:.2vh .35vw}
 
 .up-quote{grid-column:1/-1;padding-top:1.2vh;border-top:1px solid rgba(47,61,99,.14);font-size:11.4px;line-height:1.5;color:var(--ink-2)}
+
+/* 平台忠诚 */
+.loy{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:2.4vh}
+.loy-head{display:grid;grid-template-columns:110px 1fr 320px;gap:1.6vw;font-family:'JetBrains Mono';font-size:9.4px;letter-spacing:.14em;color:var(--ink-3);padding-bottom:.8vh;border-bottom:1px solid rgba(47,61,99,.14)}
+.loy-rows{display:flex;flex-direction:column}
+.loy-r{display:grid;grid-template-columns:110px 1fr 320px;gap:1.6vw;align-items:center;padding:2.3vh 0;border-bottom:1px solid rgba(47,61,99,.08)}
+.loy-n{font-size:13.6px;font-weight:700;color:var(--ink)}
+.loy-c{display:flex;align-items:center;flex-wrap:wrap;gap:.5em}
+.loy-t{font-size:11.8px;color:var(--ink-2);background:#fff;border-radius:6px;padding:.35vh .6em;box-shadow:0 6px 14px -12px rgba(30,40,70,.5)}
+.loy-ar{color:var(--ink-3);font-size:11px}
+.loy-g{font-size:10.6px;color:var(--ink-2);line-height:1.4}
+.loy-bot{border-top:1px solid rgba(47,61,99,.14);padding-top:2vh;display:flex;flex-direction:column;gap:1.4vh}
+.loy-k{font-family:'JetBrains Mono';font-size:9.4px;letter-spacing:.14em;color:var(--ink-3)}
+.loy-why{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw}
+.loy-why>div{display:flex;flex-direction:column;gap:.35em}
+.loy-why b{font-size:11.8px;color:var(--ink)}
+.loy-why span{font-size:10.6px;color:var(--ink-2);line-height:1.5}
+.loy-concl{font-size:12.4px;color:var(--ink-2);border-top:1px dashed rgba(47,61,99,.12);padding-top:1.2vh}
+.loy-concl b{color:var(--ink)}
 """
