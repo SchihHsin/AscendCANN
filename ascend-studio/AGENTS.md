@@ -1030,3 +1030,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 
 - 发布回执：功能提交 d7039647 已推送至 origin/main；Pages run 39728932934 成功，发布 index、JS、CSS 和内容图均返回 HTTP 200。线上 CUA 读取超时，视觉与楼层结构以本地 1440×900 生产包截图为证；未声称线上点击回放。其他对话的共享工作区改动未纳入功能提交。
+
+## 2026-11-19 · 知识图谱作为原生视图接入
+
+- 用户要求把 cann-dashboard 的算子知识工作台「巧妙融合」进 Ascend Studio，明确不要 iframe 内嵌。实现为左栏一级导航「知识图谱」，与「学习发现」并列；点击进入原生 React 视图，复用三栏壳、项目栏与面包屑。
+- 数据从 `cann-dashboard/算子知识工作台.html` 导出为 `src/knowledge/graph.json`（74 节点 / 80 条关系 / 15 段对话 / 173 轮），页面 `src/KnowledgeGraphPage.jsx` + `src/knowledge-graph.css` 读取同一份数据；后续内容更新重跑导出，不维护第二份数据。
+- 视图能力（P1）：六域色胶囊与固定种子力导向布局、悬停高亮邻域并压暗其余、搜索压暗、场景芯片过滤、点击节点在右侧展开结论 / 误区 / 出处（含原声片段）。六域色作为内容语义色保留，外壳、字体、圆角与间距沿用 Ascend Studio token。
+- 入口支持 `#knowledge` 深链；离开该视图时清除 hash。深链只覆盖「进入图谱」，尚未实现按节点定位。
+- 后续（未实现）：粒度滑块与边聚合、时间轴回放、多选路径与剧本导出、诊断面板「相关知识」跳转定位。
