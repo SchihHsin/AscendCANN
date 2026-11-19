@@ -70,6 +70,23 @@ DEV_SVG = ('<svg class="k-svg" viewBox="0 0 %d %d">' % (W, H) + _grid(4, 0) + _a
            '<text class="k-al k-rot" x="52" y="%d" text-anchor="middle" transform="rotate(-90 52 %d)">每步都查 → 敢放手</text>'
            '</svg>' % (PX, PY + PH + 26, PX + PW, PY + PH + 26, PY + PH / 2, PY + PH / 2))
 
+
+def _ellipse_from_points(pts, pad_x=24, pad_y=22):
+    """PCA 拟合一组点的外接椭圆（返回 cx,cy,rx,ry,angle）。"""
+    n = len(pts)
+    cx = sum(p[0] for p in pts) / n
+    cy = sum(p[1] for p in pts) / n
+    sxx = sum((p[0] - cx) ** 2 for p in pts) / n
+    syy = sum((p[1] - cy) ** 2 for p in pts) / n
+    sxy = sum((p[0] - cx) * (p[1] - cy) for p in pts) / n
+    ang = 0.5 * math.atan2(2 * sxy, sxx - syy)
+    ca, sa = math.cos(ang), math.sin(ang)
+    u = [((p[0] - cx) * ca + (p[1] - cy) * sa) for p in pts]
+    v = [(-(p[0] - cx) * sa + (p[1] - cy) * ca) for p in pts]
+    rx = max(abs(min(u)), abs(max(u))) + pad_x
+    ry = max(abs(min(v)), abs(max(v))) + pad_y
+    return cx, cy, rx, ry, math.degrees(ang)
+
 # ---------------- 右：学习 ----------------
 # x: 卡住才学(0) → 主动起意(1)；y: 能跑通(0) / 能讲清(0.5) / 能复现(1)
 LEARN_PAS = [('彭椒', 'e', 0.05, 0.20, 'right'), ('梁淼城', 's', 0.13, 0.14, 'right'),
@@ -81,6 +98,28 @@ _learn = ''
 for n, g, x, y in LEARN_ACT.values() and [] or []:
     pass
 
+LEARN_CLU = [
+    (['彭椒', '梁淼城', '郑雨豪', '王伟'], 'pas', '#8C95A3', '现学现用'),
+    (['王鹤锦', '徐立桂'], 'pas', '#C08A2E', '边做边懂'),
+    (['王伟', '王鹤锦', '徐立桂'], 'act', '#2E8B6B', '主动补'),
+]
+_learn += ''
+for names, src_, col, lab in LEARN_CLU:
+    pts = []
+    for n in names:
+        if src_ == 'act' and n in LEARN_ACT:
+            pts.append(_xy(*LEARN_ACT[n][:2]))
+        else:
+            row = [p for p in LEARN_PAS if p[0] == n]
+            if row:
+                pts.append(_xy(row[0][2], row[0][3]))
+    if len(pts) < 2:
+        continue
+    cx, cy, rx, ry, ang = _ellipse_from_points(pts)
+    _learn += ('<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f" fill="%s1a" stroke="%s" '
+               'stroke-dasharray="5 4" stroke-width="1.1" transform="rotate(%.1f %.1f %.1f)"/>'
+               % (cx, cy, rx, ry, col, col, ang, cx, cy))
+
 # 连线
 for n, (ax, ay, _sd) in LEARN_ACT.items():
     px, py = [p for p in LEARN_PAS if p[0] == n][0][2], [p for p in LEARN_PAS if p[0] == n][0][3]
@@ -89,7 +128,6 @@ for n, (ax, ay, _sd) in LEARN_ACT.items():
     _learn += ('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="#C3C9D4" '
                'stroke-width="1.1" stroke-dasharray="4 4"/>' % (x1, y1, x2, y2))
 
-_learn += ''
 for n, g, x, y, sd in LEARN_PAS:
     _learn += _dot(x, y, n, g, sd)
 for n, (x, y, sd) in LEARN_ACT.items():
@@ -117,7 +155,8 @@ TWO = slide('''
   <div class="k-panel two-card">
     <div class="two-h"><b>学习：学到什么程度</b><span>横轴＝什么时候学，纵轴＝什么算学会</span></div>
     %s
-    <div class="two-f"><span class="f">● 被动学（卡住时）</span><span class="h">○ 主动学（起意时）</span></div>
+    <div class="two-f"><span class="f">● 被动学</span><span class="h">○ 主动学</span>
+      <span style="color:#8C95A3">⌒ 现学现用</span><span style="color:#C08A2E">⌒ 边做边懂</span><span style="color:#2E8B6B">⌒ 主动补</span></div>
     <div class="two-t">主动学大多停在“能讲清”，<b>只有一个人推到“能复现”</b>。</div>
   </div>
 </div>''' % (DEV_SVG, LEARN_SVG),
