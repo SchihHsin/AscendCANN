@@ -51,7 +51,7 @@ Z1 = slide('''
     <div class="team-q"><b>王伟</b>："对于现在入职的新员工来说，<b>原理理解比较少</b>。"</div>
     <div class="team-q"><b>徐立桂</b>："确实对很多细节完全没有感知了，<b>越来越多东西变成黑盒</b>。"</div>
     <div class="team-q"><b>郑雨豪</b>："<b>AI 会了，我不会。</b>"</div>
-    <div class="team-more">再加上 P23 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
+    <div class="team-more">再加上 P22 那条：committer 检视时"我感觉现在他们都是让 AI 看的"。</div>
   </div>
 </div>
 <div class="cx-concl" style="margin-top:1.4vh"><span class="ck">风险</span><span class="cv">写的人、评审的人同时变薄——<b>三年后谁来判断这套实现对不对？</b>这不是个人学习习惯问题，是团队的能力结构问题。</span></div>''' % CURVE,
