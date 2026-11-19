@@ -719,8 +719,7 @@ function buildNodes(){
 function render(){
   const list=visibleNodes(); const visSet=new Set(list.map(n=>n.id));
   HITS = state.q ? new Set(list.filter(matchQ).map(n=>n.id)) : null;
-  const shown = state.tl<15 ? new Set(list.filter(n=>n.firstSeen<=state.tl).map(n=>n.id)) : visSet;
-  NODES.forEach(n=>{ n.__el.style.display=shown.has(n.id)?'':'none'; });
+  NODES.forEach(n=>{ n.__el.style.display=visSet.has(n.id)?'':'none'; });
 
   // 节点位置与尺寸
   list.forEach(n=>{
@@ -729,7 +728,7 @@ function render(){
   });
 
   // 边
-  AGG=buildEdges(shown);
+  AGG=buildEdges(visSet);
   const eg=$('#edges'); eg.innerHTML='';
   AGG.forEach(e=>{
     const A=nodeById[e.a],B=nodeById[e.b];
@@ -744,6 +743,7 @@ function render(){
 
   renderDomains(list);
   applyHighlight();
+  if(typeof applyTl==='function') applyTl();
   if(typeof renderBadges==='function') renderBadges();
 }
 
@@ -1289,6 +1289,13 @@ $('#pbCopy').onclick=async()=>{
 const TL_START=new Date(2026,8,1);
 const TL_OFFSET=[0,3,8,12,15,21,25,29,34,38,43,47,52,56,61];
 function tlDate(c){ const d=new Date(TL_START); d.setDate(d.getDate()+TL_OFFSET[c-1]); return d; }
+function applyTl(){
+  const list=visibleNodes(), vis=new Set(list.map(n=>n.id));
+  const shown = state.tl<15 ? new Set(list.filter(n=>n.firstSeen<=state.tl).map(n=>n.id)) : vis;
+  NODES.forEach(n=>{ n.__el.style.display=(vis.has(n.id)&&shown.has(n.id))?'':'none'; });
+  AGG.forEach(e=>{ e.__el.style.display=(shown.has(e.a)&&shown.has(e.b))?'':'none'; });
+  renderBadges();
+}
 function tlLabel(){
   const el=$('#tlLab');
   if(state.tl>=15){ el.textContent='全部 15 段'; return; }
@@ -1298,7 +1305,8 @@ function tlLabel(){
 function setTl(v){
   state.tl=Math.max(1,Math.min(15,v));
   $('#tlRange').value=state.tl;
-  tlLabel(); render();
+  tlLabel();
+  applyTl();
 }
 let tlTimer=null;
 $('#tlRange').oninput=e=>{ if(tlTimer){clearInterval(tlTimer);tlTimer=null;$('#tlPlay').textContent='▶';} setTl(+e.target.value); };
