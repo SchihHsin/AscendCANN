@@ -236,28 +236,28 @@ S18 = slide('''
     <div class="ax-tag">价值 高 ↑</div>
     <div class="m4-grid">
       <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
-        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P20</em></span>
-        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P33</em></span>
-        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P30</em></span>
+        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P24</em></span>
+        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P30</em></span>
+        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P21</em></span>
       </div>
       <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
-        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P17</em></span>
-        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P19</em></span>
-        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P24</em></span>
-        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P29</em></span>
+        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P18</em></span>
+        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P22</em></span>
+        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P27</em></span>
+        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P20</em></span>
       </div>
       <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
-        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P20</em></span>
-        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P30</em></span>
+        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P24</em></span>
+        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P21</em></span>
       </div>
       <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
-        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P34</em></span>
-        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P19</em></span>
+        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P31</em></span>
+        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P22</em></span>
       </div>
     </div>
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>
   </div>
-</div>''', '设计启发：八条方向按"价值 × 成本"排优先级', '发现与启示 · 设计启发', 5)
+</div>''', '设计启发：八条方向按"价值 × 成本"排优先级', '设计 · 价值与成本', 5)
 
 # ---------------- S19 边界 ----------------
 S19 = slide('''
@@ -301,6 +301,6 @@ from d_loy import LOY
 from d_s11b import S11B
 from d_s15b import S15B
 
-ALL = [S1, S2, S3, S4, P_STU, P_EMP, X1, S6, S7, S8, S9, S10, X6,
-       Q1, Q2, Q3, S11B, X2, S12, S13, Z2, PERM, X3, S14, X9,
-       S15, LOY, S15B, X4, Y1, S16, X7, X8, X5, Y2, Z1, MAP, S17N, S18, S19]
+ALL = [S1, S2, S3, S4, P_STU, P_EMP, S6, S7, S8, S9, S10, Q1, Q2, Q3,
+       X1, PERM, X6, S11B, X2, X4, Y1, S12, Z2, S13, X3, S16, S14, X9,
+       X7, X8, X5, Y2, S15, LOY, S15B, Z1, MAP, S17N, S18, S19]

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from d_journey import render_journey, J_S_DEV, J_S_LEARN, J_E_DEV, J_E_LEARN
 
-TABS = ['01 材料', '02 角色', '03 协作', '04 习惯', '05 知识', '06 发现']
+TABS = ['01 过程', '02 发现', '03 汇总', '04 设计']
 
 
 def head(title, sub, ch):
@@ -39,25 +39,23 @@ S1 = '''<section class="slide s-cover">
 </section>'''
 
 # ---------------- S2 目录 ----------------
-def _card(no, name, en, items, note, cls):
+def _card(no, name, en, items, note, cls, pages=''):
     its = ''.join('<span>%s</span>' % i for i in items)
     return ('<article class="directory-card %s"><div class="directory-no">%s</div><h2 class="directory-name">%s</h2>'
-            '<div class="directory-en">%s</div><div class="directory-items">%s</div>'
-            '<div class="directory-note">%s</div></article>' % (cls, no, name, en, its, note))
+            '<div class="directory-en">%s</div><div class="directory-range">%s</div><div class="directory-items">%s</div>'
+            '<div class="directory-note">%s</div></article>' % (cls, no, name, en, pages, its, note))
 
 
 S2 = '''<section class="slide s-gray contents-slide">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
-  <div class="body-area"><div class="contents-directory contents-6">
+  <div class="body-area"><div class="contents-directory contents-4">
   %s
   </div></div>
 </section>''' % ''.join([
-    _card('01', '材料与边界', 'Scope &amp; Evidence', ['受访者概况', '证据强度', '材料缺口'], '先确认这批材料能撑住什么', 'research'),
-    _card('02', '角色与旅程', 'Personas &amp; Journeys', ['双角色画像', '四段旅程', '共同骨架'], '看清两种人各自走的是哪条路', 'persona'),
-    _card('03', '人机协作', 'Human–AI Handoff', ['三种协作形态', '任务写法', '交接与验证'], '找到人真正被卡住的位置', 'competitor'),
-    _card('04', '习惯与偏好', 'Habits &amp; Preferences', ['明说 / 实做 / 解释', '任务与记忆', '平台不黏', '情境差异'], '把愿望、行为和推断分开', 'research'),
-    _card('05', '知识与学习', 'Knowledge &amp; Learning', ['可信来源与错误样例', 'Skill 形态', '学习窗口与标准'], '理解 AI 之后人怎么学', 'persona'),
-    _card('06', '发现与启示', 'Findings &amp; Implications', ['发现地图', '五条核心', '设计启发'], '收敛成可行动的方向', 'roadmap'),
+    _card('01', '过程', 'Process &amp; Evidence', ['材料与边界', '两张画像', '四段旅程', '三张时序图'], '先看我们是怎么看到的', 'research', 'P1–14'),
+    _card('02', '发现', 'Findings', ['前提 / 交办 / 执行', '验收 / 出错 / 沉淀', '贯穿全程的四条'], '22 条，沿任务链条排', 'persona', 'P15–36'),
+    _card('03', '汇总', 'Synthesis', ['现象与问题地图', '五条核心'], '把 22 条收敛成一张图', 'competitor', 'P37–38'),
+    _card('04', '设计', 'Design', ['价值 × 成本', '边界与缺口'], '从发现推到可行动', 'roadmap', 'P39–40'),
 ])
 
 # ---------------- S3 受访者矩阵 ----------------

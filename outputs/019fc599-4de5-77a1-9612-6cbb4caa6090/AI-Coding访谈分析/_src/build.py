@@ -43,6 +43,37 @@ html = _parts[0]
 for _i, _seg in enumerate(_parts[1:], start=1):
     html += '<section id="p%d" class="slide' % _i + _seg
 
+# 每页的章节归属（1-based）：14 过程 / 22 发现 / 2 汇总 / 2 设计
+TABMAP = [1] * 14 + [2] * 22 + [3] * 2 + [4] * 2
+GROUPS = {15: '前提', 16: '前提', 17: '前提', 18: '交办', 19: '交办',
+          20: '执行', 21: '执行', 22: '执行', 23: '执行',
+          24: '验收', 25: '验收', 26: '验收', 27: '出错', 28: '出错',
+          29: '沉淀', 30: '沉淀', 31: '沉淀', 32: '沉淀',
+          33: '贯穿', 34: '贯穿', 35: '贯穿', 36: '贯穿'}
+
+from d_slides1 import TABS as _TABS
+_secs = html.split('<section id="p')
+for _i in range(1, len(_secs)):
+    _seg = _secs[_i]
+    _ti = TABMAP[_i - 1] if _i - 1 < len(TABMAP) else len(_TABS)
+    _spans = ''.join('<span class="%s">%s</span>' % ('active' if _k + 1 == _ti else '', _t)
+                     for _k, _t in enumerate(_TABS))
+    _seg = re.sub(r'(<div class="section-tabs"[^>]*>)(.*?)(</div>)',
+                  lambda m: m.group(1) + _spans + m.group(3), _seg, count=1)
+    if 5 <= _i <= 14:
+        _seg = _seg.replace('<div class="subttl">角色与旅程 · ', '<div class="subttl">过程 · ', 1)
+        _seg = _seg.replace('<div class="subttl">人机协作 · ', '<div class="subttl">过程 · ', 1)
+    _g = GROUPS.get(_i)
+    if 15 <= _i <= 36:
+        _m = re.search(r'<div class="subttl">(.*?)</div>', _seg)
+        if _m:
+            _tail = _m.group(1).split(' · ')[-1]
+            _seg = _seg.replace(_m.group(0), '<div class="subttl">发现 · %s</div>' % _tail, 1)
+    if _g:
+        _seg = _seg.replace('<span class="ttl">', '<span class="gtag">%s</span><span class="ttl">' % _g, 1)
+    _secs[_i] = _seg
+html = '<section id="p'.join(_secs)
+
 DEEPLINK = """
 <script>
 (function(){

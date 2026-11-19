@@ -786,4 +786,12 @@ CSS_EXTRA += r"""
 .loy-why span{font-size:10.6px;color:var(--ink-2);line-height:1.5}
 .loy-concl{font-size:12.4px;color:var(--ink-2);border-top:1px dashed rgba(47,61,99,.12);padding-top:1.2vh}
 .loy-concl b{color:var(--ink)}
+
+/* 目录四卡 */
+.directory-range{font-family:'JetBrains Mono';font-size:10.2px;color:var(--ink-3);letter-spacing:.1em;margin:.15em 0 .2em}
+.contents-4 .directory-card{min-height:50vh;padding:3.4vh 1.6vw 2.2vh}
+.contents-4 .directory-no{font-size:clamp(44px,4.2vw,68px)}
+.contents-4 .directory-name{font-size:clamp(18px,1.5vw,22px)}
+.contents-4 .directory-items{margin-top:auto}
+.gtag{display:inline-block;font-family:'JetBrains Mono';font-size:9.6px;letter-spacing:.12em;color:#3B3B85;background:rgba(75,75,168,.1);border-radius:4px;padding:.18em .5em;margin-right:.7em;vertical-align:middle;transform:translateY(-2px)}
 """
