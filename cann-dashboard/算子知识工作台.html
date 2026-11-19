@@ -49,6 +49,11 @@
     box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);backdrop-filter:blur(10px)}
   .tools{position:absolute;left:16px;top:14px;z-index:8;display:flex;flex-direction:column;gap:8px;width:330px}
   .search{display:flex;align-items:center;gap:8px;padding:8px 11px}
+  .search input{flex:1;min-width:0}
+  .qclear{flex:0 0 auto;width:20px;height:20px;padding:0;display:flex;align-items:center;justify-content:center;
+    border:none;background:#EEF2F7;border-radius:50%;color:#64748B;font-size:13px;line-height:1;cursor:pointer}
+  .qclear[hidden]{display:none}
+  .qclear:hover{background:#E2E8F0;color:#0F172A}
   .search input{border:0;outline:none;background:transparent;font-size:12.5px;color:var(--ink);width:100%}
   .search input::placeholder{color:#94A3B8}
   .gran{padding:10px 12px 9px}
@@ -236,6 +241,7 @@
           <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path>
         </svg>
         <input id="q" placeholder="搜索知识点（/ 聚焦）">
+        <button class="qclear" id="qClear" title="清除搜索" hidden>×</button>
       </div>
       <div class="panel gran">
         <div class="row"><span class="lab">知识拆分粒度</span><span class="val" id="granVal">5 · 原子实操</span></div>
@@ -1027,6 +1033,14 @@ $('#gran').addEventListener('input',e=>{
   $('#granVal').textContent=state.gran+' · '+['','领域骨架','核心瓶颈','关键机制','常规细节','原子实操'][state.gran];
 });
 $('#gran').addEventListener('change',()=>{ relayout(); fitView(true); });
+const qClear=$('#qClear');
+function syncQClear(){ qClear.hidden=!$('#q').value; }
+$('#q').addEventListener('input',()=>syncQClear());
+qClear.onclick=()=>{
+  const el=$('#q'); el.value=''; syncQClear();
+  el.dispatchEvent(new Event('input')); el.focus();
+};
+syncQClear();
 $('#q').addEventListener('input',e=>{
   state.q=e.target.value.trim();
   clearTimeout(window.__qt);
@@ -1037,6 +1051,9 @@ $('#q').addEventListener('input',e=>{
     fitView(true, q?visibleNodes().filter(matchQ):null);
     const hits=visibleNodes();
     const rs=q?ROUNDS.filter(r=>sceneSet.has(r.c)&&roundHit(r,q)):[];
+    if(!q){
+      $('#hint').textContent='点击节点看结论与原文 · 拖拽节点 / 滚轮缩放 · 按 / 搜索';
+    }
     if(q){
       const mh=hits.filter(matchQ).length;
       $('#hint').textContent=`搜索“${state.q}” · 命中 ${mh} 个知识点 · ${rs.length} 轮原文（其余已淡化）`;
