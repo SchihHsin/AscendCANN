@@ -43,13 +43,13 @@ def _dot(x, y, name, role, side='right', hollow=False, label=True):
 # ---------------- 左：开发 ----------------
 DEV_PTS = [('王鹤锦', 's', 0.30, 0.28), ('梁淼城', 's', 0.45, 0.52), ('徐立桂', 's', 0.80, 0.68),
            ('王伟', 'e', 0.72, 0.40), ('郑雨豪', 'e', 0.75, 0.15), ('彭椒', 'e', 0.92, 0.88)]
-DEV_CLU = [('彭椒', '徐立桂', '#4B4BA8', '放手', '干得多，也敢放手', 1),
-           ('王伟', '郑雨豪', '#B3403A', '审查', '干得多，每一步都要查', 1),
-           ('梁淼城', '王鹤锦', '#727B88', '自己写', '用得少，也不太信', -1)]
+DEV_CLU = [('彭椒', '徐立桂', '#4B4BA8', '放手', '干得多，也敢放手', 498, 54, 'middle'),
+           ('王伟', '郑雨豪', '#B3403A', '审查', '干得多，每一步都要查', 500, 342, 'start'),
+           ('梁淼城', '王鹤锦', '#727B88', '自己写', '用得少，也不太信', 202, 296, 'end')]
 
 _dev_pos = {n: _xy(x, y) for n, g, x, y in DEV_PTS}
 _dev_rings = ''
-for a, b, col, lab, note, side in DEV_CLU:
+for a, b, col, lab, note, lx, ly, anc in DEV_CLU:
     (x1, y1), (x2, y2) = _dev_pos[a], _dev_pos[b]
     cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
     dx, dy = x2 - x1, y2 - y1
@@ -58,6 +58,9 @@ for a, b, col, lab, note, side in DEV_CLU:
     _dev_rings += ('<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="30" fill="%s1a" stroke="%s" '
                    'stroke-dasharray="5 4" stroke-width="1.1" transform="rotate(%.1f %.1f %.1f)"/>'
                    % (cx, cy, d / 2 + 22, col, col, ang, cx, cy))
+    _dev_rings += ('<text class="k-cl" x="%d" y="%d" fill="%s" text-anchor="%s">%s</text>'
+                   '<text class="k-cn" x="%d" y="%d" text-anchor="%s">%s</text>'
+                   % (lx, ly, col, anc, lab, lx, ly + 13, anc, note))
 
 _dev_dots = ''
 for n, g, x, y in DEV_PTS:
@@ -99,12 +102,12 @@ for n, g, x, y in LEARN_ACT.values() and [] or []:
     pass
 
 LEARN_CLU = [
-    (['彭椒', '梁淼城', '郑雨豪', '王伟'], 'pas', '#8C95A3', '现学现用'),
-    (['王鹤锦', '徐立桂'], 'pas', '#C08A2E', '边做边懂'),
-    (['王伟', '王鹤锦', '徐立桂'], 'act', '#2E8B6B', '主动补'),
+    (['彭椒', '梁淼城', '郑雨豪', '王伟'], 'pas', '#8C95A3', '现学现用', '卡住才学，能跑通就算', 176, 436, 'middle'),
+    (['王鹤锦', '徐立桂'], 'pas', '#C08A2E', '边做边懂', '卡住时也追到能讲清', 168, 196, 'end'),
+    (['王伟', '王鹤锦', '徐立桂'], 'act', '#2E8B6B', '主动补', '自己起意去学', 570, 300, 'end'),
 ]
 _learn += ''
-for names, src_, col, lab in LEARN_CLU:
+for names, src_, col, lab, note, lx, ly, anc in LEARN_CLU:
     pts = []
     for n in names:
         if src_ == 'act' and n in LEARN_ACT:
@@ -119,6 +122,9 @@ for names, src_, col, lab in LEARN_CLU:
     _learn += ('<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f" fill="%s1a" stroke="%s" '
                'stroke-dasharray="5 4" stroke-width="1.1" transform="rotate(%.1f %.1f %.1f)"/>'
                % (cx, cy, rx, ry, col, col, ang, cx, cy))
+    _learn += ('<text class="k-cl" x="%d" y="%d" fill="%s" text-anchor="%s">%s</text>'
+               '<text class="k-cn" x="%d" y="%d" text-anchor="%s">%s</text>'
+               % (lx, ly, col, anc, lab, lx, ly + 13, anc, note))
 
 # 连线
 for n, (ax, ay, _sd) in LEARN_ACT.items():
@@ -149,14 +155,14 @@ TWO = slide('''
     <div class="two-h"><b>开发：交到什么程度</b><span>横轴＝AI 干多少，纵轴＝查得多紧</span></div>
     %s
     <div class="two-f"><span class="s">● 学生</span><span class="e">● 企业新员工</span>
-      <span style="color:#4B4BA8">⌒ 放手</span><span style="color:#B3403A">⌒ 审查</span><span style="color:#727B88">⌒ 自己写</span></div>
+      </div>
     <div class="two-t">用得多、查得紧的人落在右下：<b>AI 的产能进来了，验收没跟上</b>。</div>
   </div>
   <div class="k-panel two-card">
     <div class="two-h"><b>学习：学到什么程度</b><span>横轴＝什么时候学，纵轴＝什么算学会</span></div>
     %s
     <div class="two-f"><span class="f">● 被动学</span><span class="h">○ 主动学</span>
-      <span style="color:#8C95A3">⌒ 现学现用</span><span style="color:#C08A2E">⌒ 边做边懂</span><span style="color:#2E8B6B">⌒ 主动补</span></div>
+      </div>
     <div class="two-t">主动学大多停在“能讲清”，<b>只有一个人推到“能复现”</b>。</div>
   </div>
 </div>''' % (DEV_SVG, LEARN_SVG),
