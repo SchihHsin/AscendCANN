@@ -721,12 +721,11 @@ function applyHighlight(){
     document.querySelectorAll('#domtitles .domtitle').forEach(t=>{
       t.style.opacity = !hitDoms ? .9 : (hitDoms.has(t.dataset.dom) ? .9 : .16);
     });
-    AGG.forEach(e=>{
-      const on=HITS?(HITS.has(e.a)||HITS.has(e.b)):true;
-      e.__el.setAttribute('stroke-opacity',on?'1':'.06');
-    });
     document.querySelectorAll('.eglabel').forEach(e=>e.remove());
-    AGG.forEach(e=>{ e.__el.setAttribute('stroke-opacity','1'); e.__el.removeAttribute('marker-end'); });
+    AGG.forEach(e=>{
+      e.__el.setAttribute('stroke-opacity', HITS?'.22':'1');
+      e.__el.removeAttribute('marker-end');
+    });
     return;
   }
   document.querySelectorAll('#domtitles .domtitle').forEach(t=>{ t.style.opacity=.9; });
