@@ -254,6 +254,9 @@
     padding:5px 10px;font-size:11px;cursor:pointer}
   .pb-btn.ghost{background:#fff;color:#64748B;border:1px solid var(--line)}
   .pb-btn.ghost:hover{background:#F1F5F9}
+  .pb-start{border:1px dashed #CBD5E1;background:#fff;color:#475569;border-radius:20px;
+    padding:6px 14px;font-size:11.5px;cursor:pointer}
+  .pb-start:hover{border-color:#94A3B8;color:#0F172A;background:#F8FAFC}
   /* 时间轴 */
   .tl{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:12px;
     background:rgba(255,255,255,.97);border:1px solid var(--line);box-shadow:0 8px 28px rgba(15,23,42,.08)}
@@ -366,7 +369,7 @@ const domById=Object.fromEntries(DOMAINS.map(d=>[d.id,d]));
 const nodeById=Object.fromEntries(NODES.map(n=>[n.id,n]));
 const dlgByN=Object.fromEntries(DLG.map(d=>[d.n,d]));
 const W={x:1000,y:720};
-const state={scene:'all',gran:5,domain:null,q:'',sel:null,streamAll:true,path:[],tl:15,play:false};
+const state={scene:'all',gran:5,domain:null,q:'',sel:null,streamAll:true,path:[],tl:15,play:false,picking:false};
 let HITS=null;
 let view={k:1,x:0,y:0};
 
@@ -1070,7 +1073,7 @@ svg.addEventListener('pointerup',e=>{
   if(drag){
     const n=drag.n, wasDrag=drag.moved>5; drag=null;
     if(!wasDrag){
-      if(e.shiftKey){ togglePath(n.id); }   // Shift + 点击：加入/移出剧本
+      if(e.shiftKey || state.picking){ togglePath(n.id); }   // Shift 或选择模式下：加入/移出剧本
       else select(n.id,{scroll:true});
     } else {
       const list=visibleNodes(); const links=layoutLinks(list);
@@ -1166,6 +1169,7 @@ function openDrawer(){
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='/'&&document.activeElement!==$('#q')){e.preventDefault();$('#q').focus();}
+  if(e.key==='Escape' && state.picking){ state.picking=false; renderPathBar(); return; }
   if(e.key==='Escape'){ state.sel=null; applyHighlight(); renderInsight(); }
   if(e.key==='0'){ fitView(true); }
 });
@@ -1231,16 +1235,30 @@ function renderBadges(){
 }
 function renderPathBar(){
   const bar=$('#pathbar'); if(!bar) return;
-  if(!state.path.length){ bar.hidden=true; bar.innerHTML=''; return; }
+  if(!state.path.length && !state.picking){
+    bar.hidden=false;
+    bar.innerHTML=`<button class="pb-start" id="pickStart">＋ 建立排查剧本</button>`;
+    $('#pickStart').onclick=()=>{ state.picking=true; renderPathBar(); };
+    return;
+  }
+  if(!state.path.length && state.picking){
+    bar.hidden=false;
+    bar.innerHTML=`<span class="pb-lab">选择模式：点击节点加入路径（再次点击移出）· Esc 退出</span>
+      <button class="pb-btn ghost" id="pickExit">退出</button>`;
+    $('#pickExit').onclick=()=>{ state.picking=false; renderPathBar(); };
+    return;
+  }
   bar.hidden=false;
   bar.innerHTML=`<span class="pb-lab">路径 ${state.path.length} 步</span>`
     + state.path.map((id,i)=>`<button class="pb-chip" data-del="${id}"><b>${i+1}</b>${esc(nodeById[id].name)}<i>×</i></button>`).join('')
     + `<span class="pb-sp"></span>
        <button class="pb-btn" id="pbPlaybook">生成剧本</button>
        <button class="pb-btn ghost" id="pbSort">按对话排序</button>
-       <button class="pb-btn ghost" id="pbClear">清空</button>`;
+       <button class="pb-btn ghost" id="pbClear">清空</button>
+       ${state.picking?'<button class="pb-btn ghost" id="pbDone">完成</button>':''}`;
   bar.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>togglePath(b.dataset.del));
   $('#pbClear').onclick=()=>{ state.path=[]; renderBadges(); renderPathBar(); render(); };
+  const don=$('#pbDone'); if(don) don.onclick=()=>{ state.picking=false; renderPathBar(); };
   $('#pbSort').onclick=()=>{
     state.path.sort((a,b)=>firstSeen(nodeById[a])-firstSeen(nodeById[b]));
     renderBadges(); renderPathBar();
