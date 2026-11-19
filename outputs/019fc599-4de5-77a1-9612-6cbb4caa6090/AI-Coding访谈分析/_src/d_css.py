@@ -725,7 +725,7 @@ CSS_EXTRA += r"""
 /* 画像形式三：左紫栏 + 右便利贴墙 */
 .up{display:grid;grid-template-columns:clamp(250px,22vw,320px) 1fr;gap:2vw;flex:0 1 auto;align-items:stretch;padding-top:.4vh}
 .up-side{background:linear-gradient(160deg,#6366D8,#8268E2);border-radius:16px;padding:1.6vh 1.1vw;color:#fff;display:flex;flex-direction:column;gap:1.1vh;min-width:0}
-.up-portrait{width:100%;aspect-ratio:2/1;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.14);flex:none}
+.up-portrait{width:100%;aspect-ratio:3/2;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.14);flex:none}
 .up-portrait img{width:100%;height:100%;object-fit:cover}
 .up-name{font-size:clamp(19px,1.6vw,25px);font-weight:800;line-height:1.15}
 .up-role{font-size:11px;opacity:.88;margin-top:.2em}
@@ -736,7 +736,7 @@ CSS_EXTRA += r"""
 .up-bio{font-size:10.4px;line-height:1.5;opacity:.92}
 .up-notes{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:.6vh .5vw;min-height:0}
 .up-tag{background:#fff;color:#3A3F4A;border-radius:6px;padding:.7vh .4vw;font-size:10.2px;line-height:1.25;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 8px 16px -12px rgba(0,0,0,.5)}
-.up-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;align-content:space-between;gap:1.4vh .9vw;min-width:0}
+.up-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto auto;align-content:space-between;gap:1.6vh .9vw;min-width:0}
 .up-card{background:#fff;border-radius:12px;padding:1.3vh .9vw;display:flex;flex-direction:column;justify-content:flex-start;gap:.9vh;min-width:0;box-shadow:0 14px 30px -28px rgba(30,40,70,.55)}
 .up-card.span2{grid-column:span 2}
 .up-label{font-family:'JetBrains Mono';font-size:9.2px;letter-spacing:.13em;color:var(--ink-3);text-transform:uppercase}
@@ -765,4 +765,6 @@ CSS_EXTRA += r"""
 .up-dots .d i.on{background:#5B5BD6}
 .up-chips{display:flex;flex-wrap:wrap;gap:.4vh .3vw;margin-top:.2vh}
 .up-chips span{font-size:9.2px;color:var(--ink-2);background:#F1F3F6;border-radius:4px;padding:.2vh .35vw}
+
+.up-quote{grid-column:1/-1;padding-top:1.2vh;border-top:1px solid rgba(47,61,99,.14);font-size:11.4px;line-height:1.5;color:var(--ink-2)}
 """

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
+import base64
 import pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from d_css import CSS_EXTRA
@@ -83,6 +84,16 @@ if _OLD in html:
     html = html.replace(_OLD, _NEW, 1)
 else:
     print('WARN: updateCurrent(0) not found')
+
+# 头像内联为 data URI，保证单文件可移植（源文件保留在目录里）
+_base = pathlib.Path(__file__).resolve().parent.parent
+for _f in ('av-student.svg', 'av-emp.svg'):
+    _p = _base / _f
+    if _p.exists():
+        _b64 = base64.b64encode(_p.read_bytes()).decode()
+        html = html.replace('src="%s"' % _f, 'src="data:image/svg+xml;base64,%s"' % _b64)
+    else:
+        print('WARN: avatar missing', _f)
 
 out = pathlib.Path(__file__).resolve().parent.parent / 'AI-Coding用户访谈分析.html'
 out.write_text(html, encoding='utf-8')
