@@ -88,6 +88,7 @@ import {
   IconSettingsAutomation,
   IconThumbDown,
   IconThumbUp,
+  IconTopologyStar3,
   IconX,
 } from "@tabler/icons-react";
 
@@ -220,7 +221,7 @@ function App() {
     if (launchTask) return "task";
     if (launchParams.has("showcaseRev") && ["classic", "explore", "combine"].includes(launchHome)) return "home";
     const savedView = readSession("main-view", null);
-    if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "task"].includes(savedView)) return savedView;
+    if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "knowledge-graph", "task"].includes(savedView)) return savedView;
     // A home-variant query may remain in the URL after navigating into a task.
     // Use it only for a fresh session so it cannot override the saved task view on refresh.
     if (["classic", "explore", "combine"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
@@ -289,6 +290,7 @@ function App() {
   const showAutomations = mainView === "automations";
   const showCapabilities = mainView === "capabilities";
   const showKnowledgePocket = mainView === "knowledge-pocket";
+  const showKnowledgeGraph = mainView === "knowledge-graph";
   const showTaskWorkspace = mainView === "task";
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingCompositionPath, setPendingCompositionPath] = useState(null);
@@ -432,7 +434,7 @@ function App() {
         return;
       }
       if (routeState?.view === "task" && taskNames.has(routeState.task)) wb.selectTask(routeState.task);
-      setMainView(["home", "learning", "automations", "capabilities", "knowledge-pocket"].includes(routeState?.view) ? routeState.view : "home");
+      setMainView(["home", "learning", "automations", "capabilities", "knowledge-pocket", "knowledge-graph"].includes(routeState?.view) ? routeState.view : "home");
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -1639,7 +1641,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (showKnowledgePocket ? " is-knowledge-pocket-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed ? " is-log-diagnostic-workspace-open" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed && !projectPanelOpen ? " is-log-format-lab-focused" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (showKnowledgePocket ? " is-knowledge-pocket-view" : "") + (showKnowledgeGraph ? " is-knowledge-graph-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed ? " is-log-diagnostic-workspace-open" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed && !projectPanelOpen ? " is-log-format-lab-focused" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
@@ -1647,6 +1649,7 @@ function App() {
             <button className={"icon-rail-button" + (showAutomations ? " is-current" : "")} type="button" aria-label="自动化任务" title="自动化任务" aria-current={showAutomations ? "page" : undefined} onClick={() => navigateMainView("automations")}><IconSettingsAutomation size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showCapabilities ? " is-current" : "")} type="button" aria-label="能力库" title="能力库" aria-current={showCapabilities ? "page" : undefined} onClick={() => navigateMainView("capabilities")}><IconBooks size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showKnowledgePocket ? " is-current" : "")} type="button" aria-label="知识口袋" title="知识口袋" aria-current={showKnowledgePocket ? "page" : undefined} onClick={() => navigateMainView("knowledge-pocket")}><IconBookmark size={ICON_SIZE.navigation} /></button>
+            <button className={"icon-rail-button" + (showKnowledgeGraph ? " is-current" : "")} type="button" aria-label="知识图谱" title="知识图谱" aria-current={showKnowledgeGraph ? "page" : undefined} onClick={() => navigateMainView("knowledge-graph")}><IconTopologyStar3 size={ICON_SIZE.navigation} /></button>
           </div>
         </aside>
         <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={!projectPanelOpen}>
@@ -1699,7 +1702,7 @@ function App() {
           const created = wb.createTask({ name: taskName, groupId, goal, kind, attachments, compositionPlan });
           if (created) { setMainView("task"); setProjectPanelOpen(false); if (compositionPlan) setPendingCompositionPath(taskName); }
           return created;
-        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showKnowledgePocket ? <KnowledgePocketPage items={knowledgePocket.items} selectedId={selectedPocketId} onSelect={setSelectedPocketId} onSendNow={sendPocketItemNow} onSchedule={schedulePocketItem} onSignal={setPocketSignal} onRemove={removePocketItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
+        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showKnowledgePocket ? <KnowledgePocketPage items={knowledgePocket.items} selectedId={selectedPocketId} onSelect={setSelectedPocketId} onSendNow={sendPocketItemNow} onSchedule={schedulePocketItem} onSignal={setPocketSignal} onRemove={removePocketItem} /> : showKnowledgeGraph ? <section className="management-page" aria-label="知识图谱" style={{ padding: 0, overflow: "hidden" }}><iframe src="./knowledge-graph/index.html" title="知识图谱" style={{ width: "100%", height: "100%", border: 0, display: "block" }} /></section> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 自动化</span><h1 id="automations-page-title">自动化任务</h1><p>查看自动化状态，安排演示任务，或手动运行一次检查。</p></div><div className="management-page-summary"><strong>{wb.automations.filter(item => item.enabled).length}</strong><span>项已启用</span><i /><strong>{wb.automations.length}</strong><span>项任务</span></div></header>
           <div className="management-page-content"><AutomationList automations={wb.automations} onToggleAutomation={(id) => wb.setAutomations((items) => items.map((item) => item.id === id ? { ...item, enabled: !item.enabled } : item))} onRunAutomation={wb.runAutomation} onAddAutomation={(entry) => wb.setAutomations((items) => [...items, { ...entry, id: crypto.randomUUID(), enabled: true, lastRun: "" }])} /></div>
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
