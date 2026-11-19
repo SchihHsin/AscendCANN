@@ -11,31 +11,62 @@ PT = [
     ('彭椒', 'e', 0.92, 0.88),
 ]
 
-W, H = 880, 460
-X0, Y0 = 160, 0
-BASE = Y0 + H  # 460
+# Kano 式象限图（参考 cann-dashboard 问卷分析 #3）
+X0, Y0, PW, PH = 150, 40, 640, 420
+GRID = 'rgba(76,85,98,.13)'
+
+
+def _pt(x, y):
+    return X0 + x * PW, Y0 + (1 - y) * PH
+
+
+_grid = ''
+for i in range(1, 4):
+    gx = X0 + PW * i / 4
+    gy = Y0 + PH * i / 4
+    _grid += '<line x1="%.1f" y1="%d" x2="%.1f" y2="%d" stroke="%s"/>' % (gx, Y0, gx, Y0 + PH, GRID)
+    _grid += '<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s"/>' % (X0, gy, X0 + PW, gy, GRID)
+
+_QUAD = [
+    ('k-Q2', 26, 62, 'start', '只让它试', '用得少，但愿意信'),
+    ('k-Q1', 914, 62, 'end', '放手', '干得多，也敢放手'),
+    ('k-Q3', 26, 442, 'start', '自己写', '用得少，也不太信'),
+    ('k-Q4', 914, 442, 'end', '审查', '干得多，每一步都要查'),
+]
+_qlab = ''
+for cls, x, y, anchor, t, note in _QUAD:
+    _qlab += ('<text class="k-ql %s" x="%d" y="%d" text-anchor="%s">%s</text>'
+              '<text class="k-qn" x="%d" y="%d" text-anchor="%s">%s</text>'
+              % (cls, x, y, anchor, t, x, y + 16, anchor, note))
 
 _dots = ''
 for n, g, x, y in PT:
-    px = X0 + x * W
-    py = BASE - y * H
-    side = ' lft' if px > X0 + W * 0.55 else ''
-    _dots += ('<div class="sc-pt %s%s" style="left:%dpx;top:%dpx"><i></i><b>%s</b></div>'
-              % (g, side, int(px), int(py), n))
+    cx, cy = _pt(x, y)
+    right = cx < X0 + PW * 0.62
+    lx = cx + 14 if right else cx - 14
+    anchor = 'start' if right else 'end'
+    _dots += ('<g class="k-pt %s"><circle cx="%.1f" cy="%.1f" r="7.5"/>'
+              '<text x="%.1f" y="%.1f" text-anchor="%s">%s</text></g>'
+              % (g, cx, cy, lx, cy + 4, anchor, n))
 
 SCATTER = '''
 <div class="proto">
-  <div class="sc-wrap">
-    <div class="sc-axis-x"></div>
-    <div class="sc-axis-y"></div>
-    <div class="sc-cap xl">AI 干得少</div><div class="sc-cap xr">AI 干得多</div>
-    <div class="sc-cap yt">敢放手</div><div class="sc-cap yb">每步都查</div>
+  <svg class="k-svg" viewBox="0 0 940 520" preserveAspectRatio="xMidYMid meet">
+    <g class="k-gridg">%s</g>
+    <line class="k-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>
+    <line class="k-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>
     %s
-  </div>
-  <div class="sc-lg"><span class="s">● 学生</span><span class="e">● 企业新员工</span></div>
+    %s
+    <text class="k-al" x="%d" y="%d" text-anchor="start">AI 干得少</text>
+    <text class="k-al" x="%d" y="%d" text-anchor="end">AI 干得多</text>
+    <text class="k-al k-rot" x="%d" y="%d" text-anchor="middle" transform="rotate(-90 %d %d)">每步都查 → 敢放手</text>
+  </svg>
+  <div class="sc-lg"><span class="s">● 学生</span><span class="e">● 企业新员工</span><span class="muted">点的位置为研究者据访谈判断的定性定位，不构成测量值</span></div>
   <div class="proto-take">用得多、查得紧的人落在右下：<b>AI 的产能已经进来了，人的验收没跟上</b>。</div>
-  <div class="proto-note">点的位置为研究者据访谈判断的定性定位，不构成测量值。</div>
-</div>''' % _dots
+</div>''' % (_grid, X0, Y0 + PH, X0 + PW, Y0 + PH, X0, Y0, X0, Y0 + PH,
+              _qlab, _dots,
+              X0, Y0 + PH + 26, X0 + PW, Y0 + PH + 26,
+              118, Y0 + PH / 2, 118, Y0 + PH / 2)
 
 STAGES = ['开工 / 定题', '备料 / 上下文', 'AI 执行', '验收 / 纠偏', '沉淀 / 交付']
 
