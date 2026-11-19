@@ -693,7 +693,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #deck{counter-reset:pg}
 .slide{counter-increment:pg}
 .pfoot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;pointer-events:none;z-index:2}
-.pfoot::after{content:counter(pg,decimal-leading-zero) " / 45";opacity:.8}
+.pfoot::after{content:counter(pg,decimal-leading-zero) " / 49";opacity:.8}
 
 .tflow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:1.6vh}
 .tflow-ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
@@ -1379,6 +1379,111 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .rc-foot-box p b{color:var(--ink)}
 .rc-foot-link{margin-left:auto;font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;color:var(--lc);cursor:pointer;white-space:nowrap;padding:.25vh .55vw;border-radius:6px;background:rgba(var(--lrgb),.08);transition:background .14s}
 .rc-foot-link:hover{background:rgba(var(--lrgb),.16)}
+/* ===== 04 设计章（P45–P49）：原则 + 三大生态与工具方案 + 路线图 ===== */
+.stage-subtabs.ds-0 span.active{background:linear-gradient(135deg,#1E2330,#374151)}
+.stage-subtabs.ds-1 span.active{background:linear-gradient(135deg,#1D4ED8,#3B82F6);box-shadow:0 2px 8px -2px rgba(29,78,216,.4)}
+.stage-subtabs.ds-2 span.active{background:linear-gradient(135deg,#4338CA,#6366F1);box-shadow:0 2px 8px -2px rgba(79,70,229,.4)}
+.stage-subtabs.ds-3 span.active{background:linear-gradient(135deg,#0F766E,#10B981);box-shadow:0 2px 8px -2px rgba(15,118,110,.4)}
+.stage-subtabs.ds-4 span.active{background:linear-gradient(135deg,#B45309,#D97706);box-shadow:0 2px 8px -2px rgba(180,83,9,.4)}
+
+/* P45 四条原则 2x2 */
+.dp-grid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1.1vw}
+.dp-card{display:flex;flex-direction:column;gap:.8vh;background:rgba(255,255,255,.84);border:1px solid rgba(127,137,157,.16);border-radius:14px;padding:1.4vh 1.2vw;box-shadow:0 8px 22px -16px rgba(30,40,70,.14);backdrop-filter:blur(6px)}
+.dp-top{display:flex;justify-content:space-between;align-items:center;gap:.6vw}
+.dp-no{font-family:'JetBrains Mono';font-size:10px;font-weight:800;padding:.22vh .55vw;border-radius:6px;background:rgba(30,35,48,.08);color:var(--ink);letter-spacing:.06em}
+.dp-tags{display:flex;gap:4px}
+.dp-tag{font-family:'JetBrains Mono';font-size:8.8px;font-weight:700;padding:.18vh .48vw;border-radius:5px;background:#fff;border:1px solid rgba(47,61,99,.12);color:var(--ink-3);cursor:pointer;transition:all .13s}
+.dp-tag:hover{color:var(--ink);border-color:rgba(47,61,99,.35)}
+.dp-card h3{font-size:clamp(14.5px,1.2vw,17.5px);font-weight:800;color:var(--ink);margin:0;line-height:1.3}
+.dp-card h3 small{font-weight:600;font-size:.72em;color:var(--ink-3);margin-left:.45em;font-family:'JetBrains Mono'}
+.dp-pair{display:grid;grid-template-columns:1fr 1fr;gap:.65vw;flex:1;min-height:0}
+.dp-box{display:flex;flex-direction:column;gap:.3vh;padding:.85vh .8vw;border-radius:10px;border:1px solid transparent}
+.dp-box.do{background:rgba(15,118,110,.055);border-color:rgba(15,118,110,.15)}
+.dp-box.dont{background:rgba(190,18,60,.045);border-color:rgba(190,18,60,.14)}
+.dp-box .dl{font-size:9.2px;font-weight:800;letter-spacing:.04em;display:inline-flex;align-items:center;gap:.35em}
+.dp-box.do .dl{color:#0F766E}
+.dp-box.dont .dl{color:#BE123C}
+.dp-box p{font-size:10.8px;color:var(--ink-2);line-height:1.48;margin:0}
+.dp-box p b{color:var(--ink)}
+
+/* P46–P48 具象方案双栏布局（左策略 + 右轻量原型图） */
+.ds-layout{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.22fr;gap:1.3vw;align-items:stretch}
+.ds-left{display:flex;flex-direction:column;gap:1vh;justify-content:space-between}
+.ds-meta-row{display:flex;align-items:center;gap:.45vw;flex-wrap:wrap}
+.ds-scope{font-size:9.5px;font-weight:800;padding:.25vh .6vw;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--dc),var(--dc2))}
+.ds-pill{font-size:9.5px;font-weight:700;padding:.22vh .55vw;border-radius:999px;background:rgba(255,255,255,.78);border:1px solid rgba(127,137,157,.18);color:var(--ink-2)}
+.ds-ba{display:grid;grid-template-columns:1fr 1fr;gap:.6vw}
+.ds-ba-c{padding:.85vh .8vw;border-radius:11px;background:rgba(255,255,255,.72);border:1px solid rgba(127,137,157,.15);display:flex;flex-direction:column;gap:.25vh}
+.ds-ba-c.after{background:rgba(var(--drgb),.06);border-color:rgba(var(--drgb),.2)}
+.ds-ba-c span{font-size:9px;font-weight:800;letter-spacing:.05em;color:var(--ink-3)}
+.ds-ba-c.after span{color:var(--dc)}
+.ds-ba-c p{font-size:10.5px;color:var(--ink-2);line-height:1.42;margin:0}
+.ds-ba-c p b{color:var(--ink)}
+
+.ds-points{display:flex;flex-direction:column;gap:.75vh;flex:1;justify-content:center}
+.ds-pt{display:flex;gap:.7vw;align-items:flex-start;padding:.9vh .9vw;background:rgba(255,255,255,.86);border:1px solid rgba(127,137,157,.14);border-radius:11px;box-shadow:0 4px 14px -10px rgba(30,40,70,.12)}
+.ds-pt-n{width:22px;height:22px;border-radius:7px;background:rgba(var(--drgb),.1);color:var(--dc);font-family:'JetBrains Mono';font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.ds-pt-b{display:flex;flex-direction:column;gap:.2vh}
+.ds-pt-b h4{font-size:12px;font-weight:800;color:var(--ink);margin:0}
+.ds-pt-b p{font-size:10.4px;color:var(--ink-2);line-height:1.42;margin:0}
+.ds-pt-b p b{color:var(--ink)}
+
+.ds-impact{display:flex;align-items:center;justify-content:space-between;gap:.6vw;padding:.7vh .85vw;border-radius:10px;background:rgba(255,255,255,.68);border:1px solid rgba(127,137,157,.15);font-size:9.8px;color:var(--ink-2)}
+.ds-impact b{color:var(--ink)}
+
+/* 右侧概念 UI 原型框 */
+.ds-mock{display:flex;flex-direction:column;background:rgba(255,255,255,.92);border:1px solid rgba(127,137,157,.2);border-radius:15px;overflow:hidden;box-shadow:0 16px 36px -22px rgba(25,35,60,.22)}
+.mk-bar{display:flex;align-items:center;justify-content:space-between;padding:.75vh 1vw;background:rgba(244,246,250,.95);border-bottom:1px solid rgba(127,137,157,.15)}
+.mk-dots{display:flex;gap:5px;align-items:center}
+.mk-dots i{width:7px;height:7px;border-radius:50%;background:rgba(127,137,157,.32);display:block}
+.mk-title{font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--ink-2);letter-spacing:.03em}
+.mk-badge{font-family:'JetBrains Mono';font-size:9px;font-weight:700;padding:.2vh .5vw;border-radius:6px;background:rgba(var(--drgb),.1);color:var(--dc)}
+.mk-body{flex:1;padding:1.1vh 1.1vw;display:flex;flex-direction:column;gap:.85vh;justify-content:space-between}
+
+.mk-tabs{display:flex;align-items:center;justify-content:space-between;gap:.5vw;padding:.45vh .6vw;background:#F5F7FA;border-radius:9px;border:1px solid rgba(47,61,99,.07)}
+.mk-seg{display:flex;gap:4px}
+.mk-seg span{font-size:9.5px;font-weight:700;padding:.25vh .55vw;border-radius:6px;color:var(--ink-3)}
+.mk-seg span.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px -3px rgba(20,25,35,.2)}
+.mk-btn{font-size:9.2px;font-weight:700;padding:.28vh .6vw;border-radius:6px;background:linear-gradient(135deg,var(--dc),var(--dc2));color:#fff}
+
+.mk-card{padding:.85vh .85vw;border-radius:10px;background:#F8FAFC;border:1px solid rgba(47,61,99,.09);display:flex;flex-direction:column;gap:.35vh}
+.mk-card.warn{background:#FFF8F7;border-color:rgba(190,18,60,.18)}
+.mk-card.ok{background:#F3FBF8;border-color:rgba(15,118,110,.18)}
+.mk-card-h{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:var(--ink)}
+.mk-card-h em{font-style:normal;font-family:'JetBrains Mono';font-size:8.6px;color:var(--ink-3);font-weight:600}
+.mk-card p{font-size:9.8px;color:var(--ink-2);line-height:1.4;margin:0}
+.mk-code{font-family:'JetBrains Mono';font-size:9.2px;line-height:1.42;padding:.55vh .65vw;border-radius:7px;background:#1E2330;color:#E2E8F0;white-space:pre-wrap}
+.mk-code .r{color:#FB7185}.mk-code .g{color:#34D399}.mk-code .b{color:#93C5FD}.mk-code .y{color:#FBBF24}.mk-code .m{color:#94A3B8}
+
+.mk-steps{display:grid;grid-template-columns:1fr 1fr;gap:.45vw}
+.mk-st{display:flex;align-items:center;justify-content:space-between;padding:.45vh .55vw;border-radius:7px;background:#fff;border:1px solid rgba(47,61,99,.1);font-size:9.4px;color:var(--ink)}
+.mk-st.off{opacity:.55;background:#F5F7FA;text-decoration:line-through}
+.mk-st em{font-style:normal;font-family:'JetBrains Mono';font-size:8.2px;color:var(--ink-3)}
+
+.mk-prog{display:flex;align-items:center;gap:.35vw;margin-top:.2vh}
+.mk-pnode{flex:1;padding:.4vh .35vw;border-radius:6px;text-align:center;font-size:8.8px;font-weight:700;background:#fff;border:1px solid rgba(47,61,99,.1);color:var(--ink-2)}
+.mk-pnode.done{background:rgba(15,118,110,.1);border-color:rgba(15,118,110,.25);color:#0F766E}
+.mk-pnode.run{background:rgba(79,70,229,.12);border-color:rgba(79,70,229,.35);color:#4338CA}
+.mk-acts{display:flex;gap:.4vw;margin-top:.3vh}
+.mk-act{font-family:'JetBrains Mono';font-size:8.8px;font-weight:700;padding:.28vh .55vw;border-radius:6px;background:#fff;border:1px solid rgba(47,61,99,.15);color:var(--ink-2)}
+
+/* P49 路线图与指标增强 */
+.rm-left{display:flex;flex-direction:column;gap:1vh;justify-content:space-between}
+.rm-phases{display:flex;flex-direction:column;gap:.65vh}
+.rm-ph{padding:.8vh .85vw;border-radius:10px;background:rgba(255,255,255,.82);border:1px solid rgba(127,137,157,.16);display:flex;flex-direction:column;gap:.22vh}
+.rm-ph-h{display:flex;justify-content:space-between;align-items:center}
+.rm-ph-h b{font-size:11.2px;color:var(--ink)}
+.rm-ph-h em{font-style:normal;font-family:'JetBrains Mono';font-size:8.6px;font-weight:700;padding:.15vh .45vw;border-radius:999px;background:rgba(47,61,99,.08);color:var(--ink-2)}
+.rm-ph p{font-size:9.8px;color:var(--ink-2);line-height:1.38;margin:0}
+.rm-kpis{padding:.85vh .85vw;border-radius:10px;background:rgba(30,35,48,.05);border:1px solid rgba(47,61,99,.12);display:flex;flex-direction:column;gap:.35vh}
+.rm-kpis h5{font-size:10px;font-weight:800;color:var(--ink);margin:0;letter-spacing:.03em}
+.rm-kpis li{font-size:9.6px;color:var(--ink-2);line-height:1.38;list-style:none}
+.rm-kpis li b{color:var(--ink)}
+.dom-tag{display:inline-block;font-size:8.2px;font-weight:700;padding:1px 4px;border-radius:4px;margin-right:4px;vertical-align:1px}
+.dom-tag.eco{background:rgba(29,78,216,.1);color:#1D4ED8}
+.dom-tag.cli{background:rgba(79,70,229,.1);color:#4338CA}
+.dom-tag.ide{background:rgba(15,118,110,.1);color:#0F766E}
+
 
 
 </style>
@@ -1408,7 +1513,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <section id="p2" class="slide s-gray contents-slide">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
   <div class="body-area"><div class="contents-directory contents-4">
-  <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">过程</h2><div class="directory-en">Process &amp; Evidence</div><div class="directory-range">P1–10</div><div class="directory-items"><span>材料与边界</span><span>两张画像</span><span>双坐标与四张时序图</span></div><div class="directory-note">先看我们是怎么看到的</div></article><article class="directory-card persona"><div class="directory-no">02</div><h2 class="directory-name">发现</h2><div class="directory-en">Findings</div><div class="directory-range">P11–40</div><div class="directory-items"><span>前提 / 交办 / 执行</span><span>验收 / 出错 / 沉淀</span><span>贯穿全程的四条</span></div><div class="directory-note">22 条，沿任务链条排</div></article><article class="directory-card competitor"><div class="directory-no">03</div><h2 class="directory-name">归因</h2><div class="directory-en">Root Cause</div><div class="directory-range">P41–44</div><div class="directory-items"><span>阶段 × 三层全景</span><span>L1 / L2 / L3 根因</span></div><div class="directory-note">从 22 条现象挖出三层病根</div></article><article class="directory-card roadmap"><div class="directory-no">04</div><h2 class="directory-name">设计</h2><div class="directory-en">Design</div><div class="directory-range">P45</div><div class="directory-items"><span>价值 × 成本</span><span>八条行动方向</span></div><div class="directory-note">从发现推到可行动</div></article>
+  <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">过程</h2><div class="directory-en">Process &amp; Evidence</div><div class="directory-range">P1–10</div><div class="directory-items"><span>材料与边界</span><span>两张画像</span><span>双坐标与四张时序图</span></div><div class="directory-note">先看我们是怎么看到的</div></article><article class="directory-card persona"><div class="directory-no">02</div><h2 class="directory-name">发现</h2><div class="directory-en">Findings</div><div class="directory-range">P11–40</div><div class="directory-items"><span>前提 / 交办 / 执行</span><span>验收 / 出错 / 沉淀</span><span>贯穿全程的四条</span></div><div class="directory-note">22 条，沿任务链条排</div></article><article class="directory-card competitor"><div class="directory-no">03</div><h2 class="directory-name">归因</h2><div class="directory-en">Root Cause</div><div class="directory-range">P41–44</div><div class="directory-items"><span>阶段 × 三层全景</span><span>L1 / L2 / L3 根因</span></div><div class="directory-note">从 22 条现象挖出三层病根</div></article><article class="directory-card roadmap"><div class="directory-no">04</div><h2 class="directory-name">设计</h2><div class="directory-en">Design</div><div class="directory-range">P45–49</div><div class="directory-items"><span>原则与反模式</span><span>三大生态方案</span><span>路线图与指标</span></div><div class="directory-note">从三层归因落到可执行方案</div></article>
   </div></div>
 </section>
 
@@ -2311,7 +2416,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="rc-foot-box">
       <span class="rc-foot-tag act">设计解法边界</span>
       <p>L1 属于<b>可直接用工程补齐的硬缺口</b>：远端可观测、上下文持久化导出、Skill 步骤可裁剪与 token 预算可见。</p>
-      <span class="rc-foot-link" data-jump="p45">见 P45 设计 →</span>
+      <span class="rc-foot-link" data-jump="p47">见方案二 · Skill 与 CLI →</span>
     </div>
   </div>
 </div>
@@ -2371,7 +2476,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="rc-foot-box">
       <span class="rc-foot-tag act">设计解法边界</span>
       <p>L2 需要<b>重建人机协作协议</b>：上下文装配台、验证凭据链、交接信号面板与可恢复检查点。</p>
-      <span class="rc-foot-link" data-jump="p45">见 P45 设计 →</span>
+      <span class="rc-foot-link" data-jump="p46">见方案一 · 文档与反例 →</span>
     </div>
   </div>
 </div>
@@ -2435,34 +2540,260 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </div>
 </div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section id="p45" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">设计启发：八条方向按"价值 × 成本"排优先级</span></div><div class="subttl">设计 · 价值与成本</div></div><div class="section-tabs" aria-label="当前章节"><span data-jump="p1" class="">01 过程</span><span data-jump="p11" class="">02 发现</span><span data-jump="p41" class="">03 归因</span><span data-jump="p45" class="active">04 设计</span></div></div><div class="body-area">
+<section id="p45" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">四条设计原则：先避开“重平台、黑盒流程、静态文档”三个旧惯性</span></div><div class="subttl">设计 · 原则与反模式（从 L1 / L2 / L3 三层归因确立的生态与工具底线）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11">02 发现</span><span data-jump="p41">03 归因</span><span data-jump="p45" class="active">04 设计</span></div><div class="stage-subtabs ds-0" aria-label="设计模块"><span data-jump="p45" class="active">设计原则</span><span data-jump="p46">文档与反例</span><span data-jump="p47">Skill 与 CLI</span><span data-jump="p48">凭据与留痕</span><span data-jump="p49">落地路线图</span></div></div></div><div class="body-area">
+<div class="dp-grid">
+  <div class="dp-card">
+    <div class="dp-top"><span class="dp-no">PRINCIPLE 01 · 资产形态</span><div class="dp-tags"><span class="dp-tag" data-jump="p21">P21</span><span class="dp-tag" data-jump="p38">P38</span></div></div>
+    <h3>文件即资产 <small>Filesystem-Native</small></h3>
+    <div class="dp-pair">
+      <div class="dp-box do"><span class="dl">✓ 要做（Do）</span><p>详设模板、昇腾 API 上下文、排错沉淀直接读写本地 <b>.md / git</b>，换任何 IDE 或 CLI 零迁移代价。</p></div>
+      <div class="dp-box dont"><span class="dl">✕ 不做（Don't）</span><p>不另建封闭式网页知识库或强绑登录态的私有空间——6 人中 4 人已用本地文件沉淀。</p></div>
+    </div>
+  </div>
+
+  <div class="dp-card">
+    <div class="dp-top"><span class="dp-no">PRINCIPLE 02 · Skill 生态</span><div class="dp-tags"><span class="dp-tag" data-jump="p32">P32</span><span class="dp-tag" data-jump="p33">P33</span></div></div>
+    <h3>知识与流程解耦 <small>Composable over Monolithic</small></h3>
+    <div class="dp-pair">
+      <div class="dp-box do"><span class="dl">✓ 要做（Do）</span><p>把官方 Skill 拆成<b>可单独挂载的规则/反例知识包</b>与<b>可勾选裁剪的步骤</b>，并提前展示 token 预算。</p></div>
+      <div class="dp-box dont"><span class="dl">✕ 不做（Don't）</span><p>不把整套算子开发 SOP 焊死成黑盒大流程，强迫用户从头跑到尾、白烧商业模型额度。</p></div>
+    </div>
+  </div>
+
+  <div class="dp-card">
+    <div class="dp-top"><span class="dp-no">PRINCIPLE 03 · 信任建立</span><div class="dp-tags"><span class="dp-tag" data-jump="p23">P23</span><span class="dp-tag" data-jump="p25">P25</span><span class="dp-tag" data-jump="p27">P27</span></div></div>
+    <h3>离执行越近越可信 <small>Evidence-First</small></h3>
+    <div class="dp-pair">
+      <div class="dp-box do"><span class="dl">✓ 要做（Do）</span><p>把<b>编译结果、golden 精度、msOpProf 指标与真实报错反例</b>直接钉在结论旁，让验证成为默认态。</p></div>
+      <div class="dp-box dont"><span class="dl">✕ 不做（Don't）</span><p>不堆砌冗长的“参考来源链接列表”占版面——来源默认折叠，仅在实测冲突时按需展开。</p></div>
+    </div>
+  </div>
+
+  <div class="dp-card">
+    <div class="dp-top"><span class="dp-no">PRINCIPLE 04 · 风险与认知</span><div class="dp-tags"><span class="dp-tag" data-jump="p22">P22</span><span class="dp-tag" data-jump="p29">P29</span><span class="dp-tag" data-jump="p34">P34</span><span class="dp-tag" data-jump="p40">P40</span></div></div>
+    <h3>默认可中断、可留痕 <small>Interruptible &amp; Traceable</small></h3>
+    <div class="dp-pair">
+      <div class="dp-box do"><span class="dl">✓ 要做（Do）</span><p>把 <b>checkpoint 回滚、异常叫停信号</b>与 1 分钟<b>“决策/踩坑留痕卡”</b>做成标准件，护住团队底层理解。</p></div>
+      <div class="dp-box dont"><span class="dl">✕ 不做（Don't）</span><p>不赌模型一次写对，也不让“一键跑通”彻底吞噬工程师的试错直觉与架构心智。</p></div>
+    </div>
+  </div>
+</div>
+</div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section id="p46" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">方案一 · 面向 AI 的昇腾“双态文档 + 错误反例库”与一键装配</span></div><div class="subttl">设计 · 方案 01（昇腾文档生态为主 + 上下文装配，解 L2 前置 85% 隐性工时与反例稀缺）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11">02 发现</span><span data-jump="p41">03 归因</span><span data-jump="p45" class="active">04 设计</span></div><div class="stage-subtabs ds-1" aria-label="设计模块"><span data-jump="p45">设计原则</span><span data-jump="p46" class="active">文档与反例</span><span data-jump="p47">Skill 与 CLI</span><span data-jump="p48">凭据与留痕</span><span data-jump="p49">落地路线图</span></div></div></div><div class="body-area">
+<div class="ds-layout" style="--dc:#1D4ED8;--dc2:#3B82F6;--drgb:29,78,216">
+  <div class="ds-left">
+    <div class="ds-meta-row">
+      <span class="ds-scope">昇腾文档生态 · 核心抓手</span>
+      <span class="ds-pill">回应 P17 / P18 / P32</span>
+      <span class="ds-pill">直击 M1 审查组 &amp; L1 学习</span>
+    </div>
+    <div class="ds-ba">
+      <div class="ds-ba-c"><span>BEFORE · 现状痛点</span><p>人肉翻文档贴 API 链接、每次从零写详设；文档全教“怎么写对”，AI 一踩坑就编造接口。</p></div>
+      <div class="ds-ba-c after"><span>AFTER · 生态升级</span><p>每篇核心文档自带 <b>AI-Ready 上下文包 + 高频反例卡</b>，一键装配进本地 <b>.md</b>，开局即带护栏。</p></div>
+    </div>
+    <div class="ds-points">
+      <div class="ds-pt"><div class="ds-pt-n">1</div><div class="ds-pt-b"><h4>双态文档：一份源码同时服务“人读”与“AI 读”</h4><p>昇腾社区核心算子 / API 页面新增<b>「AI 上下文视图（llms.txt / .md）」</b>：剥离导航噪音，锁定 CANN 版本号、内存对齐约束与签名契约，并实时显示 token 体积。</p></div></div>
+      <div class="ds-pt"><div class="ds-pt-n">2</div><div class="ds-pt-b"><h4>昇腾错误反例库（Anti-Pattern Cards）</h4><p>针对“没人教怎么错”，沉淀高频踩坑三元组：<b>典型错误写法 → 真实编译/运行报错特征 → 正确改法</b>，直接喂给 AI 作负向约束，也给新人作最小反例教材。</p></div></div>
+      <div class="ds-pt"><div class="ds-pt-n">3</div><div class="ds-pt-b"><h4>轻量上下文装配台（对接本地 IDE / CLI）</h4><p>工具侧提供结构化详设骨架（目标 / 边界 / 验收命令），一键勾选挂载昇腾 API 与反例包导出本地 <code>spec.md</code>，把 85% 准备工时压缩成可复用模板。</p></div></div>
+    </div>
+    <div class="ds-impact"><span><b>预期杠杆：</b>大幅降低王伟/郑雨豪类 M1 开发者前置详设返工，同时切断 AI 编造 CANN API 的源头。</span></div>
+  </div>
+
+  <!-- 右侧轻量概念原型图 -->
+  <div class="ds-mock">
+    <div class="mk-bar">
+      <div class="mk-dots"><i></i><i></i><i></i></div>
+      <div class="mk-title">ascend-docs / AscendC · DataCopy &amp; Tiling</div>
+      <div class="mk-badge">CANN 8.0.RC3</div>
+    </div>
+    <div class="mk-body">
+      <div class="mk-tabs">
+        <div class="mk-seg"><span>人读文档</span><span class="on">AI 上下文包 (.md)</span><span>错误反例 (6)</span></div>
+        <span class="mk-btn">复制上下文 · ~1.6k tok</span>
+      </div>
+      <div class="mk-card">
+        <div class="mk-card-h"><span>① 结构化 API 契约（已去噪 · 版本锁定）</span><em>自动注入详设</em></div>
+        <div class="mk-code"><span class="b"># AscendC::DataCopy 约束清单 (CANN 8.0.RC3)</span>
+- 地址与长度必须满足 <span class="y">32B 对齐</span>；非对齐需走 DataCopyPad
+- GM → UB 搬运前确认 LocalTensor 已 AllocTensor 且未越界</div>
+      </div>
+      <div class="mk-card warn">
+        <div class="mk-card-h"><span>② 高频错误反例卡片（Anti-Pattern #04）</span><em>防 AI 自信地错</em></div>
+        <div class="mk-code"><span class="r">✕ 常见错法：</span>直接按元素数传 blockLen，忽略 fp16 字节换算
+<span class="y">! 报错特征：</span>EZ9999 / UB address not 32-byte aligned
+<span class="g">✓ 正确写法：</span>DataCopy(ubLocal, gmIn, AlignUp(len * sizeof(half), 32))</div>
+      </div>
+      <div class="mk-card ok">
+        <div class="mk-card-h"><span>③ 一键装配到本地详设骨架（spec.md）</span><em>兼容 Cursor / Claude / OpenCode</em></div>
+        <p>已勾选：<b>[✓] API 契约</b> · <b>[✓] 3 条高频反例</b> · <b>[✓] golden 精度验收命令</b> → 导出至 <code>./.ascend/spec.md</code>，可直接 <code>@spec.md</code> 启动任意工具。</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section id="p47" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">方案二 · “知识与步骤分离”的昇腾 Skill + 远端可观测 CLI</span></div><div class="subttl">设计 · 方案 02（昇腾 Skill 生态 + CLI 工具链，解 L1 环境门槛、执行黑盒与 Skill 冗重）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11">02 发现</span><span data-jump="p41">03 归因</span><span data-jump="p45" class="active">04 设计</span></div><div class="stage-subtabs ds-2" aria-label="设计模块"><span data-jump="p45">设计原则</span><span data-jump="p46">文档与反例</span><span data-jump="p47" class="active">Skill 与 CLI</span><span data-jump="p48">凭据与留痕</span><span data-jump="p49">落地路线图</span></div></div></div><div class="body-area">
+<div class="ds-layout" style="--dc:#4338CA;--dc2:#6366F1;--drgb:79,70,229">
+  <div class="ds-left">
+    <div class="ds-meta-row">
+      <span class="ds-scope">昇腾 Skill 与 CLI 工具链</span>
+      <span class="ds-pill">回应 P15 / P20 / P29 / P33</span>
+      <span class="ds-pill">直击 M2 放手组 &amp; 学生额度敏感</span>
+    </div>
+    <div class="ds-ba">
+      <div class="ds-ba-c"><span>BEFORE · 现状痛点</span><p>官方 Skill 强绑全流程狂烧 token；远端 NPU 任务黑盒无进度；跑偏后 5/6 直接换模型重来。</p></div>
+      <div class="ds-ba-c after"><span>AFTER · 生态升级</span><p>Skill 拆成<b>轻知识包 + 可裁剪步骤</b>；CLI 自带<b>环境预检、阶段进度条与 Checkpoint 回滚</b>。</p></div>
+    </div>
+    <div class="ds-points">
+      <div class="ds-pt"><div class="ds-pt-n">1</div><div class="ds-pt-b"><h4>模块化昇腾 Skill：支持“只拿知识、跳过步骤”</h4><p>把官方 Skill 拆分为<b>知识层</b>（规范/反例/报错映射，几百 token 随取随用）与<b>步骤层</b>（支持按任务勾选跳过，前置展示预估 token 消耗与档位建议）。</p></div></div>
+      <div class="ds-pt"><div class="ds-pt-n">2</div><div class="ds-pt-b"><h4>开工前 CLI 一键环境预检（ascend-doctor）</h4><p>把 AI 帮不上的算力卡位、CANN 版本、黄区代理、依赖路径做进 CLI 诊断命令，输出结构化 <code>env.json</code> 交给 AI，避免开工半小时全耗在环境报错上。</p></div></div>
+      <div class="ds-pt"><div class="ds-pt-n">3</div><div class="ds-pt-b"><h4>远端执行可观测 + 节点 Checkpoint 回滚</h4><p>面向远端 NPU 编译与跑测的长任务，暴露标准化阶段进度与日志流；每个关键节点自动落盘 checkpoint，跑偏时<b>一键回滚/切分支重试</b>，不再靠换模型硬扛。</p></div></div>
+    </div>
+    <div class="ds-impact"><span><b>预期杠杆：</b>让官方 Skill 真正被高频复用，同时把“换模型重来”变成低成本的定点回滚。</span></div>
+  </div>
+
+  <!-- 右侧轻量概念原型图 -->
+  <div class="ds-mock">
+    <div class="mk-bar">
+      <div class="mk-dots"><i></i><i></i><i></i></div>
+      <div class="mk-title">ascend-cli · Skill 裁剪与远端任务面板</div>
+      <div class="mk-badge">Token 预算可见</div>
+    </div>
+    <div class="mk-body">
+      <div class="mk-card">
+        <div class="mk-card-h"><span>① 官方 Skill 拆分挂载（ascend-op-skill）</span><em>仅载入所需 · 省 58% token</em></div>
+        <div class="mk-steps">
+          <div class="mk-st"><span><b>[知识]</b> AscendC 规范 + 反例</span><em>~650 tok</em></div>
+          <div class="mk-st"><span><b>[步骤]</b> 1. ascend-doctor 预检</span><em>本地执行</em></div>
+          <div class="mk-st"><span><b>[步骤]</b> 2. 算子实现 + 冒烟</span><em>~2.4k tok</em></div>
+          <div class="mk-st off"><span><b>[步骤]</b> 3. 全量调优报告</span><em>已跳过</em></div>
+        </div>
+      </div>
+      <div class="mk-card">
+        <div class="mk-card-h"><span>② 远端 NPU 长任务可观测流（Session #14 · 910B）</span><em>已运行 2m 14s</em></div>
+        <div class="mk-prog">
+          <div class="mk-pnode done">环境预检 ✓</div>
+          <div class="mk-pnode done">编译通过 ✓</div>
+          <div class="mk-pnode run">Golden 校验 68%</div>
+          <div class="mk-pnode">msOpProf</div>
+        </div>
+        <div class="mk-code"><span class="m">[14:02:11]</span> <span class="g">✓ checkpoint #2 saved</span> (tiling_v2.cpp)
+<span class="m">[14:03:05]</span> <span class="b">→ remote npu-04:</span> running test_add_fp16 (34/50 cases)</div>
+      </div>
+      <div class="mk-card ok">
+        <div class="mk-card-h"><span>③ 可恢复操作栏（替代盲目换模型）</span><em>断点续跑 · 状态持久化</em></div>
+        <div class="mk-acts">
+          <span class="mk-act">↩ 回滚至 Checkpoint #2</span>
+          <span class="mk-act">⑂ 开新分支拆细重试</span>
+          <span class="mk-act">⬇ 导出日志至本地 .md</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section id="p48" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">方案三 · 执行态“验证凭据链”与等待窗口的“最小实验留痕”</span></div><div class="subttl">设计 · 方案 03（工具链验收闭环 + L3 认知护城河，回应 P22 / P23 / P25 / P34 / P40）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11">02 发现</span><span data-jump="p41">03 归因</span><span data-jump="p45" class="active">04 设计</span></div><div class="stage-subtabs ds-3" aria-label="设计模块"><span data-jump="p45">设计原则</span><span data-jump="p46">文档与反例</span><span data-jump="p47">Skill 与 CLI</span><span data-jump="p48" class="active">凭据与留痕</span><span data-jump="p49">落地路线图</span></div></div></div><div class="body-area">
+<div class="ds-layout" style="--dc:#0F766E;--dc2:#10B981;--drgb:15,118,110">
+  <div class="ds-left">
+    <div class="ds-meta-row">
+      <span class="ds-scope">验收闭环 &amp; 团队认知留痕</span>
+      <span class="ds-pill">回应 P22 / P23 / P25 / P34 / P40</span>
+      <span class="ds-pill">直击 L2 验收 + L3 理解变薄</span>
+    </div>
+    <div class="ds-ba">
+      <div class="ds-ba-c"><span>BEFORE · 现状痛点</span><p>AI 自信地错、几万行 diff 审不动；老手靠手感叫停；新人一键跑通却跳过试错，团队理解变薄。</p></div>
+      <div class="ds-ba-c after"><span>AFTER · 闭环升级</span><p>把<b>实测凭据 + 异常叫停信号</b>钉在产出旁；自动生成 <b>1 分钟复盘留痕卡</b>并反哺反例库。</p></div>
+    </div>
+    <div class="ds-points">
+      <div class="ds-pt"><div class="ds-pt-n">1</div><div class="ds-pt-b"><h4>执行态验证凭据链（CLI 自动附着 PR / Diff）</h4><p>强制把离执行最近的证据——<b>编译告警、golden 误差值、msOpProf 搬运占比</b>——结构化绑定在每次提交与结论旁；静态文档来源默认折叠，冲突时再展开。</p></div></div>
+      <div class="ds-pt"><div class="ds-pt-n">2</div><div class="ds-pt-b"><h4>交接信号聚合：把老手的“手感”变成可检查项</h4><p>自动侦测 3 类高危信号（<b>过度抽象封装、thought 反复绕圈、性能指标回退</b>），在关键节点亮出「建议介入」提示，让新人也能看懂“该不该停”。</p></div></div>
+      <div class="ds-pt"><div class="ds-pt-n">3</div><div class="ds-pt-b"><h4>等待窗口的“1 分钟最小复盘卡” → 反哺反例库</h4><p>任务验收或等待空档，自动提炼 1 张极简卡片（<b>本次核心参数权衡 + 1 个 AI 踩过的坑</b>），落回本地 <code>.md</code> / PR 描述，支持一键沉淀进团队/昇腾反例库。</p></div></div>
+    </div>
+    <div class="ds-impact"><span><b>飞轮效应：</b>每次验收踩坑自动沉淀为方案一的新反例，既守住团队理解，又让昇腾生态越用越准。</span></div>
+  </div>
+
+  <!-- 右侧轻量概念原型图 -->
+  <div class="ds-mock">
+    <div class="mk-bar">
+      <div class="mk-dots"><i></i><i></i><i></i></div>
+      <div class="mk-title">PR #418 · 算子验收凭据与认知留痕卡</div>
+      <div class="mk-badge">自动附着 · 可追溯</div>
+    </div>
+    <div class="mk-body">
+      <div class="mk-card warn">
+        <div class="mk-card-h"><span>⚠ 交接信号提醒：建议人工核查 2 处异常</span><em>替代肉眼通读 3,200 行</em></div>
+        <p>1. <b>过度封装告警</b>：AI 在 <code>tiling_helper.h</code> 新增 3 层非必要模板类。<br>2. <b>性能回退信号</b>：<code>msOpProf</code> 显示 MTE2 搬运耗时较 baseline <b>+18%</b>。</p>
+      </div>
+      <div class="mk-card ok">
+        <div class="mk-card-h"><span>① 执行态验证凭据链（离执行最近）</span><em>来源引用已折叠 (2) ▾</em></div>
+        <div class="mk-steps">
+          <div class="mk-st"><span><b>编译检查</b> · 0 error / 0 warn</span><em>✓ 通过</em></div>
+          <div class="mk-st"><span><b>Golden 精度</b> · max_err 1.2e-5</span><em>✓ &lt; 1e-4</em></div>
+          <div class="mk-st"><span><b>边界单测</b> · 非对齐/零长度</span><em>✓ 18/18</em></div>
+          <div class="mk-st"><span><b>msOpProf</b> · 搬运占比 64%</span><em>⚠ 需看</em></div>
+        </div>
+      </div>
+      <div class="mk-card">
+        <div class="mk-card-h"><span>② 1 分钟决策与踩坑留痕卡（落回本地 .md）</span><em>护住 L3 团队理解</em></div>
+        <p><b>• 关键取舍：</b><code>tile_size=128</code> 比 <code>64</code> 减少 35% 搬运次数，但需注意 UB 峰值占用。<br><b>• 踩坑记录：</b>AI 初版误用旧版 API 导致对齐崩溃，已附实测修复 diff。</p>
+        <div class="mk-acts">
+          <span class="mk-act">✓ 写入 PR 描述</span>
+          <span class="mk-act">+ 一键沉淀为昇腾反例卡</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+<section id="p49" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">落地路线图：按“价值 × 成本”与负责域分三期推进，配可验证指标</span></div><div class="subttl">设计 · 优先级矩阵、三期节奏与成功指标（点击任意 P## 可回看对应发现证据）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11">02 发现</span><span data-jump="p41">03 归因</span><span data-jump="p45" class="active">04 设计</span></div><div class="stage-subtabs ds-4" aria-label="设计模块"><span data-jump="p45">设计原则</span><span data-jump="p46">文档与反例</span><span data-jump="p47">Skill 与 CLI</span><span data-jump="p48">凭据与留痕</span><span data-jump="p49" class="active">落地路线图</span></div></div></div><div class="body-area">
 <div class="m4">
-  <div>
-    <h2 style="font-size:clamp(18px,1.45vw,24px);line-height:1.35;font-weight:800;color:var(--ink);margin-bottom:1.4vh">先做"上下文装配"和"验证凭据"：<br>它们同时抬高价值、压低成本</h2>
-    <p style="font-size:12.4px;color:var(--ink-2);line-height:1.6;margin-bottom:1.4vh">每条标注它回应的那一页发现（P##），按"用户价值 × 实现成本"排优先级，避免做成功能清单。</p>
-    <div class="cx-concl"><span class="ck">取舍</span><span class="cv">不做"新建知识库"：六人里已有四人把沉淀放在文件系统里，唯一想建库的人自己也承认"知识还是单点"。</span></div>
+  <div class="rm-left">
+    <div class="rm-phases">
+      <div class="rm-ph">
+        <div class="rm-ph-h"><b>一期 · 生态快赢（先降噪、先立凭据）</b><em>NOW · 0–1 月</em></div>
+        <p>昇腾文档先出 AI 上下文包与高频反例卡；官方 Skill 拆分知识/步骤并标 token；CLI 报告默认绑定实测凭据。</p>
+      </div>
+      <div class="rm-ph">
+        <div class="rm-ph-h"><b>二期 · 工具链协同（管住长任务与交接）</b><em>NEXT · 1–3 月</em></div>
+        <p>落地本地上下文装配台、<code>ascend-doctor</code> 预检、远端 NPU 可观测进度条与 Checkpoint 回滚能力。</p>
+      </div>
+      <div class="rm-ph">
+        <div class="rm-ph-h"><b>三期 · 认知护城河（防团队理解变薄）</b><em>LATER · 3–6 月</em></div>
+        <p>打通“1 分钟复盘留痕 → 反例库”飞轮，将老手盯盘的形态信号沉淀为团队共享检查项。</p>
+      </div>
+    </div>
+    <div class="rm-kpis">
+      <h5>如何验证做对了（3 个核心观测指标）</h5>
+      <li><b>1. 详设返工轮次 ↓</b>：同一类算子任务前置准备与来回改 Prompt 轮次下降</li>
+      <li><b>2. 跑偏“换模型率” ↓</b>：遇到错误时用回滚/反例修复，而非直接切模型重来</li>
+      <li><b>3. 知识片段独立复用率 ↑</b>：Skill 知识包与反例卡被单独引用频次超过整包调用</li>
+    </div>
   </div>
   <div>
     <div class="ax-tag">价值 高 ↑</div>
     <div class="m4-grid">
-      <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本</small></div>
-        <span class="note g"><b>验证凭据链</b>：运行输出 / golden / baseline 绑定到结论<em>P25</em></span>
-        <span class="note g"><b>成本可见与 Skill 裁剪</b>：token 预算、档位、步骤可删<em>P33</em></span>
-        <span class="note g"><b>沉淀导出</b>：md / 设计文档 / Skill，不做新库<em>P21</em></span>
+      <div class="m4-cell tl"><div class="ct">快赢<small>高价值 · 低成本（一期先做）</small></div>
+        <span class="note g" data-jump="p25"><span class="dom-tag cli">工具链</span><b>验证凭据链</b>：编译 / golden / msOpProf 绑定到结论<em>P25</em></span>
+        <span class="note g" data-jump="p33"><span class="dom-tag eco">昇腾生态</span><b>Skill 拆解与预算</b>：知识/步骤分离、token 可见<em>P33</em></span>
+        <span class="note g" data-jump="p32"><span class="dom-tag eco">昇腾生态</span><b>双态文档 + 反例卡</b>：llms.txt 与高频报错反例<em>P32</em></span>
+        <span class="note g" data-jump="p21"><span class="dom-tag ide">IDE/CLI</span><b>沉淀导出本地</b>：读写 .md / git，不做封闭新库<em>P21</em></span>
       </div>
-      <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本</small></div>
-        <span class="note"><b>上下文装配台</b>：结构化详设 + API 预置 + 可复用模板<em>P17</em></span>
-        <span class="note"><b>交接信号面板</b>：thought / diff / 指标异常聚合成"该不该停"<em>P22</em></span>
-        <span class="note"><b>可恢复性</b>：checkpoint、回滚、分支对比、拆解建议<em>P29</em></span>
-        <span class="note"><b>远端执行可观测</b>：长任务进度、结果回收、断点续跑<em>P20</em></span>
+      <div class="m4-cell tr"><div class="ct">重点投入<small>高价值 · 高成本（二期攻坚）</small></div>
+        <span class="note" data-jump="p17"><span class="dom-tag ide">IDE/CLI</span><b>上下文装配台</b>：结构化详设 + API/反例一键挂载<em>P17</em></span>
+        <span class="note" data-jump="p20"><span class="dom-tag cli">工具链</span><b>远端执行可观测</b>：环境预检、NPU 进度、断点续跑<em>P20</em></span>
+        <span class="note" data-jump="p29"><span class="dom-tag cli">工具链</span><b>可恢复性</b>：Checkpoint 回滚、分支重试、替代换模型<em>P29</em></span>
+        <span class="note" data-jump="p22"><span class="dom-tag ide">IDE/CLI</span><b>交接信号面板</b>：过度封装 / 指标回退聚合为叫停提示<em>P22</em></span>
       </div>
-      <div class="m4-cell bl"><div class="ct">看情况<small>低价值 · 低成本</small></div>
-        <span class="note o"><b>来源按需展开</b>：默认收起，冲突时再展开<em>P25</em></span>
-        <span class="note o"><b>会话检索</b>：跨会话 / 跨目录找回<em>P21</em></span>
+      <div class="m4-cell bl"><div class="ct">按需轻做<small>低价值 · 低成本</small></div>
+        <span class="note o" data-jump="p25"><span class="dom-tag ide">IDE/CLI</span><b>来源按需展开</b>：默认折叠，实测冲突时再展开<em>P25</em></span>
+        <span class="note o" data-jump="p21"><span class="dom-tag ide">IDE/CLI</span><b>跨会话检索</b>：跨目录 / 跨工具找回历史上下文<em>P21</em></span>
       </div>
-      <div class="m4-cell br"><div class="ct">分阶段<small>高价值 · 很高成本</small></div>
-        <span class="note a"><b>学习留痕</b>：把被压缩的试错变成可回放的最小实验<em>P34</em></span>
-        <span class="note a"><b>判据迁移</b>：把老手的"形态信号"变成可检查项<em>P22</em></span>
+      <div class="m4-cell br"><div class="ct">长期布局<small>高价值 · 高组织成本（三期深化）</small></div>
+        <span class="note a" data-jump="p34"><span class="dom-tag eco">生态+团队</span><b>最小实验留痕</b>：1 分钟复盘卡自动反哺反例库<em>P34</em></span>
+        <span class="note a" data-jump="p22"><span class="dom-tag eco">生态+团队</span><b>老手判据迁移</b>：把“形态信号”变成可复用检查项<em>P22</em></span>
       </div>
     </div>
     <div class="ax-tag" style="text-align:right;margin-top:.7vh">成本 高 →</div>
