@@ -1302,8 +1302,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .rc-mtx{display:grid;grid-template-columns:138px repeat(7,1fr);gap:.48vw;align-items:stretch;flex:1;min-height:0}
 .rc-corner{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:.5vh .6vw;font-size:9.5px;color:var(--ink-3);line-height:1.35}
 .rc-corner b{color:var(--ink);font-size:10px}
-.rc-st-hd{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15vh;padding:.65vh .4vw;border-radius:9px;color:#fff;background:linear-gradient(135deg,var(--sc),var(--sc2));box-shadow:0 4px 12px -6px rgba(var(--rgb),.4);cursor:pointer;transition:filter .14s,transform .14s}
-.rc-st-hd:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.rc-st-hd{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15vh;padding:.65vh .4vw;border-radius:9px;color:#fff;background:linear-gradient(135deg,#1E2330 0%,#2B3242 100%);border:1px solid rgba(255,255,255,.08);box-shadow:0 3px 10px -5px rgba(20,25,35,.35);cursor:pointer;transition:background .15s,transform .15s}
+.rc-st-hd:hover{background:linear-gradient(135deg,#293040 0%,#363F54 100%);transform:translateY(-1px)}
 .rc-st-hd span{font-family:'JetBrains Mono';font-size:8.2px;opacity:.88;letter-spacing:.1em}
 .rc-st-hd b{font-size:11.5px;font-weight:800;letter-spacing:.03em}
 
@@ -2150,13 +2150,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="rc-mtx">
     <!-- Row 0: Headers -->
     <div class="rc-corner"><b>纵轴 · 归因层级</b><span>横轴 · 7 个阶段 →</span></div>
-    <div class="rc-st-hd" style="--sc:#4F46E5;--sc2:#6366F1;--rgb:79,70,229" data-jump="p12"><span>STAGE 01</span><b>前提</b></div>
-    <div class="rc-st-hd" style="--sc:#1D4ED8;--sc2:#3B82F6;--rgb:29,78,216" data-jump="p16"><span>STAGE 02</span><b>交办</b></div>
-    <div class="rc-st-hd" style="--sc:#0F766E;--sc2:#14B8A6;--rgb:15,118,110" data-jump="p19"><span>STAGE 03</span><b>执行</b></div>
-    <div class="rc-st-hd" style="--sc:#15803D;--sc2:#22C55E;--rgb:21,128,61" data-jump="p24"><span>STAGE 04</span><b>验收</b></div>
-    <div class="rc-st-hd" style="--sc:#B45309;--sc2:#F59E0B;--rgb:180,83,9" data-jump="p28"><span>STAGE 05</span><b>出错</b></div>
-    <div class="rc-st-hd" style="--sc:#BE123C;--sc2:#FB7185;--rgb:190,18,60" data-jump="p31"><span>STAGE 06</span><b>沉淀</b></div>
-    <div class="rc-st-hd" style="--sc:#6D28D9;--sc2:#A855F7;--rgb:109,40,217" data-jump="p36"><span>STAGE 07</span><b>贯穿</b></div>
+    <div class="rc-st-hd" data-jump="p12"><span>STAGE 01</span><b>前提</b></div>
+    <div class="rc-st-hd" data-jump="p16"><span>STAGE 02</span><b>交办</b></div>
+    <div class="rc-st-hd" data-jump="p19"><span>STAGE 03</span><b>执行</b></div>
+    <div class="rc-st-hd" data-jump="p24"><span>STAGE 04</span><b>验收</b></div>
+    <div class="rc-st-hd" data-jump="p28"><span>STAGE 05</span><b>出错</b></div>
+    <div class="rc-st-hd" data-jump="p31"><span>STAGE 06</span><b>沉淀</b></div>
+    <div class="rc-st-hd" data-jump="p36"><span>STAGE 07</span><b>贯穿</b></div>
 
     <!-- Row 1: L1 工具层 -->
     <div class="rc-row-hd" style="--lc:#4338CA;--lc2:#6366F1;--lrgb:79,70,229" data-jump="p42" title="点击进入 L1 工具层根因深挖">
