@@ -1416,7 +1416,7 @@ function applyDeepLink(){
     fitView(true, hits.length?hits:null);
     const rs=ROUNDS.filter(r=>sceneSet.has(r.c)&&roundHit(r,state.q.toLowerCase()));
     $('#hint').textContent=`搜索“${state.q}” · 命中 ${hits.length} 个知识点 · ${rs.length} 轮原文（其余已淡化）`;
-    if(rs.length){ openDrawer(); setTimeout(()=>scrollToRound(rs[0].c,rs[0].r,false),120); }
+    if(P.get('drawer')==='1' && rs.length){ openDrawer(); setTimeout(()=>scrollToRound(rs[0].c,rs[0].r,false),120); }
   }
   if(P.has('tl')) setTl(+P.get('tl'));
   if(P.has('path')){
