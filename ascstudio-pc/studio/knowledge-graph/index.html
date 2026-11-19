@@ -1155,6 +1155,17 @@ function closeDrawer(){
   $('#drawer').classList.remove('open');
   document.body.classList.remove('drawer-open');
   $('#fab').classList.add('show');
+  if(state.sel || state.q){
+    state.sel=null;
+    if(state.q){
+      state.q='';
+      const topQ=$('#q'); if(topQ) topQ.value='';
+      const cmpQ=$('#drawerComposerInput'); if(cmpQ) cmpQ.value='';
+    }
+    applyHighlight();
+    renderStream();
+  }
+  setTimeout(()=>{ resize(); fitView(true); }, 80);
 }
 $('#dwClose').onclick=closeDrawer;
 $('#fab').onclick=()=>openDrawer();
