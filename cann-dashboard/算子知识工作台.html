@@ -342,7 +342,7 @@
 
 <div class="dock">
   <div id="pathbar" class="pathbar" hidden></div>
-  <div class="tl" id="tl">
+  <div class="tl" id="tl" title="时间线为示意：原文未记录日期，按对话顺序每 2 分钟一轮排布">
     <button id="tlPlay" title="播放">▶</button>
     <input id="tlRange" type="range" min="1" max="15" value="15" step="1">
     <span id="tlLab">全部 15 段</span>
@@ -1288,36 +1288,52 @@ $('#pbCopy').onclick=async()=>{
 /* 时间轴 */
 const TL_START=new Date(2026,8,1);
 const TL_OFFSET=[0,3,8,12,15,21,25,29,34,38,43,47,52,56,61];
-function tlDate(c){ const d=new Date(TL_START); d.setDate(d.getDate()+TL_OFFSET[c-1]); return d; }
+const TL_CLOCK=[[9,12],[10,5],[14,40],[11,23],[15,2],[9,48],[13,10],[16,35],[10,20],[14,5],[19,40],[11,15],[15,28],[9,55],[13,45]];
+const TL_SEQ=[...ROUNDS].sort((a,b)=>a.c-b.c||a.r-b.r).map((r,i)=>{
+  const d=new Date(TL_START); d.setDate(d.getDate()+TL_OFFSET[r.c-1]);
+  const [h,m]=TL_CLOCK[r.c-1]; d.setHours(h,m,0,0); d.setMinutes(d.getMinutes()+(r.r-1)*2);
+  return {r,d,idx:i};
+});
+const TL_TOTAL=TL_SEQ.length;
+const TL_IDX=new Map(TL_SEQ.map(x=>[`${x.r.c}-${x.r.r}`,x.idx]));
+NODES.forEach(n=>{
+  n.__first=Math.min(...n.turns.map(t=>TL_IDX.has(`${t.c}-${t.t}`)?TL_IDX.get(`${t.c}-${t.t}`):0));
+});
+state.tl=TL_TOTAL;
 function applyTl(){
+  const all = state.tl>=TL_TOTAL;
   const list=visibleNodes(), vis=new Set(list.map(n=>n.id));
-  const shown = state.tl<15 ? new Set(list.filter(n=>n.firstSeen<=state.tl).map(n=>n.id)) : vis;
+  const shown = new Set(list.filter(n=>all||n.__first<=state.tl).map(n=>n.id));
   NODES.forEach(n=>{ n.__el.style.display=(vis.has(n.id)&&shown.has(n.id))?'':'none'; });
   AGG.forEach(e=>{ e.__el.style.display=(shown.has(e.a)&&shown.has(e.b))?'':'none'; });
   renderBadges();
 }
 function tlLabel(){
   const el=$('#tlLab');
-  if(state.tl>=15){ el.textContent='全部 15 段'; return; }
-  const d=tlDate(state.tl);
-  el.textContent=`${d.getMonth()+1} 月 ${d.getDate()} 日 · ${dlgByN[state.tl].t}`;
+  if(state.tl>=TL_TOTAL){ el.textContent=`全部 ${TL_TOTAL} 轮`; return; }
+  const x=TL_SEQ[Math.max(0,state.tl-1)];
+  const d=x.d;
+  const hh=String(d.getHours()).padStart(2,'0'), mm=String(d.getMinutes()).padStart(2,'0');
+  el.textContent=`${d.getMonth()+1} 月 ${d.getDate()} 日 ${hh}:${mm} · ${dlgByN[x.r.c].t} · 第 ${x.r.r} 轮`;
 }
 function setTl(v){
-  state.tl=Math.max(1,Math.min(15,v));
+  state.tl=Math.max(1,Math.min(TL_TOTAL,v));
   $('#tlRange').value=state.tl;
   tlLabel();
   applyTl();
 }
 let tlTimer=null;
+$('#tlRange').max=TL_TOTAL; $('#tlRange').value=TL_TOTAL;
 $('#tlRange').oninput=e=>{ if(tlTimer){clearInterval(tlTimer);tlTimer=null;$('#tlPlay').textContent='▶';} setTl(+e.target.value); };
 $('#tlPlay').onclick=()=>{
   if(tlTimer){ clearInterval(tlTimer); tlTimer=null; $('#tlPlay').textContent='▶'; return; }
   setTl(1); $('#tlPlay').textContent='❚❚';
   tlTimer=setInterval(()=>{
-    if(state.tl>=15){ clearInterval(tlTimer); tlTimer=null; $('#tlPlay').textContent='▶'; return; }
+    if(state.tl>=TL_TOTAL){ clearInterval(tlTimer); tlTimer=null; $('#tlPlay').textContent='▶'; return; }
     setTl(state.tl+1);
-  },750);
+  },90);
 };
+
 
 NODES.forEach(n=>{ n.firstSeen=firstSeen(n); });
 buildDefs(); buildNodes(); buildLegend(); renderStream(); renderInsight();
