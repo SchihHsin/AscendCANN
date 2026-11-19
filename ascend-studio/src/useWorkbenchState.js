@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply, LOG_DIAGNOSTIC_TASK } from "./prototype-data";
+import { KNOWLEDGE_GROUPS } from "./knowledge/dialogues";
 import { readSession, writeSession } from "./session-storage";
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
@@ -75,6 +76,12 @@ function restoreWorkbench() {
     const operatorGroup = groups.find(group => group.id === "operator");
     if (operatorGroup) operatorGroup.tasks = [...operatorGroup.tasks, taskName];
     else groups.unshift({ id: "operator", name: "CANN 自定义算子", tasks: [MAIN_TASK, LOG_DIAGNOSTIC_TASK] });
+  }
+  // 已保存过项目列表的浏览器也要补上知识对话任务，否则老会话永远看不到
+  for (const group of KNOWLEDGE_GROUPS) {
+    const existing = groups.find(item => item.id === group.id);
+    if (existing) existing.tasks = [...new Set([...existing.tasks, ...group.taskNames])];
+    else groups.push({ id: group.id, name: group.name, tasks: [...group.taskNames] });
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const launchParams = new URLSearchParams(window.location.search);
