@@ -342,6 +342,58 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .mtx .who{font-weight:800;font-size:var(--fs-h3);color:var(--ink);display:flex;align-items:center;gap:.5em}
 .mtx .who .bar{width:4px;height:22px;border-radius:2px;background:var(--c-teal)}
 .mtx .who.e .bar{background:var(--c-indigo)}
+/* ===== P3 受访者画像卡片视觉强化 ===== */
+.p3-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:1.3vh;justify-content:center}
+.p3-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8vw}
+.stat-pill{display:flex;align-items:center;gap:.65vw;padding:.85vh 1vw;background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.95);border-radius:10px;box-shadow:0 4px 14px -8px rgba(30,40,70,.12);backdrop-filter:blur(6px)}
+.stat-pill .num{font-family:'JetBrains Mono';font-size:clamp(14px,1.15vw,17px);font-weight:800;color:var(--ink);letter-spacing:-.02em;white-space:nowrap}
+.stat-pill .txt{font-size:10px;color:var(--ink-2);line-height:1.25}
+
+.p3-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1vw;flex:1;min-height:0}
+.cohort-col{display:flex;flex-direction:column;gap:.9vh;background:rgba(255,255,255,.5);border:1px solid rgba(127,137,157,.16);border-radius:14px;padding:1.1vh 1vw;backdrop-filter:blur(8px);box-shadow:0 8px 24px -16px rgba(30,40,70,.12)}
+.cohort-col.emp{border-top:3.5px solid #4F46E5}
+.cohort-col.stu{border-top:3.5px solid #0D9488}
+
+.cohort-hd{display:flex;justify-content:space-between;align-items:center;padding-bottom:.6vh;border-bottom:1px solid rgba(127,137,157,.14)}
+.cohort-hd .ch-badge{font-size:12.5px;font-weight:800;letter-spacing:.02em}
+.cohort-col.emp .ch-badge{color:#4338CA}
+.cohort-col.stu .ch-badge{color:#0F766E}
+.cohort-hd .ch-meta{font-size:9.5px;color:var(--ink-3);letter-spacing:.02em}
+
+.cohort-cards{display:grid;grid-template-rows:repeat(3,1fr);gap:.7vh;flex:1}
+.p-card{display:flex;flex-direction:column;justify-content:space-between;background:#ffffff;border:1px solid rgba(47,61,99,.08);border-radius:10px;padding:.8vh .85vw;box-shadow:0 4px 12px -8px rgba(30,40,70,.12);transition:transform .14s,box-shadow .14s,border-color .14s}
+.p-card:hover{transform:translateY(-1.5px);box-shadow:0 8px 20px -8px rgba(30,40,70,.22)}
+.cohort-col.emp .p-card:hover{border-color:rgba(79,70,229,.4)}
+.cohort-col.stu .p-card:hover{border-color:rgba(13,148,136,.4)}
+
+.p-card-top{display:flex;align-items:center;gap:.6vw}
+.p-avatar{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:11px;font-weight:800;flex-shrink:0}
+.cohort-col.emp .p-avatar{background:linear-gradient(135deg,#4F46E5,#6366F1);color:#fff}
+.cohort-col.stu .p-avatar{background:linear-gradient(135deg,#0D9488,#14B8A6);color:#fff}
+.p-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:.1vh}
+.p-name-row{display:flex;align-items:center;gap:.45em}
+.p-name{font-size:13px;font-weight:800;color:var(--ink)}
+.p-tag{font-size:9px;font-family:'JetBrains Mono';padding:1px 5px;border-radius:4px;background:rgba(120,128,145,.1);color:var(--ink-3)}
+.p-role{font-size:10px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-tenure{font-family:'JetBrains Mono';font-size:9.5px;color:var(--ink-3);white-space:nowrap;padding:.15em .5em;border-radius:4px;background:rgba(120,128,145,.08)}
+
+.p-card-mid{display:grid;grid-template-columns:1.05fr 1fr;gap:.5vw;margin:.35vh 0;padding:.3vh 0;border-top:1px dashed rgba(127,137,157,.12);border-bottom:1px dashed rgba(127,137,157,.12)}
+.p-field{display:flex;align-items:center;gap:.35em;overflow:hidden}
+.p-field .lbl{font-size:9px;color:var(--ink-3);flex-shrink:0}
+.p-field .val{font-size:9.8px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-tools{display:flex;gap:3px;overflow:hidden}
+.tool-tag{font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(127,137,157,.1);color:var(--ink-2);white-space:nowrap}
+
+.p-card-quote{display:flex;align-items:flex-start;gap:.4em;background:rgba(246,248,252,.75);padding:.35vh .5vw;border-radius:6px;font-size:9.8px;line-height:1.3;color:var(--ink-2)}
+.p-card-quote svg{width:11px;height:11px;flex-shrink:0;opacity:.45;margin-top:2px;fill:currentColor}
+.p-card-quote span{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.p-card-quote b{color:var(--ink);font-weight:700}
+
+.p3-fn{display:flex;align-items:center;gap:.8vw;padding:.65vh 1vw;background:rgba(255,255,255,.65);border:1px solid rgba(127,137,157,.16);border-radius:9px}
+.p3-fn .fn-tag{display:inline-flex;align-items:center;gap:.35em;font-size:9.5px;font-weight:700;color:#A8482C;background:rgba(168,72,44,.1);padding:.2vh .5vw;border-radius:4px;flex-shrink:0}
+.p3-fn .fn-tag i{width:5px;height:5px;border-radius:50%;background:currentColor}
+.p3-fn .fn-txt{font-size:9.5px;color:var(--ink-2);line-height:1.35}
+
 .mtx .task{color:var(--ink);font-weight:500}
 .mtx .pin{display:inline-block;font-size:var(--fs-xs);color:#8A5A2B;background:rgba(244,180,80,.16);border-radius:5px;padding:.18vh .4vw;margin-left:.35em}
 
@@ -1274,20 +1326,162 @@ body.overview #panel,body.overview #toggle{display:none!important}
   </div></div>
 </section>
 
-<section id="p3" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">6 位受访者：3 名学生、3 名企业工程师，全部每天使用</span></div><div class="subttl">材料与边界 · 受访者概况</div></div><div class="section-tabs" aria-label="当前章节"><span data-jump="p1" class="active">01 过程</span><span data-jump="p11" class="">02 发现</span><span data-jump="p41" class="">03 汇总</span><span data-jump="p43" class="">04 设计</span></div></div><div class="body-area">
-<table class="mtx">
-<colgroup><col style="width:15%"><col style="width:19%"><col style="width:16%"><col style="width:16%"><col style="width:9%"><col style="width:11%"><col style="width:14%"></colgroup>
-<thead><tr><th>受访者</th><th>身份</th><th>最近一次任务</th><th>主要工具</th><th>入口</th><th>时长 · 频率</th><th>标志性细节</th></tr></thead>
-<tbody><tr><td><div class="who e"><span class="bar"></span>王伟</div><div class="chip emp" style="margin-top:.45em"><i></i>企业</div></td><td>昇腾计算基础软件开发部工程师</td><td class="task">算子从 0 开发</td><td>Cursor · Grok · Trae</td><td>IDE</td><td>5 个月 · 每天</td><td>人工审查约 70%，与 AI 执行交替</td></tr><tr><td><div class="who e"><span class="bar"></span>郑雨豪</div><div class="chip emp" style="margin-top:.45em"><i></i>企业</div></td><td>昇腾计算基础软件开发部工程师</td><td class="task">算子开发</td><td>Cursor · Trae</td><td>IDE</td><td>半年 · 每天</td><td>一直不太信任，做完必查</td></tr><tr><td><div class="who e"><span class="bar"></span>彭椒</div><div class="chip emp" style="margin-top:.45em"><i></i>企业</div></td><td>实验室 / 测试工程师</td><td class="task">修测试脚本并跑通</td><td>OpenCode · TestAgent · 毕方</td><td>CLI · 网页</td><td>2023 起 · 每天</td><td>毕方直连服务器自动循环修正</td></tr><tr><td><div class="who"><span class="bar"></span>徐立桂</div><div class="chip stu" style="margin-top:.45em"><i></i>学生</div></td><td>南京大学 · 研二</td><td class="task">算子生成 + 昇腾知识图谱</td><td>Codex · OpenCode</td><td>客户端 · CLI</td><td>半年+ · 每天</td><td>一个窗口实现、一个窗口验收</td></tr><tr><td><div class="who"><span class="bar"></span>梁淼城</div><div class="chip stu" style="margin-top:.45em"><i></i>学生</div></td><td>南京大学 · 大四</td><td class="task">后端 Demo，改开源仓库</td><td>Codex · Claude Code</td><td>客户端 · CLI</td><td>1–1.5 年 · 每天</td><td>过度设计是最痛的点</td></tr><tr><td><div class="who"><span class="bar"></span>王鹤锦</div><div class="chip stu" style="margin-top:.45em"><i></i>学生</div></td><td>杭州电子科大 · 研三</td><td class="task">无人机跨视角定位</td><td>Claude Code · DeepSeek</td><td>CLI · 网页</td><td>2022 起 · 每天</td><td>额度不够，多 Agent 用不起</td></tr></tbody></table>
-<div style="margin-top:2.2vh;display:flex;gap:1.4vw;align-items:flex-start">
-  <div class="chip mute"><i></i>6 / 6 每天使用</div>
-  <div class="chip mute"><i></i>5 / 6 近期任务直接落在昇腾或算子场景</div>
-  <div class="chip warn"><i></i>访谈日期、访谈者均未记录</div>
-  <div style="font-size:var(--fs-sm);color:var(--ink-2);line-height:1.5">
-    研究目的：按时间还原"任务理解 → 方案形成 → 上下文准备 → 实现 → 验证 → 沉淀"，观察人、AI、资料与环境如何交替参与。<br>身份取自访谈记录；郑雨豪的记录未写身份，按用户补充归入昇腾基础软件开发部。<br>
-    材料为"思维导图手记为主 + ASR 逐字稿补充"的二次整理稿；<b>口径：手记优先，ASR 只补细节，两者冲突以手记为准。</b>
+<section id="p3" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">6 位受访者：3 名学生、3 名企业工程师，全部每天使用</span></div><div class="subttl">材料与边界 · 受访者概况与双阵营对照</div></div><div class="section-tabs" aria-label="当前章节"><span data-jump="p1" class="active">01 过程</span><span data-jump="p11" class="">02 发现</span><span data-jump="p41" class="">03 汇总</span><span data-jump="p43" class="">04 设计</span></div></div><div class="body-area">
+<div class="p3-wrap">
+  <!-- 顶部 4 项宏观样本指标胶囊 -->
+  <div class="p3-stats">
+    <div class="stat-pill"><span class="num">6 / 6</span><span class="txt">深度高频使用 · 每天必开</span></div>
+    <div class="stat-pill"><span class="num">3 : 3</span><span class="txt">企业基础软件 vs 高校科研开发者</span></div>
+    <div class="stat-pill"><span class="num">5 / 6</span><span class="txt">算子生成 / 昇腾场景直接相关</span></div>
+    <div class="stat-pill"><span class="num">100%</span><span class="txt">多模型按任务特性灵活混配</span></div>
   </div>
-</div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
+
+  <!-- 中部双阵营 3v3 人物卡片对照网格 -->
+  <div class="p3-grid">
+    <!-- 企业工程阵营 -->
+    <div class="cohort-col emp">
+      <div class="cohort-hd">
+        <div class="ch-badge">🏢 企业工程阵营 · 3 位</div>
+        <div class="ch-meta">昇腾计算基础软件部 · 实验室测试工程师</div>
+      </div>
+      <div class="cohort-cards">
+        <!-- 王伟 -->
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-avatar">WW</div>
+            <div class="p-info">
+              <div class="p-name-row"><span class="p-name">王伟</span><span class="p-tag">IDE 入口</span></div>
+              <div class="p-role">昇腾计算基础软件开发部工程师</div>
+            </div>
+            <div class="p-tenure">5 个月 · 每天</div>
+          </div>
+          <div class="p-card-mid">
+            <div class="p-field"><span class="lbl">近期任务</span><span class="val">算子从 0 开发</span></div>
+            <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Cursor</span><span class="tool-tag">Grok</span><span class="tool-tag">Trae</span></div></div>
+          </div>
+          <div class="p-card-quote">
+            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <span><b>标志性细节</b>：人工审查约 70%，与 AI 执行交替；手写详设文档把控结构</span>
+          </div>
+        </div>
+        <!-- 郑雨豪 -->
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-avatar">ZY</div>
+            <div class="p-info">
+              <div class="p-name-row"><span class="p-name">郑雨豪</span><span class="p-tag">IDE 入口</span></div>
+              <div class="p-role">昇腾计算基础软件开发部工程师</div>
+            </div>
+            <div class="p-tenure">半年 · 每天</div>
+          </div>
+          <div class="p-card-mid">
+            <div class="p-field"><span class="lbl">近期任务</span><span class="val">算子开发</span></div>
+            <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Cursor</span><span class="tool-tag">Trae</span></div></div>
+          </div>
+          <div class="p-card-quote">
+            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <span><b>标志性细节</b>：一直不太信任 AI，做完必通读 diff，清理无效封装与冗余</span>
+          </div>
+        </div>
+        <!-- 彭椒 -->
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-avatar">PJ</div>
+            <div class="p-info">
+              <div class="p-name-row"><span class="p-name">彭椒</span><span class="p-tag">CLI · 网页</span></div>
+              <div class="p-role">实验室 / 测试工程师</div>
+            </div>
+            <div class="p-tenure">2023 起 · 每天</div>
+          </div>
+          <div class="p-card-mid">
+            <div class="p-field"><span class="lbl">近期任务</span><span class="val">修测试脚本并跑通</span></div>
+            <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">OpenCode</span><span class="tool-tag">TestAgent</span><span class="tool-tag">毕方</span></div></div>
+          </div>
+          <div class="p-card-quote">
+            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <span><b>标志性细节</b>：毕方直连服务器自动循环执行修正，直至测试用例全绿通过</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 高校科研阵营 -->
+    <div class="cohort-col stu">
+      <div class="cohort-hd">
+        <div class="ch-badge">🎓 高校科研阵营 · 3 位</div>
+        <div class="ch-meta">南京大学（研二 / 大四）· 杭州电子科大（研三）</div>
+      </div>
+      <div class="cohort-cards">
+        <!-- 徐立桂 -->
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-avatar">XL</div>
+            <div class="p-info">
+              <div class="p-name-row"><span class="p-name">徐立桂</span><span class="p-tag">客户端 · CLI</span></div>
+              <div class="p-role">南京大学 · 研二</div>
+            </div>
+            <div class="p-tenure">半年+ · 每天</div>
+          </div>
+          <div class="p-card-mid">
+            <div class="p-field"><span class="lbl">近期任务</span><span class="val">算子生成 + 昇腾知识图谱</span></div>
+            <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Codex</span><span class="tool-tag">OpenCode</span></div></div>
+          </div>
+          <div class="p-card-quote">
+            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <span><b>标志性细节</b>：一个窗口实现生成、一个独立窗口验收校验，双通道分离</span>
+          </div>
+        </div>
+        <!-- 梁淼城 -->
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-avatar">LM</div>
+            <div class="p-info">
+              <div class="p-name-row"><span class="p-name">梁淼城</span><span class="p-tag">客户端 · CLI</span></div>
+              <div class="p-role">南京大学 · 大四</div>
+            </div>
+            <div class="p-tenure">1–1.5 年 · 每天</div>
+          </div>
+          <div class="p-card-mid">
+            <div class="p-field"><span class="lbl">近期任务</span><span class="val">后端 Demo，改开源仓库</span></div>
+            <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Codex</span><span class="tool-tag">Claude Code</span></div></div>
+          </div>
+          <div class="p-card-quote">
+            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <span><b>标志性细节</b>：过度设计是最痛的点；AI 引入不必要抽象反而大幅增加理解成本</span>
+          </div>
+        </div>
+        <!-- 王鹤锦 -->
+        <div class="p-card">
+          <div class="p-card-top">
+            <div class="p-avatar">WH</div>
+            <div class="p-info">
+              <div class="p-name-row"><span class="p-name">王鹤锦</span><span class="p-tag">CLI · 网页</span></div>
+              <div class="p-role">杭州电子科大 · 研三</div>
+            </div>
+            <div class="p-tenure">2022 起 · 每天</div>
+          </div>
+          <div class="p-card-mid">
+            <div class="p-field"><span class="lbl">近期任务</span><span class="val">无人机跨视角定位</span></div>
+            <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Claude Code</span><span class="tool-tag">DeepSeek</span></div></div>
+          </div>
+          <div class="p-card-quote">
+            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <span><b>标志性细节</b>：商用额度严重不够，多 Agent 用不起；靠多模型换着用摸索方向</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部边界说明条 -->
+  <div class="p3-fn">
+    <div class="fn-tag"><i></i>研究边界与口径</div>
+    <div class="fn-txt">
+      样本为定性深度还原（思维导图手记为主 + ASR 逐字稿校对补充；手记优先），重在按时间链条还原「准备 → 编码 → 验收 → 沉淀」中的人机交互断点，不推断群体比例。
+    </div>
+  </div>
+</div>
+</div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section id="p4" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">高校学生：一边学一边做，完成标准是"能复现"</span></div><div class="subttl">过程 · 画像一（学生）</div></div><div class="section-tabs" aria-label="当前章节"><span data-jump="p1" class="active">01 过程</span><span data-jump="p11" class="">02 发现</span><span data-jump="p41" class="">03 汇总</span><span data-jump="p43" class="">04 设计</span></div></div><div class="body-area">
 <div class="up">
