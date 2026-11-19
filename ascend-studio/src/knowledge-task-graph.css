@@ -11,3 +11,13 @@
 .ktg-hint { margin: 0; padding: 10px 18px 14px; font-size: 11px; color: var(--text-soft); border-top: 1px solid var(--line); }
 .ktg-empty { padding: 24px 18px; font-size: 12px; color: var(--text-soft); }
 .is-knowledge-focus { background: #fff9d9 !important; transition: background 200ms ease; }
+
+.conversation-panel.is-knowledge-task { position: relative; }
+.conversation-panel.is-knowledge-task .knowledge-side {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 400px; z-index: 3;
+  display: flex; min-height: 0; background: var(--surface); border-left: 1px solid var(--line);
+}
+.conversation-panel.is-knowledge-task .conversation-scroll { margin-right: 400px; }
+.conversation-panel.is-knowledge-task form.composer { margin-right: 400px; }
+.workspace-grid.is-task-workspace > .conversation-panel.is-knowledge-task { grid-column: 3 / 5; }
+.workspace-grid:has(> .conversation-panel.is-knowledge-task) > .workspace-divider--conversation { display: none; }

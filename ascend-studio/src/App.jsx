@@ -41,7 +41,6 @@ import { NewTaskHome } from "./NewTaskHome";
 import { CompositionLearningPathCanvas } from "./CompositionLearningPathCanvas.jsx";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
 import { KnowledgeTaskGraph } from "./KnowledgeTaskGraph";
-import { KnowledgeGraphPage } from "./KnowledgeGraphPage";
 import { buildHomeSuggestions } from "./home-recommendations";
 import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
@@ -87,7 +86,6 @@ import {
   IconSend,
   IconShieldCheck,
   IconSparkles,
-  IconAffiliate,
   IconSettingsAutomation,
   IconThumbDown,
   IconThumbUp,
@@ -238,7 +236,6 @@ function App() {
     window.history.replaceState(window.history.state, "", url);
   }, []);
   useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
-  const [knowledgeOpen, setKnowledgeOpen] = useState(false);
   const [knowledgePocket, setKnowledgePocket] = useState(readKnowledgePocket);
   const [selectedPocketId, setSelectedPocketId] = useState("");
   useEffect(() => {
@@ -1639,7 +1636,6 @@ function App() {
         </div>}
         {showTaskWorkspace && !saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
         {showTaskWorkspace && workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容{workspace.state.visitedTabs.some(item => item.unread) && <span className="reopen-update-count">{workspace.state.visitedTabs.filter(item => item.unread).length} 项更新</span>}</button>}
-        {showTaskWorkspace && <button className="knowledge-entry" type="button" onClick={() => setKnowledgeOpen(true)}><IconAffiliate size={ICON_SIZE.control} /><span>知识图谱</span></button>}
         {showTaskWorkspace && <span className={`proposal-badge${(isPathGenerationTask && learning.state.draftPath) || task.compositionPlan ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{task.compositionPlan ? "学习路径 · 草案" : isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
         <button className="icon-button top-icon" type="button" aria-label="通知" data-menu-trigger aria-expanded={wb.menu?.name === "notifications"} onClick={(event) => openMenu("notifications", event)}><IconBell size={ICON_SIZE.heading} />{wb.notifications.length > 0 && <span className="notification-dot" />}</button>
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
@@ -1711,7 +1707,7 @@ function App() {
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 工具与方法</span><h1 id="capabilities-page-title">能力库</h1><p>按类型查找可复用的检查能力，选择后会带入当前任务。</p></div><div className="management-page-summary"><strong>{capabilities.length}</strong><span>项可用能力</span><i /><strong>{new Set(capabilities.map(item => item.category).filter(Boolean)).size}</strong><span>个分类</span></div></header>
           <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
-        </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
+        </section> : <section ref={conversationPanelRef} className={`conversation-panel${isKnowledgeTask ? " is-knowledge-task" : ""}${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
           <div id="task-conversation-history" className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
@@ -1884,10 +1880,15 @@ function App() {
           </div>
           <input hidden type="file" multiple ref={wb.fileRef} onChange={(event) => wb.readFiles(event, "file")} aria-label="选择文件附件" />
           <input hidden type="file" multiple accept="image/*" ref={wb.imageRef} onChange={(event) => wb.readFiles(event, "image")} aria-label="选择截图附件" />
+          {isKnowledgeTask && (
+            <aside className="knowledge-side" aria-label="本段对话的知识图谱">
+              <KnowledgeTaskGraph task={task} />
+            </aside>
+          )}
         </section>}
 
         {showTaskWorkspace && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
-        {showTaskWorkspace && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
+        {showTaskWorkspace && !isKnowledgeTask && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
           {isKnowledgeTask
             ? <KnowledgeTaskGraph task={task} />
             : supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
@@ -1912,13 +1913,7 @@ function App() {
 
       <WorkbenchDialogs dialog={wb.dialog} onClose={wb.closeDialog} groups={wb.groups} taskName={selectedTask} taskGoal={task.goal} onCreateTask={wb.createTask} onAttachCode={wb.attachCode} history={session.history} onRestoreConversation={wb.restoreConversation} modelOptions={modelOptions} selectedModel={wb.selectedModel} onSelectModel={wb.chooseModel} attempts={wb.attempts} onAddAttempt={(entry) => wb.addRecord({ ...entry, kind: "attempt", isDemo: false })} evidenceDetail={wb.dialogData} copyText={wb.dialogData.text || ""} />
       {toast && <div className="toast-message" role="status">{toast}</div>}
-          {knowledgeOpen && (
-        <div className="kg-overlay" role="dialog" aria-modal="true" aria-label="知识图谱">
-          <button className="kg-overlay-close" type="button" onClick={() => setKnowledgeOpen(false)} aria-label="关闭知识图谱">×</button>
-          <KnowledgeGraphPage />
-        </div>
-      )}
-</main>
+    </main>
   );
 }
 

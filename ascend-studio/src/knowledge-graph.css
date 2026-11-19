@@ -270,3 +270,12 @@
 .knowledge-entry:hover { background: var(--surface-subtle); }
 .kg-overlay { position: fixed; inset: 58px 0 0 0; z-index: 60; background: var(--surface); overflow: auto; }
 .kg-overlay-close { position: fixed; right: 22px; top: 70px; z-index: 61; width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #666; font-size: 18px; line-height: 1; cursor: pointer; }
+
+.conversation-panel.is-knowledge-task { position: relative; }
+.conversation-panel.is-knowledge-task .knowledge-side {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 400px; z-index: 3;
+  display: flex; min-height: 0; background: var(--surface); border-left: 1px solid var(--line);
+}
+.conversation-panel.is-knowledge-task .conversation-scroll { margin-right: 400px; }
+.conversation-panel.is-knowledge-task form.composer { margin-right: 400px; }
+.ktg { width: 100%; }
