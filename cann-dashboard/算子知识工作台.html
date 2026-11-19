@@ -211,6 +211,57 @@
     border-radius:10px;height:32px;padding:0 12px;font-size:11.5px;color:#334155;cursor:pointer;
     box-shadow:0 2px 8px rgba(15,23,42,.08);display:none}
   .fab.show{display:block}
+  /* 剧本 */
+  #playbook{position:fixed;right:0;top:62px;bottom:0;width:420px;background:#fff;
+    border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(15,23,42,.06);
+    display:flex;flex-direction:column;z-index:45}
+  #playbook[hidden]{display:none}
+  .pb-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line)}
+  .pb-t{font-size:12px;font-weight:700;color:#0F172A}
+  .pb-acts{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .pb-acts button{border:1px solid var(--line);background:#fff;border-radius:7px;font-size:10.5px;
+    padding:4px 8px;color:#334155;cursor:pointer}
+  .pb-acts button:hover{background:#F1F5F9}
+  .pb-x{width:22px;height:22px;padding:0;font-size:15px;line-height:1}
+  .pb-body{flex:1;overflow:auto;padding:14px 16px 40px}
+  .pbs{border-bottom:1px dashed var(--line);padding-bottom:14px;margin-bottom:14px}
+  .pbs:last-child{border-bottom:none}
+  .pbs h3{font-size:14px;margin:0 0 4px;color:#0F172A;display:flex;align-items:center;gap:7px}
+  .pbn{width:18px;height:18px;border-radius:50%;background:#0F172A;color:#fff;font-size:10px;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .pbmeta{font-size:10.5px;color:#94A3B8;margin-bottom:6px}
+  .pbs p{font-size:12px;line-height:1.75;color:#334155;margin:0 0 6px}
+  .pbpit{color:#92400E;background:#FFFBEB;border-radius:6px;padding:6px 8px}
+  .pbsrc{color:#64748B;font-size:11px}
+  /* 底部 dock */
+  .dock{position:fixed;left:50%;transform:translateX(-50%);bottom:40px;z-index:40;
+    display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+  .dock>*{pointer-events:auto}
+  .pathbar{display:flex;align-items:center;gap:6px;max-width:min(760px,90vw);overflow-x:auto;
+    padding:7px 10px;border-radius:12px;background:rgba(255,255,255,.97);border:1px solid var(--line);
+    box-shadow:0 8px 28px rgba(15,23,42,.10);scrollbar-width:none}
+  .pathbar[hidden]{display:none}
+  .pathbar::-webkit-scrollbar{display:none}
+  .pb-lab{font-size:10.5px;color:#94A3B8;flex:0 0 auto}
+  .pb-chip{flex:0 0 auto;display:flex;align-items:center;gap:5px;border:1px solid var(--line);
+    background:#fff;border-radius:20px;padding:3px 9px;font-size:11px;color:#334155;cursor:pointer}
+  .pb-chip b{width:14px;height:14px;border-radius:50%;background:#0F172A;color:#fff;font-size:9px;
+    display:flex;align-items:center;justify-content:center}
+  .pb-chip i{font-style:normal;color:#94A3B8}
+  .pb-chip:hover{background:#F1F5F9}
+  .pb-sp{flex:1}
+  .pb-btn{flex:0 0 auto;border:none;background:#0F172A;color:#fff;border-radius:8px;
+    padding:5px 10px;font-size:11px;cursor:pointer}
+  .pb-btn.ghost{background:#fff;color:#64748B;border:1px solid var(--line)}
+  .pb-btn.ghost:hover{background:#F1F5F9}
+  /* 时间轴 */
+  .tl{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:12px;
+    background:rgba(255,255,255,.97);border:1px solid var(--line);box-shadow:0 8px 28px rgba(15,23,42,.08)}
+  .tl button{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;
+    font-size:9px;color:#334155;cursor:pointer;padding:0}
+  .tl button:hover{background:#F1F5F9}
+  .tl input[type=range]{width:210px;accent-color:#0F172A}
+  .tl span{font-size:10.5px;color:#64748B;min-width:96px;text-align:right}
 </style>
 </head>
 <body>
@@ -232,6 +283,7 @@
         <g id="eglabels"></g>
         <g id="nodes"></g>
         <g id="domtitles"></g>
+        <g id="badges"></g>
       </g>
     </svg>
 
@@ -276,6 +328,27 @@
   <div id="stream"></div>
 </aside>
 
+<aside id="playbook" hidden>
+  <div class="pb-head">
+    <div class="pb-t">排查剧本</div>
+    <div class="pb-acts">
+      <button id="pbExport">导出 md</button>
+      <button id="pbCopy">复制</button>
+      <button id="pbClose" class="pb-x">×</button>
+    </div>
+  </div>
+  <div id="playbookBody" class="pb-body"></div>
+</aside>
+
+<div class="dock">
+  <div id="pathbar" class="pathbar" hidden></div>
+  <div class="tl" id="tl">
+    <button id="tlPlay" title="播放">▶</button>
+    <input id="tlRange" type="range" min="1" max="15" value="15" step="1">
+    <span id="tlLab">全部 15 段</span>
+  </div>
+</div>
+
 <script>
 /* ===== 数据 ===== */
 const DOMAINS=[{id: "env", name: "环境与部署", color: "#5E8FDE", cx: 250, cy: 200}, {id: "build", name: "编译与工程", color: "#E5A861", cx: 620, cy: 140}, {id: "data", name: "数据与搬运", color: "#60D2C5", cx: 860, cy: 330}, {id: "sync", name: "并发与同步", color: "#8674DC", cx: 700, cy: 570}, {id: "numperf", name: "精度与性能", color: "#E06793", cx: 380, cy: 590}, {id: "arch", name: "架构与迁移", color: "#8DA5C4", cx: 180, cy: 430}];
@@ -293,7 +366,7 @@ const domById=Object.fromEntries(DOMAINS.map(d=>[d.id,d]));
 const nodeById=Object.fromEntries(NODES.map(n=>[n.id,n]));
 const dlgByN=Object.fromEntries(DLG.map(d=>[d.n,d]));
 const W={x:1000,y:720};
-const state={scene:'all',gran:5,domain:null,q:'',sel:null,streamAll:true};
+const state={scene:'all',gran:5,domain:null,q:'',sel:null,streamAll:true,path:[],tl:15,play:false};
 let HITS=null;
 let view={k:1,x:0,y:0};
 
@@ -669,7 +742,11 @@ function render(){
   });
 
   renderDomains(list);
+  list.forEach(n=>{
+    n.__el.classList.toggle('tldim', state.tl<15 && n.firstSeen>state.tl);
+  });
   applyHighlight();
+  if(typeof renderBadges==='function') renderBadges();
 }
 
 function placeLabels(list){
@@ -722,8 +799,9 @@ function applyHighlight(){
       t.style.opacity = !hitDoms ? .9 : (hitDoms.has(t.dataset.dom) ? .9 : .16);
     });
     document.querySelectorAll('.eglabel').forEach(e=>e.remove());
+    const base = state.tl<15 ? '.15' : (HITS?'.22':'1');
     AGG.forEach(e=>{
-      e.__el.setAttribute('stroke-opacity', HITS?'.22':'1');
+      e.__el.setAttribute('stroke-opacity', base);
       e.__el.removeAttribute('marker-end');
     });
     return;
@@ -994,7 +1072,8 @@ svg.addEventListener('pointerup',e=>{
   if(drag){
     const n=drag.n, wasDrag=drag.moved>5; drag=null;
     if(!wasDrag){
-      select(n.id,{scroll:true});   // 轻点：选中并出原文
+      if(e.shiftKey){ togglePath(n.id); }   // Shift + 点击：加入/移出剧本
+      else select(n.id,{scroll:true});
     } else {
       const list=visibleNodes(); const links=layoutLinks(list);
       for(let i=0;i<40;i++) step(list,links,.5);
@@ -1129,7 +1208,111 @@ function buildLegend(){
 })();
 
 /* ================= 启动 ================= */
+/* ================= 剧本 / 时间轴 ================= */
+function firstSeen(n){ return Math.min(...(n.refs&&n.refs.length?n.refs:[99])); }
+function togglePath(id){
+  const i=state.path.indexOf(id);
+  if(i>=0) state.path.splice(i,1); else state.path.push(id);
+  renderBadges(); renderPathBar(); render();
+}
+function renderBadges(){
+  const g=$('#badges'); if(!g) return; g.innerHTML='';
+  state.path.forEach((id,i)=>{
+    const n=nodeById[id];
+    if(!n||n.__el.style.display==='none') return;
+    const cx=n.x+n.__w/2-3, cy=n.y-n.__h/2+3;
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',7);
+    c.setAttribute('fill','#0F172A');
+    g.appendChild(c);
+    const t=document.createElementNS(NS,'text');
+    t.setAttribute('x',cx); t.setAttribute('y',cy+3.3); t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill','#fff'); t.setAttribute('font-size','9'); t.setAttribute('font-weight','700');
+    t.textContent=i+1; g.appendChild(t);
+  });
+}
+function renderPathBar(){
+  const bar=$('#pathbar'); if(!bar) return;
+  if(!state.path.length){ bar.hidden=true; bar.innerHTML=''; return; }
+  bar.hidden=false;
+  bar.innerHTML=`<span class="pb-lab">路径 ${state.path.length} 步</span>`
+    + state.path.map((id,i)=>`<button class="pb-chip" data-del="${id}"><b>${i+1}</b>${esc(nodeById[id].name)}<i>×</i></button>`).join('')
+    + `<span class="pb-sp"></span>
+       <button class="pb-btn" id="pbPlaybook">生成剧本</button>
+       <button class="pb-btn ghost" id="pbSort">按对话排序</button>
+       <button class="pb-btn ghost" id="pbClear">清空</button>`;
+  bar.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>togglePath(b.dataset.del));
+  $('#pbClear').onclick=()=>{ state.path=[]; renderBadges(); renderPathBar(); render(); };
+  $('#pbSort').onclick=()=>{
+    state.path.sort((a,b)=>firstSeen(nodeById[a])-firstSeen(nodeById[b]));
+    renderBadges(); renderPathBar();
+  };
+  $('#pbPlaybook').onclick=openPlaybook;
+}
+function playbookMd(){
+  const L=['# 排查剧本','',`> ${state.path.length} 个知识点串联 · ${new Date().toLocaleString('zh-CN')}`,''];
+  state.path.forEach((id,i)=>{
+    const n=nodeById[id], d=domById[n.dom], t=n.turns[0];
+    L.push(`## ${i+1}. ${n.name}`,'',`- 领域：${d.name} · ${WNAME[n.w]}`,`- 结论：${n.def}`);
+    if(n.pit) L.push(`- 常见误区：${n.pit}`);
+    if(t) L.push(`- 出处：${dlgByN[t.c].t} · 第 ${t.t} 轮`);
+    L.push('');
+  });
+  return L.join('\n');
+}
+function openPlaybook(){
+  if(!state.path.length) return;
+  $('#playbookBody').innerHTML=state.path.map((id,i)=>{
+    const n=nodeById[id], d=domById[n.dom], t=n.turns[0];
+    return `<section class="pbs">
+      <h3><span class="pbn">${i+1}</span>${esc(n.name)}</h3>
+      <div class="pbmeta">${d.name} · ${WNAME[n.w]}</div>
+      <p>${esc(n.def)}</p>
+      ${n.pit?`<p class="pbpit">误区：${esc(n.pit)}</p>`:''}
+      ${t?`<p class="pbsrc">出处：${esc(dlgByN[t.c].t)} · 第 ${t.t} 轮</p>`:''}
+    </section>`;
+  }).join('');
+  $('#playbook').hidden=false;
+}
+$('#pbClose').onclick=()=>{ $('#playbook').hidden=true; };
+$('#pbExport').onclick=()=>{
+  const blob=new Blob([playbookMd()],{type:'text/markdown;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='排查剧本.md'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+$('#pbCopy').onclick=async()=>{
+  try{ await navigator.clipboard.writeText(playbookMd()); $('#pbCopy').textContent='已复制'; }
+  catch(_){ $('#pbCopy').textContent='复制失败'; }
+  setTimeout(()=>{ $('#pbCopy').textContent='复制'; },1200);
+};
+
+/* 时间轴 */
+function tlLabel(){
+  if(state.tl>=15){ $('#tlLab').textContent='全部 15 段'; return; }
+  const n=ROUNDS.filter(r=>r.c===state.tl).length;
+  const shown=NODES.filter(x=>x.firstSeen<=state.tl).length;
+  $('#tlLab').textContent=`第 ${state.tl} 段 · ${shown} 个点`;
+}
+function setTl(v){
+  state.tl=Math.max(1,Math.min(15,v));
+  $('#tlRange').value=state.tl;
+  tlLabel(); render();
+}
+let tlTimer=null;
+$('#tlRange').oninput=e=>{ if(tlTimer){clearInterval(tlTimer);tlTimer=null;$('#tlPlay').textContent='▶';} setTl(+e.target.value); };
+$('#tlPlay').onclick=()=>{
+  if(tlTimer){ clearInterval(tlTimer); tlTimer=null; $('#tlPlay').textContent='▶'; return; }
+  setTl(1); $('#tlPlay').textContent='❚❚';
+  tlTimer=setInterval(()=>{
+    if(state.tl>=15){ clearInterval(tlTimer); tlTimer=null; $('#tlPlay').textContent='▶'; return; }
+    setTl(state.tl+1);
+  },750);
+};
+
+NODES.forEach(n=>{ n.firstSeen=firstSeen(n); });
 buildDefs(); buildNodes(); buildLegend(); renderStream(); renderInsight();
+renderPathBar(); tlLabel();
 if(!$('#drawer').classList.contains('open')) $('#fab').classList.add('show');
 syncControls();
 resize();
