@@ -273,9 +273,14 @@
     padding:5px 10px;font-size:11px;cursor:pointer}
   .pb-btn.ghost{background:#fff;color:#64748B;border:1px solid var(--line)}
   .pb-btn.ghost:hover{background:#F1F5F9}
-  .pb-start{border:1px dashed #CBD5E1;background:#fff;color:#475569;border-radius:20px;
-    padding:6px 14px;font-size:11.5px;cursor:pointer}
-  .pb-start:hover{border-color:#94A3B8;color:#0F172A;background:#F8FAFC}
+  .pickslot{padding:0;overflow:hidden}
+  .pick-start{width:100%;border:0;background:transparent;color:#475569;font-size:11.5px;
+    padding:11px 10px;cursor:pointer;text-align:center}
+  .pick-start:hover{background:#F1F5F9;color:#0F172A}
+  .pick-hint{display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:10px;font-size:10.5px;color:#64748B}
+  .pick-hint button{border:1px solid var(--line);background:#fff;border-radius:999px;
+    padding:2px 9px;font-size:10px;color:#475569;cursor:pointer}
   /* 时间轴 */
   .tl{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:12px;
     background:rgba(255,255,255,.97);border:1px solid var(--line);box-shadow:0 8px 28px rgba(15,23,42,.08)}
@@ -329,6 +334,7 @@
         <input type="range" id="gran" min="1" max="5" step="1" value="5">
         <div class="ticks"><span>领域骨架</span><span>核心瓶颈</span><span>关键机制</span><span>常规细节</span><span>原子实操</span></div>
       </div>
+      <div class="panel pickslot" id="pickslot"></div>
     </div>
 
     <div class="legend panel" id="legend"></div>
@@ -1258,21 +1264,20 @@ function renderBadges(){
     t.textContent=i+1; g.appendChild(t);
   });
 }
-function renderPathBar(){
-  const bar=$('#pathbar'); if(!bar) return;
-  if(!state.path.length && !state.picking){
-    bar.hidden=false;
-    bar.innerHTML=`<button class="pb-start" id="pickStart">＋ 建立排查剧本</button>`;
-    $('#pickStart').onclick=()=>{ state.picking=true; renderPathBar(); };
-    return;
-  }
-  if(!state.path.length && state.picking){
-    bar.hidden=false;
-    bar.innerHTML=`<span class="pb-lab">选择模式：点击节点加入路径（再次点击移出）· Esc 退出</span>
-      <button class="pb-btn ghost" id="pickExit">退出</button>`;
+function renderPickslot(){
+  const slot=$('#pickslot'); if(!slot) return;
+  if(state.picking){
+    slot.innerHTML=`<div class="pick-hint">选择模式 · 点击节点加入路径<button id="pickExit">Esc 退出</button></div>`;
     $('#pickExit').onclick=()=>{ state.picking=false; renderPathBar(); };
     return;
   }
+  slot.innerHTML=`<button class="pick-start" id="pickStart">＋ 建立排查剧本${state.path.length?' · 已选 '+state.path.length:''}</button>`;
+  $('#pickStart').onclick=()=>{ state.picking=true; renderPathBar(); };
+}
+function renderPathBar(){
+  const bar=$('#pathbar'); if(!bar) return;
+  renderPickslot();
+  if(!state.path.length){ bar.hidden=true; bar.innerHTML=''; return; }
   bar.hidden=false;
   bar.innerHTML=`<span class="pb-lab">路径 ${state.path.length} 步</span>`
     + state.path.map((id,i)=>`<button class="pb-chip" data-del="${id}"><b>${i+1}</b>${esc(nodeById[id].name)}<i>×</i></button>`).join('')
