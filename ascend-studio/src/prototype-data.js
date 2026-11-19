@@ -1,8 +1,6 @@
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK, LEARNING_PATH_GENERATION_PROFILE } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 
-import { KNOWLEDGE_TASKS, KNOWLEDGE_GROUPS } from "./knowledge/dialogues";
-
 export const LOG_DIAGNOSTIC_TASK = "Add 算子异常：从日志到验证";
 export const TASK_DISPLAY_NAMES = Object.freeze({
   "AddCustom 精度异常": "Add 算子精度差异排查",
@@ -127,26 +125,6 @@ export const taskDetails = {
     status: "waiting",
   },
 };
-
-// 知识图谱的 15 段对话：按场景挂到左侧项目下，作为可追溯的任务
-for (const group of KNOWLEDGE_GROUPS) {
-  initialGroups.push({ id: group.id, name: group.name, tasks: group.taskNames });
-}
-for (const [name, meta] of Object.entries(KNOWLEDGE_TASKS)) {
-  const first = meta.dialogue[0] || { q: "", a: "" };
-  taskDetails[name] = {
-    project: meta.project,
-    kind: "knowledge",
-    sidebarStatus: `${meta.dialogue.length} 轮`,
-    goal: `把「${name}」这段对话的结论、误区与出处放回知识图谱里核对。`,
-    question: first.q || "（这轮直接贴了一段代码）",
-    reply: first.a,
-    dialogue: meta.dialogue,
-    dialogueId: meta.dialogueId,
-    nodeIds: meta.nodeIds,
-    status: "active",
-  };
-}
 
 export const capabilities = [
   {

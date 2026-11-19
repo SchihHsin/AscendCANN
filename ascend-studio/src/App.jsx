@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "./icon-system.js";
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
 import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
 import { resolveTaskUrlValue, taskUrlIdentifier } from "./task-url";
@@ -40,7 +40,6 @@ import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
 import { CompositionLearningPathCanvas } from "./CompositionLearningPathCanvas.jsx";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
-import { KnowledgeTaskGraph } from "./KnowledgeTaskGraph";
 import { buildHomeSuggestions } from "./home-recommendations";
 import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
@@ -381,7 +380,6 @@ function App() {
   const isPathGenerationTask = selectedTask === LEARNING_PATH_GENERATION_TASK;
   const isOfficialLearningTask = task.kind === "official-learning";
   const isLearningTask = isStandardLearningTask || isOfficialLearningTask;
-  const isKnowledgeTask = task.kind === "knowledge";
   const communityInviteMessage = supportsCommunityDraft
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
@@ -1707,7 +1705,7 @@ function App() {
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 工具与方法</span><h1 id="capabilities-page-title">能力库</h1><p>按类型查找可复用的检查能力，选择后会带入当前任务。</p></div><div className="management-page-summary"><strong>{capabilities.length}</strong><span>项可用能力</span><i /><strong>{new Set(capabilities.map(item => item.category).filter(Boolean)).size}</strong><span>个分类</span></div></header>
           <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
-        </section> : <section ref={conversationPanelRef} className={`conversation-panel${isKnowledgeTask ? " is-knowledge-task" : ""}${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
+        </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
           <div id="task-conversation-history" className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
@@ -1770,22 +1768,7 @@ function App() {
               </div>
             </article>
             </>}
-            {session.showIntro && !isMainTask && (Array.isArray(task.dialogue) && task.dialogue.length > 1 ? (
-              task.dialogue.map((round) => (
-                <Fragment key={`k-${round.r}`}>
-                  <article className="message-row user-message" data-knowledge-round={`${task.dialogueId}-${round.r}`}>
-                    <div className="message-content"><div className="message-meta">他</div><div className="user-bubble">{round.q || "（这轮直接贴了一段代码）"}</div></div>
-                  </article>
-                  <article className="message-row assistant-message" data-knowledge-round={`${task.dialogueId}-${round.r}`}>
-                    <div className="message-content">
-                      <div className="message-meta">Ascend Work · 原声</div>
-                      <div className="assistant-response">{round.a.split("\n\n").map((text, index) => <p className="message-paragraph" key={index}>{text}</p>)}</div>
-                    </div>
-                  </article>
-                </Fragment>
-              ))
-            ) : (
-              <>
+            {session.showIntro && !isMainTask && <>
               <article className="message-row user-message">
                 <div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div>
               </article>
@@ -1801,8 +1784,7 @@ function App() {
                   <div className="message-feedback"><button type="button" className="pocket-save-action" aria-label="收进知识口袋" data-tooltip="收进知识口袋" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: task.reply.split(/[。\n]/)[0].slice(0, 52) || task.title, summary: task.reply.split("\n\n")[0], content: task.reply, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} /></button></div>
                 </div>
               </article>
-            </>
-            ))}
+            </>}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
                 <div className="message-content">
@@ -1880,18 +1862,11 @@ function App() {
           </div>
           <input hidden type="file" multiple ref={wb.fileRef} onChange={(event) => wb.readFiles(event, "file")} aria-label="选择文件附件" />
           <input hidden type="file" multiple accept="image/*" ref={wb.imageRef} onChange={(event) => wb.readFiles(event, "image")} aria-label="选择截图附件" />
-          {isKnowledgeTask && (
-            <aside className="knowledge-side" aria-label="本段对话的知识图谱">
-              <KnowledgeTaskGraph task={task} />
-            </aside>
-          )}
         </section>}
 
         {showTaskWorkspace && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
-        {showTaskWorkspace && !isKnowledgeTask && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          {isKnowledgeTask
-            ? <KnowledgeTaskGraph task={task} />
-            : supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
+        {showTaskWorkspace && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
+          {supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
             ? <CommunityDraftPanel draft={session.communityDraft} onUpdate={communityDraft => wb.patchSession({ communityDraft })} onClose={closeCommunityDraft} onSubmit={submitCommunityDraft} />
             : <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaInteractionChange={setAreaInteractionActive} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
