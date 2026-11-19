@@ -58,7 +58,7 @@ def render(spec):
 
     # ---- 生命线与列头 ----
     for i, p in enumerate(P):
-        o.append('<line x1="%.1f" y1="56" x2="%.1f" y2="%d" stroke="#D8DDE3" stroke-width="1" stroke-dasharray="3 5"/>'
+        o.append('<line x1="%.1f" y1="56" x2="%.1f" y2="%d" stroke="#B4BDC9" stroke-width="1.3" stroke-dasharray="5 4"/>'
                  % (cx[i], cx[i], H - 6))
         w = 148
         o.append('<rect x="%.1f" y="14" width="%d" height="34" rx="9" fill="%s"/>' % (cx[i] - w / 2, w, p['color']))
