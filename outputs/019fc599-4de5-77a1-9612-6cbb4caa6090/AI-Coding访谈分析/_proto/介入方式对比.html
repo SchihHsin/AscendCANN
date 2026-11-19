@@ -1087,7 +1087,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
 
 .proto{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:1.2vh}
-.k-svg{width:min(100%,1040px);height:auto;max-height:58vh;display:block;margin:0 auto}
+.k-panel{width:min(100%,1080px);margin:0 auto;background:#fff;border-radius:18px;padding:1.8vh 1.6vw 1.2vh;
+  box-shadow:0 26px 60px -46px rgba(20,25,35,.5),0 2px 0 rgba(255,255,255,.9) inset}
+.k-svg{width:100%;height:auto;max-height:52vh;display:block}
 .k-axis{stroke:#555D68;stroke-width:1.4}
 .k-ql{font:700 15px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif}
 .k-ql.k-Q1{fill:#4B4BA8}.k-ql.k-Q2{fill:#0E7C86}
@@ -1099,7 +1101,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .k-pt.s circle{fill:#0E7C86}
 .k-pt.e circle{fill:#4B4BA8}
 .k-pt text{font:600 11.6px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#2C333D}
-.sc-lg{display:flex;gap:1.4vw;font-size:10.4px;color:#8C95A3;align-items:center}
+.sc-lg{display:flex;gap:1.4vw;font-size:10.4px;color:#8C95A3;align-items:center;justify-content:center;padding:.6vh 0 .4vh}
 .sc-lg .s{color:#0E7C86}.sc-lg .e{color:#4B4BA8}
 .sc-lg .muted{color:#A6ADB8;margin-left:.8vw}
 .proto-take{font-size:11.8px;color:#3A4048;line-height:1.55;text-align:center}
@@ -1127,6 +1129,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .tl-legend i.dot1{width:8px;height:8px;border-radius:50%;background:#fff;border:2px solid #9AA3B2}
 </style></head><body><div id="deck"><section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">依赖都上来了，信任没跟上</span></div><div class="subttl">过程 · 用户对照（原型 A：坐标）</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 过程</span><span class="">02 发现</span><span class="">03 汇总</span><span class="">04 设计</span></div></div><div class="body-area">
 <div class="proto">
+  <div class="k-panel">
   <svg class="k-svg" viewBox="0 0 940 520" preserveAspectRatio="xMidYMid meet">
     <g class="k-gridg"><line x1="310.0" y1="40" x2="310.0" y2="460" stroke="rgba(76,85,98,.13)"/><line x1="150" y1="145.0" x2="790" y2="145.0" stroke="rgba(76,85,98,.13)"/><line x1="470.0" y1="40" x2="470.0" y2="460" stroke="rgba(76,85,98,.13)"/><line x1="150" y1="250.0" x2="790" y2="250.0" stroke="rgba(76,85,98,.13)"/><line x1="630.0" y1="40" x2="630.0" y2="460" stroke="rgba(76,85,98,.13)"/><line x1="150" y1="355.0" x2="790" y2="355.0" stroke="rgba(76,85,98,.13)"/></g>
     <line class="k-axis" x1="150" y1="460" x2="790" y2="460"/>
@@ -1139,6 +1142,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <text class="k-al k-rot" x="118" y="250" text-anchor="middle" transform="rotate(-90 118 250)">每步都查 → 敢放手</text>
   </svg>
   <div class="sc-lg"><span class="s">● 学生</span><span class="e">● 企业新员工</span><span class="muted">点的位置为研究者据访谈判断的定性定位，不构成测量值</span></div>
+  </div>
   <div class="proto-take">圈起来的三组位置最接近：<b>放手、审查、自写</b>。最值得看的是“审查”那组——用得多，查得也最细。</div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section><section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">同一条任务，六个人在不同的地方回来</span></div><div class="subttl">过程 · 用户对照（原型 B：介入时间线）</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 过程</span><span class="">02 发现</span><span class="">03 汇总</span><span class="">04 设计</span></div></div><div class="body-area">
 <div class="proto">

@@ -73,6 +73,7 @@ for a, b, col in CLUSTERS:
 
 SCATTER = '''
 <div class="proto">
+  <div class="k-panel">
   <svg class="k-svg" viewBox="0 0 940 520" preserveAspectRatio="xMidYMid meet">
     <g class="k-gridg">%s</g>
     <line class="k-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>
@@ -85,6 +86,7 @@ SCATTER = '''
     <text class="k-al k-rot" x="%d" y="%d" text-anchor="middle" transform="rotate(-90 %d %d)">每步都查 → 敢放手</text>
   </svg>
   <div class="sc-lg"><span class="s">● 学生</span><span class="e">● 企业新员工</span><span class="muted">点的位置为研究者据访谈判断的定性定位，不构成测量值</span></div>
+  </div>
   <div class="proto-take">圈起来的三组位置最接近：<b>放手、审查、自写</b>。最值得看的是“审查”那组——用得多，查得也最细。</div>
 </div>''' % (_grid, X0, Y0 + PH, X0 + PW, Y0 + PH, X0, Y0, X0, Y0 + PH,
               _qlab, _rings, _dots,
