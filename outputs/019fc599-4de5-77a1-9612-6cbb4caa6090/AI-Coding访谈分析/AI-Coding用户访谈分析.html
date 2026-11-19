@@ -1887,16 +1887,16 @@ document.addEventListener('mousemove',e=>{
 });
 document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
 
-var _m=(location.hash||'').match(/^#p(\d+)$/),_el=_m&&document.getElementById('p'+_m[1]);if(_el){var _h=document.documentElement;_h.style.scrollBehavior='auto';_h.scrollTop=_el.offsetTop;}else{window.scrollTo(0,0);}
+var _m=(location.hash||'').match(/^#p?(\d+)$/),_el=_m&&document.getElementById('p'+_m[1]);if(_el){var _h=document.documentElement;_h.style.scrollBehavior='auto';_h.scrollTop=_el.offsetTop;}else{window.scrollTo(0,0);}
 slides.forEach(paintSlide);
-updateCurrent(0);
+var _uc=updateCurrent;updateCurrent=function(n){_uc(n);try{history.replaceState(null,"","#"+(n+1))}catch(e){}};updateCurrent(0);
 if(CTRL) setActive(0);
 </script>
 
 <script>
 (function(){
   function goto(){
-    var m=(location.hash||'').match(/^#p(\d+)$/);
+    var m=(location.hash||'').match(/^#p?(\d+)$/);
     if(!m) return;
     var el=document.getElementById('p'+m[1]);
     if(!el) return;
@@ -1917,7 +1917,7 @@ if(CTRL) setActive(0);
 <script>
 (function(){
   function goto(){
-    var m=(location.hash||'').match(/^#p(\d+)$/);
+    var m=(location.hash||'').match(/^#p?(\d+)$/);
     if(!m) return;
     var el=document.getElementById('p'+m[1]);
     if(!el) return;

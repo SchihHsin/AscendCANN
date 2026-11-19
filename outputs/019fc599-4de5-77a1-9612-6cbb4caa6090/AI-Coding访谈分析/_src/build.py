@@ -46,7 +46,7 @@ DEEPLINK = """
 <script>
 (function(){
   function goto(){
-    var m=(location.hash||'').match(/^#p(\\d+)$/);
+    var m=(location.hash||'').match(/^#p?(\\d+)$/);
     if(!m) return;
     var el=document.getElementById('p'+m[1]);
     if(!el) return;
@@ -64,7 +64,7 @@ DEEPLINK = """
 html = html.replace('</body>', DEEPLINK + '</body>')
 
 # 运行时初始化时的 scrollTo(0,0) 也要尊重 #pN（body 是滚动容器）
-_boot = ("var _m=(location.hash||'').match(/^#p(\\d+)$/),"
+_boot = ("var _m=(location.hash||'').match(/^#p?(\\d+)$/),"
          "_el=_m&&document.getElementById('p'+_m[1]);"
          "if(_el){var _h=document.documentElement;_h.style.scrollBehavior='auto';_h.scrollTop=_el.offsetTop;}"
          "else{window.scrollTo(0,0);}")
@@ -72,6 +72,17 @@ if 'window.scrollTo(0,0);' in html:
     html = html.replace('window.scrollTo(0,0);', _boot, 1)
 else:
     print('WARN: boot scrollTo not found')
+
+# 翻页时把当前页码写回地址栏（#1、#2 …），刷新/分享即定位到该页
+_OLD = 'updateCurrent(0);'
+_NEW = ('var _uc=updateCurrent;'
+        'updateCurrent=function(n){_uc(n);'
+        'try{history.replaceState(null,"","#"+(n+1))}catch(e){}};'
+        'updateCurrent(0);')
+if _OLD in html:
+    html = html.replace(_OLD, _NEW, 1)
+else:
+    print('WARN: updateCurrent(0) not found')
 
 out = pathlib.Path(__file__).resolve().parent.parent / 'AI-Coding用户访谈分析.html'
 out.write_text(html, encoding='utf-8')
