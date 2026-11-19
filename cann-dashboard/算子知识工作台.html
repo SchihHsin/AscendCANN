@@ -123,9 +123,10 @@
     height:26px;padding:0 9px;font-size:11px;color:var(--ink2);cursor:pointer}
   #insight{padding:9px 14px 8px;border-bottom:1px solid var(--line);flex:0 0 auto}
   .ins-meta{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#64748B}
-  .ins-x{margin-left:2px;border:1px solid var(--line);background:#fff;border-radius:6px;height:20px;
-    padding:0 7px;font-size:10px;color:#64748B;cursor:pointer}
-  .ins-x:hover{background:#F1F5F9;color:#0F172A}
+  .ins-x{margin-left:2px;width:22px;height:22px;padding:0;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);background:#fff;border-radius:6px;font-size:15px;line-height:1;
+    color:#64748B;cursor:pointer}
+  .ins-x:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
   .ins-meta .dot{width:7px;height:7px;border-radius:50%}
   .ins-row{display:flex;align-items:center;gap:8px;margin-top:1px}
   .ins-title{font-size:16px;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -715,7 +716,7 @@ function renderInsight(){
   const box=$('#insight');
   if(!state.sel){
     const sc=SCENES.find(x=>x.id===state.scene);
-    box.innerHTML=`<div class="ins-meta"><span class="dot" style="background:#94A3B8"></span>当前场景<button class="ins-x" id="insClose">收起</button></div>
+    box.innerHTML=`<div class="ins-meta"><span class="dot" style="background:#94A3B8"></span>当前场景<button class="ins-x" id="insClose" title="收起">×</button></div>
       <div class="ins-row"><h2 class="ins-title">${sc.name}</h2></div>
       <p class="ins-def clamp1">${sc.ds.length} 篇对话 · ${state.gran} 档粒度 · ${visibleNodes().length} 个节点，点击节点看结论与来源。</p>`;
     $('#dwSub').textContent=`${sc.ds.length} 篇原声 · ${visibleNodes().length} 节点`;
@@ -730,7 +731,7 @@ function renderInsight(){
     <div class="ins-meta">
       <span class="dot" style="background:${d.color}"></span>${d.name} · ${WNAME[n.w]}${n.anchor?' · 锚点':''}
       ${n.pit?'<button class="more" id="insMore">详情</button>':''}
-      <button class="ins-x" id="insClose">收起</button>
+      <button class="ins-x" id="insClose" title="收起">×</button>
     </div>
     <div class="ins-row">
       <h2 class="ins-title">${n.name}</h2>
