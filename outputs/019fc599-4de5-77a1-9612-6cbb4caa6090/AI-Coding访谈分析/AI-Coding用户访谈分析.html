@@ -1258,8 +1258,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 /* ===== 发现总览架构图（P11） & 阶段封面清单 ===== */
 .arch{flex:1;min-height:0;display:flex;flex-direction:column;gap:1.3vh;justify-content:center}
 .arch-flow{display:grid;grid-template-columns:3fr 2fr 4fr 3fr 2fr 4fr;gap:.55vw;align-items:stretch}
-.arch-col{display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.88) 0%,rgba(248,250,253,.78) 100%);border:1px solid rgba(255,255,255,.95);border-top:3.5px solid var(--sc,#4F46E5);border-radius:13px;overflow:hidden;box-shadow:0 12px 26px -20px rgba(30,40,70,.28),0 2px 6px -2px rgba(var(--rgb,79,70,229),.12);transition:transform .18s,box-shadow .18s}
-.arch-col:hover{box-shadow:0 16px 32px -16px rgba(var(--rgb,79,70,229),.35),0 4px 10px -2px rgba(var(--rgb,79,70,229),.18)}
+.arch-col{display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.88) 0%,rgba(248,250,253,.78) 100%);border:1px solid rgba(127,137,157,.15);border-radius:13px;overflow:hidden;box-shadow:0 12px 26px -20px rgba(30,40,70,.22),0 2px 6px -2px rgba(var(--rgb,79,70,229),.08);transition:transform .18s,box-shadow .18s}
+.arch-col:hover{box-shadow:0 16px 32px -16px rgba(var(--rgb,79,70,229),.3),0 4px 10px -2px rgba(var(--rgb,79,70,229),.15)}
 .arch-hd{padding:1.15vh .8vw;color:#fff;background:linear-gradient(135deg,var(--sc,#4F46E5) 0%,var(--sc2,#6366F1) 100%);cursor:pointer;display:flex;flex-direction:column;gap:.3vh;position:relative;transition:filter .16s,box-shadow .16s;box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 4px 14px -4px rgba(var(--rgb,79,70,229),.45)}
 .arch-hd:hover{filter:brightness(1.08)}
 .arch-hd .ano{font-family:'JetBrains Mono';font-size:9.2px;letter-spacing:.14em;opacity:.9;display:flex;align-items:center;justify-content:space-between}
@@ -1269,12 +1269,12 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .arch-hd:hover .anm-arrow{transform:translateX(2.5px);background:rgba(255,255,255,.38)}
 .arch-hd .aq{font-size:9.8px;opacity:.92;line-height:1.25}
 .arch-list{padding:.85vh .6vw;display:flex;flex-direction:column;gap:.65vh;flex:1;justify-content:flex-start}
-.arch-item{background:#ffffff;border:1px solid rgba(47,61,99,.08);border-left:3px solid var(--sc,#4F46E5);border-radius:8px;padding:.75vh .58vw;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:.25vh;position:relative}
-.arch-item:hover{transform:translateY(-1.5px);border-color:rgba(var(--rgb,79,70,229),.4);border-left-color:var(--sc2,#6366F1);box-shadow:0 8px 18px -8px rgba(var(--rgb,79,70,229),.35)}
+.arch-item{background:#ffffff;border:1px solid rgba(47,61,99,.08);border-radius:8px;padding:.75vh .65vw;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:.25vh;position:relative}
+.arch-item:hover{transform:translateY(-1.5px);border-color:rgba(var(--rgb,79,70,229),.35);box-shadow:0 8px 18px -8px rgba(var(--rgb,79,70,229),.28)}
 .arch-item b{font-size:11.2px;font-weight:700;color:var(--ink);line-height:1.28}
 .arch-item span{font-size:9.5px;color:var(--ink-3);line-height:1.25}
 .arch-item em{font-style:normal;font-family:'JetBrains Mono';font-size:8.8px;font-weight:700;color:var(--sc,#4F46E5);display:inline-flex;align-items:center;gap:.3em;letter-spacing:.04em}
-.arch-span{background:linear-gradient(135deg,#1E2330 0%,#272E3F 100%);border:1px solid rgba(255,255,255,.1);border-top:3px solid;border-image:linear-gradient(90deg,#6366F1,#3B82F6,#14B8A6,#22C55E,#F59E0B,#FB7185,#A855F7) 1;border-radius:13px;padding:1.1vh 1vw;display:grid;grid-template-columns:185px 1fr;gap:1vw;align-items:center;box-shadow:0 16px 36px -20px rgba(15,20,35,.45)}
+.arch-span{background:linear-gradient(135deg,#1E2330 0%,#272E3F 100%);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:1.1vh 1vw;display:grid;grid-template-columns:185px 1fr;gap:1vw;align-items:center;box-shadow:0 16px 36px -20px rgba(15,20,35,.45)}
 .arch-span-hd{cursor:pointer;display:flex;flex-direction:column;gap:.25vh;padding-right:.9vw;border-right:1px solid rgba(255,255,255,.14);color:#fff}
 .arch-span-hd .ano{font-family:'JetBrains Mono';font-size:9.2px;letter-spacing:.14em;color:#C084FC;display:flex;align-items:center;justify-content:space-between}
 .arch-span-hd .stage-ico{width:15px;height:15px;opacity:.95;stroke-width:2.2}
@@ -1283,8 +1283,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .arch-span-hd:hover .anm-arrow{transform:translateX(2.5px);background:rgba(192,132,252,.35)}
 .arch-span-hd .aq{font-size:9.8px;color:rgba(255,255,255,.7)}
 .arch-span-items{display:grid;grid-template-columns:repeat(4,1fr);gap:.6vw}
-.arch-span-items .arch-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-left:3px solid #A855F7;backdrop-filter:blur(4px)}
-.arch-span-items .arch-item:hover{background:rgba(255,255,255,.13);border-color:rgba(168,85,247,.55);box-shadow:0 8px 18px -6px rgba(168,85,247,.4)}
+.arch-span-items .arch-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px)}
+.arch-span-items .arch-item:hover{background:rgba(255,255,255,.13);border-color:rgba(168,85,247,.45);box-shadow:0 8px 18px -6px rgba(168,85,247,.35)}
 .arch-span-items .arch-item b{color:#ffffff}
 .arch-span-items .arch-item span{color:rgba(255,255,255,.68)}
 .arch-span-items .arch-item em{color:#C084FC}
