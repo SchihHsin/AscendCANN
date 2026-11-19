@@ -198,6 +198,9 @@
   .round .chips{margin-top:7px}
 
   .empty{padding:24px 16px;font-size:12px;color:#94A3B8;line-height:1.8}
+  .searchbar{padding:10px 10px 8px;font-size:11px;color:#64748B}
+  .searchbar b{color:#0F172A}
+  mark{background:#FEF08A;color:inherit;border-radius:2px;padding:0 1px}
 
   .fab{position:fixed;right:16px;top:70px;z-index:35;border:1px solid var(--line);background:#fff;
     border-radius:10px;height:32px;padding:0 12px;font-size:11.5px;color:#334155;cursor:pointer;
@@ -322,10 +325,14 @@ const R={3:11.5,2:7.5,1:5,0:3.5};
 const WNAME={3:'核心瓶颈',2:'关键机制',1:'常规细节',0:'原子实操'};
 
 function inScene(n){ return n.refs.some(r=>sceneSet.has(r)); }
+const ROUNDMAP=new Map(ROUNDS.map(r=>[`${r.c}-${r.r}`,r]));
+const roundText=r=>(r.q+' '+r.a).toLowerCase();
+const roundHit=(r,q)=>roundText(r).includes(q);
 function matchQ(n){
   if(!state.q) return false;
   const q=state.q.toLowerCase();
-  return n.name.toLowerCase().includes(q)||n.def.toLowerCase().includes(q)||(n.pit||'').toLowerCase().includes(q);
+  if(n.name.toLowerCase().includes(q)||n.def.toLowerCase().includes(q)||(n.pit||'').toLowerCase().includes(q)) return true;
+  return n.turns.some(t=>{const r=ROUNDMAP.get(`${t.c}-${t.t}`); return r&&roundHit(r,q);});
 }
 function visibleNode(n){
   if(state.q) return matchQ(n);
@@ -523,6 +530,13 @@ function buildEdges(visSet){
 }
 
 /* ================= 渲染：节点 / 边 / 标签 ================= */
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function hl(t,q){
+  if(!q) return esc(t);
+  const i=t.toLowerCase().indexOf(q);
+  if(i<0) return esc(t);
+  return esc(t.slice(0,i))+'<mark>'+esc(t.slice(i,i+q.length))+'</mark>'+esc(t.slice(i+q.length));
+}
 let measureCtx=document.createElement('canvas').getContext('2d');
 function textW(t,fs=9.8){ measureCtx.font=fs+'px "PingFang SC",sans-serif'; return measureCtx.measureText(t).width; }
 
@@ -761,8 +775,16 @@ function renderStream(){
   sel.value=[...sel.options].some(o=>o.value===cur)?cur:'all';
   const only=sel.value==='all'?null:Number(sel.value);
 
-  const list=ROUNDS.filter(r=>sceneSet.has(r.c)&&(!only||r.c===only));
+  const q=state.q.toLowerCase();
+  let list=ROUNDS.filter(r=>sceneSet.has(r.c)&&(!only||r.c===only));
+  if(q) list=list.filter(r=>roundHit(r,q));
   const frag=document.createDocumentFragment();
+  if(q){
+    const bar=document.createElement('div');
+    bar.className='searchbar';
+    bar.innerHTML=`搜索 “${esc(state.q)}” · 命中 <b>${list.length}</b> 轮`;
+    frag.appendChild(bar);
+  }
   let last=null, wrap=null;
   list.forEach(r=>{
     if(r.c!==last){
@@ -780,8 +802,8 @@ function renderStream(){
     const chips=r.nodes.map(id=>`<button class="chip" data-node="${id}">${nodeById[id].name}</button>`).join('');
     el.innerHTML=`
       <div class="round-top"><span class="rd">第 ${r.r} 轮</span></div>
-      <div class="qa q"><span class="who">他</span><div class="tx">${r.q}</div></div>
-      <div class="qa a"><span class="who a">助手</span><div class="tx">${r.a}</div></div>
+      <div class="qa q"><span class="who">他</span><div class="tx">${hl(r.q,q)}</div></div>
+      <div class="qa a"><span class="who a">助手</span><div class="tx">${hl(r.a,q)}</div></div>
       ${chips?`<div class="chips">${chips}</div>`:''}`;
     el.querySelectorAll('.tx').forEach(t=>t.onclick=()=>t.classList.toggle('open'));
     el.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>onChip(b.dataset.node));
@@ -953,9 +975,19 @@ $('#q').addEventListener('input',e=>{
   state.q=e.target.value.trim();
   clearTimeout(window.__qt);
   window.__qt=setTimeout(()=>{
+    const q=state.q.toLowerCase();
+    renderStream();
     relayout(); fitView(true);
     const hits=visibleNodes();
-    if(state.q && hits.length===1) select(hits[0].id,{scroll:true,fly:true});
+    const rs=q?ROUNDS.filter(r=>sceneSet.has(r.c)&&roundHit(r,q)):[];
+    if(q){
+      $('#hint').textContent=`搜索“${state.q}” · ${hits.length} 个知识点 · ${rs.length} 轮原文`;
+      if(rs.length){
+        openDrawer();
+        setTimeout(()=>scrollToRound(rs[0].c,rs[0].r,false),80);
+      }
+    }
+    if(q && hits.length===1) select(hits[0].id,{scroll:true,fly:true});
   },220);
 });
 $('#zIn').onclick=()=>{view.k=Math.min(2.8,view.k*1.2);applyView();};
