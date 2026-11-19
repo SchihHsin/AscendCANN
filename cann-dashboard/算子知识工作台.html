@@ -719,7 +719,8 @@ function buildNodes(){
 function render(){
   const list=visibleNodes(); const visSet=new Set(list.map(n=>n.id));
   HITS = state.q ? new Set(list.filter(matchQ).map(n=>n.id)) : null;
-  NODES.forEach(n=>{ n.__el.style.display=visSet.has(n.id)?'':'none'; });
+  const shown = state.tl<15 ? new Set(list.filter(n=>n.firstSeen<=state.tl).map(n=>n.id)) : visSet;
+  NODES.forEach(n=>{ n.__el.style.display=shown.has(n.id)?'':'none'; });
 
   // 节点位置与尺寸
   list.forEach(n=>{
@@ -728,7 +729,7 @@ function render(){
   });
 
   // 边
-  AGG=buildEdges(visSet);
+  AGG=buildEdges(shown);
   const eg=$('#edges'); eg.innerHTML='';
   AGG.forEach(e=>{
     const A=nodeById[e.a],B=nodeById[e.b];
@@ -742,9 +743,6 @@ function render(){
   });
 
   renderDomains(list);
-  list.forEach(n=>{
-    n.__el.classList.toggle('tldim', state.tl<15 && n.firstSeen>state.tl);
-  });
   applyHighlight();
   if(typeof renderBadges==='function') renderBadges();
 }
@@ -799,7 +797,7 @@ function applyHighlight(){
       t.style.opacity = !hitDoms ? .9 : (hitDoms.has(t.dataset.dom) ? .9 : .16);
     });
     document.querySelectorAll('.eglabel').forEach(e=>e.remove());
-    const base = state.tl<15 ? '.15' : (HITS?'.22':'1');
+    const base = HITS?'.22':'1';
     AGG.forEach(e=>{
       e.__el.setAttribute('stroke-opacity', base);
       e.__el.removeAttribute('marker-end');
@@ -1288,11 +1286,14 @@ $('#pbCopy').onclick=async()=>{
 };
 
 /* 时间轴 */
+const TL_START=new Date(2026,8,1);
+const TL_OFFSET=[0,3,8,12,15,21,25,29,34,38,43,47,52,56,61];
+function tlDate(c){ const d=new Date(TL_START); d.setDate(d.getDate()+TL_OFFSET[c-1]); return d; }
 function tlLabel(){
-  if(state.tl>=15){ $('#tlLab').textContent='全部 15 段'; return; }
-  const n=ROUNDS.filter(r=>r.c===state.tl).length;
-  const shown=NODES.filter(x=>x.firstSeen<=state.tl).length;
-  $('#tlLab').textContent=`第 ${state.tl} 段 · ${shown} 个点`;
+  const el=$('#tlLab');
+  if(state.tl>=15){ el.textContent='全部 15 段'; return; }
+  const d=tlDate(state.tl);
+  el.textContent=`${d.getMonth()+1} 月 ${d.getDate()} 日 · ${dlgByN[state.tl].t}`;
 }
 function setTl(v){
   state.tl=Math.max(1,Math.min(15,v));
