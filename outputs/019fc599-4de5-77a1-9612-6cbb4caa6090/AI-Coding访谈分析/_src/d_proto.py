@@ -49,6 +49,28 @@ for n, g, x, y in PT:
               '<text x="%.1f" y="%.1f" text-anchor="%s">%s</text></g>'
               % (g, cx, cy, lx, cy + 4, anchor, n))
 
+# 相邻成组的三个圈（互为最近邻）
+import math as _m
+
+CLUSTERS = [
+    ('彭椒', '徐立桂', '#4B4BA8'),
+    ('王伟', '郑雨豪', '#B3403A'),
+    ('梁淼城', '王鹤锦', '#727B88'),
+]
+
+_pos = {n: _pt(x, y) for n, g, x, y in PT}
+_rings = ''
+for a, b, col in CLUSTERS:
+    (x1, y1), (x2, y2) = _pos[a], _pos[b]
+    cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+    dx, dy = x2 - x1, y2 - y1
+    d = _m.hypot(dx, dy)
+    ang = _m.degrees(_m.atan2(dy, dx))
+    rx, ry = d / 2 + 32, 40
+    _rings += ('<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f" fill="%s1a" stroke="%s" '
+               'stroke-dasharray="5 4" stroke-width="1.2" transform="rotate(%.1f %.1f %.1f)"/>'
+               % (cx, cy, rx, ry, col, col, ang, cx, cy))
+
 SCATTER = '''
 <div class="proto">
   <svg class="k-svg" viewBox="0 0 940 520" preserveAspectRatio="xMidYMid meet">
@@ -57,14 +79,15 @@ SCATTER = '''
     <line class="k-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>
     %s
     %s
+    %s
     <text class="k-al" x="%d" y="%d" text-anchor="start">AI 干得少</text>
     <text class="k-al" x="%d" y="%d" text-anchor="end">AI 干得多</text>
     <text class="k-al k-rot" x="%d" y="%d" text-anchor="middle" transform="rotate(-90 %d %d)">每步都查 → 敢放手</text>
   </svg>
   <div class="sc-lg"><span class="s">● 学生</span><span class="e">● 企业新员工</span><span class="muted">点的位置为研究者据访谈判断的定性定位，不构成测量值</span></div>
-  <div class="proto-take">用得多、查得紧的人落在右下：<b>AI 的产能已经进来了，人的验收没跟上</b>。</div>
+  <div class="proto-take">圈起来的三组位置最接近：<b>放手、审查、自写</b>。最值得看的是“审查”那组——用得多，查得也最细。</div>
 </div>''' % (_grid, X0, Y0 + PH, X0 + PW, Y0 + PH, X0, Y0, X0, Y0 + PH,
-              _qlab, _dots,
+              _qlab, _rings, _dots,
               X0, Y0 + PH + 26, X0 + PW, Y0 + PH + 26,
               118, Y0 + PH / 2, 118, Y0 + PH / 2)
 
