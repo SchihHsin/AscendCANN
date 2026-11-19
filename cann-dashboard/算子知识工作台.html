@@ -94,7 +94,8 @@
   .edge.dep{stroke:#C7D2E1}
   .edge.trade{stroke:#E1566F;stroke-dasharray:6 4}
   .edge.agg{stroke-opacity:.75}
-  .node{cursor:pointer}
+  .node{cursor:pointer;transition:opacity .2s}
+  .node.qdim{opacity:.12}
   .cap{stroke:none}
   .caphalo{transition:opacity .18s}
   .node:hover .caphalo,.node.sel .caphalo{opacity:.3 !important}
@@ -287,6 +288,7 @@ const nodeById=Object.fromEntries(NODES.map(n=>[n.id,n]));
 const dlgByN=Object.fromEntries(DLG.map(d=>[d.n,d]));
 const W={x:1000,y:720};
 const state={scene:'all',gran:5,domain:null,q:'',sel:null,streamAll:true};
+let HITS=null;
 let view={k:1,x:0,y:0};
 
 let ready=false;
@@ -327,15 +329,48 @@ const WNAME={3:'核心瓶颈',2:'关键机制',1:'常规细节',0:'原子实操'
 function inScene(n){ return n.refs.some(r=>sceneSet.has(r)); }
 const ROUNDMAP=new Map(ROUNDS.map(r=>[`${r.c}-${r.r}`,r]));
 const roundText=r=>(r.q+' '+r.a).toLowerCase();
-const roundHit=(r,q)=>roundText(r).includes(q);
+
+// 同义词组：任一词命中，整组生效
+const SYN=[
+ ["oom","内存不足","内存超限","workspace","ub 不够"],
+ ["编译不过","编译报错","编译失败","undefined reference","ccec"],
+ ["越界","溢出","踩内存","trap","踩坏"],
+ ["慢","性能","带宽","木桶","耗时"],
+ ["精度","误差","mare","mere","对不齐"],
+ ["对齐","32b","非对齐","对齐错误"],
+ ["多核","切分","blockdim","尾核","负载"],
+ ["双缓冲","tque","tbuf","流水"],
+ ["日志","plog","msnpureport","device 日志"],
+ ["驱动","固件","firmware","版本不匹配"],
+ ["tiling","切块","分块","tile"],
+ ["迁移","cuda","映射","搬"],
+ ["shape","动态","分档","尾块"],
+];
+function expandQ(q){
+  const out=new Set([q]);
+  SYN.forEach(g=>{ if(g.some(t=>t.includes(q)||q.includes(t))) g.forEach(t=>out.add(t)); });
+  return [...out];
+}
+function qTerms(){ return expandQ((state.q||'').toLowerCase()); }
+const anyIn=(hay,terms)=>terms.some(t=>hay.includes(t));
+const roundHit=(r,q)=>{
+  const terms=q?expandQ(q.toLowerCase()):[];
+  return anyIn(roundText(r),terms);
+};
 function matchQ(n){
   if(!state.q) return false;
-  const q=state.q.toLowerCase();
-  if(n.name.toLowerCase().includes(q)||n.def.toLowerCase().includes(q)||(n.pit||'').toLowerCase().includes(q)) return true;
-  return n.turns.some(t=>{const r=ROUNDMAP.get(`${t.c}-${t.t}`); return r&&roundHit(r,q);});
+  const terms=qTerms();
+  const own=(n.name+' '+n.def+' '+(n.pit||'')).toLowerCase();
+  if(anyIn(own,terms)) return true;
+  return n.turns.some(t=>{const r=ROUNDMAP.get(`${t.c}-${t.t}`); return r&&anyIn(roundText(r),terms);});
 }
 function visibleNode(n){
-  if(state.q) return matchQ(n);
+  if(state.q){
+    if(state.gran===1) return n.anchor;
+    if(n.w < {2:3,3:2,4:1,5:0}[state.gran]) return false;
+    if(state.domain && n.dom!==state.domain) return false;
+    return true;  // 搜索时跨场景，保留全部节点只做淡化
+  }
   if(state.gran===1) return n.anchor && inScene(n) && (!state.domain||n.dom===state.domain);
   if(n.w < {2:3,3:2,4:1,5:0}[state.gran]) return false;
   if(state.domain && n.dom!==state.domain) return false;
@@ -603,11 +638,13 @@ function buildNodes(){
 
 function render(){
   const list=visibleNodes(); const visSet=new Set(list.map(n=>n.id));
+  HITS = state.q ? new Set(list.filter(matchQ).map(n=>n.id)) : null;
   NODES.forEach(n=>{ n.__el.style.display=visSet.has(n.id)?'':'none'; });
 
   // 节点位置与尺寸
   list.forEach(n=>{
     n.__el.setAttribute('transform',`translate(${n.x.toFixed(1)},${n.y.toFixed(1)})`);
+    n.__el.classList.toggle('qdim', !!HITS && !HITS.has(n.id));
   });
 
   // 边
@@ -673,6 +710,10 @@ function applyHighlight(){
   });
   if(!focus){
     glows.forEach(g=>g.style.opacity=0);
+    AGG.forEach(e=>{
+      const on=HITS?(HITS.has(e.a)||HITS.has(e.b)):true;
+      e.__el.setAttribute('stroke-opacity',on?'1':'.06');
+    });
     document.querySelectorAll('.eglabel').forEach(e=>e.remove());
     AGG.forEach(e=>{ e.__el.setAttribute('stroke-opacity','1'); e.__el.removeAttribute('marker-end'); });
     return;
@@ -864,8 +905,8 @@ function onChip(id){
 }
 
 /* ================= 视野 ================= */
-function fitView(animate){
-  const list=visibleNodes();
+function fitView(animate,subset){
+  const list=(subset&&subset.length?subset:visibleNodes());
   if(!list.length) return;
   const pad=40;
   const minX=Math.min(...list.map(n=>n.x-n.__w/2))-pad;
@@ -992,11 +1033,13 @@ $('#q').addEventListener('input',e=>{
   window.__qt=setTimeout(()=>{
     const q=state.q.toLowerCase();
     renderStream();
-    relayout(); fitView(true);
+    relayout();
+    fitView(true, q?visibleNodes().filter(matchQ):null);
     const hits=visibleNodes();
     const rs=q?ROUNDS.filter(r=>sceneSet.has(r.c)&&roundHit(r,q)):[];
     if(q){
-      $('#hint').textContent=`搜索“${state.q}” · ${hits.length} 个知识点 · ${rs.length} 轮原文`;
+      const mh=hits.filter(matchQ).length;
+      $('#hint').textContent=`搜索“${state.q}” · 命中 ${mh} 个知识点 · ${rs.length} 轮原文（其余已淡化）`;
       if(rs.length){
         openDrawer();
         setTimeout(()=>scrollToRound(rs[0].c,rs[0].r,false),80);
