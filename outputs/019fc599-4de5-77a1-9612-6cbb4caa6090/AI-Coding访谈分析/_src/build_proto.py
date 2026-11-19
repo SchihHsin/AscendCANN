@@ -3,6 +3,7 @@ import pathlib, re, sys
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from d_slides1 import slide
 from d_proto import SCATTER, TIMELINE
+from d_seq_all import ALLSEQ
 
 base = pathlib.Path(__file__).resolve().parent.parent
 deck = (base / 'AI-Coding用户访谈分析.html').read_text(encoding='utf-8')
@@ -57,7 +58,7 @@ p2 = slide(TIMELINE, '同一条任务，六个人在不同的地方回来', '过
 
 html = ('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<title>介入方式原型</title><style>' + css + EXTRA + '</style></head><body><div id="deck">'
-        + p1 + p2 + '</div></body></html>')
+        + p1 + p2 + ALLSEQ + '</div></body></html>')
 out = base / '_proto' / '介入方式对比.html'
 out.parent.mkdir(exist_ok=True)
 out.write_text(html, encoding='utf-8')

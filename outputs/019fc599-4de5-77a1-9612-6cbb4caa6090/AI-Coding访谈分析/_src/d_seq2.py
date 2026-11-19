@@ -95,10 +95,13 @@ def render(spec):
             x1, x2 = lane_x(a), lane_x(b)
             d = 1 if b > a else -1
             o.append('<g><title>%s → %s：%s</title>' % (esc(P[a]['label']), esc(P[b]['label']), esc(m.get('detail', m['label']))))
-            o.append('<line x1="%.1f" y1="%d" x2="%.1f" y2="%d" stroke="#8C97A5" stroke-width="1.6" marker-end="url(#arr)"/>'
-                     % (x1 + d * 13, my, x2 - d * 11, my))
-            o.append('<text x="%.1f" y="%d" font-size="10.5" fill="#2F3844" text-anchor="%s">%s</text>'
-                     % (x1 + d * 26, my - 8, 'start' if d > 0 else 'end', esc(m['label'])))
+            _c = '#C0392B' if m.get('red') else '#8C97A5'
+            _mk = 'arrRed' if m.get('red') else 'arr'
+            o.append('<line x1="%.1f" y1="%d" x2="%.1f" y2="%d" stroke="%s" stroke-width="1.8" marker-end="url(#%s)"/>'
+                     % (x1 + d * 13, my, x2 - d * 11, my, _c, _mk))
+            o.append('<text x="%.1f" y="%d" font-size="10.5" fill="%s" text-anchor="%s">%s</text>'
+                     % (x1 + d * 26, my - 8, '#B3403A' if m.get('red') else '#2F3844',
+                        'start' if d > 0 else 'end', esc(m['label'])))
             o.append('<circle cx="%.1f" cy="%d" r="9" fill="#fff" stroke="%s" stroke-width="1.6"/>'
                      '<text x="%.1f" y="%d" font-size="8" font-weight="700" fill="%s" text-anchor="middle">%s</text>'
                      % (x1, my, P[a]['color'], x1, my + 3, P[a]['color'], m.get('id', 'E%d' % (si + 1))))
@@ -155,8 +158,8 @@ P4 = [{'id': DEV, 'label': '开发者', 'color': HUMAN},
       {'id': ENV, 'label': '运行环境', 'color': TOOL}]
 
 
-def M(f, t, label, detail=''):
-    return {'from': f, 'to': t, 'label': label, 'detail': detail or label}
+def M(f, t, label, detail='', red=False):
+    return {'from': f, 'to': t, 'label': label, 'detail': detail or label, 'red': red}
 
 
 Q1 = seq_slide({
