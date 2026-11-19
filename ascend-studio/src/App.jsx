@@ -40,7 +40,7 @@ import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
 import { CompositionLearningPathCanvas } from "./CompositionLearningPathCanvas.jsx";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
-import { KnowledgeGraphPage } from "./KnowledgeGraphPage";
+import { KnowledgeTaskGraph } from "./KnowledgeTaskGraph";
 import { buildHomeSuggestions } from "./home-recommendations";
 import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
@@ -86,7 +86,6 @@ import {
   IconSend,
   IconShieldCheck,
   IconSparkles,
-  IconAffiliate,
   IconSettingsAutomation,
   IconThumbDown,
   IconThumbUp,
@@ -222,7 +221,7 @@ function App() {
     if (launchTask) return "task";
     if (launchParams.has("showcaseRev") && ["classic", "explore", "combine"].includes(launchHome)) return "home";
     const savedView = readSession("main-view", null);
-    if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "knowledge", "task"].includes(savedView)) return savedView;
+    if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "task"].includes(savedView)) return savedView;
     // A home-variant query may remain in the URL after navigating into a task.
     // Use it only for a fresh session so it cannot override the saved task view on refresh.
     if (["classic", "explore", "combine"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
@@ -237,9 +236,6 @@ function App() {
     window.history.replaceState(window.history.state, "", url);
   }, []);
   useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
-  useEffect(() => {
-    if (window.location.hash === "#knowledge") setMainView("knowledge");
-  }, []);
   const [knowledgePocket, setKnowledgePocket] = useState(readKnowledgePocket);
   const [selectedPocketId, setSelectedPocketId] = useState("");
   useEffect(() => {
@@ -294,7 +290,6 @@ function App() {
   const showAutomations = mainView === "automations";
   const showCapabilities = mainView === "capabilities";
   const showKnowledgePocket = mainView === "knowledge-pocket";
-  const showKnowledgeGraph = mainView === "knowledge";
   const showTaskWorkspace = mainView === "task";
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingCompositionPath, setPendingCompositionPath] = useState(null);
@@ -386,6 +381,7 @@ function App() {
   const isPathGenerationTask = selectedTask === LEARNING_PATH_GENERATION_TASK;
   const isOfficialLearningTask = task.kind === "official-learning";
   const isLearningTask = isStandardLearningTask || isOfficialLearningTask;
+  const isKnowledgeTask = task.kind === "knowledge";
   const communityInviteMessage = supportsCommunityDraft
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
@@ -1624,7 +1620,7 @@ function App() {
         </div>
         <div className="topbar-divider" />
         <nav className="breadcrumbs" aria-label="当前位置">
-          {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : showAutomations ? <strong>自动化任务</strong> : showCapabilities ? <strong>能力库</strong> : showKnowledgeGraph ? <strong>知识图谱</strong> : showKnowledgePocket ? <strong>知识口袋</strong> : <>
+          {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : showAutomations ? <strong>自动化任务</strong> : showCapabilities ? <strong>能力库</strong> : showKnowledgePocket ? <strong>知识口袋</strong> : <>
           <span className="breadcrumb-project">{currentGroup?.name}</span><IconChevronRight className="breadcrumb-project" size={ICON_SIZE.inline} /><button className="task-title-button" type="button" title={displayTaskName(selectedTask)} aria-label="当前任务与对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={event => openMenu("chat", event)}><strong>{displayTaskName(selectedTask)}</strong><IconChevronDown size={ICON_SIZE.inline} /></button>
           </>}
         </nav>
@@ -1645,14 +1641,13 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (showKnowledgePocket ? " is-knowledge-pocket-view" : "") + (showKnowledgeGraph ? " is-knowledge-graph" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed ? " is-log-diagnostic-workspace-open" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed && !projectPanelOpen ? " is-log-format-lab-focused" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (showKnowledgePocket ? " is-knowledge-pocket-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed ? " is-log-diagnostic-workspace-open" : "") + (showTaskWorkspace && isLogDiagnosticTask && !workspace.state.collapsed && !projectPanelOpen ? " is-log-format-lab-focused" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showLearningDiscovery ? " is-current" : "")} type="button" aria-label="学习发现" title="学习发现" aria-current={showLearningDiscovery ? "page" : undefined} onClick={() => navigateMainView("learning")}><IconSparkles size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showAutomations ? " is-current" : "")} type="button" aria-label="自动化任务" title="自动化任务" aria-current={showAutomations ? "page" : undefined} onClick={() => navigateMainView("automations")}><IconSettingsAutomation size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showCapabilities ? " is-current" : "")} type="button" aria-label="能力库" title="能力库" aria-current={showCapabilities ? "page" : undefined} onClick={() => navigateMainView("capabilities")}><IconBooks size={ICON_SIZE.navigation} /></button>
-            <button className={"icon-rail-button" + (showKnowledgeGraph ? " is-current" : "")} type="button" aria-label="知识图谱" title="知识图谱" aria-current={showKnowledgeGraph ? "page" : undefined} onClick={() => navigateMainView("knowledge")}><IconAffiliate size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showKnowledgePocket ? " is-current" : "")} type="button" aria-label="知识口袋" title="知识口袋" aria-current={showKnowledgePocket ? "page" : undefined} onClick={() => navigateMainView("knowledge-pocket")}><IconBookmark size={ICON_SIZE.navigation} /></button>
           </div>
         </aside>
@@ -1706,7 +1701,7 @@ function App() {
           const created = wb.createTask({ name: taskName, groupId, goal, kind, attachments, compositionPlan });
           if (created) { setMainView("task"); setProjectPanelOpen(false); if (compositionPlan) setPendingCompositionPath(taskName); }
           return created;
-        }} /> : showKnowledgeGraph ? <KnowledgeGraphPage /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showKnowledgePocket ? <KnowledgePocketPage items={knowledgePocket.items} selectedId={selectedPocketId} onSelect={setSelectedPocketId} onSendNow={sendPocketItemNow} onSchedule={schedulePocketItem} onSignal={setPocketSignal} onRemove={removePocketItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
+        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showKnowledgePocket ? <KnowledgePocketPage items={knowledgePocket.items} selectedId={selectedPocketId} onSelect={setSelectedPocketId} onSendNow={sendPocketItemNow} onSchedule={schedulePocketItem} onSignal={setPocketSignal} onRemove={removePocketItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 自动化</span><h1 id="automations-page-title">自动化任务</h1><p>查看自动化状态，安排演示任务，或手动运行一次检查。</p></div><div className="management-page-summary"><strong>{wb.automations.filter(item => item.enabled).length}</strong><span>项已启用</span><i /><strong>{wb.automations.length}</strong><span>项任务</span></div></header>
           <div className="management-page-content"><AutomationList automations={wb.automations} onToggleAutomation={(id) => wb.setAutomations((items) => items.map((item) => item.id === id ? { ...item, enabled: !item.enabled } : item))} onRunAutomation={wb.runAutomation} onAddAutomation={(entry) => wb.setAutomations((items) => [...items, { ...entry, id: crypto.randomUUID(), enabled: true, lastRun: "" }])} /></div>
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
@@ -1889,7 +1884,9 @@ function App() {
 
         {showTaskWorkspace && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
         {showTaskWorkspace && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          {supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
+          {isKnowledgeTask
+            ? <KnowledgeTaskGraph task={task} />
+            : supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
             ? <CommunityDraftPanel draft={session.communityDraft} onUpdate={communityDraft => wb.patchSession({ communityDraft })} onClose={closeCommunityDraft} onSubmit={submitCommunityDraft} />
             : <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaInteractionChange={setAreaInteractionActive} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
