@@ -9549,3 +9549,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-20（P42 原声引用样式）
 - 按用户反馈移除原声块的左描边，改用浅色底和放大的半透明装饰引号；保留引文文本、人物及来源标注。
 - 不改变研究内容、页面序列或 API / Host / Application 边界；修改后提交并推送 origin/main。
+
+### 2026-11-20（P42 总结句与原声版式）
+- 按用户反馈移除 `rc-summary` 底色和描边，将一句话总结放在题目下、配图上；略缩插画尺寸，为原声与来源链接留出版面。
+- 保留原声、人物和出处，不改变研究结论、页面序列或 API / Host / Application 边界；修改后推送 origin/main。

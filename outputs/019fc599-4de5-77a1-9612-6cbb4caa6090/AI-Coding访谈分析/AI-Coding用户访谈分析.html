@@ -1387,13 +1387,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p42 .rc-blk{padding:.48vh .7vw;gap:.15vh}
 #p42 .rc-blk p{font-size:clamp(10.5px,.8vw,12.5px);line-height:1.4}
 #p42 .rc-blk.root{flex:0}
-#p42 .rc-summary{margin:0;padding:.65vh .75vw;border-radius:9px;background:rgba(var(--lrgb),.07);border:1px solid rgba(var(--lrgb),.16);font-size:clamp(11px,.82vw,13px);color:var(--ink-2);line-height:1.48}
+#p42 .rc-summary{margin:.35vh 0 .6vh;padding:0;border:0;background:none;font-size:clamp(11px,.82vw,13px);color:var(--ink-2);line-height:1.48}
 #p42 .rc-summary b{color:var(--lc)}
 #p42 .rc-quote{position:relative;margin:0;padding:.65vh .75vw .6vh clamp(30px,2.6vw,46px);border:0;border-radius:8px;background:rgba(var(--lrgb),.045);font-size:clamp(10.5px,.8vw,12px);line-height:1.4;color:var(--ink-2)}
 #p42 .rc-quote::before{content:"“";position:absolute;left:.45vw;top:-.35vh;font-family:Georgia,serif;font-size:clamp(42px,5vh,64px);font-weight:700;line-height:1;color:var(--lc);opacity:.16;pointer-events:none}
 #p42 .rc-quote cite{display:block;margin-top:.15vh;font-size:10px;font-style:normal;color:var(--lc)}
 #p42 .rc-refs{margin-top:0}
-#p42 .rc-visual-wrap{flex:0 0 auto;width:min(100%,300px);aspect-ratio:3/2;align-self:center;overflow:hidden;border-radius:9px;background:transparent}
+#p42 .rc-visual-wrap{flex:0 0 auto;width:min(100%,260px);aspect-ratio:3/2;align-self:center;overflow:hidden;border-radius:9px;background:transparent}
 #p42 .rc-visual{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 /* ===== 04 设计章（P45–P49）：原则 + 三大生态与工具方案 + 路线图 ===== */
 .stage-subtabs.ds-0 span.active{background:linear-gradient(135deg,#1E2330,#374151)}
@@ -2399,33 +2399,39 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 01</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p19">执行</span></div></div>
       <h4>缺少面向长程任务的“工作记忆托管”与状态可观测</h4>
-      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l1-01.jpg" alt="长任务路径中断，工作记忆碎片散落"></div>
       <p class="rc-summary">6/6 受访者手动维护上下文，切换任务后难追进度，因为工具仍把<b>线性聊天记录</b>当作工作记忆。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l1-01.jpg" alt="长任务路径中断，工作记忆碎片散落"></div>
+
+
       <blockquote class="rc-quote">“压缩过的对话会丢失记忆，clear 后也会丢失。”<cite>王鹤锦 · P21</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p20">P20 注意力管理</span><span class="rc-ref" data-jump="p21">P21 记忆缺口</span></div>
-      
+
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 02</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p19">执行</span></div></div>
       <h4>缺乏“诚实的不确定性”信号，自检流于形式</h4>
-      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l1-02.jpg" alt="看似可靠的输出下方是破裂的验证标记"></div>
-      <div class="rc-card-body" style="display:contents">
       <p class="rc-summary">受访者遇到 AI 自信出错、追问也难确认的情况，因为生成结果缺少编译、单测和结果对比等<b>外部校验</b>。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l1-02.jpg" alt="看似可靠的输出下方是破裂的验证标记"></div>
+
+      <div class="rc-card-body" style="display:contents">
+
       <blockquote class="rc-quote">“他做的是错的，但他认为他是对的。”<cite>郑雨豪 · P23</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p23">P23 失败形态</span></div>
-      
+
       </div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 03</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p12">前提</span><span class="rc-st-pill" data-jump="p31">沉淀</span></div></div>
       <h4>工具预设理想化沙盒，与真实环境及成本约束错位</h4>
-      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l1-03.jpg" alt="理想沙盒与外部环境及资源约束"></div>
       <p class="rc-summary">算力、网络与依赖卡住开工，Skill 又常绑着完整流程，因为工具默认资源充足，没把<b>可复用知识</b>从流程中拆出来。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l1-03.jpg" alt="理想沙盒与外部环境及资源约束"></div>
+
+
       <blockquote class="rc-quote">“我一般不太会用他的工作流，一般让他看里面的一些知识。”<cite>王伟 · P33</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p13">P13 资源条件</span><span class="rc-ref" data-jump="p15">P15 环境门槛</span><span class="rc-ref" data-jump="p33">P33 Skill 形态</span></div>
-      
+
     </div>
   </div>
 
