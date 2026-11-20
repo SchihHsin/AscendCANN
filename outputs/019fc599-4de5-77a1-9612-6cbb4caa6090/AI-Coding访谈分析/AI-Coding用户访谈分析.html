@@ -1403,6 +1403,19 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p42 .rc-refs{margin-top:0}
 #p42 .rc-visual-wrap{flex:0 0 auto;width:min(100%,320px);aspect-ratio:3/2;align-self:center;overflow:hidden;border-radius:9px;background:transparent}
 #p42 .rc-visual{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+/* P43–P44: match P42 root-cause card rhythm */
+#p43 .rc-deep,#p44 .rc-deep{gap:1vh}
+#p43 .rc-cards,#p44 .rc-cards{flex:0 0 auto;align-items:start}
+#p43 .rc-card,#p44 .rc-card{padding:1.1vh 1vw;gap:.35vh;overflow:hidden}
+#p43 .rc-card h4,#p44 .rc-card h4{font-size:clamp(14px,1.12vw,17px);line-height:1.35;min-height:0}
+#p43 .rc-summary,#p44 .rc-summary{margin:.15vh 0 .35vh;padding:0;border:0;background:none;font-size:clamp(11px,.82vw,13px);color:var(--ink-2);line-height:1.48}
+#p43 .rc-summary b,#p44 .rc-summary b{color:var(--lc)}
+#p43 .rc-quote,#p44 .rc-quote{position:relative;margin:0;padding:.65vh .75vw .6vh clamp(30px,2.6vw,46px);border:0;border-radius:8px;background:rgba(var(--lrgb),.045);font-size:clamp(10.5px,.8vw,12px);line-height:1.4;color:var(--ink-2)}
+#p43 .rc-quote::before,#p44 .rc-quote::before{content:"“";position:absolute;left:.45vw;top:-.35vh;font-family:Georgia,serif;font-size:clamp(42px,5vh,64px);font-weight:700;line-height:1;color:var(--lc);opacity:.16;pointer-events:none}
+#p43 .rc-quote cite,#p44 .rc-quote cite{display:block;margin-top:.15vh;font-size:10px;font-style:normal;color:var(--lc)}
+#p43 .rc-refs,#p44 .rc-refs{margin-top:0}
+#p43 .rc-visual-wrap,#p44 .rc-visual-wrap{flex:0 0 auto;width:min(100%,320px);aspect-ratio:3/2;align-self:center;overflow:hidden;border-radius:9px;background:transparent}
+#p43 .rc-visual,#p44 .rc-visual{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 /* ===== 04 设计章（P45–P49）：原则 + 三大生态与工具方案 + 路线图 ===== */
 .stage-subtabs.ds-0 span.active{background:linear-gradient(135deg,#1E2330,#374151)}
 .stage-subtabs.ds-1 span.active{background:linear-gradient(135deg,#1D4ED8,#3B82F6);box-shadow:0 2px 8px -2px rgba(29,78,216,.4)}
@@ -2634,24 +2647,27 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 01</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p16">交办</span><span class="rc-st-pill" data-jump="p24">验收</span></div></div>
       <h4>代码生成零边际成本，把瓶颈推向了“前置详设”与“后置评审”</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>写详设、贴 API、拆粒度与逐轮审查占掉约 85% 时间；动辄数千上万行 PR 人类根本审不动，连 committer 也开始让 AI 审。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>旧契约假设<b>“写得慢、读得快”</b>；AI 颠倒了读写比，却没有配套的结构化 Spec 工具与面向机器/人类分层的 diff 验收标准。</p></div>
+      <p class="rc-summary">AI 生成提速后，详设与评审仍占去约 85% 工时，因为旧协作方式仍按“写得慢、读得快”设计。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l2-01.jpg" alt="详设与评审占去工时"></div>
+      <blockquote class="rc-quote">“基本上还是得自己看，看完再告诉他不用做那么多封装。”<cite>王伟 · P18</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p17">P17 写法共同点</span><span class="rc-ref" data-jump="p18">P18 隐性工时</span><span class="rc-ref" data-jump="p26">P26 评审与交接</span></div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 02</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p12">前提</span><span class="rc-st-pill" data-jump="p19">执行</span><span class="rc-st-pill" data-jump="p28">出错</span></div></div>
       <h4>缺失细粒度信任护栏，风控全靠个人“手感”与“换模型”兜底</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>为了少点 yes 权限全开，却靠盯 thought 凭老手直觉叫停；一旦 AI 跑偏，5/6 的人直接换模型重来，没人自己接手修残局。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>缺少<b>“可回滚检查点 + 异常信号聚合”</b>的中间态机制，导致授权与风控脱钩——用户只能在全放手与全紧盯之间摇摆。</p></div>
+      <p class="rc-summary">AI 跑偏后，5/6 受访者会换模型，权限也在全放手与紧盯之间摇摆，因为工具缺少可回滚检查点和异常信号汇总。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l2-02.jpg" alt="权限两端摇摆与缺失的回滚检查点"></div>
+      <blockquote class="rc-quote">“点开他的 thought……发现那些尝试完全都不对，就让他终止。”<cite>王伟 · P22</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p14">P14 授权风险</span><span class="rc-ref" data-jump="p22">P22 交接触发</span><span class="rc-ref" data-jump="p29">P29 失败恢复</span></div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 03</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p24">验收</span><span class="rc-st-pill" data-jump="p31">沉淀</span><span class="rc-st-pill" data-jump="p36">贯穿</span></div></div>
       <h4>静态文档脱离执行现场，用户用本地文件系统绕过平台绑定</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>文档都在教怎么写对、没人教怎么错；AI 给的引用链接不进决策链；有效经验全落在本地 md/git，换工具代价几乎为零。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>研发信任严格遵循<b>“离执行越近越可信”</b>——没有实测输出与反例约束的静态知识，既帮不上排错，也留不住用户。</p></div>
+      <p class="rc-summary">用户更信执行现场的结果，静态文档难以指导排错，经验也留在本地，因为知识没有连到运行证据与反例。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l2-03.jpg" alt="静态文档与执行证据之间的断桥"></div>
+      <blockquote class="rc-quote">“其实缺的就是错误样例，他不知道怎么错的。”<cite>梁淼城 · P32</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p25">P25 验证与信任</span><span class="rc-ref" data-jump="p27">P27 知识流</span><span class="rc-ref" data-jump="p32">P32 错误样例</span><span class="rc-ref" data-jump="p38">P38 平台忠诚</span></div>
     </div>
   </div>
@@ -2692,24 +2708,27 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 01</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p31">沉淀</span></div></div>
       <h4>“亲手排错”的学习闭环被折叠，学习退化为碎片等待副产品</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>学习不再发生在专门“学”的时段，而被迫挤进等 AI 跑任务/跑实验的空档；“会用 / 能复现 / 亲手写”三档标准彻底分裂。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>工程直觉建立在<b>“有摩擦的试错与调参”</b>之上；AI 把最脏最累的排查过程打包代劳后，人拿到结果却跳过了心智建模。</p></div>
+      <p class="rc-summary">学习挤进等待 AI 的碎片时间，“会用、能复现、亲手写”开始分化，因为 AI 代劳排错也折叠了试错过程。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l3-01.jpg" alt="被跳过的亲手试错路径"></div>
+      <blockquote class="rc-quote">“我想学 vLLM，就让 AI 写规划，代码我自己写。”<cite>王鹤锦 · P35</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p34">P34 学习窗口</span><span class="rc-ref" data-jump="p35">P35 学会标准</span></div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 02</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p28">出错</span></div></div>
       <h4>归因内化：人把工具的黑盒边界误判为自己的表达失误</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>AI 给出错误实现时，开发者第一反应往往是“我详设没写清、上下文没给够”，反复自我反思并重写提示词。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>L1 隐藏了模型真实能力边界，叠加 L2<b>“写法决定成败”</b>的强体感，让开发者过度承担了系统本身的不确定性。</p></div>
+      <p class="rc-summary">AI 出错时，开发者先怪自己没写清 prompt，因为工具藏起了能力边界，协作又让人感觉成败取决于表达。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l3-02.jpg" alt="把工具边界误认为自己的表达失误"></div>
+      <blockquote class="rc-quote">“结果不好不一定是 AI 的问题，很可能是我 prompt 写得不好，或者技术路线选错。”<cite>王鹤锦 · P30</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p30">P30 失败归因</span></div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 03</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p36">贯穿</span></div></div>
       <h4>个体短期提效与团队底层理解沉淀出现“剪刀差”</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>新人借助 AI 上手明显更快、代码产出暴涨，但代码由 AI 写、PR 靠 AI 审，团队对核心算子与架构的真实理解在变薄。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>研发考核只验收<b>“任务跑通”</b>而不考核<b>“心智同步”</b>；当老手退场或遇极端线上故障时，缺乏底层直觉的风险将被集中引爆。</p></div>
+      <p class="rc-summary">新人交付更快、产出更多，但团队对核心代码的理解变薄，因为只验收任务跑通，没有确认团队是否同步理解。</p>
+      <div class="rc-visual-wrap"><img class="rc-visual" src="root-cause-assets/l3-03.jpg" alt="产出增长与团队理解变薄的剪刀差"></div>
+      <blockquote class="rc-quote">“AI 会了，我不会。”<cite>郑雨豪 · P40</cite></blockquote>
       <div class="rc-refs"><span class="rc-ref" data-jump="p40">P40 团队层面</span></div>
     </div>
   </div>
