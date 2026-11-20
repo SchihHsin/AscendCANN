@@ -1571,6 +1571,24 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .p3-compare .v{color:#C9D0DE}
 .p3-compare .v b{color:#fff}
 .p3-compare>div:nth-child(3n){border-left:1px solid rgba(255,255,255,.12)}
+
+/* P3 v4：列表在左、对照在右；引语去掉标签 */
+.p3-wrap{display:grid;grid-template-columns:minmax(0,1fr) 352px;grid-template-rows:auto 1fr;
+  gap:1.5vh 1.4vw;align-items:start;justify-content:center}
+.p3-stats{grid-column:1/-1}
+.p3-grid{grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:1vh}
+.p3-compare{grid-column:2;grid-row:2;align-self:stretch;display:flex;flex-direction:column;gap:1.2vh;
+  padding:2vh 1.1vw;justify-content:space-between}
+.cmp-title{font-family:'JetBrains Mono';font-size:9.6px;letter-spacing:.14em;color:#8E98AC}
+.cmp-g{border-top:1px solid rgba(255,255,255,.12);padding-top:1vh}
+.cmp-k{font-family:'JetBrains Mono';font-size:9.2px;letter-spacing:.1em;color:#8E98AC;margin-bottom:.55em}
+.cmp-emp,.cmp-stu{font-size:10.6px;line-height:1.55;color:#C9D0DE;display:flex;gap:.5em}
+.cmp-emp{margin-bottom:.45em}
+.cmp-emp i,.cmp-stu i{width:6px;height:6px;border-radius:50%;margin-top:.55em;flex:none}
+.cmp-emp i{background:#8F86F2}
+.cmp-stu i{background:#5FC6CE}
+.p-card-quote{border-left:2px solid rgba(75,75,168,.45);font-size:11.4px;line-height:1.55;color:#1C2128;font-weight:500}
+.p-card-quote b{color:#1C2128;font-weight:600}
 </style>
 </head>
 <body>
@@ -1616,10 +1634,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="p3-grid">
     <!-- 企业工程阵营 -->
     <div class="cohort-col emp">
-      <div class="cohort-hd">
-        <div class="ch-badge">🏢 企业工程阵营 · 3 位</div>
-        <div class="ch-meta">昇腾计算基础软件部 · 实验室测试工程师</div>
-      </div>
+      
       <div class="cohort-cards">
         <!-- 王伟 -->
         <div class="p-card">
@@ -1637,7 +1652,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </div>
           <div class="p-card-quote">
             <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            <span><b>标志性细节</b>：人工审查约 70%，与 AI 执行交替；手写详设文档把控结构</span>
+            <span>人工审查约占七成，与 AI 执行交替进行；先手写详细设计文档把控结构，再看 diff 逐轮纠正，精度对 golden、性能对 baseline 双线验收。</span>
           </div>
         </div>
         <!-- 郑雨豪 -->
@@ -1656,7 +1671,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </div>
           <div class="p-card-quote">
             <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            <span><b>标志性细节</b>：一直不太信任 AI，做完必通读 diff，清理无效封装与冗余</span>
+            <span>一直不太信任 AI，做完必通读 diff，清理无效封装与冗余；可读性差的大工程还要拆成多个 PR，才有人检视得动。</span>
           </div>
         </div>
         <!-- 彭椒 -->
@@ -1675,7 +1690,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </div>
           <div class="p-card-quote">
             <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            <span><b>标志性细节</b>：毕方直连服务器自动循环执行修正，直至测试用例全绿通过</span>
+            <span>毕方直连服务器，AI 自动循环修正直到测试用例全绿；跑完仍会自己手跑一遍，生成慢、界面拥挤、容易挂是主要抱怨。</span>
           </div>
         </div>
       </div>
@@ -1683,10 +1698,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
     <!-- 高校科研阵营 -->
     <div class="cohort-col stu">
-      <div class="cohort-hd">
-        <div class="ch-badge">🎓 高校科研阵营 · 3 位</div>
-        <div class="ch-meta">南京大学（研二 / 大四）· 杭州电子科大（研三）</div>
-      </div>
+      
       <div class="cohort-cards">
         <!-- 徐立桂 -->
         <div class="p-card">
@@ -1704,7 +1716,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </div>
           <div class="p-card-quote">
             <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            <span><b>标志性细节</b>：一个窗口实现生成、一个独立窗口验收校验，双通道分离</span>
+            <span>一个窗口实现、另一个独立窗口验收，双通道分离；Codex 降智时切到便宜模型兜底，额度决定能同时开几个 Agent。</span>
           </div>
         </div>
         <!-- 梁淼城 -->
@@ -1723,7 +1735,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </div>
           <div class="p-card-quote">
             <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            <span><b>标志性细节</b>：过度设计是最痛的点；AI 引入不必要抽象反而大幅增加理解成本</span>
+            <span>过度设计是最痛的点：AI 引入不必要的抽象、定义变量传来传去，反而大幅增加理解成本，清理常要额外一天。</span>
           </div>
         </div>
         <!-- 王鹤锦 -->
@@ -1742,7 +1754,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </div>
           <div class="p-card-quote">
             <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            <span><b>标志性细节</b>：商用额度严重不够，多 Agent 用不起；靠多模型换着用摸索方向</span>
+            <span>商用额度严重不够、多 Agent 用不起；靠 Claude Code、DeepSeek Harness、Grok 换着用探索方向，涉昇腾时切回手动。</span>
           </div>
         </div>
       </div>
@@ -1752,16 +1764,22 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <!-- 底部边界说明条 -->
   <!-- 两阵营三行对照 -->
   <div class="p3-compare">
-    <div class="ch">对照</div><div class="ch emp">企业工程阵营</div><div class="ch stu">高校科研阵营</div>
-    <div class="k">入口</div>
-    <div class="v">IDE 里用 <b>Cursor / Trae</b>，改文件和跑命令都在编辑器内</div>
-    <div class="v">客户端或 CLI，<b>Codex / Claude Code</b>，常配两个窗口分开实现与验收</div>
-    <div class="k">算力与权限</div>
-    <div class="v">组织采购、<b>黄区</b>，能碰到什么模型取决于合规与预算</div>
-    <div class="v"><b>自费租卡</b>、无 root，环境要自己搭、自己连</div>
-    <div class="k">怎么算做完</div>
-    <div class="v">精度对 golden、性能对 baseline，<b>合入前过 committer 检视</b></div>
-    <div class="v"><b>能自己复现一遍</b>才算会，benchmark 对 baseline</div>
+    <div class="cmp-title">两阵营对照</div>
+    <div class="cmp-g">
+      <div class="cmp-k">入口</div>
+      <div class="cmp-emp"><i class="d emp"></i>IDE 里用 Cursor / Trae，改文件和跑命令都在编辑器内</div>
+      <div class="cmp-stu"><i class="d stu"></i>客户端或 CLI，Codex / Claude Code，常配两个窗口分开实现与验收</div>
+    </div>
+    <div class="cmp-g">
+      <div class="cmp-k">算力与权限</div>
+      <div class="cmp-emp"><i class="d emp"></i>组织采购、黄区，能碰到什么模型取决于合规与预算</div>
+      <div class="cmp-stu"><i class="d stu"></i>自费租卡、无 root，环境要自己搭、自己连</div>
+    </div>
+    <div class="cmp-g">
+      <div class="cmp-k">怎么算做完</div>
+      <div class="cmp-emp"><i class="d emp"></i>精度对 golden、性能对 baseline，合入前过 committer 检视</div>
+      <div class="cmp-stu"><i class="d stu"></i>能自己复现一遍才算会，benchmark 对 baseline</div>
+    </div>
   </div>
 
 </div>
