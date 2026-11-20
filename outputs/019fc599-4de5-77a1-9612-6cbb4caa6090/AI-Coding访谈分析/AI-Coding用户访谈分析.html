@@ -1630,6 +1630,11 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .p3-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,auto);gap:1vh 1.2vw;align-items:stretch}
 .cohort-col{display:grid;grid-template-rows:subgrid;grid-row:span 3;gap:.8vh;background:transparent;border:0;padding:0}
 .cohort-cards{display:contents}
+
+/* 修正：容器仍是两列网格，导致数字带与对照条只占左列 —— 强制整宽纵向排布 */
+.p3-wrap{display:flex !important;flex-direction:column !important;grid-template-columns:none !important;
+  gap:1.4vh;justify-content:center;width:100%}
+.p3-stats,.p3-grid,.p3-compare{width:100%;grid-column:auto !important;grid-row:auto !important}
 </style>
 </head>
 <body>
