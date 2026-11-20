@@ -9568,3 +9568,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-20（P43–P44 根因卡片视觉统一）
 - 延续 P42 卡片结构改版 P43（L2 琥珀色）与 P44（L3 青绿色）：每项根因使用一句现象—原因总结、同风格 3:2 插画、受访者原声与来源。六张插画保存在 `root-cause-assets/l2-01.jpg` 至 `l3-03.jpg`。
 - 原声分别依据 P18、P22、P32、P35、P30、P40 既有访谈内容；未新增研究结论，不改变页面序列或 API / Host / Application 边界。
+
+### 2026-11-20（P43–P44 插画降低彩色面积）
+- 根据用户反馈，用 ImageGen 编辑 P43、P44 的六张插画：主体改为中性灰白，琥珀与青绿色只保留在关键细节；新图以 `-muted.jpg` 后缀保存，页面沿用现有结构与证据。
+- 不改变研究结论、页面序列或 API / Host / Application 边界；独立暂存本任务并推送 origin/main。
