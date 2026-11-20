@@ -9529,3 +9529,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-20（AI Coding 访谈归因页视觉试点）
 - 用户确定先按三列图文卡片试改 P42，待其评审后再决定是否推广到 P43、P44。P42 三个工具层根因分别配 ImageGen 生成的工作记忆断裂、验证缺口和理想沙盒错位插画，压缩正文并保留原发现跳转与三层导航；素材位于同目录 `root-cause-assets/l1-01.jpg` 至 `l1-03.jpg`。
 - 内容仍依据现有六人访谈分析，插画为概念隐喻，不构成新增证据；未调整页面序列或 API / Host / Application 边界。检查：`git diff --check`，HTML 结构、三张图片及证据跳转检查通过；浏览器安全策略阻止 `file:` 预览，尚待用户视觉评审。按用户要求本轮提交后立即推送 origin/main；推送及 Pages 状态以本轮实际回执为准。
+
+### 2026-11-20（AI Coding 归因试点补充原声与调整配图）
+- 根据用户反馈仅调整 P42：三张卡片分别引用 P21 王鹤锦、P23 郑雨豪、P33 王伟的访谈原声并保留出处跳转；插画移至文字下方，使用 `object-fit: contain` 保持原图比例。P43–P44 暂待用户评审后处理。
+- 原声来自现有访谈分析页，未新增研究证据；页面序列和 API / Host / Application 边界不变。验证：原声、素材路径及先文字后图片的 DOM 顺序检查和 `git diff --check` 通过；本地 `file:` 浏览器预览仍受安全策略限制。按要求提交并推送 origin/main，Pages 状态以实际发布回执为准。
