@@ -1515,7 +1515,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .p-field .val{font-size:11px;font-weight:600;color:var(--ink)}
 .tool-tag{font-size:9.2px;padding:1.5px 6px;border:1px solid rgba(47,61,99,.14);
   background:#fff;color:var(--ink-2);font-weight:500}
-.p-card-quote{background:transparent;padding:.5vh 0 0 .55vw;border-left:2px solid rgba(75,75,168,.35);
+.p-card-quote{background:transparent;padding:0;
   font-size:10.4px;line-height:1.45;color:var(--ink-2);border-radius:0}
 .p-card-quote svg{display:none}
 .p-card-quote b{color:var(--ink-3);font-weight:600;margin-right:.25em}
@@ -1552,7 +1552,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   padding:.85vh 1vw;display:grid;grid-template-columns:330px 1fr;column-gap:1.4vw;row-gap:.35vh;align-items:center}
 .p-card-top{grid-column:1;grid-row:1;width:330px}
 .p-card-mid{grid-column:2;grid-row:1;margin:0;padding:0;display:flex;gap:2vw;align-items:center}
-.p-card-quote{grid-column:1 / -1;grid-row:2;padding:0}
+.p-card-quote{grid-column:1 / -1;grid-row:2;padding:0 0 0 46px}
 .p3-stats .stat-pill{background:transparent;border:none;box-shadow:none;padding:.8vh 0}
 .p3-stats .stat-pill:nth-child(1){background:rgba(75,75,168,.10)}
 .p3-stats .stat-pill:nth-child(2){background:rgba(14,124,134,.10)}
@@ -1589,6 +1589,10 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .cmp-stu i{background:#5FC6CE}
 .p-card-quote{font-size:11.4px;line-height:1.55;color:#1C2128;font-weight:500}
 .p-card-quote b{color:#1C2128;font-weight:600}
+
+/* 引语左侧的引号图标其实是那根“竖线”，直接隐藏 */
+.p-card-quote svg{display:none !important}
+.p-card-quote span{-webkit-line-clamp:3;display:block}
 </style>
 </head>
 <body>
@@ -1651,7 +1655,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
             <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Cursor</span><span class="tool-tag">Grok</span><span class="tool-tag">Trae</span></div></div>
           </div>
           <div class="p-card-quote">
-            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
             <span>人工审查约占七成，与 AI 执行交替进行；先手写详细设计文档把控结构，再看 diff 逐轮纠正，精度对 golden、性能对 baseline 双线验收。</span>
           </div>
         </div>
@@ -1670,7 +1673,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
             <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Cursor</span><span class="tool-tag">Trae</span></div></div>
           </div>
           <div class="p-card-quote">
-            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
             <span>一直不太信任 AI，做完必通读 diff，清理无效封装与冗余；可读性差的大工程还要拆成多个 PR，才有人检视得动。</span>
           </div>
         </div>
@@ -1689,7 +1691,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
             <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">OpenCode</span><span class="tool-tag">TestAgent</span><span class="tool-tag">毕方</span></div></div>
           </div>
           <div class="p-card-quote">
-            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
             <span>毕方直连服务器，AI 自动循环修正直到测试用例全绿；跑完仍会自己手跑一遍，生成慢、界面拥挤、容易挂是主要抱怨。</span>
           </div>
         </div>
@@ -1715,7 +1716,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
             <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Codex</span><span class="tool-tag">OpenCode</span></div></div>
           </div>
           <div class="p-card-quote">
-            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
             <span>一个窗口实现、另一个独立窗口验收，双通道分离；Codex 降智时切到便宜模型兜底，额度决定能同时开几个 Agent。</span>
           </div>
         </div>
@@ -1734,7 +1734,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
             <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Codex</span><span class="tool-tag">Claude Code</span></div></div>
           </div>
           <div class="p-card-quote">
-            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
             <span>过度设计是最痛的点：AI 引入不必要的抽象、定义变量传来传去，反而大幅增加理解成本，清理常要额外一天。</span>
           </div>
         </div>
@@ -1753,7 +1752,6 @@ body.overview #panel,body.overview #toggle{display:none!important}
             <div class="p-field"><span class="lbl">核心工具</span><div class="p-tools"><span class="tool-tag">Claude Code</span><span class="tool-tag">DeepSeek</span></div></div>
           </div>
           <div class="p-card-quote">
-            <svg viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
             <span>商用额度严重不够、多 Agent 用不起；靠 Claude Code、DeepSeek Harness、Grok 换着用探索方向，涉昇腾时切回手动。</span>
           </div>
         </div>
