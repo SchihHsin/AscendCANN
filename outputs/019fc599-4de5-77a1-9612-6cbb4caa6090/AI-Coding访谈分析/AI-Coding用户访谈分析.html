@@ -1389,7 +1389,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p42 .rc-blk.root{flex:0}
 #p42 .rc-summary{margin:0;padding:.65vh .75vw;border-radius:9px;background:rgba(var(--lrgb),.07);border:1px solid rgba(var(--lrgb),.16);font-size:clamp(11px,.82vw,13px);color:var(--ink-2);line-height:1.48}
 #p42 .rc-summary b{color:var(--lc)}
-#p42 .rc-quote{margin:0;padding:.55vh .7vw;border-left:2px solid var(--lc2);background:rgba(var(--lrgb),.045);font-size:clamp(10.5px,.8vw,12px);line-height:1.4;color:var(--ink-2)}
+#p42 .rc-quote{position:relative;margin:0;padding:.65vh .75vw .6vh clamp(30px,2.6vw,46px);border:0;border-radius:8px;background:rgba(var(--lrgb),.045);font-size:clamp(10.5px,.8vw,12px);line-height:1.4;color:var(--ink-2)}
+#p42 .rc-quote::before{content:"“";position:absolute;left:.45vw;top:-.35vh;font-family:Georgia,serif;font-size:clamp(42px,5vh,64px);font-weight:700;line-height:1;color:var(--lc);opacity:.16;pointer-events:none}
 #p42 .rc-quote cite{display:block;margin-top:.15vh;font-size:10px;font-style:normal;color:var(--lc)}
 #p42 .rc-refs{margin-top:0}
 #p42 .rc-visual-wrap{flex:0 0 auto;width:min(100%,300px);aspect-ratio:3/2;align-self:center;overflow:hidden;border-radius:9px;background:transparent}
