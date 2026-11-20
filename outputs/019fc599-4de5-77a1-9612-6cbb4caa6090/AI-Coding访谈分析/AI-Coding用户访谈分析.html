@@ -1379,6 +1379,17 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .rc-foot-box p b{color:var(--ink)}
 .rc-foot-link{margin-left:auto;font-family:'JetBrains Mono';font-size:9.5px;font-weight:700;color:var(--lc);cursor:pointer;white-space:nowrap;padding:.25vh .55vw;border-radius:6px;background:rgba(var(--lrgb),.08);transition:background .14s}
 .rc-foot-link:hover{background:rgba(var(--lrgb),.16)}
+
+/* P42: visual root-cause cards */
+#p42 .rc-deep{gap:1vh}
+#p42 .rc-card{padding:1.1vh 1vw;gap:.65vh;overflow:hidden}
+#p42 .rc-visual{height:clamp(100px,17vh,180px);width:100%;object-fit:cover;object-position:center;border-radius:9px;display:block;background:#e7eaf3}
+#p42 .rc-card h4{font-size:clamp(14px,1.12vw,17px);line-height:1.35;min-height:2.7em}
+#p42 .rc-blk{padding:.55vh .7vw;gap:.2vh}
+#p42 .rc-blk p{font-size:clamp(10.5px,.8vw,12.5px);line-height:1.45}
+#p42 .rc-blk.root{flex:0}
+#p42 .rc-refs{margin-top:auto}
+
 /* ===== 04 设计章（P45–P49）：原则 + 三大生态与工具方案 + 路线图 ===== */
 .stage-subtabs.ds-0 span.active{background:linear-gradient(135deg,#1E2330,#374151)}
 .stage-subtabs.ds-1 span.active{background:linear-gradient(135deg,#1D4ED8,#3B82F6);box-shadow:0 2px 8px -2px rgba(29,78,216,.4)}
@@ -2382,27 +2393,30 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="rc-cards">
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 01</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p19">执行</span></div></div>
+      <img class="rc-visual" src="root-cause-assets/l1-01.jpg" alt="长任务路径中断，工作记忆碎片散落">
       <h4>缺少面向长程任务的“工作记忆托管”与状态可观测</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>6/6 都在手动救上下文（按目录隔离、拉进度条、手动另存 md）；多任务并发时，切屏回来完全不知道远端跑到哪一步。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>工具仍把<b>“线性聊天记录”</b>当成工程工作记忆——上下文压缩黑盒丢关键约束，长任务既无阶段进度条，也无断点续跑机制。</p></div>
+      <div class="rc-blk"><span class="bl">表面症状</span><p>6/6 受访者手动维护上下文；并行任务切换后，远端进度难以掌握。</p></div>
+      <div class="rc-blk root"><span class="bl">底层病根</span><p>工具把<b>线性聊天记录</b>当作工作记忆，压缩可能丢失约束，长任务缺少可见进度与续跑能力。</p></div>
       <div class="rc-refs"><span class="rc-ref" data-jump="p20">P20 注意力管理</span><span class="rc-ref" data-jump="p21">P21 记忆缺口</span></div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 02</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p19">执行</span></div></div>
+      <img class="rc-visual" src="root-cause-assets/l1-02.jpg" alt="看似可靠的输出下方是破裂的验证标记">
       <h4>缺乏“诚实的不确定性”信号，自检流于形式</h4>
       <div class="rc-card-body" style="display:contents">
-      <div class="rc-blk"><span class="bl">表面症状</span><p>AI 不会说“我不会”，反而会自信地编造函数名、生成极其规范的 slop；反问一句“你确定吗”往往左右脑互搏。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>模型的生成偏好是<b>“流畅补全”而非“风险暴露”</b>，且工具未把编译器、单测、golden 对比绑定成输出前的硬校验门槛。</p></div>
+      <div class="rc-blk"><span class="bl">表面症状</span><p>AI 可能自信地编造函数或生成看似规范的错误内容；追问也未必可靠。</p></div>
+      <div class="rc-blk root"><span class="bl">底层病根</span><p>流畅输出容易掩盖不确定性，编译、单测与结果对比也未必成为必要校验。</p></div>
       <div class="rc-refs"><span class="rc-ref" data-jump="p23">P23 失败形态</span></div>
       </div>
     </div>
 
     <div class="rc-card">
       <div class="rc-card-hd"><span class="rc-num">ROOT CAUSE 03</span><div class="rc-st-pills"><span class="rc-st-pill" data-jump="p12">前提</span><span class="rc-st-pill" data-jump="p31">沉淀</span></div></div>
+      <img class="rc-visual" src="root-cause-assets/l1-03.jpg" alt="理想沙盒与外部环境及资源约束">
       <h4>工具预设理想化沙盒，与真实环境及成本约束错位</h4>
-      <div class="rc-blk"><span class="bl">表面症状</span><p>算力卡位、黄区网络、依赖版本等开工门槛 AI 帮不上；官方 Skill 动辄跑完重流程、狂耗 token，用户只想拿走里面的知识。</p></div>
-      <div class="rc-blk root"><span class="bl">底层病根</span><p>产品默认<b>“无限额度 + 封闭托管”</b>假设，忽视了学生卡额度、企业卡合规的现实，把“可复用知识”强绑定成了“不可裁剪流程”。</p></div>
+      <div class="rc-blk"><span class="bl">表面症状</span><p>算力、网络和依赖仍是开工门槛；用户需要知识时，却可能被迫运行完整流程。</p></div>
+      <div class="rc-blk root"><span class="bl">底层病根</span><p>工具对资源与环境的默认假设，可能忽视额度、合规约束，并把知识绑定到难以裁剪的流程。</p></div>
       <div class="rc-refs"><span class="rc-ref" data-jump="p13">P13 资源条件</span><span class="rc-ref" data-jump="p15">P15 环境门槛</span><span class="rc-ref" data-jump="p33">P33 Skill 形态</span></div>
     </div>
   </div>
