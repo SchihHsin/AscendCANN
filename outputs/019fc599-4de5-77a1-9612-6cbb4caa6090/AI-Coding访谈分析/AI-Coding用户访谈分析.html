@@ -1541,6 +1541,36 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .p3-compare .v{font-size:11px;color:var(--ink-2);line-height:1.45}
 .p3-compare .v b{color:var(--ink);font-weight:600}
 .p3-compare>div:nth-child(3n){border-left:1px solid rgba(127,137,157,.18);padding-left:1.1vw}
+
+/* P3 v3：单列六行 + 数字带彩色 + 对照深色 */
+.p3-wrap{gap:1.5vh;justify-content:center}
+.p3-grid{grid-template-columns:1fr;gap:1vh;flex:0 1 auto}
+.cohort-col{background:transparent;border:none;box-shadow:none;backdrop-filter:none;padding:0;gap:.5vh}
+.cohort-hd{padding:0 0 .2vh}
+.cohort-cards{grid-template-columns:1fr;grid-template-rows:none;gap:.7vh}
+.p-card{background:#fff;border:1px solid rgba(47,61,99,.09);box-shadow:0 6px 16px -14px rgba(30,40,70,.3);
+  padding:.85vh 1vw;display:grid;grid-template-columns:290px 1fr;column-gap:1.2vw;row-gap:.35vh;align-items:center}
+.p-card-top{grid-column:1;grid-row:1;}
+.p-card-mid{grid-column:2;grid-row:1;margin:0;padding:0;display:flex;gap:2vw;align-items:center}
+.p-card-quote{grid-column:1 / -1;grid-row:2;border-left:2px solid rgba(75,75,168,.35);padding:.15vh 0 .15vh .6vw}
+.p3-stats .stat-pill{background:transparent;border:none;box-shadow:none;padding:.8vh 0}
+.p3-stats .stat-pill:nth-child(1){background:rgba(75,75,168,.10)}
+.p3-stats .stat-pill:nth-child(2){background:rgba(14,124,134,.10)}
+.p3-stats .stat-pill:nth-child(3){background:rgba(176,122,42,.12)}
+.p3-stats .stat-pill:nth-child(4){background:rgba(120,90,180,.10)}
+.p3-stats .stat-pill{background-clip:padding-box;border-radius:10px;padding:.9vh 1vw}
+.stat-pill:nth-child(1) .num{color:#3B3B85}
+.stat-pill:nth-child(2) .num{color:#0B6B72}
+.stat-pill:nth-child(3) .num{color:#8A5F1E}
+.stat-pill:nth-child(4) .num{color:#5B4A8C}
+.p3-compare{background:#1E2330;border-color:rgba(255,255,255,.08);box-shadow:0 16px 36px -26px rgba(10,14,24,.9)}
+.p3-compare .ch{color:#8E98AC}
+.p3-compare .ch.emp{color:#A9A6F0}
+.p3-compare .ch.stu{color:#67C7CE}
+.p3-compare .k{color:#8E98AC}
+.p3-compare .v{color:#C9D0DE}
+.p3-compare .v b{color:#fff}
+.p3-compare>div:nth-child(3n){border-left:1px solid rgba(255,255,255,.12)}
 </style>
 </head>
 <body>
@@ -1733,12 +1763,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="v">精度对 golden、性能对 baseline，<b>合入前过 committer 检视</b></div>
     <div class="v"><b>能自己复现一遍</b>才算会，benchmark 对 baseline</div>
   </div>
-<div class="p3-fn">
-      <div class="fn-tag"><i></i>研究边界与口径</div>
-    <div class="fn-txt">
-      样本为定性深度还原（思维导图手记为主 + ASR 逐字稿校对补充；手记优先），重在按时间链条还原「准备 → 编码 → 验收 → 沉淀」中的人机交互断点，不推断群体比例。
-    </div>
-  </div>
+
 </div>
 </div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
