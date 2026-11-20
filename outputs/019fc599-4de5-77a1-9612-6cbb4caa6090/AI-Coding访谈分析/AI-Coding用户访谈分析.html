@@ -1382,12 +1382,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
 
 /* P42: visual root-cause cards */
 #p42 .rc-deep{gap:1vh}
-#p42 .rc-card{padding:1.1vh 1vw;gap:.55vh;overflow:hidden}
-#p42 .rc-card h4{font-size:clamp(14px,1.12vw,17px);line-height:1.35;min-height:2.7em}
+#p42 .rc-cards{flex:0 0 auto;align-items:start}
+#p42 .rc-card{padding:1.1vh 1vw;gap:.35vh;overflow:hidden}
+#p42 .rc-card h4{font-size:clamp(14px,1.12vw,17px);line-height:1.35;min-height:0}
 #p42 .rc-blk{padding:.48vh .7vw;gap:.15vh}
 #p42 .rc-blk p{font-size:clamp(10.5px,.8vw,12.5px);line-height:1.4}
 #p42 .rc-blk.root{flex:0}
-#p42 .rc-summary{margin:.35vh 0 .6vh;padding:0;border:0;background:none;font-size:clamp(11px,.82vw,13px);color:var(--ink-2);line-height:1.48}
+#p42 .rc-summary{margin:.15vh 0 .35vh;padding:0;border:0;background:none;font-size:clamp(11px,.82vw,13px);color:var(--ink-2);line-height:1.48}
 #p42 .rc-summary b{color:var(--lc)}
 #p42 .rc-quote{position:relative;margin:0;padding:.65vh .75vw .6vh clamp(30px,2.6vw,46px);border:0;border-radius:8px;background:rgba(var(--lrgb),.045);font-size:clamp(10.5px,.8vw,12px);line-height:1.4;color:var(--ink-2)}
 #p42 .rc-quote::before{content:"“";position:absolute;left:.45vw;top:-.35vh;font-family:Georgia,serif;font-size:clamp(42px,5vh,64px);font-weight:700;line-height:1;color:var(--lc);opacity:.16;pointer-events:none}
