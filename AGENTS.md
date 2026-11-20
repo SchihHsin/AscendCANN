@@ -9572,3 +9572,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-20（P43–P44 插画降低彩色面积）
 - 根据用户反馈，用 ImageGen 编辑 P43、P44 的六张插画：主体改为中性灰白，琥珀与青绿色只保留在关键细节；新图以 `-muted.jpg` 后缀保存，页面沿用现有结构与证据。
 - 不改变研究结论、页面序列或 API / Host / Application 边界；独立暂存本任务并推送 origin/main。
+
+### 2026-11-20（P43 插画明暗层次）
+- 根据用户反馈，使用 ImageGen 重新调整 P43 三张插画：人物恢复自然肤色，主体增加深灰、中灰与浅灰的区分，琥珀色仍仅作局部强调。图片另存为 `l2-0*-contrast.jpg`。
+- 仅改变 P43 插画，不改变研究结论、页面序列或 API / Host / Application 边界；本任务独立提交并推送 origin/main。
