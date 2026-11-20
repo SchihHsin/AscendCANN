@@ -1635,6 +1635,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .p3-wrap{display:flex !important;flex-direction:column !important;grid-template-columns:none !important;
   gap:1.4vh;justify-content:center;width:100%}
 .p3-stats,.p3-grid,.p3-compare{width:100%;grid-column:auto !important;grid-row:auto !important}
+
+.cmp-head{grid-column:1 / -1;display:flex;align-items:center;gap:1.6vw;margin-bottom:.6vh}
+.cmp-t{font-family:'JetBrains Mono';font-size:9.6px;letter-spacing:.14em;color:#8E98AC}
+.cmp-head .lg{display:inline-flex;align-items:center;gap:.45em;font-size:10.2px;color:#C9D0DE}
+.cmp-head .lg i{width:6px;height:6px;border-radius:50%;display:inline-block}
+.cmp-head .lg i.emp{background:#8F86F2}
+.cmp-head .lg i.stu{background:#5FC6CE}
 </style>
 </head>
 <body>
@@ -1810,7 +1817,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <!-- 底部边界说明条 -->
   <!-- 两阵营三行对照 -->
   <div class="p3-compare">
-    <div class="cmp-title">两阵营对照</div>
+    <div class="cmp-head"><span class="cmp-t">两阵营对照</span><span class="lg"><i class="d emp"></i>企业（3 人）</span><span class="lg"><i class="d stu"></i>高校（3 人）</span></div>
     <div class="cmp-g">
       <div class="cmp-k">入口</div>
       <div class="cmp-emp"><i class="d emp"></i>IDE 里用 Cursor / Trae，改文件和跑命令都在编辑器内</div>
