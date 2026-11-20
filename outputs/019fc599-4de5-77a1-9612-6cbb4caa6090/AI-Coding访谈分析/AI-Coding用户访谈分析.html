@@ -1707,6 +1707,11 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .tp-c-h span{font-size:9.8px;color:var(--ink-3)}
 .tp-c-b{font-size:10.6px;color:var(--ink-2);line-height:1.5;margin-top:.35em}
 .tp-note{font-size:9.6px;color:var(--ink-3);line-height:1.5;margin-top:.4vh}
+
+.loy-stat{display:flex;align-items:baseline;gap:.55em;margin-bottom:.6vh;font-size:10.4px;color:var(--ink-3)}
+.loy-stat b{font-family:'JetBrains Mono';font-size:15px;color:var(--ink);font-weight:800}
+.loy-stat i{width:1px;height:12px;background:rgba(47,61,99,.18);margin:0 .8em;display:inline-block;transform:translateY(2px)}
+.loy-concl{font-size:12px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -2466,18 +2471,13 @@ body.overview #panel,body.overview #toggle{display:none!important}
     </div></div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section id="p39" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="gtag">贯穿</span><span class="ttl">没有“我的平台”：换工具的代价几乎为零</span></div><div class="subttl">发现 · 平台忠诚</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p12" class="active">02 发现</span><span data-jump="p42">03 归因</span><span data-jump="p46">04 设计</span></div><div class="stage-subtabs st-7" aria-label="细化阶段"><span data-jump="p12">总览</span><span data-jump="p13">前提</span><span data-jump="p17">交办</span><span data-jump="p20">执行</span><span data-jump="p25">验收</span><span data-jump="p29">出错</span><span data-jump="p32">沉淀</span><span data-jump="p37" class="active">贯穿</span></div></div></div><div class="body-area">
+<section id="p39" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="gtag">贯穿</span><span class="ttl">没有人固定用一个平台：六个人都在换着用</span></div><div class="subttl">发现 · 平台忠诚</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p12" class="active">02 发现</span><span data-jump="p42">03 归因</span><span data-jump="p46">04 设计</span></div><div class="stage-subtabs st-7" aria-label="细化阶段"><span data-jump="p12">总览</span><span data-jump="p13">前提</span><span data-jump="p17">交办</span><span data-jump="p20">执行</span><span data-jump="p25">验收</span><span data-jump="p29">出错</span><span data-jump="p32">沉淀</span><span data-jump="p37" class="active">贯穿</span></div></div></div><div class="body-area">
 <div class="loy">
+  <div class="loy-stat"><b>6 / 6</b><span>同时用 2 个以上工具</span><i></i><b>每人 2–3 个</b><span>同时在用的工具</span><i></i><b>4 类</b><span>换的触发：限流降智 / 任务类型 / 稳定性 / 成本</span></div>
   <div class="loy-head"><div>受访者</div><div>现在同时在用的</div><div>什么情况下换</div></div>
   <div class="loy-rows"><div class="loy-r"><div class="loy-n">王鹤锦</div><div class="loy-c"><span class="loy-t">Claude Code</span><span class="loy-ar">→</span><span class="loy-t">DeepSeek Harness</span><span class="loy-ar">→</span><span class="loy-t">Grok</span></div><div class="loy-g">限制多就换：触发 safeguard、被限流</div></div><div class="loy-r"><div class="loy-n">徐立桂</div><div class="loy-c"><span class="loy-t">Codex 客户端</span><span class="loy-ar">→</span><span class="loy-t">OpenCode + DeepSeek</span></div><div class="loy-g">觉得 DeepSeek 写代码“更干净”</div></div><div class="loy-r"><div class="loy-n">梁淼城</div><div class="loy-c"><span class="loy-t">按项目选主力</span><span class="loy-ar">→</span><span class="loy-t">DeepSeek（审美类）</span></div><div class="loy-g">任务类型决定用哪个</div></div><div class="loy-r"><div class="loy-n">王伟</div><div class="loy-c"><span class="loy-t">国外模型（复杂任务）</span><span class="loy-ar">→</span><span class="loy-t">Trae（问题单）</span></div><div class="loy-g">任务类型；“公司配的 Trae 非常卡”</div></div><div class="loy-r"><div class="loy-n">郑雨豪</div><div class="loy-c"><span class="loy-t">强模型（写码）</span><span class="loy-ar">→</span><span class="loy-t">弱模型（对话）</span></div><div class="loy-g">任务类型决定用哪个</div></div><div class="loy-r"><div class="loy-n">彭椒</div><div class="loy-c"><span class="loy-t">OpenCode</span><span class="loy-ar">→</span><span class="loy-t">手动备份到 VS Code</span></div><div class="loy-g">“生成速度慢、容易挂”</div></div></div>
   <div class="loy-bot">
-    <div class="loy-k">为什么换得动</div>
-    <div class="loy-why">
-      <div><b>沉淀物是文件，不在平台里</b><span>md、代码、Skill 都留在本地，换个工具照样接着用</span></div>
-      <div><b>迁移成本≈0</b><span>“OpenCode 里觉得有用的内容会手动保存在别的地方（VS Code）”</span></div>
-      <div><b>所以没有“我的平台”</b><span>只有“这一轮用哪个”——忠诚度是结果，不是前提</span></div>
-    </div>
-    <div class="loy-concl">产品留人不能靠“存得多、搬不走”，只能靠<b>“每次任务都更强”</b>。</div>
+    <div class="loy-concl">换的成本几乎为零：<b>沉淀是本地 md / 代码，不在平台里</b>（“有用的内容手动存到 VS Code”）。所以忠诚度是结果，留人只能靠<b>“每次任务都更强”</b>。</div>
   </div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
