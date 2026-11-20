@@ -1390,8 +1390,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p42 .rc-quote{margin:0;padding:.55vh .7vw;border-left:2px solid var(--lc2);background:rgba(var(--lrgb),.045);font-size:clamp(10.5px,.8vw,12px);line-height:1.4;color:var(--ink-2)}
 #p42 .rc-quote cite{display:block;margin-top:.15vh;font-size:10px;font-style:normal;color:var(--lc)}
 #p42 .rc-refs{margin-top:0}
-#p42 .rc-visual-wrap{flex:0 0 clamp(58px,9vh,92px);display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:9px;background:#e7eaf3}
-#p42 .rc-visual{display:block;width:100%;height:100%;min-height:0;object-fit:contain;object-position:center}
+#p42 .rc-visual-wrap{flex:0 0 auto;width:min(100%,300px);aspect-ratio:3/2;align-self:center;overflow:hidden;border-radius:9px;background:transparent}
+#p42 .rc-visual{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 /* ===== 04 设计章（P45–P49）：原则 + 三大生态与工具方案 + 路线图 ===== */
 .stage-subtabs.ds-0 span.active{background:linear-gradient(135deg,#1E2330,#374151)}
 .stage-subtabs.ds-1 span.active{background:linear-gradient(135deg,#1D4ED8,#3B82F6);box-shadow:0 2px 8px -2px rgba(29,78,216,.4)}
