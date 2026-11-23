@@ -674,6 +674,122 @@
       flex-shrink: 0;
     }
 
+    /* Quick Matcher Bar (Overview) */
+    .matcher-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+    .matcher-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .matcher-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+    .m-chip {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 5px;
+      background: var(--bg-tray);
+      color: var(--text-secondary);
+      transition: all 0.14s ease;
+    }
+    .m-chip:hover { background: var(--bg-hover); color: var(--text); }
+    .m-chip.active { background: var(--dark); color: #ffffff; }
+
+    /* Dual View Switcher (Paths: Track vs Period) */
+    .view-switch {
+      display: inline-flex;
+      background: var(--bg-tray);
+      padding: 3px;
+      border-radius: 8px;
+      gap: 2px;
+    }
+    .vs-btn {
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      transition: all 0.14s ease;
+    }
+    .vs-btn.active {
+      background: #ffffff;
+      color: var(--text);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    }
+
+    /* Architecture Node Resource Links */
+    .arch-res-line {
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding: 3px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .arch-res-badge {
+      font-size: 10.5px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--bg-tray);
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .arch-res-line a { color: var(--link-blue); }
+    .arch-res-line a:hover { text-decoration: underline; }
+
+    /* Academia 4-Step Course Application Flow */
+    .flow-tray {
+      background: var(--bg-tray);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .flow-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      position: relative;
+    }
+    .flow-num {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--link-blue);
+      margin-bottom: 4px;
+    }
+    .flow-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .flow-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
     /* ================= Tab 2: Learning Paths ================= */
     .filter-bar {
       display: flex;
@@ -1117,7 +1233,7 @@
     }
 
     @media (max-width: 960px) {
-      .role-grid, .arch-grid { grid-template-columns: repeat(2, 1fr); }
+      .role-grid, .arch-grid, .flow-steps { grid-template-columns: repeat(2, 1fr); }
       .overview-split, .honor-grid, .explore-grid { grid-template-columns: 1fr; }
       .stage-section { grid-template-columns: 1fr; gap: 10px; }
     }
@@ -1218,16 +1334,33 @@
     <!-- ==================== TAB 1: OVERVIEW (Role-Driven) ==================== -->
     <div class="tab-pane active" id="pane-overview">
 
-      <!-- Block 1: Role Selection (Visual Centerpiece) -->
+      <!-- Block 1: Role + AI Direction Quick Matcher -->
       <div class="block">
         <div class="block-head">
           <div>
-            <h2 class="block-title">选择你的角色，直达对应学习路径</h2>
-            <p class="block-sub">点击任意方向进入专属路线图；鼠标悬停在课程卡片上可实时预览大纲与前置要求</p>
+            <h2 class="block-title">快速匹配：按角色与 AI 方向直达课程</h2>
+            <p class="block-sub">按你的目标方向或可用学习周期筛选，点击卡片进入专属路线图</p>
           </div>
-          <button class="text-link" onclick="switchTab('paths')">查看全部 5 条主线 &gt;</button>
+          <button class="text-link" onclick="switchTab('paths')">查看全部路径与周期课 &gt;</button>
         </div>
         <div class="role-tray">
+          <div class="matcher-bar">
+            <div class="matcher-group" id="matchDirGroup">
+              <span class="matcher-label">AI 方向</span>
+              <button class="m-chip active" data-dir="all">全部方向</button>
+              <button class="m-chip" data-dir="llm">大模型训推</button>
+              <button class="m-chip" data-dir="operator">Ascend C 算子</button>
+              <button class="m-chip" data-dir="app">离线推理 / CV</button>
+              <button class="m-chip" data-dir="recsys">推荐与 AI 应用</button>
+            </div>
+            <div class="matcher-group" id="matchCycleGroup">
+              <span class="matcher-label">周期</span>
+              <button class="m-chip active" data-cycle="all">不限</button>
+              <button class="m-chip" data-cycle="2d">2 天上手</button>
+              <button class="m-chip" data-cycle="1w">1~2 周实战</button>
+              <button class="m-chip" data-cycle="4w">4 周+ 系统</button>
+            </div>
+          </div>
           <div class="role-grid" id="roleGrid"></div>
         </div>
       </div>
@@ -1395,26 +1528,43 @@
 
     <!-- ==================== TAB 2: LEARNING PATHS ==================== -->
     <div class="tab-pane" id="pane-paths">
-      <div class="filter-bar">
-        <div class="pill-group" id="trackPills"></div>
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div class="view-switch" id="pathViewSwitch">
+          <button class="vs-btn active" data-view="track">按方向主线（5 条）</button>
+          <button class="vs-btn" data-view="period">按周期精品课（2天 / 1周 / 2周 / 4周 / 常态）</button>
+        </div>
         <span class="role-tag" id="progressSummary" style="padding:4px 10px; font-size:12px;">已打卡 0 / 0 门</span>
       </div>
-      <div class="meta-strip" id="trackMetaStrip"></div>
-      <div class="stage-list" id="stageList"></div>
+
+      <div id="trackViewWrap">
+        <div class="filter-bar">
+          <div class="pill-group" id="trackPills"></div>
+        </div>
+        <div class="meta-strip" id="trackMetaStrip"></div>
+        <div class="stage-list" id="stageList"></div>
+      </div>
+
+      <div id="periodViewWrap" style="display:none;">
+        <div class="filter-bar">
+          <div class="pill-group" id="periodPills"></div>
+        </div>
+        <div class="meta-strip" id="periodMetaStrip"></div>
+        <div class="stage-list" id="periodStageList"></div>
+      </div>
     </div>
 
-    <!-- ==================== TAB 3: FULLSTACK MAP ==================== -->
+    <!-- ==================== TAB 3: FULLSTACK MAP (Architecture -> Docs & Atomic & Cases) ==================== -->
     <div class="tab-pane" id="pane-map">
       <div class="filter-bar">
         <div>
-          <h2 class="block-title">全栈课程体系地图（12 大技术领域）</h2>
-          <p class="block-sub">按初 / 中 / 高级筛选，鼠标悬停在任意课程上即可预览核心内容</p>
+          <h2 class="block-title">AI 软件 / CANN 架构 · 资料、原子课与实践案例</h2>
+          <p class="block-sub">按架构分层查阅参考资料、原子课程体系与实践案例，鼠标悬停即可预览要点</p>
         </div>
-        <div class="pill-group" id="levelFilter">
-          <button class="pill-btn active" data-level="all">全部难度</button>
-          <button class="pill-btn" data-level="初级">初级</button>
-          <button class="pill-btn" data-level="中级">中级</button>
-          <button class="pill-btn" data-level="高级">高级</button>
+        <div class="pill-group" id="resTypeFilter">
+          <button class="pill-btn active" data-rtype="all">全部类型</button>
+          <button class="pill-btn" data-rtype="原子课">原子课程</button>
+          <button class="pill-btn" data-rtype="资料">参考资料</button>
+          <button class="pill-btn" data-rtype="案例">实践案例</button>
         </div>
       </div>
       <div class="arch-tray" id="archMap"></div>
@@ -1422,10 +1572,43 @@
 
     <!-- ==================== TAB 4: ACADEMIA & EVENTS ==================== -->
     <div class="tab-pane" id="pane-academia">
+      <!-- 4-Step Course Application Flow -->
+      <div class="flow-tray">
+        <div class="flow-head">
+          <div>
+            <h2 class="block-title">高校开课与考核全流程指导</h2>
+            <p class="block-sub">从开课申请、班级算力配置、教学实验到 CANNJudge 考核与认证衔接的一站式支持</p>
+          </div>
+          <a class="btn btn-dark" href="https://gitcode.com/cann/cann-learning-hub/issues" target="_blank" rel="noopener">提交开课申请 &gt;</a>
+        </div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-num">STEP 01</div>
+            <div class="flow-title">开课申请与对接</div>
+            <p class="flow-desc">通过社区 Issue 或高校合作通道提交授课计划，获取专属教学对接与课程包。</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">STEP 02</div>
+            <div class="flow-title">选课与算力配置</div>
+            <p class="flow-desc">按需选用 2 天启航营至学期常态课大纲，为班级统一配置 CANNLab 云端算力。</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">STEP 03</div>
+            <div class="flow-title">教学与实验实践</div>
+            <p class="flow-desc">复用官方 PPTX、原子课程与 13 门高校共建实验代码，学生浏览器零配置实操。</p>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">STEP 04</div>
+            <div class="flow-title">考核评测与认证</div>
+            <p class="flow-desc">接入 CANNJudge 在线题库自动判题考核，并衔接昇腾开发者等级认证与赛事。</p>
+          </div>
+        </div>
+      </div>
+
       <div class="filter-bar">
         <div>
-          <h2 class="block-title">高校教学、共建课程与生态案例</h2>
-          <p class="block-sub">面向高校教师开课、学生备赛与社区共建的独立资源专区</p>
+          <h2 class="block-title">高校教学方案、共建课程与生态案例</h2>
+          <p class="block-sub">按模块浏览开源教学资源包与合作高校共建成果</p>
         </div>
         <div class="pill-group" id="hubTabs"></div>
       </div>
@@ -1527,12 +1710,71 @@
     };
 
     const ROLES = [
-      { id: "starter", targetTab: "overview", trackId: "train", name: "新手开发者", tag: "零门槛", color: "#2563eb", bg: "#eff6ff", desc: "从 CANN 第一课起步，5 节交互式课程快速跑通 NPU 环境、PyTorch 迁移与基础推理。", meta: "约 2~3 小时 · 5 节课", go: "开始第一课 →" },
-      { id: "train", targetTab: "paths", trackId: "train", name: "大模型训练工程师", tag: "主线一", color: "#4f46e5", bg: "#eef2ff", desc: "覆盖 SwanLab LoRA 微调、多卡混合精度、MindSpeed 3D 并行与 HCCL 通信优化。", meta: "约 12~16 小时 · 中级→高级", go: "进入训练主线 →" },
-      { id: "infer", targetTab: "paths", trackId: "infer", name: "大模型推理工程师", tag: "主线二", color: "#0891b2", bg: "#ecfeff", desc: "掌握 vLLM-Ascend 部署、KV Cache 显存优化、ModelSlim W8A8 量化与 PD 分离。", meta: "约 10~14 小时 · 中级→高级", go: "进入推理主线 →" },
-      { id: "operator", targetTab: "paths", trackId: "operator", name: "Ascend C 算子工程师", tag: "主线三", color: "#7c3aed", bg: "#f5f3ff", desc: "深入 AI Core 架构、Vector/Cube 编程、动态 Tiling 切分、融合算子与 msProf 调优。", meta: "约 18~24 小时 · 中级→专家", go: "进入算子主线 →" },
-      { id: "app", targetTab: "paths", trackId: "app", name: "应用开发（离线推理）", tag: "主线四", color: "#059669", bg: "#ecfdf5", desc: "系统学习 ATC 模型转换、ACL 同步/异步推理、DVPP 媒体加速与 YOLO 端到端实践。", meta: "约 8~10 小时 · 初级→中级", go: "进入应用主线 →" },
-      { id: "recsys", targetTab: "paths", trackId: "recsys", name: "推荐系统 & AI 应用", tag: "主线五", color: "#ea580c", bg: "#fff7ed", desc: "跑通 RecSDK 稀疏特征加速、CTR 排序 + 双塔召回全链路以及 RAG 知识库问答。", meta: "约 10~12 小时 · 中级", go: "进入推荐主线 →" }
+      { id: "starter", dir: "all", cycle: "2d", targetTab: "overview", trackId: "train", name: "新手开发者", tag: "2 天上手", color: "#2563eb", bg: "#eff6ff", desc: "从 CANN 第一课起步，5 节交互式课程快速跑通 NPU 环境、PyTorch 迁移与基础推理。", meta: "约 2~3 小时 · 5 节课", go: "开始第一课 →" },
+      { id: "train", dir: "llm", cycle: "1w", targetTab: "paths", trackId: "train", name: "大模型训练工程师", tag: "主线一", color: "#4f46e5", bg: "#eef2ff", desc: "覆盖 SwanLab LoRA 微调、多卡混合精度、MindSpeed 3D 并行与 HCCL 通信优化。", meta: "约 12~16 小时 · 1~2 周", go: "进入训练主线 →" },
+      { id: "infer", dir: "llm", cycle: "1w", targetTab: "paths", trackId: "infer", name: "大模型推理工程师", tag: "主线二", color: "#0891b2", bg: "#ecfeff", desc: "掌握 vLLM-Ascend 部署、KV Cache 显存优化、ModelSlim W8A8 量化与 PD 分离。", meta: "约 10~14 小时 · 1~2 周", go: "进入推理主线 →" },
+      { id: "operator", dir: "operator", cycle: "4w", targetTab: "paths", trackId: "operator", name: "Ascend C 算子工程师", tag: "主线三", color: "#7c3aed", bg: "#f5f3ff", desc: "深入 AI Core 架构、Vector/Cube 编程、动态 Tiling 切分、融合算子与 msProf 调优。", meta: "约 18~24 小时 · 4 周+", go: "进入算子主线 →" },
+      { id: "app", dir: "app", cycle: "2d", targetTab: "paths", trackId: "app", name: "应用开发（离线推理）", tag: "主线四", color: "#059669", bg: "#ecfdf5", desc: "系统学习 ATC 模型转换、ACL 同步/异步推理、DVPP 媒体加速与 YOLO 端到端实践。", meta: "约 8~10 小时 · 2 天~1 周", go: "进入应用主线 →" },
+      { id: "recsys", dir: "recsys", cycle: "1w", targetTab: "paths", trackId: "recsys", name: "推荐系统 & AI 应用", tag: "主线五", color: "#ea580c", bg: "#fff7ed", desc: "跑通 RecSDK 稀疏特征加速、CTR 排序 + 双塔召回全链路以及 RAG 知识库问答。", meta: "约 10~12 小时 · 1~2 周", go: "进入推荐主线 →" }
+    ];
+
+    const PERIOD_COURSES = [
+      {
+        id: "2d", label: "2 天启航营", audience: "零基础学生 / 企业快速导入", format: "集中工作坊 / 训练营", goal: "跑通 NPU 环境与首个模型/算子", eval: "CANNLab 随堂实操",
+        stages: [
+          { num: "DAY 01", title: "环境与模型迁移", courses: [
+            { id: "p2-1", title: "CANN 架构概览与 CANNLab 云端上手", desc: "快速理解昇腾软件栈并在浏览器完成首个张量实验。", modes: ["在线体验", "CANNLab"], preview: { points: ["昇腾硬件与 CANN 软件栈认知", "CANNLab 100h 云端环境初始化", "PyTorch 3 行代码迁移 NPU"], prereq: "Python 基础", time: "半天" } },
+            { id: "p2-2", title: "ATC 模型转换与 ACL 离线推理", desc: "完成 ONNX 到 OM 编译并跑通 ResNet/YOLO 推理。", modes: ["在线体验", "CANNLab"], preview: { points: ["ATC 命令行参数与静态/动态 Shape", "ACL 内存与上下文管理模板", "端到端推理精度核对"], prereq: "基础编程", time: "半天" } }
+          ] },
+          { num: "DAY 02", title: "算子初探与结营演练", courses: [
+            { id: "p2-3", title: "Ascend C Add 自定义算子实战", desc: "动手编写第一个核函数并体验三级流水线执行。", modes: ["在线体验", "CANNLab"], preview: { points: ["CopyIn/Compute/CopyOut 核函数编写", "CPU 侧孪生调试验证结果", "提交 CANNJudge 入门题验收"], prereq: "C/C++ 基础", time: "1 天" } }
+          ] }
+        ]
+      },
+      {
+        id: "1w", label: "1 周实训课", audience: "高校短学期实训 / 研发团队专项", format: "5 天任务驱动实训", goal: "独立完成大模型推理部署或微调项目", eval: "项目演示 + 性能基准",
+        stages: [
+          { num: "DAY 1-3", title: "核心框架与部署", courses: [
+            { id: "p1w-1", title: "vLLM-Ascend 大模型服务化部署", desc: "部署 Qwen/DeepSeek 并完成高并发压测。", modes: ["CANNLab"], preview: { points: ["PagedAttention 与连续批处理配置", "OpenAI 兼容服务接口压测", "Prefix Caching 首字延迟优化"], prereq: "Python / Linux", time: "3 天" } }
+          ] },
+          { num: "DAY 4-5", title: "微调与实验追踪", courses: [
+            { id: "p1w-2", title: "SwanLab + NPU LoRA 微调实战", desc: "完成垂直领域数据集微调与可视化评测报告。", modes: ["在线体验", "CANNLab"], preview: { points: ["LoRA 参数高效微调脚本配置", "SwanLab 实时追踪 Loss 与显存", "微调前后问答质量对比评测"], prereq: "PyTorch 基础", time: "2 天" } }
+          ] }
+        ]
+      },
+      {
+        id: "2w", label: "2 周进阶课", audience: "算法工程师 / 高校高年级课程设计", format: "双周进阶专题", goal: "掌握量化压缩、算子 Tiling 与性能调优", eval: "CANNJudge 进阶题 + 调优报告",
+        stages: [
+          { num: "WEEK 01", title: "模型压缩与算子切分", courses: [
+            { id: "p2w-1", title: "ModelSlim W8A8 量化与动态 Shape Tiling", desc: "深入权重量化与多核 Tiling 负载均衡策略。", modes: ["CANNLab"], preview: { points: ["SmoothQuant 异常值平滑与精度验证", "动态 Shape TilingData 结构体设计", "非对齐尾块处理实战"], prereq: "1 周实训基础", time: "1 周" } }
+          ] },
+          { num: "WEEK 02", title: "Profiling 瓶颈剖析", courses: [
+            { id: "p2w-2", title: "msProf 全链路性能剖析与调优", desc: "定位 AI Core 流水线气泡与显存带宽瓶颈。", modes: ["CANNLab"], preview: { points: ["采集算子与集群 Timeline 数据", "区分访存受限与计算受限算子", "迭代优化并输出性能提升报告"], prereq: "CANN 开发基础", time: "1 周" } }
+          ] }
+        ]
+      },
+      {
+        id: "4w", label: "4 周专题课", audience: "高性能计算开发者 / 竞赛备赛团队", format: "月度深度攻坚", goal: "独立开发 Cube 融合算子或千亿并行训练", eval: "竞赛真题评测 + 答辩",
+        stages: [
+          { num: "WEEK 1-2", title: "Cube 融合算子攻坚", courses: [
+            { id: "p4w-1", title: "MatMul / FlashAttention 融合算子开发", desc: "Cube 与 Vector 协同编排，逼近硬件峰值算力。", modes: ["CANNLab"], preview: { points: ["L1/L0 缓存复用与分块矩阵乘法", "在线 Softmax 融合减少 HBM 读写", "对标官方标杆性能迭代优化"], prereq: "Ascend C 中级", time: "2 周" } }
+          ] },
+          { num: "WEEK 3-4", title: "分布式集群与赛题冲刺", courses: [
+            { id: "p4w-2", title: "MindSpeed 3D 并行与 CANNJudge 赛题冲刺", desc: "掌握集群通信掩盖并完成高难度赛题打榜。", modes: ["CANNLab"], preview: { points: ["TP/PP/DP 并行切分与 HCCL 调优", "昇腾 AI 创新大赛真题解析", "自动化精度与性能回归验证"], prereq: "分布式 / 算子基础", time: "2 周" } }
+          ] }
+        ]
+      },
+      {
+        id: "term", label: "常态学期课", audience: "高校计算机 / AI 专业本科与研究生", format: "16 周学分课程（32~48 学时）", goal: "系统掌握异构计算体系结构与 AI 系统工程", eval: "平时实验 + CANNJudge 机考 + 大作业",
+        stages: [
+          { num: "MODULE 1-2", title: "体系结构与传统学科融合", courses: [
+            { id: "pt-1", title: "昇腾异构计算与传统学科实验替换包", desc: "无缝嵌入《计算机体系结构》《编译原理》《操作系统》等核心课。", modes: ["CANNLab"], preview: { points: ["00 原子课程 + 02 传统学科实验包", "配套完整教学大纲、PPTX 与教材", "13 门合作高校共建课程参考"], prereq: "高校专业基础课", time: "8 周" } }
+          ] },
+          { num: "MODULE 3-4", title: "综合课程设计与考核认证", courses: [
+            { id: "pt-2", title: "端到端 AI 系统综合大作业与等级认证", desc: "围绕大模型/推荐/CV 选题完成系统实现并衔接认证考核。", modes: ["在线体验", "CANNLab"], preview: { points: ["开源项目实战与代码评审规范", "CANNJudge 期末机考题库接入", "衔接昇腾开发者等级认证路径"], prereq: "完成前半学期实验", time: "8 周" } }
+          ] }
+        ]
+      }
     ];
 
     const FIRST_LESSONS = [
@@ -1650,35 +1892,35 @@
 
     const ARCH_LAYERS = [
       {
-        layer: "应用与框架",
+        layer: "AI 框架与场景",
         items: [
-          { name: "AI 应用与 RAG", 初级: "RAG 问答入门", 中级: "多模态检索增强", 高级: "Agent 工具编排" },
-          { name: "推荐系统 (RecSDK)", 初级: "稀疏 Embedding", 中级: "CTR 精排实战", 高级: "召回+排序全链路" },
-          { name: "离线推理 (ACL)", 初级: "ATC 模型转换", 中级: "ACL 多流并发", 高级: "DVPP 媒体加速" }
+          { name: "大模型训练 (MindSpeed)", 原子课: "PyTorch 迁移与 3D 并行", 资料: "torch_npu 与 HCCL 指南", 案例: "Qwen2.5 + SwanLab 微调" },
+          { name: "大模型推理 (vLLM-Ascend)", 原子课: "PagedAttention 与部署", 资料: "KV Cache 与 PD 分离架构", 案例: "DeepSeek MLA 推理优化" },
+          { name: "推荐与 AI 应用 (RecSDK)", 原子课: "稀疏 Embedding 与 RAG", 资料: "RecSDK API 参考手册", 案例: "CTR 排序 + 双塔召回全链路" }
         ]
       },
       {
-        layer: "训推与压缩",
+        layer: "图引擎与压缩",
         items: [
-          { name: "大模型训练", 初级: "PyTorch 迁移", 中级: "SwanLab 微调", 高级: "3D 并行与 HCCL" },
-          { name: "大模型推理", 初级: "Transformers 推理", 中级: "vLLM-Ascend 部署", 高级: "PD 分离与投机采样" },
-          { name: "模型压缩与量化", 初级: "PTQ 量化基础", 中级: "ModelSlim 平滑量化", 高级: "QAT 量化感知" }
+          { name: "离线推理 (ATC & ACL)", 原子课: "ATC 编译与多流并发", 资料: "ACL 运行时接口文档", 案例: "YOLO + DVPP 端到端检测" },
+          { name: "模型压缩 (ModelSlim)", 原子课: "PTQ / W8A8 平滑量化", 资料: "量化校准精度对齐指南", 案例: "W8A8 无损量化接入 vLLM" },
+          { name: "图编译优化 (GE)", 原子课: "计算图与图融合基础", 资料: "自定义 Pass 开发参考", 案例: "端到端图算融合加速实践" }
         ]
       },
       {
         layer: "算子与调优",
         items: [
-          { name: "Ascend C 算子", 初级: "Add / Vector 算子", 中级: "动态 Shape Tiling", 高级: "Cube 融合算子" },
-          { name: "性能调优 (msProf)", 初级: "Profiling 采集", 中级: "算子耗时分析", 高级: "流水线瓶颈消除" },
-          { name: "图编译与优化 (GE)", 初级: "计算图概念", 中级: "图融合规则", 高级: "自定义 Pass" }
+          { name: "Ascend C 编程语言", 原子课: "Vector/Cube 三级流水线", 资料: "Ascend C API 与 Tiling 手册", 案例: "FlashAttention 融合算子" },
+          { name: "性能剖析 (msProf)", 原子课: "Profiling 采集与气泡分析", 资料: "AI Core 指标解读手册", 案例: "消除 MTE 搬运瓶颈实战" },
+          { name: "孪生调试与测试", 原子课: "CPU 侧精度快速验证", 资料: "UT/ST 自动化测试规范", 案例: "动态 Shape 边界测试集" }
         ]
       },
       {
-        layer: "生态与教学",
+        layer: "基础与教学生态",
         items: [
-          { name: "CANN 基础", 初级: "CANN 第一课", 中级: "CANNLab 远程开发", 高级: "多版本工具链" },
-          { name: "高校学科课程", 初级: "启航营 / 原子课", 中级: "传统学科融合", 高级: "新课大纲与教材" },
-          { name: "赛事与认证", 初级: "CANNJudge 题库", 中级: "算子/推理赛题", 高级: "等级认证路径" }
+          { name: "CANN 基础环境", 原子课: "CANN 第一课（01~05）", 资料: "CANN 9.0.0 版本与安装", 案例: "CANNLab 100h 云端实战" },
+          { name: "高校课程体系", 原子课: "00 原子课 / 01 启航营", 资料: "04 教材区与教学 PPTX", 案例: "13 门高校共建课程案例" },
+          { name: "评测与竞赛", 原子课: "CANNJudge 刷题入门", 资料: "等级认证知识点映射", 案例: "昇腾创新大赛优秀方案" }
         ]
       }
     ];
@@ -1737,8 +1979,12 @@
     // State
     let activeTab = "overview";
     let activeStep = 0;
+    let matchDir = "all";
+    let matchCycle = "all";
+    let activePathView = "track";
     let activeTrackId = "train";
-    let activeLevel = "all";
+    let activePeriodId = "2d";
+    let activeResType = "all";
     let activeHub = "university";
     let activeBlogCat = "all";
     let completed = JSON.parse(localStorage.getItem("cann_hub_done_v3") || "{}");
@@ -1787,24 +2033,33 @@
     }
     function hideHoverCard() { hoverCard.classList.remove("visible"); }
 
-    // Render Overview
+    // Render Overview (with Quick Matcher)
     function renderOverview() {
-      document.getElementById("roleGrid").innerHTML = ROLES.map(r => `
-        <div class="role-card" onclick="enterRole('${r.targetTab}', '${r.trackId}')">
-          <div>
-            <div class="role-top">
-              <div class="role-icon-box" style="background:${r.bg}; color:${r.color};">${ICONS[r.id]}</div>
-              <span class="role-tag">${r.tag}</span>
+      const matched = ROLES.filter(r =>
+        (matchDir === "all" || r.dir === matchDir || r.dir === "all") &&
+        (matchCycle === "all" || r.cycle === matchCycle)
+      );
+      const grid = document.getElementById("roleGrid");
+      if (!matched.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1; background:#fff; border-radius:10px; padding:28px; text-align:center; color:var(--text-secondary);">当前组合暂无精确匹配，可点击 <button class="text-link" style="color:var(--link-blue); font-weight:600;" onclick="resetMatcher()">重置筛选</button> 或直接浏览周期精品课。</div>`;
+      } else {
+        grid.innerHTML = matched.map(r => `
+          <div class="role-card" onclick="enterRole('${r.targetTab}', '${r.trackId}')">
+            <div>
+              <div class="role-top">
+                <div class="role-icon-box" style="background:${r.bg}; color:${r.color};">${ICONS[r.id]}</div>
+                <span class="role-tag">${r.tag}</span>
+              </div>
+              <div class="role-name" style="margin-top:14px;">${r.name}</div>
+              <p class="role-desc">${r.desc}</p>
             </div>
-            <div class="role-name" style="margin-top:14px;">${r.name}</div>
-            <p class="role-desc">${r.desc}</p>
+            <div class="role-foot">
+              <span>${r.meta}</span>
+              <span class="role-go">${r.go}</span>
+            </div>
           </div>
-          <div class="role-foot">
-            <span>${r.meta}</span>
-            <span class="role-go">${r.go}</span>
-          </div>
-        </div>
-      `).join("");
+        `).join("");
+      }
 
       document.getElementById("newsList").innerHTML = NEWS.map(n => `
         <div class="notice-card">
@@ -1812,6 +2067,14 @@
           <div class="notice-time">${n.date}</div>
         </div>
       `).join("");
+    }
+
+    function resetMatcher() {
+      matchDir = "all";
+      matchCycle = "all";
+      document.querySelectorAll("#matchDirGroup .m-chip").forEach(b => b.classList.toggle("active", b.dataset.dir === "all"));
+      document.querySelectorAll("#matchCycleGroup .m-chip").forEach(b => b.classList.toggle("active", b.dataset.cycle === "all"));
+      renderOverview();
     }
 
     function enterRole(tab, trackId) {
@@ -1889,15 +2152,62 @@
     }
 
     function selectTrack(id) { activeTrackId = id; renderPaths(); }
+    function selectPeriod(id) { activePeriodId = id; renderPeriodCourses(); }
+
+    function renderPeriodCourses() {
+      document.getElementById("periodPills").innerHTML = PERIOD_COURSES.map(p =>
+        `<button class="pill-btn ${p.id===activePeriodId?'active':''}" onclick="selectPeriod('${p.id}')">${p.label}</button>`
+      ).join("");
+      const p = PERIOD_COURSES.find(x => x.id === activePeriodId);
+      document.getElementById("periodMetaStrip").innerHTML = `
+        <div><div class="meta-k">适用对象</div><div class="meta-v">${p.audience}</div></div>
+        <div><div class="meta-k">课程形态</div><div class="meta-v">${p.format}</div></div>
+        <div><div class="meta-k">核心目标</div><div class="meta-v">${p.goal}</div></div>
+        <div><div class="meta-k">考核与验收</div><div class="meta-v">${p.eval}</div></div>
+      `;
+      document.getElementById("periodStageList").innerHTML = p.stages.map(st => `
+        <div class="stage-section">
+          <div class="stage-rail">
+            <div class="stage-num">${st.num}</div>
+            <div class="stage-label">${st.title}</div>
+          </div>
+          <div class="stage-cards">
+            ${st.courses.map(c => {
+              coursePreviewMap[c.id] = { kicker: `${p.label} · ${st.num}`, title: c.title, ...c.preview };
+              const isDone = !!completed[c.id];
+              return `
+                <div class="course-card ${isDone?'done':''}" data-preview="${c.id}">
+                  <div>
+                    <div class="course-head">
+                      <div class="course-name">${c.title}</div>
+                      <button class="check-btn ${isDone?'checked':''}" title="标记完成" onclick="event.stopPropagation(); toggleDone('${c.id}')">✓</button>
+                    </div>
+                    <p class="course-desc">${c.desc}</p>
+                  </div>
+                  <div class="course-foot">
+                    <span class="hint-hover">悬停预览大纲</span>
+                    <div style="display:flex; gap:6px;">
+                      ${c.modes.map(m => `<a class="mini-link ${m==='CANNLab'?'blue':''}" href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener">${m==='CANNLab'?'open in CANNLab':'在线体验'}</a>`).join("")}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+
     function toggleDone(id) {
       if (completed[id]) delete completed[id]; else completed[id] = true;
       localStorage.setItem("cann_hub_done_v3", JSON.stringify(completed));
       renderPaths();
+      renderPeriodCourses();
     }
 
-    // Render Fullstack Map
+    // Render Fullstack Map (CANN Architecture -> Atomic Courses, Docs, Cases)
     function renderArchMap() {
-      const levels = activeLevel === "all" ? ["初级", "中级", "高级"] : [activeLevel];
+      const types = activeResType === "all" ? ["原子课", "资料", "案例"] : [activeResType];
       document.getElementById("archMap").innerHTML = ARCH_LAYERS.map(layer => `
         <div class="arch-row">
           <div class="arch-cat">${layer.layer}</div>
@@ -1905,16 +2215,16 @@
             ${layer.items.map((it, idx) => `
               <div class="arch-card">
                 <div class="arch-card-title">${it.name}</div>
-                ${levels.map(lv => {
-                  const key = `map-${layer.layer}-${idx}-${lv}`;
+                ${types.map(tp => {
+                  const key = `map-${layer.layer}-${idx}-${tp}`;
                   coursePreviewMap[key] = {
-                    kicker: `${it.name} · ${lv}课程`,
-                    title: it[lv],
-                    points: [`覆盖 ${it.name} 的${lv}核心知识点`, "提供完整 Notebook / CANNLab 实操代码", "可直接关联对应学习主线进阶"],
-                    prereq: lv === "初级" ? "Python 基础" : "完成前置阶课程",
-                    time: lv === "初级" ? "约 1.5 小时" : "约 3 小时"
+                    kicker: `${it.name} · ${tp}`,
+                    title: it[tp],
+                    points: [`归属 ${layer.layer} 层核心能力模块`, `提供配套 ${tp} 与可运行代码索引`, "支持结合学习路径与高校课程包复用"],
+                    prereq: "CANN 9.0.0",
+                    time: tp === "原子课" ? "约 1.5~3 小时" : (tp === "案例" ? "端到端实战" : "随时查阅")
                   };
-                  return `<div class="arch-line"><span>${lv}：</span><a href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener" data-preview="${key}">${it[lv]}</a></div>`;
+                  return `<div class="arch-res-line"><span class="arch-res-badge">${tp}</span><a href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener" data-preview="${key}">${it[tp]}</a></div>`;
                 }).join("")}
               </div>
             `).join("")}
@@ -2026,11 +2336,34 @@
     }
 
     // Bind filters
-    document.getElementById("levelFilter").addEventListener("click", e => {
-      const btn = e.target.closest("[data-level]");
+    document.getElementById("matchDirGroup").addEventListener("click", e => {
+      const btn = e.target.closest("[data-dir]");
       if (!btn) return;
-      activeLevel = btn.dataset.level;
-      document.querySelectorAll("#levelFilter .pill-btn").forEach(b => b.classList.toggle("active", b.dataset.level === activeLevel));
+      matchDir = btn.dataset.dir;
+      document.querySelectorAll("#matchDirGroup .m-chip").forEach(b => b.classList.toggle("active", b.dataset.dir === matchDir));
+      renderOverview();
+    });
+    document.getElementById("matchCycleGroup").addEventListener("click", e => {
+      const btn = e.target.closest("[data-cycle]");
+      if (!btn) return;
+      matchCycle = btn.dataset.cycle;
+      document.querySelectorAll("#matchCycleGroup .m-chip").forEach(b => b.classList.toggle("active", b.dataset.cycle === matchCycle));
+      renderOverview();
+    });
+    document.getElementById("pathViewSwitch").addEventListener("click", e => {
+      const btn = e.target.closest("[data-view]");
+      if (!btn) return;
+      activePathView = btn.dataset.view;
+      document.querySelectorAll("#pathViewSwitch .vs-btn").forEach(b => b.classList.toggle("active", b.dataset.view === activePathView));
+      document.getElementById("trackViewWrap").style.display = activePathView === "track" ? "block" : "none";
+      document.getElementById("periodViewWrap").style.display = activePathView === "period" ? "block" : "none";
+      hideHoverCard();
+    });
+    document.getElementById("resTypeFilter").addEventListener("click", e => {
+      const btn = e.target.closest("[data-rtype]");
+      if (!btn) return;
+      activeResType = btn.dataset.rtype;
+      document.querySelectorAll("#resTypeFilter .pill-btn").forEach(b => b.classList.toggle("active", b.dataset.rtype === activeResType));
       renderArchMap();
     });
     document.getElementById("hubTabs").addEventListener("click", e => {
@@ -2056,6 +2389,7 @@
     renderOverview();
     renderWorkflow();
     renderPaths();
+    renderPeriodCourses();
     renderArchMap();
     renderHub();
     renderBlogs();
