@@ -1050,13 +1050,14 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
     }
     .course-card:hover {
       border-color: rgba(22, 119, 255, 0.35);
       box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+      transform: translateY(-1px);
     }
-    .course-card.done { background: #fafcfb; border-color: #bbf7d0; }
     .course-head {
       display: flex;
       align-items: flex-start;
@@ -1757,7 +1758,6 @@
           <button class="vs-btn active" data-view="track">按方向主线（5 条）</button>
           <button class="vs-btn" data-view="period">按周期精品课（2天 / 1周 / 2周 / 4周 / 常态）</button>
         </div>
-        <span class="role-tag" id="progressSummary" style="padding:4px 10px; font-size:12px;">已打卡 0 / 0 门</span>
       </div>
 
       <div id="trackViewWrap">
@@ -2497,19 +2497,18 @@
           <div class="stage-cards">
             ${st.courses.map(c => {
               coursePreviewMap[c.id] = { kicker: `${tr.label} · ${st.num}`, title: c.title, ...c.preview };
-              const isDone = !!completed[c.id];
               return `
-                <div class="course-card ${isDone?'done':''}" data-preview="${c.id}">
+                <div class="course-card" data-preview="${c.id}" onclick="window.open('https://gitcode.com/cann/cann-learning-hub', '_blank', 'noopener')">
                   <div>
                     <div class="course-head">
                       <div class="course-name">${c.title}</div>
-                      <button class="check-btn ${isDone?'checked':''}" title="标记完成" onclick="event.stopPropagation(); toggleDone('${c.id}')">✓</button>
+                      <span class="role-tag">${c.preview.time}</span>
                     </div>
                     <p class="course-desc">${c.desc}</p>
                   </div>
                   <div class="course-foot">
-                    <span class="hint-hover">悬停预览大纲</span>
-                    <div style="display:flex; gap:6px;">
+                    <span class="hint-hover">点击进入课程 · 悬停预览大纲</span>
+                    <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
                       ${c.modes.map(m => `<a class="mini-link ${m==='CANNLab'?'blue':''}" href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener">${m==='CANNLab'?'open in CANNLab':'在线体验'}</a>`).join("")}
                     </div>
                   </div>
@@ -2519,9 +2518,6 @@
           </div>
         </div>
       `).join("");
-
-      const total = TRACKS.reduce((a, t) => a + t.stages.reduce((s, st) => s + st.courses.length, 0), 0);
-      document.getElementById("progressSummary").textContent = `已打卡 ${Object.keys(completed).length} / ${total} 门课程`;
     }
 
     function selectTrack(id) { activeTrackId = id; renderPaths(); }
@@ -2547,19 +2543,18 @@
           <div class="stage-cards">
             ${st.courses.map(c => {
               coursePreviewMap[c.id] = { kicker: `${p.label} · ${st.num}`, title: c.title, ...c.preview };
-              const isDone = !!completed[c.id];
               return `
-                <div class="course-card ${isDone?'done':''}" data-preview="${c.id}">
+                <div class="course-card" data-preview="${c.id}" onclick="window.open('https://gitcode.com/cann/cann-learning-hub', '_blank', 'noopener')">
                   <div>
                     <div class="course-head">
                       <div class="course-name">${c.title}</div>
-                      <button class="check-btn ${isDone?'checked':''}" title="标记完成" onclick="event.stopPropagation(); toggleDone('${c.id}')">✓</button>
+                      <span class="role-tag">${c.preview.time}</span>
                     </div>
                     <p class="course-desc">${c.desc}</p>
                   </div>
                   <div class="course-foot">
-                    <span class="hint-hover">悬停预览大纲</span>
-                    <div style="display:flex; gap:6px;">
+                    <span class="hint-hover">点击进入课程 · 悬停预览大纲</span>
+                    <div style="display:flex; gap:6px;" onclick="event.stopPropagation()">
                       ${c.modes.map(m => `<a class="mini-link ${m==='CANNLab'?'blue':''}" href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener">${m==='CANNLab'?'open in CANNLab':'在线体验'}</a>`).join("")}
                     </div>
                   </div>
