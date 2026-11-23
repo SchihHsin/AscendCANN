@@ -9587,4 +9587,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-11-23（docs-card-options Hero 右侧 3D 插画）
 - 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 提供了三种 3D 图形方案供用户选择；用户选定方案 B（三层软件栈计算板）。直接对原版方案 B 通过 macOS Vision `VNGenerateForegroundInstanceMaskRequest` 抠出透明 PNG 主体（`cann-dashboard/assets/cann-docs-hero-layers.png`，引用加 `?v=2` 破除缓存），完整保留圆润磨砂玻璃质感与通透色彩，彻底去掉背景和阴影噪点。
-- Hero 上半主体保持亮白 `#FFFFFF`，去掉全屏扁平散点，改为紧贴右侧 3D 主体周围、沿双交叉椭圆轨道**有规律对称分布的 3D 装饰元素**（等轴测磨砂冰玻璃小立方体、3D 高光球体与磨砂玻璃小方片），下边缘锚定三色虹彩柔光（`.hero-banner-bg`），下方画布为中性冷灰 `#ECEFF5`；仅暂存本任务文件并推送 `origin/main`。
+- 去掉全屏扁平散点，改为紧贴右侧 3D 主体周围、沿双交叉椭圆轨道**有规律对称分布的 3D 装饰元素**（等轴测磨砂冰玻璃小立方体、3D 高光球体与磨砂玻璃小方片）；Hero 底色加深为浅冰蓝紫渐变（`#F5F7FE → #E8EEFC`）并增强下边缘蓝/紫/珊瑚粉三色虹彩柔光（`.hero-banner-bg`），与下方 `#ECEFF5` 冷灰画布形成更明确的层次；仅暂存本任务文件并推送 `origin/main`。
