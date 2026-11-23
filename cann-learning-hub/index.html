@@ -1534,12 +1534,7 @@
               <textarea id="aiChatInput" rows="2" placeholder="向 CANN AI 学习助手提问：告诉我你的基础、想做的事或可用时间，直接为你匹配路线与课程..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitAiMatch();}"></textarea>
             </div>
             <div class="ai-composer-foot">
-              <div class="ai-prompts" id="aiQuickPrompts">
-                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('我是新手，只有 2 天时间想把 PyTorch 迁到 NPU')">2 天迁移 PyTorch</button>
-                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('想用 vLLM-Ascend 部署 DeepSeek 并做量化')">部署 DeepSeek 与量化</button>
-                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('想从零学 Ascend C 写融合算子并备赛')">零基础学 Ascend C</button>
-                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('我是高校老师，想开一门 16 周的昇腾实践课')">高校 16 周开课</button>
-              </div>
+              <span style="font-size:11.5px; color:var(--text-muted);">CANN AI 学习助手 · 支持描述基础、目标与可用周期</span>
               <div class="ai-send-wrap">
                 <span style="font-size:11px; color:var(--text-muted);">Enter 发送</span>
                 <button type="submit" class="ai-send-btn" title="发送匹配">
@@ -2772,6 +2767,23 @@
     renderHub();
     renderBlogs();
     renderPrereqs();
+
+    // Gentle rotating placeholder examples for the AI composer
+    const AI_PLACEHOLDERS = [
+      "例如：我没学过 C++，只有 2 天时间，想把 PyTorch 模型迁到 NPU...",
+      "例如：想用 vLLM-Ascend 部署 DeepSeek 并做 W8A8 量化，该看哪些课程？",
+      "例如：我是高校老师，想给大三学生开一门带算子实验的 16 周实践课...",
+      "例如：想从零学 Ascend C 融合算子开发并参加昇腾创新大赛..."
+    ];
+    let phIdx = 0;
+    const aiInputEl = document.getElementById("aiChatInput");
+    aiInputEl.placeholder = AI_PLACEHOLDERS[0];
+    setInterval(() => {
+      if (document.activeElement !== aiInputEl && !aiInputEl.value) {
+        phIdx = (phIdx + 1) % AI_PLACEHOLDERS.length;
+        aiInputEl.placeholder = AI_PLACEHOLDERS[phIdx];
+      }
+    }, 4500);
   </script>
 </body>
 </html>
