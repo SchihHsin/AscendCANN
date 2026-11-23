@@ -834,3 +834,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 `main` 与 `origin/main` 处于分叉状态：本地领先 19 个提交（含算子知识图谱、15 次对话等未推送内容），落后 1168 个提交
 - 为确保只发布这一个文件，本次提交用 `read-tree origin/main` + `update-index` + `commit-tree` 的方式直接建立在 `origin/main` 之上，再以 `git push origin <sha>:refs/heads/main` 推送；**未移动本地 main 分支，未触碰工作区里 195 个未提交改动**
 - 后续若要恢复常规 `git push`，需先处理本地 main 与远端的分叉（本地那 19 个提交仍未推送）
+
+### 2026-11-23（本会话）
+
+#### docs-card-options.html 首屏去掉「布局要点」提示卡
+
+- 删除 Hero 检索区右上角的 `#layoutHintBox`（标题「布局要点：架构分层 Bento 布局」+ 一段说明文字）
+- 该块无任何 JS 引用（`layoutHintBox` / `hintTitle` / `hintDesc` 仅出现于 HTML 本身），纯静态代码块，删除后无副作用
+- 首屏 Hero 现在只保留左侧内容列（标题 / 版本说明 / 搜索框 / 高频直达胶囊）
+- commit `2dfb1d72`，已 push 至 `origin/main`
