@@ -9587,4 +9587,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-11-23（docs-card-options Hero 右侧 3D 插画）
 - 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 提供了三种 3D 图形方案供用户选择；用户选定方案 B（三层软件栈计算板），保存至 `cann-dashboard/assets/cann-docs-hero-layers.jpg`（重命名以彻底清除旧图缓存）。
-- 去掉点阵背景，Hero 采用蓝紫 × 珊瑚粉三色虹彩弥散光晕（`.hero-banner-bg`）配合底边微投影，下方画布压深为中性冷灰 `#ECEFF5`，拉开首屏与 Bento 卡片区层次；右侧以 `h-[240px] xl:h-[260px] object-contain` 配合 `closest-side` 径向边缘淡出遮罩（`.hero-3d-art`）呈现完整 3D 图形，仅暂存本任务文件并推送 `origin/main`。
+- 去掉点阵背景，Hero 上半主体保持纯净亮白 `#FFFFFF`，仅在**下边缘**锚定蓝、紫、珊瑚粉三色虹彩柔光（`.hero-banner-bg`）配合底边微投影，下方画布为中性冷灰 `#ECEFF5`，拉开首屏与 Bento 卡片区层次；右侧以 `h-[240px] xl:h-[260px] object-contain` 配合 `closest-side` 径向边缘淡出遮罩（`.hero-3d-art`）呈现完整 3D 图形，仅暂存本任务文件并推送 `origin/main`。
