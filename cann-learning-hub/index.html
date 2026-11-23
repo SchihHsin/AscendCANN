@@ -674,45 +674,68 @@
       flex-shrink: 0;
     }
 
-    /* Conversational AI Course Matcher (Overview) */
-    .ai-matcher {
-      background: #ffffff;
-      border-radius: var(--radius-md);
-      padding: 16px 18px;
-      margin-bottom: 14px;
-      border: 1px solid var(--border-subtle);
+    /* Conversational AI Composer (Overview) */
+    .ai-composer-shell {
+      border-radius: var(--radius-lg);
+      padding: 1.5px;
+      background: linear-gradient(120deg, rgba(99, 102, 241, 0.22), rgba(22, 119, 255, 0.16), rgba(244, 63, 94, 0.14));
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04);
+      margin-bottom: 16px;
     }
-    .ai-input-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-tray);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 6px 8px 6px 14px;
-      transition: border-color 0.15s ease, background 0.15s ease;
-    }
-    .ai-input-row:focus-within {
+    .ai-composer {
       background: #ffffff;
-      border-color: rgba(22, 119, 255, 0.45);
+      border-radius: 12.5px;
+      padding: 14px 16px 12px;
+      transition: box-shadow 0.18s ease;
+    }
+    .ai-composer:focus-within {
       box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
     }
-    .ai-input-row input {
+    .ai-composer-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .ai-composer-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+      color: #4f46e5;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .ai-composer textarea {
       flex: 1;
       border: none;
       outline: none;
+      resize: none;
       background: transparent;
-      font-size: 13px;
+      font-family: inherit;
+      font-size: 13.5px;
+      line-height: 1.55;
       color: var(--text);
-      min-width: 0;
+      min-height: 44px;
+      max-height: 120px;
     }
-    .ai-input-row input::placeholder { color: var(--text-muted); }
+    .ai-composer textarea::placeholder { color: var(--text-muted); }
+    .ai-composer-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f1f3f6;
+    }
     .ai-prompts {
       display: flex;
       align-items: center;
       gap: 6px;
       flex-wrap: wrap;
-      margin-top: 10px;
     }
     .ai-prompt-chip {
       font-size: 11.5px;
@@ -723,6 +746,84 @@
       transition: all 0.14s ease;
     }
     .ai-prompt-chip:hover { background: var(--bg-hover); color: var(--text); }
+    .ai-send-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .ai-send-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--dark);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      transition: transform 0.14s ease, background 0.14s ease;
+    }
+    .ai-send-btn:hover { background: var(--dark-hover); transform: translateY(-1px); }
+
+    /* True-Role Lightweight Strip (3 Real Personas) */
+    .persona-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .persona-pill-card {
+      background: var(--bg-tray);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+    .persona-pill-card:hover {
+      background: #ffffff;
+      border-color: rgba(22, 119, 255, 0.25);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      transform: translateY(-1px);
+    }
+    .persona-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .persona-ico {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .persona-title { font-size: 13px; font-weight: 600; color: var(--text); }
+    .persona-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+
+    /* Balanced 3 + 2 Bento Grid for 5 Pure Technical Directions */
+    .dir-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+    .dir-grid .role-card { grid-column: span 2; }
+    .dir-grid .role-card:nth-child(4),
+    .dir-grid .role-card:nth-child(5) { grid-column: span 3; }
+    @media (max-width: 960px) {
+      .persona-strip { grid-template-columns: 1fr; }
+      .dir-grid { grid-template-columns: repeat(2, 1fr); }
+      .dir-grid .role-card,
+      .dir-grid .role-card:nth-child(4),
+      .dir-grid .role-card:nth-child(5) { grid-column: span 1; }
+    }
+    @media (max-width: 720px) {
+      .dir-grid { grid-template-columns: 1fr; }
+    }
     .ai-thread {
       margin-top: 14px;
       padding-top: 14px;
@@ -1422,32 +1523,88 @@
     <!-- ==================== TAB 1: OVERVIEW (Role-Driven) ==================== -->
     <div class="tab-pane active" id="pane-overview">
 
-      <!-- Block 1: Conversational AI Matcher + Role Cards -->
+      <!-- Block 1: Modern AI Conversational Composer + 3 True-Role Quick Entries -->
+      <div class="block">
+        <div class="ai-composer-shell">
+          <form class="ai-composer" onsubmit="event.preventDefault(); submitAiMatch();">
+            <div class="ai-composer-top">
+              <div class="ai-composer-icon">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              </div>
+              <textarea id="aiChatInput" rows="2" placeholder="向 CANN AI 学习助手提问：告诉我你的基础、想做的事或可用时间，直接为你匹配路线与课程..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitAiMatch();}"></textarea>
+            </div>
+            <div class="ai-composer-foot">
+              <div class="ai-prompts" id="aiQuickPrompts">
+                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('我是新手，只有 2 天时间想把 PyTorch 迁到 NPU')">2 天迁移 PyTorch</button>
+                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('想用 vLLM-Ascend 部署 DeepSeek 并做量化')">部署 DeepSeek 与量化</button>
+                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('想从零学 Ascend C 写融合算子并备赛')">零基础学 Ascend C</button>
+                <button type="button" class="ai-prompt-chip" onclick="runAiMatch('我是高校老师，想开一门 16 周的昇腾实践课')">高校 16 周开课</button>
+              </div>
+              <div class="ai-send-wrap">
+                <span style="font-size:11px; color:var(--text-muted);">Enter 发送</span>
+                <button type="submit" class="ai-send-btn" title="发送匹配">
+                  <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="ai-thread" id="aiThread"></div>
+          </form>
+        </div>
+
+        <!-- 3 Real Personas Quick Strip -->
+        <div class="persona-strip">
+          <div class="persona-pill-card" onclick="enterPersona('starter')">
+            <div class="persona-left">
+              <div class="persona-ico" style="background:#eff6ff; color:#2563eb;">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              </div>
+              <div>
+                <div class="persona-title">我是零基础新手</div>
+                <div class="persona-sub">从 CANN 第一课与 2 天启航营起步</div>
+              </div>
+            </div>
+            <span style="color:var(--text-muted); font-size:13px;">→</span>
+          </div>
+
+          <div class="persona-pill-card" onclick="enterPersona('teacher')">
+            <div class="persona-left">
+              <div class="persona-ico" style="background:#f5f3ff; color:#7c3aed;">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div>
+                <div class="persona-title">我是高校教师</div>
+                <div class="persona-sub">开课申请、16 周常态课与 13 门共建课</div>
+              </div>
+            </div>
+            <span style="color:var(--text-muted); font-size:13px;">→</span>
+          </div>
+
+          <div class="persona-pill-card" onclick="enterPersona('competitor')">
+            <div class="persona-left">
+              <div class="persona-ico" style="background:#fff7ed; color:#ea580c;">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+              </div>
+              <div>
+                <div class="persona-title">我要备赛 / 考证</div>
+                <div class="persona-sub">CANNJudge 题库、4 周冲刺与等级认证</div>
+              </div>
+            </div>
+            <span style="color:var(--text-muted); font-size:13px;">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 2: 5 Pure Technical Directions (Visual Centerpiece, 3+2 Bento) -->
       <div class="block">
         <div class="block-head">
           <div>
-            <h2 class="block-title">AI 学习向导：告诉我你的目标，直接匹配课程</h2>
-            <p class="block-sub">用自然语言描述你的背景、想做的方向或可用时间，也可直接点选下方角色卡片</p>
+            <h2 class="block-title">按技术方向学习（5 大核心主线）</h2>
+            <p class="block-sub">按你想掌握的 AI 与 NPU 技术方向直接进入系统路线图，与「学习路径」主线一一对应</p>
           </div>
-          <button class="text-link" onclick="switchTab('paths')">查看全部路径与周期课 &gt;</button>
+          <button class="text-link" onclick="switchTab('paths')">查看主线与周期精品课 &gt;</button>
         </div>
         <div class="role-tray">
-          <div class="ai-matcher">
-            <form class="ai-input-row" onsubmit="event.preventDefault(); submitAiMatch();">
-              <svg class="ico" style="color:var(--link-blue);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-              <input type="text" id="aiChatInput" placeholder="例如：我是新手，只有 2 天时间想把 PyTorch 迁到 NPU / 想用 vLLM 部署 DeepSeek..." />
-              <button type="submit" class="btn btn-dark" style="height:28px; padding:0 12px;">匹配课程</button>
-            </form>
-            <div class="ai-prompts" id="aiQuickPrompts">
-              <span style="font-size:11.5px; color:var(--text-muted);">试试这样问：</span>
-              <button type="button" class="ai-prompt-chip" onclick="runAiMatch('我是新手，只有 2 天时间想把 PyTorch 迁到 NPU')">新手 · 2 天 PyTorch 迁移 NPU</button>
-              <button type="button" class="ai-prompt-chip" onclick="runAiMatch('想用 vLLM-Ascend 部署 DeepSeek 并做量化')">大模型 · vLLM 部署与量化</button>
-              <button type="button" class="ai-prompt-chip" onclick="runAiMatch('想从零学 Ascend C 写融合算子并备赛')">算子 · Ascend C 与备赛</button>
-              <button type="button" class="ai-prompt-chip" onclick="runAiMatch('我是高校老师，想开一门 16 周的昇腾实践课')">高校老师 · 16 周开课申请</button>
-            </div>
-            <div class="ai-thread" id="aiThread"></div>
-          </div>
-          <div class="role-grid" id="roleGrid"></div>
+          <div class="dir-grid" id="roleGrid"></div>
         </div>
       </div>
 
@@ -1795,13 +1952,12 @@
       recsys: `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10Z"/></svg>`
     };
 
-    const ROLES = [
-      { id: "starter", dir: "all", cycle: "2d", targetTab: "overview", trackId: "train", name: "新手开发者", tag: "2 天上手", color: "#2563eb", bg: "#eff6ff", desc: "从 CANN 第一课起步，5 节交互式课程快速跑通 NPU 环境、PyTorch 迁移与基础推理。", meta: "约 2~3 小时 · 5 节课", go: "开始第一课 →" },
-      { id: "train", dir: "llm", cycle: "1w", targetTab: "paths", trackId: "train", name: "大模型训练工程师", tag: "主线一", color: "#4f46e5", bg: "#eef2ff", desc: "覆盖 SwanLab LoRA 微调、多卡混合精度、MindSpeed 3D 并行与 HCCL 通信优化。", meta: "约 12~16 小时 · 1~2 周", go: "进入训练主线 →" },
-      { id: "infer", dir: "llm", cycle: "1w", targetTab: "paths", trackId: "infer", name: "大模型推理工程师", tag: "主线二", color: "#0891b2", bg: "#ecfeff", desc: "掌握 vLLM-Ascend 部署、KV Cache 显存优化、ModelSlim W8A8 量化与 PD 分离。", meta: "约 10~14 小时 · 1~2 周", go: "进入推理主线 →" },
-      { id: "operator", dir: "operator", cycle: "4w", targetTab: "paths", trackId: "operator", name: "Ascend C 算子工程师", tag: "主线三", color: "#7c3aed", bg: "#f5f3ff", desc: "深入 AI Core 架构、Vector/Cube 编程、动态 Tiling 切分、融合算子与 msProf 调优。", meta: "约 18~24 小时 · 4 周+", go: "进入算子主线 →" },
-      { id: "app", dir: "app", cycle: "2d", targetTab: "paths", trackId: "app", name: "应用开发（离线推理）", tag: "主线四", color: "#059669", bg: "#ecfdf5", desc: "系统学习 ATC 模型转换、ACL 同步/异步推理、DVPP 媒体加速与 YOLO 端到端实践。", meta: "约 8~10 小时 · 2 天~1 周", go: "进入应用主线 →" },
-      { id: "recsys", dir: "recsys", cycle: "1w", targetTab: "paths", trackId: "recsys", name: "推荐系统 & AI 应用", tag: "主线五", color: "#ea580c", bg: "#fff7ed", desc: "跑通 RecSDK 稀疏特征加速、CTR 排序 + 双塔召回全链路以及 RAG 知识库问答。", meta: "约 10~12 小时 · 1~2 周", go: "进入推荐主线 →" }
+    const DIRECTIONS = [
+      { id: "train", trackId: "train", name: "大模型训练", tag: "主线一", color: "#4f46e5", bg: "#eef2ff", desc: "覆盖 PyTorch 迁移、SwanLab LoRA 微调、多卡混合精度、MindSpeed 3D 并行与 HCCL 通信优化。", meta: "约 12~16 小时 · 中级→高级", go: "进入训练主线 →" },
+      { id: "infer", trackId: "infer", name: "大模型推理", tag: "主线二", color: "#0891b2", bg: "#ecfeff", desc: "掌握 vLLM-Ascend 高并发部署、KV Cache 显存优化、ModelSlim W8A8 量化与 PD 分离架构。", meta: "约 10~14 小时 · 中级→高级", go: "进入推理主线 →" },
+      { id: "operator", trackId: "operator", name: "Ascend C 算子开发", tag: "主线三", color: "#7c3aed", bg: "#f5f3ff", desc: "深入 AI Core 架构、Vector/Cube 三级流水线、动态 Tiling 切分、融合算子与 msProf 剖析调优。", meta: "约 18~24 小时 · 中级→专家", go: "进入算子主线 →" },
+      { id: "app", trackId: "app", name: "离线推理应用", tag: "主线四", color: "#059669", bg: "#ecfdf5", desc: "系统学习 ATC 模型编译转换、ACL 同步/异步多流推理、DVPP 硬件媒体加速与 YOLO 端到端检测实践。", meta: "约 8~10 小时 · 初级→中级", go: "进入应用主线 →" },
+      { id: "recsys", trackId: "recsys", name: "推荐系统与 RAG 应用", tag: "主线五", color: "#ea580c", bg: "#fff7ed", desc: "跑通 RecSDK 稀疏特征 Embedding 加速、CTR 精排 + 双塔向量召回全链路，以及大模型 RAG 知识库问答。", meta: "约 10~12 小时 · 中级", go: "进入推荐主线 →" }
     ];
 
     const PERIOD_COURSES = [
@@ -2122,19 +2278,19 @@
     // Render Overview & Conversational AI Matcher
     let aiHistory = [];
     function renderOverview() {
-      document.getElementById("roleGrid").innerHTML = ROLES.map(r => `
-        <div class="role-card" onclick="enterRole('${r.targetTab}', '${r.trackId}')">
+      document.getElementById("roleGrid").innerHTML = DIRECTIONS.map(d => `
+        <div class="role-card" onclick="enterDirection('${d.trackId}')">
           <div>
             <div class="role-top">
-              <div class="role-icon-box" style="background:${r.bg}; color:${r.color};">${ICONS[r.id]}</div>
-              <span class="role-tag">${r.tag}</span>
+              <div class="role-icon-box" style="background:${d.bg}; color:${d.color};">${ICONS[d.id]}</div>
+              <span class="role-tag">${d.tag}</span>
             </div>
-            <div class="role-name" style="margin-top:14px;">${r.name}</div>
-            <p class="role-desc">${r.desc}</p>
+            <div class="role-name" style="margin-top:14px;">${d.name}</div>
+            <p class="role-desc">${d.desc}</p>
           </div>
           <div class="role-foot">
-            <span>${r.meta}</span>
-            <span class="role-go">${r.go}</span>
+            <span>${d.meta}</span>
+            <span class="role-go">${d.go}</span>
           </div>
         </div>
       `).join("");
@@ -2145,6 +2301,26 @@
           <div class="notice-time">${n.date}</div>
         </div>
       `).join("");
+    }
+
+    function enterDirection(trackId) {
+      activePathView = "track";
+      syncPathView();
+      selectTrack(trackId);
+      switchTab("paths");
+    }
+
+    function enterPersona(type) {
+      if (type === "starter") {
+        document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (type === "teacher") {
+        switchTab("academia");
+      } else if (type === "competitor") {
+        activePathView = "period";
+        activePeriodId = "4w";
+        syncPathView();
+        switchTab("paths");
+      }
     }
 
     function buildAiRecommendation(query, prevContext = "") {
