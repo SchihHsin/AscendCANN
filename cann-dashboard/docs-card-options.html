@@ -17,11 +17,11 @@
       font-family: 'JetBrains Mono', monospace;
     }
     .hero-banner-bg {
-      background-color: #F4F6FD;
-      background-image: url('assets/cann-docs-hero-banner.jpg');
-      background-size: cover;
-      background-position: right center;
-      background-repeat: no-repeat;
+      background: linear-gradient(135deg, #F8FAFF 0%, #F2F5FC 55%, #ECF1FC 100%);
+    }
+    .hero-3d-art {
+      -webkit-mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 54%, transparent 100%);
+      mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 54%, transparent 100%);
     }
 
     /* 方案一 Bento 卡片交互 */
@@ -56,11 +56,11 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Hero 检索区（全幅拉通 3D Banner） -->
-  <section class="relative hero-banner-bg border-b border-slate-200/60 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#F6F8FE]/90 via-[#F6F8FE]/75 to-[#F6F8FE]/20 lg:from-transparent lg:via-transparent lg:to-transparent pointer-events-none"></div>
-    <div class="relative max-w-6xl mx-auto px-6 py-12 md:py-16">
-      <div class="max-w-2xl">
+  <!-- Hero 检索区 -->
+  <section class="hero-banner-bg border-b border-slate-200/60 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 py-10 md:py-12">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div class="max-w-2xl">
           <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-2.5">
             CANN 开源文档
           </h1>
@@ -100,6 +100,16 @@
             <button onclick="quickFilter('调优')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">性能调优</button>
             <button onclick="quickFilter('故障')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">故障处理</button>
           </div>
+        </div>
+
+        <!-- Hero 右侧 3D 架构插画（方案 B：三层软件栈计算板） -->
+        <div class="hidden lg:flex items-center justify-end flex-shrink-0 pointer-events-none select-none">
+          <img
+            src="assets/cann-docs-hero-banner.jpg"
+            alt="CANN 开源文档三层架构 3D 插画"
+            class="hero-3d-art h-[240px] xl:h-[260px] w-auto object-contain"
+          />
+        </div>
       </div>
     </div>
   </section>
