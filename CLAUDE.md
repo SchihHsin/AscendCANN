@@ -843,3 +843,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 该块无任何 JS 引用（`layoutHintBox` / `hintTitle` / `hintDesc` 仅出现于 HTML 本身），纯静态代码块，删除后无副作用
 - 首屏 Hero 现在只保留左侧内容列（标题 / 版本说明 / 搜索框 / 高频直达胶囊）
 - commit `2dfb1d72`，已 push 至 `origin/main`
+
+#### docs-card-options.html 去掉顶部极简顶栏
+
+- 删除 `<header>` 极简顶栏（蓝底 C logo + 「CANN 开源文档中心」站点名 + `master` 圆角徽章），首屏 Hero 直接顶到页面最上方
+- 无 sticky 依赖残留：文件内没有 `scroll-margin` / `scrollIntoView` 等按顶栏高度补偿的逻辑，删除后锚点跳转无偏移问题
+- `master` 分支信息未丢失 —— Hero 的版本说明行本身写了「基于 CANN 开源社区 master 分支的文档自动编译生成」
+- 验证：headless Chrome 1440×900 截首屏，确认顶栏消失、Hero 正常顶格、下方 Bento 卡片不受影响
+- commit `7f5eef50`，已 push
