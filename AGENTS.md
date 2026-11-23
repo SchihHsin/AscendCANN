@@ -9584,3 +9584,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-20（设计试稿改为会话式工具）
 - 用户确认工具侧设计以 Codex 会话界面为基础，生态侧以现有昇腾社区界面为基础；不使用 IDE 编辑器作为工具侧默认画面。多任务状态坞试稿已替换为 ImageGen 生成的会话式界面（项目 / 聊天列表、任务状态、中央会话与底部输入框），状态为设计示意。
 - 此轮仅替换试稿图像，不改变证据、页面序列或 API / Host / Application 边界；基于最新 main 单独提交并推送。
+
+### 2026-11-23（docs-card-options Hero 右侧 3D 插画）
+- 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 右侧生成等轴测 3D 彩色架构插画，保存至 `cann-dashboard/assets/cann-docs-hero-3d.jpg`。
+- 通过 `mix-blend-mode: multiply` 与径向渐变遮罩（`.hero-3d-art`）融入现有白色点阵背景（`.hero-grid`），零文本与零边框干扰；仅暂存本任务文件并推送 `origin/main`。
