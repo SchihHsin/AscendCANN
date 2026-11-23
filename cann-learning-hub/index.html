@@ -231,7 +231,7 @@
     /* ================= Compact Hero Banner ================= */
     .org-hero {
       background: linear-gradient(102deg, #edf3fd 0%, #f5f4fb 50%, #fdf4e9 100%);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.04);
     }
     .hero-inner {
       padding-top: 26px;
@@ -663,29 +663,32 @@
       flex-shrink: 0;
     }
 
-    /* Conversational AI Composer (Direction B: Crisp White Floating Tile slicing the seam) */
+    /* Conversational AI Composer (Direction A: Translucent Frosted Glass across the seam) */
     .ai-composer-shell {
       position: relative;
       z-index: 10;
       margin: -56px 0 22px;
     }
     .ai-composer {
-      background: #ffffff;
-      border: 1px solid rgba(208, 213, 221, 0.72);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(22px) saturate(165%);
+      -webkit-backdrop-filter: blur(22px) saturate(165%);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 14px;
       padding: 8px 10px 8px 16px;
       box-shadow:
-        0 0 0 4px #ffffff,
-        0 8px 24px -4px rgba(15, 23, 42, 0.08),
-        0 2px 6px rgba(15, 23, 42, 0.04);
-      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        0 12px 32px -6px rgba(79, 70, 229, 0.13),
+        0 2px 8px rgba(15, 23, 42, 0.05);
+      transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
     }
     .ai-composer:focus-within {
-      border-color: rgba(22, 119, 255, 0.5);
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(99, 102, 241, 0.4);
       box-shadow:
-        0 0 0 4px #ffffff,
-        0 10px 28px -4px rgba(22, 119, 255, 0.14),
-        0 2px 8px rgba(15, 23, 42, 0.05);
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 14px 36px -6px rgba(79, 70, 229, 0.18),
+        0 0 0 3px rgba(99, 102, 241, 0.08);
     }
     .ai-composer-top {
       display: flex;
