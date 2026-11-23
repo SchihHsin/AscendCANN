@@ -9586,5 +9586,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 此轮仅替换试稿图像，不改变证据、页面序列或 API / Host / Application 边界；基于最新 main 单独提交并推送。
 
 ### 2026-11-23（docs-card-options Hero 右侧 3D 插画）
-- 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 提供了三种 3D 图形方案供用户选择；用户选定方案 B（三层软件栈计算板），保存至 `cann-dashboard/assets/cann-docs-hero-banner.jpg`。
-- 去掉点阵背景，改用同色系 `#F2F5FC` 渐变铺底（`.hero-banner-bg`），右侧以 `h-[240px] xl:h-[260px] object-contain` 配合径向边缘淡出（`.hero-3d-art`）呈现完整 3D 图形，避免裁切与硬边框；仅暂存本任务文件并推送 `origin/main`。
+- 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 提供了三种 3D 图形方案供用户选择；用户选定方案 B（三层软件栈计算板），保存至 `cann-dashboard/assets/cann-docs-hero-layers.jpg`（重命名以彻底清除旧图缓存）。
+- 去掉点阵背景，改用同色系 `#F1F5FD`–`#EAF0FC` 渐变铺底（`.hero-banner-bg`），右侧以 `h-[240px] xl:h-[260px] object-contain` 配合 `closest-side` 径向边缘淡出遮罩（`.hero-3d-art`）呈现完整 3D 图形，彻底消除矩形边缘；仅暂存本任务文件并推送 `origin/main`。
