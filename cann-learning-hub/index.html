@@ -246,7 +246,7 @@
     }
     .hero-inner {
       padding-top: 26px;
-      padding-bottom: 26px;
+      padding-bottom: 44px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -674,13 +674,16 @@
       flex-shrink: 0;
     }
 
-    /* Conversational AI Composer (Single-line clean bar) */
+    /* Conversational AI Composer (Single-line bar straddling hero/white seam) */
     .ai-composer-shell {
+      position: relative;
+      z-index: 10;
+      margin-top: -54px;
+      margin-bottom: 22px;
       border-radius: 12px;
       padding: 1.5px;
-      background: linear-gradient(120deg, rgba(99, 102, 241, 0.22), rgba(22, 119, 255, 0.16), rgba(244, 63, 94, 0.14));
-      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-      margin-bottom: 14px;
+      background: linear-gradient(120deg, rgba(99, 102, 241, 0.25), rgba(22, 119, 255, 0.18), rgba(244, 63, 94, 0.16));
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
     }
     .ai-composer {
       background: #ffffff;
