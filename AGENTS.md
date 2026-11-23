@@ -9586,5 +9586,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 此轮仅替换试稿图像，不改变证据、页面序列或 API / Host / Application 边界；基于最新 main 单独提交并推送。
 
 ### 2026-11-23（docs-card-options Hero 右侧 3D 插画）
-- 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 右侧生成等轴测 3D 彩色架构插画，保存至 `cann-dashboard/assets/cann-docs-hero-3d.jpg`。
-- 通过 `mix-blend-mode: multiply` 与径向渐变遮罩（`.hero-3d-art`）融入现有白色点阵背景（`.hero-grid`），零文本与零边框干扰；仅暂存本任务文件并推送 `origin/main`。
+- 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 生成全幅拉通的 3D 彩色架构横幅背景图（`cann-dashboard/assets/cann-docs-hero-banner.jpg`），去掉点阵背景（`.hero-grid`）及独立的右侧图片盒。
+- 图像左侧自然留白承载标题、说明、半透明搜索框与高频直达胶囊，右侧呈现等轴测 NPU 与磨砂玻璃文档卡片，整块 Hero 形成连续一体画面；仅暂存本任务文件并推送 `origin/main`。
