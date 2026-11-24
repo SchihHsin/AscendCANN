@@ -9597,3 +9597,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（docs-card-options 方案 A 分层配置驱动与多规模预览）
 - 新增独立配置文件 `cann-dashboard/docs-config.json`，将 Hero 高频直达胶囊（`quickTags`）与 Bento 三层分类（`tier: "featured" | "standard" | "strip"`）完全配置化。
 - 重构 `cann-dashboard/docs-card-options.html` 渲染逻辑为通用分层引擎（`renderDocsPage`）：不改代码即可随配置增减分类或手册（`standard` 超过 5 项自动折叠并提供「展开全部」与搜索自动透出）；并新增顶部预设切换条（`精简 4 分类` / `标准 7 分类` / `扩容 10 分类·多手册`）供直观对比不同数量下的自适应效果，仅暂存本任务文件并推送 `origin/main`。
+
+### 2026-11-24（查找 VitePress 项目）
+
+- 确认 Ascend C 文档站项目位于 `cann-dashboard/ascend-doc/vitepress/`，配置位于 `.vitepress/config.mjs`；配置引用的文档源 `cann-dashboard/repo-scan/asc-devkit-fresh/docs/` 当前不存在，项目 `node_modules` 也未安装。依据本地配置与目录检查（H），未修改页面序列或 Agent 分层边界；后续启动需先恢复文档源并安装依赖。
