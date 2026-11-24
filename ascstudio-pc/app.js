@@ -211,6 +211,12 @@ function applyPcStage(point, doc) {
 
   const ensureInvite = () => {
     if (isVisible(doc.querySelector('[aria-label="任务完成后的社区经验邀请"]')) || isVisible(doc.querySelector(".community-draft-card"))) return true;
+    const complete = visibleButton(doc, ".cm-completion-trigger", "标记为已解决");
+    if (complete) { complete.click(); return false; }
+    const reopen = visibleButton(doc, "button.reopen-content");
+    if (reopen) { reopen.click(); return false; }
+    const allContents = visibleButton(doc, 'button[aria-label="查看本任务全部内容"]');
+    if (allContents) { allContents.click(); return false; }
     const resolve = visibleButton(doc, "button", "标记为已解决");
     if (resolve) { resolve.click(); return false; }
     const overview = visibleButton(doc, 'button[aria-label="查看本任务全部内容"]');

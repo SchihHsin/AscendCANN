@@ -9588,3 +9588,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-23（docs-card-options Hero 右侧 3D 插画）
 - 基于 `cann-3d-illustration` skill 为 `cann-dashboard/docs-card-options.html` 首屏 Hero 提供了三种 3D 图形方案供用户选择；用户选定方案 B（三层软件栈计算板）。直接对原版方案 B 通过 macOS Vision `VNGenerateForegroundInstanceMaskRequest` 抠出透明 PNG 主体（`cann-dashboard/assets/cann-docs-hero-layers.png`，引用加 `?v=2` 破除缓存），完整保留圆润磨砂玻璃质感与通透色彩，彻底去掉背景和阴影噪点。
 - 去掉全屏扁平散点，改为紧贴右侧 3D 主体周围、沿双交叉椭圆轨道**有规律对称分布的 3D 装饰元素**（等轴测磨砂冰玻璃小立方体、3D 高光球体与磨砂玻璃小方片）；Hero 底色加深为浅冰蓝紫渐变（`#F5F7FE → #E8EEFC`）并增强下边缘蓝/紫/珊瑚粉三色虹彩柔光（`.hero-banner-bg`），下方卡片区移除点阵画布并调浅为 `#F4F6FA` 浅冷灰；仅暂存本任务文件并推送 `origin/main`。
+
+### 2026-11-24（PC 设计点图文 Markdown）
+- 新增 `ascstudio-pc/design-points.md`：整理三章 17 个设计点，每点包含对应页面起点、简短说明、1440×900 Demo 截图和线上直达链接；截图存于 `ascstudio-pc/evidence/`。
+- 为保证社区线截图与设计点一致，修正 `ascstudio-pc/app.js` 的经验邀请状态定位：直达时先展开任务内容、打开全部内容画布，再触发示例完成状态；后续草稿审阅和多渠道预览可从正确状态进入。原 Demo 仍是策划交互示例，不代表真实社区发布或 NPU 验证。
+- 证据来自当前工作区 PC 材料和内嵌 Demo。页面序列不变；不涉及 API / Host / Application 边界变更。通过 `node --check ascstudio-pc/app.js`、`git diff --check`、17 个 Markdown 图片路径核对，并在桌面 Chrome 1440×900 逐项生成截图、复核社区线三张状态。提交与推送结果见本条后续更新。
