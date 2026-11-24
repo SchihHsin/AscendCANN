@@ -9613,3 +9613,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（蓝色主题版本核对）
 
 - 用户指出后续为蓝色主题；核对到独立本地仓库 `/Users/hsin/Documents/Coding/ascend-doc`，运行 `npm run dev -- --host 127.0.0.1 --port 5174` 可查看蓝色主题首页。历史记录确认蓝紫侧栏、蓝色正文链接和黑色胶囊按钮；实测首页可见，但入门教程因文档源缺失返回 404。未修改产品页面、页面序列或 Agent 分层边界。
+
+### 2026-11-24（恢复文档预览）
+
+- 更正上一条：独立仓库的文档 Markdown 源缺失，但完整历史静态构建保留于 `/Users/hsin/Documents/Coding/ascend-doc/.vitepress/dist-static/`。之前误用 `npm run dev`，只渲染本地首页；正确方式为在该仓运行 `node serve.mjs`，访问 `http://localhost:5301/`。已在浏览器确认入门教程正文和 `/api/README.html` 均可打开；仅抽查这些页面，不代表所有历史链接或资源均已验证。未修改产品代码、页面序列或 Agent 分层边界。
