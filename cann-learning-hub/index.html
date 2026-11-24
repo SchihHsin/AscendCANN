@@ -878,6 +878,103 @@
       border-color: rgba(22, 119, 255, 0.35);
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
+    .ai-persona-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .ai-persona-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .ai-persona-tag.cert {
+      color: #0369a1;
+      background: #f0f9ff;
+      border-color: rgba(2, 132, 199, 0.22);
+    }
+    .ai-journey-stages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .ai-journey-stage {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .ai-stage-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .ai-stage-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .ai-stage-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: var(--link-blue);
+      font-size: 10.5px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .ai-stage-count {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .ai-stage-courses {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .ai-course-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      background: var(--bg-tray);
+      padding: 5px 8px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.14s ease, color 0.14s ease;
+    }
+    .ai-course-pill:hover {
+      background: #eff6ff;
+      color: var(--link-blue);
+    }
+    .ai-course-pill span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .ai-followups {
       display: flex;
       align-items: center;
@@ -2312,14 +2409,61 @@
       }
     }
 
+    const SKILL_JOURNEYS = {"basics_stage": {"label": "CANN 基础知识", "total": 4, "courses": [{"title": "人工智能基础", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/01_ai_basics.ipynb", "file": "quick_start/cann_basics/01_ai_basics.ipynb"}, {"title": "什么是 NPU", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/02_what_is_npu.ipynb", "file": "quick_start/cann_basics/02_what_is_npu.ipynb"}, {"title": "什么是 CANN", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/03_what_is_cann.ipynb", "file": "quick_start/cann_basics/03_what_is_cann.ipynb"}, {"title": "NPU 实践", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/04_npu_practice.ipynb", "file": "quick_start/cann_basics/04_npu_practice.ipynb"}]}, "practice_stage": {"label": "练习与在线体验", "courses": [{"title": "算子刷题评测 · CANNJudge", "desc": "Ascend 算子编程在线刷题，实时评测", "link": "https://cannjudge.cn", "online": true}, {"title": "在线体验 · CANNLab", "desc": "一键启动云端 NPU 环境，免配置直接实操", "link": "https://gitcode.com/org/cann/cannlab", "online": true}]}, "topics": {"operator": {"goal": "算子开发入门", "level": "C++", "certificate": "获得算子开发初级证书", "trackId": "operator", "stages": [{"label": "算子开发入门", "total": 1, "courses": [{"title": "第一个 custom 算子", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_custom_operator/first_custom_operator.ipynb", "file": "quick_start/first_custom_operator/first_custom_operator.ipynb"}]}, {"label": "Ascend C 算子开发", "total": 25, "courses": [{"title": "人工智能 and 算子基础", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ascendc_operator_development/01_basic_overview/01.02_ai_and_operator_basics.ipynb", "file": "tutorials/ascendc_operator_development/01_basic_overview/01.02_ai_and_operator_basics.ipynb"}, {"title": "generalized Tiling design", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ascendc_operator_development/03_intermediate_vector_operator_development/03.04_generalized_tiling_design.ipynb", "file": "tutorials/ascendc_operator_development/03_intermediate_vector_operator_development/03.04_generalized_tiling_design.ipynb"}, {"title": "算子开发 based on opensource repo", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ascendc_operator_development/06_opensource_repo_operator_intro_and_contribution/06.03_operator_development_based_on_opensource_repo.ipynb", "file": "tutorials/ascendc_operator_development/06_opensource_repo_operator_intro_and_contribution/06.03_operator_development_based_on_opensource_repo.ipynb"}, {"title": "矢量 ops 实践", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ascendc_operator_development/09_course_practice/09.01_vector_ops_practice.ipynb", "file": "tutorials/ascendc_operator_development/09_course_practice/09.01_vector_ops_practice.ipynb"}]}]}, "inference": {"goal": "大模型推理开发", "level": "Python", "certificate": "获得大模型推理开发证书", "trackId": "infer", "stages": [{"label": "大模型推理入门", "total": 3, "courses": [{"title": "qwen3 NPU 推理 baseline", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/01_qwen3_npu_inference_baseline.ipynb", "file": "quick_start/first_llm_inference/01_qwen3_npu_inference_baseline.ipynb"}, {"title": "qwen3 NPU 推理 npugraph ex", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/02_qwen3_npu_inference_npugraph_ex.ipynb", "file": "quick_start/first_llm_inference/02_qwen3_npu_inference_npugraph_ex.ipynb"}, {"title": "qwen3 NPU 推理融合 op", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/03_qwen3_npu_inference_fused_op.ipynb", "file": "quick_start/first_llm_inference/03_qwen3_npu_inference_fused_op.ipynb"}]}, {"label": "大模型推理系列课程", "total": 15, "courses": [{"title": "baseline 推理", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/longcat_next/02_baseline_inference.ipynb", "file": "tutorials/llm_inference/longcat_next/02_baseline_inference.ipynb"}, {"title": "NPU optimization", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_1.7B/04_npu_optimization.ipynb", "file": "tutorials/llm_inference/qwen3_1.7B/04_npu_optimization.ipynb"}, {"title": "NPU optimization", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/04_npu_optimization.ipynb", "file": "tutorials/llm_inference/qwen3_8b/04_npu_optimization.ipynb"}, {"title": "ge o proj prefetch", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/llm_inference/qwen3_8b/08_ge_o_proj_prefetch.ipynb", "file": "tutorials/llm_inference/qwen3_8b/08_ge_o_proj_prefetch.ipynb"}]}, {"label": "推理部署与优化", "total": 25, "courses": [{"title": "ge 概览", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ge_development/01_basic_concepts/01.02_ge_overview.ipynb", "file": "tutorials/ge_development/01_basic_concepts/01.02_ge_overview.ipynb"}, {"title": "custom 融合 pass", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ge_development/03_graph_compilation/03.06_custom_fusion_pass.ipynb", "file": "tutorials/ge_development/03_graph_compilation/03.06_custom_fusion_pass.ipynb"}, {"title": "autofuse 简介", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/autofusion_development/01_basic_overview/01.02_autofuse_introduction.ipynb", "file": "tutorials/autofusion_development/01_basic_overview/01.02_autofuse_introduction.ipynb"}, {"title": "训练 and results", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/autofusion_development/04_qwen_sft_autofuse/04.03_training_and_results.ipynb", "file": "tutorials/autofusion_development/04_qwen_sft_autofuse/04.03_training_and_results.ipynb"}]}]}, "training": {"goal": "大模型训练开发", "level": "Python", "certificate": "获得训练实践证书", "trackId": "train", "stages": [{"label": "SFT 监督微调", "total": 26, "courses": [{"title": "wordle task 入门", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/sft_training_pipeline/01_sft_and_wordle/01.02_wordle_task_intro.ipynb", "file": "tutorials/sft_training_pipeline/01_sft_and_wordle/01.02_wordle_task_intro.ipynb"}, {"title": "running and 性能分析", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/sft_training_pipeline/04_fused_operators/04.03_running_and_profiling.ipynb", "file": "tutorials/sft_training_pipeline/04_fused_operators/04.03_running_and_profiling.ipynb"}, {"title": "from sdpa to varlen", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/sft_training_pipeline/06_varlen_attention/06.05_from_sdpa_to_varlen.ipynb", "file": "tutorials/sft_training_pipeline/06_varlen_attention/06.05_from_sdpa_to_varlen.ipynb"}, {"title": "tp2 fsdp2 comparison", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/sft_training_pipeline/08_comm_optimizations/08.04_tp2_fsdp2_comparison.ipynb", "file": "tutorials/sft_training_pipeline/08_comm_optimizations/08.04_tp2_fsdp2_comparison.ipynb"}]}, {"label": "RL 强化学习训练", "total": 17, "courses": [{"title": "install verl and vllm ascend", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/rl_training_pipeline/01_environment_setup/01.02_install_verl_and_vllm_ascend.ipynb", "file": "tutorials/rl_training_pipeline/01_environment_setup/01.02_install_verl_and_vllm_ascend.ipynb"}, {"title": "wordle 环境 and agent loop", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/rl_training_pipeline/03_wordle_rl_training/03.02_wordle_env_and_agent_loop.ipynb", "file": "tutorials/rl_training_pipeline/03_wordle_rl_training/03.02_wordle_env_and_agent_loop.ipynb"}, {"title": "fsdp2 and parallelism", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/rl_training_pipeline/06_torchtitan_npu_features/06.02_fsdp2_and_parallelism.ipynb", "file": "tutorials/rl_training_pipeline/06_torchtitan_npu_features/06.02_fsdp2_and_parallelism.ipynb"}, {"title": "switch summary", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/rl_training_pipeline/08_validation_and_troubleshooting/08.02_switch_summary.ipynb", "file": "tutorials/rl_training_pipeline/08_validation_and_troubleshooting/08.02_switch_summary.ipynb"}]}]}, "recommend": {"goal": "推荐系统开发", "level": "Python", "certificate": "获得推荐系统开发证书", "trackId": "recsys", "stages": [{"label": "推荐系统开发", "total": 7, "courses": [{"title": "QuickStart CTR DeepFM", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/00_QuickStart_CTR_DeepFM.ipynb", "file": "contrib/tutorials/torch-rechub/00_QuickStart_CTR_DeepFM.ipynb"}, {"title": "Matching DSSM", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/02_Matching_DSSM.ipynb", "file": "contrib/tutorials/torch-rechub/02_Matching_DSSM.ipynb"}, {"title": "Experiment Tracking Light", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/04_Experiment_Tracking_Light.ipynb", "file": "contrib/tutorials/torch-rechub/04_Experiment_Tracking_Light.ipynb"}, {"title": "NPU DIN Inference MultiInstance CoreControl", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/contrib/tutorials/torch-rechub/10_NPU_DIN_Inference_MultiInstance_CoreControl.ipynb", "file": "contrib/tutorials/torch-rechub/10_NPU_DIN_Inference_MultiInstance_CoreControl.ipynb"}]}]}, "basics": {"goal": "CANN 基础入门", "level": "入门", "certificate": "完成 CANN 基础入门", "trackId": null, "stages": [{"label": "CANN 基础知识", "total": 4, "courses": [{"title": "人工智能基础", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/01_ai_basics.ipynb", "file": "quick_start/cann_basics/01_ai_basics.ipynb"}, {"title": "什么是 NPU", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/02_what_is_npu.ipynb", "file": "quick_start/cann_basics/02_what_is_npu.ipynb"}, {"title": "什么是 CANN", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/03_what_is_cann.ipynb", "file": "quick_start/cann_basics/03_what_is_cann.ipynb"}, {"title": "NPU 实践", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/cann_basics/04_npu_practice.ipynb", "file": "quick_start/cann_basics/04_npu_practice.ipynb"}]}]}, "application": {"goal": "应用开发（离线推理）", "level": "Python", "certificate": "获得应用开发证书", "trackId": "app", "stages": [{"label": "YOLOv13 离线推理实战", "total": 3, "courses": [{"title": "model prepare", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/02_model_prepare.ipynb", "file": "reference_practice/yolov13_offline_inference/02_model_prepare.ipynb"}, {"title": "acl offline 推理", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/03_acl_offline_inference.ipynb", "file": "reference_practice/yolov13_offline_inference/03_acl_offline_inference.ipynb"}, {"title": "result and tuning", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/yolov13_offline_inference/04_result_and_tuning.ipynb", "file": "reference_practice/yolov13_offline_inference/04_result_and_tuning.ipynb"}]}]}, "graph": {"goal": "图框架开发", "level": "Python", "certificate": "获得图框架开发证书", "trackId": null, "stages": [{"label": "GE 图引擎", "total": 16, "courses": [{"title": "ge 概览", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ge_development/01_basic_concepts/01.02_ge_overview.ipynb", "file": "tutorials/ge_development/01_basic_concepts/01.02_ge_overview.ipynb"}, {"title": "编译 config", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ge_development/03_graph_compilation/03.03_compilation_config.ipynb", "file": "tutorials/ge_development/03_graph_compilation/03.03_compilation_config.ipynb"}, {"title": "动态形状 execution", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ge_development/04_model_execution_optimization/04.03_dynamic_shape_execution.ipynb", "file": "tutorials/ge_development/04_model_execution_optimization/04.03_dynamic_shape_execution.ipynb"}, {"title": "问题排查", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/ge_development/05_practice_and_troubleshooting/05.04_troubleshooting.ipynb", "file": "tutorials/ge_development/05_practice_and_troubleshooting/05.04_troubleshooting.ipynb"}]}, {"label": "TorchAir 图模式", "total": 18, "courses": [{"title": "torch 编译入门", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/TorchAir_development/01_basic_concepts/01.02_torch_compile_intro.ipynb", "file": "tutorials/TorchAir_development/01_basic_concepts/01.02_torch_compile_intro.ipynb"}, {"title": "内存复用", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/TorchAir_development/03_common_features/03.04_memory_reuse.ipynb", "file": "tutorials/TorchAir_development/03_common_features/03.04_memory_reuse.ipynb"}, {"title": "superkernel", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/TorchAir_development/04_advanced_features/04.06_superkernel.ipynb", "file": "tutorials/TorchAir_development/04_advanced_features/04.06_superkernel.ipynb"}, {"title": "算子 graph integration", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/TorchAir_development/05_practice_and_debug/05.06_operator_graph_integration.ipynb", "file": "tutorials/TorchAir_development/05_practice_and_debug/05.06_operator_graph_integration.ipynb"}]}, {"label": "AutoFusion 自动融合", "total": 9, "courses": [{"title": "autofuse 简介", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/autofusion_development/01_basic_overview/01.02_autofuse_introduction.ipynb", "file": "tutorials/autofusion_development/01_basic_overview/01.02_autofuse_introduction.ipynb"}, {"title": "融合 strategy solving", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/autofusion_development/02_autofusion_principles/02.03_fusion_strategy_solving.ipynb", "file": "tutorials/autofusion_development/02_autofusion_principles/02.03_fusion_strategy_solving.ipynb"}, {"title": "tensorflow project 实践", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/autofusion_development/03_practice_and_debugging/03.04_tensorflow_project_practice.ipynb", "file": "tutorials/autofusion_development/03_practice_and_debugging/03.04_tensorflow_project_practice.ipynb"}, {"title": "训练 and results", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/autofusion_development/04_qwen_sft_autofuse/04.03_training_and_results.ipynb", "file": "tutorials/autofusion_development/04_qwen_sft_autofuse/04.03_training_and_results.ipynb"}]}]}, "comm": {"goal": "集合通信开发", "level": "Python", "certificate": "获得集合通信开发证书", "trackId": null, "stages": [{"label": "HCCL 集合通信", "total": 12, "courses": [{"title": "集群通信入门", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hccl_development/01_hccl_intro_collective_comm/01.02_cluster_comm_intro.ipynb", "file": "tutorials/hccl_development/01_hccl_intro_collective_comm/01.02_cluster_comm_intro.ipynb"}, {"title": "hccl vm platform 概览", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hccl_development/03_hccl_vm_guide/03.02_hccl_vm_platform_overview.ipynb", "file": "tutorials/hccl_development/03_hccl_vm_guide/03.02_hccl_vm_platform_overview.ipynb"}, {"title": "配置 tests", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hccl_development/03_hccl_vm_guide/03.06_configure_tests.ipynb", "file": "tutorials/hccl_development/03_hccl_vm_guide/03.06_configure_tests.ipynb"}, {"title": "附录本地环境", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hccl_development/03_hccl_vm_guide/03.09_appendix_local_env.ipynb", "file": "tutorials/hccl_development/03_hccl_vm_guide/03.09_appendix_local_env.ipynb"}]}, {"label": "HiXL 单边通信", "total": 18, "courses": [{"title": "单边通信基础概念", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hixl_development/01_basic_overview/01.02_one_sided_comm_basic_concepts.ipynb", "file": "tutorials/hixl_development/01_basic_overview/01.02_one_sided_comm_basic_concepts.ipynb"}, {"title": "hixl 数据传输", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hixl_development/02_core_api_development/02.05_hixl_data_transfer.ipynb", "file": "tutorials/hixl_development/02_core_api_development/02.05_hixl_data_transfer.ipynb"}, {"title": "PD 分离概览", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hixl_development/05_pd_separation_kv_cache_transfer/05.02_pd_separation_overview.ipynb", "file": "tutorials/hixl_development/05_pd_separation_kv_cache_transfer/05.02_pd_separation_overview.ipynb"}, {"title": "Mooncake NPU usage", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/hixl_development/06_kv_cache_pooling/06.04_mooncake_npu_usage.ipynb", "file": "tutorials/hixl_development/06_kv_cache_pooling/06.04_mooncake_npu_usage.ipynb"}]}]}, "pyasc": {"goal": "算子开发（Python 版）", "level": "Python", "certificate": "获得算子开发（Python 版）证书", "trackId": null, "stages": [{"label": "PyASC 算子开发", "total": 18, "courses": [{"title": "pyasc 概览 and architecture", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pyasc_operator_development/01_pyasc_overview/01.02_pyasc_overview_and_architecture.ipynb", "file": "tutorials/pyasc_operator_development/01_pyasc_overview/01.02_pyasc_overview_and_architecture.ipynb"}, {"title": "manual 流水线 sync", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pyasc_operator_development/02_kernel_function_basic/02.05_manual_pipeline_sync.ipynb", "file": "tutorials/pyasc_operator_development/02_kernel_function_basic/02.05_manual_pipeline_sync.ipynb"}, {"title": "进阶矩阵乘 api", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pyasc_operator_development/04_matmul_operator_development/04.03_advanced_matmul_api.ipynb", "file": "tutorials/pyasc_operator_development/04_matmul_operator_development/04.03_advanced_matmul_api.ipynb"}, {"title": "性能性能分析", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pyasc_operator_development/06_debug_and_profiling/06.03_performance_profiling.ipynb", "file": "tutorials/pyasc_operator_development/06_debug_and_profiling/06.03_performance_profiling.ipynb"}]}, {"label": "PyPTO 算子开发", "total": 15, "courses": [{"title": "chip", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pypto_development/01_cann_chip_pypto_intro/01.02_chip.ipynb", "file": "tutorials/pypto_development/01_cann_chip_pypto_intro/01.02_chip.ipynb"}, {"title": "graph and swimlane", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pypto_development/02_pypto_operator_development_basics/02.04_graph_and_swimlane.ipynb", "file": "tutorials/pypto_development/02_pypto_operator_development_basics/02.04_graph_and_swimlane.ipynb"}, {"title": "算子 composition and Softmax", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pypto_development/04_intermediate_advanced_operator_practice/04.02_operator_composition_and_softmax.ipynb", "file": "tutorials/pypto_development/04_intermediate_advanced_operator_practice/04.02_operator_composition_and_softmax.ipynb"}, {"title": "agent architecture and usage", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/pypto_development/05_ai_agent_operator_development/05.02_agent_architecture_and_usage.ipynb", "file": "tutorials/pypto_development/05_ai_agent_operator_development/05.02_agent_architecture_and_usage.ipynb"}]}]}, "cannbot": {"goal": "CANNBot 算子生成", "level": "Python", "certificate": "获得 CANNBot 开发证书", "trackId": null, "stages": [{"label": "CANNBot 入门与进阶", "total": 10, "courses": [{"title": "cannbot 基础", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/01_basics/01.01_cannbot_basics.ipynb", "file": "tutorials/CANNBot/01_basics/01.01_cannbot_basics.ipynb"}, {"title": "complete workflow", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/02_core_workflows/02.01_complete_workflow.ipynb", "file": "tutorials/CANNBot/02_core_workflows/02.01_complete_workflow.ipynb"}, {"title": "算子 generation", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/03_advanced_path/03.01_operator_generation.ipynb", "file": "tutorials/CANNBot/03_advanced_path/03.01_operator_generation.ipynb"}, {"title": "skill and assessment", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/CANNBot/03_advanced_path/03.04_skill_and_assessment.ipynb", "file": "tutorials/CANNBot/03_advanced_path/03.04_skill_and_assessment.ipynb"}]}]}, "ai_app": {"goal": "AI 应用开发", "level": "Python", "certificate": "获得 AI 应用开发证书", "trackId": "recsys", "stages": [{"label": "AI 应用开发实践（RAG）", "total": 1, "courses": [{"title": "RAG 知识库", "link": "https://gitcode.com/cann/cann-learning-hub/blob/master/reference_practice/ai_application_development/rag_knowledge_base.ipynb", "file": "reference_practice/ai_application_development/rag_knowledge_base.ipynb"}]}]}}};
+
+    function buildSkillJourney(topicKey, customPersona = {}) {
+      const cfg = SKILL_JOURNEYS.topics[topicKey] || SKILL_JOURNEYS.topics.basics;
+      const stages = [];
+      if (topicKey !== "basics") {
+        stages.push(SKILL_JOURNEYS.basics_stage);
+      }
+      cfg.stages.forEach(s => stages.push(s));
+      stages.push({
+        label: SKILL_JOURNEYS.practice_stage.label,
+        total: SKILL_JOURNEYS.practice_stage.courses.length,
+        courses: SKILL_JOURNEYS.practice_stage.courses
+      });
+      return {
+        role: customPersona.role || "开发人员",
+        level: customPersona.level || cfg.level,
+        goal: customPersona.goal || cfg.goal,
+        certificate: cfg.certificate,
+        trackId: cfg.trackId,
+        stages
+      };
+    }
+
     function buildAiRecommendation(query, prevContext = "") {
       const q = (prevContext + " " + query).toLowerCase();
       const noCpp = /没学过\s*c\+\+|不会\s*c\+\+|没有\s*c\+\+|无\s*c\+\+/.test(q);
-      const wantBlogs = /博客|文章|原理|深入/.test(query);
+      const hasCuda = /cuda/.test(q);
+      const twoDays = /2\s*天|两天|快速上手|启航/.test(q);
+      const wantBlogs = /博客|文章|最新特性|技术动态|实践案例|客户案例|落地经验|最佳实践|别人怎么做的/.test(query);
 
-      if (/老师|高校|开课|教学|16\s*周|学期|学生/.test(q)) {
+      const persona = {};
+      if (/学生|研究生|大三|大四|本科/.test(q)) persona.role = "高校学生";
+      else if (/新手|零基础|新入门|小白/.test(q)) persona.role = "新入门开发者";
+      if (hasCuda) persona.level = "有 CUDA 经验";
+      else if (noCpp) persona.level = "Python（无 C++）";
+
+      // 1. 资讯 / 技术博客分流（遵循 Skill 消歧规则）
+      if (wantBlogs && !/想学|入门|怎么学/.test(query)) {
+        return {
+          reply: "已为你切换到「技术博客与实践案例」视角：仓库 blogs/ 目录收录 54+ 篇 CANN 最新特性解析与真实客户落地案例，可直接按「算子开发 / 大模型推理 / 大模型训练」筛选阅读。",
+          journey: null,
+          cards: [
+            { tag: "技术博客墙", title: "54 篇技术博客与客户实践案例", desc: "涵盖 Ascend C 调优、vLLM-Ascend 部署与 MindSpeed 训练实践。", go: "进入技术博客 →", fn: () => switchTab("blogs") },
+            { tag: "架构资料", title: "12 大领域标准课程体系总览", desc: "按目录结构浏览全部开源教程与参考实践。", go: "查看课程体系 →", fn: () => switchTab("map") }
+          ],
+          followups: ["我想系统学大模型推理", "我想用 Python 写算子", "看 Ascend C 算子开发路径"]
+        };
+      }
+
+      // 2. 高校教师 / 开课闭环
+      if (/老师|高校|开课|教学|16\s*周|学期/.test(q)) {
         return {
           reply: "推荐走「高校开课与考核闭环」：直接复用官方 16 周常态学期课大纲与 13 门高校共建实验包，学生零配置在 CANNLab 上机，期末可接入 CANNJudge 自动判题。",
+          journey: buildSkillJourney("basics", { role: "高校教师", level: "教学开课", goal: "16 周课程与实验共建" }),
           cards: [
             { tag: "周期精品课", title: "常态学期课（16 周 / 32~48 学时）", desc: "含传统学科融合实验、PPTX 讲义与综合大作业方案。", go: "查看课程安排 →", fn: () => { activePathView = "period"; activePeriodId = "term"; syncPathView(); switchTab("paths"); } },
             { tag: "开课闭环", title: "高校开课申请与考核全流程", desc: "4 步完成开课对接、班级算力申请与 CANNJudge 考核。", go: "进入高校与赛事 →", fn: () => switchTab("academia") }
@@ -2327,73 +2471,150 @@
           followups: ["需要给学生配 2 天启航营", "查看 13 门高校共建课程", "看推荐系统或大模型实验"]
         };
       }
-      if (/算子|ascend\s*c|tiling|cube|vector|flash|竞赛|备赛|cannjudge/.test(q) && !noCpp) {
+
+      // 3. PyASC / PyPTO Python 算子（含不会 C++ 但想写算子）
+      if (/pyasc|pypto|python\s*写算子|python\s*算子/.test(q) || (noCpp && /算子/.test(q))) {
         return {
-          reply: "已为你匹配「Ascend C 算子开发」路线：先通过第一课熟悉三级流水线，再依次攻克 Vector 矢量算子、动态 Shape Tiling 与 Cube 融合算子，并结合 CANNJudge 刷题备赛。",
+          reply: "已为你规划「Python 算子开发（PyASC / PyPTO）」学习路径：无需先学 C++，从 CANN 基础起步，直接掌握 PyASC 编程范式与 PyPTO 核函数开发，并在 CANNJudge / CANNLab 在线实操。",
+          journey: buildSkillJourney("pyasc", persona),
           cards: [
-            { tag: "主线三", title: "Ascend C 算子开发主线（18~24 小时）", desc: "覆盖 Vector/Cube 编程、Tiling 切分与 msProf 调优。", go: "进入算子主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("operator"); switchTab("paths"); } },
-            { tag: "4 周专题", title: "4 周专题课 · 融合算子与赛题冲刺", desc: "FlashAttention 融合算子实战 + CANNJudge 真题打榜。", go: "查看 4 周专题 →", fn: () => { activePathView = "period"; activePeriodId = "4w"; syncPathView(); switchTab("paths"); } }
+            { tag: "开源目录", title: "12 大领域课程体系 · 算子与编译目录", desc: "查看仓库 tutorials/pyasc_operator_development 与 pypto_development 完整章节。", go: "进入课程体系 →", fn: () => switchTab("map") },
+            { tag: "在线实操", title: "CANN 第一课（Python 快速上手）", desc: "先在浏览器跑通 NPU 环境与张量计算。", go: "体验第一课 →", fn: () => { setStep(2); document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" }); } }
           ],
-          followups: ["我没学过 C++ 怎么办", "把时间压缩到 2 天", "看 Ascend C 技术博客"]
+          followups: ["想看 CANNBot AI 生成算子", "想学 TorchAir 图模式", "对比 Ascend C 算子主线"]
         };
       }
-      if (/vllm|推理|量化|deepseek|modelslim|pd|kv\s*cache|部署/.test(q) || (wantBlogs && /推理|vllm/.test(q))) {
+
+      // 4. CANNBot AI 生成算子
+      if (/cannbot|ai\s*生成算子|算子代码生成|自动生成算子/.test(q)) {
         return {
-          reply: "推荐直接进入「大模型推理」主线：从 vLLM-Ascend 服务化部署起步，接着用 ModelSlim 做 W8A8 平滑量化，最后按需选学 PD 分离与 DeepSeek MLA 优化。",
+          reply: "已为你规划「CANNBot 算子生成」学习路径：掌握 Flash Workflow 与算子自动生成完整工作流，快速用 AI 辅助产出与验证 Ascend 算子代码。",
+          journey: buildSkillJourney("cannbot", persona),
           cards: [
-            { tag: "主线二", title: "大模型推理主线（10~14 小时）", desc: "vLLM-Ascend 部署、Prefix Caching 与 W8A8 量化。", go: "进入推理主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("infer"); switchTab("paths"); } },
-            { tag: "1 周实训", title: "1 周实训课 · 推理部署与微调", desc: "3 天完成 vLLM 服务化与压测，2 天完成 SwanLab 微调。", go: "查看 1 周实训 →", fn: () => { activePathView = "period"; activePeriodId = "1w"; syncPathView(); switchTab("paths"); } }
+            { tag: "算子主线", title: "Ascend C 算子开发主线", desc: "配合 CANNBot 生成代码后深入理解 Tiling 与调优原理。", go: "进入算子主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("operator"); switchTab("paths"); } },
+            { tag: "在线评测", title: "CANNJudge 算子在线评测", desc: "提交生成的算子代码进行功能与性能评测。", go: "打开课程体系 →", fn: () => switchTab("map") }
           ],
-          followups: ["看 DeepSeek / vLLM 技术博客", "我还想学大模型微调训练", "时间压缩到 2 天"]
+          followups: ["我想用 PyASC 用 Python 写算子", "想学 Ascend C 算子优化", "看技术博客实践"]
         };
       }
-      if (/微调|训练|swanlab|mindspeed|lora|并行/.test(q)) {
+
+      // 5. 图框架（GE / TorchAir / AutoFusion）
+      if (/图框架|\bge\b|图引擎|torchair|npugraph|autofusion|autofuse|图编译/.test(q)) {
         return {
-          reply: "推荐「大模型训练」主线：先用 3 行代码完成 PyTorch 迁移，再结合 SwanLab 跑通 Qwen/Llama LoRA 微调，进阶可学 MindSpeed 3D 并行与 HCCL 调优。",
+          reply: "已为你规划「图框架开发（GE / TorchAir / AutoFusion）」学习路径：依次打通 GE 图引擎、TorchAir 图模式（npugraph_ex）与 AutoFusion 自动融合策略。",
+          journey: buildSkillJourney("graph", persona),
           cards: [
-            { tag: "主线一", title: "大模型训练主线（12~16 小时）", desc: "PyTorch 迁移、SwanLab LoRA 微调与 3D 并行。", go: "进入训练主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("train"); switchTab("paths"); } },
-            { tag: "实战案例", title: "SwanLab 共建微调看板案例", desc: "实时观测 NPU 显存占用与多组超参 Loss 曲线。", go: "查看 SwanLab 案例 →", fn: () => { activeHub = "swanlab"; renderHub(); switchTab("academia"); } }
+            { tag: "推理主线", title: "大模型推理与图模式部署主线", desc: "结合图模式加速 Qwen3 / DeepSeek 推理性能。", go: "进入推理主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("infer"); switchTab("paths"); } },
+            { tag: "课程目录", title: "查看图框架完整课程体系", desc: "定位 GE、TorchAir 与 AutoFusion 全部 43 节实战 Notebook。", go: "进入课程体系 →", fn: () => switchTab("map") }
           ],
-          followups: ["顺便看看大模型推理部署", "看训练相关技术博客", "只有 2 天怎么入门"]
+          followups: ["想学 vLLM-Ascend 大模型推理", "想学 HCCL 集合通信", "看技术博客最新特性"]
         };
       }
-      if (/推荐|recsys|rag|知识库|检索|ctr|召回/.test(q)) {
+
+      // 6. 集合通信（HCCL / HiXL）
+      if (/集合通信|hccl|hixl|单边通信|多卡通信|集群通信|allreduce|kv\s*cache.*池/.test(q)) {
         return {
-          reply: "推荐「推荐系统 & AI 应用」主线：涵盖 RecSDK 稀疏特征加速、CTR 排序 + 双塔召回全链路，以及 RAG 知识库问答端到端开发。",
+          reply: "已为你规划「集合通信开发（HCCL / HiXL）」学习路径：从集群通信算法与带宽调优起步，进阶掌握 HiXL 单边通信、PD 分离与 KV Cache 池化传输。",
+          journey: buildSkillJourney("comm", persona),
           cards: [
-            { tag: "主线五", title: "推荐系统 & AI 应用（10~12 小时）", desc: "RecSDK、CTR 精排、双塔召回与 RAG 问答。", go: "进入推荐主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("recsys"); switchTab("paths"); } },
-            { tag: "架构资料", title: "AI 框架与场景参考资料库", desc: "直接查阅 RecSDK API 手册与全链路实践案例。", go: "查看资料与案例 →", fn: () => switchTab("map") }
+            { tag: "训练主线", title: "大模型训练主线（含 3D 并行与通信调优）", desc: "将 HCCL 集合通信应用到 MindSpeed 多卡集群训练。", go: "进入训练主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("train"); switchTab("paths"); } },
+            { tag: "课程目录", title: "查看 HCCL / HiXL 完整课程目录", desc: "共 30 节集群通信与单边通信实战 Notebook。", go: "进入课程体系 →", fn: () => switchTab("map") }
           ],
-          followups: ["需要学大模型微调吗", "时间压缩到 2 天", "看全部技术博客"]
+          followups: ["想学大模型 SFT / RL 训练", "想学 TorchAir 图框架", "看通信与推理技术博客"]
         };
       }
-      if (/离线|acl|atc|dvpp|yolo|cv|应用/.test(q)) {
+
+      // 7. AI 应用开发（RAG / 智能体）
+      if (/rag|知识库|智能体|ai\s*应用/.test(q)) {
         return {
-          reply: "推荐「应用开发（离线推理）」主线：掌握 ONNX 转 OM、ACL 异步多流推理以及 DVPP 硬件图像编解码加速，适合 CV 与边缘端云部署。",
+          reply: "已为你规划「AI 应用开发（RAG 知识库问答）」学习路径：从 CANN 基础起步，快速跑通基于昇腾 NPU 的 RAG 知识库端到端应用实践。",
+          journey: buildSkillJourney("ai_app", persona),
+          cards: [
+            { tag: "主线五", title: "推荐系统 & AI 应用主线", desc: "覆盖 RAG 知识库与推荐检索端到端全链路。", go: "进入应用主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("recsys"); switchTab("paths"); } },
+            { tag: "推理部署", title: "大模型推理主线（vLLM-Ascend）", desc: "为 RAG 应用提供高吞吐、低时延的大模型推理底座。", go: "进入推理主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("infer"); switchTab("paths"); } }
+          ],
+          followups: ["想学 vLLM-Ascend 模型部署", "想看推荐系统 torch-rechub", "只有 2 天时间怎么入门"]
+        };
+      }
+
+      // 8. 推荐系统
+      if (/推荐|rechub|deepfm|\bdin\b|dssm|mmoe|ctr|召回/.test(q)) {
+        return {
+          reply: "已为你规划「推荐系统开发（torch-rechub）」学习路径：涵盖 DeepFM、DIN 精排、DSSM 双塔召回与 MMoE 多任务实战。",
+          journey: buildSkillJourney("recommend", persona),
+          cards: [
+            { tag: "主线五", title: "推荐系统 & AI 应用（10~12 小时）", desc: "RecSDK 稀疏特征加速、CTR 排序与双塔召回全链路。", go: "进入推荐主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("recsys"); switchTab("paths"); } },
+            { tag: "课程目录", title: "12 大领域课程体系总览", desc: "直接查阅推荐系统与相关场景参考资料。", go: "查看课程体系 →", fn: () => switchTab("map") }
+          ],
+          followups: ["想看 RAG 知识库应用", "想学大模型微调训练", "看全部技术博客"]
+        };
+      }
+
+      // 9. 应用开发（离线推理 YOLOv13 / ACL / ATC）
+      if (/离线|acl|atc|dvpp|yolo|cv|应用开发/.test(q)) {
+        return {
+          reply: "已为你规划「应用开发（离线推理）」学习路径：掌握模型准备、ATC 转 OM、ACL 异步离线推理与结果调优，适合视觉与边缘云部署。",
+          journey: buildSkillJourney("application", persona),
           cards: [
             { tag: "主线四", title: "应用开发（离线推理 · 8~10 小时）", desc: "ATC 编译、ACL 多流并发与 YOLO 端到端检测。", go: "进入应用主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("app"); switchTab("paths"); } },
             { tag: "第一课", title: "04 ATC 模型转换与 ACL 入门", desc: "直接在下方第一课展示卡体验转换命令与代码示例。", go: "定位到第一课 →", fn: () => { setStep(3); document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" }); } }
           ],
-          followups: ["我没学过 C++ 可以用 Python 吗", "看 2 天启航营安排", "查看全部课程体系"]
+          followups: ["我不会 C++ 可以用 Python 写算子吗", "看 2 天启航营安排", "查看全部课程体系"]
         };
       }
-      if (noCpp) {
+
+      // 10. Ascend C 算子开发
+      if (/算子|ascend\s*c|tiling|cube|vector|flash|竞赛|备赛|cannjudge|核函数/.test(q)) {
         return {
-          reply: "没学过 C++ 完全不影响入门！建议先避开底层 Ascend C 算子，优先走基于 Python 的「PyTorch 迁移 + 大模型训推 / RAG 应用」路线，全部可在 Notebook 在线运行。",
+          reply: "已为你生成「Ascend C 算子开发」分阶段学习路径：从 CANN 基础与第一个自定义算子起步，循序攻克 Vector/Cube 编程、Tiling 切分与开源仓算子贡献，并结合 CANNJudge 刷题备赛。",
+          journey: buildSkillJourney("operator", persona),
           cards: [
-            { tag: "Python 友好", title: "CANN 第一课（01~03 Python 篇）", desc: "纯 Python 上手 NPU 张量计算与 3 行代码迁移 PyTorch。", go: "体验第一课 →", fn: () => { setStep(2); document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" }); } },
-            { tag: "主线推荐", title: "大模型推理 / 推荐与 RAG 应用", desc: "基于 vLLM-Ascend 与 Python API 构建应用。", go: "进入大模型推理 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("infer"); switchTab("paths"); } }
+            { tag: "主线三", title: "Ascend C 算子开发主线（18~24 小时）", desc: "覆盖三级流水线、动态 Shape Tiling 与 msProf 调优。", go: "进入算子主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("operator"); switchTab("paths"); } },
+            { tag: "4 周专题", title: "4 周专题课 · 融合算子与赛题冲刺", desc: "FlashAttention 融合算子实战 + CANNJudge 真题打榜。", go: "查看 4 周专题 →", fn: () => { activePathView = "period"; activePeriodId = "4w"; syncPathView(); switchTab("paths"); } }
           ],
-          followups: ["我想看 2 天快速上手计划", "后续想学大模型微调", "查看前置基础自查"]
+          followups: ["我没学过 C++ 想用 Python 写算子", "把时间压缩到 2 天", "看 Ascend C 技术博客"]
         };
       }
+
+      // 11. 大模型推理
+      if (/vllm|推理|量化|deepseek|modelslim|pd\s*分离|部署|qwen|llm/.test(q)) {
+        return {
+          reply: "已为你生成「大模型推理开发」分阶段学习路径：从 Qwen3 推理 Baseline 与融合算子加速起步，进阶学习 vLLM-Ascend 服务化、W8A8 量化以及 GE/AutoFusion 图优化。",
+          journey: buildSkillJourney("inference", persona),
+          cards: [
+            { tag: "主线二", title: "大模型推理主线（10~14 小时）", desc: "vLLM-Ascend 部署、Prefix Caching 与 W8A8 量化。", go: "进入推理主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("infer"); switchTab("paths"); } },
+            { tag: "1 周实训", title: "1 周实训课 · 推理部署与微调", desc: "3 天完成 vLLM 服务化与压测，2 天完成 SwanLab 微调。", go: "查看 1 周实训 →", fn: () => { activePathView = "period"; activePeriodId = "1w"; syncPathView(); switchTab("paths"); } }
+          ],
+          followups: ["想看 TorchAir / AutoFusion 图优化", "我还想学大模型 SFT / RL 训练", "看 DeepSeek / vLLM 技术博客"]
+        };
+      }
+
+      // 12. 大模型训练（SFT / RL）
+      if (/微调|训练|sft|\brl\b|强化学习|verl|grpo|ppo|swanlab|mindspeed|lora|并行/.test(q)) {
+        return {
+          reply: "已为你生成「大模型训练开发（SFT + RL）」分阶段学习路径：先跑通 SFT 监督微调与 FSDP 分布式训练，再进阶 VERL 强化学习（PPO/GRPO）与 3D 并行调优。",
+          journey: buildSkillJourney("training", persona),
+          cards: [
+            { tag: "主线一", title: "大模型训练主线（12~16 小时）", desc: "PyTorch 迁移、SwanLab LoRA 微调与 3D 并行。", go: "进入训练主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("train"); switchTab("paths"); } },
+            { tag: "实战案例", title: "SwanLab 共建微调看板案例", desc: "实时观测 NPU 显存占用与多组超参 Loss 曲线。", go: "查看 SwanLab 案例 →", fn: () => { activeHub = "swanlab"; renderHub(); switchTab("academia"); } }
+          ],
+          followups: ["想学 HCCL 多卡集合通信", "顺便看看大模型推理部署", "只有 2 天怎么入门"]
+        };
+      }
+
+      // 13. CANN 基础入门 / 2天启航营 / CUDA 对照 / 无 C++ PyTorch 迁移
       return {
-        reply: "建议从「CANN 第一课 + 2 天启航营」开始：先花 2 小时在浏览器零配置跑通 NPU 环境与 PyTorch 迁移，再根据兴趣切入大模型、算子或离线应用主线。",
+        reply: hasCuda
+          ? "你有 CUDA 经验，上手 CANN 会非常快！建议先花 1~2 小时快速过一遍「CANN 基础知识」建立 NPU 架构与内存层级对照，再直接切入 Ascend C 算子或大模型训推实战。"
+          : (twoDays || noCpp)
+            ? "已为你规划「2 天零门槛入门」路径：无需 C++ 基础，先完成 CANN 基础 4 讲并在 CANNLab 跑通 PyTorch 迁移，第二天即可按兴趣切入大模型推理或 PyASC Python 算子。"
+            : "已为你生成「CANN 基础入门」分阶段学习路径：从人工智能基础、NPU 架构到 CANN 核心概念与实践，配合 2 天启航营与第一课交互体验快速起步。",
+        journey: buildSkillJourney("basics", persona),
         cards: [
-          { tag: "零门槛起点", title: "CANN 第一课（5 节交互式入门）", desc: "浏览器直接体验架构初探、CANNLab 与 PyTorch 迁移。", go: "体验第一课 →", fn: () => { setStep(0); document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" }); } },
+          { tag: "零门槛起点", title: "CANN 第一课（5 节交互式入门）", desc: "浏览器直接体验架构初探、CANNLab 与 PyTorch 迁移。", go: "体验第一课 →", fn: () => { setStep(noCpp ? 2 : 0); document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" }); } },
           { tag: "2 天周期课", title: "2 天启航营精品课", desc: "Day 1 环境与模型迁移，Day 2 算子初探与结营演练。", go: "查看 2 天启航营 →", fn: () => { activePathView = "period"; activePeriodId = "2d"; syncPathView(); switchTab("paths"); } }
         ],
-        followups: ["我只有 2 天时间", "我想部署大模型推理", "看 54 篇技术博客"]
+        followups: ["不会 C++ 想用 Python 写算子", "我想学大模型推理部署", "我想学 Ascend C 算子开发", "看 54 篇技术博客"]
       };
     }
 
@@ -2420,17 +2641,46 @@
       const thread = document.getElementById("aiThread");
       thread.classList.add("open");
       aiRecCallbacks = res.cards.map(c => c.fn);
+      const j = res.journey;
+      const journeyHtml = j ? `
+        <div class="ai-persona-bar">
+          <span class="ai-persona-tag">角色 · ${j.role}</span>
+          <span class="ai-persona-tag">基础 · ${j.level}</span>
+          <span class="ai-persona-tag">目标 · ${j.goal}</span>
+          <span class="ai-persona-tag cert">结业 · ${j.certificate}</span>
+        </div>
+        <div class="ai-journey-stages">
+          ${j.stages.map((st, idx) => `
+            <div class="ai-journey-stage">
+              <div class="ai-stage-head">
+                <span class="ai-stage-title"><span class="ai-stage-num">${idx + 1}</span>${st.label}</span>
+                <span class="ai-stage-count">${st.total > st.courses.length ? `精选 ${st.courses.length}/${st.total} 讲` : `${st.courses.length} 讲`}</span>
+              </div>
+              <div class="ai-stage-courses">
+                ${st.courses.map(c => `
+                  <a class="ai-course-pill" href="${c.link}" target="_blank" rel="noopener" title="${c.title}">
+                    <span>${c.title}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; opacity:0.65;"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                  </a>
+                `).join("")}
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      ` : "";
+
       thread.innerHTML = `
         <div class="ai-msg-user">${query}</div>
         <div class="ai-msg-bot">
           <div class="ai-bot-head">
             <span class="ai-bot-badge">
-              <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-              CANN AI 学习助手
+              <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1-1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              CANN AI 学习路径规划（11 大方向 · 实时目录）
             </span>
-            <button class="text-link" style="font-size:11.5px;" onclick="clearAiMatch()">收起对话</button>
+            <button type="button" class="text-link" style="font-size:11.5px;" onclick="clearAiMatch()">收起对话</button>
           </div>
           <p class="ai-bot-text">${res.reply}</p>
+          ${journeyHtml}
           <div class="ai-rec-grid">
             ${res.cards.map((c, idx) => `
               <div class="ai-rec-card" onclick="aiRecCallbacks[${idx}]()">
@@ -2759,9 +3009,10 @@
 
     // Gentle rotating placeholder examples for the AI composer
     const AI_PLACEHOLDERS = [
-      "我没学过 C++，只有 2 天时间，想把 PyTorch 模型迁到 NPU",
-      "想用 vLLM-Ascend 部署 DeepSeek 并做 W8A8 量化，该看哪些课程？",
-      "我是高校老师，想给大三学生开一门带算子实验的 16 周实践课",
+      "不会 C++，想用 PyASC / PyPTO 用 Python 写算子",
+      "想学 TorchAir 图模式与 AutoFusion 自动融合",
+      "想用 vLLM-Ascend 部署 DeepSeek 并做 W8A8 量化",
+      "想学 HCCL 集合通信与 HiXL 单边通信优化",
       "想从零学 Ascend C 融合算子开发并参加昇腾创新大赛"
     ];
     let phIdx = 0;
