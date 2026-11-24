@@ -878,102 +878,199 @@
       border-color: rgba(22, 119, 255, 0.35);
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
-    .ai-persona-bar {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
+    /* ---- CANN Bench 昇腾学习旅程地图（Skill build_map.py 同款样式）---- */
+    .skill-persona {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
     }
-    .ai-persona-tag {
+    .skill-chip {
+      background: #ffffff;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .skill-chip .k { font-size: 11.5px; color: #6B7280; margin-bottom: 3px; }
+    .skill-chip .v { font-size: 15px; font-weight: 600; color: #111421; }
+
+    .skill-journey {
+      position: relative;
+      padding: 6px 0 8px;
+      margin-bottom: 14px;
+    }
+    .skill-journey::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #D1D5DB;
+      transform: translateX(-50%);
+    }
+    .skill-stage {
+      position: relative;
+      padding-bottom: 20px;
+    }
+    .skill-stage:last-of-type { padding-bottom: 10px; }
+    .skill-stage-label-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .skill-stage-label {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      background: #ffffff;
+      color: #111421;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 18px;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    .skill-stage-sub {
       font-size: 11px;
       font-weight: 500;
-      color: var(--text-secondary);
-      background: #ffffff;
-      border: 1px solid var(--border);
-      padding: 2px 8px;
-      border-radius: 999px;
+      color: #6B7280;
     }
-    .ai-persona-tag.cert {
-      color: #0369a1;
-      background: #f0f9ff;
-      border-color: rgba(2, 132, 199, 0.22);
-    }
-    .ai-journey-stages {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 10px;
+    .skill-step {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 12px;
+      position: relative;
     }
-    .ai-journey-stage {
+    .skill-step-col {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+    }
+    .skill-col-left { justify-content: flex-end; padding-right: 24px; }
+    .skill-col-right { justify-content: flex-start; padding-left: 24px; }
+    .skill-step-marker {
+      width: 30px;
+      height: 30px;
+      flex: none;
       background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .ai-stage-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-    .ai-stage-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .ai-stage-num {
-      width: 18px;
-      height: 18px;
+      border: 2px solid #D1D5DB;
       border-radius: 50%;
-      background: #eff6ff;
-      color: var(--link-blue);
-      font-size: 10.5px;
-      font-weight: 700;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-    .ai-stage-count {
-      font-size: 10.5px;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-    .ai-stage-courses {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #111421;
+      z-index: 1;
+    }
+    .skill-course-card {
+      flex: 1;
+      max-width: 360px;
+      text-decoration: none;
+      color: inherit;
+      background: #ffffff;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 12px 15px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+    .skill-course-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(20, 86, 240, 0.10);
+      border-color: #1456F0;
+    }
+    .skill-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .skill-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111421;
+      line-height: 1.35;
+      display: flex;
+      align-items: flex-start;
       gap: 5px;
     }
-    .ai-course-pill {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      font-size: 11.5px;
-      color: var(--text-secondary);
-      background: var(--bg-tray);
-      padding: 5px 8px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.14s ease, color 0.14s ease;
+    .skill-link-ico {
+      width: 14px;
+      height: 14px;
+      margin-top: 2px;
+      flex: none;
+      opacity: 0.55;
+      color: #1456F0;
     }
-    .ai-course-pill:hover {
-      background: #eff6ff;
-      color: var(--link-blue);
+    .skill-course-card:hover .skill-link-ico { opacity: 0.95; }
+    .skill-online-pill {
+      flex: none;
+      font-size: 11px;
+      font-weight: 500;
+      color: #1456F0;
+      background: #E8F0FE;
+      border: 1px solid #E8F0FE;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
-    .ai-course-pill span {
+    .skill-card-desc {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #6B7280;
+      line-height: 1.45;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    .skill-cert {
+      position: relative;
+      z-index: 1;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ffffff;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .skill-cert-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      flex: none;
+      overflow: hidden;
+      background: #FDECEC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+    .skill-cert-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .skill-cert-title { font-size: 15px; font-weight: 600; color: #C7000B; }
+    .skill-cert-desc { margin-top: 2px; font-size: 12px; color: #6B7280; }
+    @media (max-width: 720px) {
+      .skill-persona { grid-template-columns: 1fr; }
+      .skill-journey::before { left: 15px; }
+      .skill-step { display: block; padding-left: 42px; }
+      .skill-step-marker { position: absolute; left: 0; top: 14px; }
+      .skill-col-left, .skill-col-right { justify-content: stretch; padding: 0; }
+      .skill-course-card { max-width: 100%; }
+      .skill-stage-label-wrap { justify-content: flex-start; padding-left: 42px; }
     }
     .ai-followups {
       display: flex;
@@ -2660,30 +2757,56 @@
       thread.classList.add("open");
       aiRecCallbacks = res.cards.map(c => c.fn);
       const j = res.journey;
-      const journeyHtml = j ? `
-        <div class="ai-persona-bar">
-          <span class="ai-persona-tag">角色 · ${j.role}</span>
-          <span class="ai-persona-tag">基础 · ${j.level}</span>
-          <span class="ai-persona-tag">目标 · ${j.goal}</span>
-          <span class="ai-persona-tag cert">结业 · ${j.certificate}</span>
-        </div>
-        <div class="ai-journey-stages">
-          ${j.stages.map((st, idx) => `
-            <div class="ai-journey-stage">
-              <div class="ai-stage-head">
-                <span class="ai-stage-title"><span class="ai-stage-num">${idx + 1}</span>${st.label}</span>
-                <span class="ai-stage-count">${st.total > st.courses.length ? `精选 ${st.courses.length}/${st.total} 讲` : `${st.courses.length} 讲`}</span>
-              </div>
-              <div class="ai-stage-courses">
-                ${st.courses.map(c => `
-                  <a class="ai-course-pill" href="${c.link}" target="_blank" rel="noopener" title="${c.title}">
-                    <span>${c.title}</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; opacity:0.65;"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
-                  </a>
-                `).join("")}
-              </div>
+      const renderSkillCard = (c, side) => `
+        <a class="skill-course-card ${side}" href="${c.link}" target="_blank" rel="noopener">
+          <div class="skill-card-top">
+            <div class="skill-card-title">
+              <span>${c.title}</span>
+              <svg class="skill-link-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </div>
+            <span class="skill-online-pill">在线体验</span>
+          </div>
+          <div class="skill-card-desc">${c.desc || c.file || "GitCode 开源交互式 Notebook"}</div>
+        </a>
+      `;
+      const journeyHtml = j ? `
+        <div class="skill-persona">
+          <div class="skill-chip"><span class="k">角色</span><span class="v">${j.role}</span></div>
+          <div class="skill-chip"><span class="k">目标</span><span class="v">${j.goal}</span></div>
+          <div class="skill-chip"><span class="k">技术水平</span><span class="v">${j.level}</span></div>
+        </div>
+        <div class="skill-journey">
+          ${j.stages.map((st, sIdx) => `
+            <section class="skill-stage">
+              <div class="skill-stage-label-wrap">
+                <span class="skill-stage-label">
+                  ${st.label}
+                  ${st.total > st.courses.length ? `<span class="skill-stage-sub">精选 ${st.courses.length}/${st.total} 讲</span>` : ""}
+                </span>
+              </div>
+              <div class="skill-stage-steps">
+                ${st.courses.map((c, idx) => {
+                  const stepNum = idx + 1;
+                  const side = stepNum % 2 === 1 ? "left" : "right";
+                  const cardHtml = renderSkillCard(c, side);
+                  return `
+                    <div class="skill-step">
+                      <div class="skill-step-col skill-col-left">${side === "left" ? cardHtml : ""}</div>
+                      <div class="skill-step-marker"><span>${stepNum}</span></div>
+                      <div class="skill-step-col skill-col-right">${side === "right" ? cardHtml : ""}</div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </section>
           `).join("")}
+          <div class="skill-cert">
+            <div class="skill-cert-icon"><img src="assets/journey-cert.png" alt="证书" /></div>
+            <div>
+              <div class="skill-cert-title">${j.certificate}</div>
+              <div class="skill-cert-desc">完成本路径全部课程与练习后可获得认证</div>
+            </div>
+          </div>
         </div>
       ` : "";
 
