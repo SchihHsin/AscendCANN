@@ -9601,3 +9601,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（查找 VitePress 项目）
 
 - 确认 Ascend C 文档站项目位于 `cann-dashboard/ascend-doc/vitepress/`，配置位于 `.vitepress/config.mjs`；配置引用的文档源 `cann-dashboard/repo-scan/asc-devkit-fresh/docs/` 当前不存在，项目 `node_modules` 也未安装。依据本地配置与目录检查（H），未修改页面序列或 Agent 分层边界；后续启动需先恢复文档源并安装依赖。
+
+### 2026-11-24（核对 VitePress Pages）
+
+- GitHub 仓库 `SchihHsin/ascend-doc` 的 Pages 配置地址为 `https://schihhsin.github.io/ascend-doc/`，来源为 main 根目录；GitHub API 显示状态 built，但 2026-11-24 实测该入口 HTTP 404。根仓 `cann-dashboard/ascend-doc/vitepress/` 对应路径亦返回 404，不能视作已发布。此次仅核查地址，不影响页面序列或 Agent 分层边界。
