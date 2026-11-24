@@ -9593,3 +9593,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增 `ascstudio-pc/design-points.md`：整理三章 17 个设计点，每点包含对应页面起点、简短说明、1440×900 Demo 截图和线上直达链接；截图存于 `ascstudio-pc/evidence/`。
 - 为保证社区线截图与设计点一致，修正 `ascstudio-pc/app.js` 的经验邀请状态定位：直达时先展开任务内容、打开全部内容画布，再触发示例完成状态；后续草稿审阅和多渠道预览可从正确状态进入。原 Demo 仍是策划交互示例，不代表真实社区发布或 NPU 验证。
 - 证据来自当前工作区 PC 材料和内嵌 Demo。页面序列不变；不涉及 API / Host / Application 边界变更。通过 `node --check ascstudio-pc/app.js`、`git diff --check`、17 个 Markdown 图片路径核对，并在桌面 Chrome 1440×900 逐项生成截图、复核社区线三张状态。内容提交 `b6e830ee` 已推送至 `origin/main`；GitHub Pages 对应构建状态为 `built`，Markdown 与截图直达地址均返回 HTTP 200。
+
+### 2026-11-24（docs-card-options 方案 A 分层配置驱动与多规模预览）
+- 新增独立配置文件 `cann-dashboard/docs-config.json`，将 Hero 高频直达胶囊（`quickTags`）与 Bento 三层分类（`tier: "featured" | "standard" | "strip"`）完全配置化。
+- 重构 `cann-dashboard/docs-card-options.html` 渲染逻辑为通用分层引擎（`renderDocsPage`）：不改代码即可随配置增减分类或手册（`standard` 超过 5 项自动折叠并提供「展开全部」与搜索自动透出）；并新增顶部预设切换条（`精简 4 分类` / `标准 7 分类` / `扩容 10 分类·多手册`）供直观对比不同数量下的自适应效果，仅暂存本任务文件并推送 `origin/main`。

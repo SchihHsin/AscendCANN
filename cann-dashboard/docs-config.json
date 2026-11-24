@@ -1,0 +1,109 @@
+{
+  "quickTags": [
+    { "label": "Ascend C", "query": "Ascend C" },
+    { "label": "PyPTO", "query": "PyPTO" },
+    { "label": "HCCL通信", "query": "HCCL" },
+    { "label": "性能调优", "query": "调优" },
+    { "label": "故障处理", "query": "故障" }
+  ],
+  "categories": [
+    {
+      "id": "languages",
+      "title": "编程语言",
+      "subtitle": "面向算子与计算图的多层级编程范式",
+      "tier": "featured",
+      "badge": "核心开发入口",
+      "icon": "code",
+      "accent": "blue",
+      "flowSteps": [
+        "Kernel 核函数 (Ascend C / PyPTO)",
+        "Graph 计算图 (图开发)"
+      ],
+      "items": [
+        { "title": "Ascend C算子开发", "tag": "C++ / Kernel", "tagAccent": "blue", "href": "#ascend-c", "keywords": "Ascend C算子开发 编程语言" },
+        { "title": "PyPTO算子开发", "tag": "Python", "tagAccent": "indigo", "href": "#pypto", "keywords": "PyPTO算子开发 编程语言 Python" },
+        { "title": "图开发", "tag": "Graph", "tagAccent": "slate", "href": "#graph-dev", "keywords": "图开发 编程语言" }
+      ]
+    },
+    {
+      "id": "api-ref",
+      "title": "API参考",
+      "subtitle": "全栈算子库、运行时与图引擎接口索引",
+      "tier": "featured",
+      "showCount": true,
+      "icon": "database",
+      "accent": "indigo",
+      "items": [
+        { "title": "Ascend C API", "href": "#api-ascend-c", "keywords": "Ascend C API参考" },
+        { "title": "PyPTO API", "href": "#api-pypto", "keywords": "PyPTO API参考" },
+        { "title": "算子库", "href": "#api-ops", "keywords": "算子库 API参考" },
+        { "title": "Runtime运行时API", "href": "#api-runtime", "keywords": "Runtime运行时API API参考" },
+        { "title": "GE图引擎API", "href": "#api-ge", "keywords": "GE图引擎API API参考", "spanFullIfOdd": true }
+      ]
+    },
+    {
+      "id": "comm",
+      "title": "通信库",
+      "tier": "standard",
+      "icon": "network",
+      "accent": "sky",
+      "items": [
+        { "title": "HCCL集合通信开发", "href": "#hccl", "keywords": "HCCL集合通信开发 通信库" },
+        { "title": "SHMEM共享内存通信开发", "href": "#shmem", "keywords": "SHMEM共享内存通信开发 通信库" }
+      ]
+    },
+    {
+      "id": "tools",
+      "title": "调试与分析工具",
+      "tier": "standard",
+      "icon": "pulse",
+      "accent": "emerald",
+      "items": [
+        { "title": "ATC模型转换工具", "href": "#atc", "keywords": "ATC模型转换工具 调试与分析工具" },
+        { "title": "性能调优工具", "href": "#profiling", "keywords": "性能调优工具 调试与分析工具" },
+        { "title": "精度调试工具", "href": "#precision", "keywords": "精度调试工具 调试与分析工具" },
+        { "title": "算子调试工具", "href": "#op-debug", "keywords": "算子调试工具 调试与分析工具" }
+      ]
+    },
+    {
+      "id": "compiler",
+      "title": "编译器",
+      "tier": "standard",
+      "badge": "ISA",
+      "icon": "beaker",
+      "accent": "purple",
+      "items": [
+        { "title": "毕昇编译器开发与指令集参考", "href": "#bisheng", "keywords": "毕昇编译器开发与指令集参考 编译器" }
+      ]
+    },
+    {
+      "id": "more",
+      "title": "更多",
+      "tier": "standard",
+      "subtitle": "场景扩展",
+      "icon": "grid",
+      "accent": "slate",
+      "items": [
+        { "title": "应用开发", "href": "#app-dev", "keywords": "应用开发" },
+        { "title": "LLM DataDist开发", "href": "#llm-datadist", "keywords": "LLM DataDist开发" },
+        { "title": "DataFlow开发", "href": "#dataflow", "keywords": "DataFlow开发" }
+      ]
+    },
+    {
+      "id": "reference",
+      "title": "参考",
+      "subtitle": "日常开发排障、参数配置与底层融合规范速查",
+      "tier": "strip",
+      "badge": "Quick Reference",
+      "icon": "book",
+      "accent": "amber",
+      "items": [
+        { "title": "故障处理", "href": "#troubleshooting", "keywords": "故障处理" },
+        { "title": "日志参考", "href": "#log-ref", "keywords": "日志参考" },
+        { "title": "环境变量参考", "href": "#env-ref", "keywords": "环境变量参考" },
+        { "title": "图融合和UB融合规则参考", "href": "#fusion-ref", "keywords": "图融合和UB融合规则参考" },
+        { "title": "基础数据结构和接口", "href": "#data-struct", "keywords": "基础数据结构和接口" }
+      ]
+    }
+  ]
+}

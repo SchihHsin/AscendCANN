@@ -112,15 +112,8 @@
             </div>
           </div>
 
-          <!-- 高频直达胶囊 -->
-          <div class="flex flex-wrap items-center gap-1.5 text-xs">
-            <span class="text-slate-500 mr-1">高频直达：</span>
-            <button onclick="quickFilter('Ascend C')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">Ascend C</button>
-            <button onclick="quickFilter('PyPTO')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">PyPTO</button>
-            <button onclick="quickFilter('HCCL')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">HCCL通信</button>
-            <button onclick="quickFilter('调优')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">性能调优</button>
-            <button onclick="quickFilter('故障')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">故障处理</button>
-          </div>
+          <!-- 高频直达胶囊（由配置文件动态生成） -->
+          <div id="quickTagsContainer" class="flex flex-wrap items-center gap-1.5 text-xs"></div>
         </div>
 
         <!-- Hero 右侧 3D 架构插画 + 环绕的 3D 秩序微粒 -->
@@ -206,286 +199,23 @@
       <button onclick="resetFilter()" class="text-xs text-[#0052D9] hover:underline font-medium">重置筛选条件</button>
     </div>
 
-    <!-- ===================================================================== -->
-    <!-- 方案一：架构分层 Bento 布局 (Architecture Bento Grid)                  -->
-    <!-- ===================================================================== -->
-    <div id="view-bento" class="space-y-6">
-      
-      <!-- 第一层：核心开发与接口（双宽卡 6:6 非对称内部分栏） -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        <!-- 1. 编程语言（主宽卡） -->
-        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-white via-white to-blue-50/40">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-lg bg-[#0052D9] text-white flex items-center justify-center shadow-xs">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                </span>
-                <div>
-                  <h2 class="font-bold text-base text-slate-900">编程语言</h2>
-                  <p class="text-xs text-slate-500">面向算子与计算图的多层级编程范式</p>
-                </div>
-              </div>
-              <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-blue-50 text-[#0052D9]">核心开发入口</span>
-            </div>
-
-            <!-- 极简开发路径微示意 -->
-            <div class="my-4 px-3 py-2 rounded-lg bg-[#F5F7FA] flex items-center justify-between text-[11px] text-slate-500 font-mono-code">
-              <span>Kernel 核函数 (Ascend C / PyPTO)</span>
-              <span class="text-slate-300">──▶</span>
-              <span>Graph 计算图 (图开发)</span>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-            <a href="#ascend-c" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="Ascend C算子开发 编程语言">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white text-[#0052D9] font-medium">C++ / Kernel</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </div>
-              <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">Ascend C算子开发</div>
-            </a>
-
-            <a href="#pypto" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="PyPTO算子开发 编程语言 Python">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white text-indigo-600 font-medium">Python</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </div>
-              <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">PyPTO算子开发</div>
-            </a>
-
-            <a href="#graph-dev" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="图开发 编程语言">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white text-slate-600 font-medium">Graph</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </div>
-              <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">图开发</div>
-            </a>
-          </div>
-        </section>
-
-        <!-- 2. API参考（主宽卡：两列紧凑矩阵） -->
-        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-white via-white to-indigo-50/40">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
-              </span>
-              <div>
-                <h2 class="font-bold text-base text-slate-900">API参考</h2>
-                <p class="text-xs text-slate-500">全栈算子库、运行时与图引擎接口索引</p>
-              </div>
-            </div>
-            <span class="font-mono-code text-xs text-slate-400">5 Modules</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <a href="#ascend-c-api" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="Ascend C API">
-              <span>Ascend C API</span>
-              <span class="link-arrow text-[#0052D9] text-xs">→</span>
-            </a>
-            <a href="#pypto-api" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="PyPTO API">
-              <span>PyPTO API</span>
-              <span class="link-arrow text-[#0052D9] text-xs">→</span>
-            </a>
-            <a href="#op-lib" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="算子库">
-              <span>算子库</span>
-              <span class="link-arrow text-[#0052D9] text-xs">→</span>
-            </a>
-            <a href="#runtime-api" class="doc-item doc-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="Runtime运行时API">
-              <span>Runtime运行时API</span>
-              <span class="link-arrow text-[#0052D9] text-xs">→</span>
-            </a>
-            <a href="#ge-api" class="doc-item doc-link sm:col-span-2 flex items-center justify-between px-3 py-2.5 rounded-xl bg-[#F5F7FA] text-sm font-medium text-slate-800" data-keywords="GE图引擎API">
-              <span>GE图引擎API</span>
-              <span class="link-arrow text-[#0052D9] text-xs">→</span>
-            </a>
-          </div>
-        </section>
+    <!-- 配置规模效果预览条（仅改配置、不改渲染代码） -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#0052D9]"></span>
+        <span>分层配置驱动（<code class="font-mono-code text-[11px] bg-white px-1.5 py-0.5 rounded border border-slate-200/80 text-slate-700">docs-config.json</code>）</span>
       </div>
-
-      <!-- 第二层：核心能力组件（3列等宽：通信库 + 调试与分析工具 + 编译器与更多） -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- 3. 通信库 -->
-        <section class="doc-category bento-card rounded-2xl p-6">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-700 flex items-center justify-center">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-              </span>
-              <h2 class="font-semibold text-base text-slate-900">通信库</h2>
-            </div>
-            <!-- 迷你节点拓扑图标装饰 -->
-            <div class="flex items-center gap-1 opacity-60">
-              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
-              <span class="w-3 h-0.5 bg-cyan-300"></span>
-              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
-            </div>
-          </div>
-          <p class="text-xs text-slate-500 mb-4">集群集合通信、单边通信与通算融合开发</p>
-          <ul class="space-y-1.5">
-            <li class="doc-item" data-keywords="HCCL集合通信库">
-              <a href="#hccl" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>HCCL集合通信库</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-            <li class="doc-item" data-keywords="HIXL单边通信库">
-              <a href="#hixl" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>HIXL单边通信库</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-            <li class="doc-item" data-keywords="通信算子开发">
-              <a href="#comm-op" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>通信算子开发</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-          </ul>
-        </section>
-
-        <!-- 4. 调试与分析工具 -->
-        <section class="doc-category bento-card rounded-2xl p-6">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-              </span>
-              <h2 class="font-semibold text-base text-slate-900">调试与分析工具</h2>
-            </div>
-            <!-- 迷你泳道色块装饰 -->
-            <div class="flex items-end gap-0.5 h-3 opacity-70">
-              <span class="w-1 h-2 bg-emerald-400 rounded-xs"></span>
-              <span class="w-1 h-3 bg-emerald-500 rounded-xs"></span>
-              <span class="w-1 h-1.5 bg-emerald-300 rounded-xs"></span>
-            </div>
-          </div>
-          <p class="text-xs text-slate-500 mb-4">编译转换、Profiling 性能调优与带宽压测</p>
-          <ul class="space-y-1">
-            <li class="doc-item" data-keywords="算子编译工具">
-              <a href="#op-compiler" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>算子编译工具</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-            <li class="doc-item" data-keywords="性能调优工具">
-              <a href="#profiling" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>性能调优工具</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-            <li class="doc-item" data-keywords="ATC离线模型编译工具">
-              <a href="#atc" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>ATC离线模型编译工具</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-            <li class="doc-item" data-keywords="HCCL性能测试工具">
-              <a href="#hccl-test" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>HCCL性能测试工具</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </li>
-          </ul>
-        </section>
-
-        <!-- 5. 编译器 & 更多 -->
-        <div class="flex flex-col gap-6">
-          <section class="doc-category bento-card rounded-2xl p-5">
-            <div class="flex items-center justify-between mb-2.5">
-              <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                </span>
-                <h2 class="font-semibold text-base text-slate-900">编译器</h2>
-              </div>
-              <span class="font-mono-code text-[11px] text-purple-600 bg-purple-50 px-2 py-0.5 rounded">ISA</span>
-            </div>
-            <div class="doc-item" data-keywords="PTO虚拟指令集 编译器">
-              <a href="#pto-isa" class="doc-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700">
-                <span>PTO虚拟指令集</span>
-                <span class="link-arrow text-[#0052D9] text-xs">→</span>
-              </a>
-            </div>
-          </section>
-
-          <section class="doc-category bento-card rounded-2xl p-5 flex-1">
-            <div class="flex items-center justify-between mb-2.5">
-              <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                </span>
-                <h2 class="font-semibold text-base text-slate-900">更多</h2>
-              </div>
-              <span class="text-xs text-slate-400">场景扩展</span>
-            </div>
-            <ul class="space-y-1">
-              <li class="doc-item" data-keywords="应用开发">
-                <a href="#app-dev" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700">
-                  <span>应用开发</span>
-                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
-                </a>
-              </li>
-              <li class="doc-item" data-keywords="LLM DataDist开发">
-                <a href="#llm-datadist" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700">
-                  <span>LLM DataDist开发</span>
-                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
-                </a>
-              </li>
-              <li class="doc-item" data-keywords="DataFlow开发">
-                <a href="#dataflow" class="doc-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700">
-                  <span>DataFlow开发</span>
-                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+      <div id="configPresetBar" class="inline-flex items-center gap-1 p-1 rounded-xl bg-white/80 border border-slate-200/80 shadow-2xs text-xs">
+        <button data-preset="compact" class="preset-btn px-3 py-1 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-colors">精简（4 分类）</button>
+        <button data-preset="standard" class="preset-btn px-3 py-1 rounded-lg font-medium bg-[#0052D9] text-white shadow-2xs transition-colors">标准（7 分类·当前）</button>
+        <button data-preset="expanded" class="preset-btn px-3 py-1 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-colors">扩容（10 分类·多手册）</button>
       </div>
-
-      <!-- 第三层：参考（通栏横向速查条） -->
-      <section class="doc-category bento-card rounded-2xl p-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <div class="flex items-center gap-2.5">
-            <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            </span>
-            <div>
-              <h2 class="font-semibold text-base text-slate-900">参考</h2>
-              <p class="text-xs text-slate-500">日常开发排障、参数配置与底层融合规范速查</p>
-            </div>
-          </div>
-          <span class="text-xs text-slate-400 font-mono-code">Quick Reference</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
-          <a href="#troubleshooting" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="故障处理">
-            <span>故障处理</span>
-            <span class="link-arrow text-[#0052D9] text-xs">→</span>
-          </a>
-          <a href="#log-ref" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="日志参考">
-            <span>日志参考</span>
-            <span class="link-arrow text-[#0052D9] text-xs">→</span>
-          </a>
-          <a href="#env-ref" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="环境变量参考">
-            <span>环境变量参考</span>
-            <span class="link-arrow text-[#0052D9] text-xs">→</span>
-          </a>
-          <a href="#fusion-ref" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="图融合和UB融合规则参考">
-            <span>图融合和UB融合规则参考</span>
-            <span class="link-arrow text-[#0052D9] text-xs">→</span>
-          </a>
-          <a href="#data-struct" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="基础数据结构和接口">
-            <span>基础数据结构和接口</span>
-            <span class="link-arrow text-[#0052D9] text-xs">→</span>
-          </a>
-        </div>
-      </section>
     </div>
 
+    <!-- ===================================================================== -->
+    <!-- 方案 A：分层配置驱动 Bento 布局（由 docs-config.json 自动生成）        -->
+    <!-- ===================================================================== -->
+    <div id="view-bento" class="space-y-6"></div>
   </main>
 
   <!-- 页脚版权 -->
@@ -499,6 +229,422 @@
   </footer>
 
   <script>
+    // 图标与主题色白名单映射（后台配置只需传枚举名）
+    const ICON_MAP = {
+      code: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>',
+      database: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>',
+      network: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>',
+      pulse: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
+      beaker: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>',
+      grid: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>',
+      book: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>',
+      cube: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>',
+      shield: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>'
+    };
+
+    const ACCENT_MAP = {
+      blue: { solid: 'bg-[#0052D9] text-white shadow-xs', soft: 'bg-blue-50 text-[#0052D9]', grad: 'bg-gradient-to-br from-white via-white to-blue-50/40', tag: 'text-[#0052D9]' },
+      indigo: { solid: 'bg-indigo-600 text-white shadow-xs', soft: 'bg-indigo-50 text-indigo-600', grad: 'bg-gradient-to-br from-white via-white to-indigo-50/40', tag: 'text-indigo-600' },
+      sky: { solid: 'bg-sky-600 text-white shadow-xs', soft: 'bg-sky-50 text-sky-600', grad: 'bg-gradient-to-br from-white via-white to-sky-50/35', tag: 'text-sky-600' },
+      emerald: { solid: 'bg-emerald-600 text-white shadow-xs', soft: 'bg-emerald-50 text-emerald-600', grad: 'bg-gradient-to-br from-white via-white to-emerald-50/35', tag: 'text-emerald-600' },
+      purple: { solid: 'bg-purple-600 text-white shadow-xs', soft: 'bg-purple-50 text-purple-600', grad: 'bg-gradient-to-br from-white via-white to-purple-50/35', tag: 'text-purple-600' },
+      amber: { solid: 'bg-amber-600 text-white shadow-xs', soft: 'bg-amber-50 text-amber-700', grad: 'bg-gradient-to-br from-white via-white to-amber-50/35', tag: 'text-amber-700' },
+      rose: { solid: 'bg-rose-600 text-white shadow-xs', soft: 'bg-rose-50 text-rose-600', grad: 'bg-gradient-to-br from-white via-white to-rose-50/35', tag: 'text-rose-600' },
+      slate: { solid: 'bg-slate-700 text-white shadow-xs', soft: 'bg-slate-100 text-slate-600', grad: 'bg-gradient-to-br from-white via-white to-slate-50/50', tag: 'text-slate-600' }
+    };
+
+    // 默认配置（与 docs-config.json 保持一致，兼容本地 file:// 预览）
+    const DEFAULT_DOCS_CONFIG = {
+      quickTags: [
+        { label: 'Ascend C', query: 'Ascend C' },
+        { label: 'PyPTO', query: 'PyPTO' },
+        { label: 'HCCL通信', query: 'HCCL' },
+        { label: '性能调优', query: '调优' },
+        { label: '故障处理', query: '故障' }
+      ],
+      categories: [
+        {
+          id: 'languages',
+          title: '编程语言',
+          subtitle: '面向算子与计算图的多层级编程范式',
+          tier: 'featured',
+          badge: '核心开发入口',
+          icon: 'code',
+          accent: 'blue',
+          flowSteps: ['Kernel 核函数 (Ascend C / PyPTO)', 'Graph 计算图 (图开发)'],
+          items: [
+            { title: 'Ascend C算子开发', tag: 'C++ / Kernel', tagAccent: 'blue', href: '#ascend-c', keywords: 'Ascend C算子开发 编程语言' },
+            { title: 'PyPTO算子开发', tag: 'Python', tagAccent: 'indigo', href: '#pypto', keywords: 'PyPTO算子开发 编程语言 Python' },
+            { title: '图开发', tag: 'Graph', tagAccent: 'slate', href: '#graph-dev', keywords: '图开发 编程语言' }
+          ]
+        },
+        {
+          id: 'api-ref',
+          title: 'API参考',
+          subtitle: '全栈算子库、运行时与图引擎接口索引',
+          tier: 'featured',
+          showCount: true,
+          icon: 'database',
+          accent: 'indigo',
+          items: [
+            { title: 'Ascend C API', href: '#api-ascend-c', keywords: 'Ascend C API参考' },
+            { title: 'PyPTO API', href: '#api-pypto', keywords: 'PyPTO API参考' },
+            { title: '算子库', href: '#api-ops', keywords: '算子库 API参考' },
+            { title: 'Runtime运行时API', href: '#api-runtime', keywords: 'Runtime运行时API API参考' },
+            { title: 'GE图引擎API', href: '#api-ge', keywords: 'GE图引擎API API参考', spanFullIfOdd: true }
+          ]
+        },
+        {
+          id: 'comm',
+          title: '通信库',
+          tier: 'standard',
+          icon: 'network',
+          accent: 'sky',
+          footerNote: '多卡 / 多节点集合通信与共享内存原语',
+          items: [
+            { title: 'HCCL集合通信开发', href: '#hccl', keywords: 'HCCL集合通信开发 通信库' },
+            { title: 'SHMEM共享内存通信开发', href: '#shmem', keywords: 'SHMEM共享内存通信开发 通信库' }
+          ]
+        },
+        {
+          id: 'tools',
+          title: '调试与分析工具',
+          tier: 'standard',
+          icon: 'pulse',
+          accent: 'emerald',
+          items: [
+            { title: 'ATC模型转换工具', href: '#atc', keywords: 'ATC模型转换工具 调试与分析工具' },
+            { title: '性能调优工具', href: '#profiling', keywords: '性能调优工具 调试与分析工具' },
+            { title: '精度调试工具', href: '#precision', keywords: '精度调试工具 调试与分析工具' },
+            { title: '算子调试工具', href: '#op-debug', keywords: '算子调试工具 调试与分析工具' }
+          ]
+        },
+        {
+          id: 'compiler',
+          title: '编译器',
+          tier: 'standard',
+          badge: 'ISA',
+          icon: 'beaker',
+          accent: 'purple',
+          items: [
+            { title: '毕昇编译器开发与指令集参考', href: '#bisheng', keywords: '毕昇编译器开发与指令集参考 编译器' }
+          ]
+        },
+        {
+          id: 'more',
+          title: '更多',
+          tier: 'standard',
+          subtitle: '场景扩展',
+          icon: 'grid',
+          accent: 'slate',
+          items: [
+            { title: '应用开发', href: '#app-dev', keywords: '应用开发' },
+            { title: 'LLM DataDist开发', href: '#llm-datadist', keywords: 'LLM DataDist开发' },
+            { title: 'DataFlow开发', href: '#dataflow', keywords: 'DataFlow开发' }
+          ]
+        },
+        {
+          id: 'reference',
+          title: '参考',
+          subtitle: '日常开发排障、参数配置与底层融合规范速查',
+          tier: 'strip',
+          badge: 'Quick Reference',
+          icon: 'book',
+          accent: 'amber',
+          items: [
+            { title: '故障处理', href: '#troubleshooting', keywords: '故障处理' },
+            { title: '日志参考', href: '#log-ref', keywords: '日志参考' },
+            { title: '环境变量参考', href: '#env-ref', keywords: '环境变量参考' },
+            { title: '图融合和UB融合规则参考', href: '#fusion-ref', keywords: '图融合和UB融合规则参考' },
+            { title: '基础数据结构和接口', href: '#data-struct', keywords: '基础数据结构和接口' }
+          ]
+        }
+      ]
+    };
+
+    // 精简配置示例（4 分类）
+    const COMPACT_DOCS_CONFIG = {
+      quickTags: [
+        { label: 'Ascend C', query: 'Ascend C' },
+        { label: 'PyPTO', query: 'PyPTO' },
+        { label: '故障处理', query: '故障' }
+      ],
+      categories: [
+        DEFAULT_DOCS_CONFIG.categories[0],
+        DEFAULT_DOCS_CONFIG.categories[1],
+        DEFAULT_DOCS_CONFIG.categories[3],
+        DEFAULT_DOCS_CONFIG.categories[6]
+      ]
+    };
+
+    // 扩容配置示例（10 分类 + 单卡超 5 项自动折叠）
+    const EXPANDED_DOCS_CONFIG = {
+      quickTags: [
+        ...DEFAULT_DOCS_CONFIG.quickTags,
+        { label: '驱动与固件', query: '驱动' },
+        { label: '量化压缩', query: '量化' }
+      ],
+      categories: [
+        DEFAULT_DOCS_CONFIG.categories[0],
+        {
+          ...DEFAULT_DOCS_CONFIG.categories[1],
+          items: [
+            ...DEFAULT_DOCS_CONFIG.categories[1].items.map(i => ({ ...i, spanFullIfOdd: false })),
+            { title: 'ACLlib基础接口API', href: '#api-acl', keywords: 'ACLlib基础接口API API参考' }
+          ]
+        },
+        DEFAULT_DOCS_CONFIG.categories[2],
+        {
+          ...DEFAULT_DOCS_CONFIG.categories[3],
+          items: [
+            ...DEFAULT_DOCS_CONFIG.categories[3].items,
+            { title: 'MindStudio Insight可视化', href: '#insight', keywords: 'MindStudio Insight可视化 调试' },
+            { title: '算子仿真与核函数剖析', href: '#sim', keywords: '算子仿真 核函数剖析' },
+            { title: '异常Dump与快照诊断', href: '#dump', keywords: '异常Dump 快照诊断' }
+          ]
+        },
+        DEFAULT_DOCS_CONFIG.categories[4],
+        DEFAULT_DOCS_CONFIG.categories[5],
+        {
+          id: 'quant',
+          title: '模型压缩与量化',
+          tier: 'standard',
+          badge: 'New',
+          icon: 'cube',
+          accent: 'indigo',
+          items: [
+            { title: 'AMCT训练后量化指南', href: '#amct-ptq', keywords: 'AMCT训练后量化' },
+            { title: 'W8A8 / W4A16大模型量化', href: '#llm-quant', keywords: '大模型量化 W8A8' },
+            { title: '稀疏化与剪枝工具链', href: '#prune', keywords: '稀疏化 剪枝' }
+          ]
+        },
+        {
+          id: 'driver',
+          title: '驱动、固件与容器',
+          tier: 'standard',
+          icon: 'shield',
+          accent: 'rose',
+          items: [
+            { title: 'NPU驱动与固件升级', href: '#driver-upgrade', keywords: 'NPU驱动 固件升级' },
+            { title: 'Ascend Docker Runtime', href: '#docker-runtime', keywords: 'Docker Runtime 容器' },
+            { title: 'npu-smi设备运维命令', href: '#npu-smi', keywords: 'npu-smi 设备运维' }
+          ]
+        },
+        {
+          id: 'migration',
+          title: '三方框架迁移与适配',
+          tier: 'standard',
+          icon: 'network',
+          accent: 'blue',
+          items: [
+            { title: 'PyTorch模型迁移指南', href: '#torch-npu', keywords: 'PyTorch torch_npu 迁移' },
+            { title: 'vLLM / SGLang推理适配', href: '#vllm-ascend', keywords: 'vLLM SGLang 推理适配' }
+          ]
+        },
+        DEFAULT_DOCS_CONFIG.categories[6]
+      ]
+    };
+
+    const CONFIG_PRESETS = {
+      compact: COMPACT_DOCS_CONFIG,
+      standard: DEFAULT_DOCS_CONFIG,
+      expanded: EXPANDED_DOCS_CONFIG
+    };
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    function renderIcon(iconName) {
+      const paths = ICON_MAP[iconName] || ICON_MAP.cube;
+      return `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">${paths}</svg>`;
+    }
+
+    function renderQuickTags(tags) {
+      const container = document.getElementById('quickTagsContainer');
+      if (!container) return;
+      const pills = (tags || []).map(t => {
+        const label = typeof t === 'string' ? t : t.label;
+        const query = typeof t === 'string' ? t : (t.query || t.label);
+        return `<button onclick="quickFilter('${escapeHtml(query)}')" class="px-2.5 py-1 rounded-md bg-white/80 hover:bg-white ring-1 ring-slate-200/70 text-slate-700 hover:text-[#0052D9] transition-colors font-medium">${escapeHtml(label)}</button>`;
+      }).join('');
+      container.innerHTML = `<span class="text-slate-500 mr-1">高频直达：</span>${pills}`;
+    }
+
+    function renderFeaturedCard(cat) {
+      const acc = ACCENT_MAP[cat.accent] || ACCENT_MAP.blue;
+      const items = cat.items || [];
+      const hasTags = items.some(item => item.tag);
+
+      const headerRight = cat.badge
+        ? `<span class="text-[11px] font-medium px-2 py-0.5 rounded ${acc.soft}">${escapeHtml(cat.badge)}</span>`
+        : (cat.showCount ? `<span class="text-xs text-slate-400 font-mono-code">${items.length} Modules</span>` : '');
+
+      const flowHtml = (cat.flowSteps && cat.flowSteps.length >= 2)
+        ? `<div class="my-4 px-3 py-2 rounded-lg bg-[#F5F7FA] flex items-center justify-between text-[11px] text-slate-500 font-mono-code">${cat.flowSteps.map(s => `<span>${escapeHtml(s)}</span>`).join('<span class="text-slate-300">──▶</span>')}</div>`
+        : '';
+
+      let itemsHtml = '';
+      if (hasTags) {
+        const colsClass = items.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3';
+        itemsHtml = `
+          <div class="grid grid-cols-1 ${colsClass} gap-2.5">
+            ${items.map(item => {
+              const tagAcc = ACCENT_MAP[item.tagAccent] || acc;
+              return `
+                <a href="${escapeHtml(item.href || '#')}" class="doc-item doc-link bg-[#F5F7FA] hover:bg-blue-50/80 rounded-xl p-3 flex flex-col justify-between group" data-keywords="${escapeHtml(item.keywords || item.title)}">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white ${tagAcc.tag} font-medium">${escapeHtml(item.tag || '')}</span>
+                    <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                  </div>
+                  <div class="text-sm font-semibold text-slate-800 group-hover:text-[#0052D9]">${escapeHtml(item.title)}</div>
+                </a>`;
+            }).join('')}
+          </div>`;
+      } else {
+        itemsHtml = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            ${items.map((item, idx) => {
+              const spanFull = (item.spanFullIfOdd && items.length % 2 === 1 && idx === items.length - 1) ? ' sm:col-span-2' : '';
+              return `
+                <a href="${escapeHtml(item.href || '#')}" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-800${spanFull}" data-keywords="${escapeHtml(item.keywords || item.title)}">
+                  <span>${escapeHtml(item.title)}</span>
+                  <span class="link-arrow text-[#0052D9] text-xs">→</span>
+                </a>`;
+            }).join('')}
+          </div>`;
+      }
+
+      return `
+        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between ${acc.grad}">
+          <div>
+            <div class="flex items-center justify-between ${flowHtml ? 'mb-3' : 'mb-4'}">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg ${acc.solid} flex items-center justify-center">${renderIcon(cat.icon)}</span>
+                <div>
+                  <h2 class="font-bold text-base text-slate-900">${escapeHtml(cat.title)}</h2>
+                  ${cat.subtitle ? `<p class="text-xs text-slate-500">${escapeHtml(cat.subtitle)}</p>` : ''}
+                </div>
+              </div>
+              ${headerRight}
+            </div>
+            ${flowHtml}
+          </div>
+          ${itemsHtml}
+        </section>`;
+    }
+
+    function renderStandardCard(cat) {
+      const acc = ACCENT_MAP[cat.accent] || ACCENT_MAP.slate;
+      const items = cat.items || [];
+      const COLLAPSE_LIMIT = 5;
+      const hasOverflow = items.length > COLLAPSE_LIMIT;
+
+      const rightEl = cat.badge
+        ? `<span class="text-[11px] font-mono-code ${acc.soft} px-2 py-0.5 rounded">${escapeHtml(cat.badge)}</span>`
+        : (cat.subtitle ? `<span class="text-xs text-slate-400">${escapeHtml(cat.subtitle)}</span>` : '');
+
+      const listHtml = items.map((item, idx) => {
+        const extraClass = hasOverflow && idx >= COLLAPSE_LIMIT ? ' extra-item hidden' : '';
+        return `
+          <li class="doc-item${extraClass}" data-keywords="${escapeHtml(item.keywords || item.title)}">
+            <a href="${escapeHtml(item.href || '#')}" class="doc-link flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-slate-700">
+              <span>${escapeHtml(item.title)}</span>
+              <span class="link-arrow text-[#0052D9] text-xs">→</span>
+            </a>
+          </li>`;
+      }).join('');
+
+      const expandBtn = hasOverflow
+        ? `<button type="button" onclick="toggleCardExpand(this)" class="expand-toggle-btn mt-3 w-full py-1.5 rounded-lg bg-[#F5F7FA] hover:bg-blue-50 text-xs font-medium text-slate-600 hover:text-[#0052D9] transition-colors">展开全部（共 ${items.length} 项）</button>`
+        : '';
+
+      const footerHtml = cat.footerNote
+        ? `<div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400">${escapeHtml(cat.footerNote)}</div>`
+        : '';
+
+      return `
+        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg ${acc.soft} flex items-center justify-center">${renderIcon(cat.icon)}</span>
+                <h2 class="font-semibold text-base text-slate-900">${escapeHtml(cat.title)}</h2>
+              </div>
+              ${rightEl}
+            </div>
+            <ul class="space-y-1">${listHtml}</ul>
+            ${expandBtn}
+          </div>
+          ${footerHtml}
+        </section>`;
+    }
+
+    function renderStripCard(cat) {
+      const acc = ACCENT_MAP[cat.accent] || ACCENT_MAP.amber;
+      const items = cat.items || [];
+      return `
+        <section class="doc-category bento-card rounded-2xl p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg ${acc.soft} flex items-center justify-center">${renderIcon(cat.icon)}</span>
+              <div>
+                <h2 class="font-semibold text-base text-slate-900">${escapeHtml(cat.title)}</h2>
+                ${cat.subtitle ? `<p class="text-xs text-slate-500">${escapeHtml(cat.subtitle)}</p>` : ''}
+              </div>
+            </div>
+            ${cat.badge ? `<span class="text-xs text-slate-400 font-mono-code">${escapeHtml(cat.badge)}</span>` : ''}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+            ${items.map(item => `
+              <a href="${escapeHtml(item.href || '#')}" class="doc-item doc-link bg-[#F5F7FA] px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium text-slate-700" data-keywords="${escapeHtml(item.keywords || item.title)}">
+                <span>${escapeHtml(item.title)}</span>
+                <span class="link-arrow text-[#0052D9] text-xs">→</span>
+              </a>`).join('')}
+          </div>
+        </section>`;
+    }
+
+    function renderDocsPage(config) {
+      renderQuickTags(config.quickTags);
+
+      const categories = config.categories || [];
+      const featured = categories.filter(c => c.tier === 'featured');
+      const standard = categories.filter(c => c.tier !== 'featured' && c.tier !== 'strip');
+      const strips = categories.filter(c => c.tier === 'strip');
+
+      const container = document.getElementById('view-bento');
+      let html = '';
+
+      if (featured.length > 0) {
+        const fCols = featured.length === 1 ? 'lg:grid-cols-1' : 'lg:grid-cols-2';
+        html += `<div class="grid grid-cols-1 ${fCols} gap-6">${featured.map(renderFeaturedCard).join('')}</div>`;
+      }
+
+      if (standard.length > 0) {
+        const sCols = standard.length === 1 ? 'lg:grid-cols-1' : (standard.length === 2 ? 'md:grid-cols-2 lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3');
+        html += `<div class="grid grid-cols-1 ${sCols} gap-6">${standard.map(renderStandardCard).join('')}</div>`;
+      }
+
+      strips.forEach(cat => {
+        html += renderStripCard(cat);
+      });
+
+      container.innerHTML = html;
+      filterDocs(searchInput.value || '');
+    }
+
+    window.toggleCardExpand = function (btn) {
+      const card = btn.closest('.doc-category');
+      const extras = card.querySelectorAll('.extra-item');
+      const expanded = btn.dataset.expanded === '1';
+      extras.forEach(el => el.classList.toggle('hidden', expanded));
+      btn.dataset.expanded = expanded ? '0' : '1';
+      btn.textContent = expanded ? `展开全部（共 ${card.querySelectorAll('.doc-item').length} 项）` : '收起部分';
+    };
+
     // 实时搜索过滤
     const searchInput = document.getElementById('docSearchInput');
     const clearBtn = document.getElementById('clearSearchBtn');
@@ -510,22 +656,24 @@
       clearBtn.classList.toggle('hidden', q.length === 0);
 
       const activeContainer = document.getElementById('view-bento');
-
       const categories = activeContainer.querySelectorAll('.doc-category');
       let visibleCategories = 0;
 
       categories.forEach(cat => {
         const items = cat.querySelectorAll('.doc-item');
+        const expandBtn = cat.querySelector('.expand-toggle-btn');
         let hasMatch = false;
 
         items.forEach(item => {
           const text = item.textContent.toLowerCase();
           const keywords = (item.dataset.keywords || '').toLowerCase();
           const matched = !q || text.includes(q) || keywords.includes(q);
-          item.classList.toggle('hidden', !matched);
+          const isCollapsedExtra = !q && item.classList.contains('extra-item') && (!expandBtn || expandBtn.dataset.expanded !== '1');
+          item.classList.toggle('hidden', !matched || isCollapsedExtra);
           if (matched) hasMatch = true;
         });
 
+        if (expandBtn) expandBtn.classList.toggle('hidden', q.length > 0);
         cat.classList.toggle('hidden', !hasMatch);
         if (hasMatch) visibleCategories++;
       });
@@ -561,6 +709,36 @@
         searchInput.blur();
       }
     });
+
+    // 预设规模切换
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const preset = btn.dataset.preset;
+        document.querySelectorAll('.preset-btn').forEach(b => {
+          const active = b === btn;
+          b.className = active
+            ? 'preset-btn px-3 py-1 rounded-lg font-medium bg-[#0052D9] text-white shadow-2xs transition-colors'
+            : 'preset-btn px-3 py-1 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-colors';
+        });
+        renderDocsPage(CONFIG_PRESETS[preset] || DEFAULT_DOCS_CONFIG);
+      });
+    });
+
+    // 优先读取外部 docs-config.json，失败时回退内置默认配置
+    (async function initDocsPage() {
+      try {
+        const res = await fetch('./docs-config.json', { cache: 'no-store' });
+        if (res.ok) {
+          const externalConfig = await res.json();
+          if (externalConfig && Array.isArray(externalConfig.categories)) {
+            CONFIG_PRESETS.standard = externalConfig;
+          }
+        }
+      } catch (_) {
+        // 本地 file:// 打开时使用内置 DEFAULT_DOCS_CONFIG
+      }
+      renderDocsPage(CONFIG_PRESETS.standard);
+    })();
   </script>
 </body>
 </html>
