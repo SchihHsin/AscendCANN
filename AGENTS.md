@@ -9617,3 +9617,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（恢复文档预览）
 
 - 更正上一条：独立仓库的文档 Markdown 源缺失，但完整历史静态构建保留于 `/Users/hsin/Documents/Coding/ascend-doc/.vitepress/dist-static/`。之前误用 `npm run dev`，只渲染本地首页；正确方式为在该仓运行 `node serve.mjs`，访问 `http://localhost:5301/`。已在浏览器确认入门教程正文和 `/api/README.html` 均可打开；仅抽查这些页面，不代表所有历史链接或资源均已验证。未修改产品代码、页面序列或 Agent 分层边界。
+
+### 2026-11-24（在线发布可行性）
+
+- 用户询问 VitePress 能否形成公开访问链接。独立仓 `SchihHsin/ascend-doc` 已配置 Pages，但当前为 main 根目录 legacy 发布，入口 HTTP 404；完整历史静态构建在本地 `.vitepress/dist-static/`，约 2.6 GB、11655 文件，且现有 `serve.mjs` 动态注入主题和脚本并使用根路径。公开发布需处理产物体积、子路径与注入，不能直接把 localhost 链接分享给他人；Markdown 源缺失使完整重新构建受限。此次仅核查，未发布，未改变页面序列或 Agent 分层边界。
