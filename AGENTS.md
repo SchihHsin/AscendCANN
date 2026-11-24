@@ -9605,3 +9605,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（核对 VitePress Pages）
 
 - GitHub 仓库 `SchihHsin/ascend-doc` 的 Pages 配置地址为 `https://schihhsin.github.io/ascend-doc/`，来源为 main 根目录；GitHub API 显示状态 built，但 2026-11-24 实测该入口 HTTP 404。根仓 `cann-dashboard/ascend-doc/vitepress/` 对应路径亦返回 404，不能视作已发布。此次仅核查地址，不影响页面序列或 Agent 分层边界。
+
+### 2026-11-24（查看 VitePress 历史效果）
+
+- 向用户展示 `cann-dashboard/ascend-doc/now/verify2.png` 中保留的 Ascend C 文档页截图：左侧目录、正文、右侧本页内容与淡蓝紫标题横幅。截图是历史效果（H：本地留存截图），不是当前线上运行验证；未改动产品页面、页面序列或 Agent 分层边界。
