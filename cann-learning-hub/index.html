@@ -2434,20 +2434,21 @@
     }
 
     function buildAiRecommendation(query, prevContext = "") {
-      const q = (prevContext + " " + query).toLowerCase();
-      const noCpp = /没学过\s*c\+\+|不会\s*c\+\+|没有\s*c\+\+|无\s*c\+\+/.test(q);
-      const hasCuda = /cuda/.test(q);
-      const twoDays = /2\s*天|两天|快速上手|启航/.test(q);
-      const wantBlogs = /博客|文章|最新特性|技术动态|实践案例|客户案例|落地经验|最佳实践|别人怎么做的/.test(query);
+      const qNow = query.toLowerCase();
+      const qCtx = (prevContext + " " + query).toLowerCase();
+      const noCpp = /没学过\s*c\+\+|不会\s*c\+\+|没有\s*c\+\+|无\s*c\+\+/.test(qCtx);
+      const hasCuda = /cuda/.test(qCtx);
+      const twoDays = /2\s*天|两天|快速上手|启航/.test(qCtx);
+      const wantBlogs = /博客|文章|最新特性|技术动态|实践案例|客户案例|落地经验|最佳实践|别人怎么做的/.test(qNow);
 
       const persona = {};
-      if (/学生|研究生|大三|大四|本科/.test(q)) persona.role = "高校学生";
-      else if (/新手|零基础|新入门|小白/.test(q)) persona.role = "新入门开发者";
+      if (/学生|研究生|大三|大四|本科/.test(qCtx)) persona.role = "高校学生";
+      else if (/新手|零基础|新入门|小白/.test(qCtx)) persona.role = "新入门开发者";
       if (hasCuda) persona.level = "有 CUDA 经验";
       else if (noCpp) persona.level = "Python（无 C++）";
 
       // 1. 资讯 / 技术博客分流（遵循 Skill 消歧规则）
-      if (wantBlogs && !/想学|入门|怎么学/.test(query)) {
+      if (wantBlogs && !/想学|入门|怎么学/.test(qNow)) {
         return {
           reply: "已为你切换到「技术博客与实践案例」视角：仓库 blogs/ 目录收录 54+ 篇 CANN 最新特性解析与真实客户落地案例，可直接按「算子开发 / 大模型推理 / 大模型训练」筛选阅读。",
           journey: null,
@@ -2459,8 +2460,25 @@
         };
       }
 
+      // 优先按当前输入 query 识别主题；仅当当前输入无明确主题（如追问时间/基础）时才沿用 prevContext
+      const detectTopic = (t) => {
+        if (/老师|高校|开课|教学|16\s*周|学期/.test(t)) return "teacher";
+        if (/pyasc|pypto|python\s*写算子|python\s*算子/.test(t) || (noCpp && /算子/.test(t) && !/ascend\s*c/.test(t))) return "pyasc";
+        if (/cannbot|ai\s*生成算子|算子代码生成|自动生成算子/.test(t)) return "cannbot";
+        if (/图框架|\bge\b|图引擎|torchair|npugraph|autofusion|autofuse|图编译/.test(t)) return "graph";
+        if (/集合通信|hccl|hixl|单边通信|多卡通信|集群通信|allreduce|kv\s*cache.*池/.test(t)) return "comm";
+        if (/rag|知识库|智能体|ai\s*应用/.test(t)) return "ai_app";
+        if (/推荐|rechub|deepfm|\bdin\b|dssm|mmoe|ctr|召回/.test(t)) return "recommend";
+        if (/离线|acl|atc|dvpp|yolo|cv|应用开发/.test(t)) return "application";
+        if (/算子|ascend\s*c|tiling|cube|vector|flash|竞赛|备赛|cannjudge|核函数/.test(t)) return "operator";
+        if (/vllm|推理|量化|deepseek|modelslim|pd\s*分离|部署|qwen|llm/.test(t)) return "inference";
+        if (/微调|训练|sft|\brl\b|强化学习|verl|grpo|ppo|swanlab|mindspeed|lora|并行/.test(t)) return "training";
+        return null;
+      };
+      const topic = detectTopic(qNow) || (prevContext ? detectTopic(prevContext.toLowerCase()) : null) || "basics";
+
       // 2. 高校教师 / 开课闭环
-      if (/老师|高校|开课|教学|16\s*周|学期/.test(q)) {
+      if (topic === "teacher") {
         return {
           reply: "推荐走「高校开课与考核闭环」：直接复用官方 16 周常态学期课大纲与 13 门高校共建实验包，学生零配置在 CANNLab 上机，期末可接入 CANNJudge 自动判题。",
           journey: buildSkillJourney("basics", { role: "高校教师", level: "教学开课", goal: "16 周课程与实验共建" }),
@@ -2473,7 +2491,7 @@
       }
 
       // 3. PyASC / PyPTO Python 算子（含不会 C++ 但想写算子）
-      if (/pyasc|pypto|python\s*写算子|python\s*算子/.test(q) || (noCpp && /算子/.test(q))) {
+      if (topic === "pyasc") {
         return {
           reply: "已为你规划「Python 算子开发（PyASC / PyPTO）」学习路径：无需先学 C++，从 CANN 基础起步，直接掌握 PyASC 编程范式与 PyPTO 核函数开发，并在 CANNJudge / CANNLab 在线实操。",
           journey: buildSkillJourney("pyasc", persona),
@@ -2486,7 +2504,7 @@
       }
 
       // 4. CANNBot AI 生成算子
-      if (/cannbot|ai\s*生成算子|算子代码生成|自动生成算子/.test(q)) {
+      if (topic === "cannbot") {
         return {
           reply: "已为你规划「CANNBot 算子生成」学习路径：掌握 Flash Workflow 与算子自动生成完整工作流，快速用 AI 辅助产出与验证 Ascend 算子代码。",
           journey: buildSkillJourney("cannbot", persona),
@@ -2499,7 +2517,7 @@
       }
 
       // 5. 图框架（GE / TorchAir / AutoFusion）
-      if (/图框架|\bge\b|图引擎|torchair|npugraph|autofusion|autofuse|图编译/.test(q)) {
+      if (topic === "graph") {
         return {
           reply: "已为你规划「图框架开发（GE / TorchAir / AutoFusion）」学习路径：依次打通 GE 图引擎、TorchAir 图模式（npugraph_ex）与 AutoFusion 自动融合策略。",
           journey: buildSkillJourney("graph", persona),
@@ -2512,7 +2530,7 @@
       }
 
       // 6. 集合通信（HCCL / HiXL）
-      if (/集合通信|hccl|hixl|单边通信|多卡通信|集群通信|allreduce|kv\s*cache.*池/.test(q)) {
+      if (topic === "comm") {
         return {
           reply: "已为你规划「集合通信开发（HCCL / HiXL）」学习路径：从集群通信算法与带宽调优起步，进阶掌握 HiXL 单边通信、PD 分离与 KV Cache 池化传输。",
           journey: buildSkillJourney("comm", persona),
@@ -2525,7 +2543,7 @@
       }
 
       // 7. AI 应用开发（RAG / 智能体）
-      if (/rag|知识库|智能体|ai\s*应用/.test(q)) {
+      if (topic === "ai_app") {
         return {
           reply: "已为你规划「AI 应用开发（RAG 知识库问答）」学习路径：从 CANN 基础起步，快速跑通基于昇腾 NPU 的 RAG 知识库端到端应用实践。",
           journey: buildSkillJourney("ai_app", persona),
@@ -2538,7 +2556,7 @@
       }
 
       // 8. 推荐系统
-      if (/推荐|rechub|deepfm|\bdin\b|dssm|mmoe|ctr|召回/.test(q)) {
+      if (topic === "recommend") {
         return {
           reply: "已为你规划「推荐系统开发（torch-rechub）」学习路径：涵盖 DeepFM、DIN 精排、DSSM 双塔召回与 MMoE 多任务实战。",
           journey: buildSkillJourney("recommend", persona),
@@ -2551,7 +2569,7 @@
       }
 
       // 9. 应用开发（离线推理 YOLOv13 / ACL / ATC）
-      if (/离线|acl|atc|dvpp|yolo|cv|应用开发/.test(q)) {
+      if (topic === "application") {
         return {
           reply: "已为你规划「应用开发（离线推理）」学习路径：掌握模型准备、ATC 转 OM、ACL 异步离线推理与结果调优，适合视觉与边缘云部署。",
           journey: buildSkillJourney("application", persona),
@@ -2564,7 +2582,7 @@
       }
 
       // 10. Ascend C 算子开发
-      if (/算子|ascend\s*c|tiling|cube|vector|flash|竞赛|备赛|cannjudge|核函数/.test(q)) {
+      if (topic === "operator") {
         return {
           reply: "已为你生成「Ascend C 算子开发」分阶段学习路径：从 CANN 基础与第一个自定义算子起步，循序攻克 Vector/Cube 编程、Tiling 切分与开源仓算子贡献，并结合 CANNJudge 刷题备赛。",
           journey: buildSkillJourney("operator", persona),
@@ -2577,7 +2595,7 @@
       }
 
       // 11. 大模型推理
-      if (/vllm|推理|量化|deepseek|modelslim|pd\s*分离|部署|qwen|llm/.test(q)) {
+      if (topic === "inference") {
         return {
           reply: "已为你生成「大模型推理开发」分阶段学习路径：从 Qwen3 推理 Baseline 与融合算子加速起步，进阶学习 vLLM-Ascend 服务化、W8A8 量化以及 GE/AutoFusion 图优化。",
           journey: buildSkillJourney("inference", persona),
@@ -2590,7 +2608,7 @@
       }
 
       // 12. 大模型训练（SFT / RL）
-      if (/微调|训练|sft|\brl\b|强化学习|verl|grpo|ppo|swanlab|mindspeed|lora|并行/.test(q)) {
+      if (topic === "training") {
         return {
           reply: "已为你生成「大模型训练开发（SFT + RL）」分阶段学习路径：先跑通 SFT 监督微调与 FSDP 分布式训练，再进阶 VERL 强化学习（PPO/GRPO）与 3D 并行调优。",
           journey: buildSkillJourney("training", persona),
