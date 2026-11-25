@@ -1994,20 +1994,20 @@
       border: none;
       box-shadow: none;
     }
+
     .explore-node.is-sub {
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-50%, -50%) scale(0.86);
-      padding: 4px 8px;
-      z-index: 3;
-    }
-    .explore-node.is-sub.is-revealed {
-      opacity: 1;
+      opacity: 0.92;
       pointer-events: auto;
       transform: translate(-50%, -50%) scale(1);
+      padding: 4px 8px;
+      z-index: 2;
     }
-    .explore-canvas.has-focus .explore-node.is-primary:not(.is-focused):not(.is-connected) {
-      opacity: 0.32;
+    .explore-canvas.has-focus .explore-node:not(.is-focused):not(.is-neighbor):not(.is-connected) {
+      opacity: 0.30;
+    }
+    .explore-node.is-neighbor {
+      opacity: 1 !important;
+      z-index: 3;
     }
     .explore-node:hover,
     .explore-node.is-focused {
@@ -2029,7 +2029,7 @@
     }
     .explore-node.is-connected .explore-node-dot,
     .explore-node.is-source .explore-node-dot {
-      box-shadow: 0 0 0 4px rgba(20, 86, 240, 0.16);
+      box-shadow: 0 0 0 4px rgba(20, 86, 240, 0.18);
     }
     .explore-node-kicker {
       display: flex;
@@ -2602,13 +2602,6 @@
 
         <div id="exploreGraphWrap">
           <div class="explore-graph-card">
-            <div class="explore-top-bar">
-              <div class="explore-status-legend">
-                <span class="explore-legend-item"><span class="explore-legend-dot" style="background:#2563eb;"></span>悬浮任一核心方向深化子线索</span>
-                <span class="explore-legend-item"><span class="explore-legend-dot" style="background:#7c3aed;"></span>悬浮蓄力或点击节点连线（再点连线可移除）</span>
-              </div>
-              <span class="explore-hint" id="exploreHintText">全部 6 大方向已就位 · 悬浮展开深化</span>
-            </div>
             <div class="explore-canvas" id="exploreCanvas">
               <div class="explore-cursor-glow" id="exploreCursorGlow"></div>
               <svg class="explore-svg" id="exploreSvg" viewBox="0 0 1000 390" preserveAspectRatio="none"></svg>
@@ -3769,65 +3762,35 @@
       `;
     }
 
-    // ================= Homepage Interactive Exploration Graph (全方向首屏 + 悬浮深化 + 蓄力/点击连线) =================
-    const EXPLORE_PRIMARY_NODES = [
-      { id: "p_operator", en: "OPERATOR", label: "算子开发", sub: "Ascend C · PyASC", color: "#2563eb", x: 22, y: 30, prompt: "系统学习 Ascend C 或 Python 算子开发" },
-      { id: "p_inference", en: "LLM INFERENCE", label: "大模型推理", sub: "vLLM · W8A8 量化", color: "#0284c7", x: 50, y: 24, prompt: "大模型推理部署与量化加速" },
-      { id: "p_training", en: "LLM TRAINING", label: "大模型训练", sub: "SFT · VERL 强化学习", color: "#7c3aed", x: 78, y: 30, prompt: "大模型 SFT 微调与强化学习训练" },
-      { id: "p_graph", en: "GRAPH ENGINE", label: "图框架与编译", sub: "GE · TorchAir · AutoFusion", color: "#0d9488", x: 24, y: 70, prompt: "GE 图引擎与 TorchAir 图模式编译" },
-      { id: "p_comm", en: "COLLECTIVE COMM", label: "集合通信", sub: "HCCL · HiXL 单边通信", color: "#059669", x: 51, y: 74, prompt: "HCCL 集群通信与 HiXL 单边通信" },
-      { id: "p_app", en: "APP & RECSYS", label: "应用与推荐", sub: "ACL · RAG · RecHub", color: "#ea580c", x: 77, y: 70, prompt: "离线推理应用、RAG 与推荐系统开发" }
+    // ================= Homepage Interactive Exploration Graph (全图可见 + 悬浮聚光 + 点击/拖拽连线) =================
+    const ALL_EXPLORE_NODES = [
+      // 5 Core Pillars (slightly larger)
+      { id: "n_operator", primary: true, en: "OPERATOR", label: "算子开发", color: "#2563eb", x: 50, y: 50, neighbors: ["n_pyasc", "n_tiling", "n_cannbot", "n_judge", "n_graph"], prompt: "系统学习 Ascend C 自定义算子开发" },
+      { id: "n_infer", primary: true, en: "LLM INFERENCE", label: "大模型推理", color: "#0284c7", x: 16, y: 34, neighbors: ["n_quant", "n_graph", "n_rag", "n_acl"], prompt: "大模型推理部署与 vLLM-Ascend 加速" },
+      { id: "n_train", primary: true, en: "LLM TRAINING", label: "大模型训练", color: "#7c3aed", x: 84, y: 34, neighbors: ["n_comm", "n_rl", "n_swan", "n_recsys"], prompt: "大模型 SFT 微调与强化学习训练" },
+      { id: "n_graph", primary: true, en: "GRAPH ENGINE", label: "图框架与编译", color: "#0d9488", x: 26, y: 74, neighbors: ["n_operator", "n_infer", "n_tiling", "n_comm"], prompt: "GE 图引擎、TorchAir 与 AutoFusion" },
+      { id: "n_comm", primary: true, en: "COLLECTIVE COMM", label: "集合通信", color: "#059669", x: 75, y: 75, neighbors: ["n_train", "n_graph", "n_quant"], prompt: "HCCL 集群通信与 HiXL 单边通信" },
+
+      // 7 Cross-Cutting Related Clues (all visible with natural spatial spacing)
+      { id: "n_pyasc", primary: false, en: "PYTHON OPERATOR", label: "用 Python 写算子 (PyASC)", color: "#7c3aed", x: 35, y: 20, neighbors: ["n_operator", "n_cannbot", "n_judge"], prompt: "不会 C++，用 PyASC / PyPTO 用 Python 写算子" },
+      { id: "n_tiling", primary: false, en: "PERFORMANCE TUNING", label: "动态 Tiling 与性能调优", color: "#059669", x: 66, y: 20, neighbors: ["n_operator", "n_graph", "n_judge"], prompt: "Ascend C 动态 Shape Tiling 与 msProf 调优" },
+      { id: "n_cannbot", primary: false, en: "AI CODEGEN", label: "CANNBot AI 生成算子", color: "#db2777", x: 50, y: 13, neighbors: ["n_operator", "n_pyasc"], prompt: "用 CANNBot 自动生成与验证算子" },
+      { id: "n_quant", primary: false, en: "W8A8 QUANTIZATION", label: "ModelSlim 量化与 PD 分离", color: "#2563eb", x: 30, y: 47, neighbors: ["n_infer", "n_comm"], prompt: "大模型 W8A8 平滑量化与 PD 分离" },
+      { id: "n_rl", primary: false, en: "VERL & SWANLAB", label: "VERL 强化学习与微调", color: "#ea580c", x: 71, y: 48, neighbors: ["n_train", "n_comm"], prompt: "基于 VERL 与 SwanLab 开展强化学习训练" },
+      { id: "n_judge", primary: false, en: "VALIDATION", label: "精度排查与 CANNJudge 评测", color: "#dc2626", x: 50, y: 83, neighbors: ["n_operator", "n_pyasc", "n_tiling"], prompt: "算子精度排查与 CANNJudge 真题评测" },
+      { id: "n_acl", primary: false, en: "APP & RAG & RECSYS", label: "ACL 离线推理 / RAG / 推荐", color: "#0d9488", x: 14, y: 60, neighbors: ["n_infer", "n_graph"], prompt: "YOLOv13 离线推理、RAG 应用与推荐系统" },
+      { id: "n_recsys", primary: false, en: "RECSYS", label: "推荐系统 torch-rechub", color: "#ea580c", x: 87, y: 58, neighbors: ["n_train"], prompt: "基于 torch-rechub 训练 CTR 精排与双塔召回" }
     ];
 
-    const EXPLORE_SUB_NODES = [
-      // Operator children
-      { id: "s_op_pyasc", parent: "p_operator", en: "PYTHON OP", label: "用 Python 写算子 (PyASC)", color: "#7c3aed", x: 11, y: 14, prompt: "不会 C++，用 PyASC / PyPTO 用 Python 写算子" },
-      { id: "s_op_tiling", parent: "p_operator", en: "TILING & PROF", label: "动态 Tiling 与 msProf 调优", color: "#2563eb", x: 36, y: 13, prompt: "Ascend C 动态 Shape Tiling 与 msProf 调优" },
-      { id: "s_op_bot", parent: "p_operator", en: "CANNBOT", label: "CANNBot AI 生成算子", color: "#db2777", x: 12, y: 49, prompt: "用 CANNBot 自动生成与验证算子" },
-      { id: "s_op_judge", parent: "p_operator", en: "VALIDATION", label: "精度排查与 CANNJudge 评测", color: "#0284c7", x: 37, y: 49, prompt: "算子精度排查与 CANNJudge 真题评测" },
-
-      // Inference children
-      { id: "s_inf_qwen", parent: "p_inference", en: "FIRST LLM", label: "Qwen3 推理快速跑通", color: "#2563eb", x: 36, y: 12, prompt: "从零跑通 Qwen3 大模型 NPU 推理" },
-      { id: "s_inf_vllm", parent: "p_inference", en: "VLLM-ASCEND", label: "vLLM-Ascend 服务化部署", color: "#0284c7", x: 64, y: 12, prompt: "用 vLLM-Ascend 部署高吞吐推理服务" },
-      { id: "s_inf_quant", parent: "p_inference", en: "MODELSLIM", label: "ModelSlim W8A8 量化", color: "#059669", x: 37, y: 46, prompt: "大模型 W8A8 平滑量化与精度校准" },
-      { id: "s_inf_pd", parent: "p_inference", en: "PD SEPARATION", label: "PD 分离与 KV Cache 池化", color: "#7c3aed", x: 64, y: 46, prompt: "推理 PD 分离与 HiXL KV Cache 传输" },
-
-      // Training children
-      { id: "s_trn_mig", parent: "p_training", en: "PYTORCH NPU", label: "3 行代码迁移 PyTorch", color: "#2563eb", x: 64, y: 13, prompt: "零门槛把 PyTorch 训练脚本迁到昇腾 NPU" },
-      { id: "s_trn_sft", parent: "p_training", en: "SFT & FSDP", label: "SFT 监督微调与 FSDP", color: "#7c3aed", x: 88, y: 14, prompt: "大模型 SFT 监督微调与 FSDP 分布式训练" },
-      { id: "s_trn_rl", parent: "p_training", en: "VERL RL", label: "VERL 强化学习 (PPO/GRPO)", color: "#db2777", x: 87, y: 50, prompt: "基于 VERL 框架开展 PPO / GRPO 强化学习训练" },
-      { id: "s_trn_swan", parent: "p_training", en: "SWANLAB", label: "SwanLab 微调可视化看板", color: "#ea580c", x: 65, y: 49, prompt: "结合 SwanLab 实时监控 NPU 显存与 Loss" },
-
-      // Graph children
-      { id: "s_gr_ge", parent: "p_graph", en: "ASCEND IR", label: "GE 图引擎与 Ascend IR", color: "#2563eb", x: 12, y: 53, prompt: "学习 GE 图引擎与 Ascend IR 原理" },
-      { id: "s_gr_ta", parent: "p_graph", en: "TORCHAIR", label: "TorchAir 图模式 (npugraph_ex)", color: "#0d9488", x: 37, y: 52, prompt: "掌握 TorchAir 图模式编译与动态 Shape" },
-      { id: "s_gr_af", parent: "p_graph", en: "AUTOFUSION", label: "AutoFusion 自动算子融合", color: "#059669", x: 14, y: 87, prompt: "使用 AutoFusion 自动识别与融合子图" },
-      { id: "s_gr_op", parent: "p_graph", en: "CUSTOM OP IN GRAPH", label: "自定义算子入图", color: "#0284c7", x: 38, y: 87, prompt: "把 Ascend C 自定义算子接入图框架" },
-
-      // Comm children
-      { id: "s_cm_hccl", parent: "p_comm", en: "HCCL", label: "HCCL 集群集合通信", color: "#059669", x: 37, y: 53, prompt: "HCCL 集合通信算法与多卡调优" },
-      { id: "s_cm_hixl", parent: "p_comm", en: "HIXL ONE-SIDED", label: "HiXL 单边通信与内存直传", color: "#ea580c", x: 65, y: 53, prompt: "HiXL 单边通信、FabricMem 与 KV Cache 池化" },
-      { id: "s_cm_3d", parent: "p_comm", en: "3D PARALLEL", label: "多机 3D 并行通信调优", color: "#7c3aed", x: 39, y: 88, prompt: "多机多卡 3D 并行与集合通信带宽优化" },
-
-      // App & RecSys children
-      { id: "s_ap_yolo", parent: "p_app", en: "ACL / ATC", label: "YOLOv13 / ACL 离线推理", color: "#dc2777", x: 64, y: 52, prompt: "YOLOv13 / CV 模型 ATC 转换与 ACL 离线推理" },
-      { id: "s_ap_rag", parent: "p_app", en: "RAG APP", label: "搭建 RAG 知识库问答", color: "#0d9488", x: 88, y: 52, prompt: "基于昇腾底座搭建 RAG 知识库问答应用" },
-      { id: "s_ap_rec", parent: "p_app", en: "TORCH-RECHUB", label: "推荐系统 DeepFM / MMoE", color: "#ea580c", x: 86, y: 87, prompt: "基于 torch-rechub 训练 CTR 精排与双塔召回" }
-    ];
-
-    const ALL_EXPLORE_NODES = [...EXPLORE_PRIMARY_NODES, ...EXPLORE_SUB_NODES];
     const exploreNodeMap = Object.fromEntries(ALL_EXPLORE_NODES.map(n => [n.id, n]));
 
     let exploreState = {
-      focusedPrimaryId: null,
-      lockedPrimaryId: null,
-      sourceNodeId: null,
-      dwellTargetId: null,
-      dwellTimer: null,
-      leaveFocusTimer: null,
-      pointerPos: null, // {xPct, yPct}
+      hoveredId: null,
+      draggingFromId: null,
+      dragMoved: false,
+      pointerPos: null,
       edges: [], // {from, to, color}
-      connectedIds: []
+      selectedIds: [] // ordered trail of connected/selected nodes
     };
 
     function setOverviewExploreMode(mode) {
@@ -3846,117 +3809,85 @@
         const fromNode = exploreNodeMap[fromId];
         exploreState.edges.push({ from: fromId, to: toId, color: (fromNode && fromNode.color) || "#2563eb" });
       }
-      if (!exploreState.connectedIds.includes(fromId)) exploreState.connectedIds.push(fromId);
-      if (!exploreState.connectedIds.includes(toId)) exploreState.connectedIds.push(toId);
-      // Chain continues from target node
-      exploreState.sourceNodeId = toId;
-      const toNode = exploreNodeMap[toId];
-      if (toNode && toNode.parent) exploreState.lockedPrimaryId = toNode.parent;
+      if (!exploreState.selectedIds.includes(fromId)) exploreState.selectedIds.push(fromId);
+      if (!exploreState.selectedIds.includes(toId)) exploreState.selectedIds.push(toId);
     }
 
     function removeExploreEdge(fromId, toId) {
       exploreState.edges = exploreState.edges.filter(e => !(e.from === fromId && e.to === toId));
       const used = new Set();
       exploreState.edges.forEach(e => { used.add(e.from); used.add(e.to); });
-      exploreState.connectedIds = exploreState.connectedIds.filter(id => used.has(id));
-      if (exploreState.sourceNodeId && !used.has(exploreState.sourceNodeId) && exploreState.edges.length === 0) {
-        exploreState.sourceNodeId = null;
-      }
+      exploreState.selectedIds = exploreState.selectedIds.filter(id => used.has(id));
       renderExploreGraph();
     }
 
     function onExploreNodeEnter(nodeId) {
-      clearTimeout(exploreState.leaveFocusTimer);
-      clearTimeout(exploreState.dwellTimer);
-      const node = exploreNodeMap[nodeId];
-      if (!node) return;
-
-      // Hovering a primary node deepens its sub-clues; hovering a sub-node keeps its parent deepened
-      if (!node.parent) {
-        exploreState.focusedPrimaryId = nodeId;
-      } else {
-        exploreState.focusedPrimaryId = node.parent;
-      }
-
-      // Dwell-to-connect micro-interaction
-      exploreState.dwellTargetId = nodeId;
-      const dwellMs = exploreState.sourceNodeId && exploreState.sourceNodeId !== nodeId ? 380 : 440;
-      exploreState.dwellTimer = setTimeout(() => {
-        if (exploreState.dwellTargetId !== nodeId) return;
-        if (!exploreState.sourceNodeId) {
-          exploreState.sourceNodeId = nodeId;
-          if (!exploreState.connectedIds.includes(nodeId)) exploreState.connectedIds.push(nodeId);
-        } else if (exploreState.sourceNodeId !== nodeId) {
-          addExploreConnection(exploreState.sourceNodeId, nodeId);
-        }
-        exploreState.dwellTargetId = null;
-        renderExploreGraph();
-      }, dwellMs);
-
+      exploreState.hoveredId = nodeId;
       renderExploreGraph();
     }
 
     function onExploreNodeLeave(nodeId) {
-      clearTimeout(exploreState.dwellTimer);
-      if (exploreState.dwellTargetId === nodeId) exploreState.dwellTargetId = null;
-      clearTimeout(exploreState.leaveFocusTimer);
-      exploreState.leaveFocusTimer = setTimeout(() => {
-        if (!exploreState.lockedPrimaryId && !exploreState.sourceNodeId) {
-          exploreState.focusedPrimaryId = null;
-          renderExploreGraph();
-        }
-      }, 240);
+      if (exploreState.hoveredId === nodeId) {
+        exploreState.hoveredId = null;
+        renderExploreGraph();
+      }
+    }
+
+    function onExploreNodeDown(e, nodeId) {
+      if (e.button !== 0) return;
+      exploreState.draggingFromId = nodeId;
+      exploreState.dragMoved = false;
+    }
+
+    function onExploreNodeUp(e, nodeId) {
+      if (exploreState.draggingFromId && exploreState.dragMoved && exploreState.draggingFromId !== nodeId) {
+        // Drag-to-connect completed!
+        addExploreConnection(exploreState.draggingFromId, nodeId);
+        exploreState.draggingFromId = null;
+        exploreState.dragMoved = false;
+        renderExploreGraph();
+        return;
+      }
+      exploreState.draggingFromId = null;
+      exploreState.dragMoved = false;
     }
 
     function onExploreNodeClick(nodeId) {
-      clearTimeout(exploreState.dwellTimer);
-      exploreState.dwellTargetId = null;
-      const node = exploreNodeMap[nodeId];
-      if (!node) return;
-
-      if (!node.parent) {
-        exploreState.focusedPrimaryId = nodeId;
-        exploreState.lockedPrimaryId = nodeId;
+      // Clean click-to-connect:
+      // 1) If already selected and has no edges (or is last), toggle off
+      // 2) If there is already a selected trail, connect from the last selected node to this node!
+      const idx = exploreState.selectedIds.indexOf(nodeId);
+      if (idx >= 0) {
+        // Remove this node and any edges touching it
+        exploreState.edges = exploreState.edges.filter(e => e.from !== nodeId && e.to !== nodeId);
+        exploreState.selectedIds = exploreState.selectedIds.filter(id => id !== nodeId);
       } else {
-        exploreState.focusedPrimaryId = node.parent;
-        exploreState.lockedPrimaryId = node.parent;
-      }
-
-      if (!exploreState.sourceNodeId) {
-        exploreState.sourceNodeId = nodeId;
-        if (!exploreState.connectedIds.includes(nodeId)) exploreState.connectedIds.push(nodeId);
-      } else if (exploreState.sourceNodeId === nodeId) {
-        // Clicking active source without edges deselects it
-        if (exploreState.edges.length === 0) {
-          exploreState.sourceNodeId = null;
-          exploreState.connectedIds = [];
-          exploreState.lockedPrimaryId = null;
+        const lastId = exploreState.selectedIds[exploreState.selectedIds.length - 1];
+        if (lastId) {
+          addExploreConnection(lastId, nodeId);
+        } else {
+          exploreState.selectedIds.push(nodeId);
         }
-      } else {
-        addExploreConnection(exploreState.sourceNodeId, nodeId);
       }
       renderExploreGraph();
     }
 
     function resetExploreTrail() {
-      clearTimeout(exploreState.dwellTimer);
-      exploreState.focusedPrimaryId = null;
-      exploreState.lockedPrimaryId = null;
-      exploreState.sourceNodeId = null;
-      exploreState.dwellTargetId = null;
+      exploreState.hoveredId = null;
+      exploreState.draggingFromId = null;
+      exploreState.dragMoved = false;
       exploreState.edges = [];
-      exploreState.connectedIds = [];
+      exploreState.selectedIds = [];
       renderExploreGraph();
     }
 
     function launchExploreJourney() {
-      const chosen = exploreState.connectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
-      const focusNode = exploreState.focusedPrimaryId ? exploreNodeMap[exploreState.focusedPrimaryId] : null;
-      const trailLabels = chosen.length ? chosen.map(n => n.label) : (focusNode ? [focusNode.label] : ["CANN 全栈入门"]);
-      const prompts = chosen.length ? chosen.map(n => n.prompt) : (focusNode ? [focusNode.prompt] : ["系统入门 CANN"]);
+      const chosen = exploreState.selectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
+      const trailLabels = chosen.length ? chosen.map(n => n.label) : ["CANN 全栈入门"];
+      const prompts = chosen.length ? chosen.map(n => n.prompt) : ["系统入门 CANN"];
       const query = chosen.length
         ? `我通过连线探索选中了线索「${trailLabels.join(" → ")}」，请结合 ${prompts.join("；")} 为我规划学习路径`
-        : `我想探索「${trailLabels[0]}」方向，请为我规划学习路径`;
+        : `我想探索 CANN 知识地图并规划入门学习路径`;
       runAiMatch(query, { sourceType: "explore", exploreTrail: trailLabels });
     }
 
@@ -3978,19 +3909,23 @@
           xSvg: (x / rect.width) * 1000,
           ySvg: (y / rect.height) * 390
         };
-        if (exploreState.sourceNodeId) renderExplorePreviewSvg();
+        if (exploreState.draggingFromId) {
+          exploreState.dragMoved = true;
+          renderExplorePreviewSvg();
+        }
+      });
+      window.addEventListener("pointerup", () => {
+        if (exploreState.draggingFromId) {
+          exploreState.draggingFromId = null;
+          exploreState.dragMoved = false;
+          renderExplorePreviewSvg();
+        }
       });
       canvas.addEventListener("pointerleave", () => {
         canvas.classList.remove("has-pointer");
         exploreState.pointerPos = null;
-        clearTimeout(exploreState.leaveFocusTimer);
-        exploreState.leaveFocusTimer = setTimeout(() => {
-          if (!exploreState.lockedPrimaryId && !exploreState.sourceNodeId) {
-            exploreState.focusedPrimaryId = null;
-            renderExploreGraph();
-          }
-        }, 180);
-        renderExplorePreviewSvg();
+        exploreState.hoveredId = null;
+        renderExploreGraph();
       });
     }
 
@@ -3999,8 +3934,8 @@
       if (!svgEl) return;
       const oldPrev = svgEl.querySelector("#explorePreviewPath");
       if (oldPrev) oldPrev.remove();
-      if (!exploreState.sourceNodeId || !exploreState.pointerPos) return;
-      const src = exploreNodeMap[exploreState.sourceNodeId];
+      if (!exploreState.draggingFromId || !exploreState.dragMoved || !exploreState.pointerPos) return;
+      const src = exploreNodeMap[exploreState.draggingFromId];
       if (!src) return;
       const sx = src.x * 10;
       const sy = src.y * 3.9;
@@ -4022,29 +3957,23 @@
       const svgEl = document.getElementById("exploreSvg");
       const nodesEl = document.getElementById("exploreNodesLayer");
       const trailEl = document.getElementById("exploreTrailChain");
-      const hintEl = document.getElementById("exploreHintText");
       if (!canvasEl || !svgEl || !nodesEl) return;
 
-      const activePrimary = exploreState.focusedPrimaryId || exploreState.lockedPrimaryId;
-      canvasEl.classList.toggle("has-focus", !!activePrimary);
-      if (hintEl) {
-        const focusNode = activePrimary ? exploreNodeMap[activePrimary] : null;
-        hintEl.textContent = exploreState.sourceNodeId
-          ? `已锁定起点「${exploreNodeMap[exploreState.sourceNodeId].label}」，移到下一节点蓄力或点击即可连线`
-          : (focusNode ? `正在深化「${focusNode.label}」· 悬浮或点击子节点串联线索` : "全部 6 大方向已就位 · 悬浮任一方向展开深化");
-      }
+      const hovNode = exploreState.hoveredId ? exploreNodeMap[exploreState.hoveredId] : null;
+      const hovNeighbors = new Set(hovNode ? (hovNode.neighbors || []) : []);
+      canvasEl.classList.toggle("has-focus", !!hovNode);
 
-      // 1. Render guide lines (primary -> revealed sub nodes), confirmed edges + hit targets + endpoint circles
-      const guidePaths = EXPLORE_SUB_NODES.map(sub => {
-        const isRev = activePrimary === sub.parent || exploreState.connectedIds.includes(sub.id);
-        if (!isRev) return "";
-        const par = exploreNodeMap[sub.parent];
-        const x1 = par.x * 10, y1 = par.y * 3.9;
-        const x2 = sub.x * 10, y2 = sub.y * 3.9;
+      // 1. Soft dotted guide lines from currently hovered node to its neighbors
+      const guidePaths = hovNode ? (hovNode.neighbors || []).map(nid => {
+        const nb = exploreNodeMap[nid];
+        if (!nb) return "";
+        const x1 = hovNode.x * 10, y1 = hovNode.y * 3.9;
+        const x2 = nb.x * 10, y2 = nb.y * 3.9;
         const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - 14;
         return `<path class="explore-edge-guide visible" d="M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}" />`;
-      }).join("");
+      }).join("") : "";
 
+      // 2. Confirmed solid colored Bezier edges
       const edgePaths = exploreState.edges.map(e => {
         const a = exploreNodeMap[e.from], b = exploreNodeMap[e.to];
         if (!a || !b) return "";
@@ -4056,8 +3985,8 @@
           <g>
             <path class="explore-edge-hit" d="${d}" onclick="removeExploreEdge('${e.from}','${e.to}')" title="点击移除此连线" />
             <path class="explore-edge-line" style="stroke:${e.color};" d="${d}" />
-            <circle cx="${x1}" cy="${y1}" r="3.6" fill="${a.color}" />
-            <circle cx="${x2}" cy="${y2}" r="3.6" fill="${b.color}" />
+            <circle cx="${x1}" cy="${y1}" r="3.4" fill="${a.color}" />
+            <circle cx="${x2}" cy="${y2}" r="3.4" fill="${b.color}" />
           </g>
         `;
       }).join("");
@@ -4065,49 +3994,43 @@
       svgEl.innerHTML = guidePaths + edgePaths;
       renderExplorePreviewSvg();
 
-      // 2. Render primary + sub nodes
+      // 3. Render all nodes (borderless floating typography)
       nodesEl.innerHTML = ALL_EXPLORE_NODES.map(n => {
-        const isPrimary = !n.parent;
-        const isFocused = activePrimary === n.id;
-        const isRevealed = isPrimary || activePrimary === n.parent || exploreState.connectedIds.includes(n.id);
-        const connIdx = exploreState.connectedIds.indexOf(n.id);
+        const isFocused = exploreState.hoveredId === n.id;
+        const isNeighbor = hovNeighbors.has(n.id);
+        const connIdx = exploreState.selectedIds.indexOf(n.id);
         const isConn = connIdx >= 0;
-        const isSource = exploreState.sourceNodeId === n.id;
-        const isDwelling = exploreState.dwellTargetId === n.id;
-        const dwellMs = exploreState.sourceNodeId && exploreState.sourceNodeId !== n.id ? 380 : 440;
 
         return `
           <button type="button"
-            class="explore-node ${isPrimary ? "is-primary" : "is-sub"} ${isRevealed ? "is-revealed" : ""} ${isFocused ? "is-focused" : ""} ${isConn ? "is-connected" : ""} ${isSource ? "is-source" : ""}"
-            style="left:${n.x}%; top:${n.y}%; color:${n.color}; --dwell-ms:${dwellMs}ms;"
+            class="explore-node ${n.primary ? "is-primary" : "is-sub"} ${isFocused ? "is-focused" : ""} ${isNeighbor ? "is-neighbor" : ""} ${isConn ? "is-connected" : ""}"
+            style="left:${n.x}%; top:${n.y}%; color:${n.color};"
             onpointerenter="onExploreNodeEnter('${n.id}')"
             onpointerleave="onExploreNodeLeave('${n.id}')"
+            onpointerdown="onExploreNodeDown(event, '${n.id}')"
+            onpointerup="onExploreNodeUp(event, '${n.id}')"
             onclick="onExploreNodeClick('${n.id}')">
             <div class="explore-node-kicker">
-              <span class="explore-dot-wrap">
-                <span class="explore-node-dot"></span>
-                ${isDwelling ? `<svg class="explore-dwell-svg" viewBox="0 0 14 14"><circle class="explore-dwell-circle" cx="7" cy="7" r="6"/></svg>` : ""}
-              </span>
+              <span class="explore-dot-wrap"><span class="explore-node-dot"></span></span>
               ${n.en}
             </div>
             <div class="explore-node-label">${n.label}${isConn ? `<span class="explore-node-badge">#${connIdx + 1}</span>` : ""}</div>
-            ${n.sub ? `<div class="explore-node-sub">${n.sub}</div>` : ""}
           </button>
         `;
       }).join("");
 
-      // 3. Bottom trail chain
-      const chosen = exploreState.connectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
+      // 4. Bottom trail bar
+      const chosen = exploreState.selectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
       if (chosen.length) {
         trailEl.innerHTML = `
           <span style="color:var(--text-muted); font-size:12px;">已连探索线索：</span>
           ${chosen.map((n, i) => `${i > 0 ? '<span style="color:#94a3b8;">→</span>' : ''}<span class="explore-trail-chip" style="border-color:${n.color}40;">${n.label}</span>`).join("")}
+          <span style="font-size:11.5px; color:var(--text-muted); margin-left:4px;">（继续点击或拖拽到下一节点连线，再点已选节点可取消）</span>
         `;
       } else {
-        const focusNode = activePrimary ? exploreNodeMap[activePrimary] : null;
-        trailEl.innerHTML = focusNode
-          ? `<span style="color:var(--text-muted); font-size:12px;">当前聚焦：</span><span class="explore-trail-chip">${focusNode.label}</span><span style="font-size:11.5px; color:var(--text-muted); margin-left:4px;">（悬浮蓄力或点击子节点继续连线）</span>`
-          : `<span style="color:var(--text-muted); font-size:12px;">悬浮任意方向展开子线索，点击或悬浮蓄力即可自由连线</span>`;
+        trailEl.innerHTML = `
+          <span style="color:var(--text-muted); font-size:12px;">点击任意两个节点，或按住节点拖拽连线，串联你想探索的学习线索</span>
+        `;
       }
     }
 
