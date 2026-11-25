@@ -1816,32 +1816,27 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 14px 20px;
+      padding: 12px 20px;
       border-bottom: 1px solid rgba(15, 23, 42, 0.05);
       flex-wrap: wrap;
     }
-    .explore-hub-pills {
+    .explore-status-legend {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
       flex-wrap: wrap;
     }
-    .explore-hub-pill {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      background: var(--bg-tray);
-      padding: 5px 12px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: all 0.14s ease;
+    .explore-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
-    .explore-hub-pill:hover { background: var(--bg-hover); color: var(--text); }
-    .explore-hub-pill.active {
-      background: var(--dark);
-      color: #ffffff;
-      font-weight: 600;
+    .explore-legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
     }
     .explore-hint {
       font-size: 11.5px;
@@ -1849,11 +1844,23 @@
     }
     .explore-canvas {
       position: relative;
-      height: 360px;
+      height: 390px;
       width: 100%;
       overflow: hidden;
       user-select: none;
     }
+    .explore-cursor-glow {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.09) 0%, rgba(139, 92, 246, 0.05) 42%, transparent 72%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .explore-canvas.has-pointer .explore-cursor-glow { opacity: 1; }
     .explore-svg {
       position: absolute;
       inset: 0;
@@ -1861,82 +1868,162 @@
       height: 100%;
       pointer-events: none;
     }
-    .explore-edge {
+    .explore-edge-guide {
       fill: none;
-      stroke: #dbe2ef;
-      stroke-width: 1.5;
+      stroke: #e2e8f0;
+      stroke-width: 1.25;
       stroke-dasharray: 4 4;
-      transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease;
-      opacity: 0.75;
+      opacity: 0;
+      transition: opacity 0.22s ease;
     }
-    .explore-edge.active {
-      stroke-dasharray: none;
-      stroke-width: 2.4;
-      opacity: 1;
+    .explore-edge-guide.visible { opacity: 0.85; }
+    .explore-edge-line {
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      transition: stroke-width 0.16s ease, opacity 0.16s ease;
+    }
+    .explore-edge-hit {
+      fill: none;
+      stroke: transparent;
+      stroke-width: 14;
+      pointer-events: stroke;
+      cursor: pointer;
+    }
+    .explore-edge-hit:hover + .explore-edge-line,
+    .explore-edge-line.hovered {
+      stroke-width: 3.4;
+      filter: drop-shadow(0 2px 6px rgba(20, 86, 240, 0.25));
+    }
+    .explore-edge-preview {
+      fill: none;
+      stroke-width: 2;
+      stroke-dasharray: 6 5;
+      stroke-linecap: round;
+      opacity: 0.85;
+      animation: exploreDashFlow 0.75s linear infinite;
+    }
+    @keyframes exploreDashFlow {
+      to { stroke-dashoffset: -22; }
     }
     .explore-node {
       position: absolute;
       transform: translate(-50%, -50%);
       padding: 8px 14px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(6px);
-      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(15, 23, 42, 0.06);
       cursor: pointer;
-      transition: all 0.18s ease;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
       text-align: left;
-      max-width: 220px;
+      max-width: 230px;
+      z-index: 2;
     }
-    .explore-node:hover {
-      background: #ffffff;
-      border-color: rgba(15, 23, 42, 0.12);
-      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
-      transform: translate(-50%, -50%) scale(1.03);
-      z-index: 4;
+    .explore-node.is-primary {
+      padding: 11px 17px;
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(15, 23, 42, 0.09);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
     }
-    .explore-node.is-center {
-      background: #ffffff;
-      border-color: rgba(20, 86, 240, 0.26);
-      box-shadow: 0 10px 28px rgba(20, 86, 240, 0.10);
-      padding: 11px 18px;
+    .explore-node.is-sub {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.86);
+      padding: 7px 12px;
       z-index: 3;
     }
-    .explore-node.is-selected {
+    .explore-node.is-sub.is-revealed {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .explore-canvas.has-focus .explore-node.is-primary:not(.is-focused):not(.is-connected) {
+      opacity: 0.36;
+    }
+    .explore-node:hover,
+    .explore-node.is-focused {
+      background: #ffffff;
+      border-color: rgba(20, 86, 240, 0.30);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+      transform: translate(-50%, -50%) scale(1.04);
+      z-index: 5;
+    }
+    .explore-node.is-connected {
+      opacity: 1 !important;
+      pointer-events: auto !important;
       background: #ffffff;
       border-color: currentColor;
-      box-shadow: 0 8px 24px rgba(20, 86, 240, 0.14);
-      z-index: 3;
+      box-shadow: 0 8px 22px rgba(20, 86, 240, 0.14);
+      transform: translate(-50%, -50%) scale(1);
+      z-index: 4;
+    }
+    .explore-node.is-source {
+      box-shadow: 0 0 0 3px rgba(20, 86, 240, 0.18), 0 10px 24px rgba(20, 86, 240, 0.16);
     }
     .explore-node-kicker {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       font-size: 9.5px;
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      opacity: 0.82;
+      opacity: 0.85;
       white-space: nowrap;
     }
-    .explore-node-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: currentColor;
+    .explore-dot-wrap {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      display: grid;
+      place-items: center;
       flex-shrink: 0;
     }
+    .explore-node-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .explore-dwell-svg {
+      position: absolute;
+      inset: 0;
+      width: 14px;
+      height: 14px;
+      transform: rotate(-90deg);
+    }
+    .explore-dwell-circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-dasharray: 37.7;
+      stroke-dashoffset: 37.7;
+      animation: exploreDwellFill var(--dwell-ms, 420ms) linear forwards;
+    }
+    @keyframes exploreDwellFill {
+      to { stroke-dashoffset: 0; }
+    }
     .explore-node-label {
-      font-size: 16px;
+      font-size: 14.5px;
       font-weight: 600;
       margin-top: 2px;
       line-height: 1.25;
       white-space: nowrap;
     }
-    .explore-node.is-center .explore-node-label { font-size: 20px; font-weight: 700; }
-    .explore-node.is-large .explore-node-label { font-size: 18px; }
+    .explore-node.is-primary .explore-node-label {
+      font-size: 17.5px;
+      font-weight: 700;
+    }
+    .explore-node-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      white-space: nowrap;
+    }
     .explore-node-badge {
       display: inline-block;
-      margin-left: 5px;
+      margin-left: 6px;
       font-size: 10px;
       font-weight: 600;
       padding: 1px 6px;
@@ -2442,11 +2529,15 @@
         <div id="exploreGraphWrap">
           <div class="explore-graph-card">
             <div class="explore-top-bar">
-              <div class="explore-hub-pills" id="exploreHubPills"></div>
-              <span class="explore-hint">点击任意节点拉出关联线索，选中后一键生成专属路径</span>
+              <div class="explore-status-legend">
+                <span class="explore-legend-item"><span class="explore-legend-dot" style="background:#2563eb;"></span>悬浮任一核心方向深化子线索</span>
+                <span class="explore-legend-item"><span class="explore-legend-dot" style="background:#7c3aed;"></span>悬浮蓄力或点击节点连线（再点连线可移除）</span>
+              </div>
+              <span class="explore-hint" id="exploreHintText">全部 6 大方向已就位 · 悬浮展开深化</span>
             </div>
             <div class="explore-canvas" id="exploreCanvas">
-              <svg class="explore-svg" id="exploreSvg" viewBox="0 0 1000 360" preserveAspectRatio="none"></svg>
+              <div class="explore-cursor-glow" id="exploreCursorGlow"></div>
+              <svg class="explore-svg" id="exploreSvg" viewBox="0 0 1000 390" preserveAspectRatio="none"></svg>
               <div id="exploreNodesLayer"></div>
             </div>
             <div class="explore-trail-bar">
@@ -3571,63 +3662,66 @@
       `;
     }
 
-    // ================= Homepage Interactive Exploration Graph (连线探索) =================
-    const EXPLORE_GRAPHS = {
-      operator: {
-        label: "算子开发",
-        center: { id: "op_center", en: "OPERATOR", label: "算子开发", color: "#2563eb", x: 50, y: 52 },
-        nodes: [
-          { id: "op_principle", en: "OPERATOR PRINCIPLES", label: "理解算子原理", color: "#6366f1", x: 35, y: 24, prompt: "理解 NPU 算子原理与内存层级" },
-          { id: "op_custom", en: "CUSTOM OPERATOR DEV", label: "完成 Ascend C 算子开发", color: "#2563eb", x: 54, y: 15, large: true, prompt: "系统学习 Ascend C 自定义算子开发" },
-          { id: "op_perf", en: "OPERATOR PERFORMANCE", label: "优化算子性能", color: "#059669", x: 74, y: 26, large: true, prompt: "算子 Tiling 与 msProf 性能优化" },
-          { id: "op_pyasc", en: "PYTHON OPERATOR", label: "用 Python 写算子 (PyASC)", color: "#7c3aed", x: 24, y: 54, prompt: "不会 C++，用 PyASC / PyPTO 用 Python 写算子" },
-          { id: "op_cannbot", en: "AI CODEGEN", label: "CANNBot AI 生成算子", color: "#db2777", x: 79, y: 56, prompt: "用 CANNBot 自动生成与验证算子" },
-          { id: "op_verify", en: "OPERATOR VALIDATION", label: "验证算子正确性", color: "#0284c7", x: 34, y: 80, prompt: "算子精度排查与 CANNJudge 评测" },
-          { id: "op_framework", en: "FRAMEWORK INTEGRATION", label: "将算子接入图框架", color: "#0d9488", x: 68, y: 81, prompt: "把自定义算子接入 TorchAir 图模式" }
-        ]
-      },
-      inference: {
-        label: "大模型推理",
-        center: { id: "inf_center", en: "LLM INFERENCE", label: "大模型推理", color: "#0284c7", x: 50, y: 52 },
-        nodes: [
-          { id: "inf_qwen", en: "FIRST LLM RUN", label: "Qwen3 推理快速跑通", color: "#2563eb", x: 32, y: 23, prompt: "从零跑通 Qwen3 大模型 NPU 推理" },
-          { id: "inf_vllm", en: "SERVING ENGINE", label: "vLLM-Ascend 服务化部署", color: "#0284c7", x: 56, y: 16, large: true, prompt: "用 vLLM-Ascend 部署高吞吐推理服务" },
-          { id: "inf_quant", en: "QUANTIZATION", label: "ModelSlim W8A8 量化", color: "#059669", x: 76, y: 29, large: true, prompt: "大模型 W8A8 平滑量化与精度校准" },
-          { id: "inf_pd", en: "PD SEPARATION", label: "PD 分离与 KV Cache 池化", color: "#7c3aed", x: 24, y: 56, prompt: "推理 PD 分离与 HiXL KV Cache 传输" },
-          { id: "inf_graph", en: "GRAPH ACCEL", label: "TorchAir 与 AutoFusion 加速", color: "#ea580c", x: 78, y: 58, prompt: "开启 TorchAir 图模式与 AutoFusion 融合加速推理" },
-          { id: "inf_rag", en: "AI APPLICATION", label: "搭建 RAG 知识库问答", color: "#0d9488", x: 37, y: 82, prompt: "基于昇腾推理底座搭建 RAG 知识库应用" },
-          { id: "inf_offline", en: "OFFLINE INFERENCE", label: "ACL / ATC 视觉离线推理", color: "#dc2626", x: 67, y: 81, prompt: "YOLOv13 / CV 模型 ATC 转换与 ACL 离线推理" }
-        ]
-      },
-      training: {
-        label: "大模型训练",
-        center: { id: "trn_center", en: "LLM TRAINING", label: "大模型训练", color: "#7c3aed", x: 50, y: 52 },
-        nodes: [
-          { id: "trn_migrate", en: "PYTORCH MIGRATION", label: "3 行代码迁移 PyTorch", color: "#2563eb", x: 31, y: 24, prompt: "零门槛把 PyTorch 训练脚本迁到昇腾 NPU" },
-          { id: "trn_sft", en: "SFT PIPELINE", label: "SFT 监督微调与 FSDP", color: "#7c3aed", x: 55, y: 16, large: true, prompt: "大模型 SFT 监督微调与 FSDP 分布式训练" },
-          { id: "trn_rl", en: "RL POST-TRAINING", label: "VERL 强化学习 (PPO / GRPO)", color: "#db2777", x: 76, y: 28, large: true, prompt: "基于 VERL 框架开展 PPO / GRPO 强化学习训练" },
-          { id: "trn_hccl", en: "COLLECTIVE COMM", label: "HCCL 多卡集合通信调优", color: "#059669", x: 25, y: 56, prompt: "多机多卡 HCCL 集合通信与带宽优化" },
-          { id: "trn_swan", en: "EXPERIMENT TRACKING", label: "SwanLab 微调可视化看板", color: "#ea580c", x: 77, y: 58, prompt: "结合 SwanLab 实时监控 NPU 显存与 Loss" },
-          { id: "trn_3d", en: "3D PARALLEL", label: "MindSpeed 3D 并行加速", color: "#0284c7", x: 38, y: 82, prompt: "MindSpeed 3D 并行大规模集群训练" },
-          { id: "trn_rec", en: "RECSYS TRAINING", label: "推荐系统 DeepFM / MMoE", color: "#0d9488", x: 68, y: 81, prompt: "基于 torch-rechub 训练 CTR 精排与双塔召回" }
-        ]
-      },
-      graph: {
-        label: "图框架与通信",
-        center: { id: "gr_center", en: "GRAPH & COMM", label: "图框架与通信", color: "#0d9488", x: 50, y: 52 },
-        nodes: [
-          { id: "gr_ge", en: "GRAPH ENGINE", label: "GE 图引擎与 Ascend IR", color: "#2563eb", x: 32, y: 24, prompt: "学习 GE 图引擎与 Ascend IR 原理" },
-          { id: "gr_ta", en: "TORCHAIR", label: "TorchAir 图模式 (npugraph_ex)", color: "#0d9488", x: 56, y: 16, large: true, prompt: "掌握 TorchAir 图模式编译与动态 Shape" },
-          { id: "gr_af", en: "AUTO FUSION", label: "AutoFusion 自动算子融合", color: "#059669", x: 76, y: 29, large: true, prompt: "使用 AutoFusion 自动识别与融合子图" },
-          { id: "gr_hccl", en: "HCCL", label: "HCCL 集群集合通信", color: "#7c3aed", x: 25, y: 58, prompt: "HCCL 集合通信算法与多卡调优" },
-          { id: "gr_hixl", en: "HIXL ONE-SIDED", label: "HiXL 单边通信与内存直传", color: "#ea580c", x: 77, y: 59, prompt: "HiXL 单边通信、FabricMem 与 KV Cache 池化" },
-          { id: "gr_op", en: "CUSTOM OP", label: "自定义算子入图", color: "#0284c7", x: 50, y: 83, prompt: "把 Ascend C 自定义算子接入图框架" }
-        ]
-      }
-    };
+    // ================= Homepage Interactive Exploration Graph (全方向首屏 + 悬浮深化 + 蓄力/点击连线) =================
+    const EXPLORE_PRIMARY_NODES = [
+      { id: "p_operator", en: "OPERATOR", label: "算子开发", sub: "Ascend C · PyASC", color: "#2563eb", x: 22, y: 30, prompt: "系统学习 Ascend C 或 Python 算子开发" },
+      { id: "p_inference", en: "LLM INFERENCE", label: "大模型推理", sub: "vLLM · W8A8 量化", color: "#0284c7", x: 50, y: 24, prompt: "大模型推理部署与量化加速" },
+      { id: "p_training", en: "LLM TRAINING", label: "大模型训练", sub: "SFT · VERL 强化学习", color: "#7c3aed", x: 78, y: 30, prompt: "大模型 SFT 微调与强化学习训练" },
+      { id: "p_graph", en: "GRAPH ENGINE", label: "图框架与编译", sub: "GE · TorchAir · AutoFusion", color: "#0d9488", x: 24, y: 70, prompt: "GE 图引擎与 TorchAir 图模式编译" },
+      { id: "p_comm", en: "COLLECTIVE COMM", label: "集合通信", sub: "HCCL · HiXL 单边通信", color: "#059669", x: 51, y: 74, prompt: "HCCL 集群通信与 HiXL 单边通信" },
+      { id: "p_app", en: "APP & RECSYS", label: "应用与推荐", sub: "ACL · RAG · RecHub", color: "#ea580c", x: 77, y: 70, prompt: "离线推理应用、RAG 与推荐系统开发" }
+    ];
 
-    let activeExploreHub = "operator";
-    let selectedExploreNodeIds = [];
+    const EXPLORE_SUB_NODES = [
+      // Operator children
+      { id: "s_op_pyasc", parent: "p_operator", en: "PYTHON OP", label: "用 Python 写算子 (PyASC)", color: "#7c3aed", x: 11, y: 14, prompt: "不会 C++，用 PyASC / PyPTO 用 Python 写算子" },
+      { id: "s_op_tiling", parent: "p_operator", en: "TILING & PROF", label: "动态 Tiling 与 msProf 调优", color: "#2563eb", x: 36, y: 13, prompt: "Ascend C 动态 Shape Tiling 与 msProf 调优" },
+      { id: "s_op_bot", parent: "p_operator", en: "CANNBOT", label: "CANNBot AI 生成算子", color: "#db2777", x: 12, y: 49, prompt: "用 CANNBot 自动生成与验证算子" },
+      { id: "s_op_judge", parent: "p_operator", en: "VALIDATION", label: "精度排查与 CANNJudge 评测", color: "#0284c7", x: 37, y: 49, prompt: "算子精度排查与 CANNJudge 真题评测" },
+
+      // Inference children
+      { id: "s_inf_qwen", parent: "p_inference", en: "FIRST LLM", label: "Qwen3 推理快速跑通", color: "#2563eb", x: 36, y: 12, prompt: "从零跑通 Qwen3 大模型 NPU 推理" },
+      { id: "s_inf_vllm", parent: "p_inference", en: "VLLM-ASCEND", label: "vLLM-Ascend 服务化部署", color: "#0284c7", x: 64, y: 12, prompt: "用 vLLM-Ascend 部署高吞吐推理服务" },
+      { id: "s_inf_quant", parent: "p_inference", en: "MODELSLIM", label: "ModelSlim W8A8 量化", color: "#059669", x: 37, y: 46, prompt: "大模型 W8A8 平滑量化与精度校准" },
+      { id: "s_inf_pd", parent: "p_inference", en: "PD SEPARATION", label: "PD 分离与 KV Cache 池化", color: "#7c3aed", x: 64, y: 46, prompt: "推理 PD 分离与 HiXL KV Cache 传输" },
+
+      // Training children
+      { id: "s_trn_mig", parent: "p_training", en: "PYTORCH NPU", label: "3 行代码迁移 PyTorch", color: "#2563eb", x: 64, y: 13, prompt: "零门槛把 PyTorch 训练脚本迁到昇腾 NPU" },
+      { id: "s_trn_sft", parent: "p_training", en: "SFT & FSDP", label: "SFT 监督微调与 FSDP", color: "#7c3aed", x: 88, y: 14, prompt: "大模型 SFT 监督微调与 FSDP 分布式训练" },
+      { id: "s_trn_rl", parent: "p_training", en: "VERL RL", label: "VERL 强化学习 (PPO/GRPO)", color: "#db2777", x: 87, y: 50, prompt: "基于 VERL 框架开展 PPO / GRPO 强化学习训练" },
+      { id: "s_trn_swan", parent: "p_training", en: "SWANLAB", label: "SwanLab 微调可视化看板", color: "#ea580c", x: 65, y: 49, prompt: "结合 SwanLab 实时监控 NPU 显存与 Loss" },
+
+      // Graph children
+      { id: "s_gr_ge", parent: "p_graph", en: "ASCEND IR", label: "GE 图引擎与 Ascend IR", color: "#2563eb", x: 12, y: 53, prompt: "学习 GE 图引擎与 Ascend IR 原理" },
+      { id: "s_gr_ta", parent: "p_graph", en: "TORCHAIR", label: "TorchAir 图模式 (npugraph_ex)", color: "#0d9488", x: 37, y: 52, prompt: "掌握 TorchAir 图模式编译与动态 Shape" },
+      { id: "s_gr_af", parent: "p_graph", en: "AUTOFUSION", label: "AutoFusion 自动算子融合", color: "#059669", x: 14, y: 87, prompt: "使用 AutoFusion 自动识别与融合子图" },
+      { id: "s_gr_op", parent: "p_graph", en: "CUSTOM OP IN GRAPH", label: "自定义算子入图", color: "#0284c7", x: 38, y: 87, prompt: "把 Ascend C 自定义算子接入图框架" },
+
+      // Comm children
+      { id: "s_cm_hccl", parent: "p_comm", en: "HCCL", label: "HCCL 集群集合通信", color: "#059669", x: 37, y: 53, prompt: "HCCL 集合通信算法与多卡调优" },
+      { id: "s_cm_hixl", parent: "p_comm", en: "HIXL ONE-SIDED", label: "HiXL 单边通信与内存直传", color: "#ea580c", x: 65, y: 53, prompt: "HiXL 单边通信、FabricMem 与 KV Cache 池化" },
+      { id: "s_cm_3d", parent: "p_comm", en: "3D PARALLEL", label: "多机 3D 并行通信调优", color: "#7c3aed", x: 39, y: 88, prompt: "多机多卡 3D 并行与集合通信带宽优化" },
+
+      // App & RecSys children
+      { id: "s_ap_yolo", parent: "p_app", en: "ACL / ATC", label: "YOLOv13 / ACL 离线推理", color: "#dc2777", x: 64, y: 52, prompt: "YOLOv13 / CV 模型 ATC 转换与 ACL 离线推理" },
+      { id: "s_ap_rag", parent: "p_app", en: "RAG APP", label: "搭建 RAG 知识库问答", color: "#0d9488", x: 88, y: 52, prompt: "基于昇腾底座搭建 RAG 知识库问答应用" },
+      { id: "s_ap_rec", parent: "p_app", en: "TORCH-RECHUB", label: "推荐系统 DeepFM / MMoE", color: "#ea580c", x: 86, y: 87, prompt: "基于 torch-rechub 训练 CTR 精排与双塔召回" }
+    ];
+
+    const ALL_EXPLORE_NODES = [...EXPLORE_PRIMARY_NODES, ...EXPLORE_SUB_NODES];
+    const exploreNodeMap = Object.fromEntries(ALL_EXPLORE_NODES.map(n => [n.id, n]));
+
+    let exploreState = {
+      focusedPrimaryId: null,
+      lockedPrimaryId: null,
+      sourceNodeId: null,
+      dwellTargetId: null,
+      dwellTimer: null,
+      leaveFocusTimer: null,
+      pointerPos: null, // {xPct, yPct}
+      edges: [], // {from, to, color}
+      connectedIds: []
+    };
 
     function setOverviewExploreMode(mode) {
       document.querySelectorAll("#overviewExploreSwitch .explore-mode-btn").forEach(b => {
@@ -3638,90 +3732,276 @@
       if (mode === "graph") renderExploreGraph();
     }
 
-    function selectExploreHub(hubKey) {
-      activeExploreHub = hubKey;
-      selectedExploreNodeIds = [];
+    function addExploreConnection(fromId, toId) {
+      if (!fromId || !toId || fromId === toId) return;
+      const exists = exploreState.edges.some(e => (e.from === fromId && e.to === toId) || (e.from === toId && e.to === fromId));
+      if (!exists) {
+        const fromNode = exploreNodeMap[fromId];
+        exploreState.edges.push({ from: fromId, to: toId, color: (fromNode && fromNode.color) || "#2563eb" });
+      }
+      if (!exploreState.connectedIds.includes(fromId)) exploreState.connectedIds.push(fromId);
+      if (!exploreState.connectedIds.includes(toId)) exploreState.connectedIds.push(toId);
+      // Chain continues from target node
+      exploreState.sourceNodeId = toId;
+      const toNode = exploreNodeMap[toId];
+      if (toNode && toNode.parent) exploreState.lockedPrimaryId = toNode.parent;
+    }
+
+    function removeExploreEdge(fromId, toId) {
+      exploreState.edges = exploreState.edges.filter(e => !(e.from === fromId && e.to === toId));
+      const used = new Set();
+      exploreState.edges.forEach(e => { used.add(e.from); used.add(e.to); });
+      exploreState.connectedIds = exploreState.connectedIds.filter(id => used.has(id));
+      if (exploreState.sourceNodeId && !used.has(exploreState.sourceNodeId) && exploreState.edges.length === 0) {
+        exploreState.sourceNodeId = null;
+      }
       renderExploreGraph();
     }
 
-    function toggleExploreNode(nodeId) {
-      const idx = selectedExploreNodeIds.indexOf(nodeId);
-      if (idx >= 0) selectedExploreNodeIds.splice(idx, 1);
-      else {
-        if (selectedExploreNodeIds.length >= 3) selectedExploreNodeIds.shift();
-        selectedExploreNodeIds.push(nodeId);
+    function onExploreNodeEnter(nodeId) {
+      clearTimeout(exploreState.leaveFocusTimer);
+      clearTimeout(exploreState.dwellTimer);
+      const node = exploreNodeMap[nodeId];
+      if (!node) return;
+
+      // Hovering a primary node deepens its sub-clues; hovering a sub-node keeps its parent deepened
+      if (!node.parent) {
+        exploreState.focusedPrimaryId = nodeId;
+      } else {
+        exploreState.focusedPrimaryId = node.parent;
+      }
+
+      // Dwell-to-connect micro-interaction
+      exploreState.dwellTargetId = nodeId;
+      const dwellMs = exploreState.sourceNodeId && exploreState.sourceNodeId !== nodeId ? 380 : 440;
+      exploreState.dwellTimer = setTimeout(() => {
+        if (exploreState.dwellTargetId !== nodeId) return;
+        if (!exploreState.sourceNodeId) {
+          exploreState.sourceNodeId = nodeId;
+          if (!exploreState.connectedIds.includes(nodeId)) exploreState.connectedIds.push(nodeId);
+        } else if (exploreState.sourceNodeId !== nodeId) {
+          addExploreConnection(exploreState.sourceNodeId, nodeId);
+        }
+        exploreState.dwellTargetId = null;
+        renderExploreGraph();
+      }, dwellMs);
+
+      renderExploreGraph();
+    }
+
+    function onExploreNodeLeave(nodeId) {
+      clearTimeout(exploreState.dwellTimer);
+      if (exploreState.dwellTargetId === nodeId) exploreState.dwellTargetId = null;
+      clearTimeout(exploreState.leaveFocusTimer);
+      exploreState.leaveFocusTimer = setTimeout(() => {
+        if (!exploreState.lockedPrimaryId && !exploreState.sourceNodeId) {
+          exploreState.focusedPrimaryId = null;
+          renderExploreGraph();
+        }
+      }, 240);
+    }
+
+    function onExploreNodeClick(nodeId) {
+      clearTimeout(exploreState.dwellTimer);
+      exploreState.dwellTargetId = null;
+      const node = exploreNodeMap[nodeId];
+      if (!node) return;
+
+      if (!node.parent) {
+        exploreState.focusedPrimaryId = nodeId;
+        exploreState.lockedPrimaryId = nodeId;
+      } else {
+        exploreState.focusedPrimaryId = node.parent;
+        exploreState.lockedPrimaryId = node.parent;
+      }
+
+      if (!exploreState.sourceNodeId) {
+        exploreState.sourceNodeId = nodeId;
+        if (!exploreState.connectedIds.includes(nodeId)) exploreState.connectedIds.push(nodeId);
+      } else if (exploreState.sourceNodeId === nodeId) {
+        // Clicking active source without edges deselects it
+        if (exploreState.edges.length === 0) {
+          exploreState.sourceNodeId = null;
+          exploreState.connectedIds = [];
+          exploreState.lockedPrimaryId = null;
+        }
+      } else {
+        addExploreConnection(exploreState.sourceNodeId, nodeId);
       }
       renderExploreGraph();
     }
 
     function resetExploreTrail() {
-      selectedExploreNodeIds = [];
+      clearTimeout(exploreState.dwellTimer);
+      exploreState.focusedPrimaryId = null;
+      exploreState.lockedPrimaryId = null;
+      exploreState.sourceNodeId = null;
+      exploreState.dwellTargetId = null;
+      exploreState.edges = [];
+      exploreState.connectedIds = [];
       renderExploreGraph();
     }
 
     function launchExploreJourney() {
-      const g = EXPLORE_GRAPHS[activeExploreHub];
-      const chosen = selectedExploreNodeIds.map(id => g.nodes.find(n => n.id === id)).filter(Boolean);
-      const trailLabels = [g.center.label, ...chosen.map(n => n.label)];
+      const chosen = exploreState.connectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
+      const focusNode = exploreState.focusedPrimaryId ? exploreNodeMap[exploreState.focusedPrimaryId] : null;
+      const trailLabels = chosen.length ? chosen.map(n => n.label) : (focusNode ? [focusNode.label] : ["CANN 全栈入门"]);
+      const prompts = chosen.length ? chosen.map(n => n.prompt) : (focusNode ? [focusNode.prompt] : ["系统入门 CANN"]);
       const query = chosen.length
-        ? `我通过连线探索选中了线索「${trailLabels.join(" → ")}」，请结合 ${chosen.map(n => n.prompt).join("；")} 为我规划学习路径`
-        : `我想系统探索「${g.center.label}」方向，请为我规划从入门到实战的学习路径`;
+        ? `我通过连线探索选中了线索「${trailLabels.join(" → ")}」，请结合 ${prompts.join("；")} 为我规划学习路径`
+        : `我想探索「${trailLabels[0]}」方向，请为我规划学习路径`;
       runAiMatch(query, { sourceType: "explore", exploreTrail: trailLabels });
     }
 
+    function initExplorePointer() {
+      const canvas = document.getElementById("exploreCanvas");
+      const glow = document.getElementById("exploreCursorGlow");
+      if (!canvas || canvas.dataset.bound) return;
+      canvas.dataset.bound = "1";
+      canvas.addEventListener("pointermove", e => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        canvas.classList.add("has-pointer");
+        if (glow) {
+          glow.style.left = `${x}px`;
+          glow.style.top = `${y}px`;
+        }
+        exploreState.pointerPos = {
+          xSvg: (x / rect.width) * 1000,
+          ySvg: (y / rect.height) * 390
+        };
+        if (exploreState.sourceNodeId) renderExplorePreviewSvg();
+      });
+      canvas.addEventListener("pointerleave", () => {
+        canvas.classList.remove("has-pointer");
+        exploreState.pointerPos = null;
+        clearTimeout(exploreState.leaveFocusTimer);
+        exploreState.leaveFocusTimer = setTimeout(() => {
+          if (!exploreState.lockedPrimaryId && !exploreState.sourceNodeId) {
+            exploreState.focusedPrimaryId = null;
+            renderExploreGraph();
+          }
+        }, 180);
+        renderExplorePreviewSvg();
+      });
+    }
+
+    function renderExplorePreviewSvg() {
+      const svgEl = document.getElementById("exploreSvg");
+      if (!svgEl) return;
+      const oldPrev = svgEl.querySelector("#explorePreviewPath");
+      if (oldPrev) oldPrev.remove();
+      if (!exploreState.sourceNodeId || !exploreState.pointerPos) return;
+      const src = exploreNodeMap[exploreState.sourceNodeId];
+      if (!src) return;
+      const sx = src.x * 10;
+      const sy = src.y * 3.9;
+      const px = exploreState.pointerPos.xSvg;
+      const py = exploreState.pointerPos.ySvg;
+      const mx = (sx + px) / 2;
+      const my = (sy + py) / 2 - 22;
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.id = "explorePreviewPath";
+      path.setAttribute("class", "explore-edge-preview");
+      path.setAttribute("style", `stroke:${src.color};`);
+      path.setAttribute("d", `M ${sx} ${sy} Q ${mx} ${my} ${px} ${py}`);
+      svgEl.appendChild(path);
+    }
+
     function renderExploreGraph() {
-      const pillsEl = document.getElementById("exploreHubPills");
+      initExplorePointer();
+      const canvasEl = document.getElementById("exploreCanvas");
       const svgEl = document.getElementById("exploreSvg");
       const nodesEl = document.getElementById("exploreNodesLayer");
       const trailEl = document.getElementById("exploreTrailChain");
-      if (!pillsEl || !svgEl || !nodesEl) return;
+      const hintEl = document.getElementById("exploreHintText");
+      if (!canvasEl || !svgEl || !nodesEl) return;
 
-      pillsEl.innerHTML = Object.entries(EXPLORE_GRAPHS).map(([k, v]) => `
-        <button type="button" class="explore-hub-pill ${k === activeExploreHub ? "active" : ""}" onclick="selectExploreHub('${k}')">${v.label}</button>
-      `).join("");
+      const activePrimary = exploreState.focusedPrimaryId || exploreState.lockedPrimaryId;
+      canvasEl.classList.toggle("has-focus", !!activePrimary);
+      if (hintEl) {
+        const focusNode = activePrimary ? exploreNodeMap[activePrimary] : null;
+        hintEl.textContent = exploreState.sourceNodeId
+          ? `已锁定起点「${exploreNodeMap[exploreState.sourceNodeId].label}」，移到下一节点蓄力或点击即可连线`
+          : (focusNode ? `正在深化「${focusNode.label}」· 悬浮或点击子节点串联线索` : "全部 6 大方向已就位 · 悬浮任一方向展开深化");
+      }
 
-      const g = EXPLORE_GRAPHS[activeExploreHub];
-      const cx = g.center.x * 10;
-      const cy = g.center.y * 3.6;
-
-      // Draw curved SVG edges from center to each surrounding node
-      svgEl.innerHTML = g.nodes.map(n => {
-        const nx = n.x * 10;
-        const ny = n.y * 3.6;
-        const mx = (cx + nx) / 2;
-        const my = (cy + ny) / 2 - (ny < cy ? 18 : -18);
-        const isActive = selectedExploreNodeIds.includes(n.id);
-        return `<path class="explore-edge ${isActive ? "active" : ""}" style="${isActive ? `stroke:${n.color};` : ""}" d="M ${cx} ${cy} Q ${mx} ${my} ${nx} ${ny}" />`;
+      // 1. Render guide lines (primary -> revealed sub nodes), confirmed edges + hit targets + endpoint circles
+      const guidePaths = EXPLORE_SUB_NODES.map(sub => {
+        const isRev = activePrimary === sub.parent || exploreState.connectedIds.includes(sub.id);
+        if (!isRev) return "";
+        const par = exploreNodeMap[sub.parent];
+        const x1 = par.x * 10, y1 = par.y * 3.9;
+        const x2 = sub.x * 10, y2 = sub.y * 3.9;
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - 14;
+        return `<path class="explore-edge-guide visible" d="M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}" />`;
       }).join("");
 
-      // Render center node + surrounding nodes
-      const centerHtml = `
-        <div class="explore-node is-center" style="left:${g.center.x}%; top:${g.center.y}%; color:${g.center.color};" onclick="resetExploreTrail()" title="当前探索中心">
-          <div class="explore-node-kicker"><span class="explore-node-dot"></span>${g.center.en}</div>
-          <div class="explore-node-label">${g.center.label}</div>
-        </div>
-      `;
-      const surroundingHtml = g.nodes.map(n => {
-        const isSel = selectedExploreNodeIds.includes(n.id);
-        const order = isSel ? selectedExploreNodeIds.indexOf(n.id) + 1 : null;
+      const edgePaths = exploreState.edges.map(e => {
+        const a = exploreNodeMap[e.from], b = exploreNodeMap[e.to];
+        if (!a || !b) return "";
+        const x1 = a.x * 10, y1 = a.y * 3.9;
+        const x2 = b.x * 10, y2 = b.y * 3.9;
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - 22;
+        const d = `M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`;
         return `
-          <button type="button" class="explore-node ${n.large ? "is-large" : ""} ${isSel ? "is-selected" : ""}"
-            style="left:${n.x}%; top:${n.y}%; color:${n.color};"
-            onclick="toggleExploreNode('${n.id}')">
-            <div class="explore-node-kicker"><span class="explore-node-dot"></span>${n.en}</div>
-            <div class="explore-node-label">${n.label}${order ? `<span class="explore-node-badge">已连 #${order}</span>` : ""}</div>
+          <g>
+            <path class="explore-edge-hit" d="${d}" onclick="removeExploreEdge('${e.from}','${e.to}')" title="点击移除此连线" />
+            <path class="explore-edge-line" style="stroke:${e.color};" d="${d}" />
+            <circle cx="${x1}" cy="${y1}" r="3.6" fill="${a.color}" />
+            <circle cx="${x2}" cy="${y2}" r="3.6" fill="${b.color}" />
+          </g>
+        `;
+      }).join("");
+
+      svgEl.innerHTML = guidePaths + edgePaths;
+      renderExplorePreviewSvg();
+
+      // 2. Render primary + sub nodes
+      nodesEl.innerHTML = ALL_EXPLORE_NODES.map(n => {
+        const isPrimary = !n.parent;
+        const isFocused = activePrimary === n.id;
+        const isRevealed = isPrimary || activePrimary === n.parent || exploreState.connectedIds.includes(n.id);
+        const connIdx = exploreState.connectedIds.indexOf(n.id);
+        const isConn = connIdx >= 0;
+        const isSource = exploreState.sourceNodeId === n.id;
+        const isDwelling = exploreState.dwellTargetId === n.id;
+        const dwellMs = exploreState.sourceNodeId && exploreState.sourceNodeId !== n.id ? 380 : 440;
+
+        return `
+          <button type="button"
+            class="explore-node ${isPrimary ? "is-primary" : "is-sub"} ${isRevealed ? "is-revealed" : ""} ${isFocused ? "is-focused" : ""} ${isConn ? "is-connected" : ""} ${isSource ? "is-source" : ""}"
+            style="left:${n.x}%; top:${n.y}%; color:${n.color}; --dwell-ms:${dwellMs}ms;"
+            onpointerenter="onExploreNodeEnter('${n.id}')"
+            onpointerleave="onExploreNodeLeave('${n.id}')"
+            onclick="onExploreNodeClick('${n.id}')">
+            <div class="explore-node-kicker">
+              <span class="explore-dot-wrap">
+                <span class="explore-node-dot"></span>
+                ${isDwelling ? `<svg class="explore-dwell-svg" viewBox="0 0 14 14"><circle class="explore-dwell-circle" cx="7" cy="7" r="6"/></svg>` : ""}
+              </span>
+              ${n.en}
+            </div>
+            <div class="explore-node-label">${n.label}${isConn ? `<span class="explore-node-badge">#${connIdx + 1}</span>` : ""}</div>
+            ${n.sub ? `<div class="explore-node-sub">${n.sub}</div>` : ""}
           </button>
         `;
       }).join("");
-      nodesEl.innerHTML = centerHtml + surroundingHtml;
 
-      const chosen = selectedExploreNodeIds.map(id => g.nodes.find(n => n.id === id)).filter(Boolean);
-      const chips = [g.center.label, ...chosen.map(n => n.label)];
-      trailEl.innerHTML = `
-        <span style="color:var(--text-muted); font-size:12px;">当前探索线索：</span>
-        ${chips.map((lbl, i) => `${i > 0 ? '<span style="color:#94a3b8;">→</span>' : ''}<span class="explore-trail-chip">${lbl}</span>`).join("")}
-        ${!chosen.length ? '<span style="font-size:11.5px; color:var(--text-muted); margin-left:4px;">（点选上方 1~3 个关联节点串联线索，或直接生成）</span>' : ''}
-      `;
+      // 3. Bottom trail chain
+      const chosen = exploreState.connectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
+      if (chosen.length) {
+        trailEl.innerHTML = `
+          <span style="color:var(--text-muted); font-size:12px;">已连探索线索：</span>
+          ${chosen.map((n, i) => `${i > 0 ? '<span style="color:#94a3b8;">→</span>' : ''}<span class="explore-trail-chip" style="border-color:${n.color}40;">${n.label}</span>`).join("")}
+        `;
+      } else {
+        const focusNode = activePrimary ? exploreNodeMap[activePrimary] : null;
+        trailEl.innerHTML = focusNode
+          ? `<span style="color:var(--text-muted); font-size:12px;">当前聚焦：</span><span class="explore-trail-chip">${focusNode.label}</span><span style="font-size:11.5px; color:var(--text-muted); margin-left:4px;">（悬浮蓄力或点击子节点继续连线）</span>`
+          : `<span style="color:var(--text-muted); font-size:12px;">悬浮任意方向展开子线索，点击或悬浮蓄力即可自由连线</span>`;
+      }
     }
 
     // ================= Right-Side Split-Screen Journey Co-Creation Drawer =================
