@@ -1977,28 +1977,28 @@
     .explore-node {
       position: absolute;
       transform: translate(-50%, -50%);
-      padding: 8px 14px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(15, 23, 42, 0.06);
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
       cursor: pointer;
-      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease, filter 0.22s ease;
       text-align: left;
-      max-width: 230px;
+      max-width: 240px;
       z-index: 2;
     }
     .explore-node.is-primary {
-      padding: 11px 17px;
-      background: rgba(255, 255, 255, 0.96);
-      border-color: rgba(15, 23, 42, 0.09);
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+      padding: 6px 10px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
     .explore-node.is-sub {
       opacity: 0;
       pointer-events: none;
       transform: translate(-50%, -50%) scale(0.86);
-      padding: 7px 12px;
+      padding: 4px 8px;
       z-index: 3;
     }
     .explore-node.is-sub.is-revealed {
@@ -2007,27 +2007,29 @@
       transform: translate(-50%, -50%) scale(1);
     }
     .explore-canvas.has-focus .explore-node.is-primary:not(.is-focused):not(.is-connected) {
-      opacity: 0.36;
+      opacity: 0.32;
     }
     .explore-node:hover,
     .explore-node.is-focused {
-      background: #ffffff;
-      border-color: rgba(20, 86, 240, 0.30);
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
-      transform: translate(-50%, -50%) scale(1.04);
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      transform: translate(-50%, -50%) scale(1.06);
+      filter: drop-shadow(0 6px 16px rgba(15, 23, 42, 0.08));
       z-index: 5;
     }
     .explore-node.is-connected {
       opacity: 1 !important;
       pointer-events: auto !important;
-      background: #ffffff;
-      border-color: currentColor;
-      box-shadow: 0 8px 22px rgba(20, 86, 240, 0.14);
-      transform: translate(-50%, -50%) scale(1);
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      transform: translate(-50%, -50%) scale(1.03);
       z-index: 4;
     }
-    .explore-node.is-source {
-      box-shadow: 0 0 0 3px rgba(20, 86, 240, 0.18), 0 10px 24px rgba(20, 86, 240, 0.16);
+    .explore-node.is-connected .explore-node-dot,
+    .explore-node.is-source .explore-node-dot {
+      box-shadow: 0 0 0 4px rgba(20, 86, 240, 0.16);
     }
     .explore-node-kicker {
       display: flex;
