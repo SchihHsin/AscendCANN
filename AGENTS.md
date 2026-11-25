@@ -9627,3 +9627,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-25（核对文档站仓库归属）
 
 - GitHub API 确认 `https://schihhsin.github.io/ascend-doc/` 是独立仓库 `SchihHsin/ascend-doc` 的 Pages，配置来源为该仓 `main` 根目录（legacy）；本仓 `cann-dashboard/ascend-doc/vitepress/` 属于 `SchihHsin/AscendCANN`，不是该 Pages 的直接发布来源。两套工程同为 Ascend C 文档站，具体内容和发布状态应分别核验；未改动页面序列或 Agent 分层边界。
+
+### 2026-11-25（确认 VitePress 最终工作位置）
+
+- 通过两仓主题文件与提交记录确认：后续视觉改造工作位于独立仓 `/Users/hsin/Documents/Coding/ascend-doc`，其远端为 `SchihHsin/ascend-doc`；本仓 `cann-dashboard/ascend-doc/vitepress` 保留较早版本。独立仓当前蓝青主题文件存在本地未提交改动，不能把该本地状态等同于 GitHub 已提交版本。未改页面序列或 Agent 分层边界。
