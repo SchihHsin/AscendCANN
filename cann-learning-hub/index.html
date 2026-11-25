@@ -880,20 +880,71 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
     /* ---- CANN Bench 昇腾学习旅程地图（Skill build_map.py 同款样式）---- */
+    .skill-header {
+      position: relative;
+      margin: 0 -26px;
+      background:
+        radial-gradient(circle at 12% 40%, rgba(255, 180, 220, .45), transparent 40%),
+        radial-gradient(circle at 88% 60%, rgba(160, 220, 255, .45), transparent 40%),
+        linear-gradient(90deg, #F3D9F9 0%, #E4E0FF 35%, #CCE3FF 70%, #C3F0FF 100%);
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+    .skill-header img.skill-header-img {
+      display: block;
+      width: 100%;
+      max-width: 780px;
+      height: auto;
+    }
+    .skill-subbar {
+      margin-top: -18px;
+      position: relative;
+      z-index: 2;
+      background: #ffffff;
+      border: 1px solid #E5E7EB;
+      border-radius: 20px;
+      padding: 20px 24px 18px;
+      box-shadow: 0 10px 34px rgba(0, 0, 0, .04);
+    }
+    .skill-subtitle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .skill-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6B7280;
+    }
     .skill-persona {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 14px;
     }
     .skill-chip {
-      background: #ffffff;
-      border: 1px solid #E5E7EB;
+      background: #F4F5F7;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 11px 15px;
+      min-height: 62px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+    .skill-foot {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #6B7280;
+    }
+    .skill-foot a {
+      color: #1456F0;
+      text-decoration: none;
     }
     .skill-chip .k { font-size: 11.5px; color: #6B7280; margin-bottom: 3px; }
     .skill-chip .v { font-size: 15px; font-weight: 600; color: #111421; }
@@ -2237,7 +2288,7 @@
     .jd-composer input:focus { border-color: #1456F0; }
     .jd-canvas-col {
       overflow-y: auto;
-      padding: 20px 26px 36px;
+      padding: 0 26px 38px;
       min-height: 0;
     }
     .jd-canvas-meta {
@@ -4260,7 +4311,7 @@
               <div class="skill-card-top">
                 <div class="skill-card-title">
                   <span>${c.title}</span>
-                  <svg class="skill-link-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  <img class="skill-link-ico" src="assets/journey-link.svg" alt="外链" />
                 </div>
                 <span class="skill-online-pill">${isAdopted ? "已采纳" : "在线体验"}</span>
               </div>
@@ -4280,15 +4331,21 @@
       };
 
       col.innerHTML = `
-        <div class="jd-canvas-meta">
-          <div class="jd-canvas-summary">共 <strong>${j.stages.length}</strong> 个阶段 · 精选 <strong>${totalCourses}</strong> 讲真实 GitCode 课程${skippedCount ? `（已折叠 ${skippedCount} 个已掌握阶段）` : ""}</div>
+        <header class="skill-header">
+          <img class="skill-header-img" src="assets/journey-header.png" alt="昇腾学习旅程地图" />
+        </header>
+        <div class="skill-subbar">
+          <div class="skill-subtitle-row">
+            <span class="skill-subtitle">按照您的技术方向，为您推荐最优的学习路径</span>
+            <span class="jd-canvas-summary">共 <strong>${j.stages.length}</strong> 个阶段 · 精选 <strong>${totalCourses}</strong> 讲真实课程${skippedCount ? `（已折叠 ${skippedCount} 个阶段）` : ""}</span>
+          </div>
+          <div class="skill-persona">
+            <div class="skill-chip"><span class="k">角色</span><span class="v">${j.role}</span></div>
+            <div class="skill-chip"><span class="k">目标</span><span class="v">${j.goal}</span></div>
+            <div class="skill-chip"><span class="k">技术水平</span><span class="v">${j.level}</span></div>
+          </div>
         </div>
-        <div class="skill-persona">
-          <div class="skill-chip"><span class="k">角色</span><span class="v">${j.role}</span></div>
-          <div class="skill-chip"><span class="k">目标</span><span class="v">${j.goal}</span></div>
-          <div class="skill-chip"><span class="k">技术水平</span><span class="v">${j.level}</span></div>
-        </div>
-        <div class="skill-journey">
+        <div class="skill-journey" style="margin-top:34px;">
           ${j.stages.map((st, sIdx) => {
             const isSkipped = drawerState.skippedStages.has(sIdx);
             const stageSuggestions = drawerState.aiSuggestions
@@ -4331,6 +4388,9 @@
               <div class="skill-cert-desc">完成本路径全部课程与练习后可获得认证</div>
             </div>
           </div>
+        </div>
+        <div class="skill-foot">
+          学习资源来自 CANN 学习中心 · <a href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener">https://gitcode.com/cann/cann-learning-hub</a>
         </div>
         <div class="ai-rec-grid" style="margin-top:16px;">
           ${(res.cards || []).map((c, idx) => `
