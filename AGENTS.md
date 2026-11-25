@@ -9600,6 +9600,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 第二层 `standard` 新增自动合列（`buildStandardSlots`）：**不是硬性要求**——仅当相邻两张卡内容特别少（某卡仅 1 项且合计 `<= 4` 项，或两卡均 `<= 2` 项）时才上下叠放进同一列；若内容均衡（如 4 张各 3–5 项），则自然按 `lg:grid-cols-6` 排成 `2×2`（除仅 1 卡外绝不单卡独占一行），消除孤卡与留白。
 - 新增姊妹说明页 `cann-dashboard/docs-layout-spec.html`（含三层分工、默认展示 `2×2` 且可切换极短卡合列的交互式排布沙盘、核心规则与代码对照及 `docs-config.json` Schema），并在 `docs-card-options.html` 顶部预设栏旁增加「查看排版规则与代码 →」双向跳转入口；仅暂存本任务文件并推送 `origin/main`。
 
+### 2026-11-25（合入独立 ascend-doc 仓库首页）
+- 将 3D 光晕 Hero（`cann-docs-hero-layers.png` + 有序轨道 3D 微粒）与配置驱动三层 Bento 首页正式合入独立仓库 `/Users/hsin/Documents/Coding/ascend-doc`（`.vitepress/dist-static/` 与 `public/`、`ascend-theme.css`、`ascend-sidebar-search.js`），已推送 `SchihHsin/ascend-doc` `main`（commit `67609b6`）。
+- 首页配置 `docs-config.json` 对接 `ascend-doc` 真实内页路由（开发指南、Ascend C API、跨代迁移、技术附录等），Hero 搜索框与 VitePress 原生全站搜索合二为一（点击或按 `/` 直接唤起全站 2,700+ 篇正文检索弹窗），高频直达胶囊直链对应文档页。
+
 ### 2026-11-24（查找 VitePress 项目）
 
 - 确认 Ascend C 文档站项目位于 `cann-dashboard/ascend-doc/vitepress/`，配置位于 `.vitepress/config.mjs`；配置引用的文档源 `cann-dashboard/repo-scan/asc-devkit-fresh/docs/` 当前不存在，项目 `node_modules` 也未安装。依据本地配置与目录检查（H），未修改页面序列或 Agent 分层边界；后续启动需先恢复文档源并安装依赖。
