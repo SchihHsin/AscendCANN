@@ -536,7 +536,7 @@
         </section>`;
     }
 
-    function renderStandardCard(cat, spanClass = 'lg:col-span-2', isWide = false) {
+    function renderStandardCard(cat, spanClass = 'lg:col-span-2', isWide = false, stretchClass = '') {
       const acc = ACCENT_MAP[cat.accent] || ACCENT_MAP.slate;
       const items = cat.items || [];
       const COLLAPSE_LIMIT = isWide ? 6 : 5;
@@ -570,7 +570,7 @@
         : '';
 
       return `
-        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between ${spanClass}">
+        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between ${spanClass} ${stretchClass}">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center gap-2.5">
@@ -584,6 +584,25 @@
           </div>
           ${footerHtml}
         </section>`;
+    }
+
+    // 自动合列：优先将相邻且条目少的短卡片上下叠放进同一列，既保住配置顺序，又与左侧高卡片等高对齐
+    function buildStandardSlots(categories) {
+      const slots = [];
+      for (let i = 0; i < categories.length; i++) {
+        const cur = categories[i];
+        const next = categories[i + 1];
+        const curLen = (cur.items || []).length;
+        const nextLen = next ? (next.items || []).length : Infinity;
+
+        if (next && Math.min(curLen, nextLen) <= 2 && (curLen + nextLen) <= 4) {
+          slots.push({ type: 'pair', items: [cur, next] });
+          i++;
+        } else {
+          slots.push({ type: 'single', items: [cur] });
+        }
+      }
+      return slots;
     }
 
     function renderStripCard(cat) {
@@ -628,8 +647,9 @@
       }
 
       if (standard.length > 0) {
-        const n = standard.length;
-        const standardHtml = standard.map((cat, idx) => {
+        const slots = buildStandardSlots(standard);
+        const n = slots.length;
+        const standardHtml = slots.map((slot, idx) => {
           let spanClass = 'lg:col-span-2';
           if (n === 1) {
             spanClass = 'lg:col-span-6';
@@ -638,7 +658,15 @@
           } else if (n % 3 === 1 && idx >= n - 4) {
             spanClass = 'lg:col-span-3';
           }
-          return renderStandardCard(cat, spanClass, n === 1);
+
+          if (slot.type === 'pair') {
+            return `
+              <div class="doc-slot flex flex-col gap-6 ${spanClass}">
+                ${renderStandardCard(slot.items[0], '', false, '')}
+                ${renderStandardCard(slot.items[1], '', false, 'flex-1')}
+              </div>`;
+          }
+          return renderStandardCard(slot.items[0], spanClass, n === 1, '');
         }).join('');
         html += `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">${standardHtml}</div>`;
       }
@@ -691,6 +719,11 @@
         if (expandBtn) expandBtn.classList.toggle('hidden', q.length > 0);
         cat.classList.toggle('hidden', !hasMatch);
         if (hasMatch) visibleCategories++;
+      });
+
+      activeContainer.querySelectorAll('.doc-slot').forEach(slot => {
+        const hasVisibleCat = Array.from(slot.querySelectorAll('.doc-category')).some(c => !c.classList.contains('hidden'));
+        slot.classList.toggle('hidden', !hasVisibleCat);
       });
 
       if (visibleCategories === 0) {
