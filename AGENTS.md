@@ -9623,3 +9623,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（在线发布可行性）
 
 - 用户询问 VitePress 能否形成公开访问链接。独立仓 `SchihHsin/ascend-doc` 已配置 Pages，但当前为 main 根目录 legacy 发布，入口 HTTP 404；完整历史静态构建在本地 `.vitepress/dist-static/`，约 2.6 GB、11655 文件，且现有 `serve.mjs` 动态注入主题和脚本并使用根路径。公开发布需处理产物体积、子路径与注入，不能直接把 localhost 链接分享给他人；Markdown 源缺失使完整重新构建受限。此次仅核查，未发布，未改变页面序列或 Agent 分层边界。
+
+### 2026-11-25（核对文档站仓库归属）
+
+- GitHub API 确认 `https://schihhsin.github.io/ascend-doc/` 是独立仓库 `SchihHsin/ascend-doc` 的 Pages，配置来源为该仓 `main` 根目录（legacy）；本仓 `cann-dashboard/ascend-doc/vitepress/` 属于 `SchihHsin/AscendCANN`，不是该 Pages 的直接发布来源。两套工程同为 Ascend C 文档站，具体内容和发布状态应分别核验；未改动页面序列或 Agent 分层边界。
