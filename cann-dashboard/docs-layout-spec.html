@@ -97,8 +97,8 @@
             <span id="simCountVal" class="font-mono-code font-semibold text-[#0052D9] w-4 text-center">4</span>
           </label>
           <label class="inline-flex items-center gap-1.5 bg-[#F5F7FA] px-3 py-1.5 rounded-lg border border-slate-200/70 cursor-pointer select-none">
-            <input id="simPairToggle" type="checkbox" checked class="accent-[#0052D9]" />
-            <span class="text-slate-600 font-medium">含 2 张相邻短卡自动合列</span>
+            <input id="simPairToggle" type="checkbox" class="accent-[#0052D9]" />
+            <span class="text-slate-600 font-medium">模拟含极短卡（如 1 项 + 3 项）触发合列</span>
           </label>
         </div>
       </div>
@@ -118,7 +118,7 @@
             <span class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-indigo-50 text-indigo-600">buildStandardSlots()</span>
           </div>
           <p class="text-xs text-slate-500 leading-relaxed mb-4">
-            按配置顺序扫描第二层卡片：只要相邻两张卡片中<strong>至少一张 ≤ 2 项、且两张合计 ≤ 4 项</strong>，就上下叠放进同一个槽位（下方卡片加 <code class="font-mono-code bg-slate-100 px-1 rounded">flex-1</code> 自动撑齐整行高度），既保留配置顺序，又避免短卡旁大片留白。
+            <strong>不是硬性要求</strong>：如果 4 张卡内容都比较均衡（各 3–5 项），会直接排成标准的 <strong>2×2</strong>；只有相邻两张卡内容都特别少（<strong>某卡仅 1 项且合计 ≤ 4 项，或两卡均 ≤ 2 项</strong>）时，才自动上下叠放进同一个槽位，避免空旷。
           </p>
         </div>
         <pre class="rounded-xl bg-slate-900 text-slate-100 p-4 text-[11.5px] leading-relaxed overflow-x-auto font-mono-code"><code>function buildStandardSlots(categories) {
@@ -129,10 +129,14 @@
     const curLen = (cur.items || []).length;
     const nextLen = next ? (next.items || []).length : Infinity;
 
-    // 相邻短卡配对条件：至少一张 &lt;= 2 项 且 合计 &lt;= 4 项
-    if (next &amp;&amp; Math.min(curLen, nextLen) &lt;= 2 &amp;&amp; (curLen + nextLen) &lt;= 4) {
+    // 仅在内容特别少时合列；内容均衡时直接走 2×2 或 3 列
+    const isVerySparsePair = next &amp;&amp; (
+      (Math.min(curLen, nextLen) === 1 &amp;&amp; (curLen + nextLen) &lt;= 4) ||
+      (curLen &lt;= 2 &amp;&amp; nextLen &lt;= 2)
+    );
+    if (isVerySparsePair) {
       slots.push({ type: 'pair', items: [cur, next] });
-      i++; // 跳过已合列的下一张
+      i++;
     } else {
       slots.push({ type: 'single', items: [cur] });
     }

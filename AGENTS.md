@@ -9597,8 +9597,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（docs-card-options 方案 A 分层配置驱动与多规模预览）
 - 新增独立配置文件 `cann-dashboard/docs-config.json`，将 Hero 高频直达胶囊（`quickTags`）与 Bento 三层分类（`tier: "featured" | "standard" | "strip"`）完全配置化。
 - 重构 `cann-dashboard/docs-card-options.html` 渲染逻辑为通用分层引擎（`renderDocsPage`）：不改代码即可随配置增减分类或手册（`standard` 超过 5 项自动折叠并提供「展开全部」与搜索自动透出）；并新增顶部预设切换条（`精简 4 分类` / `标准 7 分类` / `扩容 10 分类·多手册`）供直观对比不同数量下的自适应效果。
-- 第二层 `standard` 新增自动合列（`buildStandardSlots`）：相邻且条目少的短卡片（其中一张 `<= 2` 项且合计 `<= 4` 项）自动上下叠放进同一列，与左侧高卡片等高对齐（如默认配置自动呈现「通信库 | 调试工具 | 编译器+更多」三列）；合列后其余槽位仍按 `lg:grid-cols-6` 自适应跨列（除仅 1 卡外绝不单卡独占一行），消除孤卡与留白。
-- 新增姊妹说明页 `cann-dashboard/docs-layout-spec.html`（含三层分工、交互式「列 vs 槽位」排布沙盘、核心规则与代码对照及 `docs-config.json` Schema），并在 `docs-card-options.html` 顶部预设栏旁增加「查看排版规则与代码 →」双向跳转入口；仅暂存本任务文件并推送 `origin/main`。
+- 第二层 `standard` 新增自动合列（`buildStandardSlots`）：**不是硬性要求**——仅当相邻两张卡内容特别少（某卡仅 1 项且合计 `<= 4` 项，或两卡均 `<= 2` 项）时才上下叠放进同一列；若内容均衡（如 4 张各 3–5 项），则自然按 `lg:grid-cols-6` 排成 `2×2`（除仅 1 卡外绝不单卡独占一行），消除孤卡与留白。
+- 新增姊妹说明页 `cann-dashboard/docs-layout-spec.html`（含三层分工、默认展示 `2×2` 且可切换极短卡合列的交互式排布沙盘、核心规则与代码对照及 `docs-config.json` Schema），并在 `docs-card-options.html` 顶部预设栏旁增加「查看排版规则与代码 →」双向跳转入口；仅暂存本任务文件并推送 `origin/main`。
 
 ### 2026-11-24（查找 VitePress 项目）
 

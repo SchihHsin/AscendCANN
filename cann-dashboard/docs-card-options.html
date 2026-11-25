@@ -590,7 +590,7 @@
         </section>`;
     }
 
-    // 自动合列：优先将相邻且条目少的短卡片上下叠放进同一列，既保住配置顺序，又与左侧高卡片等高对齐
+    // 自动合列：仅当内容特别少（如某卡仅 1 项且合计 <= 4 项，或两卡均 <= 2 项）时才上下叠放，否则自然走 2×2 / 3 列
     function buildStandardSlots(categories) {
       const slots = [];
       for (let i = 0; i < categories.length; i++) {
@@ -599,7 +599,12 @@
         const curLen = (cur.items || []).length;
         const nextLen = next ? (next.items || []).length : Infinity;
 
-        if (next && Math.min(curLen, nextLen) <= 2 && (curLen + nextLen) <= 4) {
+        const isVerySparsePair = next && (
+          (Math.min(curLen, nextLen) === 1 && (curLen + nextLen) <= 4) ||
+          (curLen <= 2 && nextLen <= 2)
+        );
+
+        if (isVerySparsePair) {
           slots.push({ type: 'pair', items: [cur, next] });
           i++;
         } else {
