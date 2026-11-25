@@ -3787,6 +3787,7 @@
     let exploreState = {
       hoveredId: null,
       draggingFromId: null,
+      dragStartPt: null,
       dragMoved: false,
       pointerPos: null,
       edges: [], // {from, to, color}
@@ -3836,19 +3837,21 @@
     function onExploreNodeDown(e, nodeId) {
       if (e.button !== 0) return;
       exploreState.draggingFromId = nodeId;
+      exploreState.dragStartPt = { x: e.clientX, y: e.clientY };
       exploreState.dragMoved = false;
     }
 
     function onExploreNodeUp(e, nodeId) {
       if (exploreState.draggingFromId && exploreState.dragMoved && exploreState.draggingFromId !== nodeId) {
-        // Drag-to-connect completed!
         addExploreConnection(exploreState.draggingFromId, nodeId);
         exploreState.draggingFromId = null;
+        exploreState.dragStartPt = null;
         exploreState.dragMoved = false;
         renderExploreGraph();
         return;
       }
       exploreState.draggingFromId = null;
+      exploreState.dragStartPt = null;
       exploreState.dragMoved = false;
     }
 
@@ -3909,14 +3912,18 @@
           xSvg: (x / rect.width) * 1000,
           ySvg: (y / rect.height) * 390
         };
-        if (exploreState.draggingFromId) {
-          exploreState.dragMoved = true;
-          renderExplorePreviewSvg();
+        if (exploreState.draggingFromId && exploreState.dragStartPt) {
+          const dist = Math.hypot(e.clientX - exploreState.dragStartPt.x, e.clientY - exploreState.dragStartPt.y);
+          if (dist > 6) {
+            exploreState.dragMoved = true;
+            renderExplorePreviewSvg();
+          }
         }
       });
       window.addEventListener("pointerup", () => {
         if (exploreState.draggingFromId) {
           exploreState.draggingFromId = null;
+          exploreState.dragStartPt = null;
           exploreState.dragMoved = false;
           renderExplorePreviewSvg();
         }
@@ -3994,16 +4001,13 @@
       svgEl.innerHTML = guidePaths + edgePaths;
       renderExplorePreviewSvg();
 
-      // 3. Render all nodes (borderless floating typography)
-      nodesEl.innerHTML = ALL_EXPLORE_NODES.map(n => {
-        const isFocused = exploreState.hoveredId === n.id;
-        const isNeighbor = hovNeighbors.has(n.id);
-        const connIdx = exploreState.selectedIds.indexOf(n.id);
-        const isConn = connIdx >= 0;
-
-        return `
+      // 3. Build node DOM elements ONCE (never destroy DOM on hover so clicks never go stale!)
+      if (!nodesEl.dataset.built) {
+        nodesEl.dataset.built = "1";
+        nodesEl.innerHTML = ALL_EXPLORE_NODES.map(n => `
           <button type="button"
-            class="explore-node ${n.primary ? "is-primary" : "is-sub"} ${isFocused ? "is-focused" : ""} ${isNeighbor ? "is-neighbor" : ""} ${isConn ? "is-connected" : ""}"
+            class="explore-node ${n.primary ? "is-primary" : "is-sub"}"
+            data-node-id="${n.id}"
             style="left:${n.x}%; top:${n.y}%; color:${n.color};"
             onpointerenter="onExploreNodeEnter('${n.id}')"
             onpointerleave="onExploreNodeLeave('${n.id}')"
@@ -4014,10 +4018,31 @@
               <span class="explore-dot-wrap"><span class="explore-node-dot"></span></span>
               ${n.en}
             </div>
-            <div class="explore-node-label">${n.label}${isConn ? `<span class="explore-node-badge">#${connIdx + 1}</span>` : ""}</div>
+            <div class="explore-node-label">${n.label}<span class="explore-node-badge" style="display:none;"></span></div>
           </button>
-        `;
-      }).join("");
+        `).join("");
+      }
+
+      // Sync classes & #order badges in place
+      nodesEl.querySelectorAll(".explore-node").forEach(btn => {
+        const nid = btn.dataset.nodeId;
+        const isFocused = exploreState.hoveredId === nid;
+        const isNeighbor = hovNeighbors.has(nid);
+        const connIdx = exploreState.selectedIds.indexOf(nid);
+        const isConn = connIdx >= 0;
+        btn.classList.toggle("is-focused", isFocused);
+        btn.classList.toggle("is-neighbor", isNeighbor);
+        btn.classList.toggle("is-connected", isConn);
+        const badge = btn.querySelector(".explore-node-badge");
+        if (badge) {
+          if (isConn) {
+            badge.style.display = "inline-block";
+            badge.textContent = `#${connIdx + 1}`;
+          } else {
+            badge.style.display = "none";
+          }
+        }
+      });
 
       // 4. Bottom trail bar
       const chosen = exploreState.selectedIds.map(id => exploreNodeMap[id]).filter(Boolean);
