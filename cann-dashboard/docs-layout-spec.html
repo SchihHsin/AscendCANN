@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CANN 开源文档中心 · 自适应排版规则与实现说明</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background-color: #F4F6FA;
+      color: #1D2129;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .spec-card {
+      background: #FFFFFF;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    pre {
+      tab-size: 2;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 顶部导航 -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/70 sticky top-0 z-20">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5 text-sm">
+        <span class="w-2 h-2 rounded-full bg-[#0052D9]"></span>
+        <span class="font-semibold text-slate-900">CANN 文档首页 · 自适应排版规则</span>
+        <span class="hidden sm:inline-block text-xs text-slate-400 font-mono-code">Spec &amp; Code</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="docs-config.json" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/70 transition-colors font-mono-code">
+          docs-config.json
+        </a>
+        <a href="docs-card-options.html" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-white bg-[#0052D9] hover:bg-blue-700 transition-colors">
+          ← 返回文档首页 Demo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl w-full mx-auto px-6 py-8 space-y-6 flex-1">
+
+    <!-- 1. 一句话原理 + 三层分工 -->
+    <section class="spec-card rounded-2xl p-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-5">
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">后台只改 JSON，首页自动排版的 4 条核心规则</h1>
+          <p class="text-sm text-slate-500 mt-1">页面视觉与业务逻辑解耦：配置文件只描述「分类、层级、条目」，渲染引擎自动完成合列、补齐与折叠。</p>
+        </div>
+        <span class="self-start md:self-auto text-[11px] font-mono-code px-2.5 py-1 rounded-md bg-blue-50 text-[#0052D9] font-medium">零代码变更 · 无限扩充</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="rounded-xl bg-[#F6F8FC] p-4 border border-slate-200/60">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-[#0052D9]">第一层 · featured</span>
+            <span class="text-[11px] font-mono-code text-slate-400">2 列重点卡</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">承载核心入口（如编程语言、API参考）。带 <code class="font-mono-code bg-white px-1 rounded">tag</code> 渲染小卡，无 <code class="font-mono-code bg-white px-1 rounded">tag</code> 渲染紧凑矩阵。</p>
+        </div>
+        <div class="rounded-xl bg-[#F6F8FC] p-4 border border-blue-200/80">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-indigo-600">第二层 · standard</span>
+            <span class="text-[11px] font-mono-code text-slate-400">自动合列 + 6 列栅格</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">所有常规/新增分类默认落入此层。短卡自动两两合列，再按槽位数自动铺满行宽。</p>
+        </div>
+        <div class="rounded-xl bg-[#F6F8FC] p-4 border border-slate-200/60">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-amber-700">第三层 · strip</span>
+            <span class="text-[11px] font-mono-code text-slate-400">通栏 5 列速查</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">适合排障、日志、环境变量等速查入口，独立占满整行并按 5 列自动折行。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 交互式排布沙盘（直观理解 列 vs 槽位） -->
+    <section class="spec-card rounded-2xl p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900">交互演示：列（6 格尺子）与槽位（内容坑位）如何配合</h2>
+          <p class="text-xs text-slate-500 mt-0.5">拖动滑块改变第二层分类数量，或开关「包含短卡合列」，实时查看桌面端自动排布结果。</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <label class="inline-flex items-center gap-2 bg-[#F5F7FA] px-3 py-1.5 rounded-lg border border-slate-200/70">
+            <span class="text-slate-600 font-medium">分类数：</span>
+            <input id="simCount" type="range" min="1" max="11" value="4" class="w-24 accent-[#0052D9]" />
+            <span id="simCountVal" class="font-mono-code font-semibold text-[#0052D9] w-4 text-center">4</span>
+          </label>
+          <label class="inline-flex items-center gap-1.5 bg-[#F5F7FA] px-3 py-1.5 rounded-lg border border-slate-200/70 cursor-pointer select-none">
+            <input id="simPairToggle" type="checkbox" checked class="accent-[#0052D9]" />
+            <span class="text-slate-600 font-medium">含 2 张相邻短卡自动合列</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="simSummary" class="text-xs text-slate-600 bg-blue-50/70 border border-blue-100 rounded-xl px-3.5 py-2 mb-4"></div>
+      <div id="simGrid" class="grid grid-cols-6 gap-3"></div>
+    </section>
+
+    <!-- 3. 规则与核心代码对照 -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- 规则 A：相邻短卡自动合列 -->
+      <div class="spec-card rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-base font-bold text-slate-900">规则 1：相邻短卡自动合列</h2>
+            <span class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-indigo-50 text-indigo-600">buildStandardSlots()</span>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed mb-4">
+            按配置顺序扫描第二层卡片：只要相邻两张卡片中<strong>至少一张 ≤ 2 项、且两张合计 ≤ 4 项</strong>，就上下叠放进同一个槽位（下方卡片加 <code class="font-mono-code bg-slate-100 px-1 rounded">flex-1</code> 自动撑齐整行高度），既保留配置顺序，又避免短卡旁大片留白。
+          </p>
+        </div>
+        <pre class="rounded-xl bg-slate-900 text-slate-100 p-4 text-[11.5px] leading-relaxed overflow-x-auto font-mono-code"><code>function buildStandardSlots(categories) {
+  const slots = [];
+  for (let i = 0; i &lt; categories.length; i++) {
+    const cur = categories[i];
+    const next = categories[i + 1];
+    const curLen = (cur.items || []).length;
+    const nextLen = next ? (next.items || []).length : Infinity;
+
+    // 相邻短卡配对条件：至少一张 &lt;= 2 项 且 合计 &lt;= 4 项
+    if (next &amp;&amp; Math.min(curLen, nextLen) &lt;= 2 &amp;&amp; (curLen + nextLen) &lt;= 4) {
+      slots.push({ type: 'pair', items: [cur, next] });
+      i++; // 跳过已合列的下一张
+    } else {
+      slots.push({ type: 'single', items: [cur] });
+    }
+  }
+  return slots;
+}</code></pre>
+      </div>
+
+      <!-- 规则 B：6 列栅格满格跨列 -->
+      <div class="spec-card rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-base font-bold text-slate-900">规则 2：按槽位数自动铺满 6 列</h2>
+            <span class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-blue-50 text-[#0052D9]">n % 3 满格算法</span>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed mb-4">
+            把桌面端一行等分为 <strong>6 列（<code class="font-mono-code bg-slate-100 px-1 rounded">lg:grid-cols-6</code>）</strong>。根据合列后的槽位总数 <code class="font-mono-code bg-slate-100 px-1 rounded">n</code> 分配列宽：除 <code class="font-mono-code bg-slate-100 px-1 rounded">n = 1</code> 外，绝不出现单卡独占一行或末尾空列（如 7 槽位排成 <code class="font-mono-code bg-slate-100 px-1 rounded">3 + 2 + 2</code>）。
+          </p>
+        </div>
+        <pre class="rounded-xl bg-slate-900 text-slate-100 p-4 text-[11.5px] leading-relaxed overflow-x-auto font-mono-code"><code>const n = slots.length;
+const standardHtml = slots.map((slot, idx) =&gt; {
+  let spanClass = 'lg:col-span-2'; // 默认 1/3 宽（每行 3 槽位）
+
+  if (n === 1) {
+    spanClass = 'lg:col-span-6';   // 仅 1 槽位：占满整行
+  } else if (n % 3 === 2 &amp;&amp; idx &gt;= n - 2) {
+    spanClass = 'lg:col-span-3';   // 余 2：末 2 槽位各占 1/2 宽
+  } else if (n % 3 === 1 &amp;&amp; idx &gt;= n - 4) {
+    spanClass = 'lg:col-span-3';   // 余 1：末 4 槽位排成 2+2
+  }
+
+  return renderSlot(slot, spanClass);
+}).join('');</code></pre>
+      </div>
+
+      <!-- 规则 C：单卡折叠与搜索联动 -->
+      <div class="spec-card rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-base font-bold text-slate-900">规则 3：单卡超长折叠与搜索透出</h2>
+            <span class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-emerald-50 text-emerald-700">COLLAPSE_LIMIT = 5</span>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed mb-4">
+            第二层标准卡内条目超过 <strong>5 项</strong>（单卡占满 6 列时为 <strong>6 项</strong>）自动收起多余条目并生成展开按钮；当用户输入关键词搜索时，自动穿透折叠展示匹配条目，若合列槽位内两张卡均无匹配则整列隐藏。
+          </p>
+        </div>
+        <pre class="rounded-xl bg-slate-900 text-slate-100 p-4 text-[11.5px] leading-relaxed overflow-x-auto font-mono-code"><code>// 渲染时标记超出上限的条目
+const COLLAPSE_LIMIT = isWide ? 6 : 5;
+const extraClass = (items.length &gt; COLLAPSE_LIMIT &amp;&amp; idx &gt;= COLLAPSE_LIMIT)
+  ? ' extra-item hidden' : '';
+
+// 搜索时自动透出匹配到的隐藏条目，并隐藏空槽位
+const isCollapsedExtra = !q &amp;&amp; item.classList.contains('extra-item')
+  &amp;&amp; (!expandBtn || expandBtn.dataset.expanded !== '1');
+item.classList.toggle('hidden', !matched || isCollapsedExtra);
+
+activeContainer.querySelectorAll('.doc-slot').forEach(slot =&gt; {
+  const hasVisible = [...slot.querySelectorAll('.doc-category')]
+    .some(c =&gt; !c.classList.contains('hidden'));
+  slot.classList.toggle('hidden', !hasVisible);
+});</code></pre>
+      </div>
+
+      <!-- 规则 D：配置文件 Schema 与白名单 -->
+      <div class="spec-card rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-base font-bold text-slate-900">规则 4：配置文件结构与安全枚举</h2>
+            <span class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-purple-50 text-purple-600">docs-config.json</span>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed mb-4">
+            后台只需维护纯数据字段；图标与配色由前端 <code class="font-mono-code bg-slate-100 px-1 rounded">ICON_MAP</code> / <code class="font-mono-code bg-slate-100 px-1 rounded">ACCENT_MAP</code> 白名单映射，避免脏样式破坏界面一致性。
+          </p>
+        </div>
+        <pre class="rounded-xl bg-slate-900 text-slate-100 p-4 text-[11.5px] leading-relaxed overflow-x-auto font-mono-code"><code>{
+  "quickTags": [{ "label": "Ascend C", "query": "Ascend C" }],
+  "categories": [{
+    "id": "quant",
+    "title": "模型压缩与量化",
+    "tier": "standard",        // featured | standard | strip
+    "badge": "New",            // 可选右上角徽章
+    "icon": "cube",            // code|database|network|pulse|beaker|grid|book|cube|shield
+    "accent": "indigo",        // blue|indigo|sky|emerald|purple|amber|rose|slate
+    "items": [
+      { "title": "AMCT量化指南", "href": "#amct", "keywords": "AMCT 量化" }
+    ]
+  }]
+}</code></pre>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    const simCount = document.getElementById('simCount');
+    const simCountVal = document.getElementById('simCountVal');
+    const simPairToggle = document.getElementById('simPairToggle');
+    const simSummary = document.getElementById('simSummary');
+    const simGrid = document.getElementById('simGrid');
+
+    function renderSimulator() {
+      const catCount = Number(simCount.value);
+      const enablePair = simPairToggle.checked && catCount >= 2;
+      simCountVal.textContent = catCount;
+
+      // 构造模拟槽位：若开启短卡合列，把末尾两张模拟为短卡合进 1 个槽位
+      const slots = [];
+      if (enablePair) {
+        for (let i = 0; i < catCount - 2; i++) {
+          slots.push({ type: 'single', label: `分类 ${i + 1}` });
+        }
+        slots.push({ type: 'pair', labels: [`短卡 ${catCount - 1}`, `短卡 ${catCount}`] });
+      } else {
+        for (let i = 0; i < catCount; i++) {
+          slots.push({ type: 'single', label: `分类 ${i + 1}` });
+        }
+      }
+
+      const n = slots.length;
+      const spans = slots.map((_, idx) => {
+        if (n === 1) return 6;
+        if (n % 3 === 2 && idx >= n - 2) return 3;
+        if (n % 3 === 1 && idx >= n - 4) return 3;
+        return 2;
+      });
+
+      const rowSizes = [];
+      let acc = 0;
+      let countInRow = 0;
+      spans.forEach(sp => {
+        acc += sp;
+        countInRow++;
+        if (acc === 6) {
+          rowSizes.push(countInRow);
+          acc = 0;
+          countInRow = 0;
+        }
+      });
+
+      simSummary.innerHTML =
+        `共 <strong>${catCount}</strong> 个分类 → ` +
+        (enablePair ? `末尾 2 张短卡自动合列为 1 个槽位 → ` : '') +
+        `生成 <strong>${n}</strong> 个槽位 → 6 列栅格排布为：<strong class="font-mono-code text-[#0052D9]">${rowSizes.join(' + ')}</strong>（每行满 6 列，无空缺）`;
+
+      simGrid.innerHTML = slots.map((slot, idx) => {
+        const sp = spans[idx];
+        const colClass = sp === 6 ? 'col-span-6' : (sp === 3 ? 'col-span-3' : 'col-span-2');
+        if (slot.type === 'pair') {
+          return `
+            <div class="${colClass} flex flex-col gap-2">
+              <div class="rounded-xl bg-purple-50 border border-purple-200 px-3 py-2 text-xs font-semibold text-purple-700 flex items-center justify-between">
+                <span>${slot.labels[0]}</span>
+                <span class="font-mono-code text-[10px] opacity-75">合列 · 占${sp}/6</span>
+              </div>
+              <div class="rounded-xl bg-slate-100 border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 flex items-center justify-between flex-1">
+                <span>${slot.labels[1]}</span>
+                <span class="font-mono-code text-[10px] opacity-75">合列 · flex-1</span>
+              </div>
+            </div>`;
+        }
+        return `
+          <div class="${colClass} rounded-xl bg-blue-50/70 border border-blue-200/80 px-4 py-5 flex items-center justify-between text-xs font-semibold text-slate-800">
+            <span>${slot.label}</span>
+            <span class="font-mono-code text-[11px] text-[#0052D9]">占 ${sp}/6 列</span>
+          </div>`;
+      }).join('');
+    }
+
+    simCount.addEventListener('input', renderSimulator);
+    simPairToggle.addEventListener('change', renderSimulator);
+    renderSimulator();
+  </script>
+</body>
+</html>
