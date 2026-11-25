@@ -1712,6 +1712,24 @@
       position: relative;
       flex-shrink: 0;
     }
+    .ai-composer.is-dragover {
+      border-color: #1456F0;
+      border-style: dashed;
+      background: rgba(239, 246, 255, 0.96);
+      box-shadow: 0 12px 32px rgba(20, 86, 240, 0.14);
+    }
+    .ai-drop-hint {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #1456F0;
+      padding-top: 8px;
+      margin-top: 8px;
+      border-top: 1px dashed rgba(20, 86, 240, 0.28);
+    }
+    .ai-composer.is-dragover .ai-drop-hint { display: flex; }
     .ai-upload-btn {
       width: 30px;
       height: 30px;
@@ -2514,6 +2532,10 @@
               </button>
             </div>
             <div class="ai-rule-bar" id="aiRuleBar"></div>
+            <div class="ai-drop-hint" id="aiDropHint">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>松开即可本地解析项目规则（README.md / AGENTS.md / requirements.txt / CMakeLists.txt），自动生成学习路径</span>
+            </div>
           </form>
         </div>
 
@@ -3658,9 +3680,7 @@
       document.getElementById("projectRuleFile").click();
     }
 
-    async function handleProjectRuleFile(e) {
-      const file = e.target.files && e.target.files[0];
-      e.target.value = "";
+    async function processProjectRuleFile(file, autoLaunch = false) {
       if (!file) return;
       const text = await file.text().catch(() => "");
       const parsed = parseProjectRuleText(file.name, text);
@@ -3670,10 +3690,45 @@
       if (!input.value.trim()) {
         input.value = `结合上传的 ${file.name} 项目规则，为我规划针对性的 CANN 学习路径`;
       }
-      if (document.getElementById("journeyDrawer").classList.contains("open")) {
-        runAiMatch(`已上传项目规则 ${file.name}，请按文件里的技术栈和约束重新规划学习路径`, { sourceType: "rule", ruleData: parsed });
+      if (autoLaunch || document.getElementById("journeyDrawer").classList.contains("open")) {
+        const promptText = input.value.trim();
+        input.value = "";
+        runAiMatch(promptText, { sourceType: "rule", ruleData: parsed });
       }
     }
+
+    async function handleProjectRuleFile(e) {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      await processProjectRuleFile(file, false);
+    }
+
+    (function initAiComposerDragDrop() {
+      const composer = document.querySelector(".ai-composer");
+      if (!composer) return;
+      let dragDepth = 0;
+      composer.addEventListener("dragenter", e => {
+        e.preventDefault();
+        dragDepth++;
+        composer.classList.add("is-dragover");
+      });
+      composer.addEventListener("dragover", e => {
+        e.preventDefault();
+        if (e.dataTransfer) e.dataTransfer.dropEffect = "copy";
+      });
+      composer.addEventListener("dragleave", e => {
+        e.preventDefault();
+        dragDepth = Math.max(0, dragDepth - 1);
+        if (dragDepth === 0) composer.classList.remove("is-dragover");
+      });
+      composer.addEventListener("drop", async e => {
+        e.preventDefault();
+        dragDepth = 0;
+        composer.classList.remove("is-dragover");
+        const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (file) await processProjectRuleFile(file, true);
+      });
+    })();
 
     function applySampleRule(key) {
       closeRulePopover();
@@ -4712,10 +4767,10 @@
 
     // Gentle rotating placeholder examples for the AI composer
     const AI_PLACEHOLDERS = [
+      "拖入或点击右侧 + 上传 README / AGENTS.md 等项目规则，直接识别学习路径",
       "不会 C++，想用 PyASC / PyPTO 用 Python 写算子",
       "想学 TorchAir 图模式与 AutoFusion 自动融合",
       "想用 vLLM-Ascend 部署 DeepSeek 并做 W8A8 量化",
-      "想学 HCCL 集合通信与 HiXL 单边通信优化",
       "想从零学 Ascend C 融合算子开发并参加昇腾创新大赛"
     ];
     let phIdx = 0;
