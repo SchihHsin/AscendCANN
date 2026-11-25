@@ -9602,7 +9602,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-11-25（合入独立 ascend-doc 仓库首页）
 - 将 3D 光晕 Hero（`cann-docs-hero-layers.png` + 有序轨道 3D 微粒）与配置驱动三层 Bento 首页正式合入独立仓库 `/Users/hsin/Documents/Coding/ascend-doc`（`.vitepress/dist-static/` 与 `public/`、`ascend-theme.css`、`ascend-sidebar-search.js`），已推送 `SchihHsin/ascend-doc` `main`（commit `67609b6`）。
-- 首页配置 `docs-config.json` 对接 `ascend-doc` 真实内页路由（开发指南、Ascend C API、跨代迁移、技术附录等），Hero 搜索框与 VitePress 原生全站搜索合二为一（点击或按 `/` 直接唤起全站 2,700+ 篇正文检索弹窗），高频直达胶囊直链对应文档页。
+- 首页配置 `docs-config.json` 对接 `ascend-doc` 真实内页路由（开发指南、Ascend C API、跨代迁移、技术附录等），Hero 搜索框与 VitePress 原生全站搜索合二为一（点击或按 `/` 直接唤起全站 2,700+ 篇正文检索弹窗），高频直达胶囊直链对应文档页；并更新 `ascend-doc/.github/workflows/pages.yml`（commit `8713edd`），构建期自动将 `.vitepress/dist-static/` 注入主题/脚本并适配 `/ascend-doc/` 子路径，支持 `https://schihhsin.github.io/ascend-doc/` 直接在线访问。
 
 ### 2026-11-24（查找 VitePress 项目）
 
