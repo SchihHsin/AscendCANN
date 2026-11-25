@@ -3784,8 +3784,14 @@
 
     const exploreNodeMap = Object.fromEntries(ALL_EXPLORE_NODES.map(n => [n.id, n]));
 
+    const DWELL_SOURCE_MS = 280;
+    const DWELL_TARGET_MS = 680;
     let exploreState = {
       hoveredId: null,
+      sourceId: null,
+      dwellTargetId: null,
+      dwellTimer: null,
+      dwellMs: DWELL_SOURCE_MS,
       draggingFromId: null,
       dragStartPt: null,
       dragMoved: false,
@@ -3823,15 +3829,37 @@
     }
 
     function onExploreNodeEnter(nodeId) {
+      clearTimeout(exploreState.dwellTimer);
       exploreState.hoveredId = nodeId;
+
+      if (exploreState.sourceId !== nodeId) {
+        const isTarget = !!(exploreState.sourceId && exploreState.sourceId !== nodeId);
+        const ms = isTarget ? DWELL_TARGET_MS : DWELL_SOURCE_MS;
+        exploreState.dwellTargetId = nodeId;
+        exploreState.dwellMs = ms;
+        exploreState.dwellTimer = setTimeout(() => {
+          if (exploreState.dwellTargetId !== nodeId) return;
+          if (!exploreState.sourceId) {
+            exploreState.sourceId = nodeId;
+            if (!exploreState.selectedIds.includes(nodeId)) exploreState.selectedIds.push(nodeId);
+          } else if (exploreState.sourceId !== nodeId) {
+            addExploreConnection(exploreState.sourceId, nodeId);
+            exploreState.sourceId = nodeId;
+          }
+          exploreState.dwellTargetId = null;
+          renderExploreGraph();
+        }, ms);
+      } else {
+        exploreState.dwellTargetId = null;
+      }
       renderExploreGraph();
     }
 
     function onExploreNodeLeave(nodeId) {
-      if (exploreState.hoveredId === nodeId) {
-        exploreState.hoveredId = null;
-        renderExploreGraph();
-      }
+      clearTimeout(exploreState.dwellTimer);
+      if (exploreState.dwellTargetId === nodeId) exploreState.dwellTargetId = null;
+      if (exploreState.hoveredId === nodeId) exploreState.hoveredId = null;
+      renderExploreGraph();
     }
 
     function onExploreNodeDown(e, nodeId) {
@@ -3844,6 +3872,7 @@
     function onExploreNodeUp(e, nodeId) {
       if (exploreState.draggingFromId && exploreState.dragMoved && exploreState.draggingFromId !== nodeId) {
         addExploreConnection(exploreState.draggingFromId, nodeId);
+        exploreState.sourceId = nodeId;
         exploreState.draggingFromId = null;
         exploreState.dragStartPt = null;
         exploreState.dragMoved = false;
@@ -3856,27 +3885,33 @@
     }
 
     function onExploreNodeClick(nodeId) {
-      // Clean click-to-connect:
-      // 1) If already selected and has no edges (or is last), toggle off
-      // 2) If there is already a selected trail, connect from the last selected node to this node!
+      clearTimeout(exploreState.dwellTimer);
+      exploreState.dwellTargetId = null;
       const idx = exploreState.selectedIds.indexOf(nodeId);
       if (idx >= 0) {
-        // Remove this node and any edges touching it
+        // Clicking an already-selected node removes it unless it was only just auto-selected by dwell on this same hover
         exploreState.edges = exploreState.edges.filter(e => e.from !== nodeId && e.to !== nodeId);
         exploreState.selectedIds = exploreState.selectedIds.filter(id => id !== nodeId);
+        if (exploreState.sourceId === nodeId) {
+          exploreState.sourceId = exploreState.selectedIds[exploreState.selectedIds.length - 1] || null;
+        }
       } else {
-        const lastId = exploreState.selectedIds[exploreState.selectedIds.length - 1];
-        if (lastId) {
-          addExploreConnection(lastId, nodeId);
+        const anchor = exploreState.sourceId || exploreState.selectedIds[exploreState.selectedIds.length - 1];
+        if (anchor && anchor !== nodeId) {
+          addExploreConnection(anchor, nodeId);
         } else {
           exploreState.selectedIds.push(nodeId);
         }
+        exploreState.sourceId = nodeId;
       }
       renderExploreGraph();
     }
 
     function resetExploreTrail() {
+      clearTimeout(exploreState.dwellTimer);
       exploreState.hoveredId = null;
+      exploreState.sourceId = null;
+      exploreState.dwellTargetId = null;
       exploreState.draggingFromId = null;
       exploreState.dragMoved = false;
       exploreState.edges = [];
@@ -3916,8 +3951,10 @@
           const dist = Math.hypot(e.clientX - exploreState.dragStartPt.x, e.clientY - exploreState.dragStartPt.y);
           if (dist > 6) {
             exploreState.dragMoved = true;
-            renderExplorePreviewSvg();
           }
+        }
+        if (exploreState.sourceId || (exploreState.draggingFromId && exploreState.dragMoved)) {
+          renderExplorePreviewSvg();
         }
       });
       window.addEventListener("pointerup", () => {
@@ -3929,9 +3966,14 @@
         }
       });
       canvas.addEventListener("pointerleave", () => {
+        clearTimeout(exploreState.dwellTimer);
+        exploreState.dwellTargetId = null;
         canvas.classList.remove("has-pointer");
         exploreState.pointerPos = null;
         exploreState.hoveredId = null;
+        if (exploreState.edges.length === 0) {
+          exploreState.sourceId = null;
+        }
         renderExploreGraph();
       });
     }
@@ -3941,8 +3983,9 @@
       if (!svgEl) return;
       const oldPrev = svgEl.querySelector("#explorePreviewPath");
       if (oldPrev) oldPrev.remove();
-      if (!exploreState.draggingFromId || !exploreState.dragMoved || !exploreState.pointerPos) return;
-      const src = exploreNodeMap[exploreState.draggingFromId];
+      const previewSrcId = (exploreState.draggingFromId && exploreState.dragMoved) ? exploreState.draggingFromId : exploreState.sourceId;
+      if (!previewSrcId || !exploreState.pointerPos) return;
+      const src = exploreNodeMap[previewSrcId];
       if (!src) return;
       const sx = src.x * 10;
       const sy = src.y * 3.9;
@@ -4023,16 +4066,41 @@
         `).join("");
       }
 
-      // Sync classes & #order badges in place
+      // Sync classes, dwell ring, & #order badges in place (never destroy button DOM!)
       nodesEl.querySelectorAll(".explore-node").forEach(btn => {
         const nid = btn.dataset.nodeId;
         const isFocused = exploreState.hoveredId === nid;
         const isNeighbor = hovNeighbors.has(nid);
         const connIdx = exploreState.selectedIds.indexOf(nid);
         const isConn = connIdx >= 0;
+        const isSource = exploreState.sourceId === nid;
+        const isDwelling = exploreState.dwellTargetId === nid;
+
         btn.classList.toggle("is-focused", isFocused);
         btn.classList.toggle("is-neighbor", isNeighbor);
         btn.classList.toggle("is-connected", isConn);
+        btn.classList.toggle("is-source", isSource);
+        btn.style.setProperty("--dwell-ms", `${exploreState.dwellMs}ms`);
+
+        const dotWrap = btn.querySelector(".explore-dot-wrap");
+        if (dotWrap) {
+          const oldSvg = dotWrap.querySelector(".explore-dwell-svg");
+          if (isDwelling && !oldSvg) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("class", "explore-dwell-svg");
+            svg.setAttribute("viewBox", "0 0 14 14");
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("class", "explore-dwell-circle");
+            circle.setAttribute("cx", "7");
+            circle.setAttribute("cy", "7");
+            circle.setAttribute("r", "6");
+            svg.appendChild(circle);
+            dotWrap.appendChild(svg);
+          } else if (!isDwelling && oldSvg) {
+            oldSvg.remove();
+          }
+        }
+
         const badge = btn.querySelector(".explore-node-badge");
         if (badge) {
           if (isConn) {
@@ -4054,7 +4122,7 @@
         `;
       } else {
         trailEl.innerHTML = `
-          <span style="color:var(--text-muted); font-size:12px;">点击任意两个节点，或按住节点拖拽连线，串联你想探索的学习线索</span>
+          <span style="color:var(--text-muted); font-size:12px;">悬浮节点片刻（0.3s）自动设为起点，移到下一节点停留（0.7s）即可无点击连线，也可直接点击</span>
         `;
       }
     }
