@@ -9597,7 +9597,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-11-24（docs-card-options 方案 A 分层配置驱动与多规模预览）
 - 新增独立配置文件 `cann-dashboard/docs-config.json`，将 Hero 高频直达胶囊（`quickTags`）与 Bento 三层分类（`tier: "featured" | "standard" | "strip"`）完全配置化。
 - 重构 `cann-dashboard/docs-card-options.html` 渲染逻辑为通用分层引擎（`renderDocsPage`）：不改代码即可随配置增减分类或手册（`standard` 超过 5 项自动折叠并提供「展开全部」与搜索自动透出）；并新增顶部预设切换条（`精简 4 分类` / `标准 7 分类` / `扩容 10 分类·多手册`）供直观对比不同数量下的自适应效果。
-- 第二层 `standard` 改用 `lg:grid-cols-6` 自适应跨列（4 项走 2×2 对称；5/8 项尾行两卡 3+3；7/10 项尾卡自动通栏 6 列并横向排布子项），消除末行孤卡留白；仅暂存本任务文件并推送 `origin/main`。
+- 第二层 `standard` 改用 `lg:grid-cols-6` 自适应跨列（除仅 1 卡外，绝不出现单卡独占一行：余 2 时末 2 卡 3+3；余 1 如 4/7/10 项时末 4 卡走 2×2，即 7 项为 `3+2+2`），消除末行孤卡与留白；仅暂存本任务文件并推送 `origin/main`。
 
 ### 2026-11-24（查找 VitePress 项目）
 

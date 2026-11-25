@@ -631,19 +631,14 @@
         const n = standard.length;
         const standardHtml = standard.map((cat, idx) => {
           let spanClass = 'lg:col-span-2';
-          let isWide = false;
           if (n === 1) {
             spanClass = 'lg:col-span-6';
-            isWide = true;
-          } else if (n === 2 || n === 4) {
-            spanClass = 'lg:col-span-3';
-          } else if (n % 3 === 1 && idx === n - 1) {
-            spanClass = 'lg:col-span-6';
-            isWide = true;
           } else if (n % 3 === 2 && idx >= n - 2) {
             spanClass = 'lg:col-span-3';
+          } else if (n % 3 === 1 && idx >= n - 4) {
+            spanClass = 'lg:col-span-3';
           }
-          return renderStandardCard(cat, spanClass, isWide);
+          return renderStandardCard(cat, spanClass, n === 1);
         }).join('');
         html += `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">${standardHtml}</div>`;
       }
