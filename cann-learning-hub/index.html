@@ -1626,6 +1626,608 @@
       .showcase-right img { -webkit-mask-image: none; mask-image: none; }
       .search-trigger { display: none; }
     }
+
+    /* ================= Persistent Top-Bar Journey Pill ================= */
+    .journey-nav-pill {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.10), rgba(139, 92, 246, 0.12));
+      border: 1px solid rgba(99, 102, 241, 0.28);
+      color: #1e293b;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      max-width: 210px;
+    }
+    .journey-nav-pill.visible { display: inline-flex; }
+    .journey-nav-pill:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.16), rgba(139, 92, 246, 0.20));
+      border-color: rgba(99, 102, 241, 0.48);
+      transform: translateY(-1px);
+    }
+    .journey-nav-pill span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ================= Project Rule Upload (+ Popover & Attached Chip) ================= */
+    .ai-upload-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .ai-upload-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      background: rgba(248, 250, 252, 0.9);
+      color: var(--text-secondary);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .ai-upload-btn:hover, .ai-upload-btn.active {
+      background: #ffffff;
+      border-color: rgba(20, 86, 240, 0.35);
+      color: #1456F0;
+      box-shadow: 0 2px 8px rgba(20, 86, 240, 0.10);
+    }
+    .rule-popover {
+      position: absolute;
+      left: 0;
+      top: calc(100% + 10px);
+      width: 320px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+      padding: 8px;
+      z-index: 80;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .rule-popover.open { display: flex; }
+    .rule-pop-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 4px 8px 2px;
+      letter-spacing: 0.02em;
+    }
+    .rule-pop-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-align: left;
+      width: 100%;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.14s ease;
+    }
+    .rule-pop-item:hover { background: var(--bg-tray); }
+    .rule-pop-ico {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: #eff6ff;
+      color: #1456F0;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .rule-pop-ico.sample {
+      background: #f5f3ff;
+      color: #7c3aed;
+    }
+    .rule-pop-name { font-size: 12.5px; font-weight: 600; color: var(--text); }
+    .rule-pop-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+    .rule-pop-divider { height: 1px; background: var(--border); margin: 4px 6px; }
+    .ai-rule-bar {
+      display: none;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(15, 23, 42, 0.08);
+    }
+    .ai-rule-bar.visible { display: flex; }
+    .ai-rule-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #1456F0;
+      background: #eff6ff;
+      border: 1px solid rgba(20, 86, 240, 0.22);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .ai-rule-chip button {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+    .ai-rule-chip button:hover { color: #0f172a; }
+    .ai-rule-tag {
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: var(--bg-tray);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    /* ================= Homepage Interactive Exploration Graph (连线探索) ================= */
+    .block-head-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .explore-mode-switch {
+      display: inline-flex;
+      background: var(--bg-tray);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .explore-mode-btn {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 4px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .explore-mode-btn.active {
+      background: #ffffff;
+      color: var(--text);
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+    }
+    .explore-graph-card {
+      position: relative;
+      background:
+        radial-gradient(ellipse 46% 65% at 18% 24%, rgba(99, 102, 241, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 42% 60% at 84% 72%, rgba(6, 182, 212, 0.06) 0%, transparent 70%),
+        #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+    }
+    .explore-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+      flex-wrap: wrap;
+    }
+    .explore-hub-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .explore-hub-pill {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-tray);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .explore-hub-pill:hover { background: var(--bg-hover); color: var(--text); }
+    .explore-hub-pill.active {
+      background: var(--dark);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .explore-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .explore-canvas {
+      position: relative;
+      height: 360px;
+      width: 100%;
+      overflow: hidden;
+      user-select: none;
+    }
+    .explore-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .explore-edge {
+      fill: none;
+      stroke: #dbe2ef;
+      stroke-width: 1.5;
+      stroke-dasharray: 4 4;
+      transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease;
+      opacity: 0.75;
+    }
+    .explore-edge.active {
+      stroke-dasharray: none;
+      stroke-width: 2.4;
+      opacity: 1;
+    }
+    .explore-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(6px);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: left;
+      max-width: 220px;
+    }
+    .explore-node:hover {
+      background: #ffffff;
+      border-color: rgba(15, 23, 42, 0.12);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+      transform: translate(-50%, -50%) scale(1.03);
+      z-index: 4;
+    }
+    .explore-node.is-center {
+      background: #ffffff;
+      border-color: rgba(20, 86, 240, 0.26);
+      box-shadow: 0 10px 28px rgba(20, 86, 240, 0.10);
+      padding: 11px 18px;
+      z-index: 3;
+    }
+    .explore-node.is-selected {
+      background: #ffffff;
+      border-color: currentColor;
+      box-shadow: 0 8px 24px rgba(20, 86, 240, 0.14);
+      z-index: 3;
+    }
+    .explore-node-kicker {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      opacity: 0.82;
+      white-space: nowrap;
+    }
+    .explore-node-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+    .explore-node-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 2px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+    .explore-node.is-center .explore-node-label { font-size: 20px; font-weight: 700; }
+    .explore-node.is-large .explore-node-label { font-size: 18px; }
+    .explore-node-badge {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(20, 86, 240, 0.10);
+      color: #1456F0;
+      vertical-align: middle;
+    }
+    .explore-trail-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 20px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .explore-trail-chain {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+    .explore-trail-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .explore-trail-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ================= Right-Side Split-Screen Journey Co-Creation Drawer ================= */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.34);
+      backdrop-filter: blur(4px);
+      z-index: 160;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .journey-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(1140px, 94vw);
+      background: #F4F5F7;
+      z-index: 170;
+      box-shadow: -16px 0 48px rgba(15, 23, 42, 0.18);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .journey-drawer.open { transform: translateX(0); }
+    .jd-head {
+      height: 56px;
+      padding: 0 20px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .jd-head-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .jd-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .jd-status-pill {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0369a1;
+      background: #f0f9ff;
+      border: 1px solid rgba(2, 132, 199, 0.22);
+      padding: 2px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .jd-head-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .jd-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+    }
+    .jd-chat-col {
+      background: #ffffff;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .jd-context-box {
+      padding: 12px 14px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .jd-context-box.visible { display: flex; }
+    .jd-context-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #1456F0;
+    }
+    .jd-context-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .jd-context-tag {
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .jd-chat-log {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .jd-bubble-user {
+      align-self: flex-end;
+      background: var(--dark);
+      color: #ffffff;
+      font-size: 12.5px;
+      line-height: 1.5;
+      padding: 8px 12px;
+      border-radius: 12px 12px 2px 12px;
+      max-width: 90%;
+    }
+    .jd-bubble-bot {
+      align-self: flex-start;
+      background: var(--bg-tray);
+      color: var(--text);
+      font-size: 12.5px;
+      line-height: 1.6;
+      padding: 10px 12px;
+      border-radius: 2px 12px 12px 12px;
+      max-width: 96%;
+    }
+    .jd-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 14px;
+      border-top: 1px solid rgba(15, 23, 42, 0.05);
+      background: #fafbfc;
+    }
+    .jd-composer {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+    }
+    .jd-composer input {
+      flex: 1;
+      min-width: 0;
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 12.5px;
+      color: var(--text);
+      outline: none;
+    }
+    .jd-composer input:focus { border-color: #1456F0; }
+    .jd-canvas-col {
+      overflow-y: auto;
+      padding: 20px 26px 36px;
+      min-height: 0;
+    }
+    .jd-canvas-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .jd-canvas-summary {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+    .skill-stage-toggle {
+      margin-left: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .skill-stage-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    .skill-stage.is-skipped .skill-stage-steps { display: none; }
+    .skill-stage.is-skipped .skill-stage-label {
+      background: #f8fafc;
+      color: #64748b;
+      border-style: dashed;
+    }
+    .skill-course-card.is-ai-suggest {
+      background: #fffbeb;
+      border: 1.5px dashed #f59e0b;
+    }
+    .skill-suggest-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(217, 119, 6, 0.25);
+    }
+    .skill-suggest-tag {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #b45309;
+    }
+    .skill-suggest-btns {
+      display: flex;
+      gap: 6px;
+    }
+    .skill-suggest-btn {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .skill-suggest-btn.adopt {
+      background: #1456F0;
+      color: #ffffff;
+    }
+    .skill-suggest-btn.ignore {
+      background: #ffffff;
+      color: #64748b;
+      border-color: #cbd5e1;
+    }
+    @media (max-width: 900px) {
+      .jd-body { grid-template-columns: 1fr; }
+      .jd-chat-col { max-height: 42vh; border-right: none; border-bottom: 1px solid var(--border); }
+      .explore-canvas { height: 420px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1642,6 +2244,10 @@
         </div>
 
         <div class="top-actions">
+          <button class="journey-nav-pill" id="openJourneyPill" onclick="openJourneyDrawer()" title="打开我的学习路径副屏">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3.4C13.1 8.1 15.9 10.9 20.6 12C15.9 13.1 13.1 15.9 12 20.6C10.9 15.9 8.1 13.1 3.4 12C8.1 10.9 10.9 8.1 12 3.4Z" fill="#6366f1"/></svg>
+            <span id="openJourneyPillText">当前路径</span>
+          </button>
           <button class="search-trigger" onclick="openSearchModal()" title="全局搜索 (⌘K)">
             <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <span class="kbd">⌘K</span>
@@ -1727,12 +2333,50 @@
                   <path d="M12 3.4C13.1 8.1 15.9 10.9 20.6 12C15.9 13.1 13.1 15.9 12 20.6C10.9 15.9 8.1 13.1 3.4 12C8.1 10.9 10.9 8.1 12 3.4Z" fill="url(#aiSparkleGrad)" stroke="url(#aiSparkleGrad)" stroke-width="2.2" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <input type="text" id="aiChatInput" placeholder="我没学过 C++，只有 2 天时间，想把 PyTorch 模型迁到 NPU" />
-              <button type="submit" class="ai-send-btn" title="发送匹配">
+              <div class="ai-upload-wrap">
+                <button type="button" class="ai-upload-btn" id="ruleUploadBtn" onclick="toggleRulePopover(event)" title="上传项目规则文件，自动识别学习路径">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </button>
+                <input type="file" id="projectRuleFile" accept=".md,.txt,.json,.yaml,.yml,.py,.cpp,.cmake,.toml" style="display:none" onchange="handleProjectRuleFile(event)" />
+                <div class="rule-popover" id="rulePopover" onclick="event.stopPropagation()">
+                  <div class="rule-pop-title">上传项目规则 · 自动识别学习路径</div>
+                  <button type="button" class="rule-pop-item" onclick="triggerLocalRuleUpload()">
+                    <div class="rule-pop-ico">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <div>
+                      <div class="rule-pop-name">上传本地项目文件</div>
+                      <div class="rule-pop-desc">支持 README.md / AGENTS.md / requirements.txt / CMakeLists.txt，仅浏览器本地解析</div>
+                    </div>
+                  </button>
+                  <div class="rule-pop-divider"></div>
+                  <div class="rule-pop-title">一键试用示例项目规则</div>
+                  <button type="button" class="rule-pop-item" onclick="applySampleRule('inference_migration')">
+                    <div class="rule-pop-ico sample">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <div>
+                      <div class="rule-pop-name">AGENTS.md · Qwen3 推理与图模式迁移</div>
+                      <div class="rule-pop-desc">识别：Python 优先 · vLLM-Ascend W8A8 · TorchAir 动态 Shape</div>
+                    </div>
+                  </button>
+                  <button type="button" class="rule-pop-item" onclick="applySampleRule('ascendc_op_repo')">
+                    <div class="rule-pop-ico sample">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <div>
+                      <div class="rule-pop-name">README.md · Ascend C 算子仓开发规范</div>
+                      <div class="rule-pop-desc">识别：C++ / Ascend C 核函数 · 尾块 Tiling · msProf 调优</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <input type="text" id="aiChatInput" placeholder="不会 C++，想用 PyASC / PyPTO 用 Python 写算子" />
+              <button type="submit" class="ai-send-btn" title="生成学习路径">
                 <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
               </button>
             </div>
-            <div class="ai-thread" id="aiThread"></div>
+            <div class="ai-rule-bar" id="aiRuleBar"></div>
           </form>
         </div>
 
@@ -1779,17 +2423,46 @@
         </div>
       </div>
 
-      <!-- Block 2: 5 Pure Technical Directions (Visual Centerpiece, 3+2 Bento) -->
+      <!-- Block 2: Homepage Exploration & Discovery Centerpiece (连线探索 default + 5 Mainlines toggle) -->
       <div class="block">
         <div class="block-head">
           <div>
-            <h2 class="block-title">按技术方向学习（5 大核心主线）</h2>
-            <p class="block-sub">按你想掌握的 AI 与 NPU 技术方向直接进入系统路线图，与「学习路径」主线一一对应</p>
+            <h2 class="block-title">探索 CANN 知识地图</h2>
+            <p class="block-sub">首页用于发现方向与关联线索；如目标已明确，可直接进入「学习路径」按主线或周期选课</p>
           </div>
-          <button class="text-link" onclick="switchTab('paths')">查看主线与周期精品课 &gt;</button>
+          <div class="block-head-actions">
+            <div class="explore-mode-switch" id="overviewExploreSwitch">
+              <button type="button" class="explore-mode-btn active" data-mode="graph" onclick="setOverviewExploreMode('graph')">连线探索</button>
+              <button type="button" class="explore-mode-btn" data-mode="cards" onclick="setOverviewExploreMode('cards')">主线卡片</button>
+            </div>
+            <button class="text-link" onclick="switchTab('paths')">进入学习路径 &gt;</button>
+          </div>
         </div>
-        <div class="role-tray">
-          <div class="dir-grid" id="roleGrid"></div>
+
+        <div id="exploreGraphWrap">
+          <div class="explore-graph-card">
+            <div class="explore-top-bar">
+              <div class="explore-hub-pills" id="exploreHubPills"></div>
+              <span class="explore-hint">点击任意节点拉出关联线索，选中后一键生成专属路径</span>
+            </div>
+            <div class="explore-canvas" id="exploreCanvas">
+              <svg class="explore-svg" id="exploreSvg" viewBox="0 0 1000 360" preserveAspectRatio="none"></svg>
+              <div id="exploreNodesLayer"></div>
+            </div>
+            <div class="explore-trail-bar">
+              <div class="explore-trail-chain" id="exploreTrailChain"></div>
+              <div class="explore-trail-actions">
+                <button type="button" class="btn btn-outline" style="height:30px; font-size:12px;" onclick="resetExploreTrail()">重置线索</button>
+                <button type="button" class="btn btn-dark" style="height:30px; font-size:12px;" onclick="launchExploreJourney()">沿此线索生成学习路径 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="dirCardsWrap" style="display:none;">
+          <div class="role-tray">
+            <div class="dir-grid" id="roleGrid"></div>
+          </div>
         </div>
       </div>
 
@@ -2125,6 +2798,40 @@
       <div class="modal-body" id="globalSearchResults"></div>
     </div>
   </div>
+
+  
+  <!-- Right-Side Split-Screen Learning Journey Co-Creation Drawer -->
+  <div class="drawer-backdrop" id="journeyDrawerBackdrop" onclick="closeJourneyDrawer()"></div>
+  <aside class="journey-drawer" id="journeyDrawer" aria-label="CANN AI 学习路径共创副屏">
+    <div class="jd-head">
+      <div class="jd-head-left">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3.4C13.1 8.1 15.9 10.9 20.6 12C15.9 13.1 13.1 15.9 12 20.6C10.9 15.9 8.1 13.1 3.4 12C8.1 10.9 10.9 8.1 12 3.4Z" fill="url(#aiSparkleGrad)"/></svg>
+        <span class="jd-title" id="jdHeaderTitle">昇腾学习旅程共创</span>
+        <span class="jd-status-pill" id="jdStatusPill">共创中 · 可跳过已掌握阶段</span>
+      </div>
+      <div class="jd-head-right">
+        <button type="button" class="btn btn-outline" style="height:30px; font-size:12px;" id="jdSwitchTrackBtn" onclick="jumpToDrawerTrack()">在学习路径 Tab 查看</button>
+        <button type="button" class="btn btn-dark" style="height:30px; font-size:12px;" onclick="closeJourneyDrawer()">收起并返回门户</button>
+      </div>
+    </div>
+    <div class="jd-body">
+      <div class="jd-chat-col">
+        <div class="jd-context-box" id="jdContextBox"></div>
+        <div class="jd-chat-log" id="jdChatLog"></div>
+        <div class="jd-quick-chips" id="jdQuickChips"></div>
+        <form class="jd-composer" onsubmit="event.preventDefault(); submitDrawerChat();">
+          <button type="button" class="ai-upload-btn" onclick="triggerLocalRuleUpload()" title="上传项目规则文件">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </button>
+          <input type="text" id="drawerChatInput" placeholder="继续调整路径，如“跳过基础”或“压缩到 2 天”..." />
+          <button type="submit" class="ai-send-btn" style="width:30px; height:30px;" title="发送调整">
+            <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+          </button>
+        </form>
+      </div>
+      <div class="jd-canvas-col" id="jdCanvasCol"></div>
+    </div>
+  </aside>
 
   <script>
     const ICONS = {
@@ -2741,66 +3448,602 @@
       renderPeriodCourses();
     }
 
+    // ================= Project Rules Upload & Parser =================
+    const SAMPLE_PROJECT_RULES = {
+      inference_migration: {
+        name: "AGENTS.md",
+        label: "Qwen3 推理与图模式迁移规范",
+        content: `# Project Rules: Qwen3-32B Ascend Migration
+- Runtime: Python 3.10 + PyTorch 2.3 + vLLM-Ascend (no custom C++ kernels required in phase 1)
+- Target: Deploy Qwen3 inference with W8A8 quantization and dynamic shape support
+- Optimization: Enable TorchAir npugraph_ex and AutoFusion for decode latency reduction
+- Verification: Check NCHW/token tensor shapes and benchmark throughput on CANNLab`,
+        rules: ["Python 优先（无 C++）", "vLLM-Ascend + W8A8 量化", "TorchAir 图模式优化"],
+        suggestedPrompt: "结合上传的 AGENTS.md 项目规则，为我定制 Qwen3 推理部署与 TorchAir 图优化学习路径"
+      },
+      ascendc_op_repo: {
+        name: "README.md",
+        label: "Ascend C 自定义算子仓规范",
+        content: `# Custom Operator Repo (Ascend C / CMakeLists)
+- Language: C++ / Ascend C kernel programming (Vector + Cube)
+- Requirement: Implement dynamic shape Tiling with strict tail-block boundary checks
+- Quality Gate: Pass precision validation, msProf performance profiling, and CANNJudge testcases`,
+        rules: ["C++ / Ascend C 核函数", "动态 Shape Tiling 边界保护", "msProf 性能调优与评测"],
+        suggestedPrompt: "结合上传的 README.md 算子仓规范，为我定制 Ascend C 算子开发与 Tiling 调优路径"
+      }
+    };
+
+    let attachedProjectRule = null;
+
+    function parseProjectRuleText(filename, text) {
+      const low = (filename + " " + text).toLowerCase();
+      const rules = [];
+      let topicHint = "basics";
+      let noCpp = /no\s*(custom\s*)?c\+\+|无\s*c\+\+|python\s*only|python\s*优先/.test(low);
+
+      if (/pyasc|pypto/.test(low)) { rules.push("PyASC / PyPTO Python 算子"); topicHint = "pyasc"; }
+      else if (/ascend\s*c|tiling|kernel|cmake|custom_op|核函数/.test(low)) { rules.push("C++ / Ascend C 核函数与 Tiling"); topicHint = "operator"; }
+      if (/vllm|qwen|deepseek|w8a8|量化|inference|推理/.test(low)) { rules.push("大模型推理与量化部署"); if (topicHint === "basics") topicHint = "inference"; }
+      if (/torchair|npugraph|autofusion|\bge\b|图模式/.test(low)) { rules.push("TorchAir / 图编译优化"); if (topicHint === "basics") topicHint = "graph"; }
+      if (/hccl|hixl|allreduce|多卡|集群通信/.test(low)) { rules.push("HCCL / HiXL 集合通信"); if (topicHint === "basics") topicHint = "comm"; }
+      if (/sft|verl|grpo|ppo|lora|微调|训练/.test(low)) { rules.push("大模型 SFT / RL 训练"); if (topicHint === "basics") topicHint = "training"; }
+      if (/yolo|acl|atc|onnx|离线推理/.test(low)) { rules.push("ACL / ATC 离线推理"); if (topicHint === "basics") topicHint = "application"; }
+      if (/rag|知识库|agent|智能体/.test(low)) { rules.push("RAG 知识库应用"); if (topicHint === "basics") topicHint = "ai_app"; }
+      if (/rechub|deepfm|ctr|推荐/.test(low)) { rules.push("推荐系统开发"); if (topicHint === "basics") topicHint = "recommend"; }
+      if (/msprof|profiling|精度|precision|boundary|尾块/.test(low)) { rules.push("精度排查与性能调优"); }
+      if (noCpp) { rules.unshift("Python 优先（无 C++）"); }
+      if (!rules.length) { rules.push("通用昇腾 NPU 项目接入", "CANN 基础环境与迁移"); }
+      return { name: filename, rules: rules.slice(0, 4), topicHint, noCpp, rawLength: text.length };
+    }
+
+    function toggleRulePopover(e) {
+      if (e) e.stopPropagation();
+      const pop = document.getElementById("rulePopover");
+      const btn = document.getElementById("ruleUploadBtn");
+      const willOpen = !pop.classList.contains("open");
+      pop.classList.toggle("open", willOpen);
+      btn.classList.toggle("active", willOpen);
+    }
+    function closeRulePopover() {
+      const pop = document.getElementById("rulePopover");
+      const btn = document.getElementById("ruleUploadBtn");
+      if (pop) pop.classList.remove("open");
+      if (btn) btn.classList.remove("active");
+    }
+    document.addEventListener("click", closeRulePopover);
+
+    function triggerLocalRuleUpload() {
+      closeRulePopover();
+      document.getElementById("projectRuleFile").click();
+    }
+
+    async function handleProjectRuleFile(e) {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      const text = await file.text().catch(() => "");
+      const parsed = parseProjectRuleText(file.name, text);
+      attachedProjectRule = parsed;
+      renderAttachedRuleBar();
+      const input = document.getElementById("aiChatInput");
+      if (!input.value.trim()) {
+        input.value = `结合上传的 ${file.name} 项目规则，为我规划针对性的 CANN 学习路径`;
+      }
+      if (document.getElementById("journeyDrawer").classList.contains("open")) {
+        runAiMatch(`已上传项目规则 ${file.name}，请按文件里的技术栈和约束重新规划学习路径`, { sourceType: "rule", ruleData: parsed });
+      }
+    }
+
+    function applySampleRule(key) {
+      closeRulePopover();
+      const sample = SAMPLE_PROJECT_RULES[key];
+      if (!sample) return;
+      const parsed = parseProjectRuleText(sample.name, sample.content);
+      parsed.rules = sample.rules;
+      attachedProjectRule = parsed;
+      renderAttachedRuleBar();
+      const input = document.getElementById("aiChatInput");
+      input.value = sample.suggestedPrompt;
+      input.focus();
+    }
+
+    function clearAttachedRule() {
+      attachedProjectRule = null;
+      renderAttachedRuleBar();
+    }
+
+    function renderAttachedRuleBar() {
+      const bar = document.getElementById("aiRuleBar");
+      if (!bar) return;
+      if (!attachedProjectRule) {
+        bar.classList.remove("visible");
+        bar.innerHTML = "";
+        return;
+      }
+      bar.classList.add("visible");
+      bar.innerHTML = `
+        <span class="ai-rule-chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          ${attachedProjectRule.name}
+          <button type="button" onclick="clearAttachedRule()" title="移除文件">×</button>
+        </span>
+        ${attachedProjectRule.rules.map(r => `<span class="ai-rule-tag">${r}</span>`).join("")}
+      `;
+    }
+
+    // ================= Homepage Interactive Exploration Graph (连线探索) =================
+    const EXPLORE_GRAPHS = {
+      operator: {
+        label: "算子开发",
+        center: { id: "op_center", en: "OPERATOR", label: "算子开发", color: "#2563eb", x: 50, y: 52 },
+        nodes: [
+          { id: "op_principle", en: "OPERATOR PRINCIPLES", label: "理解算子原理", color: "#6366f1", x: 35, y: 24, prompt: "理解 NPU 算子原理与内存层级" },
+          { id: "op_custom", en: "CUSTOM OPERATOR DEV", label: "完成 Ascend C 算子开发", color: "#2563eb", x: 54, y: 15, large: true, prompt: "系统学习 Ascend C 自定义算子开发" },
+          { id: "op_perf", en: "OPERATOR PERFORMANCE", label: "优化算子性能", color: "#059669", x: 74, y: 26, large: true, prompt: "算子 Tiling 与 msProf 性能优化" },
+          { id: "op_pyasc", en: "PYTHON OPERATOR", label: "用 Python 写算子 (PyASC)", color: "#7c3aed", x: 24, y: 54, prompt: "不会 C++，用 PyASC / PyPTO 用 Python 写算子" },
+          { id: "op_cannbot", en: "AI CODEGEN", label: "CANNBot AI 生成算子", color: "#db2777", x: 79, y: 56, prompt: "用 CANNBot 自动生成与验证算子" },
+          { id: "op_verify", en: "OPERATOR VALIDATION", label: "验证算子正确性", color: "#0284c7", x: 34, y: 80, prompt: "算子精度排查与 CANNJudge 评测" },
+          { id: "op_framework", en: "FRAMEWORK INTEGRATION", label: "将算子接入图框架", color: "#0d9488", x: 68, y: 81, prompt: "把自定义算子接入 TorchAir 图模式" }
+        ]
+      },
+      inference: {
+        label: "大模型推理",
+        center: { id: "inf_center", en: "LLM INFERENCE", label: "大模型推理", color: "#0284c7", x: 50, y: 52 },
+        nodes: [
+          { id: "inf_qwen", en: "FIRST LLM RUN", label: "Qwen3 推理快速跑通", color: "#2563eb", x: 32, y: 23, prompt: "从零跑通 Qwen3 大模型 NPU 推理" },
+          { id: "inf_vllm", en: "SERVING ENGINE", label: "vLLM-Ascend 服务化部署", color: "#0284c7", x: 56, y: 16, large: true, prompt: "用 vLLM-Ascend 部署高吞吐推理服务" },
+          { id: "inf_quant", en: "QUANTIZATION", label: "ModelSlim W8A8 量化", color: "#059669", x: 76, y: 29, large: true, prompt: "大模型 W8A8 平滑量化与精度校准" },
+          { id: "inf_pd", en: "PD SEPARATION", label: "PD 分离与 KV Cache 池化", color: "#7c3aed", x: 24, y: 56, prompt: "推理 PD 分离与 HiXL KV Cache 传输" },
+          { id: "inf_graph", en: "GRAPH ACCEL", label: "TorchAir 与 AutoFusion 加速", color: "#ea580c", x: 78, y: 58, prompt: "开启 TorchAir 图模式与 AutoFusion 融合加速推理" },
+          { id: "inf_rag", en: "AI APPLICATION", label: "搭建 RAG 知识库问答", color: "#0d9488", x: 37, y: 82, prompt: "基于昇腾推理底座搭建 RAG 知识库应用" },
+          { id: "inf_offline", en: "OFFLINE INFERENCE", label: "ACL / ATC 视觉离线推理", color: "#dc2626", x: 67, y: 81, prompt: "YOLOv13 / CV 模型 ATC 转换与 ACL 离线推理" }
+        ]
+      },
+      training: {
+        label: "大模型训练",
+        center: { id: "trn_center", en: "LLM TRAINING", label: "大模型训练", color: "#7c3aed", x: 50, y: 52 },
+        nodes: [
+          { id: "trn_migrate", en: "PYTORCH MIGRATION", label: "3 行代码迁移 PyTorch", color: "#2563eb", x: 31, y: 24, prompt: "零门槛把 PyTorch 训练脚本迁到昇腾 NPU" },
+          { id: "trn_sft", en: "SFT PIPELINE", label: "SFT 监督微调与 FSDP", color: "#7c3aed", x: 55, y: 16, large: true, prompt: "大模型 SFT 监督微调与 FSDP 分布式训练" },
+          { id: "trn_rl", en: "RL POST-TRAINING", label: "VERL 强化学习 (PPO / GRPO)", color: "#db2777", x: 76, y: 28, large: true, prompt: "基于 VERL 框架开展 PPO / GRPO 强化学习训练" },
+          { id: "trn_hccl", en: "COLLECTIVE COMM", label: "HCCL 多卡集合通信调优", color: "#059669", x: 25, y: 56, prompt: "多机多卡 HCCL 集合通信与带宽优化" },
+          { id: "trn_swan", en: "EXPERIMENT TRACKING", label: "SwanLab 微调可视化看板", color: "#ea580c", x: 77, y: 58, prompt: "结合 SwanLab 实时监控 NPU 显存与 Loss" },
+          { id: "trn_3d", en: "3D PARALLEL", label: "MindSpeed 3D 并行加速", color: "#0284c7", x: 38, y: 82, prompt: "MindSpeed 3D 并行大规模集群训练" },
+          { id: "trn_rec", en: "RECSYS TRAINING", label: "推荐系统 DeepFM / MMoE", color: "#0d9488", x: 68, y: 81, prompt: "基于 torch-rechub 训练 CTR 精排与双塔召回" }
+        ]
+      },
+      graph: {
+        label: "图框架与通信",
+        center: { id: "gr_center", en: "GRAPH & COMM", label: "图框架与通信", color: "#0d9488", x: 50, y: 52 },
+        nodes: [
+          { id: "gr_ge", en: "GRAPH ENGINE", label: "GE 图引擎与 Ascend IR", color: "#2563eb", x: 32, y: 24, prompt: "学习 GE 图引擎与 Ascend IR 原理" },
+          { id: "gr_ta", en: "TORCHAIR", label: "TorchAir 图模式 (npugraph_ex)", color: "#0d9488", x: 56, y: 16, large: true, prompt: "掌握 TorchAir 图模式编译与动态 Shape" },
+          { id: "gr_af", en: "AUTO FUSION", label: "AutoFusion 自动算子融合", color: "#059669", x: 76, y: 29, large: true, prompt: "使用 AutoFusion 自动识别与融合子图" },
+          { id: "gr_hccl", en: "HCCL", label: "HCCL 集群集合通信", color: "#7c3aed", x: 25, y: 58, prompt: "HCCL 集合通信算法与多卡调优" },
+          { id: "gr_hixl", en: "HIXL ONE-SIDED", label: "HiXL 单边通信与内存直传", color: "#ea580c", x: 77, y: 59, prompt: "HiXL 单边通信、FabricMem 与 KV Cache 池化" },
+          { id: "gr_op", en: "CUSTOM OP", label: "自定义算子入图", color: "#0284c7", x: 50, y: 83, prompt: "把 Ascend C 自定义算子接入图框架" }
+        ]
+      }
+    };
+
+    let activeExploreHub = "operator";
+    let selectedExploreNodeIds = [];
+
+    function setOverviewExploreMode(mode) {
+      document.querySelectorAll("#overviewExploreSwitch .explore-mode-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.mode === mode);
+      });
+      document.getElementById("exploreGraphWrap").style.display = mode === "graph" ? "block" : "none";
+      document.getElementById("dirCardsWrap").style.display = mode === "cards" ? "block" : "none";
+      if (mode === "graph") renderExploreGraph();
+    }
+
+    function selectExploreHub(hubKey) {
+      activeExploreHub = hubKey;
+      selectedExploreNodeIds = [];
+      renderExploreGraph();
+    }
+
+    function toggleExploreNode(nodeId) {
+      const idx = selectedExploreNodeIds.indexOf(nodeId);
+      if (idx >= 0) selectedExploreNodeIds.splice(idx, 1);
+      else {
+        if (selectedExploreNodeIds.length >= 3) selectedExploreNodeIds.shift();
+        selectedExploreNodeIds.push(nodeId);
+      }
+      renderExploreGraph();
+    }
+
+    function resetExploreTrail() {
+      selectedExploreNodeIds = [];
+      renderExploreGraph();
+    }
+
+    function launchExploreJourney() {
+      const g = EXPLORE_GRAPHS[activeExploreHub];
+      const chosen = selectedExploreNodeIds.map(id => g.nodes.find(n => n.id === id)).filter(Boolean);
+      const trailLabels = [g.center.label, ...chosen.map(n => n.label)];
+      const query = chosen.length
+        ? `我通过连线探索选中了线索「${trailLabels.join(" → ")}」，请结合 ${chosen.map(n => n.prompt).join("；")} 为我规划学习路径`
+        : `我想系统探索「${g.center.label}」方向，请为我规划从入门到实战的学习路径`;
+      runAiMatch(query, { sourceType: "explore", exploreTrail: trailLabels });
+    }
+
+    function renderExploreGraph() {
+      const pillsEl = document.getElementById("exploreHubPills");
+      const svgEl = document.getElementById("exploreSvg");
+      const nodesEl = document.getElementById("exploreNodesLayer");
+      const trailEl = document.getElementById("exploreTrailChain");
+      if (!pillsEl || !svgEl || !nodesEl) return;
+
+      pillsEl.innerHTML = Object.entries(EXPLORE_GRAPHS).map(([k, v]) => `
+        <button type="button" class="explore-hub-pill ${k === activeExploreHub ? "active" : ""}" onclick="selectExploreHub('${k}')">${v.label}</button>
+      `).join("");
+
+      const g = EXPLORE_GRAPHS[activeExploreHub];
+      const cx = g.center.x * 10;
+      const cy = g.center.y * 3.6;
+
+      // Draw curved SVG edges from center to each surrounding node
+      svgEl.innerHTML = g.nodes.map(n => {
+        const nx = n.x * 10;
+        const ny = n.y * 3.6;
+        const mx = (cx + nx) / 2;
+        const my = (cy + ny) / 2 - (ny < cy ? 18 : -18);
+        const isActive = selectedExploreNodeIds.includes(n.id);
+        return `<path class="explore-edge ${isActive ? "active" : ""}" style="${isActive ? `stroke:${n.color};` : ""}" d="M ${cx} ${cy} Q ${mx} ${my} ${nx} ${ny}" />`;
+      }).join("");
+
+      // Render center node + surrounding nodes
+      const centerHtml = `
+        <div class="explore-node is-center" style="left:${g.center.x}%; top:${g.center.y}%; color:${g.center.color};" onclick="resetExploreTrail()" title="当前探索中心">
+          <div class="explore-node-kicker"><span class="explore-node-dot"></span>${g.center.en}</div>
+          <div class="explore-node-label">${g.center.label}</div>
+        </div>
+      `;
+      const surroundingHtml = g.nodes.map(n => {
+        const isSel = selectedExploreNodeIds.includes(n.id);
+        const order = isSel ? selectedExploreNodeIds.indexOf(n.id) + 1 : null;
+        return `
+          <button type="button" class="explore-node ${n.large ? "is-large" : ""} ${isSel ? "is-selected" : ""}"
+            style="left:${n.x}%; top:${n.y}%; color:${n.color};"
+            onclick="toggleExploreNode('${n.id}')">
+            <div class="explore-node-kicker"><span class="explore-node-dot"></span>${n.en}</div>
+            <div class="explore-node-label">${n.label}${order ? `<span class="explore-node-badge">已连 #${order}</span>` : ""}</div>
+          </button>
+        `;
+      }).join("");
+      nodesEl.innerHTML = centerHtml + surroundingHtml;
+
+      const chosen = selectedExploreNodeIds.map(id => g.nodes.find(n => n.id === id)).filter(Boolean);
+      const chips = [g.center.label, ...chosen.map(n => n.label)];
+      trailEl.innerHTML = `
+        <span style="color:var(--text-muted); font-size:12px;">当前探索线索：</span>
+        ${chips.map((lbl, i) => `${i > 0 ? '<span style="color:#94a3b8;">→</span>' : ''}<span class="explore-trail-chip">${lbl}</span>`).join("")}
+        ${!chosen.length ? '<span style="font-size:11.5px; color:var(--text-muted); margin-left:4px;">（点选上方 1~3 个关联节点串联线索，或直接生成）</span>' : ''}
+      `;
+    }
+
+    // ================= Right-Side Split-Screen Journey Co-Creation Drawer =================
+    let drawerState = {
+      active: false,
+      res: null,
+      messages: [],
+      skippedStages: new Set(),
+      aiSuggestions: [], // { stageIdx, course: {title, desc, link}, note, status: 'pending'|'adopted'|'ignored' }
+      contextType: null, // 'rule' | 'explore' | null
+      ruleData: null,
+      exploreTrail: null
+    };
+
+    function openJourneyDrawer() {
+      document.getElementById("journeyDrawerBackdrop").classList.add("open");
+      document.getElementById("journeyDrawer").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeJourneyDrawer() {
+      document.getElementById("journeyDrawerBackdrop").classList.remove("open");
+      document.getElementById("journeyDrawer").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function jumpToDrawerTrack() {
+      const tid = drawerState.res && drawerState.res.journey && drawerState.res.journey.trackId;
+      closeJourneyDrawer();
+      if (tid) {
+        activePathView = "track";
+        syncPathView();
+        selectTrack(tid);
+      }
+      switchTab("paths");
+    }
+
+    function toggleStageSkipped(sIdx) {
+      if (drawerState.skippedStages.has(sIdx)) drawerState.skippedStages.delete(sIdx);
+      else drawerState.skippedStages.add(sIdx);
+      renderDrawerCanvas();
+    }
+
+    function adoptAiSuggestion(idx) {
+      if (drawerState.aiSuggestions[idx]) {
+        drawerState.aiSuggestions[idx].status = "adopted";
+        renderDrawerCanvas();
+      }
+    }
+
+    function ignoreAiSuggestion(idx) {
+      if (drawerState.aiSuggestions[idx]) {
+        drawerState.aiSuggestions[idx].status = "ignored";
+        renderDrawerCanvas();
+      }
+    }
+
     function submitAiMatch() {
       const input = document.getElementById("aiChatInput");
       const val = input.value.trim() || input.placeholder.trim();
       if (!val) return;
       input.value = "";
-      runAiMatch(val);
+      const opts = attachedProjectRule ? { sourceType: "rule", ruleData: attachedProjectRule } : {};
+      runAiMatch(val, opts);
+    }
+
+    function submitDrawerChat() {
+      const input = document.getElementById("drawerChatInput");
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = "";
+      runAiMatch(val, { fromDrawer: true });
     }
 
     let aiRecCallbacks = [];
-    function runAiMatch(query) {
+    function runAiMatch(query, opts = {}) {
       const prev = aiHistory.map(h => h.query).join(" ");
-      const res = buildAiRecommendation(query, prev);
-      aiHistory = [{ query, res }];
-      const thread = document.getElementById("aiThread");
-      thread.classList.add("open");
-      aiRecCallbacks = res.cards.map(c => c.fn);
-      const j = res.journey;
-      const renderSkillCard = (c, side) => `
-        <a class="skill-course-card ${side}" href="${c.link}" target="_blank" rel="noopener">
-          <div class="skill-card-top">
-            <div class="skill-card-title">
-              <span>${c.title}</span>
-              <svg class="skill-link-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </div>
-            <span class="skill-online-pill">在线体验</span>
+      const ruleText = opts.ruleData ? opts.ruleData.rules.join(" ") : (drawerState.ruleData ? drawerState.ruleData.rules.join(" ") : "");
+      const res = buildAiRecommendation(query, (prev + " " + ruleText).trim());
+
+      // Check for co-creation refinement intents inside an active journey
+      const qLow = query.toLowerCase();
+      const isSkipBasics = /跳过基础|已会基础|基础.*跳过|已掌握基础/.test(qLow);
+      const isTwoDays = /压缩到\s*2\s*天|只有\s*2\s*天|两天/.test(qLow);
+      const isAddGraph = /补充.*torchair|加.*图模式|加上.*autofusion/.test(qLow);
+
+      if (!opts.fromDrawer) {
+        drawerState.messages = [];
+        drawerState.skippedStages = new Set();
+        drawerState.aiSuggestions = [];
+        drawerState.contextType = opts.sourceType || null;
+        drawerState.ruleData = opts.ruleData || null;
+        drawerState.exploreTrail = opts.exploreTrail || null;
+      }
+
+      if (opts.fromDrawer && drawerState.res && drawerState.res.journey && (isSkipBasics || isTwoDays || isAddGraph)) {
+        // Co-creation adjustment on existing journey!
+        let botMsg = "";
+        if (isSkipBasics) {
+          drawerState.skippedStages.add(0);
+          botMsg = "已为你将「01 CANN 基础知识」折叠为快速回顾，后续直接聚焦核心实战阶段。你也可以随时点击右侧阶段标签重新展开。";
+        } else if (isTwoDays) {
+          drawerState.skippedStages.add(0);
+          drawerState.aiSuggestions.push({
+            stageIdx: Math.min(1, drawerState.res.journey.stages.length - 1),
+            course: {
+              title: "2 天启航营 · 核心冲刺精选包",
+              desc: "AI 建议：压缩为 Day1 环境迁移 + Day2 核心实操演练，优先保障最小闭环跑通。",
+              link: "https://gitcode.com/cann/cann-learning-hub"
+            },
+            note: "AI 建议 · 2 天压缩方案",
+            status: "pending"
+          });
+          botMsg = "已按「2 天时间预算」为你折叠基础阶段，并在右侧画布标出 1 项「AI 建议 · 待确认」压缩方案，你可以直接点击「采纳」或「忽略」。";
+        } else if (isAddGraph) {
+          drawerState.aiSuggestions.push({
+            stageIdx: Math.max(0, drawerState.res.journey.stages.length - 2),
+            course: {
+              title: "TorchAir 图模式（npugraph_ex）与 AutoFusion",
+              desc: "AI 建议补充：开启图编译与自动算子融合，进一步压低推理/执行时延。",
+              link: "https://gitcode.com/cann/cann-learning-hub/blob/master/tutorials/TorchAir_development/01_basic_concepts/01.01_torch_compile_intro.ipynb"
+            },
+            note: "AI 建议 · 补充图优化节点",
+            status: "pending"
+          });
+          botMsg = "已在右侧学习路径中补充 1 个「TorchAir 图模式」待确认建议卡，确认后点击「采纳」即可并入当前路径。";
+        }
+        drawerState.messages.push({ role: "user", text: query }, { role: "bot", text: botMsg });
+      } else {
+        drawerState.res = res;
+        drawerState.skippedStages = new Set();
+        drawerState.aiSuggestions = [];
+        if (opts.ruleData && res.journey) {
+          // Highlight a rule-derived AI suggestion node
+          drawerState.aiSuggestions.push({
+            stageIdx: Math.min(1, res.journey.stages.length - 1),
+            course: {
+              title: `按 ${opts.ruleData.name} 定制的核验清单`,
+              desc: `重点对照：${opts.ruleData.rules.join(" · ")}`,
+              link: "https://gitcode.com/cann/cann-learning-hub"
+            },
+            note: "来自项目规则解析 · 待确认",
+            status: "pending"
+          });
+        }
+        drawerState.messages.push({ role: "user", text: query }, { role: "bot", text: res.reply });
+      }
+
+      aiHistory = [{ query, res: drawerState.res }];
+      drawerState.active = true;
+
+      // Update top-bar persistent pill
+      const pill = document.getElementById("openJourneyPill");
+      const pillText = document.getElementById("openJourneyPillText");
+      if (pill && pillText && drawerState.res && drawerState.res.journey) {
+        pill.classList.add("visible");
+        pillText.textContent = `当前路径 · ${drawerState.res.journey.goal}`;
+      }
+
+      renderDrawer();
+      openJourneyDrawer();
+    }
+
+    function renderDrawer() {
+      const res = drawerState.res;
+      if (!res) return;
+
+      document.getElementById("jdHeaderTitle").textContent = res.journey ? `昇腾学习旅程 · ${res.journey.goal}` : "CANN 技术博客与案例推荐";
+      const trackBtn = document.getElementById("jdSwitchTrackBtn");
+      trackBtn.style.display = (res.journey && res.journey.trackId) ? "inline-flex" : "none";
+
+      // Context box (Project Rules or Explore Trail)
+      const ctxBox = document.getElementById("jdContextBox");
+      if (drawerState.contextType === "rule" && drawerState.ruleData) {
+        ctxBox.classList.add("visible");
+        ctxBox.innerHTML = `
+          <div class="jd-context-head">
+            <span>已解析项目规则 · ${drawerState.ruleData.name}</span>
+            <span style="color:#64748b; font-weight:500;">本地提取</span>
           </div>
-          <div class="skill-card-desc">${c.desc || c.file || "GitCode 开源交互式 Notebook"}</div>
-        </a>
-      `;
-      const journeyHtml = j ? `
+          <div class="jd-context-list">
+            ${drawerState.ruleData.rules.map(r => `<span class="jd-context-tag">${r}</span>`).join("")}
+          </div>
+        `;
+      } else if (drawerState.contextType === "explore" && drawerState.exploreTrail) {
+        ctxBox.classList.add("visible");
+        ctxBox.innerHTML = `
+          <div class="jd-context-head"><span>来自首页连线探索</span></div>
+          <div class="jd-context-list">
+            ${drawerState.exploreTrail.map(t => `<span class="jd-context-tag">${t}</span>`).join("")}
+          </div>
+        `;
+      } else {
+        ctxBox.classList.remove("visible");
+        ctxBox.innerHTML = "";
+      }
+
+      // Chat log
+      const logEl = document.getElementById("jdChatLog");
+      logEl.innerHTML = drawerState.messages.map(m =>
+        `<div class="${m.role === "user" ? "jd-bubble-user" : "jd-bubble-bot"}">${m.text}</div>`
+      ).join("");
+      logEl.scrollTop = logEl.scrollHeight;
+
+      // Quick co-creation chips
+      const quickChips = res.journey
+        ? ["我已会基础，跳过入门", "把时间压缩到 2 天", "补充 TorchAir 图模式", ...(res.followups || []).slice(0, 2)]
+        : (res.followups || []);
+      document.getElementById("jdQuickChips").innerHTML = quickChips.map(f =>
+        `<button type="button" class="ai-prompt-chip" style="background:#fff; border:1px solid var(--border);" onclick="runAiMatch('${f}', {fromDrawer:true})">${f}</button>`
+      ).join("");
+
+      renderDrawerCanvas();
+    }
+
+    function renderDrawerCanvas() {
+      const res = drawerState.res;
+      const col = document.getElementById("jdCanvasCol");
+      if (!res || !col) return;
+
+      aiRecCallbacks = (res.cards || []).map(c => c.fn);
+      const j = res.journey;
+
+      if (!j) {
+        col.innerHTML = `
+          <div class="ai-rec-grid">
+            ${(res.cards || []).map((c, idx) => `
+              <div class="ai-rec-card" onclick="closeJourneyDrawer(); aiRecCallbacks[${idx}]()">
+                <div>
+                  <span class="role-tag">${c.tag}</span>
+                  <div style="font-size:14px; font-weight:600; margin-top:6px;">${c.title}</div>
+                  <div style="font-size:12.5px; color:var(--text-secondary); margin-top:4px;">${c.desc}</div>
+                </div>
+                <div style="font-size:12px; color:var(--link-blue); font-weight:500;">${c.go}</div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        return;
+      }
+
+      const pendingCount = drawerState.aiSuggestions.filter(s => s.status === "pending").length;
+      const skippedCount = drawerState.skippedStages.size;
+      const totalCourses = j.stages.reduce((acc, s) => acc + s.courses.length, 0);
+      document.getElementById("jdStatusPill").textContent = pendingCount
+        ? `${pendingCount} 项 AI 调整待确认`
+        : (skippedCount ? `已跳过 ${skippedCount} 个阶段 · 共创中` : "共创中 · 点击阶段可跳过");
+
+      const renderSkillCard = (c, side, suggestObj = null, suggestIdx = -1) => {
+        if (suggestObj && suggestObj.status === "ignored") return "";
+        const isPending = suggestObj && suggestObj.status === "pending";
+        const isAdopted = suggestObj && suggestObj.status === "adopted";
+        return `
+          <div class="skill-course-card ${side} ${isPending ? "is-ai-suggest" : ""}">
+            <a href="${c.link}" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
+              <div class="skill-card-top">
+                <div class="skill-card-title">
+                  <span>${c.title}</span>
+                  <svg class="skill-link-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </div>
+                <span class="skill-online-pill">${isAdopted ? "已采纳" : "在线体验"}</span>
+              </div>
+              <div class="skill-card-desc">${c.desc || c.file || "GitCode 开源交互式 Notebook"}</div>
+            </a>
+            ${isPending ? `
+              <div class="skill-suggest-bar">
+                <span class="skill-suggest-tag">${suggestObj.note}</span>
+                <div class="skill-suggest-btns">
+                  <button type="button" class="skill-suggest-btn adopt" onclick="adoptAiSuggestion(${suggestIdx})">采纳</button>
+                  <button type="button" class="skill-suggest-btn ignore" onclick="ignoreAiSuggestion(${suggestIdx})">忽略</button>
+                </div>
+              </div>
+            ` : ""}
+          </div>
+        `;
+      };
+
+      col.innerHTML = `
+        <div class="jd-canvas-meta">
+          <div class="jd-canvas-summary">共 <strong>${j.stages.length}</strong> 个阶段 · 精选 <strong>${totalCourses}</strong> 讲真实 GitCode 课程${skippedCount ? `（已折叠 ${skippedCount} 个已掌握阶段）` : ""}</div>
+        </div>
         <div class="skill-persona">
           <div class="skill-chip"><span class="k">角色</span><span class="v">${j.role}</span></div>
           <div class="skill-chip"><span class="k">目标</span><span class="v">${j.goal}</span></div>
           <div class="skill-chip"><span class="k">技术水平</span><span class="v">${j.level}</span></div>
         </div>
         <div class="skill-journey">
-          ${j.stages.map((st, sIdx) => `
-            <section class="skill-stage">
-              <div class="skill-stage-label-wrap">
-                <span class="skill-stage-label">
-                  ${st.label}
-                  ${st.total > st.courses.length ? `<span class="skill-stage-sub">精选 ${st.courses.length}/${st.total} 讲</span>` : ""}
-                </span>
-              </div>
-              <div class="skill-stage-steps">
-                ${st.courses.map((c, idx) => {
-                  const stepNum = idx + 1;
-                  const side = stepNum % 2 === 1 ? "left" : "right";
-                  const cardHtml = renderSkillCard(c, side);
-                  return `
-                    <div class="skill-step">
-                      <div class="skill-step-col skill-col-left">${side === "left" ? cardHtml : ""}</div>
-                      <div class="skill-step-marker"><span>${stepNum}</span></div>
-                      <div class="skill-step-col skill-col-right">${side === "right" ? cardHtml : ""}</div>
-                    </div>
-                  `;
-                }).join("")}
-              </div>
-            </section>
-          `).join("")}
+          ${j.stages.map((st, sIdx) => {
+            const isSkipped = drawerState.skippedStages.has(sIdx);
+            const stageSuggestions = drawerState.aiSuggestions
+              .map((s, i) => ({ s, i }))
+              .filter(x => x.s.stageIdx === sIdx && x.s.status !== "ignored");
+            const combined = [
+              ...st.courses.map(c => ({ c, s: null, i: -1 })),
+              ...stageSuggestions.map(x => ({ c: x.s.course, s: x.s, i: x.i }))
+            ];
+            return `
+              <section class="skill-stage ${isSkipped ? "is-skipped" : ""}">
+                <div class="skill-stage-label-wrap">
+                  <span class="skill-stage-label">
+                    ${st.label}
+                    ${st.total > st.courses.length ? `<span class="skill-stage-sub">精选 ${st.courses.length}/${st.total} 讲</span>` : ""}
+                    <button type="button" class="skill-stage-toggle" onclick="toggleStageSkipped(${sIdx})">${isSkipped ? "已跳过 · 展开" : "已掌握 · 跳过"}</button>
+                  </span>
+                </div>
+                <div class="skill-stage-steps">
+                  ${combined.map((item, idx) => {
+                    const stepNum = idx + 1;
+                    const side = stepNum % 2 === 1 ? "left" : "right";
+                    const cardHtml = renderSkillCard(item.c, side, item.s, item.i);
+                    return `
+                      <div class="skill-step">
+                        <div class="skill-step-col skill-col-left">${side === "left" ? cardHtml : ""}</div>
+                        <div class="skill-step-marker"><span>${stepNum}</span></div>
+                        <div class="skill-step-col skill-col-right">${side === "right" ? cardHtml : ""}</div>
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+              </section>
+            `;
+          }).join("")}
           <div class="skill-cert">
             <div class="skill-cert-icon"><img src="assets/journey-cert.png" alt="证书" /></div>
             <div>
@@ -2809,45 +4052,23 @@
             </div>
           </div>
         </div>
-      ` : "";
-
-      thread.innerHTML = `
-        <div class="ai-msg-user">${query}</div>
-        <div class="ai-msg-bot">
-          <div class="ai-bot-head">
-            <span class="ai-bot-badge">
-              <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1-1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-              CANN AI 学习路径规划（11 大方向 · 实时目录）
-            </span>
-            <button type="button" class="text-link" style="font-size:11.5px;" onclick="clearAiMatch()">收起对话</button>
-          </div>
-          <p class="ai-bot-text">${res.reply}</p>
-          ${journeyHtml}
-          <div class="ai-rec-grid">
-            ${res.cards.map((c, idx) => `
-              <div class="ai-rec-card" onclick="aiRecCallbacks[${idx}]()">
-                <div>
-                  <span class="role-tag">${c.tag}</span>
-                  <div style="font-size:13.5px; font-weight:600; margin-top:6px;">${c.title}</div>
-                  <div style="font-size:12px; color:var(--text-secondary); margin-top:3px;">${c.desc}</div>
-                </div>
-                <div style="font-size:12px; color:var(--link-blue); font-weight:500;">${c.go}</div>
+        <div class="ai-rec-grid" style="margin-top:16px;">
+          ${(res.cards || []).map((c, idx) => `
+            <div class="ai-rec-card" onclick="closeJourneyDrawer(); aiRecCallbacks[${idx}]()">
+              <div>
+                <span class="role-tag">${c.tag}</span>
+                <div style="font-size:13.5px; font-weight:600; margin-top:6px;">${c.title}</div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-top:3px;">${c.desc}</div>
               </div>
-            `).join("")}
-          </div>
-          <div class="ai-followups">
-            <span style="font-size:11.5px; color:var(--text-muted);">继续追问：</span>
-            ${res.followups.map(f => `<button type="button" class="ai-prompt-chip" style="background:#fff;" onclick="runAiMatch('${f}')">${f}</button>`).join("")}
-          </div>
+              <div style="font-size:12px; color:var(--link-blue); font-weight:500;">${c.go}</div>
+            </div>
+          `).join("")}
         </div>
       `;
     }
 
     function clearAiMatch() {
-      aiHistory = [];
-      const thread = document.getElementById("aiThread");
-      thread.classList.remove("open");
-      thread.innerHTML = "";
+      closeJourneyDrawer();
     }
 
     function enterRole(tab, trackId) {
@@ -3136,11 +4357,12 @@
     document.getElementById("blogSearchInput").addEventListener("input", renderBlogs);
     document.addEventListener("keydown", e => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openSearchModal(); }
-      else if (e.key === "Escape") { closeSearchModal(); closePrereqModal(); }
+      else if (e.key === "Escape") { closeSearchModal(); closePrereqModal(); closeJourneyDrawer(); closeRulePopover(); }
     });
 
     // Init
     renderOverview();
+    renderExploreGraph();
     renderWorkflow();
     renderPaths();
     renderPeriodCourses();
