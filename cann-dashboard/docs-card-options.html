@@ -536,21 +536,25 @@
         </section>`;
     }
 
-    function renderStandardCard(cat) {
+    function renderStandardCard(cat, spanClass = 'lg:col-span-2', isWide = false) {
       const acc = ACCENT_MAP[cat.accent] || ACCENT_MAP.slate;
       const items = cat.items || [];
-      const COLLAPSE_LIMIT = 5;
+      const COLLAPSE_LIMIT = isWide ? 6 : 5;
       const hasOverflow = items.length > COLLAPSE_LIMIT;
 
       const rightEl = cat.badge
         ? `<span class="text-[11px] font-mono-code ${acc.soft} px-2 py-0.5 rounded">${escapeHtml(cat.badge)}</span>`
         : (cat.subtitle ? `<span class="text-xs text-slate-400">${escapeHtml(cat.subtitle)}</span>` : '');
 
+      const listLayoutClass = isWide
+        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5'
+        : 'space-y-1';
+
       const listHtml = items.map((item, idx) => {
         const extraClass = hasOverflow && idx >= COLLAPSE_LIMIT ? ' extra-item hidden' : '';
         return `
           <li class="doc-item${extraClass}" data-keywords="${escapeHtml(item.keywords || item.title)}">
-            <a href="${escapeHtml(item.href || '#')}" class="doc-link flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium text-slate-700">
+            <a href="${escapeHtml(item.href || '#')}" class="doc-link ${isWide ? 'bg-[#F5F7FA] px-3.5 py-2.5' : 'px-3 py-2'} flex items-center justify-between rounded-xl text-sm font-medium text-slate-700">
               <span>${escapeHtml(item.title)}</span>
               <span class="link-arrow text-[#0052D9] text-xs">→</span>
             </a>
@@ -566,7 +570,7 @@
         : '';
 
       return `
-        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between">
+        <section class="doc-category bento-card rounded-2xl p-6 flex flex-col justify-between ${spanClass}">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center gap-2.5">
@@ -575,7 +579,7 @@
               </div>
               ${rightEl}
             </div>
-            <ul class="space-y-1">${listHtml}</ul>
+            <ul class="${listLayoutClass}">${listHtml}</ul>
             ${expandBtn}
           </div>
           ${footerHtml}
@@ -624,8 +628,24 @@
       }
 
       if (standard.length > 0) {
-        const sCols = standard.length === 1 ? 'lg:grid-cols-1' : (standard.length === 2 ? 'md:grid-cols-2 lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3');
-        html += `<div class="grid grid-cols-1 ${sCols} gap-6">${standard.map(renderStandardCard).join('')}</div>`;
+        const n = standard.length;
+        const standardHtml = standard.map((cat, idx) => {
+          let spanClass = 'lg:col-span-2';
+          let isWide = false;
+          if (n === 1) {
+            spanClass = 'lg:col-span-6';
+            isWide = true;
+          } else if (n === 2 || n === 4) {
+            spanClass = 'lg:col-span-3';
+          } else if (n % 3 === 1 && idx === n - 1) {
+            spanClass = 'lg:col-span-6';
+            isWide = true;
+          } else if (n % 3 === 2 && idx >= n - 2) {
+            spanClass = 'lg:col-span-3';
+          }
+          return renderStandardCard(cat, spanClass, isWide);
+        }).join('');
+        html += `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">${standardHtml}</div>`;
       }
 
       strips.forEach(cat => {
