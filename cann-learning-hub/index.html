@@ -3878,6 +3878,12 @@
       renderExploreGraph(true);
     }
 
+    function canExpandExploreNode(nodeId) {
+      const n = exploreNodeMap[nodeId];
+      if (!n || !n.related || !n.related.length) return false;
+      return n.related.some(cid => cid !== nodeId && !exploreState.selectedIds.includes(cid));
+    }
+
     function onExploreNodeEnter(nodeId) {
       clearTimeout(exploreState.dwellTimer);
       const node = exploreNodeMap[nodeId];
@@ -3889,31 +3895,43 @@
           exploreState.dwellTargetId = null;
           return;
         }
-        // Target dwell (680ms) -> auto-connect activeSrc -> nodeId and advance focusId to nodeId!
+        // Target dwell (680ms) -> auto-connect activeSrc -> nodeId; only glide to center if nodeId can expand further
         exploreState.dwellTargetId = nodeId;
         exploreState.dwellMs = DWELL_TARGET_MS;
         exploreState.dwellTimer = setTimeout(() => {
           if (exploreState.dwellTargetId !== nodeId || exploreState.sourceId !== activeSrc) return;
           addExploreConnection(activeSrc, nodeId);
-          const hasRelated = (node.related || []).length > 0;
-          exploreState.sourceId = hasRelated ? nodeId : null;
-          exploreState.focusId = nodeId;
+          const canExpand = canExpandExploreNode(nodeId);
+          if (canExpand) {
+            exploreState.focusId = nodeId;
+            exploreState.sourceId = nodeId;
+          } else {
+            // Terminal / leaf node: stay in place on the right arc, do not shift layout
+            exploreState.sourceId = null;
+          }
           exploreState.dwellTargetId = null;
-          renderExploreGraph(true);
+          renderExploreGraph(canExpand);
         }, DWELL_TARGET_MS);
         renderExploreGraph(false);
       } else {
+        // If already focused on a parent and hovering a terminal leaf on the right, do not shift it to center
+        if (exploreState.focusId && !canExpandExploreNode(nodeId)) {
+          exploreState.dwellTargetId = null;
+          return;
+        }
         // Source dwell (280ms) -> focus nodeId at (50, 50), hide unrelated primaries, reveal nodeId.related on right!
         exploreState.dwellTargetId = nodeId;
         exploreState.dwellMs = DWELL_SOURCE_MS;
         exploreState.dwellTimer = setTimeout(() => {
           if (exploreState.dwellTargetId !== nodeId || exploreState.sourceId) return;
-          const hasRelated = (node.related || []).length > 0;
-          exploreState.sourceId = hasRelated ? nodeId : null;
-          exploreState.focusId = nodeId;
+          const canExpand = canExpandExploreNode(nodeId);
+          if (canExpand) {
+            exploreState.focusId = nodeId;
+            exploreState.sourceId = nodeId;
+          }
           if (!exploreState.selectedIds.includes(nodeId)) exploreState.selectedIds.push(nodeId);
           exploreState.dwellTargetId = null;
-          renderExploreGraph(true);
+          renderExploreGraph(canExpand);
         }, DWELL_SOURCE_MS);
         renderExploreGraph(false);
       }
@@ -3937,13 +3955,17 @@
     function onExploreNodeUp(e, nodeId) {
       if (exploreState.draggingFromId && exploreState.dragMoved && exploreState.draggingFromId !== nodeId) {
         addExploreConnection(exploreState.draggingFromId, nodeId);
-        const node = exploreNodeMap[nodeId];
-        exploreState.sourceId = (node && (node.related || []).length > 0) ? nodeId : null;
-        exploreState.focusId = nodeId;
+        const canExpand = canExpandExploreNode(nodeId);
+        if (canExpand) {
+          exploreState.focusId = nodeId;
+          exploreState.sourceId = nodeId;
+        } else {
+          exploreState.sourceId = null;
+        }
         exploreState.draggingFromId = null;
         exploreState.dragStartPt = null;
         exploreState.dragMoved = false;
-        renderExploreGraph(true);
+        renderExploreGraph(canExpand);
         return;
       }
       exploreState.draggingFromId = null;
@@ -3957,24 +3979,34 @@
       const node = exploreNodeMap[nodeId];
       if (!node) return;
       const idx = exploreState.selectedIds.indexOf(nodeId);
-      if (idx >= 0 && exploreState.focusId === nodeId) {
-        // Clicking the currently focused/selected node steps back / deselects it
+      if (idx >= 0 && (exploreState.focusId === nodeId || !canExpandExploreNode(nodeId))) {
+        // Clicking the currently focused node or an already-connected terminal leaf deselects it
         exploreState.edges = exploreState.edges.filter(e => e.from !== nodeId && e.to !== nodeId);
         exploreState.selectedIds = exploreState.selectedIds.filter(id => id !== nodeId);
-        const prev = exploreState.selectedIds[exploreState.selectedIds.length - 1] || null;
-        exploreState.focusId = prev;
-        exploreState.sourceId = prev;
+        if (exploreState.focusId === nodeId) {
+          const prev = exploreState.selectedIds[exploreState.selectedIds.length - 1] || null;
+          exploreState.focusId = prev;
+          exploreState.sourceId = prev && canExpandExploreNode(prev) ? prev : null;
+        } else {
+          exploreState.sourceId = exploreState.focusId && canExpandExploreNode(exploreState.focusId) ? exploreState.focusId : null;
+        }
+        renderExploreGraph(true);
       } else {
-        const anchor = exploreState.sourceId || exploreState.selectedIds[exploreState.selectedIds.length - 1];
+        const anchor = exploreState.sourceId || exploreState.focusId || exploreState.selectedIds[exploreState.selectedIds.length - 1];
         if (anchor && anchor !== nodeId) {
           addExploreConnection(anchor, nodeId);
         } else if (!exploreState.selectedIds.includes(nodeId)) {
           exploreState.selectedIds.push(nodeId);
         }
-        exploreState.focusId = nodeId;
-        exploreState.sourceId = (node.related || []).length > 0 ? nodeId : null;
+        const canExpand = canExpandExploreNode(nodeId);
+        if (canExpand) {
+          exploreState.focusId = nodeId;
+          exploreState.sourceId = nodeId;
+        } else {
+          exploreState.sourceId = null;
+        }
+        renderExploreGraph(canExpand);
       }
-      renderExploreGraph(true);
     }
 
     function resetExploreTrail() {
@@ -4074,17 +4106,19 @@
         visibleSet.add(m);
         posMap.set(m, [50, 50]);
 
-        // Connected/selected history nodes move to the left arc CC()
-        const leftNodes = exploreState.selectedIds.filter(id => id !== m);
+        // Focused node's recommended related nodes fan out on the right arc SC()
+        const focusNode = exploreNodeMap[m];
+        const rel = (focusNode && focusNode.related) ? focusNode.related : [];
+        const focusRelSet = new Set(rel);
+
+        // Connected/selected history nodes (excluding current focus and its right-arc children) move to the left arc CC()
+        const leftNodes = exploreState.selectedIds.filter(id => id !== m && !focusRelSet.has(id));
         leftNodes.forEach((id, idx) => {
           visibleSet.add(id);
           posMap.set(id, exploreLeftArc(idx, leftNodes.length));
         });
 
-        // Focused node's recommended related nodes fan out on the right arc SC()
-        const focusNode = exploreNodeMap[m];
-        const rel = (focusNode && focusNode.related) ? focusNode.related : [];
-        const rightNodes = rel.filter(id => !posMap.has(id));
+        const rightNodes = rel.filter(id => id !== m && !posMap.has(id));
         rightNodes.forEach((id, idx) => {
           visibleSet.add(id);
           posMap.set(id, exploreRightArc(idx, rightNodes.length));
