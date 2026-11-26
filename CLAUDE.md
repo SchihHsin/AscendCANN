@@ -867,3 +867,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
   - `gitcode-production-2026-11-26/`：现网 README、根目录列表、100 条目录树样例、1440×1200 首屏截图
   - tag `pre-gitcode-redesign-2026-11-26` 固定旧版代码状态；commit `ee1f5311` 已 push
   - 旧版在线地址：https://schihhsin.github.io/AscendCANN/cann-learning-hub/reference/previous-redesign-2026-11-26/
+- 新建 `cann-learning-hub/index-v2.html` 作为无 AI 版副本（后续修改在此）：移除 AI 输入框与规则上传、连线探索、AI 生成学习路径、我的定制路径、旅程抽屉；保留总览/自主学习/高校教学/技术博客。commit `fda76053`
