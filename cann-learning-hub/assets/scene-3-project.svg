@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f7f9fc"/>
+      <stop offset="100%" stop-color="#f1f4fa"/>
+    </linearGradient>
+    <linearGradient id="desk" x1="120" y1="305" x2="710" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0d4b3"/>
+      <stop offset="100%" stop-color="#dfb88e"/>
+    </linearGradient>
+    <linearGradient id="sweater" x1="170" y1="205" x2="320" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4e5888"/>
+      <stop offset="100%" stop-color="#353d66"/>
+    </linearGradient>
+    <linearGradient id="dropGlow" x1="420" y1="120" x2="640" y2="275" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.14"/>
+    </linearGradient>
+    <filter id="softShadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1e293b" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bg)"/>
+
+  <!-- Chair back -->
+  <path d="M136 220 C136 200 152 190 174 190 L215 190 C226 190 234 198 234 210 L240 375 L155 375 Z" fill="#8b9ab0"/>
+  <path d="M144 222 C144 206 156 198 174 198 L210 198 L216 375 L155 375 Z" fill="#9ba9be"/>
+
+  <!-- Desk surface -->
+  <polygon points="88,332 652,306 728,392 142,418" fill="url(#desk)"/>
+  <polygon points="142,418 728,392 728,404 142,430" fill="#c99c72"/>
+
+  <!-- Coffee mug on left -->
+  <ellipse cx="145" cy="346" rx="18" ry="6" fill="#d3a87f" opacity="0.5"/>
+  <path d="M128 314 L162 314 L159 345 C159 349 152 352 145 352 C138 352 131 349 131 345 Z" fill="#7c8ea6"/>
+  <ellipse cx="145" cy="314" rx="17" ry="5" fill="#5e6f87"/>
+  <ellipse cx="145" cy="314.5" rx="13" ry="3.2" fill="#573a29"/>
+  <path d="M161 321 C170 321 171 337 160 338" stroke="#7c8ea6" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Character (Software Engineer) -->
+  <!-- Torso / sweater -->
+  <path d="M210 218 C178 228 164 268 168 345 L302 345 L296 250 C292 228 274 214 252 212 Z" fill="url(#sweater)"/>
+  <!-- Collar -->
+  <path d="M236 210 L256 210 L254 226 L236 226 Z" fill="#e8edf8"/>
+  <!-- Neck -->
+  <path d="M238 188 L258 190 L256 214 L236 212 Z" fill="#e2a680"/>
+  <!-- Head & Hair -->
+  <path d="M222 144 C222 114 246 98 272 104 C294 110 302 128 298 152 C294 176 280 194 256 194 C234 194 222 174 222 144 Z" fill="#f0ba94"/>
+  <!-- Hair back/top -->
+  <path d="M215 152 C210 120 228 96 260 94 C286 92 306 108 304 134 C296 122 284 116 266 118 C248 120 236 130 232 148 C226 150 220 156 215 152 Z" fill="#2a2d43"/>
+  <!-- Ear -->
+  <circle cx="225" cy="154" r="7.5" fill="#eab08a"/>
+  <!-- Glasses & Friendly face -->
+  <circle cx="261" cy="148" r="10" stroke="#313954" stroke-width="2.2" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="285" cy="147" r="9.5" stroke="#313954" stroke-width="2.2" fill="#ffffff" fill-opacity="0.22"/>
+  <path d="M271 148 L275 148" stroke="#313954" stroke-width="2.2"/>
+  <circle cx="263" cy="148" r="2.3" fill="#23283c"/>
+  <circle cx="286" cy="147" r="2.3" fill="#23283c"/>
+  <path d="M254 135 C258 132 264 132 268 134" stroke="#2a2d43" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M279 134 C283 132 288 132 292 134" stroke="#2a2d43" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M266 168 C272 173 280 172 285 166" stroke="#b96d53" stroke-width="2.4" stroke-linecap="round"/>
+  <ellipse cx="252" cy="160" rx="6" ry="3.5" fill="#f08e7c" opacity="0.35"/>
+
+  <!-- Left arm resting / keyboard -->
+  <path d="M188 258 C184 294 202 322 246 326 L306 328 L306 306 L230 296 L220 256 Z" fill="#46507d"/>
+  <!-- Right arm reaching forward to drag -->
+  <path d="M278 242 C296 266 328 280 364 272 L366 294 C320 304 282 292 264 264 Z" fill="#525d8f"/>
+  <path d="M358 272 C372 268 386 273 388 282 C389 289 376 296 362 293 Z" fill="#f0ba94"/>
+  <!-- Left hand -->
+  <path d="M300 308 C316 306 330 314 330 323 C330 330 314 332 300 328 Z" fill="#f0ba94"/>
+
+  <!-- Laptop & Monitor on Desk -->
+  <!-- Main Monitor / Web App Screen -->
+  <g filter="url(#softShadow)">
+    <rect x="434" y="96" width="270" height="196" rx="14" fill="#2a3147"/>
+    <rect x="444" y="106" width="250" height="172" rx="8" fill="#ffffff"/>
+    <!-- Stand -->
+    <path d="M554 292 L584 292 L592 322 L546 322 Z" fill="#8f9db3"/>
+    <rect x="526" y="318" width="86" height="8" rx="4" fill="#77859b"/>
+
+    <!-- Web app top bar -->
+    <rect x="444" y="106" width="250" height="22" rx="8" fill="#f1f5f9"/>
+    <circle cx="458" cy="117" r="3.5" fill="#f87171"/>
+    <circle cx="470" cy="117" r="3.5" fill="#fbbf24"/>
+    <circle cx="482" cy="117" r="3.5" fill="#34d399"/>
+
+    <!-- Drop Zone inside screen -->
+    <rect x="458" y="138" width="110" height="126" rx="10" fill="url(#dropGlow)" stroke="#5b5bd6" stroke-width="2" stroke-dasharray="6 5"/>
+    <circle cx="513" cy="188" r="20" fill="#5b5bd6" fill-opacity="0.16"/>
+    <path d="M513 178 L513 198 M503 188 L523 188" stroke="#5b5bd6" stroke-width="3" stroke-linecap="round"/>
+    <rect x="478" y="220" width="70" height="7" rx="3.5" fill="#94a3b8" opacity="0.6"/>
+    <rect x="488" y="234" width="50" height="6" rx="3" fill="#cbd5e1"/>
+
+    <!-- Generated Learning Path Checklist on right side of screen -->
+    <rect x="580" y="138" width="102" height="28" rx="7" fill="#eef2ff"/>
+    <circle cx="594" cy="152" r="6" fill="#39b982"/>
+    <path d="M591 152 L593.5 154.5 L597.5 150" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="606" y="147" width="64" height="5" rx="2.5" fill="#4f46e5"/>
+    <rect x="606" y="156" width="44" height="4" rx="2" fill="#94a3b8"/>
+
+    <rect x="580" y="174" width="102" height="28" rx="7" fill="#ecfeff"/>
+    <circle cx="594" cy="188" r="6" fill="#28a8d8"/>
+    <rect x="606" y="183" width="60" height="5" rx="2.5" fill="#0284c7"/>
+    <rect x="606" y="192" width="48" height="4" rx="2" fill="#94a3b8"/>
+
+    <rect x="580" y="210" width="102" height="28" rx="7" fill="#f5f3ff"/>
+    <circle cx="594" cy="224" r="6" fill="#5b5bd6"/>
+    <rect x="606" y="219" width="66" height="5" rx="2.5" fill="#5b5bd6"/>
+    <rect x="606" y="228" width="40" height="4" rx="2" fill="#94a3b8"/>
+
+    <rect x="580" y="246" width="102" height="18" rx="6" fill="#22262f"/>
+    <rect x="604" y="253" width="54" height="4.5" rx="2.2" fill="#ffffff" opacity="0.85"/>
+  </g>
+
+  <!-- Dragged Project Rule Files flying into Drop Zone -->
+  <path d="M352 210 C388 164 432 154 486 178" stroke="#38bdf8" stroke-width="3.2" stroke-dasharray="6 6" stroke-linecap="round"/>
+
+  <!-- Back file card -->
+  <g transform="rotate(-10 344 198)" filter="url(#softShadow)">
+    <rect x="314" y="152" width="64" height="80" rx="8" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="325" y="168" width="32" height="5" rx="2.5" fill="#0284c7"/>
+    <rect x="325" y="180" width="42" height="4" rx="2" fill="#7dd3fc"/>
+    <rect x="325" y="190" width="36" height="4" rx="2" fill="#7dd3fc"/>
+    <rect x="325" y="200" width="40" height="4" rx="2" fill="#7dd3fc"/>
+  </g>
+
+  <!-- Front folder + file card -->
+  <g transform="rotate(-3 398 186)" filter="url(#softShadow)">
+    <rect x="364" y="142" width="74" height="88" rx="9" fill="#ffffff" stroke="#5b5bd6" stroke-width="2"/>
+    <rect x="376" y="156" width="28" height="12" rx="6" fill="#eef2ff"/>
+    <rect x="382" y="160" width="16" height="4" rx="2" fill="#5b5bd6"/>
+    <rect x="376" y="176" width="50" height="5" rx="2.5" fill="#334155"/>
+    <rect x="376" y="188" width="44" height="4.5" rx="2.2" fill="#94a3b8"/>
+    <rect x="376" y="199" width="48" height="4.5" rx="2.2" fill="#94a3b8"/>
+    <rect x="376" y="210" width="32" height="4.5" rx="2.2" fill="#39b982"/>
+  </g>
+
+  <!-- Mouse cursor dragging the card -->
+  <path d="M432 214 L432 239 L439 233 L445 244 L450 241 L444 230 L452 229 Z" fill="#1e293b" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+</svg>
