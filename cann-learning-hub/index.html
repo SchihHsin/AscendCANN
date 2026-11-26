@@ -1697,6 +1697,87 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    .jd-history-select {
+      height: 30px;
+      max-width: 210px;
+      padding: 0 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-btn);
+      background: #f8fafc;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .saved-paths-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .saved-path-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+    }
+    .saved-path-card:hover {
+      border-color: #c7d2fe;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+      transform: translateY(-2px);
+    }
+    .saved-path-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .saved-source-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+    .saved-path-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .saved-path-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    .saved-path-meta {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .saved-path-actions {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .saved-empty-state {
+      background: #ffffff;
+      border: 1px dashed var(--border-btn);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+    @media (max-width: 960px) {
+      .saved-paths-grid { grid-template-columns: 1fr; }
+    }
 
     /* ================= Project Rule Upload (+ Popover & Attached Chip) ================= */
     .ai-upload-wrap {
@@ -2800,6 +2881,7 @@
         <div class="view-switch" id="pathViewSwitch">
           <button class="vs-btn active" data-view="track">按方向主线（5 条）</button>
           <button class="vs-btn" data-view="period">按周期精品课（2天 / 1周 / 2周 / 4周 / 常态）</button>
+          <button class="vs-btn" data-view="saved">我的定制路径 <span class="tab-badge" id="savedPathBadge">0</span></button>
         </div>
       </div>
 
@@ -2817,6 +2899,10 @@
         </div>
         <div class="meta-strip" id="periodMetaStrip"></div>
         <div class="stage-list" id="periodStageList"></div>
+      </div>
+
+      <div id="savedViewWrap" style="display:none;">
+        <div id="savedPathsContainer"></div>
       </div>
     </div>
 
@@ -2977,6 +3063,8 @@
         <span class="jd-status-pill" id="jdStatusPill">共创中 · 可跳过已掌握阶段</span>
       </div>
       <div class="jd-head-right">
+        <select class="jd-history-select" id="jdHistorySelect" onchange="loadSavedJourney(this.value)" title="切换已保存的学习路径" style="display:none;"></select>
+        <button type="button" class="btn btn-outline" style="height:30px; font-size:12px;" id="jdExportBtn" onclick="exportJourneyMarkdown()">导出课表</button>
         <button type="button" class="btn btn-outline" style="height:30px; font-size:12px;" id="jdSwitchTrackBtn" onclick="jumpToDrawerTrack()">在学习路径 Tab 查看</button>
         <button type="button" class="btn btn-dark" style="height:30px; font-size:12px;" onclick="closeJourneyDrawer()">收起并返回门户</button>
       </div>
@@ -4323,10 +4411,204 @@
       aiSuggestions: [], // { stageIdx, course: {title, desc, link}, note, status: 'pending'|'adopted'|'ignored' }
       contextType: null, // 'rule' | 'explore' | null
       ruleData: null,
-      exploreTrail: null
+      exploreTrail: null,
+      journeyId: null
     };
 
+    const SAVED_JOURNEYS_KEY = "cann_saved_journeys_v1";
+    let savedJourneys = [];
+    try {
+      const rawSaved = localStorage.getItem(SAVED_JOURNEYS_KEY);
+      if (rawSaved) savedJourneys = JSON.parse(rawSaved) || [];
+    } catch (e) { savedJourneys = []; }
+
+    function writeSavedJourneys() {
+      try { localStorage.setItem(SAVED_JOURNEYS_KEY, JSON.stringify(savedJourneys.slice(0, 12))); } catch (e) {}
+    }
+
+    function getJourneySourceLabel(ctxType, ruleData) {
+      if (ctxType === "rule" && ruleData) return `来自 ${ruleData.name}`;
+      if (ctxType === "explore") return "来自连线探索";
+      return "来自 AI 对话";
+    }
+
+    function persistCurrentJourney() {
+      if (!drawerState.res || !drawerState.res.journey) return;
+      const j = drawerState.res.journey;
+      const id = drawerState.journeyId || ("j_" + Date.now());
+      drawerState.journeyId = id;
+      const record = {
+        id,
+        goal: j.goal,
+        level: j.level || "Python",
+        role: j.role || "开发者",
+        sourceLabel: getJourneySourceLabel(drawerState.contextType, drawerState.ruleData),
+        query: (aiHistory[0] && aiHistory[0].query) || j.goal,
+        updatedAt: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
+        res: { reply: drawerState.res.reply, journey: j, followups: drawerState.res.followups || [] },
+        messages: drawerState.messages.slice(-16),
+        skippedStages: Array.from(drawerState.skippedStages),
+        aiSuggestions: drawerState.aiSuggestions,
+        contextType: drawerState.contextType,
+        ruleData: drawerState.ruleData,
+        exploreTrail: drawerState.exploreTrail
+      };
+      const idx = savedJourneys.findIndex(x => x.id === id);
+      if (idx >= 0) savedJourneys.splice(idx, 1);
+      savedJourneys.unshift(record);
+      savedJourneys = savedJourneys.slice(0, 12);
+      writeSavedJourneys();
+      syncTopJourneyPill();
+      renderSavedPathsTab();
+    }
+
+    function syncTopJourneyPill() {
+      const pill = document.getElementById("openJourneyPill");
+      const pillText = document.getElementById("openJourneyPillText");
+      const badge = document.getElementById("savedPathBadge");
+      if (badge) badge.textContent = String(savedJourneys.length);
+
+      if (!pill || !pillText) return;
+      if (drawerState.res && drawerState.res.journey) {
+        pill.classList.add("visible");
+        pillText.textContent = savedJourneys.length > 1
+          ? `我的路径 · ${savedJourneys.length}`
+          : `当前路径 · ${drawerState.res.journey.goal}`;
+      } else if (savedJourneys.length > 0) {
+        pill.classList.add("visible");
+        pillText.textContent = `我的路径 · ${savedJourneys.length}`;
+      } else {
+        pill.classList.remove("visible");
+      }
+      renderDrawerHistorySelect();
+    }
+
+    function renderDrawerHistorySelect() {
+      const sel = document.getElementById("jdHistorySelect");
+      if (!sel) return;
+      if (!savedJourneys.length) {
+        sel.style.display = "none";
+        return;
+      }
+      sel.style.display = "inline-block";
+      sel.innerHTML = savedJourneys.map(item =>
+        `<option value="${item.id}" ${item.id === drawerState.journeyId ? "selected" : ""}>${item.goal}（${item.sourceLabel}）</option>`
+      ).join("");
+    }
+
+    function loadSavedJourney(id) {
+      const rec = savedJourneys.find(x => x.id === id);
+      if (!rec) return;
+      drawerState.journeyId = rec.id;
+      drawerState.res = rec.res;
+      drawerState.messages = rec.messages || [];
+      drawerState.skippedStages = new Set(rec.skippedStages || []);
+      drawerState.aiSuggestions = rec.aiSuggestions || [];
+      drawerState.contextType = rec.contextType || null;
+      drawerState.ruleData = rec.ruleData || null;
+      drawerState.exploreTrail = rec.exploreTrail || null;
+      drawerState.active = true;
+      aiHistory = [{ query: rec.query || rec.goal, res: rec.res }];
+      syncTopJourneyPill();
+      renderDrawer();
+      openJourneyDrawer();
+    }
+
+    function deleteSavedJourney(id, e) {
+      if (e) e.stopPropagation();
+      savedJourneys = savedJourneys.filter(x => x.id !== id);
+      writeSavedJourneys();
+      if (drawerState.journeyId === id) {
+        drawerState.journeyId = savedJourneys[0] ? savedJourneys[0].id : null;
+        if (savedJourneys[0]) loadSavedJourney(savedJourneys[0].id);
+        else {
+          drawerState.res = null;
+          drawerState.active = false;
+        }
+      }
+      syncTopJourneyPill();
+      renderSavedPathsTab();
+    }
+
+    function renderSavedPathsTab() {
+      const box = document.getElementById("savedPathsContainer");
+      if (!box) return;
+      if (!savedJourneys.length) {
+        box.innerHTML = `
+          <div class="saved-empty-state">
+            <div style="font-size:15px; font-weight:600; color:var(--text); margin-bottom:6px;">还没有已保存的定制学习路径</div>
+            <div style="font-size:13px; margin-bottom:14px;">在「总览」页通过 AI 对话、上传项目规则或连线探索生成路径后，会自动保存在这里方便随时回看。</div>
+            <button type="button" class="btn btn-dark" onclick="switchTab('overview')">去首页生成一条学习路径 →</button>
+          </div>
+        `;
+        return;
+      }
+      box.innerHTML = `
+        <div class="saved-paths-grid">
+          ${savedJourneys.map(item => {
+            const stages = (item.res && item.res.journey && item.res.journey.stages) || [];
+            const skippedCount = (item.skippedStages || []).length;
+            return `
+              <article class="saved-path-card" onclick="loadSavedJourney('${item.id}')" style="cursor:pointer;">
+                <div class="saved-path-top">
+                  <span class="saved-source-tag">${item.sourceLabel}</span>
+                  <span class="saved-path-time">${item.updatedAt || "刚刚"}</span>
+                </div>
+                <div class="saved-path-title">${item.goal}</div>
+                <div class="saved-path-meta">
+                  共 ${stages.length} 个阶段${skippedCount ? `（已跳过 ${skippedCount} 个）` : ""} · 水平：${item.level}
+                </div>
+                <div class="saved-path-actions">
+                  <button type="button" class="btn btn-outline" style="height:28px; font-size:12px;" onclick="deleteSavedJourney('${item.id}', event)">删除</button>
+                  <button type="button" class="btn btn-dark" style="height:28px; font-size:12px;" onclick="event.stopPropagation(); loadSavedJourney('${item.id}')">继续共创学习 →</button>
+                </div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function exportJourneyMarkdown() {
+      const j = drawerState.res && drawerState.res.journey;
+      if (!j) return;
+      const lines = [
+        `# CANN 学习路径 · ${j.goal}`,
+        `- 画像：${j.role || "开发者"} | 水平：${j.level || "Python"}`,
+        `- 结业目标：${j.certificate || "完成阶段学习"}`,
+        ""
+      ];
+      (j.stages || []).forEach((st, idx) => {
+        const skipped = drawerState.skippedStages.has(idx);
+        lines.push(`## 阶段 ${idx + 1}：${st.label}${skipped ? "（已掌握 · 跳过）" : ""}`);
+        (st.courses || []).forEach(c => {
+          lines.push(`- [${c.title}](${c.link})`);
+        });
+        lines.push("");
+      });
+      const md = lines.join("\n");
+      const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `cann-learning-path-${j.goal.replace(/[^\w\u4e00-\u9fa5]+/g, "-")}.md`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      const btn = document.getElementById("jdExportBtn");
+      if (btn) {
+        const old = btn.textContent;
+        btn.textContent = "已导出 MD ✓";
+        setTimeout(() => { btn.textContent = old; }, 1600);
+      }
+    }
+
     function openJourneyDrawer() {
+      if (!drawerState.res && savedJourneys.length) {
+        loadSavedJourney(savedJourneys[0].id);
+        return;
+      }
       document.getElementById("journeyDrawerBackdrop").classList.add("open");
       document.getElementById("journeyDrawer").classList.add("open");
       document.body.style.overflow = "hidden";
@@ -4352,12 +4634,14 @@
     function toggleStageSkipped(sIdx) {
       if (drawerState.skippedStages.has(sIdx)) drawerState.skippedStages.delete(sIdx);
       else drawerState.skippedStages.add(sIdx);
+      persistCurrentJourney();
       renderDrawerCanvas();
     }
 
     function adoptAiSuggestion(idx) {
       if (drawerState.aiSuggestions[idx]) {
         drawerState.aiSuggestions[idx].status = "adopted";
+        persistCurrentJourney();
         renderDrawerCanvas();
       }
     }
@@ -4365,6 +4649,7 @@
     function ignoreAiSuggestion(idx) {
       if (drawerState.aiSuggestions[idx]) {
         drawerState.aiSuggestions[idx].status = "ignored";
+        persistCurrentJourney();
         renderDrawerCanvas();
       }
     }
@@ -4399,6 +4684,7 @@
       const isAddGraph = /补充.*torchair|加.*图模式|加上.*autofusion/.test(qLow);
 
       if (!opts.fromDrawer) {
+        drawerState.journeyId = null;
         drawerState.messages = [];
         drawerState.skippedStages = new Set();
         drawerState.aiSuggestions = [];
@@ -4463,14 +4749,7 @@
       aiHistory = [{ query, res: drawerState.res }];
       drawerState.active = true;
 
-      // Update top-bar persistent pill
-      const pill = document.getElementById("openJourneyPill");
-      const pillText = document.getElementById("openJourneyPillText");
-      if (pill && pillText && drawerState.res && drawerState.res.journey) {
-        pill.classList.add("visible");
-        pillText.textContent = `当前路径 · ${drawerState.res.journey.goal}`;
-      }
-
+      persistCurrentJourney();
       renderDrawer();
       openJourneyDrawer();
     }
@@ -4923,15 +5202,21 @@
       });
     }
 
+    function syncPathView() {
+      document.querySelectorAll("#pathViewSwitch .vs-btn").forEach(b => b.classList.toggle("active", b.dataset.view === activePathView));
+      document.getElementById("trackViewWrap").style.display = activePathView === "track" ? "block" : "none";
+      document.getElementById("periodViewWrap").style.display = activePathView === "period" ? "block" : "none";
+      document.getElementById("savedViewWrap").style.display = activePathView === "saved" ? "block" : "none";
+      if (activePathView === "saved") renderSavedPathsTab();
+      hideHoverCard();
+    }
+
     // Bind filters
     document.getElementById("pathViewSwitch").addEventListener("click", e => {
       const btn = e.target.closest("[data-view]");
       if (!btn) return;
       activePathView = btn.dataset.view;
-      document.querySelectorAll("#pathViewSwitch .vs-btn").forEach(b => b.classList.toggle("active", b.dataset.view === activePathView));
-      document.getElementById("trackViewWrap").style.display = activePathView === "track" ? "block" : "none";
-      document.getElementById("periodViewWrap").style.display = activePathView === "period" ? "block" : "none";
-      hideHoverCard();
+      syncPathView();
     });
     document.getElementById("resTypeFilter").addEventListener("click", e => {
       const btn = e.target.closest("[data-rtype]");
@@ -4969,6 +5254,8 @@
     renderHub();
     renderBlogs();
     renderPrereqs();
+    syncTopJourneyPill();
+    renderSavedPathsTab();
 
     // Gentle rotating placeholder examples for the AI composer
     const AI_PLACEHOLDERS = [
