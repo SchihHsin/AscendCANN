@@ -123,28 +123,29 @@ body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibi
 .pill-teal{background:rgba(40,168,216,.13);color:#0284c7}
 .pill-green{background:rgba(57,185,130,.13);color:#059669}
 
-/* P3：四类真实用户场景总览（每卡配真实工作场景插画 + 极简一句话）*/
+/* P3：四类真实用户场景总览（图片无描边，自然融入卡片）*/
 .scenes-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.25vw;align-items:stretch;min-height:0}
-.scene-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 14px 34px -20px rgba(30,40,70,.2);overflow:hidden;display:flex;flex-direction:column;min-width:0}
-.scene-img{width:100%;aspect-ratio:16/10;background:#f6f8fb;overflow:hidden;border-bottom:1px solid rgba(212,216,223,.55);flex-shrink:0}
-.scene-img img{width:100%;height:100%;object-fit:cover;display:block}
-.scene-body{padding:1.8vh 1.25vw 1.6vh;display:flex;flex-direction:column;gap:.9vh;flex:1;min-height:0}
+.scene-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 14px 34px -20px rgba(30,40,70,.18);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.scene-img{width:100%;aspect-ratio:16/10;background:transparent;overflow:hidden;flex-shrink:0}
+.scene-img img{width:100%;height:100%;object-fit:cover;display:block;border:0;mix-blend-mode:multiply}
+.scene-body{padding:1.6vh 1.25vw 1.6vh;display:flex;flex-direction:column;gap:.85vh;flex:1;min-height:0}
 .scene-t{font-size:var(--fs-h2);font-weight:800;color:var(--ink);line-height:1.25}
 .scene-q{font-size:var(--fs-body);color:var(--ink-2);line-height:1.48}
-.scene-go{margin-top:auto;padding-top:1.1vh;border-top:1px dashed rgba(146,154,166,.35);font-size:var(--fs-sm);font-weight:700;color:var(--ink)}
+.scene-go{margin-top:auto;padding-top:1vh;border-top:1px dashed rgba(146,154,166,.32);font-size:var(--fs-sm);font-weight:700;color:var(--ink)}
 
-/* P4：大字观点 + 大图（极简高冲击力）*/
-.sm2-grid{display:grid;grid-template-columns:0.95fr 1.15fr;gap:3.2vw;align-items:center;min-height:0;max-height:100%}
-.sm2-left{display:flex;flex-direction:column;gap:2.6vh;min-height:0;min-width:0;padding-right:1vw}
-.sm2-kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--c-indigo);font-weight:600}
-.sm2-hero-q{font-size:clamp(28px,2.8vw,44px);font-weight:800;line-height:1.2;letter-spacing:-.02em;color:var(--ink)}
-.sm2-hero-a{font-size:clamp(17px,1.4vw,22px);line-height:1.65;color:var(--ink-2);font-weight:400}
-.sm2-hero-a b{color:var(--ink);font-weight:700;background:linear-gradient(transparent 62%,rgba(91,91,214,.18) 0)}
-.chip-row{display:flex;flex-wrap:wrap;gap:.65vw;margin-top:.6vh}
-.chip-row span{display:inline-flex;align-items:center;padding:.55vh 1vw;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 4px 12px -6px rgba(20,25,35,.12);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.sm2-visual{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/10;border:1px solid rgba(255,255,255,.88);box-shadow:0 20px 48px -22px rgba(20,30,60,.25);background:#f4f6fa;display:flex;flex-direction:column;min-height:0}
-.sm2-visual img{width:100%;height:100%;object-fit:cover;display:block;flex:1;min-height:0}
-.visual-cap{position:absolute;left:14px;bottom:14px;padding:5px 12px;border-radius:999px;background:rgba(22,25,30,.72);backdrop-filter:blur(8px);color:#fff;font-size:var(--fs-xs);font-weight:500;letter-spacing:.03em}
+/* P4 / P6 / P8 / P10：灰底讲解页（真实场景插画直接做无描边背景，左侧大字讲清“为什么这么设计”）*/
+.s-why{overflow:hidden}
+.why-bg{position:absolute;top:0;right:0;bottom:0;width:62%;z-index:0;pointer-events:none;overflow:hidden}
+.why-bg img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;border:0;mix-blend-mode:multiply;opacity:.92}
+.why-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0%,rgba(233,235,238,.92) 18%,rgba(233,235,238,.18) 44%,rgba(233,235,238,0) 68%),linear-gradient(180deg,rgba(233,235,238,.72) 0%,rgba(233,235,238,0) 18%,rgba(233,235,238,0) 84%,rgba(233,235,238,.78) 100%)}
+.s-why .head,.s-why .body-area,.s-why .foot{position:relative;z-index:1}
+.why-copy{max-width:48%;display:flex;flex-direction:column;gap:2.4vh;min-width:0}
+.why-kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--c-indigo);font-weight:600}
+.why-q{font-size:clamp(28px,2.75vw,44px);font-weight:800;line-height:1.22;letter-spacing:-.02em;color:var(--ink)}
+.why-a{font-size:clamp(17px,1.38vw,21px);line-height:1.68;color:var(--ink-2);font-weight:400}
+.why-a b{color:var(--ink);font-weight:700;background:linear-gradient(transparent 62%,rgba(91,91,214,.18) 0)}
+.chip-row{display:flex;flex-wrap:wrap;gap:.65vw;margin-top:.4vh}
+.chip-row span{display:inline-flex;align-items:center;padding:.55vh 1vw;border-radius:999px;background:rgba(255,255,255,.86);border:1px solid rgba(212,216,223,.85);box-shadow:0 4px 12px -6px rgba(20,25,35,.1);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 
 /* P12：同层级三卡（白卡 / 蓝紫渐变 / 深墨）*/
 .tri-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6vw;align-items:stretch;min-height:0}
@@ -346,32 +347,27 @@ body.on-dark .nav-dot.active{background:#fff}
     <div class="foot"><span>CANN LEARNING HUB · 4 REAL DEVELOPER SCENARIOS</span><span>03 / 12</span></div>
   </section>
 
-  <!-- P4 · 场景 1 讲解：角色轻分流，技术方向做主角 -->
-  <section class="slide s-gray">
+  <!-- P4 · 场景 1 讲解：为什么角色轻分流、技术方向做主角 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-1-goal.jpg" alt=""></div>
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">场景 01 · 目标明确：角色轻分流，技术方向做主角</span></div>
-        <div class="subttl">02 场景 1 &amp; 2 · 首页怎么承接目标明确的开发者</div>
+        <div class="brand"><span class="ttl">场景 01 · 为什么角色轻分流，技术方向做主角？</span></div>
+        <div class="subttl">02 场景 1 &amp; 2 · 目标明确型开发者</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
         <span>01 四类场景</span><span class="active">02 场景 1 &amp; 2</span><span>03 场景 3 &amp; 4</span><span>04 边界演进</span>
       </div>
     </div>
     <div class="body-area vc">
-      <div class="sm2-grid">
-        <div class="sm2-left">
-          <div class="sm2-kicker">SCENARIO 01 · ROLE VS. DIRECTION</div>
-          <div class="sm2-hero-q">首页，角色和方向哪个更重要？</div>
-          <p class="sm2-hero-a">开发者进来通常是<b>带着具体技术问题找的</b>。除了<b>新手、高校教师、备赛</b>这三类入口链路完全不同，其余都以<b>技术方向</b>做主角，不做多余的职业大卡片。</p>
-          <div class="chip-row">
-            <span>零基础新手 → 启航营</span>
-            <span>高校教师 → 16 周开课</span>
-            <span>备赛 / 考证 → 题库冲刺</span>
-          </div>
-        </div>
-        <div class="sm2-visual">
-          <img src="assets/report-role-vs-dir.jpg" alt="角色轻分流汇聚至六大技术方向概念示意">
-          <span class="visual-cap">概念示意 · 3 路轻分流汇聚至 6 大技术方向</span>
+      <div class="why-copy">
+        <div class="why-kicker">SCENARIO 01 · WHY</div>
+        <div class="why-q">首页，角色和方向哪个更重要？</div>
+        <p class="why-a">开发者进来通常是<b>带着具体技术问题找的</b>。除了<b>新手、高校教师、备赛</b>这三类学习链路完全不同，其余都直接以<b>技术方向</b>做主角，避免多余的职业卡片制造选择犹豫。</p>
+        <div class="chip-row">
+          <span>零基础新手 → 启航营</span>
+          <span>高校教师 → 16 周开课</span>
+          <span>备赛 / 考证 → 题库冲刺</span>
         </div>
       </div>
     </div>
@@ -388,42 +384,31 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
   </section>
 
-  <!-- P6 · 场景 2 讲解：自然语言对话 → 右侧双栏边聊边改 -->
-  <section class="slide s-glow" data-chapter="3">
-    <div class="glow-white"></div><div class="glow"></div>
-    <div class="chrome"><div>SCENARIO 02 · AI CHAT &amp; CO-CREATION DRAWER</div><div>02 场景 1 &amp; 2</div></div>
-    <div class="inner">
-      <div>
-        <div class="kicker">SCENARIO 02 · 会提需求</div>
-        <h1 class="h-title">一句话提需求<br/><span class="light">右侧双栏边聊边改课表</span></h1>
-        <p class="body">不把 1600px 时间轴硬塞首页，说出限制条件，右侧直接滑出专属课表。</p>
-        <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">左聊右改</div><div class="pt-desc">左 340px 追问对话，右 Skill 同款中轴时间轴</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">按需加减</div><div class="pt-desc">阶段一键跳过，AI 建议支持采纳或忽略</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">跨页常驻</div><div class="pt-desc">收起后顶栏保留胶囊，查完资料随时拉出</div></div></div>
-        </div>
+  <!-- P6 · 场景 2 讲解：为什么收进右侧双栏共创副屏 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-2-chat.jpg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">场景 02 · 为什么不把生成的路径直接摊在首页？</span></div>
+        <div class="subttl">02 场景 1 &amp; 2 · 会提需求型开发者</div>
       </div>
-      <div class="shot">
-        <div class="drawer-arch">
-          <div class="da-col">
-            <div class="da-head"><span>左栏 · 规则与追问</span><span class="da-badge">340px</span></div>
-            <div class="da-bubble user">不会 C++，想用 PyASC 写算子</div>
-            <div class="da-bubble">已跨目录编排 4 阶段课表。</div>
-            <div class="da-bubble user">基础都会了，加一点性能调优</div>
-            <div class="da-input"><span>继续追问微调路径…</span><span>发送</span></div>
-          </div>
-          <div class="da-col">
-            <div class="da-head"><span>右区 · Skill 共创画布</span><span class="da-badge">LIVE CANVAS</span></div>
-            <div class="da-timeline">
-              <div class="da-stage skipped"><span class="da-st-t">01 · CANN 基础知识</span><span class="da-st-act">已掌握 · 跳过</span></div>
-              <div class="da-stage"><span class="da-st-t">02 · PyASC 核心课</span><span class="da-st-act">在线体验</span></div>
-              <div class="da-stage ai-add"><span class="da-st-t">AI 建议 · msProf 调优</span><span class="da-st-act">采纳 / 忽略</span></div>
-              <div class="da-stage"><span class="da-st-t">03 · CANNJudge 实操</span><span class="da-st-act">结业证书</span></div>
-            </div>
-          </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 四类场景</span><span class="active">02 场景 1 &amp; 2</span><span>03 场景 3 &amp; 4</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-kicker">SCENARIO 02 · WHY</div>
+        <div class="why-q">学习路径不是一次性答案，而是边聊边改的课表</div>
+        <p class="why-a">多阶段路径直接摊开会撑破首页，也没法持续调整。收进<b>右侧双栏副屏</b>后，用户能一边追问微调、一边跳过已掌握内容，查完资料还能随时拉出对照。</p>
+        <div class="chip-row">
+          <span>不打断首页浏览</span>
+          <span>边聊边改专属课表</span>
+          <span>已掌握随时跳过</span>
         </div>
       </div>
     </div>
+    <div class="foot"><span>CANN LEARNING HUB · SCENARIO 02</span><span>06 / 12</span></div>
   </section>
 
   <!-- P7 · 场景 2 全屏 Demo：右侧双栏学习路径共创副屏 -->
@@ -436,26 +421,31 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
   </section>
 
-  <!-- P8 · 场景 3 讲解：带着项目来 → 丢文件直接识别路径 -->
-  <section class="slide s-glow" data-chapter="1">
-    <div class="glow-white"></div><div class="glow"></div>
-    <div class="chrome"><div>SCENARIO 03 · PROJECT RULE PARSING</div><div>03 场景 3 &amp; 4</div></div>
-    <div class="inner">
-      <div>
-        <div class="kicker">SCENARIO 03 · 带着项目来</div>
-        <h1 class="h-title">不口述背景<br/><span class="light">丢文件直接识别路径</span></h1>
-        <p class="body">带着迁移仓库来的开发者，直接把项目文件丢给 AI。</p>
-        <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">极轻入口：右侧无边框 + 与拖拽</div><div class="pt-desc">支持 README、AGENTS.md、requirements.txt、CMakeLists.txt</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">浏览器本地解析</div><div class="pt-desc">直接提取框架与约束，零隐私顾虑</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">内置示例一键试</div><div class="pt-desc">手边没文件也能点开即体验</div></div></div>
-        </div>
+  <!-- P8 · 场景 3 讲解：为什么要支持直接丢入项目文件 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-3-project.svg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">场景 03 · 带着项目来的人，为什么不爱打字提问？</span></div>
+        <div class="subttl">03 场景 3 &amp; 4 · 项目任务驱动型开发者</div>
       </div>
-      <div class="shot">
-        <img src="assets/report-rule-prism.jpg" alt="项目规则文件经棱镜编译为阶段路径概念示意">
-        <span class="shot-cap">概念示意 · 项目规则反推学习路径</span>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 四类场景</span><span>02 场景 1 &amp; 2</span><span class="active">03 场景 3 &amp; 4</span><span>04 边界演进</span>
       </div>
     </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-kicker">SCENARIO 03 · WHY</div>
+        <div class="why-q">手头已有代码仓库，最烦重复口述环境与约束</div>
+        <p class="why-a">真实迁移任务里，框架、依赖和限制条件全写在项目文件里。<b>直接把 README 或规则文件丢给系统</b>，省去反复解释背景，一步匹配出真正贴合当前工程的课表。</p>
+        <div class="chip-row">
+          <span>省去重复口述背景</span>
+          <span>直连真实工程约束</span>
+          <span>随手丢入即出路径</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · SCENARIO 03</span><span>08 / 12</span></div>
   </section>
 
   <!-- P9 · 场景 3 全屏 Demo：项目规则上传与一键示例识别 -->
@@ -468,26 +458,31 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
   </section>
 
-  <!-- P10 · 场景 4 讲解：不确定怎么问 → 连线探索知识地图 -->
-  <section class="slide s-glow" data-chapter="2">
-    <div class="glow-white"></div><div class="glow"></div>
-    <div class="chrome"><div>SCENARIO 04 · INTERACTIVE KNOWLEDGE GRAPH</div><div>03 场景 3 &amp; 4</div></div>
-    <div class="inner">
-      <div>
-        <div class="kicker">SCENARIO 04 · 不确定怎么问</div>
-        <h1 class="h-title">不会提问时<br/><span class="light">用点选连线理清方向</span></h1>
-        <p class="body">首页不堆目录，让技术关联随鼠标自然展开。</p>
-        <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">280ms 聚焦居中</div><div class="pt-desc">隐藏无关方向，右弧扇出推荐子路线</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">680ms 蓄力连线</div><div class="pt-desc">历史轨迹退至左弧，末端原地定格不乱跳</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">只连线索，不找单课</div><div class="pt-desc">2～3 级收口，一键交由副屏配课表</div></div></div>
-        </div>
+  <!-- P10 · 场景 4 讲解：为什么连线探索只理线索、不钻单课 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-4-explore.jpg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">场景 04 · 不知道怎么提问时，为什么不直接给目录？</span></div>
+        <div class="subttl">03 场景 3 &amp; 4 · 探索发散型开发者</div>
       </div>
-      <div class="shot">
-        <img src="assets/report-explore-graph.jpg" alt="焦点聚光居中与左右弧线推演概念示意">
-        <span class="shot-cap">概念示意 · 中心聚光与左右弧推演</span>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 四类场景</span><span>02 场景 1 &amp; 2</span><span class="active">03 场景 3 &amp; 4</span><span>04 边界演进</span>
       </div>
     </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-kicker">SCENARIO 04 · WHY</div>
+        <div class="why-q">两百多节课摊成目录只会劝退，先看清关联才敢下手</div>
+        <p class="why-a">对刚接触 CANN 的人，最难的是弄清各方向之间什么关系。<b>连线探索只呈现当下焦点与关联分支</b>，用点选帮用户理清学习线索，再交给副屏打包成课表。</p>
+        <div class="chip-row">
+          <span>看清技术怎么关联</span>
+          <span>只聚焦当下相关分支</span>
+          <span>先理清线索再配课</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · SCENARIO 04</span><span>10 / 12</span></div>
   </section>
 
   <!-- P11 · 场景 4 全屏 Demo：首页「连线探索」知识地图 -->
