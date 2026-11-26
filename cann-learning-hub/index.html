@@ -2484,9 +2484,20 @@
     }
 
     html.demo-lock, body.demo-lock {
+      scroll-behavior: auto !important;
       scrollbar-width: none;
       -ms-overflow-style: none;
       overscroll-behavior: none;
+    }
+    body.demo-mainlines #mainlinesBlock {
+      margin-bottom: 18px !important;
+    }
+    body.demo-mainlines #mainlinesBlock .block-head,
+    body.demo-mainlines #specialChannelsBlock .block-head {
+      margin-bottom: 10px !important;
+    }
+    body.demo-mainlines #mainlinesBlock .role-tray {
+      padding: 12px !important;
     }
     html.demo-lock::-webkit-scrollbar, body.demo-lock::-webkit-scrollbar {
       display: none;
@@ -5377,60 +5388,77 @@
       }
 
       function positionDemoAndSpotlight() {
+        document.documentElement.style.scrollBehavior = "auto";
         if (demo === "hero") {
           lockedScrollY = 0;
-          window.scrollTo({ top: 0, behavior: "auto" });
+          window.scrollTo(0, 0);
         } else if (demo === "rule") {
           lockedScrollY = 120;
-          window.scrollTo({ top: 120, behavior: "auto" });
+          window.scrollTo(0, 120);
           const pop = document.getElementById("rulePopover");
           if (pop) pop.classList.add("open");
-          requestAnimationFrame(() => applySpotlight([
-            { el: ".ai-composer-shell", pad: 10, tag: "重点演示 · 点击 + 或直接拖入项目规则文件" },
+          applySpotlight([
+            { el: ".ai-composer-shell", pad: 8, tag: "重点演示 · 点击 + 或直接拖入项目规则文件" },
             { el: "#rulePopover", pad: 6, tag: "内置示例 · 一键试用识别", secondary: true }
-          ]));
+          ]);
         } else if (demo === "explore") {
           const wrap = document.getElementById("exploreGraphWrap");
           const block = wrap && wrap.closest(".block");
           if (block) {
-            lockedScrollY = Math.max(0, block.getBoundingClientRect().top + window.scrollY - 68);
-            window.scrollTo({ top: lockedScrollY, behavior: "auto" });
-            requestAnimationFrame(() => applySpotlight([
+            lockedScrollY = Math.max(0, Math.round(block.getBoundingClientRect().top + window.scrollY - 68));
+            window.scrollTo(0, lockedScrollY);
+            applySpotlight([
               { el: ".explore-graph-card", pad: 8, tag: "重点演示 · 悬浮 280ms 聚光，停留 680ms 连线" }
-            ]));
+            ]);
           }
         } else if (demo === "mainlines") {
+          document.body.classList.add("demo-mainlines");
           const block = document.getElementById("mainlinesBlock");
           if (block) {
-            lockedScrollY = Math.max(0, block.getBoundingClientRect().top + window.scrollY - 68);
-            window.scrollTo({ top: lockedScrollY, behavior: "auto" });
-            requestAnimationFrame(() => applySpotlight([
-              { el: "#mainlinesBlock .role-tray", pad: 8, tag: "主角 · 五大核心技术主线" },
-              { el: "#specialChannelsBlock .persona-strip", pad: 8, tag: "轻分流 · 下方三类专项通道", secondary: true }
-            ]));
+            lockedScrollY = Math.max(0, Math.round(block.getBoundingClientRect().top + window.scrollY - 62));
+            window.scrollTo(0, lockedScrollY);
+            applySpotlight([
+              { el: "#mainlinesBlock .role-tray", pad: 6, tag: "主角 · 五大核心技术主线" },
+              { el: "#specialChannelsBlock .persona-strip", pad: 6, tag: "轻分流 · 下方三类专项通道", secondary: true }
+            ]);
           }
         } else if (demo === "drawer") {
           lockedScrollY = 0;
-          window.scrollTo({ top: 0, behavior: "auto" });
+          window.scrollTo(0, 0);
           if (typeof runAiMatch === "function" && !drawerState.active) {
             runAiMatch("不会 C++，想用 PyASC / PyPTO 用 Python 写算子", { sourceType: "chat" });
           }
         } else if (["paths", "map", "academia", "blogs"].includes(demo)) {
           if (typeof switchTab === "function") switchTab(demo);
-          window.scrollTo({ top: 0, behavior: "auto" });
+          window.scrollTo(0, 0);
         }
       }
 
       if (isHomeLockedDemo) {
         document.documentElement.classList.add("demo-lock");
         document.body.classList.add("demo-lock");
-        requestAnimationFrame(positionDemoAndSpotlight);
+        requestAnimationFrame(() => {
+          positionDemoAndSpotlight();
+          setTimeout(positionDemoAndSpotlight, 80);
+        });
         window.addEventListener("resize", () => requestAnimationFrame(positionDemoAndSpotlight));
         window.addEventListener("scroll", () => {
-          if (Math.abs(window.scrollY - lockedScrollY) > 2) {
-            window.scrollTo({ top: lockedScrollY, behavior: "auto" });
+          if (Math.abs(window.scrollY - lockedScrollY) > 1) {
+            window.scrollTo(0, lockedScrollY);
           }
         }, { passive: true });
+        window.addEventListener("wheel", e => {
+          const scroller = e.target.closest(".jd-canvas-col, .jd-chat-log");
+          if (scroller && scroller.scrollHeight > scroller.clientHeight + 2) {
+            const atTop = scroller.scrollTop <= 1 && e.deltaY < 0;
+            const atBot = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2 && e.deltaY > 0;
+            if (!atTop && !atBot) return;
+          }
+          e.preventDefault();
+          if (window.self !== window.top) {
+            window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
+          }
+        }, { passive: false });
       } else if (demo) {
         requestAnimationFrame(positionDemoAndSpotlight);
       }
@@ -5446,25 +5474,15 @@
         document.addEventListener("mousemove", e => {
           window.parent.postMessage({ __deckMouse: { x: e.clientX, y: e.clientY, w: window.innerWidth, h: window.innerHeight } }, "*");
         }, { passive: true });
-        window.addEventListener("wheel", e => {
-          // Inside drawer columns, let drawer scroll first
-          const scroller = e.target.closest(".jd-canvas-col, .jd-chat-log");
-          if (scroller && scroller.scrollHeight > scroller.clientHeight + 2) {
-            const atTop = scroller.scrollTop <= 1 && e.deltaY < 0;
-            const atBot = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2 && e.deltaY > 0;
-            if (!atTop && !atBot) return;
-          }
-          if (isHomeLockedDemo) {
-            e.preventDefault();
-            window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
-            return;
-          }
-          const pageAtTop = window.scrollY <= 1 && e.deltaY < 0;
-          const pageAtBot = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2 && e.deltaY > 0;
-          if (pageAtTop || pageAtBot) {
-            window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
-          }
-        }, { passive: false });
+        if (!isHomeLockedDemo) {
+          window.addEventListener("wheel", e => {
+            const pageAtTop = window.scrollY <= 1 && e.deltaY < 0;
+            const pageAtBot = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2 && e.deltaY > 0;
+            if (pageAtTop || pageAtBot) {
+              window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
+            }
+          }, { passive: true });
+        }
       }
     })();
   </script>
