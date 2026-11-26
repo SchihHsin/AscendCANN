@@ -133,19 +133,23 @@ body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibi
 .scene-q{font-size:var(--fs-body);color:var(--ink-2);line-height:1.48}
 .scene-go{margin-top:auto;padding-top:1vh;border-top:1px dashed rgba(146,154,166,.32);font-size:var(--fs-sm);font-weight:700;color:var(--ink)}
 
-/* P4 / P6 / P8 / P10：灰底讲解页（真实场景插画直接做无描边背景，左侧大字讲清“为什么这么设计”）*/
+/* P4 / P6 / P8 / P10：灰底讲解页（真实场景插画无描边做背景，左侧清晰两段：为什么这么设计 + 这样设计的优点）*/
 .s-why{overflow:hidden}
 .why-bg{position:absolute;top:0;right:0;bottom:0;width:62%;z-index:0;pointer-events:none;overflow:hidden}
 .why-bg img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;border:0;mix-blend-mode:multiply;opacity:.92}
-.why-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0%,rgba(233,235,238,.92) 18%,rgba(233,235,238,.18) 44%,rgba(233,235,238,0) 68%),linear-gradient(180deg,rgba(233,235,238,.72) 0%,rgba(233,235,238,0) 18%,rgba(233,235,238,0) 84%,rgba(233,235,238,.78) 100%)}
+.why-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0%,rgba(233,235,238,.95) 20%,rgba(233,235,238,.22) 46%,rgba(233,235,238,0) 70%),linear-gradient(180deg,rgba(233,235,238,.72) 0%,rgba(233,235,238,0) 18%,rgba(233,235,238,0) 84%,rgba(233,235,238,.78) 100%)}
 .s-why .head,.s-why .body-area,.s-why .foot{position:relative;z-index:1}
-.why-copy{max-width:48%;display:flex;flex-direction:column;gap:2.4vh;min-width:0}
-.why-kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--c-indigo);font-weight:600}
-.why-q{font-size:clamp(28px,2.75vw,44px);font-weight:800;line-height:1.22;letter-spacing:-.02em;color:var(--ink)}
-.why-a{font-size:clamp(17px,1.38vw,21px);line-height:1.68;color:var(--ink-2);font-weight:400}
-.why-a b{color:var(--ink);font-weight:700;background:linear-gradient(transparent 62%,rgba(91,91,214,.18) 0)}
-.chip-row{display:flex;flex-wrap:wrap;gap:.65vw;margin-top:.4vh}
-.chip-row span{display:inline-flex;align-items:center;padding:.55vh 1vw;border-radius:999px;background:rgba(255,255,255,.86);border:1px solid rgba(212,216,223,.85);box-shadow:0 4px 12px -6px rgba(20,25,35,.1);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.why-copy{max-width:48%;display:flex;flex-direction:column;gap:2.6vh;min-width:0}
+.why-block{display:flex;flex-direction:column;gap:.9vh}
+.why-label{display:inline-flex;align-items:center;align-self:flex-start;padding:.35vh .8vw;border-radius:999px;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em}
+.why-label.lbl-why{background:rgba(91,91,214,.12);color:var(--c-indigo)}
+.why-label.lbl-pro{background:rgba(57,185,130,.14);color:#047857}
+.why-text{font-size:clamp(20px,1.72vw,27px);font-weight:700;line-height:1.42;letter-spacing:-.015em;color:var(--ink)}
+.why-text b{color:var(--c-indigo);font-weight:800}
+.pro-list{list-style:none;display:flex;flex-direction:column;gap:1.15vh;margin-top:.2vh}
+.pro-list li{font-size:var(--fs-body);line-height:1.52;color:var(--ink-2);display:grid;grid-template-columns:auto 1fr;gap:.65em;align-items:start}
+.pro-list li .pdot{width:7px;height:7px;border-radius:50%;margin-top:.52em;background:var(--c-green);flex-shrink:0}
+.pro-list li b{color:var(--ink);font-weight:700}
 
 /* P12：同层级三卡（白卡 / 蓝紫渐变 / 深墨）*/
 .tri-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6vw;align-items:stretch;min-height:0}
@@ -352,7 +356,7 @@ body.on-dark .nav-dot.active{background:#fff}
     <div class="why-bg"><img src="assets/scene-1-goal.jpg" alt=""></div>
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">场景 01 · 为什么角色轻分流，技术方向做主角？</span></div>
+        <div class="brand"><span class="ttl">场景 01 · 角色轻分流，技术方向做主角</span></div>
         <div class="subttl">02 场景 1 &amp; 2 · 目标明确型开发者</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
@@ -361,13 +365,17 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
     <div class="body-area vc">
       <div class="why-copy">
-        <div class="why-kicker">SCENARIO 01 · WHY</div>
-        <div class="why-q">首页，角色和方向哪个更重要？</div>
-        <p class="why-a">开发者进来通常是<b>带着具体技术问题找的</b>。除了<b>新手、高校教师、备赛</b>这三类学习链路完全不同，其余都直接以<b>技术方向</b>做主角，避免多余的职业卡片制造选择犹豫。</p>
-        <div class="chip-row">
-          <span>零基础新手 → 启航营</span>
-          <span>高校教师 → 16 周开课</span>
-          <span>备赛 / 考证 → 题库冲刺</span>
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">开发者进来通常是<b>带着具体技术问题找的</b>，硬按职业角色切大卡片反而制造选择犹豫。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>三类硬分流一秒直达</b>：仅保留新手、高校教师、备赛三类链路完全不同的轻量入口。</span></li>
+            <li><span class="pdot"></span><span><b>直奔技术方向不纠结</b>：其余开发者不用纠结“我算哪种工程师”，直接按问题切入。</span></li>
+            <li><span class="pdot"></span><span><b>首页更清爽聚焦</b>：不与「学习路径」Tab 重复堆砌静态目录。</span></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -389,7 +397,7 @@ body.on-dark .nav-dot.active{background:#fff}
     <div class="why-bg"><img src="assets/scene-2-chat.jpg" alt=""></div>
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">场景 02 · 为什么不把生成的路径直接摊在首页？</span></div>
+        <div class="brand"><span class="ttl">场景 02 · 右侧双栏共创专属课表</span></div>
         <div class="subttl">02 场景 1 &amp; 2 · 会提需求型开发者</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
@@ -398,13 +406,17 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
     <div class="body-area vc">
       <div class="why-copy">
-        <div class="why-kicker">SCENARIO 02 · WHY</div>
-        <div class="why-q">学习路径不是一次性答案，而是边聊边改的课表</div>
-        <p class="why-a">多阶段路径直接摊开会撑破首页，也没法持续调整。收进<b>右侧双栏副屏</b>后，用户能一边追问微调、一边跳过已掌握内容，查完资料还能随时拉出对照。</p>
-        <div class="chip-row">
-          <span>不打断首页浏览</span>
-          <span>边聊边改专属课表</span>
-          <span>已掌握随时跳过</span>
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">多阶段学习路径如果直接摊在首页，<b>既撑破页面又没法边看边改</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>不打断首页浏览</b>：所有生成入口统一右侧滑出，用完即收。</span></li>
+            <li><span class="pdot"></span><span><b>边聊边改真正合身</b>：追问微调课表、已掌握阶段一键跳过，不再被动接受固定清单。</span></li>
+            <li><span class="pdot"></span><span><b>跨页随时拉出对照</b>：切换到课程体系或博客查资料时，学习上下文不断线。</span></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -426,7 +438,7 @@ body.on-dark .nav-dot.active{background:#fff}
     <div class="why-bg"><img src="assets/scene-3-project.svg" alt=""></div>
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">场景 03 · 带着项目来的人，为什么不爱打字提问？</span></div>
+        <div class="brand"><span class="ttl">场景 03 · 丢入项目文件直接识别路径</span></div>
         <div class="subttl">03 场景 3 &amp; 4 · 项目任务驱动型开发者</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
@@ -435,13 +447,17 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
     <div class="body-area vc">
       <div class="why-copy">
-        <div class="why-kicker">SCENARIO 03 · WHY</div>
-        <div class="why-q">手头已有代码仓库，最烦重复口述环境与约束</div>
-        <p class="why-a">真实迁移任务里，框架、依赖和限制条件全写在项目文件里。<b>直接把 README 或规则文件丢给系统</b>，省去反复解释背景，一步匹配出真正贴合当前工程的课表。</p>
-        <div class="chip-row">
-          <span>省去重复口述背景</span>
-          <span>直连真实工程约束</span>
-          <span>随手丢入即出路径</span>
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">手里已有代码仓库的开发者，<b>最烦把框架、版本和限制条件再口述一遍</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>省去反复打字解释</b>：直接丢入项目 README 或规则文件，一步给出路线。</span></li>
+            <li><span class="pdot"></span><span><b>贴合真实工程约束</b>：按实际依赖与限制排课，不推用不上的泛泛内容。</span></li>
+            <li><span class="pdot"></span><span><b>零门槛随手体验</b>：本地解析无隐私顾虑，同时提供示例文件一键试用。</span></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -463,7 +479,7 @@ body.on-dark .nav-dot.active{background:#fff}
     <div class="why-bg"><img src="assets/scene-4-explore.jpg" alt=""></div>
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">场景 04 · 不知道怎么提问时，为什么不直接给目录？</span></div>
+        <div class="brand"><span class="ttl">场景 04 · 焦点连线探索，先理清线索再配课</span></div>
         <div class="subttl">03 场景 3 &amp; 4 · 探索发散型开发者</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
@@ -472,13 +488,17 @@ body.on-dark .nav-dot.active{background:#fff}
     </div>
     <div class="body-area vc">
       <div class="why-copy">
-        <div class="why-kicker">SCENARIO 04 · WHY</div>
-        <div class="why-q">两百多节课摊成目录只会劝退，先看清关联才敢下手</div>
-        <p class="why-a">对刚接触 CANN 的人，最难的是弄清各方向之间什么关系。<b>连线探索只呈现当下焦点与关联分支</b>，用点选帮用户理清学习线索，再交给副屏打包成课表。</p>
-        <div class="chip-row">
-          <span>看清技术怎么关联</span>
-          <span>只聚焦当下相关分支</span>
-          <span>先理清线索再配课</span>
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">两百多节课摊成目录只会劝退新人，<b>他们连怎么向 AI 提问都不确定</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>一眼看清技术关联</b>：只聚焦当下方向与相关分支，告别满屏无关信息干扰。</span></li>
+            <li><span class="pdot"></span><span><b>点选连线替代打字</b>：顺着好奇心点两下就能拼出明确的学习线索。</span></li>
+            <li><span class="pdot"></span><span><b>与课程体系各司其职</b>：画布负责理清线索，配课交给副屏，查全量单课交给课程体系。</span></li>
+          </ul>
         </div>
       </div>
     </div>
