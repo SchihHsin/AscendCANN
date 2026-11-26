@@ -2593,7 +2593,7 @@
         <div class="block-head">
           <div>
             <h2 class="block-title">探索 CANN 知识地图</h2>
-            <p class="block-sub">首页用于发现方向与关联线索；如目标已明确，可直接进入「学习路径」按主线或周期选课</p>
+            <p class="block-sub">连线选定方向与场景线索，右侧一键生成专属学习路径；如需按目录翻阅全部单节课程，可前往「课程体系」</p>
           </div>
           <div class="block-head-actions">
             <div class="explore-mode-switch" id="overviewExploreSwitch">
@@ -3805,9 +3805,9 @@
       { id: "s_ap_rag", primary: false, en: "RAG APP", label: "搭建 RAG 知识库问答", color: "#0d9488", x: 88, y: 50, related: ["s_inf_vllm", "l3_cannlab"], prompt: "基于昇腾底座搭建 RAG 知识库问答应用" },
       { id: "s_ap_rec", primary: false, en: "TORCH-RECHUB", label: "推荐系统 DeepFM / MMoE", color: "#ea580c", x: 82, y: 70, related: ["s_trn_mig", "l3_cannlab"], prompt: "基于 torch-rechub 训练 CTR 精排与双塔召回" },
 
-      // Level 3: Concrete course chapters & online practice
-      { id: "l3_pyasc_paradigm", primary: false, en: "PYASC CHAPTER", label: "PyASC 编程范式与流水线", color: "#7c3aed", x: 82, y: 25, related: ["l3_cannjudge", "l3_cannlab"], prompt: "学习 PyASC 编程范式与显式流水线同步" },
-      { id: "l3_pypto_matmul", primary: false, en: "PYPTO CHAPTER", label: "PyPTO 矩阵乘与融合核函数", color: "#6366f1", x: 88, y: 50, related: ["l3_cannjudge", "l3_cannlab"], prompt: "学习 PyPTO Tensor 抽象与融合核函数" },
+      // Level 3: Scenario / capability goals & online practice
+      { id: "l3_pyasc_paradigm", primary: false, en: "PYTHON KERNEL", label: "PyASC 编程范式与流水线", color: "#7c3aed", x: 82, y: 25, related: ["l3_cannjudge", "l3_cannlab"], prompt: "学习 PyASC 编程范式与显式流水线同步" },
+      { id: "l3_pypto_matmul", primary: false, en: "TENSOR FUSION", label: "PyPTO 矩阵乘与融合核函数", color: "#6366f1", x: 88, y: 50, related: ["l3_cannjudge", "l3_cannlab"], prompt: "学习 PyPTO Tensor 抽象与融合核函数" },
       { id: "l3_ascendc_vector", primary: false, en: "ASCEND C", label: "Vector / Cube 三级流水线", color: "#2563eb", x: 82, y: 28, related: ["l3_ascendc_fusion", "l3_cannjudge"], prompt: "掌握 Ascend C Vector 与 Cube 三级流水线" },
       { id: "l3_ascendc_fusion", primary: false, en: "FUSED OP", label: "FlashAttention 融合算子实战", color: "#0284c7", x: 88, y: 55, related: ["l3_cannjudge", "l3_cannlab"], prompt: "实战 FlashAttention 融合算子开发" },
       { id: "l3_acl_om", primary: false, en: "ATC & ACL", label: "ONNX 转 OM 与异步多流推理", color: "#db2777", x: 84, y: 45, related: ["l3_cannlab"], prompt: "掌握 ATC 模型转换与 ACL 异步多流推理" },
