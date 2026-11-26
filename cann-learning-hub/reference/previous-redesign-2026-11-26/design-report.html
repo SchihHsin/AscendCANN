@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN Learning Hub 体验改版设计方案 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+/* ===== 设计 token（严格复用 report-ppt-skill）===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start;counter-reset:slideno}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s;counter-increment:slideno}
+body.overview .slide::after{content:counter(slideno,decimal-leading-zero);position:absolute;bottom:7px;right:8px;z-index:10;padding:2px 7px;border-radius:6px;background:rgba(15,17,24,.72);color:#fff;font-family:'JetBrains Mono';font-size:11px;opacity:0;transition:opacity .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide:hover::after{opacity:1}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner,body.overview .s-demo .slide-inner{padding:0}
+
+/* ===== 翻页过渡 ===== */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active,body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调①：封面 ============ */
+.s-cover{color:#fff;background:#08090f;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("assets/report-cover-bg.jpg") center/cover no-repeat;z-index:0}
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(8,9,15,.92) 0%,rgba(8,9,15,.64) 36%,rgba(8,9,15,.12) 66%,rgba(8,9,15,0) 100%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.65em;font-weight:600;font-size:15px;letter-spacing:.06em;color:rgba(255,255,255,.88)}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.58}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:54vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:rgba(165,180,252,.85);margin-bottom:.6vh}
+.cv-logo{display:flex;align-items:center;gap:1.4vw}
+.cv-logo img{height:min(11vh,7.6vw);width:auto;display:block}
+.cv-sub{font-weight:700;font-size:min(3.2vw,5.2vh);line-height:1.15;letter-spacing:-.015em;color:#fff}
+.cv-lead{font-weight:300;font-size:var(--fs-body);line-height:1.65;color:rgba(255,255,255,.72);max-width:44ch;margin-top:.6vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:11px;height:11px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3vh;gap:2vw}
+.head-l{display:flex;flex-direction:column-reverse;gap:.7vh;min-width:0}
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em;line-height:1.2}
+.subttl{font-weight:400;font-size:var(--fs-sm);color:var(--ink-2)}
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .65vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.body-area.vc{padding-bottom:0}
+.foot{position:absolute;left:4vw;right:4vw;bottom:2.6vh;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);letter-spacing:.08em;pointer-events:none}
+
+/* 目录（§18 4 章单行）*/
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1160px,100%);margin:0 auto;display:grid;gap:1.1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.contents-slide .directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:33vh;overflow:hidden;padding:2.2vh 1.35vw 1.6vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.contents-slide .directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.contents-slide .directory-card.c1{--dir:var(--c-indigo)}.contents-slide .directory-card.c2{--dir:var(--c-blue)}.contents-slide .directory-card.c3{--dir:var(--c-teal)}.contents-slide .directory-card.c4{--dir:var(--c-green)}
+.contents-slide .directory-no,.contents-slide .directory-name,.contents-slide .directory-en,.contents-slide .directory-items,.contents-slide .directory-note{position:relative;z-index:1}
+.contents-slide .directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.contents-slide .directory-name{margin-top:1.4vh;font-size:var(--fs-h2);line-height:1.2;font-weight:800;color:var(--ink)}
+.contents-slide .directory-en{margin-top:.4vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:600;color:color-mix(in srgb,var(--dir) 76%,#596575)}
+.contents-slide .directory-items{display:grid;gap:.55vh;margin-top:2.4vh}
+.contents-slide .directory-items span{font-size:var(--fs-body);line-height:1.38;color:var(--ink-2)}
+.contents-slide .directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir)}
+.contents-slide .directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:700;line-height:1.38;color:color-mix(in srgb,var(--dir) 72%,#465364)}
+
+/* 通用玻璃白卡 + 标签规范 */
+.glass{background:rgba(255,255,255,.58);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);border:1px solid rgba(255,255,255,.78);border-radius:16px;box-shadow:0 12px 32px -18px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.88)}
+.pill-tag{display:inline-flex;align-items:center;align-self:flex-start;width:fit-content;max-width:100%;padding:.35vh .75vw;border-radius:999px;font-size:var(--fs-xs);font-weight:600;letter-spacing:.03em;white-space:nowrap}
+.pill-neutral{background:rgba(155,165,180,.16);color:var(--ink-2)}
+.pill-indigo{background:rgba(91,91,214,.12);color:var(--c-indigo)}
+.pill-blue{background:rgba(75,141,255,.12);color:#2563eb}
+.pill-teal{background:rgba(40,168,216,.13);color:#0284c7}
+.pill-green{background:rgba(57,185,130,.13);color:#059669}
+
+/* P3：四类真实用户场景总览（图片无描边，自然融入卡片）*/
+.scenes-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.25vw;align-items:stretch;min-height:0}
+.scene-card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 14px 34px -20px rgba(30,40,70,.18);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.scene-img{width:100%;aspect-ratio:16/10;background:transparent;overflow:hidden;flex-shrink:0}
+.scene-img img{width:100%;height:100%;object-fit:cover;display:block;border:0;mix-blend-mode:multiply}
+.scene-body{padding:1.6vh 1.25vw 1.6vh;display:flex;flex-direction:column;gap:.85vh;flex:1;min-height:0}
+.scene-t{font-size:var(--fs-h2);font-weight:800;color:var(--ink);line-height:1.25}
+.scene-q{font-size:var(--fs-body);color:var(--ink-2);line-height:1.48}
+.scene-go{margin-top:auto;padding-top:1vh;border-top:1px dashed rgba(146,154,166,.32);font-size:var(--fs-sm);font-weight:700;color:var(--ink)}
+
+/* P4 / P6 / P8 / P10：灰底讲解页（真实场景插画无描边做背景，左侧清晰两段：为什么这么设计 + 这样设计的优点）*/
+.s-why{overflow:hidden}
+.why-bg{position:absolute;top:0;right:0;bottom:0;width:62%;z-index:0;pointer-events:none;overflow:hidden}
+.why-bg img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;border:0;mix-blend-mode:multiply;opacity:.92}
+.why-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0%,rgba(233,235,238,.95) 20%,rgba(233,235,238,.22) 46%,rgba(233,235,238,0) 70%),linear-gradient(180deg,rgba(233,235,238,.72) 0%,rgba(233,235,238,0) 18%,rgba(233,235,238,0) 84%,rgba(233,235,238,.78) 100%)}
+.s-why .head,.s-why .body-area,.s-why .foot{position:relative;z-index:1}
+.why-copy{max-width:48%;display:flex;flex-direction:column;gap:2.6vh;min-width:0}
+.why-block{display:flex;flex-direction:column;gap:.9vh}
+.why-label{display:inline-flex;align-items:center;align-self:flex-start;padding:.35vh .8vw;border-radius:999px;font-size:var(--fs-xs);font-weight:700;letter-spacing:.08em}
+.why-label.lbl-why{background:rgba(91,91,214,.12);color:var(--c-indigo)}
+.why-label.lbl-pro{background:rgba(57,185,130,.14);color:#047857}
+.why-text{font-size:clamp(20px,1.72vw,27px);font-weight:700;line-height:1.42;letter-spacing:-.015em;color:var(--ink)}
+.why-text b{color:var(--c-indigo);font-weight:800}
+.pro-list{list-style:none;display:flex;flex-direction:column;gap:1.15vh;margin-top:.2vh}
+.pro-list li{font-size:var(--fs-body);line-height:1.52;color:var(--ink-2);display:grid;grid-template-columns:auto 1fr;gap:.65em;align-items:start}
+.pro-list li .pdot{width:7px;height:7px;border-radius:50%;margin-top:.52em;background:var(--c-green);flex-shrink:0}
+.pro-list li b{color:var(--ink);font-weight:700}
+
+/* P12：同层级三卡（白卡 / 蓝紫渐变 / 深墨）*/
+.tri-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6vw;align-items:stretch;min-height:0}
+.tri-card{border-radius:18px;padding:2.8vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh;min-width:0;min-height:46vh}
+.tri-card.t-white{background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.86);box-shadow:0 14px 36px -20px rgba(30,40,70,.2);color:var(--ink)}
+.tri-card.t-accent{background:var(--g-accent);color:#fff;box-shadow:0 18px 42px -18px rgba(91,91,214,.44)}
+.tri-card.t-ink{background:var(--g-ink);color:#fff;box-shadow:0 18px 42px -18px rgba(20,25,35,.45)}
+.tri-card h3{font-size:var(--fs-h2);font-weight:800;line-height:1.25}
+.tri-list{list-style:none;display:flex;flex-direction:column;gap:1.35vh;margin-top:.4vh}
+.tri-list li{font-size:var(--fs-body);line-height:1.52;display:grid;grid-template-columns:auto 1fr;gap:.65em;align-items:start}
+.tri-list li .tdot{width:6px;height:6px;border-radius:50%;margin-top:.55em;background:currentColor;opacity:.7}
+.tri-card.t-white .tri-list li{color:var(--ink-2)}
+.tri-card.t-white .tri-list li b{color:var(--ink)}
+.tri-foot{margin-top:auto;padding-top:1.4vh;border-top:1px solid currentColor;border-color:rgba(148,163,184,.28);font-size:var(--fs-sm);opacity:.86}
+.tri-card.t-accent .pill-tag,.tri-card.t-ink .pill-tag{background:rgba(255,255,255,.16);color:#fff}
+
+/* ============ 基调③：黑底设计点 ============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:4.8vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.86fr 1.14fr;gap:3.2vw;align-items:center}
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),74%);margin-bottom:2vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:26px;height:1px;background:currentColor;opacity:.75}
+.h-title{font-weight:700;font-size:min(3.1vw,5.2vh);line-height:1.18;letter-spacing:-.01em;margin-bottom:1.6vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),80%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:300}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.7;color:rgba(255,255,255,.72);max-width:42ch;margin-bottom:3vh}
+.body b{color:#fff;font-weight:600}
+.points{display:flex;flex-direction:column;gap:2.1vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1em;align-items:start}
+.point .dot{width:8px;height:8px;margin-top:.55em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),66%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:600;font-size:var(--fs-h3);color:#fff;margin-bottom:.35vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-body);line-height:1.55;color:rgba(255,255,255,.64)}
+.shot{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.45);display:flex;align-items:center;justify-content:center}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.shot-cap{position:absolute;right:14px;bottom:14px;z-index:2;padding:4px 11px;border-radius:999px;background:rgba(6,6,10,.72);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px);font-size:var(--fs-xs);color:rgba(255,255,255,.78)}
+
+/* P10 双栏副屏原生结构图（在黑底 .shot 内紧凑完整展示左聊右改）*/
+.drawer-arch{position:absolute;inset:0;padding:14px;display:grid;grid-template-columns:0.84fr 1.16fr;gap:12px;background:radial-gradient(circle at 80% 15%,rgba(54,191,162,.16),transparent 52%),#0b0e17}
+.da-col{border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);padding:10px 12px;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden}
+.da-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.da-badge{font-family:'JetBrains Mono';font-size:10px;padding:2px 7px;border-radius:999px;background:rgba(54,191,162,.2);color:#5eead4}
+.da-bubble{padding:6px 9px;border-radius:8px;background:rgba(255,255,255,.07);font-size:11px;line-height:1.38;color:rgba(255,255,255,.84)}
+.da-bubble.user{background:rgba(91,91,214,.28);border:1px solid rgba(129,140,248,.35)}
+.da-input{margin-top:auto;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-size:10.5px;color:rgba(255,255,255,.55);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.da-timeline{display:flex;flex-direction:column;gap:7px;position:relative;padding-left:14px;flex:1;justify-content:space-between;min-height:0}
+.da-timeline::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,#38bdf8,#34d399)}
+.da-stage{position:relative;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.da-stage::before{content:"";position:absolute;left:-14px;width:8px;height:8px;border-radius:50%;background:#38bdf8;border:2px solid #0b0e17}
+.da-stage.skipped{opacity:.56;border-style:dashed}
+.da-stage.ai-add{border-color:rgba(52,211,153,.55);background:rgba(52,211,153,.1)}
+.da-st-t{font-size:11.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.da-st-act{font-size:10px;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.12);color:#e2e8f0;white-space:nowrap;flex-shrink:0}
+.da-stage.ai-add .da-st-act{background:#10b981;color:#052e16;font-weight:700}
+
+/* ============ 全屏实机 Demo 页（100% × 100% 纯全屏）============ */
+.s-demo{padding:0;background:#ffffff}
+.demo-frame{width:100%;height:100%;border:0;display:block;background:#fff}
+.demo-hud{position:absolute;right:16px;bottom:14px;z-index:20;display:inline-flex;align-items:center;gap:7px;padding:4px 8px 4px 10px;border-radius:999px;background:rgba(15,23,42,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:11px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.demo-hud.show{opacity:.92;pointer-events:auto}
+.demo-hud:hover{opacity:1}
+.demo-hud .live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+.demo-hud button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:999px;padding:2px 7px;font-size:10.5px;cursor:pointer;font-family:inherit;transition:background .15s}
+.demo-hud button:hover{background:rgba(255,255,255,.28)}
+
+/* ===== 导航点 + 底部控制栏（原样保留 report-ppt-skill runtime）===== */
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.32);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.6);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.32)}
+body.on-dark .nav-dot.active{background:#fff}
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.58);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.45);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.94}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.76;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.14)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.8;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.2)}
+</style>
+</head>
+<body>
+<div id="deck">
+
+  <!-- P1 · 封面 -->
+  <section class="slide s-cover">
+    <div class="cv-bg"></div>
+    <div class="cv-content">
+      <div class="cv-top">
+        <div class="cv-huawei">ASCEND · CANN OPEN SOURCE</div>
+        <div class="cv-meta">Learning Hub · UX Redesign</div>
+      </div>
+      <div class="cv-center">
+        <div class="cv-kicker">DESIGN PROPOSAL · 2026</div>
+        <div class="cv-logo"><img src="assets/cann-dark-logo.svg" alt="CANN"></div>
+        <div class="cv-sub">CANN Learning Hub 体验改版</div>
+        <div class="cv-lead">先看清方向，再一键生成专属路径</div>
+      </div>
+      <div class="cv-bot">
+        <div class="cv-ucd"><span class="sq"></span>CANN LEARNING HUB · DESIGN REVIEW</div>
+        <div class="cv-meta">20 SLIDES · 8 LIVE DEMOS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 · 目录（4 章单行横排）-->
+  <section id="contents-directory" class="slide s-gray contents-slide" data-template="contents-directory">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
+    <div class="body-area">
+      <div class="contents-directory contents-4">
+        <article class="directory-card c1">
+          <div class="directory-no">01</div>
+          <h2 class="directory-name">场景全景</h2>
+          <div class="directory-en">User Scenarios</div>
+          <div class="directory-note">四类真实开发者如何进入学习中心</div>
+        </article>
+        <article class="directory-card c2">
+          <div class="directory-no">02</div>
+          <h2 class="directory-name">首页主线</h2>
+          <div class="directory-en">Core Home Journeys</div>
+          <div class="directory-note">对话共创 · 规则识别 · 连线探索 · 方向与通道</div>
+        </article>
+        <article class="directory-card c3">
+          <div class="directory-no">03</div>
+          <h2 class="directory-name">支线场景</h2>
+          <div class="directory-en">Extended Tab Scenarios</div>
+          <div class="directory-note">学习路径 · 课程体系 · 高校赛事 · 技术博客</div>
+        </article>
+        <article class="directory-card c4">
+          <div class="directory-no">04</div>
+          <h2 class="directory-name">边界演进</h2>
+          <div class="directory-en">Scope &amp; Roadmap</div>
+          <div class="directory-note">全站职责边界、P0 闭环与 P1 规划</div>
+        </article>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · DESIGN PROPOSAL</span><span>02 / 20</span></div>
+  </section>
+
+  <!-- P3 · 讲解 1：四类真实用户场景总览（严格对应首页从上到下的视觉动线）-->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">顺着首页从上到下，承接四类真实开发者场景</span></div>
+        <div class="subttl">01 场景全景 · 叙事顺序与界面楼层一一对应</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span class="active">01 场景全景</span><span>02 首页主线</span><span>03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="scenes-grid">
+        <article class="scene-card">
+          <div class="scene-img"><img src="assets/scene-2-chat.jpg" alt="场景1：通过 AI 对话生成并微调学习路径"></div>
+          <div class="scene-body">
+            <span class="pill-tag pill-blue">场景 01 · 会提需求</span>
+            <div class="scene-t">首屏 AI 对话，一句话生成课表</div>
+            <div class="scene-q">“我不会 C++，能用 Python 写算子吗？”</div>
+            <div class="scene-go">→ 首屏 AI 输入框 + 右侧双栏共创</div>
+          </div>
+        </article>
+
+        <article class="scene-card">
+          <div class="scene-img"><img src="assets/scene-3-project.svg" alt="场景2：直接拖入项目规则文件识别路径"></div>
+          <div class="scene-body">
+            <span class="pill-tag pill-teal">场景 02 · 带着项目来</span>
+            <div class="scene-t">懒得口述背景，直接丢入文件</div>
+            <div class="scene-q">“仓库里的 README 和依赖都在这，你直接看吧。”</div>
+            <div class="scene-go">→ 输入框 + 上传 / 拖拽规则识别</div>
+          </div>
+        </article>
+
+        <article class="scene-card">
+          <div class="scene-img"><img src="assets/scene-4-explore.jpg" alt="场景3：通过连线探索理清技术分支"></div>
+          <div class="scene-body">
+            <span class="pill-tag pill-green">场景 03 · 不确定怎么问</span>
+            <div class="scene-t">先用连线探索看清技术关联</div>
+            <div class="scene-q">“听说要学算子，但下面到底有哪些分支？”</div>
+            <div class="scene-go">→ 首页知识地图焦点连线</div>
+          </div>
+        </article>
+
+        <article class="scene-card">
+          <div class="scene-img"><img src="assets/scene-1-goal.jpg" alt="场景4：目标明确的开发者与高校教师"></div>
+          <div class="scene-body">
+            <span class="pill-tag pill-indigo">场景 04 · 目标明确</span>
+            <div class="scene-t">直奔五大技术主线或专项通道</div>
+            <div class="scene-q">“我就想系统学推理，或者按 16 周开课备赛。”</div>
+            <div class="scene-go">→ 五大主线卡片 &amp; 专项学习通道</div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · 4 REAL DEVELOPER SCENARIOS</span><span>03 / 20</span></div>
+  </section>
+
+  <!-- P4 · 主线 1 讲解：首屏 AI 对话 + 右侧双栏共创课表 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-2-chat.jpg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">首屏输入需求，右侧双栏边聊边改专属课表</span></div>
+        <div class="subttl">02 首页主线 · 场景 01 会提需求型开发者</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span class="active">02 首页主线</span><span>03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">多阶段学习路径如果直接摊在首页，<b>既撑破页面又没法边看边改</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>不打断首页浏览</b>：所有生成入口统一右侧滑出，用完即收。</span></li>
+            <li><span class="pdot"></span><span><b>边聊边改且自动留存</b>：追问微调、跳过已掌握阶段，并自动本地保存，支持一键导出课表。</span></li>
+            <li><span class="pdot"></span><span><b>跨页与多路径随时切换</b>：副屏内一键切换历史路线，查完博客或目录随时拉出对照。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · CORE JOURNEY 01</span><span>04 / 20</span></div>
+  </section>
+
+  <!-- P5 · 主线 1 全屏 Demo -->
+  <section class="slide s-demo" data-demo="drawer">
+    <iframe class="demo-frame" data-src="index.html?demo=drawer" title="全屏 Demo 1：右侧双栏路径共创"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 01 · 右侧双栏路径共创与本地保存</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P6 · 主线 2 讲解：丢入项目文件直接识别路径 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-3-project.svg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">直接丢入项目文件识别路径，省去重复口述工程背景</span></div>
+        <div class="subttl">02 首页主线 · 场景 02 项目任务驱动型开发者</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span class="active">02 首页主线</span><span>03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">手里已有代码仓库的开发者，<b>最烦把框架、版本和限制条件再口述一遍</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>省去反复打字解释</b>：直接丢入项目 README 或规则文件，一步给出路线。</span></li>
+            <li><span class="pdot"></span><span><b>贴合真实工程约束</b>：按实际依赖与限制排课，不推用不上的泛泛内容。</span></li>
+            <li><span class="pdot"></span><span><b>零门槛随手体验</b>：本地解析无隐私顾虑，同时提供示例文件一键试用。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · CORE JOURNEY 02</span><span>06 / 20</span></div>
+  </section>
+
+  <!-- P7 · 主线 2 全屏 Demo -->
+  <section class="slide s-demo" data-demo="rule">
+    <iframe class="demo-frame" data-src="index.html?demo=rule" title="全屏 Demo 2：项目规则上传与识别"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 02 · 项目规则一键示例识别</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P8 · 主线 3 讲解：焦点连线探索 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-4-explore.jpg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">用焦点连线探索替代全量目录，帮新人先理清线索</span></div>
+        <div class="subttl">02 首页主线 · 场景 03 探索发散型开发者</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span class="active">02 首页主线</span><span>03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">两百多节课摊成目录只会劝退新人，<b>他们连怎么向 AI 提问都不确定</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>一眼看清技术关联</b>：只聚焦当下方向与相关分支，告别满屏无关信息干扰。</span></li>
+            <li><span class="pdot"></span><span><b>点选连线替代打字</b>：顺着好奇心点两下就能拼出明确的学习线索。</span></li>
+            <li><span class="pdot"></span><span><b>与课程体系各司其职</b>：画布负责理清线索，配课交给副屏，查全量单课交给课程体系。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · CORE JOURNEY 03</span><span>08 / 20</span></div>
+  </section>
+
+  <!-- P9 · 主线 3 全屏 Demo -->
+  <section class="slide s-demo" data-demo="explore">
+    <iframe class="demo-frame" data-src="index.html?demo=explore" title="全屏 Demo 3：焦点聚光连线探索"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 03 · 焦点聚光连线探索</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P10 · 主线 4 讲解：五大技术主线与下方专项角色通道 -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/scene-1-goal.jpg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">首页到底是角色做主角，还是技术方向做主角？</span></div>
+        <div class="subttl">02 首页主线 · 场景 04 目标明确型开发者</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span class="active">02 首页主线</span><span>03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">为什么要这样设计</span>
+          <div class="why-text">开发者进来通常是<b>带着具体技术问题找的</b>，硬按职业角色切大卡片反而制造选择犹豫。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>五大主线直接平铺</b>：紧接知识地图之后独立成层，目标明确者一眼看清学时与难度。</span></li>
+            <li><span class="pdot"></span><span><b>角色退为下方专项通道</b>：仅保留新手、高校教师、备赛三类链路完全不同的轻量入口。</span></li>
+            <li><span class="pdot"></span><span><b>主次顺序言行一致</b>：方向永远在角色之上，不让职业标签抢占核心视觉。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · CORE JOURNEY 04</span><span>10 / 20</span></div>
+  </section>
+
+  <!-- P11 · 主线 4 全屏 Demo -->
+  <section class="slide s-demo" data-demo="mainlines">
+    <iframe class="demo-frame" data-src="index.html?demo=mainlines" title="全屏 Demo 4：五大核心技术主线与专项学习通道"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 04 · 五大核心技术主线 + 下方专项通道</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P12 · 支线 1 讲解：「学习路径」Tab -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/branch-paths.svg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">「学习路径」Tab：方向主线 + 时间周期双视角选课</span></div>
+        <div class="subttl">03 支线场景 · 承接目标明确或有固定时间预算的开发者</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span>02 首页主线</span><span class="active">03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">设计动机</span>
+          <div class="why-text">不少开发者进站时<b>已经明确技术方向，或者只有固定的 2 天、1 周、16 周学习窗口</b>，不需要经过 AI 探索。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>三视角统一收口</b>：按 5 条主线、学习周期（2 天～16 周）以及「我的定制路径」集中回看。</span></li>
+            <li><span class="pdot"></span><span><b>学时与难度透明</b>：每条路径清晰标注预计耗时、前置基础与阶段产出，便于排期。</span></li>
+            <li><span class="pdot"></span><span><b>去 Banner 直入工作区</b>：切入其余 4 个 Tab 自动隐藏首页大 Banner，首屏直接展示筛选与选课区。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · TAB 2 LEARNING PATHS</span><span>12 / 20</span></div>
+  </section>
+
+  <!-- P13 · 支线 1 全屏 Demo：「学习路径」Tab -->
+  <section class="slide s-demo" data-demo="paths">
+    <iframe class="demo-frame" data-src="index.html?demo=paths" title="全屏 Demo 5：学习路径 Tab"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 05 · 「学习路径」双视角选课</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P14 · 支线 2 讲解：「课程体系」Tab -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/branch-map.svg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">「课程体系」Tab：4 层架构树 + 单领域工作台，精准查课</span></div>
+        <div class="subttl">03 支线场景 · 承接查阅完整架构与直达具体单节课程的需求</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span>02 首页主线</span><span class="active">03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">设计动机</span>
+          <div class="why-text">AI 生成路径精选的是核心主干，但资深开发者与查文档用户<b>依然需要按 12 大领域查阅完整架构，并直达具体课时</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>左树右详情工作台</b>：左侧 4 大架构层用彩色图标区分，选定领域后右侧展开真实 .ipynb 课时清单与一键生成路径。</span></li>
+            <li><span class="pdot"></span><span><b>按资源类型快速过滤</b>：支持在原子课程、参考资料与实践案例间一键筛选，直达 GitCode 源码。</span></li>
+            <li><span class="pdot"></span><span><b>配合顶栏全局搜索</b>：知道具体知识点名称时，按 ⌘K 即可跨全站秒级定位单课。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · TAB 3 COURSE CATALOG</span><span>14 / 20</span></div>
+  </section>
+
+  <!-- P15 · 支线 2 全屏 Demo：「课程体系」Tab -->
+  <section class="slide s-demo" data-demo="map">
+    <iframe class="demo-frame" data-src="index.html?demo=map" title="全屏 Demo 6：课程体系 Tab"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 06 · 「课程体系」12 大领域全量目录</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P16 · 支线 3 讲解：「高校与赛事」Tab -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/branch-academia.svg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">「高校与赛事」Tab：教学开课与刷题评测独立成区</span></div>
+        <div class="subttl">03 支线场景 · 承接高校教师开课与学生备赛认证闭环</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span>02 首页主线</span><span class="active">03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">设计动机</span>
+          <div class="why-text">高校教师备课、申请算力与学生参加昇腾赛事刷题，<b>链路完全不同于日常研发查资料</b>，混在通用目录里极难查找。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>高校开课一站配齐</b>：集中展示 16 周常态课、13 门高校共建课案例与配套 PPTX 课件。</span></li>
+            <li><span class="pdot"></span><span><b>备赛评测直连实战</b>：无缝衔接 CANNJudge 在线算子评测与等级认证，形成“学—练—测”闭环。</span></li>
+            <li><span class="pdot"></span><span><b>与首页专项通道打通</b>：首页点击「高校教师 / 备赛考证」直接落到对应子模块。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · TAB 4 ACADEMIA &amp; COMPETITION</span><span>16 / 20</span></div>
+  </section>
+
+  <!-- P17 · 支线 3 全屏 Demo：「高校与赛事」Tab -->
+  <section class="slide s-demo" data-demo="academia">
+    <iframe class="demo-frame" data-src="index.html?demo=academia" title="全屏 Demo 7：高校与赛事 Tab"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 07 · 「高校与赛事」教学与评测专区</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P18 · 支线 4 讲解：「技术博客」Tab -->
+  <section class="slide s-gray s-why">
+    <div class="why-bg"><img src="assets/branch-blogs.svg" alt=""></div>
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">「技术博客」Tab：直通 54 篇前沿特性与客户实战案例</span></div>
+        <div class="subttl">03 支线场景 · 补齐从“系统学课”到“真实落地”的最后一公里</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span>02 首页主线</span><span class="active">03 支线场景</span><span>04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="why-copy">
+        <div class="why-block">
+          <span class="why-label lbl-why">设计动机</span>
+          <div class="why-text">标准课程解决“系统入门”，但开发者落地项目时<b>更关心最新特性更新、性能调优技巧和真实客户踩坑经验</b>。</div>
+        </div>
+        <div class="why-block">
+          <span class="why-label lbl-pro">这样设计的优点</span>
+          <ul class="pro-list">
+            <li><span class="pdot"></span><span><b>学课与前沿动态打通</b>：按算子、推理、训练等分类聚合 54 篇深度文章，支持关键词即时检索。</span></li>
+            <li><span class="pdot"></span><span><b>随时与当前课表联动</b>：看博客遇到前置概念盲区，点顶栏胶囊即可拉出右侧学习路径对照补课。</span></li>
+            <li><span class="pdot"></span><span><b>持续保持社区活跃度</b>：让学习中心从静态教程站升级为常来常新的技术阵地。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · TAB 5 TECH BLOGS</span><span>18 / 20</span></div>
+  </section>
+
+  <!-- P19 · 支线 4 全屏 Demo：「技术博客」Tab -->
+  <section class="slide s-demo" data-demo="blogs">
+    <iframe class="demo-frame" data-src="index.html?demo=blogs" title="全屏 Demo 8：技术博客 Tab"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 08 · 「技术博客」54 篇实战案例</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
+    </div>
+  </section>
+
+  <!-- P20 · 边界与演进（§17 同层级三卡）-->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">全站职责清晰解耦，P0 跑通闭环、P1 持续演进</span></div>
+        <div class="subttl">04 边界演进 · 三段式分工与迭代路线</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 场景全景</span><span>02 首页主线</span><span>03 支线场景</span><span class="active">04 边界演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="tri-grid">
+        <article class="tri-card t-white">
+          <span class="pill-tag pill-neutral">清晰边界</span>
+          <h3>全站各司其职</h3>
+          <ul class="tri-list">
+            <li><span class="tdot"></span><span>首页画布：理清方向与场景线索</span></li>
+            <li><span class="tdot"></span><span>右侧副屏：跨目录生成专属课表</span></li>
+            <li><span class="tdot"></span><span>其余四 Tab：路径、目录、教学与博客</span></li>
+          </ul>
+          <div class="tri-foot">不做重画布，不堆伪角色卡</div>
+        </article>
+
+        <article class="tri-card t-accent">
+          <span class="pill-tag">P0 · 已落地</span>
+          <h3>三大高频闭环</h3>
+          <ul class="tri-list">
+            <li><span class="tdot"></span><span>项目规则本地识别</span></li>
+            <li><span class="tdot"></span><span>焦点聚光连线探索</span></li>
+            <li><span class="tdot"></span><span>右侧双栏路径共创</span></li>
+          </ul>
+          <div class="tri-foot">已完成联调与线上部署</div>
+        </article>
+
+        <article class="tri-card t-ink">
+          <span class="pill-tag">P1 · 下阶段</span>
+          <h3>从找课到解难</h3>
+          <ul class="tri-list">
+            <li><span class="tdot"></span><span>报错日志反推补课路径</span></li>
+            <li><span class="tdot"></span><span>第一课交互参数微沙箱</span></li>
+            <li><span class="tdot"></span><span>联动云端算力与题库</span></li>
+          </ul>
+          <div class="tri-foot">探索 → 学课 → 调优 → 评测</div>
+        </article>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · SCOPE &amp; ROADMAP</span><span>20 / 20</span></div>
+  </section>
+
+</div>
+
+<nav class="nav-dots" id="navDots"></nav>
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 12</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+
+/* 黑底设计点三章差异化光晕（一章一色）*/
+const chapters={
+  '1':{h:234,gap:52,sat:92,light:42,spread:36,cint:66,wint:54},
+  '2':{h:198,gap:44,sat:90,light:42,spread:36,cint:66,wint:52},
+  '3':{h:162,gap:42,sat:84,light:40,spread:36,cint:62,wint:50}
+};
+function paintSlide(s){
+  const c=chapters[s.dataset.chapter]; if(!c)return;
+  s.style.setProperty('--glow-h',c.h); s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%'); s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread); s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));
+}
+
+/* 懒加载全屏 Demo iframe（仅加载当前页及相邻 ±1 页，顺滑零白屏）*/
+function lazyFrames(center){
+  slides.forEach((s,i)=>{
+    const f=s.querySelector('iframe.demo-frame');
+    if(!f)return;
+    if(Math.abs(i-center)<=1 && !f.getAttribute('src') && f.dataset.src){
+      f.src=f.dataset.src;
+    }
+  });
+}
+function resetDemoFrame(btn){
+  const slide=btn.closest('.slide');
+  const f=slide && slide.querySelector('iframe.demo-frame');
+  if(f && f.dataset.src){ f.src=f.dataset.src; }
+}
+
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  lazyFrames(idx);
+  try{ history.replaceState(null,'','#p='+(idx+1)); }catch(e){}
+}
+
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){
+  if(document.body.classList.contains('overview'))return;
+  const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 接收全屏 Demo iframe 转发的键盘、滚轮与鼠标边界事件，确保翻页与控制栏始终丝滑 */
+let iframeWheelLock=false;
+window.addEventListener('message',e=>{
+  const d=e.data; if(!d||typeof d!=='object')return;
+  if(d.__deckKey){
+    if(['ArrowDown','PageDown'].includes(d.__deckKey)) next();
+    else if(['ArrowUp','PageUp'].includes(d.__deckKey)) prev();
+    else if(d.__deckKey==='o'||d.__deckKey==='O') toggleOverview();
+    else if(d.__deckKey==='f'||d.__deckKey==='F') toggleFullscreen();
+  }
+  if(d.__deckMouse){
+    const nearBot=d.__deckMouse.y > d.__deckMouse.h - 110;
+    controls.classList.toggle('show', nearBot);
+    document.querySelectorAll('.demo-hud').forEach(h=>h.classList.toggle('show', nearBot));
+    navDots.classList.toggle('show', d.__deckMouse.x > d.__deckMouse.w - 110);
+  }
+  if(typeof d.__deckWheel==='number'){
+    if(document.body.classList.contains('overview')||iframeWheelLock||Math.abs(d.__deckWheel)<12)return;
+    iframeWheelLock=true; setTimeout(()=>iframeWheelLock=false,650);
+    if(d.__deckWheel>0) next(); else prev();
+  }
+});
+
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+function applyOverviewScale(){
+  if(!document.body.classList.contains('overview'))return;
+  const cellW=slides[0].getBoundingClientRect().width, scale=cellW/window.innerWidth;
+  slides.forEach(s=>{
+    s.style.height=(window.innerHeight*scale)+'px';
+    const inner=s.querySelector(':scope>.slide-inner');
+    if(inner)inner.style.transform='scale('+scale+')';
+  });
+}
+function enterOverview(){
+  slides.forEach(s=>{
+    const f=s.querySelector('iframe.demo-frame');
+    if(f && !f.getAttribute('src') && f.dataset.src) f.src=f.dataset.src;
+    if(!s.querySelector(':scope>.slide-inner')){
+      const w=document.createElement('div'); w.className='slide-inner';
+      while(s.firstChild) w.appendChild(s.firstChild);
+      s.appendChild(w);
+    }
+  });
+  document.body.classList.add('overview');
+  requestAnimationFrame(applyOverviewScale);
+}
+function exitOverview(){
+  slides.forEach(s=>{
+    const w=s.querySelector(':scope>.slide-inner');
+    if(w){ while(w.firstChild) s.insertBefore(w.firstChild,w); w.remove(); }
+    s.style.height='';
+  });
+  document.body.classList.remove('overview');
+  balanceHeads();
+  if(CTRL){ setActive(idx); } else setTimeout(()=>slides[idx].scrollIntoView({block:'start',behavior:'auto'}),20);
+}
+function toggleOverview(){ document.body.classList.contains('overview')?exitOverview():enterOverview(); }
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{
+  if(!document.body.classList.contains('overview'))return;
+  const sl=e.target.closest('.slide');
+  if(sl){ const i=slides.indexOf(sl); if(i>=0){ idx=i; exitOverview(); } }
+});
+addEventListener('resize',()=>{ if(document.body.classList.contains('overview'))applyOverviewScale(); else reanchor(); balanceHeads(); });
+
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+document.addEventListener('mousemove',e=>{
+  const nearBot=e.clientY > window.innerHeight - 120;
+  controls.classList.toggle('show', nearBot);
+  document.querySelectorAll('.demo-hud').forEach(h=>h.classList.toggle('show', nearBot));
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); document.querySelectorAll('.demo-hud').forEach(h=>h.classList.remove('show')); });
+
+slides.forEach(paintSlide);
+const hashMatch=location.hash.match(/p=(\d+)/);
+const startIdx=hashMatch ? Math.max(0,Math.min(slides.length-1,parseInt(hashMatch[1],10)-1)) : 0;
+updateCurrent(startIdx);
+if(CTRL) setActive(startIdx);
+else if(startIdx>0) slides[startIdx].scrollIntoView({block:'start',behavior:'auto'});
+else window.scrollTo(0,0);
+</script>
+</body>
+</html>

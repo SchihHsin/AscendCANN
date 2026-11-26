@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="bgA" x1="0" y1="0" x2="800" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f7f9fc"/><stop offset="100%" stop-color="#eef2f8"/>
+    </linearGradient>
+    <filter id="shA" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#1e293b" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#bgA)"/>
+  <!-- Split Academia (Course Syllabus + Graduation Cap) & Competition (Judge + Trophy) -->
+  <g filter="url(#shA)">
+    <rect x="210" y="84" width="234" height="332" rx="18" fill="#ffffff"/>
+    <!-- Graduation cap graphic -->
+    <rect x="238" y="114" width="52" height="52" rx="14" fill="#f5f3ff"/>
+    <path d="M264 128 L282 137 L264 146 L246 137 Z" fill="#7c3aed"/>
+    <path d="M253 142 L253 152 C258 156 270 156 275 152 L275 142" stroke="#7c3aed" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="238" y="186" width="120" height="10" rx="5" fill="#1e293b"/>
+    <rect x="238" y="208" width="174" height="6" rx="3" fill="#94a3b8"/>
+    <rect x="238" y="222" width="146" height="6" rx="3" fill="#cbd5e1"/>
+    <!-- Syllabus bars -->
+    <rect x="238" y="254" width="178" height="34" rx="9" fill="#f8fafc" stroke="#e2e8f0"/>
+    <rect x="252" y="267" width="94" height="7" rx="3.5" fill="#7c3aed"/>
+    <rect x="238" y="298" width="178" height="34" rx="9" fill="#f8fafc" stroke="#e2e8f0"/>
+    <rect x="252" y="311" width="114" height="7" rx="3.5" fill="#5b5bd6"/>
+    <rect x="238" y="342" width="178" height="34" rx="9" fill="#f5f3ff"/>
+    <rect x="252" y="355" width="84" height="7" rx="3.5" fill="#4c1d95"/>
+
+    <!-- Right card: Competition & CANNJudge -->
+    <rect x="466" y="84" width="234" height="332" rx="18" fill="#ffffff"/>
+    <rect x="494" y="114" width="52" height="52" rx="14" fill="#fff7ed"/>
+    <!-- Trophy graphic -->
+    <path d="M510 128 H530 V140 C530 146 525 150 520 150 C515 150 510 146 510 140 Z" fill="#ea580c"/>
+    <path d="M520 150 V156 M513 156 H527" stroke="#ea580c" stroke-width="2.6" stroke-linecap="round"/>
+    <rect x="494" y="186" width="132" height="10" rx="5" fill="#1e293b"/>
+    <rect x="494" y="208" width="168" height="6" rx="3" fill="#94a3b8"/>
+    <rect x="494" y="222" width="142" height="6" rx="3" fill="#cbd5e1"/>
+    <!-- Online judge score meter -->
+    <rect x="494" y="254" width="178" height="62" rx="11" fill="#ecfdf5"/>
+    <circle cx="518" cy="285" r="12" fill="#10b981"/>
+    <path d="M513 285 L517 289 L524 281" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="540" y="274" width="106" height="8" rx="4" fill="#065f46"/>
+    <rect x="540" y="290" width="76" height="6" rx="3" fill="#34d399"/>
+    <rect x="494" y="330" width="178" height="46" rx="11" fill="#22262f"/>
+    <rect x="518" y="349" width="130" height="8" rx="4" fill="#ffffff" opacity="0.9"/>
+  </g>
+</svg>

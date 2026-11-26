@@ -1,0 +1,805 @@
+{
+ "tree": [
+  {
+   "type": "tree",
+   "name": ".gitcode",
+   "path": ".gitcode",
+   "mode": "040000",
+   "sha": "3085d9e36eaaa4e69d0bfde9a1b6e888daed2c59",
+   "md5": "712bba9fdc191734f2397facfdc44328"
+  },
+  {
+   "type": "tree",
+   "name": "ISSUE_TEMPLATE",
+   "path": ".gitcode/ISSUE_TEMPLATE",
+   "mode": "040000",
+   "sha": "2dcab09a95cfbfddc3c9f789a01aa31b1d20fc25",
+   "md5": "e16793dc12dc17e5958c67074913c3ad"
+  },
+  {
+   "type": "tree",
+   "name": "workflows",
+   "path": ".gitcode/workflows",
+   "mode": "040000",
+   "sha": "d7cc7a1a1c632adbbf1bfba40261dddcb0a85e28",
+   "md5": "22c2ea52020f88f4a5036cf93ee6378c"
+  },
+  {
+   "type": "tree",
+   "name": "blogs",
+   "path": "blogs",
+   "mode": "040000",
+   "sha": "b7e5d35a5cc13475aa86d713110a99bbef640493",
+   "md5": "51704a6cacf71c8d5211445d9e80515f"
+  },
+  {
+   "type": "tree",
+   "name": "inference",
+   "path": "blogs/inference",
+   "mode": "040000",
+   "sha": "f644d2ac00d2877db6da07a86a6552ee4755a50b",
+   "md5": "dbea1062554c44eab0e62986f75a553d"
+  },
+  {
+   "type": "tree",
+   "name": "aot_superkernel_graph_execution",
+   "path": "blogs/inference/aot_superkernel_graph_execution",
+   "mode": "040000",
+   "sha": "48b5880066c51ab1b6e472100bdab9d84851c1a1",
+   "md5": "72daf9010febb9b5cafbcb525cd1b7ff"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/aot_superkernel_graph_execution/images",
+   "mode": "040000",
+   "sha": "96d3ccac6752ccf2284011ef8fe294b6d13b9605",
+   "md5": "adbfe9be4d2fd2daa5167f78b636797f"
+  },
+  {
+   "type": "tree",
+   "name": "autofuse_torchinductor_deepseek_fusion",
+   "path": "blogs/inference/autofuse_torchinductor_deepseek_fusion",
+   "mode": "040000",
+   "sha": "168ccd1cbe62bd5a4de0280be5fbb991849b3017",
+   "md5": "85b225db296b0255721c0b2d93628fbf"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/autofuse_torchinductor_deepseek_fusion/images",
+   "mode": "040000",
+   "sha": "cf19b20b191228d02b1a063ed2246f55f2369665",
+   "md5": "3b930189cfa7d0c8d2918d17609f5552"
+  },
+  {
+   "type": "tree",
+   "name": "deepseek_r1_superpod_inference_optimization",
+   "path": "blogs/inference/deepseek_r1_superpod_inference_optimization",
+   "mode": "040000",
+   "sha": "4748f03fbea70c3c63e2a54e1677eda081349f3b",
+   "md5": "0b7325d3aee675fe573ff94f0d6520a4"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/deepseek_r1_superpod_inference_optimization/images",
+   "mode": "040000",
+   "sha": "46e8e5cc2a7f91a1bd30378946d849172b2149cd",
+   "md5": "b260b27d58d657c01985535f1a95e261"
+  },
+  {
+   "type": "tree",
+   "name": "deepseek_v4_npu_inference_optimization",
+   "path": "blogs/inference/deepseek_v4_npu_inference_optimization",
+   "mode": "040000",
+   "sha": "a7a26da4dfef680fbdc772285d465a91fa993669",
+   "md5": "26e2e22d096628ba80a782021e1836fb"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/deepseek_v4_npu_inference_optimization/images",
+   "mode": "040000",
+   "sha": "b4509444e42ba1dd0dab49f49f4e45d36b92f0ce",
+   "md5": "4daddfaddeb751b8162f33a71e3b72d8"
+  },
+  {
+   "type": "tree",
+   "name": "deepseek_v4_supernode_support",
+   "path": "blogs/inference/deepseek_v4_supernode_support",
+   "mode": "040000",
+   "sha": "249c0c9cccd32403c4e2e6e70f2d544e5f46d2a9",
+   "md5": "25aee7620bcb35014daf038524c732fd"
+  },
+  {
+   "type": "tree",
+   "name": "hixl_fabricmem_kv_cache_transfer",
+   "path": "blogs/inference/hixl_fabricmem_kv_cache_transfer",
+   "mode": "040000",
+   "sha": "aecdd90cbf369f3520d4d9825d5b61ef0f9af103",
+   "md5": "a04f52db8107d26baa420b23bebd007c"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/hixl_fabricmem_kv_cache_transfer/images",
+   "mode": "040000",
+   "sha": "bf0597ff179c1a9cbf0bd636716ea65b3e6c3a63",
+   "md5": "68e23f65af1431f66154d1b71cb40aaf"
+  },
+  {
+   "type": "tree",
+   "name": "hixl_mooncake_vllm_kv_cache_pooling",
+   "path": "blogs/inference/hixl_mooncake_vllm_kv_cache_pooling",
+   "mode": "040000",
+   "sha": "3edefc95dfd9da211d63ebb521dc8488f9587802",
+   "md5": "0a633bb9c489460fac445aa5d9a0e499"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/hixl_mooncake_vllm_kv_cache_pooling/images",
+   "mode": "040000",
+   "sha": "9c25c7725d2ef64f227773c5bd7529a4465afd5c",
+   "md5": "97b281d28a9fd367f0fb99ec0740a638"
+  },
+  {
+   "type": "tree",
+   "name": "hixl_nixl_ascend_backend",
+   "path": "blogs/inference/hixl_nixl_ascend_backend",
+   "mode": "040000",
+   "sha": "1fa4769e9526d8d89762709a48cb6cdbe951df7b",
+   "md5": "d5ed5967a080f36bd6f1e1b6d9787725"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/hixl_nixl_ascend_backend/images",
+   "mode": "040000",
+   "sha": "39cae4c7b29df71225453da065c8abad68064bcb",
+   "md5": "20a05407ef0017c112cc7ca3001461cc"
+  },
+  {
+   "type": "tree",
+   "name": "hixl_rl_tail_latency_optimization",
+   "path": "blogs/inference/hixl_rl_tail_latency_optimization",
+   "mode": "040000",
+   "sha": "247313f892d1ce2595716f73882b8d510cf5908d",
+   "md5": "fcfa5b2ac8fcd2038c5494dbb49a86cf"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/hixl_rl_tail_latency_optimization/images",
+   "mode": "040000",
+   "sha": "bd0c4eaf9b91922e9c195b2a98578f69b1de07e6",
+   "md5": "d13ca4db71b22e7bd249f0ed8faec9ec"
+  },
+  {
+   "type": "tree",
+   "name": "longcat_flash_lite_inference_optimization",
+   "path": "blogs/inference/longcat_flash_lite_inference_optimization",
+   "mode": "040000",
+   "sha": "16ea926153ea7583446bb55a793ab10c6ee3f537",
+   "md5": "e6204b89d98a040bc83ba65258936e07"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/longcat_flash_lite_inference_optimization/images",
+   "mode": "040000",
+   "sha": "9c803d19001eb9005a77b5702233b6cc1431f238",
+   "md5": "e7dacddedc38755dd9d90b6993c8c210"
+  },
+  {
+   "type": "tree",
+   "name": "longcat_flash_superpod_inference_optimization",
+   "path": "blogs/inference/longcat_flash_superpod_inference_optimization",
+   "mode": "040000",
+   "sha": "6db729456410596a568d23411a784985611dab00",
+   "md5": "a842e1fa5f4d98479d8fac0782927a8a"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/longcat_flash_superpod_inference_optimization/images",
+   "mode": "040000",
+   "sha": "c2b8fa15772e11e5f84c637daf1ab1287f3b57ba",
+   "md5": "e6ba2ddfcb2651d61f0286b7676befe3"
+  },
+  {
+   "type": "tree",
+   "name": "npugraph_ex_aclgraph_graph_mode",
+   "path": "blogs/inference/npugraph_ex_aclgraph_graph_mode",
+   "mode": "040000",
+   "sha": "d316b5e9445e40fbaed9cb4f7fbd7f9c83f7b559",
+   "md5": "e25f8fc14f15ee9d3465cf7b29868254"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/npugraph_ex_aclgraph_graph_mode/images",
+   "mode": "040000",
+   "sha": "a8b60eeb4314525fb7a8422942578a410b031cc7",
+   "md5": "dc4fda77a59dbde9bb5ba90680ed9598"
+  },
+  {
+   "type": "tree",
+   "name": "npugraph_ex_third_party_framework_integration",
+   "path": "blogs/inference/npugraph_ex_third_party_framework_integration",
+   "mode": "040000",
+   "sha": "89807171b58d71afb75331c0f5fad7fe520ff96c",
+   "md5": "f9362ff3a4e47332ba24581d9d506816"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/npugraph_ex_third_party_framework_integration/images",
+   "mode": "040000",
+   "sha": "850dcc58c87ff1ee6fb1e8be27b46183ab8a3766",
+   "md5": "747cc3bd022e58ea4edd2ff1e7247783"
+  },
+  {
+   "type": "tree",
+   "name": "practice",
+   "path": "blogs/inference/npugraph_ex_third_party_framework_integration/practice",
+   "mode": "040000",
+   "sha": "0d729068dfaed85421f44bdb4f4ee5aa9f3691df",
+   "md5": "8e858424b61e5680520f8e4ef27307e3"
+  },
+  {
+   "type": "tree",
+   "name": "overlap_scheduling_throughput_optimization",
+   "path": "blogs/inference/overlap_scheduling_throughput_optimization",
+   "mode": "040000",
+   "sha": "31907f021bb2e7caa861f7467e49b9a32579fd81",
+   "md5": "e655c93f507126406cd8c70dfeeda788"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/overlap_scheduling_throughput_optimization/images",
+   "mode": "040000",
+   "sha": "6783bfbb400a1e88a948c0aabb8f017e48e0fd79",
+   "md5": "8613159116de52e5a8c73791d024b6c0"
+  },
+  {
+   "type": "tree",
+   "name": "sals_long_sequence_inference",
+   "path": "blogs/inference/sals_long_sequence_inference",
+   "mode": "040000",
+   "sha": "d4b2ee88fb921734686fc6b22f524d90fb9c1f77",
+   "md5": "6924a5590e5adc87ecb3a8148c4d1f17"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/sals_long_sequence_inference/images",
+   "mode": "040000",
+   "sha": "57ed18cabfdfd580eee045de242c420104463a52",
+   "md5": "6a227a7f49c4d66c2ad84f9f74e94855"
+  },
+  {
+   "type": "tree",
+   "name": "sglang_mooncake_hixl_pd_separation_d2d",
+   "path": "blogs/inference/sglang_mooncake_hixl_pd_separation_d2d",
+   "mode": "040000",
+   "sha": "d0e4a21e84115f09f812f94ed811b5d07cea642e",
+   "md5": "c7062f785ff5536ef00c4c73e96f34c5"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/sglang_mooncake_hixl_pd_separation_d2d/images",
+   "mode": "040000",
+   "sha": "a9253fd45d2e2e695c9f8cdd9f1c8f81ef6486e4",
+   "md5": "2fbb2c245c2d00903f5363814a4b53a7"
+  },
+  {
+   "type": "tree",
+   "name": "spark_model_cluster_throughput_optimization",
+   "path": "blogs/inference/spark_model_cluster_throughput_optimization",
+   "mode": "040000",
+   "sha": "376b3c1ea6afe220c5b8c0e045cd28f0f3e72f5b",
+   "md5": "4d61523ac0b8c9e4671b75309a0efff4"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/spark_model_cluster_throughput_optimization/images",
+   "mode": "040000",
+   "sha": "f89bf243459fd137e3db9756658b132e89b874d4",
+   "md5": "aece33c5460ca9bdcf370a02c0e6f259"
+  },
+  {
+   "type": "tree",
+   "name": "superkernel_inference_acceleration",
+   "path": "blogs/inference/superkernel_inference_acceleration",
+   "mode": "040000",
+   "sha": "da1e2b9535c2e4f0af757d631071d0f809e3a537",
+   "md5": "f89ae90b950fdbf038825336189cb3ea"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/superkernel_inference_acceleration/images",
+   "mode": "040000",
+   "sha": "c2095fff48a8808b9913e6e5cefa3264ab4377af",
+   "md5": "93e3e985b5325bd7a3ee9cf9bd31cba6"
+  },
+  {
+   "type": "tree",
+   "name": "tensorflow_autofuse_recommendation_fusion",
+   "path": "blogs/inference/tensorflow_autofuse_recommendation_fusion",
+   "mode": "040000",
+   "sha": "34bf2f87317009806c0b2dc779969430f570a492",
+   "md5": "1d10adf33c14edc4c572e2b33b380e0d"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/tensorflow_autofuse_recommendation_fusion/images",
+   "mode": "040000",
+   "sha": "19b30174289fdf5eae22382571e764f680335af6",
+   "md5": "2696460d122bf579e320416dc000e23c"
+  },
+  {
+   "type": "tree",
+   "name": "torch_npu_ipc",
+   "path": "blogs/inference/torch_npu_ipc",
+   "mode": "040000",
+   "sha": "5553654930467ae9a1fa056d18a8d8c81401cbeb",
+   "md5": "3b4bc4f92b611b01b3b44561ce2cf211"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/torch_npu_ipc/images",
+   "mode": "040000",
+   "sha": "b57d459a8d8d1e8a629ca2161813dc62e6e25c69",
+   "md5": "5d632979c86d48f764abbacce2b7e8aa"
+  },
+  {
+   "type": "tree",
+   "name": "torchair_fx_pass_multi_stream",
+   "path": "blogs/inference/torchair_fx_pass_multi_stream",
+   "mode": "040000",
+   "sha": "e027e5b9c4ff82de03f4145e123630dd249e815c",
+   "md5": "e615ac8d2fd24bf33555b6237e57b74e"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/torchair_fx_pass_multi_stream/images",
+   "mode": "040000",
+   "sha": "ba0abbfcdd137cd4e484025a554ea99523757639",
+   "md5": "9dffc11ae6df7b77e874b9fb3f7d37aa"
+  },
+  {
+   "type": "tree",
+   "name": "vllm_ascend_inference_optimization",
+   "path": "blogs/inference/vllm_ascend_inference_optimization",
+   "mode": "040000",
+   "sha": "de3efdec702e057b1d7a400b0c9d6a4adc0a75e0",
+   "md5": "56e286f8e3aeda01f3d1b14224c32cff"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/vllm_ascend_inference_optimization/images",
+   "mode": "040000",
+   "sha": "bc267f47835da898847c085d187b47bafa48dc71",
+   "md5": "9ad71863a4313aa8aeacaeb095befd2c"
+  },
+  {
+   "type": "tree",
+   "name": "xllm_inference_performance_optimization",
+   "path": "blogs/inference/xllm_inference_performance_optimization",
+   "mode": "040000",
+   "sha": "7a6fcd3e8ae56ce82ece73d96fbbb1c449d7dd31",
+   "md5": "3dc4c05936814c92a346cbc51b6f1493"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/inference/xllm_inference_performance_optimization/images",
+   "mode": "040000",
+   "sha": "eb0ff4c24074a474e0c38df4ae35d487b58908bc",
+   "md5": "001e85b8be747871ac9ed6a7d9f3017e"
+  },
+  {
+   "type": "tree",
+   "name": "operator",
+   "path": "blogs/operator",
+   "mode": "040000",
+   "sha": "ebde4fb997129cbead2b02c237c7ce7ad7b66d04",
+   "md5": "d2f50e8fa654daaf274c8ab38dcbe60e"
+  },
+  {
+   "type": "tree",
+   "name": "aicpu_tiling_sink",
+   "path": "blogs/operator/aicpu_tiling_sink",
+   "mode": "040000",
+   "sha": "43351cc6d2c56cd9c2f3e64f1b537c74e0c2feb2",
+   "md5": "0e635d262a82ac17f4ff1cc442bc29fa"
+  },
+  {
+   "type": "tree",
+   "name": "ascend950_aiv_urma_shmem_communication",
+   "path": "blogs/operator/ascend950_aiv_urma_shmem_communication",
+   "mode": "040000",
+   "sha": "c6f6450ee1472c0ea30082fa32246f2bd2876fe0",
+   "md5": "1e83dc500d2ca267ed6310aa3c93aad0"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/ascend950_aiv_urma_shmem_communication/images",
+   "mode": "040000",
+   "sha": "411f630bfeea48e5472ecb8b13f63e7c9fb92124",
+   "md5": "897cfddfaa9183361f4923a83d722ef1"
+  },
+  {
+   "type": "tree",
+   "name": "ascend950_rmsnormquant_optimization",
+   "path": "blogs/operator/ascend950_rmsnormquant_optimization",
+   "mode": "040000",
+   "sha": "ade55fc861242de9fb31c3e0472a833ccea74e84",
+   "md5": "7c4d0beccb0191eaaa4d6e2e93a26e1d"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/ascend950_rmsnormquant_optimization/images",
+   "mode": "040000",
+   "sha": "2455a17b8e6a8029b476658579886c6ede4d3183",
+   "md5": "6a2823d96c05303a6ce228a24f7d6157"
+  },
+  {
+   "type": "tree",
+   "name": "ascend_c_mmad_selection_guide",
+   "path": "blogs/operator/ascend_c_mmad_selection_guide",
+   "mode": "040000",
+   "sha": "04183b028a9a3c9ef82b49775470723d2a9afb9e",
+   "md5": "2c51cfae4c5a268c51d663e52c74e0f1"
+  },
+  {
+   "type": "tree",
+   "name": "ascendc_rtc_compilation",
+   "path": "blogs/operator/ascendc_rtc_compilation",
+   "mode": "040000",
+   "sha": "db3b76de2e83ffa0ede188faa9c7a7620a6d285f",
+   "md5": "327fa1922fd853d4bc819e6d73506080"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/ascendc_rtc_compilation/images",
+   "mode": "040000",
+   "sha": "eabf78ea42f0b84c5c50af5b89cd5fa503dae341",
+   "md5": "1c8e9095309813016fcd88b68f2cf573"
+  },
+  {
+   "type": "tree",
+   "name": "cross_entropy_zloss_fusion",
+   "path": "blogs/operator/cross_entropy_zloss_fusion",
+   "mode": "040000",
+   "sha": "4726fb01fda2b3b7317e93c1663b149b959bea30",
+   "md5": "3761316bffd3dfae2cbcc38687886ad0"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/cross_entropy_zloss_fusion/images",
+   "mode": "040000",
+   "sha": "0a3046c4b2ab446f040281cd3ea544b786e07113",
+   "md5": "b696bbc56c88a11a6888f0b9fd05ade1"
+  },
+  {
+   "type": "tree",
+   "name": "deepxtrace_moe_slow_card_detection",
+   "path": "blogs/operator/deepxtrace_moe_slow_card_detection",
+   "mode": "040000",
+   "sha": "b4899e3beba90a18cbc4bdc0105d85cf4731a220",
+   "md5": "734208551dcce665403bf124ff9d5ff0"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/deepxtrace_moe_slow_card_detection/images",
+   "mode": "040000",
+   "sha": "9f5f71c953517fe46d2c4ba9401c96bc6a176526",
+   "md5": "0ae55bb647d65cd6ee4368e7de082880"
+  },
+  {
+   "type": "tree",
+   "name": "dsa_operator_open_source_contribution",
+   "path": "blogs/operator/dsa_operator_open_source_contribution",
+   "mode": "040000",
+   "sha": "4ac84a87aa18261cb02c35830dd95b26946e2643",
+   "md5": "83916d197752488028e239755a09f7d5"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/dsa_operator_open_source_contribution/images",
+   "mode": "040000",
+   "sha": "26248496899982ec6343fba360ab652bb2106f67",
+   "md5": "eb1f0ad3b581d34f5dea6139b8c92334"
+  },
+  {
+   "type": "tree",
+   "name": "dumptensor_operator_debugging",
+   "path": "blogs/operator/dumptensor_operator_debugging",
+   "mode": "040000",
+   "sha": "817773a2c356b41247dbf330aeb50eb4baa31b91",
+   "md5": "c326df50abdadeb38e5f0f77e5245cda"
+  },
+  {
+   "type": "tree",
+   "name": "grouped_matmul_mx_optimization",
+   "path": "blogs/operator/grouped_matmul_mx_optimization",
+   "mode": "040000",
+   "sha": "68505702d962cc4d94957ae656711b474f3c9c01",
+   "md5": "223a8d39e2adb8f8bb87de1aa7c27ae0"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/grouped_matmul_mx_optimization/images",
+   "mode": "040000",
+   "sha": "c4d3b12f4af46d9e0d7953a38a9aa67a8df28555",
+   "md5": "ff7cfd2cd6e6cc72e218c0f89af8a2c5"
+  },
+  {
+   "type": "tree",
+   "name": "hccl_custom_operator_aicpu_p2p",
+   "path": "blogs/operator/hccl_custom_operator_aicpu_p2p",
+   "mode": "040000",
+   "sha": "0621a5190e61ff0ea0f07044bde3e78cfb2f9a3c",
+   "md5": "356a79de5f73c6b7d368b5d1f7be9108"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/hccl_custom_operator_aicpu_p2p/images",
+   "mode": "040000",
+   "sha": "c8498e1e1c789d207725f3ba2950c6957d1281a6",
+   "md5": "46c5785d54253e387e82664926c13344"
+  },
+  {
+   "type": "tree",
+   "name": "hccl_reducescatter_high_precision_redevelopment",
+   "path": "blogs/operator/hccl_reducescatter_high_precision_redevelopment",
+   "mode": "040000",
+   "sha": "ef99e7eedae50e2ac591c0bd0201cf6e9591d07b",
+   "md5": "2d281ce952b88d2ea71624284756f60d"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/hccl_reducescatter_high_precision_redevelopment/images",
+   "mode": "040000",
+   "sha": "fee6f3330bf53fd6950b383c6f3246bb20e2ef09",
+   "md5": "e5811ebe71010825f18ec5351c8f961b"
+  },
+  {
+   "type": "tree",
+   "name": "kernel_direct_call_programming",
+   "path": "blogs/operator/kernel_direct_call_programming",
+   "mode": "040000",
+   "sha": "fee7a225db7fe1fc4fb70126ca682a9c98343def",
+   "md5": "e9501c97f2d79e03d255f950e45f0b25"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/kernel_direct_call_programming/images",
+   "mode": "040000",
+   "sha": "3e833d7dd3c209e62382c2974eb21ea52240f7de",
+   "md5": "69df6820e688f8472f588ae06684f988"
+  },
+  {
+   "type": "tree",
+   "name": "moe_dispatch_combine_optimization",
+   "path": "blogs/operator/moe_dispatch_combine_optimization",
+   "mode": "040000",
+   "sha": "fbaf318adbb86c55fa6a7c1d27d6062a54141940",
+   "md5": "0d9405f250a3c897ca7959de53714a7e"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/moe_dispatch_combine_optimization/images",
+   "mode": "040000",
+   "sha": "48db0d2f9272630c6c6c8c52fc87f94ca721a6f6",
+   "md5": "adc05327afca65b1fb111d6049bdd28d"
+  },
+  {
+   "type": "tree",
+   "name": "ms_sanitizer",
+   "path": "blogs/operator/ms_sanitizer",
+   "mode": "040000",
+   "sha": "97e0ebb34b9b3518c762db4a03558bfc7c395042",
+   "md5": "91d4d924072fc01deac7770b4e07ec31"
+  },
+  {
+   "type": "tree",
+   "name": "multi_vendor_operator_parallel_compilation",
+   "path": "blogs/operator/multi_vendor_operator_parallel_compilation",
+   "mode": "040000",
+   "sha": "0f40855848a3b7b35818aa90b47f89db345f2daf",
+   "md5": "8dee75f09dc59e1777d1176909603717"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/multi_vendor_operator_parallel_compilation/images",
+   "mode": "040000",
+   "sha": "131ebc130cb286566dea6ca8e5f0bc8f5b33fbdc",
+   "md5": "a94bcc9625f4eee67b18297f9c52b5b6"
+  },
+  {
+   "type": "tree",
+   "name": "mx_quantized_matmul_optimization",
+   "path": "blogs/operator/mx_quantized_matmul_optimization",
+   "mode": "040000",
+   "sha": "3b0f649988c48c4ddae681b6d422625cb64d6605",
+   "md5": "75fc2fcc6d57328518acda348100e38f"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/mx_quantized_matmul_optimization/images",
+   "mode": "040000",
+   "sha": "ac8fbda90403e4b6c86a522c4efdaf0ed4aedf32",
+   "md5": "f1812c9c0ed31b543cec222b07a49e34"
+  },
+  {
+   "type": "tree",
+   "name": "nddma_introduction",
+   "path": "blogs/operator/nddma_introduction",
+   "mode": "040000",
+   "sha": "9ccbf350abfefc21fdfa7c6a65c20f9fc243f010",
+   "md5": "7401e4faacd91df93d5e566ff585d2f0"
+  },
+  {
+   "type": "tree",
+   "name": "pypto_agent_qat_operator_development",
+   "path": "blogs/operator/pypto_agent_qat_operator_development",
+   "mode": "040000",
+   "sha": "8c89a48058f84b64948c71c3003df637aa8093cc",
+   "md5": "bd12e82fc5fe296b24c676306744b846"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/pypto_agent_qat_operator_development/images",
+   "mode": "040000",
+   "sha": "5abf36733855590a5a14ff98f0306a91f7186454",
+   "md5": "57fb26f7c878451e109e0878712c9911"
+  },
+  {
+   "type": "tree",
+   "name": "pypto_cannbot_kda_operator_delivery",
+   "path": "blogs/operator/pypto_cannbot_kda_operator_delivery",
+   "mode": "040000",
+   "sha": "33594091ca7ca07460d6ef7b4ffbd557ed30a45e",
+   "md5": "8a23b446a0ec72c39866402153eeb196"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/pypto_cannbot_kda_operator_delivery/images",
+   "mode": "040000",
+   "sha": "4b7edbd1c6a07c375aaa910367614f7f83bf86a3",
+   "md5": "0c33b4931a10331dcba033551664c4f9"
+  },
+  {
+   "type": "tree",
+   "name": "reg_vector_programming_optimization",
+   "path": "blogs/operator/reg_vector_programming_optimization",
+   "mode": "040000",
+   "sha": "b45ee0811b201aa0ee8b98a1ef8d3bc2e8b7ea2e",
+   "md5": "4236a966d6da5c9dbe2f477c1da26667"
+  },
+  {
+   "type": "tree",
+   "name": "regbase_vec_add",
+   "path": "blogs/operator/regbase_vec_add",
+   "mode": "040000",
+   "sha": "63fb8ef052da5ed31cf9f50f822bcba453a5b36d",
+   "md5": "b7cc54fa92cbe45805691ebd9dc5bcd6"
+  },
+  {
+   "type": "tree",
+   "name": "scalar_npu_operator_performance_optimization",
+   "path": "blogs/operator/scalar_npu_operator_performance_optimization",
+   "mode": "040000",
+   "sha": "5229dada8ec2ed64e3abb5ba1f1c37ef2856d162",
+   "md5": "c014944e1c843acedfb56272e5ff62d7"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/scalar_npu_operator_performance_optimization/images",
+   "mode": "040000",
+   "sha": "bd9417e0804eb447a70e26f30da085cf4b0217cd",
+   "md5": "c8af966ea09b930620c436b0ca984448"
+  },
+  {
+   "type": "tree",
+   "name": "tilelang_ascend_operator_optimization",
+   "path": "blogs/operator/tilelang_ascend_operator_optimization",
+   "mode": "040000",
+   "sha": "31f460e220dd450281f8fa1dcccb72df9f7cf5ea",
+   "md5": "399f66e2f04f9abe1446c603f7af029f"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/tilelang_ascend_operator_optimization/images",
+   "mode": "040000",
+   "sha": "68f7f20b63be6f64139489e337ad1ed646eee3dc",
+   "md5": "27ea6506121cb8add13fe8b6620b9219"
+  },
+  {
+   "type": "tree",
+   "name": "tilelang_xllm_qwen35_operator_adaptation",
+   "path": "blogs/operator/tilelang_xllm_qwen35_operator_adaptation",
+   "mode": "040000",
+   "sha": "299fa08d29d17bba8a0b1d8d432830a03c8464ee",
+   "md5": "aeabb584eca4bff9a867b987b2234b14"
+  },
+  {
+   "type": "tree",
+   "name": "tilingkey_template_programming",
+   "path": "blogs/operator/tilingkey_template_programming",
+   "mode": "040000",
+   "sha": "4b39d29ffde1c1e8c69d7b2ba5dc7ebd556c65d3",
+   "md5": "b8b9b55de6308f2544e75b5fcc8ddc08"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/tilingkey_template_programming/images",
+   "mode": "040000",
+   "sha": "f853cc64eada18733c12d533f31e2482facf14ea",
+   "md5": "5257735f968ad061ba6ef13da027cf47"
+  },
+  {
+   "type": "tree",
+   "name": "transformer_experimental_mix_operator",
+   "path": "blogs/operator/transformer_experimental_mix_operator",
+   "mode": "040000",
+   "sha": "f08009c81920a9f0150906e657d7e9527b513b68",
+   "md5": "aa6cda4b9db5307f79cae12927b26b7c"
+  },
+  {
+   "type": "tree",
+   "name": "images",
+   "path": "blogs/operator/transformer_experimental_mix_operator/images",
+   "mode": "040000",
+   "sha": "51e9f2dbd5b5b18f574863ae6654d144389e6141",
+   "md5": "ebc23c4f8524b0fc6632a5cd737f85fb"
+  },
+  {
+   "type": "tree",
+   "name": "training",
+   "path": "blogs/training",
+   "mode": "040000",
+   "sha": "48ee05ee7c3b5c0719d120053c4ea9b8664b12b0",
+   "md5": "c715bd9653930d131fa52339386bf56d"
+  },
+  {
+   "type": "tree",
+   "name": "areal_async_rl_training",
+   "path": "blogs/training/areal_async_rl_training",
+   "mode": "040000",
+   "sha": "d102da686af6e2e6939a1aa542c919ef3fb7f517",
+   "md5": "3b5f29cbe7a6c604435c76bd666041fe"
+  }
+ ],
+ "note": "GitCode trees API, first 100 entries only; full recursive tree not snapshotted."
+}
