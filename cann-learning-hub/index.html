@@ -5295,6 +5295,14 @@
             window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
           }
         });
+      } else if (demo === "mainlines") {
+        requestAnimationFrame(() => {
+          const block = document.getElementById("mainlinesBlock");
+          if (block) {
+            const top = block.getBoundingClientRect().top + window.scrollY - 68;
+            window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+          }
+        });
       } else if (demo === "drawer") {
         requestAnimationFrame(() => {
           if (typeof runAiMatch === "function") {
