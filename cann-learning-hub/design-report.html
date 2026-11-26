@@ -146,17 +146,17 @@ body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibi
 .bf-arrow svg{width:22px;height:22px}
 
 /* P4：sm2 图+文模式（角色轻分流 vs 技术方向做主角）*/
-.sm2-grid{display:grid;grid-template-columns:1.05fr 1.15fr;gap:2.6vw;align-items:stretch;min-height:0}
-.sm2-left{display:flex;flex-direction:column;gap:1.8vh;min-height:0;min-width:0}
-.sm2-card{padding:2vh 1.5vw;display:flex;flex-direction:column;gap:1vh;min-width:0}
-.sm2-card h3{font-size:var(--fs-h2);font-weight:700;color:var(--ink);line-height:1.28}
-.sm2-card p{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58}
+.sm2-grid{display:grid;grid-template-columns:1.05fr 1.15fr;gap:2.4vw;align-items:stretch;min-height:0;max-height:100%}
+.sm2-left{display:flex;flex-direction:column;gap:1.25vh;min-height:0;min-width:0}
+.sm2-card{padding:1.5vh 1.35vw;display:flex;flex-direction:column;gap:.75vh;min-width:0}
+.sm2-card h3{font-size:var(--fs-h3);font-weight:700;color:var(--ink);line-height:1.28}
+.sm2-card p{font-size:var(--fs-body);color:var(--ink-2);line-height:1.5}
 .sm2-card p b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 62%,rgba(91,91,214,.16) 0)}
-.chip-row{display:flex;flex-wrap:wrap;gap:.55vw;margin-top:.4vh}
-.chip-row span{display:inline-flex;align-items:center;padding:.45vh .8vw;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.verdict{flex:0 0 auto;display:grid;grid-template-columns:auto 1fr;gap:1.1vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:14px;padding:1.8vh 1.5vw;margin-top:auto}
+.chip-row{display:flex;flex-wrap:wrap;gap:.45vw;margin-top:.25vh}
+.chip-row span{display:inline-flex;align-items:center;padding:.35vh .7vw;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.verdict{flex:0 0 auto;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:14px;padding:1.35vh 1.35vw;margin-top:auto}
 .verdict .vk{font-size:var(--fs-sm);font-weight:700;color:var(--ink);background:#fff;border-radius:999px;padding:4px 12px;white-space:nowrap}
-.verdict .vv{font-size:var(--fs-body);line-height:1.5}
+.verdict .vv{font-size:var(--fs-body);line-height:1.45}
 .sm2-visual{position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.85);box-shadow:0 18px 44px -22px rgba(20,30,60,.24);background:#f4f6fa;display:flex;flex-direction:column;min-height:0}
 .sm2-visual img{width:100%;height:100%;object-fit:cover;display:block;flex:1;min-height:0}
 .visual-cap{position:absolute;left:14px;bottom:14px;padding:5px 12px;border-radius:999px;background:rgba(22,25,30,.72);backdrop-filter:blur(8px);color:#fff;font-size:var(--fs-xs);font-weight:500;letter-spacing:.03em}
@@ -200,32 +200,32 @@ body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibi
 .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .shot-cap{position:absolute;right:14px;bottom:14px;z-index:2;padding:4px 11px;border-radius:999px;background:rgba(6,6,10,.72);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px);font-size:var(--fs-xs);color:rgba(255,255,255,.78)}
 
-/* P10 双栏副屏原生结构图（在黑底 .shot 内清晰阐释左聊右改）*/
-.drawer-arch{position:absolute;inset:0;padding:24px;display:grid;grid-template-columns:0.82fr 1.18fr;gap:16px;background:radial-gradient(circle at 80% 15%,rgba(54,191,162,.16),transparent 52%),#0b0e17}
-.da-col{border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0}
-.da-head{display:flex;align-items:center;justify-content:space-between;font-size:var(--fs-sm);font-weight:600;color:#fff;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
-.da-badge{font-family:'JetBrains Mono';font-size:var(--fs-xs);padding:2px 8px;border-radius:999px;background:rgba(54,191,162,.2);color:#5eead4}
-.da-bubble{padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.07);font-size:var(--fs-sm);line-height:1.45;color:rgba(255,255,255,.82)}
+/* P10 双栏副屏原生结构图（在黑底 .shot 内紧凑完整展示左聊右改）*/
+.drawer-arch{position:absolute;inset:0;padding:14px;display:grid;grid-template-columns:0.84fr 1.16fr;gap:12px;background:radial-gradient(circle at 80% 15%,rgba(54,191,162,.16),transparent 52%),#0b0e17}
+.da-col{border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);padding:10px 12px;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden}
+.da-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:#fff;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.da-badge{font-family:'JetBrains Mono';font-size:10px;padding:2px 7px;border-radius:999px;background:rgba(54,191,162,.2);color:#5eead4}
+.da-bubble{padding:6px 9px;border-radius:8px;background:rgba(255,255,255,.07);font-size:11px;line-height:1.38;color:rgba(255,255,255,.84)}
 .da-bubble.user{background:rgba(91,91,214,.28);border:1px solid rgba(129,140,248,.35)}
-.da-input{margin-top:auto;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-size:var(--fs-xs);color:rgba(255,255,255,.55);display:flex;justify-content:space-between;align-items:center}
-.da-timeline{display:flex;flex-direction:column;gap:10px;position:relative;padding-left:16px}
-.da-timeline::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,#38bdf8,#34d399)}
-.da-stage{position:relative;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:8px}
-.da-stage::before{content:"";position:absolute;left:-15px;width:10px;height:10px;border-radius:50%;background:#38bdf8;border:2px solid #0b0e17}
-.da-stage.skipped{opacity:.52;border-style:dashed}
+.da-input{margin-top:auto;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-size:10.5px;color:rgba(255,255,255,.55);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.da-timeline{display:flex;flex-direction:column;gap:7px;position:relative;padding-left:14px;flex:1;justify-content:space-between;min-height:0}
+.da-timeline::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,#38bdf8,#34d399)}
+.da-stage{position:relative;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.da-stage::before{content:"";position:absolute;left:-14px;width:8px;height:8px;border-radius:50%;background:#38bdf8;border:2px solid #0b0e17}
+.da-stage.skipped{opacity:.56;border-style:dashed}
 .da-stage.ai-add{border-color:rgba(52,211,153,.55);background:rgba(52,211,153,.1)}
-.da-st-t{font-size:var(--fs-sm);font-weight:600;color:#fff}
-.da-st-act{font-size:var(--fs-xs);padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.12);color:#e2e8f0;white-space:nowrap}
+.da-st-t{font-size:11.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.da-st-act{font-size:10px;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.12);color:#e2e8f0;white-space:nowrap;flex-shrink:0}
 .da-stage.ai-add .da-st-act{background:#10b981;color:#052e16;font-weight:700}
 
-/* ============ 全屏实机 Demo 页（100vw × 100vh 纯全屏）============ */
+/* ============ 全屏实机 Demo 页（100% × 100% 纯全屏）============ */
 .s-demo{padding:0;background:#ffffff}
-.demo-frame{width:100vw;height:100vh;border:0;display:block;background:#fff}
-.demo-hud{position:absolute;left:18px;bottom:18px;z-index:20;display:inline-flex;align-items:center;gap:8px;padding:5px 10px 5px 12px;border-radius:999px;background:rgba(15,23,42,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:11.5px;font-weight:500;opacity:.62;transition:opacity .2s ease}
+.demo-frame{width:100%;height:100%;border:0;display:block;background:#fff}
+.demo-hud{position:absolute;right:18px;top:64px;z-index:20;display:inline-flex;align-items:center;gap:7px;padding:4px 8px 4px 10px;border-radius:999px;background:rgba(15,23,42,.68);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:11px;font-weight:500;opacity:.46;transition:opacity .2s ease}
 .demo-hud:hover{opacity:1}
-.demo-hud .live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
-.demo-hud button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:inherit;transition:background .15s}
-.demo-hud button:hover{background:rgba(255,255,255,.26)}
+.demo-hud .live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+.demo-hud button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:999px;padding:2px 7px;font-size:10.5px;cursor:pointer;font-family:inherit;transition:background .15s}
+.demo-hud button:hover{background:rgba(255,255,255,.28)}
 
 /* ===== 导航点 + 底部控制栏（原样保留 report-ppt-skill runtime）===== */
 .nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
@@ -358,7 +358,7 @@ body.on-dark .nav-dot.active{background:#fff}
           <div class="bf-node bf-main">
             <span class="pill-tag pill-neutral">第一段 · 首页画布</span>
             <div class="bf-t">探索线索（2～3 级）</div>
-            <div class="bf-d">停留在「大方向 → 切入方式 → 场景目标」粒度，帮用户把模糊兴趣点清楚，不充当 218 节 `.ipynb` 目录树。</div>
+            <div class="bf-d">停留在「大方向 → 切入方式 → 场景目标」粒度，帮用户把模糊兴趣点清楚，不充当 218 节 .ipynb 目录树。</div>
           </div>
           <div class="bf-arrow" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
@@ -374,7 +374,7 @@ body.on-dark .nav-dot.active{background:#fff}
           <div class="bf-node bf-ink">
             <span class="pill-tag" style="background:rgba(255,255,255,.16);color:#fff;">第三段 · 课程体系 Tab</span>
             <div class="bf-t">全量目录（4 层直达单课）</div>
-            <div class="bf-d">保留 12 大领域、18 个系列、218 节 `.ipynb` 的完整树状结构，服务明确要按章节查阅具体课时的开发者。</div>
+            <div class="bf-d">保留 12 大领域、18 个系列、218 节 .ipynb 的完整树状结构，服务明确要按章节查阅具体课时的开发者。</div>
           </div>
         </div>
       </div>
@@ -393,7 +393,7 @@ body.on-dark .nav-dot.active{background:#fff}
         <span>01 架构与边界</span><span class="active">02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
       </div>
     </div>
-    <div class="body-area vc">
+    <div class="body-area" style="padding-bottom:3.8vh;">
       <div class="sm2-grid">
         <div class="sm2-left">
           <div class="glass sm2-card">
@@ -445,9 +445,9 @@ body.on-dark .nav-dot.active{background:#fff}
         <h1 class="h-title">无需口述背景<br/><span class="light">丢入项目文件反推路径</span></h1>
         <p class="body">带着现有 PyTorch 或 vLLM 仓库来的开发者，不愿把框架版本和限制条件再打一遍——<b>直接上传项目规则文件，让系统自动提取上下文并生成针对性路线</b>。</p>
         <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">极轻入口：输入框右侧无边框 + 与全框拖拽</div><div class="pt-desc">保持输入栏简洁不加文字按钮，支持本地选择或直接拖入 `README.md`、`AGENTS.md`、`requirements.txt`、`CMakeLists.txt`。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">纯前端本地解析，零隐私顾虑</div><div class="pt-desc">浏览器端 `FileReader` 实时识别技术栈与约束（如“禁用 C++”“PD 分离”），映射至 11 大主题规则。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">内置 2 份示例规则一键试用</div><div class="pt-desc">即使手边没有现成项目文件，点开 + 即可一键体验 `AGENTS.md` 与 `README.md` 的识别效果。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">极轻入口：输入框右侧无边框 + 与全框拖拽</div><div class="pt-desc">保持输入栏简洁不加文字按钮，支持本地选择或直接拖入 README.md、AGENTS.md、requirements.txt、CMakeLists.txt。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">纯前端本地解析，零隐私顾虑</div><div class="pt-desc">浏览器端 FileReader 实时识别技术栈与约束（如“禁用 C++”“PD 分离”），映射至 11 大主题规则。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">内置 2 份示例规则一键试用</div><div class="pt-desc">即使手边没有现成项目文件，点开 + 即可一键体验 AGENTS.md 与 README.md 的识别效果。</div></div></div>
         </div>
       </div>
       <div class="shot">
@@ -587,7 +587,7 @@ body.on-dark .nav-dot.active{background:#fff}
           <h3>从「找课」走向「解难与动手」</h3>
           <ul class="tri-list">
             <li><span class="tdot"></span><span><b>报错日志 / 代码片段诊断</b>：粘贴编译或运行报错，反向生成 Troubleshooting 补课路径。</span></li>
-            <li><span class="tdot"></span><span><b>CANN 第一课交互微沙箱</b>：将 `HWC→CHW`、Tiling 尾块切分升级为可调参数可视化演示。</span></li>
+            <li><span class="tdot"></span><span><b>CANN 第一课交互微沙箱</b>：将 HWC→CHW、Tiling 尾块切分升级为可调参数可视化演示。</span></li>
             <li><span class="tdot"></span><span><b>真实算力与评测打通</b>：与 CANNLab 云端 Notebook 及 CANNJudge 题库进度联动。</span></li>
           </ul>
           <div class="tri-foot">目标：形成“探索 → 学课 → 调优 → 评测”完整闭环</div>
