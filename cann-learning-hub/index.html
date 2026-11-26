@@ -1348,52 +1348,215 @@
     .mini-link:hover { background: var(--bg-tray); }
     .mini-link.blue { color: var(--link-blue); border-color: #dbeafe; background: var(--link-blue-soft); }
 
-    /* ================= Tab 3: Fullstack Map ================= */
-    .arch-tray {
+    /* ================= Tab 3: Fullstack Map (Left Tree + Right Domain Workbench) ================= */
+    .arch-workbench {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .arch-tree {
       background: var(--bg-tray);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 14px 12px;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      position: sticky;
+      top: 72px;
     }
-    .arch-row {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 14px;
+    .arch-tree-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
-    .arch-cat {
-      background: #ffffff;
-      border-radius: var(--radius-md);
+    .arch-tree-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0 10px 4px;
+      letter-spacing: 0.03em;
+    }
+    .arch-tree-item {
+      width: 100%;
+      text-align: left;
+      padding: 9px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 600;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+    }
+    .arch-tree-item:hover {
+      background: rgba(255, 255, 255, 0.72);
       color: var(--text);
-      padding: 12px;
-      text-align: center;
     }
-    .arch-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+    .arch-tree-item.active {
+      background: #ffffff;
+      color: var(--text);
+      font-weight: 600;
+      border-color: rgba(79, 70, 229, 0.24);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     }
-    .arch-card {
+    .arch-tree-count {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .arch-tree-item.active .arch-tree-count {
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+    .arch-detail {
+      background: var(--bg-tray);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+    .arch-detail-head {
       background: #ffffff;
       border-radius: var(--radius-md);
-      padding: 16px 18px;
-    }
-    .arch-card-title { font-size: 13.5px; font-weight: 600; margin-bottom: 8px; }
-    .arch-line {
-      font-size: 12px;
-      color: var(--text-secondary);
-      padding: 3px 0;
+      padding: 18px 20px;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .arch-detail-kicker {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      margin-bottom: 6px;
+    }
+    .arch-detail-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .arch-detail-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .arch-detail-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .arch-sec {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .arch-sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .arch-sec-sub {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .arch-lesson-list {
+      display: flex;
+      flex-direction: column;
       gap: 6px;
     }
-    .arch-line a { color: var(--link-blue); }
-    .arch-line a:hover { text-decoration: underline; }
+    .arch-lesson-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: #fafbfc;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.14s ease, background 0.14s ease;
+    }
+    .arch-lesson-row:hover {
+      border-color: #c7d2fe;
+      background: #ffffff;
+    }
+    .arch-lesson-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .arch-lesson-no {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 11px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .arch-lesson-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .arch-lesson-file {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .arch-lesson-go {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--link-blue);
+      flex-shrink: 0;
+    }
+    .arch-two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      .arch-workbench { grid-template-columns: 1fr; }
+      .arch-tree { position: static; }
+      .arch-two-col { grid-template-columns: 1fr; }
+    }
 
     /* ================= Tab 4: Academia & Events ================= */
     .gov-list {
@@ -3001,7 +3164,7 @@
           <button class="pill-btn" data-rtype="案例">实践案例</button>
         </div>
       </div>
-      <div class="arch-tray" id="archMap"></div>
+      <div id="archMap"></div>
     </div>
 
     <!-- ==================== TAB 4: ACADEMIA & EVENTS ==================== -->
@@ -5130,32 +5293,161 @@
       renderPeriodCourses();
     }
 
-    // Render Fullstack Map (CANN Architecture -> Atomic Courses, Docs, Cases)
+    // Render Fullstack Map (Left Architecture Tree + Right Domain Workbench)
+    let activeArchDomain = "大模型训练 (MindSpeed)";
+    const ARCH_DOMAIN_META = {
+      "大模型训练 (MindSpeed)": { topic: "training", count: "18 节", desc: "涵盖 PyTorch 迁移、SFT 监督微调、VERL 强化学习与 3D 并行训练优化。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/sft_training_pipeline" },
+      "大模型推理 (vLLM-Ascend)": { topic: "inference", count: "18 节", desc: "覆盖 Qwen3 NPU 推理入门、vLLM-Ascend 部署、KV Cache 与 PD 分离。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference" },
+      "推荐与 AI 应用 (RecSDK)": { topic: "recommend", count: "10 节", desc: "涵盖 RecSDK 稀疏特征 Embedding、CTR 排序与 RAG 知识库端到端实践。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/contrib/tutorials/torch-rechub" },
+      "离线推理 (ATC & ACL)": { topic: "application", count: "8 节", desc: "涵盖 ONNX 转 OM、ATC 编译参数调优、ACL 异步多流推理与 YOLO 实战。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/reference_practice/yolov13_offline_inference" },
+      "模型压缩 (ModelSlim)": { topic: "inference", count: "6 节", desc: "涵盖 W8A8 平滑量化、KV Cache 量化校准与精度对齐实践。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/llm_inference" },
+      "图编译优化 (GE)": { topic: "graph", count: "43 节", desc: "涵盖 GE 图引擎、Ascend IR、TorchAir 图模式（npugraph_ex）与 AutoFusion 自动融合。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/TorchAir_development" },
+      "Ascend C 编程语言": { topic: "operator", count: "26 节", desc: "涵盖 AI Core 架构、Vector/Cube 三级流水线、泛化 Tiling 与开源算子贡献。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/ascendc_operator_development" },
+      "性能剖析 (msProf)": { topic: "pyasc", count: "33 节", desc: "涵盖 PyASC / PyPTO Python 算子开发、msProf 性能分析与 CANNBot 生成。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/pyasc_operator_development" },
+      "孪生调试与测试": { topic: "cannbot", count: "10 节", desc: "涵盖 CPU 侧孪生调试、CANNBot 自动算子验证与 UT/ST 边界测试。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/tutorials/CANNBot" },
+      "CANN 基础环境": { topic: "basics", count: "4 节", desc: "面向零基础开发者，快速理解 NPU 架构、CANN 软件栈与云端环境实操。", dirUrl: "https://gitcode.com/cann/cann-learning-hub/tree/master/quick_start/cann_basics" },
+      "高校课程体系": { topic: "basics", count: "21 门", desc: "包含 00 原子课、01 启航营、13 门高校共建课与配套教学 PPTX。", dirUrl: "https://gitcode.com/cann/cann-learning-hub" },
+      "评测与竞赛": { topic: "operator", count: "24 题", desc: "对接 CANNJudge 在线算子刷题评测与昇腾创新大赛等级认证映射。", dirUrl: "https://cannjudge.cn" }
+    };
+
+    function selectArchDomain(name) {
+      activeArchDomain = name;
+      renderArchMap();
+    }
+
     function renderArchMap() {
-      const types = activeResType === "all" ? ["原子课", "资料", "案例"] : [activeResType];
-      document.getElementById("archMap").innerHTML = ARCH_LAYERS.map(layer => `
-        <div class="arch-row">
-          <div class="arch-cat">${layer.layer}</div>
-          <div class="arch-grid">
-            ${layer.items.map((it, idx) => `
-              <div class="arch-card">
-                <div class="arch-card-title">${it.name}</div>
-                ${types.map(tp => {
-                  const key = `map-${layer.layer}-${idx}-${tp}`;
-                  coursePreviewMap[key] = {
-                    kicker: `${it.name} · ${tp}`,
-                    title: it[tp],
-                    points: [`归属 ${layer.layer} 层核心能力模块`, `提供配套 ${tp} 与可运行代码索引`, "支持结合学习路径与高校课程包复用"],
-                    prereq: "CANN 9.0.0",
-                    time: tp === "原子课" ? "约 1.5~3 小时" : (tp === "案例" ? "端到端实战" : "随时查阅")
-                  };
-                  return `<div class="arch-res-line"><span class="arch-res-badge">${tp}</span><a href="https://gitcode.com/cann/cann-learning-hub" target="_blank" rel="noopener" data-preview="${key}">${it[tp]}</a></div>`;
+      let currentLayer = ARCH_LAYERS[0].layer;
+      let currentItem = ARCH_LAYERS[0].items[0];
+      ARCH_LAYERS.forEach(l => {
+        const found = l.items.find(it => it.name === activeArchDomain);
+        if (found) {
+          currentLayer = l.layer;
+          currentItem = found;
+        }
+      });
+
+      const meta = ARCH_DOMAIN_META[currentItem.name] || { topic: "basics", count: "精选", desc: "", dirUrl: "https://gitcode.com/cann/cann-learning-hub" };
+      const topicCfg = (typeof SKILL_JOURNEYS !== "undefined" && SKILL_JOURNEYS.topics[meta.topic]) || null;
+      const realLessons = [];
+      if (topicCfg && topicCfg.stages) {
+        topicCfg.stages.forEach(st => {
+          (st.courses || []).forEach(c => {
+            if (realLessons.length < 6) realLessons.push({ stage: st.label, title: c.title, link: c.link, file: c.file || st.label });
+          });
+        });
+      }
+      if (!realLessons.length) {
+        realLessons.push({ stage: currentLayer, title: currentItem["原子课"], link: meta.dirUrl, file: `${currentLayer} · 核心原子课程` });
+      }
+
+      const showLessons = activeResType === "all" || activeResType === "原子课";
+      const showDocs = activeResType === "all" || activeResType === "资料";
+      const showCases = activeResType === "all" || activeResType === "案例";
+
+      const docKey = `map-doc-${currentItem.name}`;
+      const caseKey = `map-case-${currentItem.name}`;
+      coursePreviewMap[docKey] = {
+        kicker: `${currentItem.name} · 参考资料`,
+        title: currentItem["资料"],
+        points: [`归属 ${currentLayer} 层核心技术文档`, "包含接口说明、约束规范与最佳实践", "可结合右侧学习路径对照查阅"],
+        prereq: "CANN 9.0.0",
+        time: "随时查阅"
+      };
+      coursePreviewMap[caseKey] = {
+        kicker: `${currentItem.name} · 实践案例`,
+        title: currentItem["案例"],
+        points: [`归属 ${currentLayer} 层端到端工程实践`, "提供可运行示例代码与性能对比", "支持在 CANNLab 云端环境复现"],
+        prereq: "CANN 9.0.0",
+        time: "端到端实战"
+      };
+
+      document.getElementById("archMap").innerHTML = `
+        <div class="arch-workbench">
+          <aside class="arch-tree" aria-label="课程体系架构树">
+            ${ARCH_LAYERS.map(layer => `
+              <div class="arch-tree-group">
+                <div class="arch-tree-label">${layer.layer}</div>
+                ${layer.items.map(it => {
+                  const m = ARCH_DOMAIN_META[it.name] || { count: "课程" };
+                  const isAct = it.name === currentItem.name;
+                  return `
+                    <button type="button" class="arch-tree-item ${isAct ? "active" : ""}" onclick="selectArchDomain('${it.name}')">
+                      <span>${it.name}</span>
+                      <span class="arch-tree-count">${m.count}</span>
+                    </button>
+                  `;
                 }).join("")}
               </div>
             `).join("")}
+          </aside>
+
+          <div class="arch-detail">
+            <div class="arch-detail-head">
+              <div>
+                <span class="arch-detail-kicker">${currentLayer}</span>
+                <div class="arch-detail-title">${currentItem.name}</div>
+                <div class="arch-detail-desc">${meta.desc}</div>
+              </div>
+              <div class="arch-detail-actions">
+                <button type="button" class="btn btn-dark" onclick="runAiMatch('我想系统学习 ${currentItem.name}', { sourceType: 'chat' })">AI 定制本领域路径 →</button>
+                <a class="btn btn-outline" href="${meta.dirUrl}" target="_blank" rel="noopener">GitCode 目录 ↗</a>
+              </div>
+            </div>
+
+            ${showLessons ? `
+              <div class="arch-sec">
+                <div class="arch-sec-head">
+                  <span>原子课程清单（精选 ${realLessons.length} 节 · 共 ${meta.count}）</span>
+                  <span class="arch-sec-sub">点击直达 GitCode .ipynb 课时</span>
+                </div>
+                <div class="arch-lesson-list">
+                  ${realLessons.map((ls, i) => `
+                    <a class="arch-lesson-row" href="${ls.link}" target="_blank" rel="noopener">
+                      <div class="arch-lesson-left">
+                        <span class="arch-lesson-no">${String(i + 1).padStart(2, "0")}</span>
+                        <div style="min-width:0;">
+                          <div class="arch-lesson-title">${ls.title}</div>
+                          <div class="arch-lesson-file">${ls.file}</div>
+                        </div>
+                      </div>
+                      <span class="arch-lesson-go">打开课时 ↗</span>
+                    </a>
+                  `).join("")}
+                </div>
+              </div>
+            ` : ""}
+
+            ${(showDocs || showCases) ? `
+              <div class="${(showDocs && showCases) ? "arch-two-col" : ""}">
+                ${showDocs ? `
+                  <div class="arch-sec">
+                    <div class="arch-sec-head"><span>参考资料</span><span class="arch-sec-sub">文档与规范</span></div>
+                    <a class="arch-lesson-row" href="${meta.dirUrl}" target="_blank" rel="noopener" data-preview="${docKey}">
+                      <div class="arch-lesson-left">
+                        <span class="arch-res-badge">资料</span>
+                        <div class="arch-lesson-title">${currentItem["资料"]}</div>
+                      </div>
+                      <span class="arch-lesson-go">查阅 ↗</span>
+                    </a>
+                  </div>
+                ` : ""}
+                ${showCases ? `
+                  <div class="arch-sec">
+                    <div class="arch-sec-head"><span>实践案例</span><span class="arch-sec-sub">端到端工程</span></div>
+                    <a class="arch-lesson-row" href="${meta.dirUrl}" target="_blank" rel="noopener" data-preview="${caseKey}">
+                      <div class="arch-lesson-left">
+                        <span class="arch-res-badge">案例</span>
+                        <div class="arch-lesson-title">${currentItem["案例"]}</div>
+                      </div>
+                      <span class="arch-lesson-go">实战 ↗</span>
+                    </a>
+                  </div>
+                ` : ""}
+              </div>
+            ` : ""}
           </div>
         </div>
-      `).join("");
+      `;
     }
 
     // Render Academia
