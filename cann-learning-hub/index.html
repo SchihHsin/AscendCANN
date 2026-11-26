@@ -2483,6 +2483,54 @@
       .explore-canvas { height: 420px; }
     }
 
+    html.demo-lock, body.demo-lock {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior: none;
+    }
+    html.demo-lock::-webkit-scrollbar, body.demo-lock::-webkit-scrollbar {
+      display: none;
+    }
+    .demo-spotlight-svg {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 38;
+    }
+    .demo-spotlight-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 39;
+      border-radius: 16px;
+      border: 2px solid #4f46e5;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.16), 0 12px 32px -8px rgba(79, 70, 229, 0.28);
+      transition: all 0.2s ease;
+    }
+    .demo-spotlight-ring.secondary {
+      border-color: #0ea5e9;
+      border-style: dashed;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.14);
+    }
+    .demo-spotlight-tag {
+      position: absolute;
+      top: -13px;
+      left: 14px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: #4f46e5;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+    }
+    .demo-spotlight-ring.secondary .demo-spotlight-tag {
+      background: #0284c7;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -5275,42 +5323,116 @@
     // ================= Report PPT Fullscreen Demo Hook & Iframe Bridge =================
     (function initReportDemoHook() {
       const demo = new URLSearchParams(location.search).get("demo");
-      if (demo === "hero") {
-        window.scrollTo({ top: 0, behavior: "auto" });
-      } else if (demo === "rule") {
-        window.scrollTo({ top: 0, behavior: "auto" });
-        requestAnimationFrame(() => {
+      const isHomeLockedDemo = ["hero", "rule", "explore", "mainlines", "drawer"].includes(demo);
+      let lockedScrollY = 0;
+
+      function applySpotlight(targets) {
+        document.querySelectorAll(".demo-spotlight-svg, .demo-spotlight-ring").forEach(el => el.remove());
+        const rects = targets.map(t => {
+          const el = typeof t.el === "string" ? document.querySelector(t.el) : t.el;
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          const pad = t.pad || 8;
+          return {
+            left: Math.max(8, r.left - pad),
+            top: Math.max(8, r.top - pad),
+            width: Math.min(window.innerWidth - 16, r.width + pad * 2),
+            height: Math.min(window.innerHeight - 16, r.height + pad * 2),
+            tag: t.tag || "",
+            secondary: !!t.secondary
+          };
+        }).filter(Boolean);
+        if (!rects.length) return;
+
+        const svgNS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("class", "demo-spotlight-svg");
+        const maskId = "demoSpotMask_" + Date.now();
+        svg.innerHTML = `
+          <defs>
+            <mask id="${maskId}">
+              <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+              ${rects.map(r => `<rect x="${r.left}" y="${r.top}" width="${r.width}" height="${r.height}" rx="16" fill="black"/>`).join("")}
+            </mask>
+          </defs>
+          <rect x="0" y="0" width="100%" height="100%" fill="rgba(15, 23, 42, 0.24)" mask="url(#${maskId})"/>
+        `;
+        document.body.appendChild(svg);
+
+        rects.forEach(r => {
+          const ring = document.createElement("div");
+          ring.className = "demo-spotlight-ring" + (r.secondary ? " secondary" : "");
+          ring.style.left = r.left + "px";
+          ring.style.top = r.top + "px";
+          ring.style.width = r.width + "px";
+          ring.style.height = r.height + "px";
+          if (r.tag) {
+            const tag = document.createElement("span");
+            tag.className = "demo-spotlight-tag";
+            tag.textContent = r.tag;
+            ring.appendChild(tag);
+          }
+          document.body.appendChild(ring);
+        });
+      }
+
+      function positionDemoAndSpotlight() {
+        if (demo === "hero") {
+          lockedScrollY = 0;
+          window.scrollTo({ top: 0, behavior: "auto" });
+        } else if (demo === "rule") {
+          lockedScrollY = 120;
+          window.scrollTo({ top: 120, behavior: "auto" });
           const pop = document.getElementById("rulePopover");
           if (pop) pop.classList.add("open");
-        });
-      } else if (demo === "explore") {
-        requestAnimationFrame(() => {
+          requestAnimationFrame(() => applySpotlight([
+            { el: ".ai-composer-shell", pad: 10, tag: "重点演示 · 点击 + 或直接拖入项目规则文件" },
+            { el: "#rulePopover", pad: 6, tag: "内置示例 · 一键试用识别", secondary: true }
+          ]));
+        } else if (demo === "explore") {
           const wrap = document.getElementById("exploreGraphWrap");
           const block = wrap && wrap.closest(".block");
           if (block) {
-            const top = block.getBoundingClientRect().top + window.scrollY - 68;
-            window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+            lockedScrollY = Math.max(0, block.getBoundingClientRect().top + window.scrollY - 68);
+            window.scrollTo({ top: lockedScrollY, behavior: "auto" });
+            requestAnimationFrame(() => applySpotlight([
+              { el: ".explore-graph-card", pad: 8, tag: "重点演示 · 悬浮 280ms 聚光，停留 680ms 连线" }
+            ]));
           }
-        });
-      } else if (demo === "mainlines") {
-        requestAnimationFrame(() => {
+        } else if (demo === "mainlines") {
           const block = document.getElementById("mainlinesBlock");
           if (block) {
-            const top = block.getBoundingClientRect().top + window.scrollY - 68;
-            window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+            lockedScrollY = Math.max(0, block.getBoundingClientRect().top + window.scrollY - 68);
+            window.scrollTo({ top: lockedScrollY, behavior: "auto" });
+            requestAnimationFrame(() => applySpotlight([
+              { el: "#mainlinesBlock .role-tray", pad: 8, tag: "主角 · 五大核心技术主线" },
+              { el: "#specialChannelsBlock .persona-strip", pad: 8, tag: "轻分流 · 下方三类专项通道", secondary: true }
+            ]));
           }
-        });
-      } else if (demo === "drawer") {
-        requestAnimationFrame(() => {
-          if (typeof runAiMatch === "function") {
+        } else if (demo === "drawer") {
+          lockedScrollY = 0;
+          window.scrollTo({ top: 0, behavior: "auto" });
+          if (typeof runAiMatch === "function" && !drawerState.active) {
             runAiMatch("不会 C++，想用 PyASC / PyPTO 用 Python 写算子", { sourceType: "chat" });
           }
-        });
-      } else if (["paths", "map", "academia", "blogs"].includes(demo)) {
-        requestAnimationFrame(() => {
+        } else if (["paths", "map", "academia", "blogs"].includes(demo)) {
           if (typeof switchTab === "function") switchTab(demo);
           window.scrollTo({ top: 0, behavior: "auto" });
-        });
+        }
+      }
+
+      if (isHomeLockedDemo) {
+        document.documentElement.classList.add("demo-lock");
+        document.body.classList.add("demo-lock");
+        requestAnimationFrame(positionDemoAndSpotlight);
+        window.addEventListener("resize", () => requestAnimationFrame(positionDemoAndSpotlight));
+        window.addEventListener("scroll", () => {
+          if (Math.abs(window.scrollY - lockedScrollY) > 2) {
+            window.scrollTo({ top: lockedScrollY, behavior: "auto" });
+          }
+        }, { passive: true });
+      } else if (demo) {
+        requestAnimationFrame(positionDemoAndSpotlight);
       }
 
       if (window.self !== window.top) {
@@ -5325,19 +5447,24 @@
           window.parent.postMessage({ __deckMouse: { x: e.clientX, y: e.clientY, w: window.innerWidth, h: window.innerHeight } }, "*");
         }, { passive: true });
         window.addEventListener("wheel", e => {
-          // If inside scrollable drawer columns, let drawer scroll first
-          const scroller = e.target.closest(".jd-canvas-col, .jd-chat-col");
+          // Inside drawer columns, let drawer scroll first
+          const scroller = e.target.closest(".jd-canvas-col, .jd-chat-log");
           if (scroller && scroller.scrollHeight > scroller.clientHeight + 2) {
             const atTop = scroller.scrollTop <= 1 && e.deltaY < 0;
             const atBot = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2 && e.deltaY > 0;
             if (!atTop && !atBot) return;
           }
+          if (isHomeLockedDemo) {
+            e.preventDefault();
+            window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
+            return;
+          }
           const pageAtTop = window.scrollY <= 1 && e.deltaY < 0;
           const pageAtBot = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2 && e.deltaY > 0;
-          if (pageAtTop || pageAtBot || demo === "explore" || demo === "drawer") {
+          if (pageAtTop || pageAtBot) {
             window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
           }
-        }, { passive: true });
+        }, { passive: false });
       }
     })();
   </script>
