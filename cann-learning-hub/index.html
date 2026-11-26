@@ -3468,6 +3468,8 @@
       document.querySelectorAll(".tab-pane").forEach(pane => {
         pane.classList.toggle("active", pane.id === `pane-${tabId}`);
       });
+      const heroEl = document.querySelector(".org-hero");
+      if (heroEl) heroEl.style.display = tabId === "overview" ? "" : "none";
       hideHoverCard();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
