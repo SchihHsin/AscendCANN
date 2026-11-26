@@ -589,7 +589,7 @@
     /* Overview Block 4: Explore Other Tabs Entry Cards */
     .explore-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
     .explore-card {
@@ -2749,11 +2749,7 @@
           </button>
           <button class="nav-tab" data-tab="map">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-            课程体系 <span class="tab-badge">12</span>
-          </button>
-          <button class="nav-tab" data-tab="academia">
-            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            高校与赛事
+            高校教学 <span class="tab-badge">12</span>
           </button>
           <button class="nav-tab" data-tab="blogs">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
@@ -2882,7 +2878,7 @@
         <div class="block-head">
           <div>
             <h2 class="block-title">探索 CANN 知识地图</h2>
-            <p class="block-sub">连线选定方向与场景线索，右侧一键生成专属学习路径；如需按目录翻阅全部单节课程，可前往「课程体系」</p>
+            <p class="block-sub">连线选定方向与场景线索，右侧一键生成专属学习路径；如需按目录翻阅全部单节课程，可前往「高校教学」</p>
           </div>
           <div class="block-head-actions">
             <button class="text-link" onclick="switchTab('paths')">进入学习路径 &gt;</button>
@@ -3053,7 +3049,7 @@
         <div class="block-head">
           <div>
             <h2 class="block-title">更多专题与资源入口</h2>
-            <p class="block-sub">除角色主线外，你还可以按全栈领域查阅课程、获取高校赛事资源或检索深度技术博客</p>
+            <p class="block-sub">除角色主线外，你还可以按全栈领域查阅课程或检索深度技术博客</p>
           </div>
         </div>
         <div class="role-tray">
@@ -3080,32 +3076,7 @@
               </div>
               <div class="role-foot">
                 <span>支持悬停预览大纲</span>
-                <span class="role-go">进入课程体系 →</span>
-              </div>
-            </div>
-
-            <!-- Entry 2: Academia & Competition -->
-            <div class="explore-card" onclick="switchTab('academia')">
-              <div>
-                <div class="role-top">
-                  <div class="role-icon-box" style="background:#f5f3ff; color:#7c3aed;">
-                    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                  </div>
-                  <span class="role-tag">13 门共建课</span>
-                </div>
-                <div class="role-name" style="margin-top:14px;">高校教学、赛事与共建</div>
-                <p class="role-desc">汇集高校开课 5 大模块、13 门高校共建课程、SwanLab 案例及科研案例征集。</p>
-                <div class="explore-mini-banner">
-                  <img src="assets/honor-trophy.jpg" alt="赛事备考" />
-                  <div>
-                    <div style="font-size:12px; font-weight:600; color:var(--text);">赛事备考 &amp; 等级认证</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">CANNJudge 题库与创新大赛指南</div>
-                  </div>
-                </div>
-              </div>
-              <div class="role-foot">
-                <span>高校教师 / 竞赛选手</span>
-                <span class="role-go">进入高校与赛事 →</span>
+                <span class="role-go">进入高校教学 →</span>
               </div>
             </div>
 
@@ -3727,7 +3698,10 @@
       if (type === "starter") {
         document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" });
       } else if (type === "teacher") {
-        switchTab("academia");
+        activePathView = "period";
+        activePeriodId = "term";
+        syncPathView();
+        switchTab("paths");
       } else if (type === "competitor") {
         activePathView = "period";
         activePeriodId = "4w";
@@ -3781,7 +3755,7 @@
           journey: null,
           cards: [
             { tag: "技术博客墙", title: "54 篇技术博客与客户实践案例", desc: "涵盖 Ascend C 调优、vLLM-Ascend 部署与 MindSpeed 训练实践。", go: "进入技术博客 →", fn: () => switchTab("blogs") },
-            { tag: "架构资料", title: "12 大领域标准课程体系总览", desc: "按目录结构浏览全部开源教程与参考实践。", go: "查看课程体系 →", fn: () => switchTab("map") }
+            { tag: "架构资料", title: "12 大领域标准课程体系总览", desc: "按目录结构浏览全部开源教程与参考实践。", go: "查看高校教学 →", fn: () => switchTab("map") }
           ],
           followups: ["我想系统学大模型推理", "我想用 Python 写算子", "看 Ascend C 算子开发路径"]
         };
@@ -3811,7 +3785,6 @@
           journey: buildSkillJourney("basics", { role: "高校教师", level: "教学开课", goal: "16 周课程与实验共建" }),
           cards: [
             { tag: "周期精品课", title: "常态学期课（16 周 / 32~48 学时）", desc: "含传统学科融合实验、PPTX 讲义与综合大作业方案。", go: "查看课程安排 →", fn: () => { activePathView = "period"; activePeriodId = "term"; syncPathView(); switchTab("paths"); } },
-            { tag: "开课闭环", title: "高校开课申请与考核全流程", desc: "4 步完成开课对接、班级算力申请与 CANNJudge 考核。", go: "进入高校与赛事 →", fn: () => switchTab("academia") }
           ],
           followups: ["需要给学生配 2 天启航营", "查看 13 门高校共建课程", "看推荐系统或大模型实验"]
         };
@@ -3823,7 +3796,7 @@
           reply: "已为你规划「Python 算子开发（PyASC / PyPTO）」学习路径：无需先学 C++，从 CANN 基础起步，直接掌握 PyASC 编程范式与 PyPTO 核函数开发，并在 CANNJudge / CANNLab 在线实操。",
           journey: buildSkillJourney("pyasc", persona),
           cards: [
-            { tag: "开源目录", title: "12 大领域课程体系 · 算子与编译目录", desc: "查看仓库 tutorials/pyasc_operator_development 与 pypto_development 完整章节。", go: "进入课程体系 →", fn: () => switchTab("map") },
+            { tag: "开源目录", title: "12 大领域课程体系 · 算子与编译目录", desc: "查看仓库 tutorials/pyasc_operator_development 与 pypto_development 完整章节。", go: "进入高校教学 →", fn: () => switchTab("map") },
             { tag: "在线实操", title: "CANN 第一课（Python 快速上手）", desc: "先在浏览器跑通 NPU 环境与张量计算。", go: "体验第一课 →", fn: () => { setStep(2); document.querySelector(".showcase-card").scrollIntoView({ behavior: "smooth", block: "center" }); } }
           ],
           followups: ["想看 CANNBot AI 生成算子", "想学 TorchAir 图模式", "对比 Ascend C 算子主线"]
@@ -3837,7 +3810,7 @@
           journey: buildSkillJourney("cannbot", persona),
           cards: [
             { tag: "算子主线", title: "Ascend C 算子开发主线", desc: "配合 CANNBot 生成代码后深入理解 Tiling 与调优原理。", go: "进入算子主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("operator"); switchTab("paths"); } },
-            { tag: "在线评测", title: "CANNJudge 算子在线评测", desc: "提交生成的算子代码进行功能与性能评测。", go: "打开课程体系 →", fn: () => switchTab("map") }
+            { tag: "在线评测", title: "CANNJudge 算子在线评测", desc: "提交生成的算子代码进行功能与性能评测。", go: "打开高校教学 →", fn: () => switchTab("map") }
           ],
           followups: ["我想用 PyASC 用 Python 写算子", "想学 Ascend C 算子优化", "看技术博客实践"]
         };
@@ -3850,7 +3823,7 @@
           journey: buildSkillJourney("graph", persona),
           cards: [
             { tag: "推理主线", title: "大模型推理与图模式部署主线", desc: "结合图模式加速 Qwen3 / DeepSeek 推理性能。", go: "进入推理主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("infer"); switchTab("paths"); } },
-            { tag: "课程目录", title: "查看图框架完整课程体系", desc: "定位 GE、TorchAir 与 AutoFusion 全部 43 节实战 Notebook。", go: "进入课程体系 →", fn: () => switchTab("map") }
+            { tag: "课程目录", title: "查看图框架完整课程体系", desc: "定位 GE、TorchAir 与 AutoFusion 全部 43 节实战 Notebook。", go: "进入高校教学 →", fn: () => switchTab("map") }
           ],
           followups: ["想学 vLLM-Ascend 大模型推理", "想学 HCCL 集合通信", "看技术博客最新特性"]
         };
@@ -3863,7 +3836,7 @@
           journey: buildSkillJourney("comm", persona),
           cards: [
             { tag: "训练主线", title: "大模型训练主线（含 3D 并行与通信调优）", desc: "将 HCCL 集合通信应用到 MindSpeed 多卡集群训练。", go: "进入训练主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("train"); switchTab("paths"); } },
-            { tag: "课程目录", title: "查看 HCCL / HiXL 完整课程目录", desc: "共 30 节集群通信与单边通信实战 Notebook。", go: "进入课程体系 →", fn: () => switchTab("map") }
+            { tag: "课程目录", title: "查看 HCCL / HiXL 完整课程目录", desc: "共 30 节集群通信与单边通信实战 Notebook。", go: "进入高校教学 →", fn: () => switchTab("map") }
           ],
           followups: ["想学大模型 SFT / RL 训练", "想学 TorchAir 图框架", "看通信与推理技术博客"]
         };
@@ -3889,7 +3862,7 @@
           journey: buildSkillJourney("recommend", persona),
           cards: [
             { tag: "主线五", title: "推荐系统 & AI 应用（10~12 小时）", desc: "RecSDK 稀疏特征加速、CTR 排序与双塔召回全链路。", go: "进入推荐主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("recsys"); switchTab("paths"); } },
-            { tag: "课程目录", title: "12 大领域课程体系总览", desc: "直接查阅推荐系统与相关场景参考资料。", go: "查看课程体系 →", fn: () => switchTab("map") }
+            { tag: "课程目录", title: "12 大领域课程体系总览", desc: "直接查阅推荐系统与相关场景参考资料。", go: "查看高校教学 →", fn: () => switchTab("map") }
           ],
           followups: ["想看 RAG 知识库应用", "想学大模型微调训练", "看全部技术博客"]
         };
@@ -3941,7 +3914,7 @@
           journey: buildSkillJourney("training", persona),
           cards: [
             { tag: "主线一", title: "大模型训练主线（12~16 小时）", desc: "PyTorch 迁移、SwanLab LoRA 微调与 3D 并行。", go: "进入训练主线 →", fn: () => { activePathView = "track"; syncPathView(); selectTrack("train"); switchTab("paths"); } },
-            { tag: "实战案例", title: "SwanLab 共建微调看板案例", desc: "实时观测 NPU 显存占用与多组超参 Loss 曲线。", go: "查看 SwanLab 案例 →", fn: () => { activeHub = "swanlab"; renderHub(); switchTab("academia"); } }
+            { tag: "实战案例", title: "SwanLab 共建微调看板案例", desc: "实时观测 NPU 显存占用与多组超参 Loss 曲线。", go: "查看技术博客 →", fn: () => switchTab("blogs") }
           ],
           followups: ["想学 HCCL 多卡集合通信", "顺便看看大模型推理部署", "只有 2 天怎么入门"]
         };
