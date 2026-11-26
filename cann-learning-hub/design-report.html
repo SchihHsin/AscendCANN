@@ -123,41 +123,29 @@ body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibi
 .pill-teal{background:rgba(40,168,216,.13);color:#0284c7}
 .pill-green{background:rgba(57,185,130,.13);color:#059669}
 
-/* P3：四类需求光谱 + 三段式架构边界 */
-.arch-grid{display:grid;grid-template-rows:auto auto;gap:2.2vh;min-height:0}
-.spectrum-card{padding:2.2vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh;min-height:0}
-.sec-cap-row{display:flex;align-items:center;justify-content:space-between;gap:1vw}
-.sec-cap{font-size:var(--fs-h3);font-weight:700;color:var(--ink)}
-.sec-hint{font-size:var(--fs-sm);color:var(--ink-2)}
-.spec-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1vw;align-items:stretch}
-.spec-item{padding:1.6vh 1.15vw;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(212,216,223,.7);display:flex;flex-direction:column;gap:.8vh;min-width:0}
-.spec-item .si-t{font-size:var(--fs-h3);font-weight:700;color:var(--ink);line-height:1.25}
-.spec-item .si-d{font-size:var(--fs-body);color:var(--ink-2);line-height:1.45}
-.spec-item .si-go{margin-top:auto;padding-top:.8vh;border-top:1px dashed rgba(146,154,166,.35);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.boundary-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1vw;align-items:stretch}
-.bf-node{padding:2vh 1.4vw;border-radius:14px;display:flex;flex-direction:column;gap:.75vh;min-width:0}
-.bf-node.bf-main{background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.85)}
-.bf-node.bf-accent{background:var(--g-accent);color:#fff;box-shadow:0 14px 32px -16px rgba(91,91,214,.42)}
-.bf-node.bf-ink{background:var(--g-ink);color:#fff;box-shadow:0 14px 32px -16px rgba(20,25,35,.38)}
-.bf-node .bf-t{font-size:var(--fs-h2);font-weight:700;line-height:1.25}
-.bf-node .bf-d{font-size:var(--fs-body);line-height:1.48;opacity:.88}
+/* P3：三段式架构边界（大留白 + 一眼看清）*/
+.boundary-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1.2vw;align-items:stretch;min-height:40vh}
+.bf-node{padding:3.2vh 1.8vw;border-radius:18px;display:flex;flex-direction:column;gap:1.4vh;min-width:0}
+.bf-node.bf-main{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);box-shadow:0 14px 36px -20px rgba(30,40,70,.2)}
+.bf-node.bf-accent{background:var(--g-accent);color:#fff;box-shadow:0 16px 38px -16px rgba(91,91,214,.44)}
+.bf-node.bf-ink{background:var(--g-ink);color:#fff;box-shadow:0 16px 38px -16px rgba(20,25,35,.42)}
+.bf-node .bf-big{font-size:clamp(24px,2.2vw,34px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-top:.8vh}
+.bf-node .bf-d{font-size:var(--fs-body);line-height:1.55;opacity:.88;margin-top:.4vh}
 .bf-node.bf-main .bf-d{color:var(--ink-2);opacity:1}
+.bf-node .bf-foot{margin-top:auto;padding-top:1.4vh;border-top:1px solid rgba(148,163,184,.28);font-size:var(--fs-sm);font-weight:600;opacity:.82}
 .bf-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink-3)}
-.bf-arrow svg{width:22px;height:22px}
+.bf-arrow svg{width:26px;height:26px}
 
-/* P4：sm2 图+文模式（角色轻分流 vs 技术方向做主角）*/
-.sm2-grid{display:grid;grid-template-columns:1.05fr 1.15fr;gap:2.4vw;align-items:stretch;min-height:0;max-height:100%}
-.sm2-left{display:flex;flex-direction:column;gap:1.25vh;min-height:0;min-width:0}
-.sm2-card{padding:1.5vh 1.35vw;display:flex;flex-direction:column;gap:.75vh;min-width:0}
-.sm2-card h3{font-size:var(--fs-h3);font-weight:700;color:var(--ink);line-height:1.28}
-.sm2-card p{font-size:var(--fs-body);color:var(--ink-2);line-height:1.5}
-.sm2-card p b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 62%,rgba(91,91,214,.16) 0)}
-.chip-row{display:flex;flex-wrap:wrap;gap:.45vw;margin-top:.25vh}
-.chip-row span{display:inline-flex;align-items:center;padding:.35vh .7vw;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.verdict{flex:0 0 auto;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:14px;padding:1.35vh 1.35vw;margin-top:auto}
-.verdict .vk{font-size:var(--fs-sm);font-weight:700;color:var(--ink);background:#fff;border-radius:999px;padding:4px 12px;white-space:nowrap}
-.verdict .vv{font-size:var(--fs-body);line-height:1.45}
-.sm2-visual{position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.85);box-shadow:0 18px 44px -22px rgba(20,30,60,.24);background:#f4f6fa;display:flex;flex-direction:column;min-height:0}
+/* P4：大字观点 + 大图（极简高冲击力）*/
+.sm2-grid{display:grid;grid-template-columns:0.95fr 1.15fr;gap:3.2vw;align-items:center;min-height:0;max-height:100%}
+.sm2-left{display:flex;flex-direction:column;gap:2.6vh;min-height:0;min-width:0;padding-right:1vw}
+.sm2-kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.22em;text-transform:uppercase;color:var(--c-indigo);font-weight:600}
+.sm2-hero-q{font-size:clamp(28px,2.8vw,44px);font-weight:800;line-height:1.2;letter-spacing:-.02em;color:var(--ink)}
+.sm2-hero-a{font-size:clamp(17px,1.4vw,22px);line-height:1.65;color:var(--ink-2);font-weight:400}
+.sm2-hero-a b{color:var(--ink);font-weight:700;background:linear-gradient(transparent 62%,rgba(91,91,214,.18) 0)}
+.chip-row{display:flex;flex-wrap:wrap;gap:.65vw;margin-top:.6vh}
+.chip-row span{display:inline-flex;align-items:center;padding:.55vh 1vw;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 4px 12px -6px rgba(20,25,35,.12);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.sm2-visual{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/10;border:1px solid rgba(255,255,255,.88);box-shadow:0 20px 48px -22px rgba(20,30,60,.25);background:#f4f6fa;display:flex;flex-direction:column;min-height:0}
 .sm2-visual img{width:100%;height:100%;object-fit:cover;display:block;flex:1;min-height:0}
 .visual-cap{position:absolute;left:14px;bottom:14px;padding:5px 12px;border-radius:999px;background:rgba(22,25,30,.72);backdrop-filter:blur(8px);color:#fff;font-size:var(--fs-xs);font-weight:500;letter-spacing:.03em}
 
@@ -260,8 +248,8 @@ body.on-dark .nav-dot.active{background:#fff}
       <div class="cv-center">
         <div class="cv-kicker">DESIGN PROPOSAL · 2026</div>
         <div class="cv-logo"><img src="assets/cann-dark-logo.svg" alt="CANN"></div>
-        <div class="cv-sub">CANN Learning Hub 体验改版设计方案</div>
-        <div class="cv-lead">从静态课程目录到「探索 — 生成 — 共创」的 AI 学习门户：以技术方向为主角，串联项目规则识别、焦点连线探索与右侧双栏路径共创。</div>
+        <div class="cv-sub">CANN Learning Hub 体验改版</div>
+        <div class="cv-lead">先看清方向，再一键生成专属路径</div>
       </div>
       <div class="cv-bot">
         <div class="cv-ucd"><span class="sq"></span>CANN LEARNING HUB · DESIGN REVIEW</div>
@@ -277,148 +265,101 @@ body.on-dark .nav-dot.active{background:#fff}
       <div class="contents-directory contents-4">
         <article class="directory-card c1">
           <div class="directory-no">01</div>
-          <h2 class="directory-name">架构与边界</h2>
-          <div class="directory-en">Architecture &amp; Scope</div>
-          <div class="directory-items"><span>四类需求清晰度光谱</span><span>三段式职责边界</span></div>
-          <div class="directory-note">明确首页、副屏与目录各司其职</div>
+          <h2 class="directory-name">架构边界</h2>
+          <div class="directory-en">Architecture</div>
+          <div class="directory-note">首页、副屏与目录各干各的</div>
         </article>
         <article class="directory-card c2">
           <div class="directory-no">02</div>
           <h2 class="directory-name">角色与方向</h2>
-          <div class="directory-en">Role vs. Tech Direction</div>
-          <div class="directory-items"><span>破除伪职业卡片误区</span><span>首屏全屏实机演示</span></div>
-          <div class="directory-note">确立身份轻分流、方向做主角</div>
+          <div class="directory-en">Role vs. Direction</div>
+          <div class="directory-note">角色轻分流，技术方向做主角</div>
         </article>
         <article class="directory-card c3">
           <div class="directory-no">03</div>
-          <h2 class="directory-name">核心体验与演示</h2>
-          <div class="directory-en">Key Designs &amp; Live Demos</div>
-          <div class="directory-items"><span>项目规则识别与连线探索</span><span>右侧双栏学习路径共创</span></div>
-          <div class="directory-note">一页讲解配一页全屏实机验证</div>
+          <h2 class="directory-name">核心体验</h2>
+          <div class="directory-en">Design &amp; Live Demos</div>
+          <div class="directory-note">规则识别 · 连线探索 · 双栏共创</div>
         </article>
         <article class="directory-card c4">
           <div class="directory-no">04</div>
           <h2 class="directory-name">取舍与演进</h2>
-          <div class="directory-en">Trade-offs &amp; Roadmap</div>
-          <div class="directory-items"><span>轻量化选型原则</span><span>P0 闭环与 P1 延伸</span></div>
-          <div class="directory-note">聚焦高频闭环、克制有序迭代</div>
+          <div class="directory-en">Roadmap</div>
+          <div class="directory-note">P0 已落地闭环与 P1 规划</div>
         </article>
       </div>
     </div>
     <div class="foot"><span>CANN LEARNING HUB · DESIGN PROPOSAL</span><span>02 / 12</span></div>
   </section>
 
-  <!-- P3 · 讲解 1：信息架构与三段式边界 -->
+  <!-- P3 · 讲解 1：三段式职责边界 -->
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">首页唤醒探索，学习路径与课程体系承接确定性需求</span></div>
-        <div class="subttl">01 架构与边界 · 四类用户场景与三段式职责分工</div>
+        <div class="brand"><span class="ttl">首页唤醒探索，副屏配课表，课程体系查单课</span></div>
+        <div class="subttl">01 架构边界 · 三段式清晰分工</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
-        <span class="active">01 架构与边界</span><span>02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
+        <span class="active">01 架构边界</span><span>02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
       </div>
     </div>
     <div class="body-area vc">
-      <div class="arch-grid">
-        <div class="glass spectrum-card">
-          <div class="sec-cap-row">
-            <div class="sec-cap">按「需求清晰度光谱」精准映射 4 类入口</div>
-            <div class="sec-hint">不强迫所有开发者走同一条路，由清晰到模糊自然承接</div>
-          </div>
-          <div class="spec-cols">
-            <div class="spec-item">
-              <span class="pill-tag pill-indigo">目标明确</span>
-              <div class="si-t">效率直达</div>
-              <div class="si-d">明确要学大模型推理、高校 16 周开课或备赛刷题。</div>
-              <div class="si-go">3 角色轻分流 /「学习路径」Tab</div>
-            </div>
-            <div class="spec-item">
-              <span class="pill-tag pill-blue">意图清晰</span>
-              <div class="si-t">自然语言对话</div>
-              <div class="si-d">能口述痛点，如“不会 C++，想用 PyASC 写算子”。</div>
-              <div class="si-go">Hero AI 输入条 → 11 主题规则</div>
-            </div>
-            <div class="spec-item">
-              <span class="pill-tag pill-teal">任务驱动</span>
-              <div class="si-t">上传项目规则</div>
-              <div class="si-d">手里已有迁移仓库，不愿重复口述框架与环境约束。</div>
-              <div class="si-go">输入框 + 上传 / 拖拽本地解析</div>
-            </div>
-            <div class="spec-item">
-              <span class="pill-tag pill-green">发散探索</span>
-              <div class="si-t">焦点连线探索</div>
-              <div class="si-d">听说要学算子或图框架，但连如何提问都不确定。</div>
-              <div class="si-go">首页知识地图 2～3 级点选连线</div>
-            </div>
-          </div>
+      <div class="boundary-flow">
+        <div class="bf-node bf-main">
+          <span class="pill-tag pill-neutral">首页 · 画布</span>
+          <div class="bf-big">拼出线索</div>
+          <div class="bf-d">只到「方向 → 场景」2～3 级，帮不会提问的人理清想学什么。</div>
+          <div class="bf-foot">入口：AI 对话 / 规则上传 / 连线探索</div>
         </div>
-
-        <div class="boundary-flow">
-          <div class="bf-node bf-main">
-            <span class="pill-tag pill-neutral">第一段 · 首页画布</span>
-            <div class="bf-t">探索线索（2～3 级）</div>
-            <div class="bf-d">停留在「大方向 → 切入方式 → 场景目标」粒度，帮用户把模糊兴趣点清楚，不充当 218 节 .ipynb 目录树。</div>
-          </div>
-          <div class="bf-arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-          </div>
-          <div class="bf-node bf-accent">
-            <span class="pill-tag" style="background:rgba(255,255,255,.18);color:#fff;">第二段 · AI 共创副屏</span>
-            <div class="bf-t">路径编排（跨目录配课表）</div>
-            <div class="bf-d">按选定线索跨目录抽取核心课时，生成「基础 → 核心 → 实操 → 证书」时间轴，支持跳过与追问微调。</div>
-          </div>
-          <div class="bf-arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-          </div>
-          <div class="bf-node bf-ink">
-            <span class="pill-tag" style="background:rgba(255,255,255,.16);color:#fff;">第三段 · 课程体系 Tab</span>
-            <div class="bf-t">全量目录（4 层直达单课）</div>
-            <div class="bf-d">保留 12 大领域、18 个系列、218 节 .ipynb 的完整树状结构，服务明确要按章节查阅具体课时的开发者。</div>
-          </div>
+        <div class="bf-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </div>
+        <div class="bf-node bf-accent">
+          <span class="pill-tag" style="background:rgba(255,255,255,.18);color:#fff;">右侧 · 副屏</span>
+          <div class="bf-big">生成课表</div>
+          <div class="bf-d">跨目录打包成阶段化路径，支持跳过已掌握阶段与追问微调。</div>
+          <div class="bf-foot">输出：基础 → 核心 → 实操 → 证书</div>
+        </div>
+        <div class="bf-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </div>
+        <div class="bf-node bf-ink">
+          <span class="pill-tag" style="background:rgba(255,255,255,.16);color:#fff;">顶栏 · 课程体系</span>
+          <div class="bf-big">翻阅单课</div>
+          <div class="bf-d">保留 12 领域、218 节 .ipynb 完整目录，供目标明确者直接查课。</div>
+          <div class="bf-foot">入口：顶部「学习路径 / 课程体系」Tab</div>
         </div>
       </div>
     </div>
-    <div class="foot"><span>CANN LEARNING HUB · ARCHITECTURE &amp; BOUNDARY</span><span>03 / 12</span></div>
+    <div class="foot"><span>CANN LEARNING HUB · ARCHITECTURE</span><span>03 / 12</span></div>
   </section>
 
-  <!-- P4 · 讲解 2：角色轻分流，技术方向做主角 -->
+  <!-- P4 · 讲解 2：角色还是方向更重要 -->
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">打破“伪职业卡片”误区：角色轻分流，技术方向做主角</span></div>
-        <div class="subttl">02 角色与方向 · 首页主视觉与分流策略判断</div>
+        <div class="brand"><span class="ttl">角色轻分流，技术方向做主角</span></div>
+        <div class="subttl">02 角色与方向 · 首页主次判断</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
-        <span>01 架构与边界</span><span class="active">02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
+        <span>01 架构边界</span><span class="active">02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
       </div>
     </div>
-    <div class="body-area" style="padding-bottom:3.8vh;">
+    <div class="body-area vc">
       <div class="sm2-grid">
         <div class="sm2-left">
-          <div class="glass sm2-card">
-            <span class="pill-tag pill-neutral">常见误区</span>
-            <h3>硬按职业角色切分 4～5 张大卡片，反而制造选择犹豫</h3>
-            <p>现实中开发者往往身兼多职（算法工程师也要部署 vLLM、高校学生也想写自定义算子），<b>职业标签与当下要解决的技术问题并不严格一一对应</b>。</p>
-          </div>
-          <div class="glass sm2-card">
-            <span class="pill-tag pill-indigo">设计判断</span>
-            <h3>身份只做 3 枚轻分流胶囊，把黄金位置让给 6 大技术方向</h3>
-            <p>仅保留入口链路真正迥异的 3 类硬分流，一秒直达而不抢主视觉；其余开发者统一以<b>技术方向与工程问题</b>作为探索起点。</p>
-            <div class="chip-row">
-              <span>零基础新手 → 2 天启航营</span>
-              <span>高校教师 → 16 周开课与 13 门共建课</span>
-              <span>备赛 / 考证 → CANNJudge 真题冲刺</span>
-            </div>
-          </div>
-          <div class="verdict">
-            <span class="vk">核心原则</span>
-            <span class="vv"><b>角色轻分流、技术方向做主角、按需进副屏共创</b>——下一页直接进入首屏实机演示。</span>
+          <div class="sm2-kicker">ROLE VS. TECH DIRECTION</div>
+          <div class="sm2-hero-q">首页，角色和方向哪个更重要？</div>
+          <p class="sm2-hero-a">开发者进来通常是<b>带着具体技术问题找的</b>。除了<b>新手、高校教师、备赛</b>这三类入口链路完全不同，其余都以<b>技术方向</b>做主角，不做多余的职业大卡片。</p>
+          <div class="chip-row">
+            <span>零基础新手 → 启航营</span>
+            <span>高校教师 → 16 周开课</span>
+            <span>备赛 / 考证 → 题库冲刺</span>
           </div>
         </div>
         <div class="sm2-visual">
           <img src="assets/report-role-vs-dir.jpg" alt="角色轻分流汇聚至六大技术方向概念示意">
-          <span class="visual-cap">概念示意 · 3 路轻分流入口汇聚至 6 大技术方向主舞台</span>
+          <span class="visual-cap">概念示意 · 3 路轻分流汇聚至 6 大技术方向</span>
         </div>
       </div>
     </div>
@@ -430,29 +371,29 @@ body.on-dark .nav-dot.active{background:#fff}
     <iframe class="demo-frame" data-src="index.html?demo=hero" title="全屏 Demo 1：首屏架构与角色轻分流"></iframe>
     <div class="demo-hud">
       <span class="live-dot"></span>
-      <span>LIVE DEMO 01 · 单行 CANN 顶栏、首屏 AI 入口与 3 枚角色轻分流</span>
-      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+      <span>LIVE DEMO 01 · 首屏与角色轻分流</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
     </div>
   </section>
 
   <!-- P6 · 讲解 3：设计点 01 · 项目规则上传与路径识别 -->
   <section class="slide s-glow" data-chapter="1">
     <div class="glow-white"></div><div class="glow"></div>
-    <div class="chrome"><div>DESIGN POINT 01 · PROJECT RULE PARSING</div><div>03 核心体验与演示</div></div>
+    <div class="chrome"><div>DESIGN POINT 01 · PROJECT RULE</div><div>03 核心体验</div></div>
     <div class="inner">
       <div>
         <div class="kicker">DESIGN POINT 01</div>
-        <h1 class="h-title">无需口述背景<br/><span class="light">丢入项目文件反推路径</span></h1>
-        <p class="body">带着现有 PyTorch 或 vLLM 仓库来的开发者，不愿把框架版本和限制条件再打一遍——<b>直接上传项目规则文件，让系统自动提取上下文并生成针对性路线</b>。</p>
+        <h1 class="h-title">不口述背景<br/><span class="light">丢文件直接识别路径</span></h1>
+        <p class="body">带着迁移仓库来的开发者，直接把项目文件丢给 AI。</p>
         <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">极轻入口：输入框右侧无边框 + 与全框拖拽</div><div class="pt-desc">保持输入栏简洁不加文字按钮，支持本地选择或直接拖入 README.md、AGENTS.md、requirements.txt、CMakeLists.txt。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">纯前端本地解析，零隐私顾虑</div><div class="pt-desc">浏览器端 FileReader 实时识别技术栈与约束（如“禁用 C++”“PD 分离”），映射至 11 大主题规则。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">内置 2 份示例规则一键试用</div><div class="pt-desc">即使手边没有现成项目文件，点开 + 即可一键体验 AGENTS.md 与 README.md 的识别效果。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">极轻入口：右侧无边框 + 与拖拽</div><div class="pt-desc">支持 README、AGENTS.md、requirements.txt、CMakeLists.txt</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">浏览器本地解析</div><div class="pt-desc">直接提取框架与约束，零隐私顾虑</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">内置示例一键试</div><div class="pt-desc">手边没文件也能点开即体验</div></div></div>
         </div>
       </div>
       <div class="shot">
         <img src="assets/report-rule-prism.jpg" alt="项目规则文件经棱镜编译为阶段路径概念示意">
-        <span class="shot-cap">概念示意 · 规则文档反向编译学习路径</span>
+        <span class="shot-cap">概念示意 · 项目规则反推学习路径</span>
       </div>
     </div>
   </section>
@@ -462,29 +403,29 @@ body.on-dark .nav-dot.active{background:#fff}
     <iframe class="demo-frame" data-src="index.html?demo=rule" title="全屏 Demo 2：项目规则上传与识别"></iframe>
     <div class="demo-hud">
       <span class="live-dot"></span>
-      <span>LIVE DEMO 02 · 点击内置示例规则（AGENTS.md / README.md）实时识别路径</span>
-      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+      <span>LIVE DEMO 02 · 项目规则一键示例识别</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
     </div>
   </section>
 
   <!-- P8 · 讲解 4：设计点 02 · 连线探索知识地图 -->
   <section class="slide s-glow" data-chapter="2">
     <div class="glow-white"></div><div class="glow"></div>
-    <div class="chrome"><div>DESIGN POINT 02 · INTERACTIVE KNOWLEDGE GRAPH</div><div>03 核心体验与演示</div></div>
+    <div class="chrome"><div>DESIGN POINT 02 · KNOWLEDGE GRAPH</div><div>03 核心体验</div></div>
     <div class="inner">
       <div>
         <div class="kicker">DESIGN POINT 02</div>
-        <h1 class="h-title">焦点聚光连线探索<br/><span class="light">用点选连线替代打字</span></h1>
-        <p class="body">面向还不确定怎么向 AI 提问的探索型开发者：在首页第二屏以<b>无边框悬浮排版 + 蓄力推演连线</b>展现技术关系，帮用户把模糊兴趣收敛成清晰线索。</p>
+        <h1 class="h-title">不会提问时<br/><span class="light">用点选连线理清方向</span></h1>
+        <p class="body">首页不堆目录，让技术关联随鼠标自然展开。</p>
         <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">280ms 聚焦居中 + 隐藏无关主方向</div><div class="pt-desc">初始仅呈现 6 大核心方向；悬浮片刻聚焦节点滑至正中、淡出无关主节点，沿右弧扇出推荐二级路线。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">680ms 蓄力推进，末端节点原地定格</div><div class="pt-desc">继续移至右侧节点停留即可自动连线，历史轨迹退至左弧；到达最末级节点时原地连线不挪位，避免右侧留空。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">严守“线索”粒度，不与课程目录打架</div><div class="pt-desc">保持 2～3 级方向与场景线索，点击「沿此线索生成学习路径」后交由右侧副屏跨目录配齐课表。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">280ms 聚焦居中</div><div class="pt-desc">隐藏无关方向，右弧扇出推荐子路线</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">680ms 蓄力连线</div><div class="pt-desc">历史轨迹退至左弧，末端原地定格不乱跳</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">只连线索，不找单课</div><div class="pt-desc">2～3 级收口，一键交由副屏配课表</div></div></div>
         </div>
       </div>
       <div class="shot">
         <img src="assets/report-explore-graph.jpg" alt="焦点聚光居中与左右弧线推演概念示意">
-        <span class="shot-cap">概念示意 · 中心聚光、左弧历史轨迹与右弧推演</span>
+        <span class="shot-cap">概念示意 · 中心聚光与左右弧推演</span>
       </div>
     </div>
   </section>
@@ -494,42 +435,42 @@ body.on-dark .nav-dot.active{background:#fff}
     <iframe class="demo-frame" data-src="index.html?demo=explore" title="全屏 Demo 3：探索 CANN 知识地图"></iframe>
     <div class="demo-hud">
       <span class="live-dot"></span>
-      <span>LIVE DEMO 03 · 悬浮 280ms 聚光居中、停留 680ms 或点击层层连线</span>
-      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+      <span>LIVE DEMO 03 · 焦点聚光连线探索</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
     </div>
   </section>
 
   <!-- P10 · 讲解 5：设计点 03 · 右侧双栏学习路径共创副屏 -->
   <section class="slide s-glow" data-chapter="3">
     <div class="glow-white"></div><div class="glow"></div>
-    <div class="chrome"><div>DESIGN POINT 03 · SPLIT-SCREEN JOURNEY DRAWER</div><div>03 核心体验与演示</div></div>
+    <div class="chrome"><div>DESIGN POINT 03 · SPLIT-SCREEN DRAWER</div><div>03 核心体验</div></div>
     <div class="inner">
       <div>
         <div class="kicker">DESIGN POINT 03</div>
-        <h1 class="h-title">统一收口右侧双栏<br/><span class="light">边聊边改专属课表</span></h1>
-        <p class="body">Skill 风格中轴时间轴高度可达 1600px+，若内联撑开会顶飞首页且无法边聊边改。无论从对话、规则上传还是连线进入，均<b>统一滑出右侧双栏共创副屏</b>。</p>
+        <h1 class="h-title">右侧双栏共创<br/><span class="light">边聊边改专属课表</span></h1>
+        <p class="body">不把 1600px 时间轴硬塞首页，所有入口统一右侧滑出。</p>
         <div class="points">
-          <div class="point"><div class="dot"></div><div><div class="pt-title">左 340px 规则与对话 + 右中轴时间轴</div><div class="pt-desc">左侧沉淀已识别的项目约束与追问输入框；右侧完整复用 CANN Bench 同款头图、三栏画像、交替时间轴与证书卡。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">支持「已掌握 · 跳过」与「采纳 / 忽略」</div><div class="pt-desc">每个学习阶段可一键标记跳过折叠；追问微调时以增量建议卡片呈现，用户掌控最终课表。</div></div></div>
-          <div class="point"><div class="dot"></div><div><div class="pt-title">收起后顶栏保留「当前路径」胶囊</div><div class="pt-desc">切换到「课程体系」或「技术博客」查阅资料时，随时一键拉出对照，不中断学习上下文。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">左聊右改</div><div class="pt-desc">左 340px 规则追问，右 Skill 同款中轴时间轴</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">按需加减</div><div class="pt-desc">阶段一键跳过，AI 建议支持采纳或忽略</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">跨页常驻</div><div class="pt-desc">收起后顶栏保留胶囊，随时拉出对照</div></div></div>
         </div>
       </div>
       <div class="shot">
         <div class="drawer-arch">
           <div class="da-col">
             <div class="da-head"><span>左栏 · 规则与追问</span><span class="da-badge">340px</span></div>
-            <div class="da-bubble user">已识别线索：算子开发 → PyASC（无需 C++）</div>
-            <div class="da-bubble">已为你跨目录编排 4 个阶段，包含 CANN 基础、PyASC、PyPTO 与在线刷题。</div>
-            <div class="da-bubble user">基础概念我都懂，帮我加一点性能调优</div>
-            <div class="da-input"><span>继续追问以微调当前路径…</span><span>发送</span></div>
+            <div class="da-bubble user">线索：算子开发 → PyASC（无 C++）</div>
+            <div class="da-bubble">已跨目录编排 4 阶段课表。</div>
+            <div class="da-bubble user">基础都会了，加一点性能调优</div>
+            <div class="da-input"><span>继续追问微调路径…</span><span>发送</span></div>
           </div>
           <div class="da-col">
-            <div class="da-head"><span>右区 · Skill 路径共创画布</span><span class="da-badge">LIVE CANVAS</span></div>
+            <div class="da-head"><span>右区 · Skill 共创画布</span><span class="da-badge">LIVE CANVAS</span></div>
             <div class="da-timeline">
-              <div class="da-stage skipped"><span class="da-st-t">阶段 01 · CANN 基础知识</span><span class="da-st-act">已掌握 · 跳过</span></div>
-              <div class="da-stage"><span class="da-st-t">阶段 02 · PyASC 算子开发（4 节精选）</span><span class="da-st-act">在线体验</span></div>
-              <div class="da-stage ai-add"><span class="da-st-t">AI 建议 · msProf 算子性能调优专题</span><span class="da-st-act">采纳 / 忽略</span></div>
-              <div class="da-stage"><span class="da-st-t">阶段 03 · CANNJudge &amp; CANNLab 实操</span><span class="da-st-act">结业证书</span></div>
+              <div class="da-stage skipped"><span class="da-st-t">01 · CANN 基础知识</span><span class="da-st-act">已掌握 · 跳过</span></div>
+              <div class="da-stage"><span class="da-st-t">02 · PyASC 核心课</span><span class="da-st-act">在线体验</span></div>
+              <div class="da-stage ai-add"><span class="da-st-t">AI 建议 · msProf 调优</span><span class="da-st-act">采纳 / 忽略</span></div>
+              <div class="da-stage"><span class="da-st-t">03 · CANNJudge 实操</span><span class="da-st-act">结业证书</span></div>
             </div>
           </div>
         </div>
@@ -542,8 +483,8 @@ body.on-dark .nav-dot.active{background:#fff}
     <iframe class="demo-frame" data-src="index.html?demo=drawer" title="全屏 Demo 4：右侧双栏学习路径共创副屏"></iframe>
     <div class="demo-hud">
       <span class="live-dot"></span>
-      <span>LIVE DEMO 04 · 体验阶段「已掌握 · 跳过」与左侧追问微调</span>
-      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+      <span>LIVE DEMO 04 · 右侧双栏路径共创</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置</button>
     </div>
   </section>
 
@@ -551,50 +492,50 @@ body.on-dark .nav-dot.active{background:#fff}
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
-        <div class="brand"><span class="ttl">克制做减法：P0 跑通三大闭环，P1 延伸报错诊断与交互微沙箱</span></div>
-        <div class="subttl">04 取舍与演进 · 面向开源社区门户的轻量化迭代策略</div>
+        <div class="brand"><span class="ttl">P0 跑通三大闭环，P1 延伸报错诊断与微沙箱</span></div>
+        <div class="subttl">04 取舍与演进 · 克制做减法</div>
       </div>
       <div class="section-tabs" aria-label="当前章节">
-        <span>01 架构与边界</span><span>02 角色与方向</span><span>03 核心体验</span><span class="active">04 取舍与演进</span>
+        <span>01 架构边界</span><span>02 角色与方向</span><span>03 核心体验</span><span class="active">04 取舍与演进</span>
       </div>
     </div>
     <div class="body-area vc">
       <div class="tri-grid">
         <article class="tri-card t-white">
-          <span class="pill-tag pill-neutral">选型原则</span>
-          <h3>坚守门户轻量化，不硬塞重交互</h3>
+          <span class="pill-tag pill-neutral">选型克制</span>
+          <h3>不做重交互</h3>
           <ul class="tri-list">
-            <li><span class="tdot"></span><span><b>不做桌面 IDE 重画布</b>：剔除无限画布框选“指着说”等与网页学习门户不匹配的交互负担。</span></li>
-            <li><span class="tdot"></span><span><b>不做冗余伪角色矩阵</b>：保留 3 枚硬分流胶囊，将认知带宽留给真正的技术方向。</span></li>
-            <li><span class="tdot"></span><span><b>纯前端即开即用</b>：全部核心交互零后端依赖，支持 GitHub Pages 与社区静态部署。</span></li>
+            <li><span class="tdot"></span><span>不硬塞桌面 IDE 框选画布</span></li>
+            <li><span class="tdot"></span><span>不堆冗余伪角色大卡片</span></li>
+            <li><span class="tdot"></span><span>纯前端静态即开即用</span></li>
           </ul>
-          <div class="tri-foot">原则：设计创新性 × 强技术落地性</div>
+          <div class="tri-foot">创新性 × 高落地性</div>
         </article>
 
         <article class="tri-card t-accent">
-          <span class="pill-tag">P0 · 已完成落地</span>
-          <h3>三大高频探索与生成闭环</h3>
+          <span class="pill-tag">P0 · 已落地</span>
+          <h3>三大高频闭环</h3>
           <ul class="tri-list">
-            <li><span class="tdot"></span><span><b>项目规则上传识别</b>：无边框 + 与拖拽解析，内置 2 份示例规则一键试用。</span></li>
-            <li><span class="tdot"></span><span><b>焦点聚光连线探索</b>：280ms 聚焦、680ms 推演与末端原地定格，严守线索粒度。</span></li>
-            <li><span class="tdot"></span><span><b>右侧双栏路径共创</b>：复刻 Skill 视觉规范，支持跳过、采纳与跨 Tab 常驻。</span></li>
+            <li><span class="tdot"></span><span>项目规则本地识别</span></li>
+            <li><span class="tdot"></span><span>焦点聚光连线探索</span></li>
+            <li><span class="tdot"></span><span>右侧双栏路径共创</span></li>
           </ul>
-          <div class="tri-foot">状态：已完成原型联调与线上部署</div>
+          <div class="tri-foot">已完成联调与线上部署</div>
         </article>
 
         <article class="tri-card t-ink">
-          <span class="pill-tag">P1 · 下阶段延伸</span>
-          <h3>从「找课」走向「解难与动手」</h3>
+          <span class="pill-tag">P1 · 下阶段</span>
+          <h3>从找课到解难</h3>
           <ul class="tri-list">
-            <li><span class="tdot"></span><span><b>报错日志 / 代码片段诊断</b>：粘贴编译或运行报错，反向生成 Troubleshooting 补课路径。</span></li>
-            <li><span class="tdot"></span><span><b>CANN 第一课交互微沙箱</b>：将 HWC→CHW、Tiling 尾块切分升级为可调参数可视化演示。</span></li>
-            <li><span class="tdot"></span><span><b>真实算力与评测打通</b>：与 CANNLab 云端 Notebook 及 CANNJudge 题库进度联动。</span></li>
+            <li><span class="tdot"></span><span>报错日志反推补课路径</span></li>
+            <li><span class="tdot"></span><span>第一课交互参数微沙箱</span></li>
+            <li><span class="tdot"></span><span>联动云端算力与题库</span></li>
           </ul>
-          <div class="tri-foot">目标：形成“探索 → 学课 → 调优 → 评测”完整闭环</div>
+          <div class="tri-foot">探索 → 学课 → 调优 → 评测</div>
         </article>
       </div>
     </div>
-    <div class="foot"><span>CANN LEARNING HUB · TRADE-OFFS &amp; ROADMAP</span><span>12 / 12</span></div>
+    <div class="foot"><span>CANN LEARNING HUB · ROADMAP</span><span>12 / 12</span></div>
   </section>
 
 </div>
