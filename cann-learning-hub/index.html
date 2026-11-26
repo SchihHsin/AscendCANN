@@ -81,14 +81,40 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .brand-title {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.015em;
-      color: var(--text);
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       text-decoration: none;
+      color: var(--text);
+      transition: opacity 0.15s ease;
     }
-    .brand-title:hover { opacity: 0.78; }
+    .brand-link:hover { opacity: 0.78; }
+    .brand-logo {
+      height: 18px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+    .brand-sep {
+      width: 1px;
+      height: 14px;
+      background: #e2e8f0;
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .header-right {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
+    }
 
     .search-trigger {
       height: 32px;
@@ -2358,39 +2384,51 @@
 </head>
 <body>
 
-  <!-- Header (Unified Single Row: Left Brand + Right Tabs) -->
+  <!-- Header (Unified Single Row: Left CANN Logo + Learning Hub | Right Tabs + Search) -->
   <header class="site-header">
     <div class="top-bar-inner">
       <div class="brand-group">
-        <a class="brand-title" href="#" onclick="switchTab('overview'); return false;">cann-learning-hub</a>
+        <a class="brand-link" href="#" onclick="switchTab('overview'); return false;">
+          <img class="brand-logo" src="assets/cann-logo.png" alt="CANN" />
+          <span class="brand-sep" aria-hidden="true"></span>
+          <span class="brand-title">Learning Hub</span>
+        </a>
       </div>
 
-      <nav class="sub-nav-inner" id="mainTabs" aria-label="主导航">
-        <button class="nav-tab active" data-tab="overview">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          总览
-        </button>
-        <button class="nav-tab" data-tab="paths">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-          学习路径 <span class="tab-badge">5</span>
-        </button>
-        <button class="nav-tab" data-tab="map">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-          课程体系 <span class="tab-badge">12</span>
-        </button>
-        <button class="nav-tab" data-tab="academia">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-          高校与赛事
-        </button>
-        <button class="nav-tab" data-tab="blogs">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-          技术博客 <span class="tab-badge">54</span>
-        </button>
+      <div class="header-right">
+        <nav class="sub-nav-inner" id="mainTabs" aria-label="主导航">
+          <button class="nav-tab active" data-tab="overview">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            总览
+          </button>
+          <button class="nav-tab" data-tab="paths">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+            学习路径 <span class="tab-badge">5</span>
+          </button>
+          <button class="nav-tab" data-tab="map">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+            课程体系 <span class="tab-badge">12</span>
+          </button>
+          <button class="nav-tab" data-tab="academia">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            高校与赛事
+          </button>
+          <button class="nav-tab" data-tab="blogs">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+            技术博客 <span class="tab-badge">54</span>
+          </button>
+        </nav>
+
         <button class="journey-nav-pill" id="openJourneyPill" onclick="openJourneyDrawer()" title="打开我的学习路径副屏">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3.4C13.1 8.1 15.9 10.9 20.6 12C15.9 13.1 13.1 15.9 12 20.6C10.9 15.9 8.1 13.1 3.4 12C8.1 10.9 10.9 8.1 12 3.4Z" fill="#6366f1"/></svg>
           <span id="openJourneyPillText">当前路径</span>
         </button>
-      </nav>
+
+        <button class="search-trigger" onclick="openSearchModal()" title="全局搜索 (⌘K)">
+          <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="kbd">⌘K</span>
+        </button>
+      </div>
     </div>
   </header>
 
