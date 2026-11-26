@@ -862,3 +862,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
   - https://schihhsin.github.io/AscendCANN/cann-learning-hub/
   - https://schihhsin.github.io/AscendCANN/cann-learning-hub/design-report.html
 - 报告聚光 demo（如 `#p=7` 的 rule 页）首次点击后自动移除聚光遮罩与描边框，保留 demo 弹层；iframe 重置后恢复
+- 旧版界面与现网内容已存档到 `cann-learning-hub/reference/`：
+  - `previous-redesign-2026-11-26/`：旧 UI 完整快照（index.html、design-report.html、18 个引用资源），可独立打开
+  - `gitcode-production-2026-11-26/`：现网 README、根目录列表、100 条目录树样例、1440×1200 首屏截图
+  - tag `pre-gitcode-redesign-2026-11-26` 固定旧版代码状态；commit `ee1f5311` 已 push
+  - 旧版在线地址：https://schihhsin.github.io/AscendCANN/cann-learning-hub/reference/previous-redesign-2026-11-26/
