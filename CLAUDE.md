@@ -851,3 +851,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `master` 分支信息未丢失 —— Hero 的版本说明行本身写了「基于 CANN 开源社区 master 分支的文档自动编译生成」
 - 验证：headless Chrome 1440×900 截首屏，确认顶栏消失、Hero 正常顶格、下方 Bento 卡片不受影响
 - commit `7f5eef50`，已 push
+
+### 2026-11-26（本会话）
+
+#### 课程体系 Tab 层级图标 + 报告材料同步
+
+- 课程体系左侧 4 个架构层标签前加彩色图标，样式对齐「学习路径」Tab：AI 框架与场景（layers / 靛蓝）、图引擎与压缩（graph / 青色）、算子与调优（CPU / 紫色）、基础与教学生态（cap / 绿色），图标尺寸 22px 圆角底 + 13px 线性 SVG
+- `design-report.html` P14 同步：`assets/branch-map.svg` 重绘为「左树 + 单领域工作台」并带 4 色层级图标；标题改为「4 层架构树 + 单领域工作台」，动机去掉无依据的“218 节”，筛选措辞改为原子课程 / 参考资料 / 实践案例
+- commit `3ebcb739` 已 push；线上已验证更新：
+  - https://schihhsin.github.io/AscendCANN/cann-learning-hub/
+  - https://schihhsin.github.io/AscendCANN/cann-learning-hub/design-report.html
