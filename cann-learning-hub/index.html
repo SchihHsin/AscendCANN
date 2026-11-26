@@ -2355,32 +2355,54 @@
     }
     .jd-quick-chips {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 6px;
       padding: 8px 14px;
       border-top: 1px solid rgba(15, 23, 42, 0.05);
       background: #fafbfc;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 0;
+    }
+    .jd-quick-chips::-webkit-scrollbar { display: none; }
+    .jd-quick-chips .ai-prompt-chip {
+      flex-shrink: 0;
+      white-space: nowrap;
     }
     .jd-composer {
       padding: 10px 12px;
       border-top: 1px solid var(--border);
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .jd-composer-box {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 4px 0 10px;
       background: #ffffff;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    .jd-composer input {
+    .jd-composer-box:focus-within {
+      border-color: #1456F0;
+      box-shadow: 0 0 0 3px rgba(20, 86, 240, 0.08);
+    }
+    .jd-composer-box input {
       flex: 1;
       min-width: 0;
-      height: 34px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0 10px;
+      height: 100%;
+      border: none;
+      background: transparent;
+      padding: 0;
       font-size: 12.5px;
       color: var(--text);
       outline: none;
     }
-    .jd-composer input:focus { border-color: #1456F0; }
     .jd-canvas-col {
       overflow-y: auto;
       padding: 0 26px 38px;
@@ -3071,17 +3093,18 @@
     </div>
     <div class="jd-body">
       <div class="jd-chat-col">
-        <div class="jd-context-box" id="jdContextBox"></div>
         <div class="jd-chat-log" id="jdChatLog"></div>
         <div class="jd-quick-chips" id="jdQuickChips"></div>
         <form class="jd-composer" onsubmit="event.preventDefault(); submitDrawerChat();">
-          <input type="text" id="drawerChatInput" placeholder="继续调整路径，如“跳过基础”或“压缩到 2 天”..." />
-          <button type="button" class="ai-upload-btn" onclick="triggerLocalRuleUpload()" title="上传项目规则文件">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-          </button>
-          <button type="submit" class="ai-send-btn" style="width:30px; height:30px;" title="发送调整">
-            <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
-          </button>
+          <div class="jd-composer-box">
+            <input type="text" id="drawerChatInput" placeholder="继续调整路径，如“跳过基础”或“压缩到 2 天”..." />
+            <button type="button" class="ai-upload-btn" style="width:28px; height:28px;" onclick="triggerLocalRuleUpload()" title="上传项目规则文件">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            </button>
+            <button type="submit" class="ai-send-btn" style="width:28px; height:28px;" title="发送调整">
+              <svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+            </button>
+          </div>
         </form>
       </div>
       <div class="jd-canvas-col" id="jdCanvasCol"></div>
@@ -4762,33 +4785,7 @@
       const trackBtn = document.getElementById("jdSwitchTrackBtn");
       trackBtn.style.display = (res.journey && res.journey.trackId) ? "inline-flex" : "none";
 
-      // Context box (Project Rules or Explore Trail)
-      const ctxBox = document.getElementById("jdContextBox");
-      if (drawerState.contextType === "rule" && drawerState.ruleData) {
-        ctxBox.classList.add("visible");
-        ctxBox.innerHTML = `
-          <div class="jd-context-head">
-            <span>已解析项目规则 · ${drawerState.ruleData.name}</span>
-            <span style="color:#64748b; font-weight:500;">本地提取</span>
-          </div>
-          <div class="jd-context-list">
-            ${drawerState.ruleData.rules.map(r => `<span class="jd-context-tag">${r}</span>`).join("")}
-          </div>
-        `;
-      } else if (drawerState.contextType === "explore" && drawerState.exploreTrail) {
-        ctxBox.classList.add("visible");
-        ctxBox.innerHTML = `
-          <div class="jd-context-head"><span>来自首页连线探索</span></div>
-          <div class="jd-context-list">
-            ${drawerState.exploreTrail.map(t => `<span class="jd-context-tag">${t}</span>`).join("")}
-          </div>
-        `;
-      } else {
-        ctxBox.classList.remove("visible");
-        ctxBox.innerHTML = "";
-      }
-
-      // Chat log
+      // Chat log (starts directly at top without context box)
       const logEl = document.getElementById("jdChatLog");
       logEl.innerHTML = drawerState.messages.map(m =>
         `<div class="${m.role === "user" ? "jd-bubble-user" : "jd-bubble-bot"}">${m.text}</div>`
