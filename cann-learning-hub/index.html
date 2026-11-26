@@ -5653,8 +5653,26 @@
       const demo = new URLSearchParams(location.search).get("demo");
       const isHomeLockedDemo = ["hero", "rule", "explore", "mainlines", "drawer"].includes(demo);
       let lockedScrollY = 0;
+      let spotlightDismissed = false;
+      let spotlightDismissArmed = false;
+
+      function clearSpotlight() {
+        spotlightDismissed = true;
+        document.querySelectorAll(".demo-spotlight-svg, .demo-spotlight-ring").forEach(el => el.remove());
+      }
+
+      function armSpotlightDismiss() {
+        if (spotlightDismissArmed || spotlightDismissed) return;
+        spotlightDismissArmed = true;
+        document.addEventListener("pointerdown", function onFirstPointerDown() {
+          document.removeEventListener("pointerdown", onFirstPointerDown, true);
+          spotlightDismissArmed = false;
+          clearSpotlight();
+        }, true);
+      }
 
       function applySpotlight(targets) {
+        if (spotlightDismissed) return;
         document.querySelectorAll(".demo-spotlight-svg, .demo-spotlight-ring").forEach(el => el.remove());
         const rects = targets.map(t => {
           const el = typeof t.el === "string" ? document.querySelector(t.el) : t.el;
@@ -5702,6 +5720,7 @@
           }
           document.body.appendChild(ring);
         });
+        armSpotlightDismiss();
       }
 
       function centerScrollOnRect(topDoc, height) {

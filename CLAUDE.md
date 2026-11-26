@@ -861,3 +861,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - commit `3ebcb739` 已 push；线上已验证更新：
   - https://schihhsin.github.io/AscendCANN/cann-learning-hub/
   - https://schihhsin.github.io/AscendCANN/cann-learning-hub/design-report.html
+- 报告聚光 demo（如 `#p=7` 的 rule 页）首次点击后自动移除聚光遮罩与描边框，保留 demo 弹层；iframe 重置后恢复
