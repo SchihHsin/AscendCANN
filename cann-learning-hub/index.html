@@ -4971,6 +4971,62 @@
         aiInputEl.placeholder = AI_PLACEHOLDERS[phIdx];
       }
     }, 2200);
+
+    // ================= Report PPT Fullscreen Demo Hook & Iframe Bridge =================
+    (function initReportDemoHook() {
+      const demo = new URLSearchParams(location.search).get("demo");
+      if (demo === "hero") {
+        window.scrollTo({ top: 0, behavior: "auto" });
+      } else if (demo === "rule") {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        requestAnimationFrame(() => {
+          const pop = document.getElementById("rulePopover");
+          if (pop) pop.classList.add("open");
+        });
+      } else if (demo === "explore") {
+        requestAnimationFrame(() => {
+          const wrap = document.getElementById("exploreGraphWrap");
+          const block = wrap && wrap.closest(".block");
+          if (block) {
+            const top = block.getBoundingClientRect().top + window.scrollY - 68;
+            window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+          }
+        });
+      } else if (demo === "drawer") {
+        requestAnimationFrame(() => {
+          if (typeof runAiMatch === "function") {
+            runAiMatch("不会 C++，想用 PyASC / PyPTO 用 Python 写算子", { sourceType: "chat" });
+          }
+        });
+      }
+
+      if (window.self !== window.top) {
+        document.addEventListener("keydown", e => {
+          if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+          if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "o", "O", "f", "F"].includes(e.key)) {
+            e.preventDefault();
+            window.parent.postMessage({ __deckKey: e.key }, "*");
+          }
+        });
+        document.addEventListener("mousemove", e => {
+          window.parent.postMessage({ __deckMouse: { x: e.clientX, y: e.clientY, w: window.innerWidth, h: window.innerHeight } }, "*");
+        }, { passive: true });
+        window.addEventListener("wheel", e => {
+          // If inside scrollable drawer columns, let drawer scroll first
+          const scroller = e.target.closest(".jd-canvas-col, .jd-chat-col");
+          if (scroller && scroller.scrollHeight > scroller.clientHeight + 2) {
+            const atTop = scroller.scrollTop <= 1 && e.deltaY < 0;
+            const atBot = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2 && e.deltaY > 0;
+            if (!atTop && !atBot) return;
+          }
+          const pageAtTop = window.scrollY <= 1 && e.deltaY < 0;
+          const pageAtBot = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2 && e.deltaY > 0;
+          if (pageAtTop || pageAtBot || demo === "explore" || demo === "drawer") {
+            window.parent.postMessage({ __deckWheel: e.deltaY }, "*");
+          }
+        }, { passive: true });
+      }
+    })();
   </script>
 </body>
 </html>

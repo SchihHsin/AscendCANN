@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN Learning Hub 体验改版设计方案 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+/* ===== 设计 token（严格复用 report-ppt-skill）===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start;counter-reset:slideno}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s;counter-increment:slideno}
+body.overview .slide::after{content:counter(slideno,decimal-leading-zero);position:absolute;bottom:7px;right:8px;z-index:10;padding:2px 7px;border-radius:6px;background:rgba(15,17,24,.72);color:#fff;font-family:'JetBrains Mono';font-size:11px;opacity:0;transition:opacity .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide:hover::after{opacity:1}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner,body.overview .s-demo .slide-inner{padding:0}
+
+/* ===== 翻页过渡 ===== */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active,body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调①：封面 ============ */
+.s-cover{color:#fff;background:#08090f;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("assets/report-cover-bg.jpg") center/cover no-repeat;z-index:0}
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(8,9,15,.92) 0%,rgba(8,9,15,.64) 36%,rgba(8,9,15,.12) 66%,rgba(8,9,15,0) 100%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.65em;font-weight:600;font-size:15px;letter-spacing:.06em;color:rgba(255,255,255,.88)}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.58}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:54vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:rgba(165,180,252,.85);margin-bottom:.6vh}
+.cv-logo{display:flex;align-items:center;gap:1.4vw}
+.cv-logo img{height:min(11vh,7.6vw);width:auto;display:block}
+.cv-sub{font-weight:700;font-size:min(3.2vw,5.2vh);line-height:1.15;letter-spacing:-.015em;color:#fff}
+.cv-lead{font-weight:300;font-size:var(--fs-body);line-height:1.65;color:rgba(255,255,255,.72);max-width:44ch;margin-top:.6vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:11px;height:11px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3vh;gap:2vw}
+.head-l{display:flex;flex-direction:column-reverse;gap:.7vh;min-width:0}
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em;line-height:1.2}
+.subttl{font-weight:400;font-size:var(--fs-sm);color:var(--ink-2)}
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .65vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.body-area.vc{padding-bottom:0}
+.foot{position:absolute;left:4vw;right:4vw;bottom:2.6vh;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);letter-spacing:.08em;pointer-events:none}
+
+/* 目录（§18 4 章单行）*/
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1160px,100%);margin:0 auto;display:grid;gap:1.1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.contents-slide .directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:33vh;overflow:hidden;padding:2.2vh 1.35vw 1.6vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.contents-slide .directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.contents-slide .directory-card.c1{--dir:var(--c-indigo)}.contents-slide .directory-card.c2{--dir:var(--c-blue)}.contents-slide .directory-card.c3{--dir:var(--c-teal)}.contents-slide .directory-card.c4{--dir:var(--c-green)}
+.contents-slide .directory-no,.contents-slide .directory-name,.contents-slide .directory-en,.contents-slide .directory-items,.contents-slide .directory-note{position:relative;z-index:1}
+.contents-slide .directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.contents-slide .directory-name{margin-top:1.4vh;font-size:var(--fs-h2);line-height:1.2;font-weight:800;color:var(--ink)}
+.contents-slide .directory-en{margin-top:.4vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:600;color:color-mix(in srgb,var(--dir) 76%,#596575)}
+.contents-slide .directory-items{display:grid;gap:.55vh;margin-top:2.4vh}
+.contents-slide .directory-items span{font-size:var(--fs-body);line-height:1.38;color:var(--ink-2)}
+.contents-slide .directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir)}
+.contents-slide .directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:700;line-height:1.38;color:color-mix(in srgb,var(--dir) 72%,#465364)}
+
+/* 通用玻璃白卡 + 标签规范 */
+.glass{background:rgba(255,255,255,.58);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);border:1px solid rgba(255,255,255,.78);border-radius:16px;box-shadow:0 12px 32px -18px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.88)}
+.pill-tag{display:inline-flex;align-items:center;align-self:flex-start;width:fit-content;max-width:100%;padding:.35vh .75vw;border-radius:999px;font-size:var(--fs-xs);font-weight:600;letter-spacing:.03em;white-space:nowrap}
+.pill-neutral{background:rgba(155,165,180,.16);color:var(--ink-2)}
+.pill-indigo{background:rgba(91,91,214,.12);color:var(--c-indigo)}
+.pill-blue{background:rgba(75,141,255,.12);color:#2563eb}
+.pill-teal{background:rgba(40,168,216,.13);color:#0284c7}
+.pill-green{background:rgba(57,185,130,.13);color:#059669}
+
+/* P3：四类需求光谱 + 三段式架构边界 */
+.arch-grid{display:grid;grid-template-rows:auto auto;gap:2.2vh;min-height:0}
+.spectrum-card{padding:2.2vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh;min-height:0}
+.sec-cap-row{display:flex;align-items:center;justify-content:space-between;gap:1vw}
+.sec-cap{font-size:var(--fs-h3);font-weight:700;color:var(--ink)}
+.sec-hint{font-size:var(--fs-sm);color:var(--ink-2)}
+.spec-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1vw;align-items:stretch}
+.spec-item{padding:1.6vh 1.15vw;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(212,216,223,.7);display:flex;flex-direction:column;gap:.8vh;min-width:0}
+.spec-item .si-t{font-size:var(--fs-h3);font-weight:700;color:var(--ink);line-height:1.25}
+.spec-item .si-d{font-size:var(--fs-body);color:var(--ink-2);line-height:1.45}
+.spec-item .si-go{margin-top:auto;padding-top:.8vh;border-top:1px dashed rgba(146,154,166,.35);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.boundary-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1vw;align-items:stretch}
+.bf-node{padding:2vh 1.4vw;border-radius:14px;display:flex;flex-direction:column;gap:.75vh;min-width:0}
+.bf-node.bf-main{background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.85)}
+.bf-node.bf-accent{background:var(--g-accent);color:#fff;box-shadow:0 14px 32px -16px rgba(91,91,214,.42)}
+.bf-node.bf-ink{background:var(--g-ink);color:#fff;box-shadow:0 14px 32px -16px rgba(20,25,35,.38)}
+.bf-node .bf-t{font-size:var(--fs-h2);font-weight:700;line-height:1.25}
+.bf-node .bf-d{font-size:var(--fs-body);line-height:1.48;opacity:.88}
+.bf-node.bf-main .bf-d{color:var(--ink-2);opacity:1}
+.bf-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink-3)}
+.bf-arrow svg{width:22px;height:22px}
+
+/* P4：sm2 图+文模式（角色轻分流 vs 技术方向做主角）*/
+.sm2-grid{display:grid;grid-template-columns:1.05fr 1.15fr;gap:2.6vw;align-items:stretch;min-height:0}
+.sm2-left{display:flex;flex-direction:column;gap:1.8vh;min-height:0;min-width:0}
+.sm2-card{padding:2vh 1.5vw;display:flex;flex-direction:column;gap:1vh;min-width:0}
+.sm2-card h3{font-size:var(--fs-h2);font-weight:700;color:var(--ink);line-height:1.28}
+.sm2-card p{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58}
+.sm2-card p b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 62%,rgba(91,91,214,.16) 0)}
+.chip-row{display:flex;flex-wrap:wrap;gap:.55vw;margin-top:.4vh}
+.chip-row span{display:inline-flex;align-items:center;padding:.45vh .8vw;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.verdict{flex:0 0 auto;display:grid;grid-template-columns:auto 1fr;gap:1.1vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:14px;padding:1.8vh 1.5vw;margin-top:auto}
+.verdict .vk{font-size:var(--fs-sm);font-weight:700;color:var(--ink);background:#fff;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.verdict .vv{font-size:var(--fs-body);line-height:1.5}
+.sm2-visual{position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.85);box-shadow:0 18px 44px -22px rgba(20,30,60,.24);background:#f4f6fa;display:flex;flex-direction:column;min-height:0}
+.sm2-visual img{width:100%;height:100%;object-fit:cover;display:block;flex:1;min-height:0}
+.visual-cap{position:absolute;left:14px;bottom:14px;padding:5px 12px;border-radius:999px;background:rgba(22,25,30,.72);backdrop-filter:blur(8px);color:#fff;font-size:var(--fs-xs);font-weight:500;letter-spacing:.03em}
+
+/* P12：同层级三卡（白卡 / 蓝紫渐变 / 深墨）*/
+.tri-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6vw;align-items:stretch;min-height:0}
+.tri-card{border-radius:18px;padding:2.8vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh;min-width:0;min-height:46vh}
+.tri-card.t-white{background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.86);box-shadow:0 14px 36px -20px rgba(30,40,70,.2);color:var(--ink)}
+.tri-card.t-accent{background:var(--g-accent);color:#fff;box-shadow:0 18px 42px -18px rgba(91,91,214,.44)}
+.tri-card.t-ink{background:var(--g-ink);color:#fff;box-shadow:0 18px 42px -18px rgba(20,25,35,.45)}
+.tri-card h3{font-size:var(--fs-h2);font-weight:800;line-height:1.25}
+.tri-list{list-style:none;display:flex;flex-direction:column;gap:1.35vh;margin-top:.4vh}
+.tri-list li{font-size:var(--fs-body);line-height:1.52;display:grid;grid-template-columns:auto 1fr;gap:.65em;align-items:start}
+.tri-list li .tdot{width:6px;height:6px;border-radius:50%;margin-top:.55em;background:currentColor;opacity:.7}
+.tri-card.t-white .tri-list li{color:var(--ink-2)}
+.tri-card.t-white .tri-list li b{color:var(--ink)}
+.tri-foot{margin-top:auto;padding-top:1.4vh;border-top:1px solid currentColor;border-color:rgba(148,163,184,.28);font-size:var(--fs-sm);opacity:.86}
+.tri-card.t-accent .pill-tag,.tri-card.t-ink .pill-tag{background:rgba(255,255,255,.16);color:#fff}
+
+/* ============ 基调③：黑底设计点 ============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:4.8vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.86fr 1.14fr;gap:3.2vw;align-items:center}
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),74%);margin-bottom:2vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:26px;height:1px;background:currentColor;opacity:.75}
+.h-title{font-weight:700;font-size:min(3.1vw,5.2vh);line-height:1.18;letter-spacing:-.01em;margin-bottom:1.6vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),80%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:300}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.7;color:rgba(255,255,255,.72);max-width:42ch;margin-bottom:3vh}
+.body b{color:#fff;font-weight:600}
+.points{display:flex;flex-direction:column;gap:2.1vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1em;align-items:start}
+.point .dot{width:8px;height:8px;margin-top:.55em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),66%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:600;font-size:var(--fs-h3);color:#fff;margin-bottom:.35vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-body);line-height:1.55;color:rgba(255,255,255,.64)}
+.shot{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.45);display:flex;align-items:center;justify-content:center}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.shot-cap{position:absolute;right:14px;bottom:14px;z-index:2;padding:4px 11px;border-radius:999px;background:rgba(6,6,10,.72);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px);font-size:var(--fs-xs);color:rgba(255,255,255,.78)}
+
+/* P10 双栏副屏原生结构图（在黑底 .shot 内清晰阐释左聊右改）*/
+.drawer-arch{position:absolute;inset:0;padding:24px;display:grid;grid-template-columns:0.82fr 1.18fr;gap:16px;background:radial-gradient(circle at 80% 15%,rgba(54,191,162,.16),transparent 52%),#0b0e17}
+.da-col{border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.da-head{display:flex;align-items:center;justify-content:space-between;font-size:var(--fs-sm);font-weight:600;color:#fff;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1)}
+.da-badge{font-family:'JetBrains Mono';font-size:var(--fs-xs);padding:2px 8px;border-radius:999px;background:rgba(54,191,162,.2);color:#5eead4}
+.da-bubble{padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.07);font-size:var(--fs-sm);line-height:1.45;color:rgba(255,255,255,.82)}
+.da-bubble.user{background:rgba(91,91,214,.28);border:1px solid rgba(129,140,248,.35)}
+.da-input{margin-top:auto;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-size:var(--fs-xs);color:rgba(255,255,255,.55);display:flex;justify-content:space-between;align-items:center}
+.da-timeline{display:flex;flex-direction:column;gap:10px;position:relative;padding-left:16px}
+.da-timeline::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,#38bdf8,#34d399)}
+.da-stage{position:relative;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.da-stage::before{content:"";position:absolute;left:-15px;width:10px;height:10px;border-radius:50%;background:#38bdf8;border:2px solid #0b0e17}
+.da-stage.skipped{opacity:.52;border-style:dashed}
+.da-stage.ai-add{border-color:rgba(52,211,153,.55);background:rgba(52,211,153,.1)}
+.da-st-t{font-size:var(--fs-sm);font-weight:600;color:#fff}
+.da-st-act{font-size:var(--fs-xs);padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.12);color:#e2e8f0;white-space:nowrap}
+.da-stage.ai-add .da-st-act{background:#10b981;color:#052e16;font-weight:700}
+
+/* ============ 全屏实机 Demo 页（100vw × 100vh 纯全屏）============ */
+.s-demo{padding:0;background:#ffffff}
+.demo-frame{width:100vw;height:100vh;border:0;display:block;background:#fff}
+.demo-hud{position:absolute;left:18px;bottom:18px;z-index:20;display:inline-flex;align-items:center;gap:8px;padding:5px 10px 5px 12px;border-radius:999px;background:rgba(15,23,42,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:11.5px;font-weight:500;opacity:.62;transition:opacity .2s ease}
+.demo-hud:hover{opacity:1}
+.demo-hud .live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+.demo-hud button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:inherit;transition:background .15s}
+.demo-hud button:hover{background:rgba(255,255,255,.26)}
+
+/* ===== 导航点 + 底部控制栏（原样保留 report-ppt-skill runtime）===== */
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.32);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.6);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.32)}
+body.on-dark .nav-dot.active{background:#fff}
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.58);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.45);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.94}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.76;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.14)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.8;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.2)}
+</style>
+</head>
+<body>
+<div id="deck">
+
+  <!-- P1 · 封面 -->
+  <section class="slide s-cover">
+    <div class="cv-bg"></div>
+    <div class="cv-content">
+      <div class="cv-top">
+        <div class="cv-huawei">ASCEND · CANN OPEN SOURCE</div>
+        <div class="cv-meta">Learning Hub · UX Redesign</div>
+      </div>
+      <div class="cv-center">
+        <div class="cv-kicker">DESIGN PROPOSAL · 2026</div>
+        <div class="cv-logo"><img src="assets/cann-dark-logo.svg" alt="CANN"></div>
+        <div class="cv-sub">CANN Learning Hub 体验改版设计方案</div>
+        <div class="cv-lead">从静态课程目录到「探索 — 生成 — 共创」的 AI 学习门户：以技术方向为主角，串联项目规则识别、焦点连线探索与右侧双栏路径共创。</div>
+      </div>
+      <div class="cv-bot">
+        <div class="cv-ucd"><span class="sq"></span>CANN LEARNING HUB · DESIGN REVIEW</div>
+        <div class="cv-meta">12 SLIDES · 4 LIVE DEMOS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 · 目录（4 章单行横排）-->
+  <section id="contents-directory" class="slide s-gray contents-slide" data-template="contents-directory">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
+    <div class="body-area">
+      <div class="contents-directory contents-4">
+        <article class="directory-card c1">
+          <div class="directory-no">01</div>
+          <h2 class="directory-name">架构与边界</h2>
+          <div class="directory-en">Architecture &amp; Scope</div>
+          <div class="directory-items"><span>四类需求清晰度光谱</span><span>三段式职责边界</span></div>
+          <div class="directory-note">明确首页、副屏与目录各司其职</div>
+        </article>
+        <article class="directory-card c2">
+          <div class="directory-no">02</div>
+          <h2 class="directory-name">角色与方向</h2>
+          <div class="directory-en">Role vs. Tech Direction</div>
+          <div class="directory-items"><span>破除伪职业卡片误区</span><span>首屏全屏实机演示</span></div>
+          <div class="directory-note">确立身份轻分流、方向做主角</div>
+        </article>
+        <article class="directory-card c3">
+          <div class="directory-no">03</div>
+          <h2 class="directory-name">核心体验与演示</h2>
+          <div class="directory-en">Key Designs &amp; Live Demos</div>
+          <div class="directory-items"><span>项目规则识别与连线探索</span><span>右侧双栏学习路径共创</span></div>
+          <div class="directory-note">一页讲解配一页全屏实机验证</div>
+        </article>
+        <article class="directory-card c4">
+          <div class="directory-no">04</div>
+          <h2 class="directory-name">取舍与演进</h2>
+          <div class="directory-en">Trade-offs &amp; Roadmap</div>
+          <div class="directory-items"><span>轻量化选型原则</span><span>P0 闭环与 P1 延伸</span></div>
+          <div class="directory-note">聚焦高频闭环、克制有序迭代</div>
+        </article>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · DESIGN PROPOSAL</span><span>02 / 12</span></div>
+  </section>
+
+  <!-- P3 · 讲解 1：信息架构与三段式边界 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">首页唤醒探索，学习路径与课程体系承接确定性需求</span></div>
+        <div class="subttl">01 架构与边界 · 四类用户场景与三段式职责分工</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span class="active">01 架构与边界</span><span>02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="arch-grid">
+        <div class="glass spectrum-card">
+          <div class="sec-cap-row">
+            <div class="sec-cap">按「需求清晰度光谱」精准映射 4 类入口</div>
+            <div class="sec-hint">不强迫所有开发者走同一条路，由清晰到模糊自然承接</div>
+          </div>
+          <div class="spec-cols">
+            <div class="spec-item">
+              <span class="pill-tag pill-indigo">目标明确</span>
+              <div class="si-t">效率直达</div>
+              <div class="si-d">明确要学大模型推理、高校 16 周开课或备赛刷题。</div>
+              <div class="si-go">3 角色轻分流 /「学习路径」Tab</div>
+            </div>
+            <div class="spec-item">
+              <span class="pill-tag pill-blue">意图清晰</span>
+              <div class="si-t">自然语言对话</div>
+              <div class="si-d">能口述痛点，如“不会 C++，想用 PyASC 写算子”。</div>
+              <div class="si-go">Hero AI 输入条 → 11 主题规则</div>
+            </div>
+            <div class="spec-item">
+              <span class="pill-tag pill-teal">任务驱动</span>
+              <div class="si-t">上传项目规则</div>
+              <div class="si-d">手里已有迁移仓库，不愿重复口述框架与环境约束。</div>
+              <div class="si-go">输入框 + 上传 / 拖拽本地解析</div>
+            </div>
+            <div class="spec-item">
+              <span class="pill-tag pill-green">发散探索</span>
+              <div class="si-t">焦点连线探索</div>
+              <div class="si-d">听说要学算子或图框架，但连如何提问都不确定。</div>
+              <div class="si-go">首页知识地图 2～3 级点选连线</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="boundary-flow">
+          <div class="bf-node bf-main">
+            <span class="pill-tag pill-neutral">第一段 · 首页画布</span>
+            <div class="bf-t">探索线索（2～3 级）</div>
+            <div class="bf-d">停留在「大方向 → 切入方式 → 场景目标」粒度，帮用户把模糊兴趣点清楚，不充当 218 节 `.ipynb` 目录树。</div>
+          </div>
+          <div class="bf-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </div>
+          <div class="bf-node bf-accent">
+            <span class="pill-tag" style="background:rgba(255,255,255,.18);color:#fff;">第二段 · AI 共创副屏</span>
+            <div class="bf-t">路径编排（跨目录配课表）</div>
+            <div class="bf-d">按选定线索跨目录抽取核心课时，生成「基础 → 核心 → 实操 → 证书」时间轴，支持跳过与追问微调。</div>
+          </div>
+          <div class="bf-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </div>
+          <div class="bf-node bf-ink">
+            <span class="pill-tag" style="background:rgba(255,255,255,.16);color:#fff;">第三段 · 课程体系 Tab</span>
+            <div class="bf-t">全量目录（4 层直达单课）</div>
+            <div class="bf-d">保留 12 大领域、18 个系列、218 节 `.ipynb` 的完整树状结构，服务明确要按章节查阅具体课时的开发者。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · ARCHITECTURE &amp; BOUNDARY</span><span>03 / 12</span></div>
+  </section>
+
+  <!-- P4 · 讲解 2：角色轻分流，技术方向做主角 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">打破“伪职业卡片”误区：角色轻分流，技术方向做主角</span></div>
+        <div class="subttl">02 角色与方向 · 首页主视觉与分流策略判断</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 架构与边界</span><span class="active">02 角色与方向</span><span>03 核心体验</span><span>04 取舍与演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="sm2-grid">
+        <div class="sm2-left">
+          <div class="glass sm2-card">
+            <span class="pill-tag pill-neutral">常见误区</span>
+            <h3>硬按职业角色切分 4～5 张大卡片，反而制造选择犹豫</h3>
+            <p>现实中开发者往往身兼多职（算法工程师也要部署 vLLM、高校学生也想写自定义算子），<b>职业标签与当下要解决的技术问题并不严格一一对应</b>。</p>
+          </div>
+          <div class="glass sm2-card">
+            <span class="pill-tag pill-indigo">设计判断</span>
+            <h3>身份只做 3 枚轻分流胶囊，把黄金位置让给 6 大技术方向</h3>
+            <p>仅保留入口链路真正迥异的 3 类硬分流，一秒直达而不抢主视觉；其余开发者统一以<b>技术方向与工程问题</b>作为探索起点。</p>
+            <div class="chip-row">
+              <span>零基础新手 → 2 天启航营</span>
+              <span>高校教师 → 16 周开课与 13 门共建课</span>
+              <span>备赛 / 考证 → CANNJudge 真题冲刺</span>
+            </div>
+          </div>
+          <div class="verdict">
+            <span class="vk">核心原则</span>
+            <span class="vv"><b>角色轻分流、技术方向做主角、按需进副屏共创</b>——下一页直接进入首屏实机演示。</span>
+          </div>
+        </div>
+        <div class="sm2-visual">
+          <img src="assets/report-role-vs-dir.jpg" alt="角色轻分流汇聚至六大技术方向概念示意">
+          <span class="visual-cap">概念示意 · 3 路轻分流入口汇聚至 6 大技术方向主舞台</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · ROLE VS. DIRECTION</span><span>04 / 12</span></div>
+  </section>
+
+  <!-- P5 · 全屏 Demo 1：首屏架构与角色轻分流 -->
+  <section class="slide s-demo" data-demo="hero">
+    <iframe class="demo-frame" data-src="index.html?demo=hero" title="全屏 Demo 1：首屏架构与角色轻分流"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 01 · 单行 CANN 顶栏、首屏 AI 入口与 3 枚角色轻分流</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+    </div>
+  </section>
+
+  <!-- P6 · 讲解 3：设计点 01 · 项目规则上传与路径识别 -->
+  <section class="slide s-glow" data-chapter="1">
+    <div class="glow-white"></div><div class="glow"></div>
+    <div class="chrome"><div>DESIGN POINT 01 · PROJECT RULE PARSING</div><div>03 核心体验与演示</div></div>
+    <div class="inner">
+      <div>
+        <div class="kicker">DESIGN POINT 01</div>
+        <h1 class="h-title">无需口述背景<br/><span class="light">丢入项目文件反推路径</span></h1>
+        <p class="body">带着现有 PyTorch 或 vLLM 仓库来的开发者，不愿把框架版本和限制条件再打一遍——<b>直接上传项目规则文件，让系统自动提取上下文并生成针对性路线</b>。</p>
+        <div class="points">
+          <div class="point"><div class="dot"></div><div><div class="pt-title">极轻入口：输入框右侧无边框 + 与全框拖拽</div><div class="pt-desc">保持输入栏简洁不加文字按钮，支持本地选择或直接拖入 `README.md`、`AGENTS.md`、`requirements.txt`、`CMakeLists.txt`。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">纯前端本地解析，零隐私顾虑</div><div class="pt-desc">浏览器端 `FileReader` 实时识别技术栈与约束（如“禁用 C++”“PD 分离”），映射至 11 大主题规则。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">内置 2 份示例规则一键试用</div><div class="pt-desc">即使手边没有现成项目文件，点开 + 即可一键体验 `AGENTS.md` 与 `README.md` 的识别效果。</div></div></div>
+        </div>
+      </div>
+      <div class="shot">
+        <img src="assets/report-rule-prism.jpg" alt="项目规则文件经棱镜编译为阶段路径概念示意">
+        <span class="shot-cap">概念示意 · 规则文档反向编译学习路径</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- P7 · 全屏 Demo 2：项目规则上传与一键示例识别 -->
+  <section class="slide s-demo" data-demo="rule">
+    <iframe class="demo-frame" data-src="index.html?demo=rule" title="全屏 Demo 2：项目规则上传与识别"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 02 · 点击内置示例规则（AGENTS.md / README.md）实时识别路径</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+    </div>
+  </section>
+
+  <!-- P8 · 讲解 4：设计点 02 · 连线探索知识地图 -->
+  <section class="slide s-glow" data-chapter="2">
+    <div class="glow-white"></div><div class="glow"></div>
+    <div class="chrome"><div>DESIGN POINT 02 · INTERACTIVE KNOWLEDGE GRAPH</div><div>03 核心体验与演示</div></div>
+    <div class="inner">
+      <div>
+        <div class="kicker">DESIGN POINT 02</div>
+        <h1 class="h-title">焦点聚光连线探索<br/><span class="light">用点选连线替代打字</span></h1>
+        <p class="body">面向还不确定怎么向 AI 提问的探索型开发者：在首页第二屏以<b>无边框悬浮排版 + 蓄力推演连线</b>展现技术关系，帮用户把模糊兴趣收敛成清晰线索。</p>
+        <div class="points">
+          <div class="point"><div class="dot"></div><div><div class="pt-title">280ms 聚焦居中 + 隐藏无关主方向</div><div class="pt-desc">初始仅呈现 6 大核心方向；悬浮片刻聚焦节点滑至正中、淡出无关主节点，沿右弧扇出推荐二级路线。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">680ms 蓄力推进，末端节点原地定格</div><div class="pt-desc">继续移至右侧节点停留即可自动连线，历史轨迹退至左弧；到达最末级节点时原地连线不挪位，避免右侧留空。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">严守“线索”粒度，不与课程目录打架</div><div class="pt-desc">保持 2～3 级方向与场景线索，点击「沿此线索生成学习路径」后交由右侧副屏跨目录配齐课表。</div></div></div>
+        </div>
+      </div>
+      <div class="shot">
+        <img src="assets/report-explore-graph.jpg" alt="焦点聚光居中与左右弧线推演概念示意">
+        <span class="shot-cap">概念示意 · 中心聚光、左弧历史轨迹与右弧推演</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- P9 · 全屏 Demo 3：首页「连线探索」知识地图 -->
+  <section class="slide s-demo" data-demo="explore">
+    <iframe class="demo-frame" data-src="index.html?demo=explore" title="全屏 Demo 3：探索 CANN 知识地图"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 03 · 悬浮 280ms 聚光居中、停留 680ms 或点击层层连线</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+    </div>
+  </section>
+
+  <!-- P10 · 讲解 5：设计点 03 · 右侧双栏学习路径共创副屏 -->
+  <section class="slide s-glow" data-chapter="3">
+    <div class="glow-white"></div><div class="glow"></div>
+    <div class="chrome"><div>DESIGN POINT 03 · SPLIT-SCREEN JOURNEY DRAWER</div><div>03 核心体验与演示</div></div>
+    <div class="inner">
+      <div>
+        <div class="kicker">DESIGN POINT 03</div>
+        <h1 class="h-title">统一收口右侧双栏<br/><span class="light">边聊边改专属课表</span></h1>
+        <p class="body">Skill 风格中轴时间轴高度可达 1600px+，若内联撑开会顶飞首页且无法边聊边改。无论从对话、规则上传还是连线进入，均<b>统一滑出右侧双栏共创副屏</b>。</p>
+        <div class="points">
+          <div class="point"><div class="dot"></div><div><div class="pt-title">左 340px 规则与对话 + 右中轴时间轴</div><div class="pt-desc">左侧沉淀已识别的项目约束与追问输入框；右侧完整复用 CANN Bench 同款头图、三栏画像、交替时间轴与证书卡。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">支持「已掌握 · 跳过」与「采纳 / 忽略」</div><div class="pt-desc">每个学习阶段可一键标记跳过折叠；追问微调时以增量建议卡片呈现，用户掌控最终课表。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">收起后顶栏保留「当前路径」胶囊</div><div class="pt-desc">切换到「课程体系」或「技术博客」查阅资料时，随时一键拉出对照，不中断学习上下文。</div></div></div>
+        </div>
+      </div>
+      <div class="shot">
+        <div class="drawer-arch">
+          <div class="da-col">
+            <div class="da-head"><span>左栏 · 规则与追问</span><span class="da-badge">340px</span></div>
+            <div class="da-bubble user">已识别线索：算子开发 → PyASC（无需 C++）</div>
+            <div class="da-bubble">已为你跨目录编排 4 个阶段，包含 CANN 基础、PyASC、PyPTO 与在线刷题。</div>
+            <div class="da-bubble user">基础概念我都懂，帮我加一点性能调优</div>
+            <div class="da-input"><span>继续追问以微调当前路径…</span><span>发送</span></div>
+          </div>
+          <div class="da-col">
+            <div class="da-head"><span>右区 · Skill 路径共创画布</span><span class="da-badge">LIVE CANVAS</span></div>
+            <div class="da-timeline">
+              <div class="da-stage skipped"><span class="da-st-t">阶段 01 · CANN 基础知识</span><span class="da-st-act">已掌握 · 跳过</span></div>
+              <div class="da-stage"><span class="da-st-t">阶段 02 · PyASC 算子开发（4 节精选）</span><span class="da-st-act">在线体验</span></div>
+              <div class="da-stage ai-add"><span class="da-st-t">AI 建议 · msProf 算子性能调优专题</span><span class="da-st-act">采纳 / 忽略</span></div>
+              <div class="da-stage"><span class="da-st-t">阶段 03 · CANNJudge &amp; CANNLab 实操</span><span class="da-st-act">结业证书</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P11 · 全屏 Demo 4：右侧双栏学习路径共创副屏 -->
+  <section class="slide s-demo" data-demo="drawer">
+    <iframe class="demo-frame" data-src="index.html?demo=drawer" title="全屏 Demo 4：右侧双栏学习路径共创副屏"></iframe>
+    <div class="demo-hud">
+      <span class="live-dot"></span>
+      <span>LIVE DEMO 04 · 体验阶段「已掌握 · 跳过」与左侧追问微调</span>
+      <button type="button" onclick="resetDemoFrame(this)">重置视图</button>
+    </div>
+  </section>
+
+  <!-- P12 · 选型取舍与 P0 / P1 演进路线（§17 同层级三卡）-->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">克制做减法：P0 跑通三大闭环，P1 延伸报错诊断与交互微沙箱</span></div>
+        <div class="subttl">04 取舍与演进 · 面向开源社区门户的轻量化迭代策略</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 架构与边界</span><span>02 角色与方向</span><span>03 核心体验</span><span class="active">04 取舍与演进</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="tri-grid">
+        <article class="tri-card t-white">
+          <span class="pill-tag pill-neutral">选型原则</span>
+          <h3>坚守门户轻量化，不硬塞重交互</h3>
+          <ul class="tri-list">
+            <li><span class="tdot"></span><span><b>不做桌面 IDE 重画布</b>：剔除无限画布框选“指着说”等与网页学习门户不匹配的交互负担。</span></li>
+            <li><span class="tdot"></span><span><b>不做冗余伪角色矩阵</b>：保留 3 枚硬分流胶囊，将认知带宽留给真正的技术方向。</span></li>
+            <li><span class="tdot"></span><span><b>纯前端即开即用</b>：全部核心交互零后端依赖，支持 GitHub Pages 与社区静态部署。</span></li>
+          </ul>
+          <div class="tri-foot">原则：设计创新性 × 强技术落地性</div>
+        </article>
+
+        <article class="tri-card t-accent">
+          <span class="pill-tag">P0 · 已完成落地</span>
+          <h3>三大高频探索与生成闭环</h3>
+          <ul class="tri-list">
+            <li><span class="tdot"></span><span><b>项目规则上传识别</b>：无边框 + 与拖拽解析，内置 2 份示例规则一键试用。</span></li>
+            <li><span class="tdot"></span><span><b>焦点聚光连线探索</b>：280ms 聚焦、680ms 推演与末端原地定格，严守线索粒度。</span></li>
+            <li><span class="tdot"></span><span><b>右侧双栏路径共创</b>：复刻 Skill 视觉规范，支持跳过、采纳与跨 Tab 常驻。</span></li>
+          </ul>
+          <div class="tri-foot">状态：已完成原型联调与线上部署</div>
+        </article>
+
+        <article class="tri-card t-ink">
+          <span class="pill-tag">P1 · 下阶段延伸</span>
+          <h3>从「找课」走向「解难与动手」</h3>
+          <ul class="tri-list">
+            <li><span class="tdot"></span><span><b>报错日志 / 代码片段诊断</b>：粘贴编译或运行报错，反向生成 Troubleshooting 补课路径。</span></li>
+            <li><span class="tdot"></span><span><b>CANN 第一课交互微沙箱</b>：将 `HWC→CHW`、Tiling 尾块切分升级为可调参数可视化演示。</span></li>
+            <li><span class="tdot"></span><span><b>真实算力与评测打通</b>：与 CANNLab 云端 Notebook 及 CANNJudge 题库进度联动。</span></li>
+          </ul>
+          <div class="tri-foot">目标：形成“探索 → 学课 → 调优 → 评测”完整闭环</div>
+        </article>
+      </div>
+    </div>
+    <div class="foot"><span>CANN LEARNING HUB · TRADE-OFFS &amp; ROADMAP</span><span>12 / 12</span></div>
+  </section>
+
+</div>
+
+<nav class="nav-dots" id="navDots"></nav>
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 12</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+
+/* 黑底设计点三章差异化光晕（一章一色）*/
+const chapters={
+  '1':{h:234,gap:52,sat:92,light:42,spread:36,cint:66,wint:54},
+  '2':{h:198,gap:44,sat:90,light:42,spread:36,cint:66,wint:52},
+  '3':{h:162,gap:42,sat:84,light:40,spread:36,cint:62,wint:50}
+};
+function paintSlide(s){
+  const c=chapters[s.dataset.chapter]; if(!c)return;
+  s.style.setProperty('--glow-h',c.h); s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%'); s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread); s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));
+}
+
+/* 懒加载全屏 Demo iframe（仅加载当前页及相邻 ±1 页，顺滑零白屏）*/
+function lazyFrames(center){
+  slides.forEach((s,i)=>{
+    const f=s.querySelector('iframe.demo-frame');
+    if(!f)return;
+    if(Math.abs(i-center)<=1 && !f.getAttribute('src') && f.dataset.src){
+      f.src=f.dataset.src;
+    }
+  });
+}
+function resetDemoFrame(btn){
+  const slide=btn.closest('.slide');
+  const f=slide && slide.querySelector('iframe.demo-frame');
+  if(f && f.dataset.src){ f.src=f.dataset.src; }
+}
+
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  lazyFrames(idx);
+  try{ history.replaceState(null,'','#p='+(idx+1)); }catch(e){}
+}
+
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){
+  if(document.body.classList.contains('overview'))return;
+  const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 接收全屏 Demo iframe 转发的键盘、滚轮与鼠标边界事件，确保翻页与控制栏始终丝滑 */
+let iframeWheelLock=false;
+window.addEventListener('message',e=>{
+  const d=e.data; if(!d||typeof d!=='object')return;
+  if(d.__deckKey){
+    if(['ArrowDown','PageDown'].includes(d.__deckKey)) next();
+    else if(['ArrowUp','PageUp'].includes(d.__deckKey)) prev();
+    else if(d.__deckKey==='o'||d.__deckKey==='O') toggleOverview();
+    else if(d.__deckKey==='f'||d.__deckKey==='F') toggleFullscreen();
+  }
+  if(d.__deckMouse){
+    controls.classList.toggle('show', d.__deckMouse.y > d.__deckMouse.h - 110);
+    navDots.classList.toggle('show', d.__deckMouse.x > d.__deckMouse.w - 110);
+  }
+  if(typeof d.__deckWheel==='number'){
+    if(document.body.classList.contains('overview')||iframeWheelLock||Math.abs(d.__deckWheel)<12)return;
+    iframeWheelLock=true; setTimeout(()=>iframeWheelLock=false,650);
+    if(d.__deckWheel>0) next(); else prev();
+  }
+});
+
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+function applyOverviewScale(){
+  if(!document.body.classList.contains('overview'))return;
+  const cellW=slides[0].getBoundingClientRect().width, scale=cellW/window.innerWidth;
+  slides.forEach(s=>{
+    s.style.height=(window.innerHeight*scale)+'px';
+    const inner=s.querySelector(':scope>.slide-inner');
+    if(inner)inner.style.transform='scale('+scale+')';
+  });
+}
+function enterOverview(){
+  slides.forEach(s=>{
+    const f=s.querySelector('iframe.demo-frame');
+    if(f && !f.getAttribute('src') && f.dataset.src) f.src=f.dataset.src;
+    if(!s.querySelector(':scope>.slide-inner')){
+      const w=document.createElement('div'); w.className='slide-inner';
+      while(s.firstChild) w.appendChild(s.firstChild);
+      s.appendChild(w);
+    }
+  });
+  document.body.classList.add('overview');
+  requestAnimationFrame(applyOverviewScale);
+}
+function exitOverview(){
+  slides.forEach(s=>{
+    const w=s.querySelector(':scope>.slide-inner');
+    if(w){ while(w.firstChild) s.insertBefore(w.firstChild,w); w.remove(); }
+    s.style.height='';
+  });
+  document.body.classList.remove('overview');
+  balanceHeads();
+  if(CTRL){ setActive(idx); } else setTimeout(()=>slides[idx].scrollIntoView({block:'start',behavior:'auto'}),20);
+}
+function toggleOverview(){ document.body.classList.contains('overview')?exitOverview():enterOverview(); }
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{
+  if(!document.body.classList.contains('overview'))return;
+  const sl=e.target.closest('.slide');
+  if(sl){ const i=slides.indexOf(sl); if(i>=0){ idx=i; exitOverview(); } }
+});
+addEventListener('resize',()=>{ if(document.body.classList.contains('overview'))applyOverviewScale(); else reanchor(); balanceHeads(); });
+
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+document.addEventListener('mousemove',e=>{
+  controls.classList.toggle('show', e.clientY > window.innerHeight - 120);
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
+
+slides.forEach(paintSlide);
+const hashMatch=location.hash.match(/p=(\d+)/);
+const startIdx=hashMatch ? Math.max(0,Math.min(slides.length-1,parseInt(hashMatch[1],10)-1)) : 0;
+updateCurrent(startIdx);
+if(CTRL) setActive(startIdx);
+else if(startIdx>0) slides[startIdx].scrollIntoView({block:'start',behavior:'auto'});
+else window.scrollTo(0,0);
+</script>
+</body>
+</html>
