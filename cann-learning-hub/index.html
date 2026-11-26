@@ -5387,25 +5387,37 @@
         });
       }
 
+      function centerScrollOnRect(topDoc, height) {
+        const headerH = 55;
+        const availH = Math.max(200, window.innerHeight - headerH);
+        const targetY = Math.round(topDoc - headerH - Math.max(12, (availH - height) / 2));
+        return Math.max(0, targetY);
+      }
+
       function positionDemoAndSpotlight() {
         document.documentElement.style.scrollBehavior = "auto";
         if (demo === "hero") {
           lockedScrollY = 0;
           window.scrollTo(0, 0);
         } else if (demo === "rule") {
-          lockedScrollY = 120;
-          window.scrollTo(0, 120);
+          const shell = document.querySelector(".ai-composer-shell");
           const pop = document.getElementById("rulePopover");
           if (pop) pop.classList.add("open");
-          applySpotlight([
-            { el: ".ai-composer-shell", pad: 8, tag: "重点演示 · 点击 + 或直接拖入项目规则文件" },
-            { el: "#rulePopover", pad: 6, tag: "内置示例 · 一键试用识别", secondary: true }
-          ]);
+          if (shell) {
+            const shellTopDoc = shell.getBoundingClientRect().top + window.scrollY;
+            const totalH = shell.offsetHeight + (pop ? pop.offsetHeight + 10 : 0);
+            lockedScrollY = centerScrollOnRect(shellTopDoc, totalH);
+            window.scrollTo(0, lockedScrollY);
+            applySpotlight([
+              { el: ".ai-composer-shell", pad: 8, tag: "重点演示 · 点击 + 或直接拖入项目规则文件" },
+              { el: "#rulePopover", pad: 6, tag: "内置示例 · 一键试用识别", secondary: true }
+            ]);
+          }
         } else if (demo === "explore") {
-          const wrap = document.getElementById("exploreGraphWrap");
-          const block = wrap && wrap.closest(".block");
-          if (block) {
-            lockedScrollY = Math.max(0, Math.round(block.getBoundingClientRect().top + window.scrollY - 68));
+          const card = document.querySelector(".explore-graph-card");
+          if (card) {
+            const cardTopDoc = card.getBoundingClientRect().top + window.scrollY;
+            lockedScrollY = centerScrollOnRect(cardTopDoc, card.offsetHeight);
             window.scrollTo(0, lockedScrollY);
             applySpotlight([
               { el: ".explore-graph-card", pad: 8, tag: "重点演示 · 悬浮 280ms 聚光，停留 680ms 连线" }
@@ -5414,8 +5426,11 @@
         } else if (demo === "mainlines") {
           document.body.classList.add("demo-mainlines");
           const block = document.getElementById("mainlinesBlock");
-          if (block) {
-            lockedScrollY = Math.max(0, Math.round(block.getBoundingClientRect().top + window.scrollY - 62));
+          const chBlock = document.getElementById("specialChannelsBlock");
+          if (block && chBlock) {
+            const topDoc = block.getBoundingClientRect().top + window.scrollY;
+            const botDoc = chBlock.getBoundingClientRect().bottom + window.scrollY;
+            lockedScrollY = centerScrollOnRect(topDoc, botDoc - topDoc);
             window.scrollTo(0, lockedScrollY);
             applySpotlight([
               { el: "#mainlinesBlock .role-tray", pad: 6, tag: "主角 · 五大核心技术主线" },
