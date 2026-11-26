@@ -5014,6 +5014,11 @@
             runAiMatch("不会 C++，想用 PyASC / PyPTO 用 Python 写算子", { sourceType: "chat" });
           }
         });
+      } else if (["paths", "map", "academia", "blogs"].includes(demo)) {
+        requestAnimationFrame(() => {
+          if (typeof switchTab === "function") switchTab(demo);
+          window.scrollTo({ top: 0, behavior: "auto" });
+        });
       }
 
       if (window.self !== window.top) {
