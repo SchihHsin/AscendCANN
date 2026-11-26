@@ -243,8 +243,8 @@
     }
     .org-hero .hero-inner { position: relative; z-index: 1; }
     .hero-inner {
-      padding-top: 28px;
-      padding-bottom: 66px;
+      padding-top: 22px;
+      padding-bottom: 54px;
       display: grid;
       grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
       align-items: center;
@@ -2464,8 +2464,8 @@
     <!-- ==================== TAB 1: OVERVIEW (Role-Driven) ==================== -->
     <div class="tab-pane active" id="pane-overview">
 
-      <!-- Block 1: Modern AI Conversational Composer + 3 True-Role Quick Entries -->
-      <div class="block">
+      <!-- Block 1: Modern AI Conversational Composer (Tightened so Tech Directions enter first screen) -->
+      <div class="block" style="margin-bottom:26px;">
         <div class="ai-composer-shell">
           <form class="ai-composer" onsubmit="event.preventDefault(); submitAiMatch();">
             <div class="ai-composer-top">
@@ -2533,9 +2533,65 @@
             </div>
           </form>
         </div>
+      </div>
 
-        <!-- 3 Real Personas Quick Strip -->
-        <div class="persona-strip">
+      <!-- Block 2 (Floor 1): Homepage Exploration & Discovery Centerpiece (6 Core Tech Directions) -->
+      <div class="block">
+        <div class="block-head">
+          <div>
+            <h2 class="block-title">探索 CANN 知识地图</h2>
+            <p class="block-sub">连线选定方向与场景线索，右侧一键生成专属学习路径；如需按目录翻阅全部单节课程，可前往「课程体系」</p>
+          </div>
+          <div class="block-head-actions">
+            <button class="text-link" onclick="switchTab('paths')">进入学习路径 &gt;</button>
+          </div>
+        </div>
+
+        <div id="exploreGraphWrap">
+          <div class="explore-graph-card">
+            <div class="explore-canvas" id="exploreCanvas">
+              <div class="explore-cursor-glow" id="exploreCursorGlow"></div>
+              <svg class="explore-svg" id="exploreSvg" viewBox="0 0 1000 390" preserveAspectRatio="none"></svg>
+              <div id="exploreNodesLayer"></div>
+            </div>
+            <div class="explore-trail-bar">
+              <div class="explore-trail-chain" id="exploreTrailChain"></div>
+              <div class="explore-trail-actions">
+                <button type="button" class="btn btn-outline" style="height:30px; font-size:12px;" onclick="resetExploreTrail()">重置线索</button>
+                <button type="button" class="btn btn-dark" style="height:30px; font-size:12px;" onclick="launchExploreJourney()">沿此线索生成学习路径 →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 3 (Floor 2): Five Core Tech Mainlines (Standalone Section) -->
+      <div class="block" id="mainlinesBlock">
+        <div class="block-head">
+          <div>
+            <h2 class="block-title">五大核心技术主线</h2>
+            <p class="block-sub">方向已明确？按技术主线直接进入对应阶段课程与实战</p>
+          </div>
+          <div class="block-head-actions">
+            <button class="text-link" onclick="activePathView='period'; switchTab('paths');">按学习周期选课（2 天～16 周） &gt;</button>
+          </div>
+        </div>
+        <div id="dirCardsWrap">
+          <div class="role-tray">
+            <div class="dir-grid" id="roleGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 4 (Floor 3): 3 Special Role Channels (Secondary Lightweight Strip) -->
+      <div class="block" id="specialChannelsBlock">
+        <div class="block-head">
+          <div>
+            <h2 class="block-title">专项学习通道</h2>
+            <p class="block-sub">面向零基础启航、高校开课与备赛考证三类专属诉求，一键直达</p>
+          </div>
+        </div>
+        <div class="persona-strip" style="margin-top:0;">
           <div class="persona-pill-card" onclick="enterPersona('starter')">
             <div class="persona-left">
               <div class="persona-ico" style="background:#eff6ff; color:#2563eb;">
@@ -2573,46 +2629,6 @@
               </div>
             </div>
             <span style="color:var(--text-muted); font-size:13px;">→</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Block 2: Homepage Exploration & Discovery Centerpiece (连线探索 default + 5 Mainlines toggle) -->
-      <div class="block">
-        <div class="block-head">
-          <div>
-            <h2 class="block-title">探索 CANN 知识地图</h2>
-            <p class="block-sub">连线选定方向与场景线索，右侧一键生成专属学习路径；如需按目录翻阅全部单节课程，可前往「课程体系」</p>
-          </div>
-          <div class="block-head-actions">
-            <div class="explore-mode-switch" id="overviewExploreSwitch">
-              <button type="button" class="explore-mode-btn active" data-mode="graph" onclick="setOverviewExploreMode('graph')">连线探索</button>
-              <button type="button" class="explore-mode-btn" data-mode="cards" onclick="setOverviewExploreMode('cards')">主线卡片</button>
-            </div>
-            <button class="text-link" onclick="switchTab('paths')">进入学习路径 &gt;</button>
-          </div>
-        </div>
-
-        <div id="exploreGraphWrap">
-          <div class="explore-graph-card">
-            <div class="explore-canvas" id="exploreCanvas">
-              <div class="explore-cursor-glow" id="exploreCursorGlow"></div>
-              <svg class="explore-svg" id="exploreSvg" viewBox="0 0 1000 390" preserveAspectRatio="none"></svg>
-              <div id="exploreNodesLayer"></div>
-            </div>
-            <div class="explore-trail-bar">
-              <div class="explore-trail-chain" id="exploreTrailChain"></div>
-              <div class="explore-trail-actions">
-                <button type="button" class="btn btn-outline" style="height:30px; font-size:12px;" onclick="resetExploreTrail()">重置线索</button>
-                <button type="button" class="btn btn-dark" style="height:30px; font-size:12px;" onclick="launchExploreJourney()">沿此线索生成学习路径 →</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="dirCardsWrap" style="display:none;">
-          <div class="role-tray">
-            <div class="dir-grid" id="roleGrid"></div>
           </div>
         </div>
       </div>
