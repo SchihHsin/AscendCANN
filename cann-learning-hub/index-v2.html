@@ -549,14 +549,90 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
-    .notice-card {
+    .news-card {
+      position: relative;
       background: #ffffff;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 14px 16px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     }
-    .notice-text { font-size: 12.5px; color: var(--text); line-height: 1.55; }
-    .notice-time { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+    .news-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--tone);
+      opacity: .85;
+    }
+    .news-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px -12px rgba(15, 23, 42, .22);
+      border-color: color-mix(in srgb, var(--tone) 22%, var(--border-subtle));
+    }
+    .news-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .news-cat {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: var(--tone);
+      background: var(--tone-bg);
+      white-space: nowrap;
+    }
+    .news-date {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .news-text {
+      font-size: 12.5px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .news-card.is-featured {
+      grid-column: 1 / -1;
+      padding: 18px 20px 18px 22px;
+      background: linear-gradient(120deg, #fffaf5 0%, #fff7ed 44%, #f7f5ff 100%);
+      border-color: rgba(217, 119, 6, .18);
+    }
+    .news-card.is-featured::after {
+      content: "";
+      position: absolute;
+      right: -36px;
+      top: -70px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(244, 114, 182, .13), transparent 66%);
+      pointer-events: none;
+    }
+    .news-card.is-featured .news-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.55;
+      max-width: 920px;
+    }
+    .news-card.is-featured .news-cat { font-size: 11.5px; padding: 3px 10px; }
+    .news-card.is-featured .news-date { font-size: 12px; }
+    .news-card.tone-amber { --tone: #d97706; --tone-bg: #fffbeb; }
+    .news-card.tone-teal { --tone: #0d9488; --tone-bg: #f0fdfa; }
+    .news-card.tone-indigo { --tone: #4f46e5; --tone-bg: #eef2ff; }
+    .news-card.tone-green { --tone: #059669; --tone-bg: #ecfdf5; }
+    .news-card.tone-purple { --tone: #7c3aed; --tone-bg: #f5f3ff; }
+    .news-card.tone-blue { --tone: #2563eb; --tone-bg: #eff6ff; }
+    .news-card.tone-red { --tone: #e11d48; --tone-bg: #fff1f2; }
 
     .pptx-card {
       margin-top: 16px;
@@ -3382,10 +3458,13 @@
     ];
 
     const NEWS = [
-      { date: "2026/09", text: "新增推荐系统全链路实践（CTR 排序 + 召回）与高校共建课程专区。" },
-      { date: "2026/08", text: "SwanLab 微调实战案例上线，支持 NPU 训练指标实时可视化。" },
-      { date: "2026/06", text: "全面适配 CANN 9.0.0，更新 vLLM-Ascend 与 Ascend C 融合算子教程。" },
-      { date: "2026/05", text: "CANNLab 云端环境接入 100 小时算力与 VS Code 远程连接。" }
+      { date: "2026/09", cat: "RL 训练", tone: "amber", text: "新增大模型 RL 训练系列教程：使用 verl + GRPO 完成 Qwen3-1.7B Wordle 强化学习训练。" },
+      { date: "2026/09", cat: "新课程", tone: "teal", text: "新增面向高性能计算的数据结构课程。" },
+      { date: "2026/08", cat: "系列教程", tone: "indigo", text: "新增 PyPTO、PyASC、CANNBot、TorchAir、GE、AutoFusion、HCCL 系列教程。" },
+      { date: "2026/08", cat: "大模型训练", tone: "green", text: "新增大模型训练系列课程（SFT 初阶）。" },
+      { date: "2026/07", cat: "算子 / 推理", tone: "purple", text: "新增 Ascend C 算子开发（Kernel 直调版）、大模型推理系列与 Conv 算子实战。" },
+      { date: "2026/06", cat: "版本适配", tone: "blue", text: "在线体验适配 CANN 9.0.0。" },
+      { date: "2026/03", cat: "里程碑", tone: "red", text: "cann-learning-hub 首次上线。" }
     ];
 
     const PREREQS = [
@@ -3474,11 +3553,14 @@
         </div>
       `).join("");
 
-      document.getElementById("newsList").innerHTML = NEWS.map(n => `
-        <div class="notice-card">
-          <div class="notice-text">${n.text}</div>
-          <div class="notice-time">${n.date}</div>
-        </div>
+      document.getElementById("newsList").innerHTML = NEWS.map((n, i) => `
+        <article class="news-card tone-${n.tone}${i === 0 ? " is-featured" : ""}">
+          <div class="news-top">
+            <span class="news-cat">${n.cat}</span>
+            <span class="news-date">${n.date}</span>
+          </div>
+          <div class="news-text">${n.text}</div>
+        </article>
       `).join("");
     }
 
