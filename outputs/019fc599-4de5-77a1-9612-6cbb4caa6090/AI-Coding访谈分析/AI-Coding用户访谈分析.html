@@ -1906,6 +1906,34 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p11c .trp-li{font-size:12.2px;padding:1vh .9vw}
 #p11c .trp-li span{font-size:11px}
 #p11c .trp-li em{font-size:13px}
+
+/* 定义带：与结论带等宽的白底条，逐条说明 AI 直连 / ENV·Bash 各是什么 */
+.trp-def{margin:0 0 2.2vh;display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5vw;align-items:center;
+  background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:13px;padding:1.9vh 1.6vw;
+  box-shadow:0 10px 30px -16px rgba(30,40,70,.18),inset 0 1px 0 rgba(255,255,255,.85)}
+.trp-def-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.18em;color:var(--ink-3);
+  border:1px solid rgba(47,61,99,.16);border-radius:6px;padding:5px 9px;white-space:nowrap}
+.trp-def-rows{display:flex;flex-direction:column;gap:.85vh;min-width:0}
+.trp-def-item{display:grid;grid-template-columns:auto 88px minmax(0,1fr);align-items:baseline;gap:.6em;
+  font-size:clamp(11.4px,.83vw,13.2px);line-height:1.5;color:var(--ink-2)}
+.trp-def-item i{width:7px;height:7px;border-radius:50%;display:block;align-self:center}
+.trp-def-item.ai i{background:#4F46E5}
+.trp-def-item.env i{background:#E5484D}
+.trp-def-item b{font-size:clamp(12px,.88vw,14px);color:var(--ink);font-weight:800;white-space:nowrap}
+.trp-def-item code{font-family:'JetBrains Mono',monospace;font-size:.92em;color:#4338CA;background:rgba(79,70,229,.07);border-radius:4px;padding:1px 4px;margin-right:3px}
+
+/* #p11c 打样：两张卡统一改「透白玻璃卡」，不再用实白 / 深底 */
+#p11c .trp-card,#p11c .trp-dark{background:rgba(255,255,255,.55);
+  -webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;
+  box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);color:var(--ink)}
+#p11c .trp-dark .trp-hd b{color:var(--ink)}
+#p11c .trp-dark .trp-hd span{color:var(--ink-3)}
+#p11c .trp-dark .trp-li{background:rgba(47,61,99,.05);border:1px solid rgba(47,61,99,.07)}
+#p11c .trp-dark .trp-li b{color:var(--ink)}
+#p11c .trp-dark .trp-li span{color:var(--ink-2)}
+#p11c .trp-dark .trp-li em{color:#B3403A}
 </style>
 </head>
 <body>
@@ -2414,6 +2442,12 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <p class="trp-concl-sub">搜索能搜通，但单次不准 → <b>65%~75%</b> 连续换词追搜；抓取 / 拉包每 <b>3~5 次</b> 就有 1 次撞上空返、反爬或 403。</p></div>
   <div class="trp-concl-num"><em>20.6%</em><span>纯外网回传受阻</span></div>
   <div class="trp-concl-num"><em>45 次</em><span>空返 / 无正文</span></div>
+</div><div class="trp-def">
+  <span class="trp-def-tag">定义</span>
+  <div class="trp-def-rows">
+    <div class="trp-def-item ai"><i></i><b>AI 直连</b><span>让“模型”去取：<code>WebFetch</code><code>WebSearch</code><code>MCP</code> 把网页正文直接读回来</span></div>
+    <div class="trp-def-item env"><i></i><b>ENV·Bash</b><span>让“环境”去取：机器上跑 <code>curl</code><code>git</code><code>pip</code><code>wget</code> 抓网页、拉仓库、装依赖</span></div>
+  </div>
 </div><div class="body-area"><div class="trp-wrap">
   <div class="trp-2col">
     <div class="trp-card">
