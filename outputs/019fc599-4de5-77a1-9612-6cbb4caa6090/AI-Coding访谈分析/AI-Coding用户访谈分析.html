@@ -3724,7 +3724,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 const root=document.documentElement;
 const deck=document.getElementById('deck');
 const slides=[...document.querySelectorAll('.slide')];
-let idx=0;
+let idx=0; let _suppressIO=false;
 
 /* ===== 翻页过渡（可切换）：slide(默认) | fade | cut | slide-h | magic =====
    改默认改这行兜底值；或地址加 ?t=fade / ?t=cut / ?t=slide-h / ?t=magic 临时切换、不用改代码 */
@@ -3816,7 +3816,7 @@ function updateCurrent(i){
 }
 /* slide 模式：谁滚进视口 ≥55% 谁就是当前页。受控模式无滚动，不用 IO */
 if(!CTRL){
-  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  const io=new IntersectionObserver(es=>{if(_suppressIO||document.body.classList.contains('overview'))return;es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
   slides.forEach(s=>io.observe(s));
 }
 
@@ -3859,10 +3859,10 @@ syncFsIcon();
 /* 总览 Overview：每页包进 .slide-inner 缩放成缩略图，排网格（按当前视窗比例）*/
 function applyOverviewScale(){if(!document.body.classList.contains('overview'))return;const cellW=slides[0].getBoundingClientRect().width,scale=cellW/window.innerWidth;slides.forEach(s=>{s.style.height=(window.innerHeight*scale)+'px';const inner=s.querySelector(':scope>.slide-inner');if(inner)inner.style.transform='scale('+scale+')';});}
 function enterOverview(){slides.forEach(s=>{if(!s.querySelector(':scope>.slide-inner')){const w=document.createElement('div');w.className='slide-inner';while(s.firstChild)w.appendChild(s.firstChild);s.appendChild(w);}});document.body.classList.add('overview');requestAnimationFrame(applyOverviewScale);}
-function exitOverview(){slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});document.body.classList.remove('overview');balanceHeads();if(CTRL){setActive(idx);}else setTimeout(()=>slides[idx].scrollIntoView({block:'start',behavior:'auto'}),20);}
+function exitOverview(target){if(typeof target==='number')idx=target;const t=idx;_suppressIO=true;slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});document.body.classList.remove('overview');balanceHeads();if(CTRL)setActive(t);else{jumpTo(t);setTimeout(()=>jumpTo(t),60);}updateCurrent(t);setTimeout(()=>{_suppressIO=false;},380);}
 function toggleOverview(){document.body.classList.contains('overview')?exitOverview():enterOverview();}
 ovBtn.onclick=toggleOverview;
-document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0){idx=i;exitOverview();}}});
+document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0)exitOverview(i);}});
 addEventListener('resize',()=>{if(document.body.classList.contains('overview'))applyOverviewScale();else reanchor();balanceHeads();});
 
 /* ===== 居中型页竖向平衡：直接量"页眉下沿→内容"和"内容→页脚上沿"两个可见空白，让它们相等 =====
@@ -3894,9 +3894,45 @@ document.addEventListener('mousemove',e=>{
 });
 document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
 
-var _m=(location.hash||'').match(/^#p?(\d+)$/),_el=_m&&document.getElementById('p'+_m[1]);if(_el){var _h=document.documentElement;_h.style.scrollBehavior='auto';_h.scrollTop=_el.offsetTop;}else{window.scrollTo(0,0);}
+/* ===== 初始定位 / 地址栏同步 =====
+   hash 统一写「页 id」（#p11c / #p18 …）。读的时候两种都认：
+     #p11c → 按 id 精确找；  #13 → 按「第 13 页」找（兼容旧链接）
+   ⚠️ 绝不能再写 "#"+(index+1)：02 章插入过 p11b–p11f，序号和 id 早已错位，
+   写页码会让每次刷新都漂到别的页（历史 bug）。 */
+function slideIndexFromHash(){
+  var h=(location.hash||'').replace(/^#/,'');
+  if(!h) return -1;
+  var byId=slides.findIndex(function(s){return s.id===h;});
+  if(byId>=0) return byId;
+  var m=h.match(/^p?(\d+)$/);
+  if(m){var n=+m[1]; if(n>=1&&n<=slides.length) return n-1;}
+  return -1;
+}
+function jumpTo(i){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  var h=document.documentElement, ob=h.style.scrollBehavior;
+  h.style.scrollBehavior='auto';
+  slides[i].scrollIntoView({block:'start',behavior:'auto'});
+  h.scrollTop=slides[i].offsetTop;
+  document.body.scrollTop=slides[i].offsetTop;
+  h.style.scrollBehavior=ob;
+}
 slides.forEach(paintSlide);
-var _uc=updateCurrent;updateCurrent=function(n){_uc(n);try{history.replaceState(null,"","#"+(n+1))}catch(e){}};
+var _uc=updateCurrent;
+updateCurrent=function(n){
+  _uc(n);
+  try{history.replaceState(null,'','#'+slides[n].id);}catch(e){}
+};
+var _startIdx=slideIndexFromHash(); if(_startIdx<0)_startIdx=0;
+if(!CTRL) jumpTo(_startIdx);
+updateCurrent(_startIdx);
+if(CTRL) setActive(_startIdx);
+addEventListener('hashchange',function(){
+  var i=slideIndexFromHash(); if(i<0) return;
+  if(i===idx){ try{history.replaceState(null,'','#'+slides[idx].id);}catch(e){} return; }
+  if(CTRL){ showSlide(i, i>idx?'fwd':'back'); updateCurrent(i); }
+  else jumpTo(i);
+});
 document.addEventListener('click', function(e){
   var el = e.target.closest('[data-jump]');
   if(!el || document.body.classList.contains('overview')) return;
@@ -3905,27 +3941,6 @@ document.addEventListener('click', function(e){
   var i = slides.indexOf(target);
   if(i >= 0) go(i);
 });
-
-updateCurrent(0);
-if(CTRL) setActive(0);
-</script>
-
-<script>
-(function(){
-  function goto(){
-    var m=(location.hash||'').match(/^#p?(\d+)$/);
-    if(!m) return;
-    var el=document.getElementById('p'+m[1]);
-    if(!el) return;
-    var h=document.documentElement, t=el.offsetTop, ob=h.style.scrollBehavior;
-    h.style.scrollBehavior='auto';
-    h.scrollTop=t;
-    window.scrollTo(0,t);
-    h.style.scrollBehavior=ob;
-  }
-  window.addEventListener('load', function(){ setTimeout(goto, 0); });
-  window.addEventListener('hashchange', goto);
-})();
 </script>
 
 <div id="seqPop" class="seq-pop" hidden></div>
