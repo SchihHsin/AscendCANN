@@ -1903,8 +1903,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p11c .trp-bar-top{font-size:12.8px}
 #p11c .trp-bars{font-size:11.6px}
 #p11c .trp-track{height:8px;background:rgba(47,61,99,.055)}
-#p11c .trp-fill.ai,#p11c .trp-fill.ok{background:#2F3D63}
-#p11c .trp-fill.env{background:#D9A15A}
+#p11c .trp-fill.ai,#p11c .trp-fill.ok{background:#3E4CC0}
+#p11c .trp-fill.env{background:#B7BEE8}
 #p11c .trp-li{font-size:12.2px;padding:1vh .9vw}
 #p11c .trp-li span{font-size:11px}
 #p11c .trp-li em{font-size:13px}
@@ -1920,8 +1920,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .trp-def-item{display:grid;grid-template-columns:auto 88px minmax(0,1fr);align-items:baseline;gap:.6em;
   font-size:clamp(11.4px,.83vw,13.2px);line-height:1.5;color:var(--ink-2)}
 .trp-def-item i{width:7px;height:7px;border-radius:50%;display:block;align-self:center}
-.trp-def-item.ai i{background:#2F3D63}
-.trp-def-item.env i{background:#D9A15A}
+.trp-def-item.ai i{background:#3E4CC0}
+.trp-def-item.env i{background:#B7BEE8}
 .trp-def-item b{font-size:clamp(12px,.88vw,14px);color:var(--ink);font-weight:800;white-space:nowrap}
 .trp-def-item code{font-family:'JetBrains Mono',monospace;font-size:.92em;color:#4338CA;background:rgba(79,70,229,.07);border-radius:4px;padding:1px 4px;margin-right:3px}
 
@@ -1936,6 +1936,51 @@ body.overview #panel,body.overview #toggle{display:none!important}
 #p11c .trp-dark .trp-li b{color:var(--ink)}
 #p11c .trp-dark .trp-li span{color:var(--ink-2)}
 #p11c .trp-dark .trp-li em{color:#B3403A}
+
+/* ===== P11d-P11f：与 P11c 同一骨架（结论带 + 透白卡 + 内容块居中） ===== */
+#p11d .trp-card,#p11d .trp-dark,#p11e .trp-card,#p11f .trp-card{
+  background:rgba(255,255,255,.55);
+  -webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;
+  box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);
+  color:var(--ink)}
+#p11f .trp-card{justify-content:flex-start}
+#p11d .trp-dark .trp-hd b{color:var(--ink)}
+#p11d .trp-dark .trp-hd span{color:var(--ink-3)}
+#p11d .trp-dark .trp-li{background:rgba(47,61,99,.05);border:1px solid rgba(47,61,99,.07)}
+#p11d .trp-dark .trp-li b{color:var(--ink)}
+#p11d .trp-dark .trp-li span{color:var(--ink-2)}
+#p11d .trp-dark .trp-li em{color:#B3403A}
+#p11d .trp-dark .trp-li code{color:#4338CA;background:rgba(79,70,229,.07)}
+
+/* 卡内：标题留顶，正文块用 auto 外边距吃掉剩余高度 */
+#p11f .trp-3col{flex:1;min-height:0}
+#p11f .trp-3col .trp-card>div:not(.trp-hd){flex:1;min-height:0;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));align-items:center}
+#p11f .trp-3col .trp-card>div:not(.trp-hd) p{margin:0!important;padding:0;border-bottom:1px solid rgba(47,61,99,.07)}
+#p11f .trp-3col .trp-card>div:not(.trp-hd) p:last-child{border-bottom:none}
+#p11e .trp-card{flex:1;min-height:0}
+#p11e .trp-metrics{margin-top:1.4vh}
+#p11d .trp-card{justify-content:space-between;gap:1.2vh}
+#p11e .trp-flow{gap:1vw}
+
+/* 字号上调一档，填高度同时保证投影可读 */
+#p11d .trp-flow,#p11e .trp-flow{display:flex;flex-direction:column;gap:1.1vh;flex:1;min-height:0}
+#p11d .trp-step,#p11e .trp-step{display:grid;grid-template-columns:116px 210px minmax(0,1fr);align-items:center;gap:1vw;padding:1.1vh 1.1vw;flex:1}
+#p11e .trp-step{grid-template-columns:132px 200px minmax(0,1fr)}
+#p11d .trp-step b,#p11e .trp-step b{font-size:13.6px}
+#p11d .trp-step span,#p11e .trp-step span{font-size:12.2px;line-height:1.55;margin:0}
+#p11d .trp-step .st-id,#p11e .trp-step .st-id{font-size:10.6px}
+#p11d .trp-dark .trp-list{flex:1;min-height:0;justify-content:space-between;gap:1.1vh}
+#p11d .trp-li{padding:1.1vh .9vw;flex:1;max-height:104px}
+#p11d .trp-li b{font-size:12.3px}
+#p11d .trp-li span{font-size:11px}
+#p11f .trp-hd b{font-size:13.6px}
+#p11f .trp-card>div:not(.trp-hd){font-size:13.2px!important;line-height:1.85!important}
+#p11f .trp-card>div:not(.trp-hd) p{margin-bottom:1.1vh!important}
+
+/* 失败/成功底色调淡，别整屏粉红 */
+#p11d .trp-step.bad,#p11e .trp-step.bad{background:rgba(229,72,77,.05);border-color:rgba(192,57,43,.18)}
+#p11d .trp-step.ok,#p11e .trp-step.ok{background:rgba(13,148,136,.07);border-color:rgba(13,148,136,.22)}
 </style>
 </head>
 <body>
@@ -2487,7 +2532,12 @@ body.overview #panel,body.overview #toggle{display:none!important}
   
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section id="p11d" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 02｜生态侧对照：官网“200 空壳”软失效 vs 官方 MCP 0.4 秒直达</span></div><div class="subttl">日志实证 · 昇腾官网真实抓取步序 vs OpenAI 官方文档 MCP 标杆（直指 P47 生态侧设计）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d" class="active">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="body-area"><div class="trp-wrap">
+<section id="p11d" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 02｜生态侧对照：官网“200 空壳”软失效 vs 官方 MCP 0.4 秒直达</span></div><div class="subttl">日志实证 · 昇腾官网真实抓取步序 vs OpenAI 官方文档 MCP 标杆（直指 P47 生态侧设计）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d" class="active">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="trp-concl">
+  <div><p class="trp-concl-main">动态渲染导致的 <b>“200 空壳（603B）”</b> 比 404 更隐蔽</p>
+    <p class="trp-concl-sub">工具以为成功了，实际没读到任何版本信息，只能 17 秒后退回搜索引擎；而 <b>官方 MCP</b> 可实现 <b>0.4~1.2 秒、100% 稳定直达</b>。</p></div>
+  <div class="trp-concl-num"><em>603B</em><span>空壳正文（完整文档 94KB）</span></div>
+  <div class="trp-concl-num"><em>0.4~1.2s</em><span>MCP 直达耗时</span></div>
+</div><div class="body-area"><div class="trp-wrap">
   <div class="trp-2eq">
     <div class="trp-card">
       <div class="trp-hd"><b>昇腾官网“表面成功、实际空壳”降级链（王鹤锦 74965573）</b><span>2/3 次官网调用触发软失效</span></div>
@@ -2503,16 +2553,21 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <div class="trp-hd"><b>同域标杆对照：网页硬抓撞墙 vs 官方 MCP 0.4s 直达（梁淼城）</b><span>3714d27e vs d70b3977</span></div>
       <div class="trp-list">
         <div class="trp-li"><div><b>方式 A · ENV/网页直抓 developers.openai.com</b><br><span>未接 MCP 时直接访问官网文档页</span></div><em>8.3s 撞登录墙</em></div>
-        <div class="trp-li" style="background:rgba(13,148,136,.18)"><div><b>方式 B · 接入 openaiDeveloperDocs MCP</b><br><span><code>search_openai_docs</code> + <code>fetch_openai_doc</code> 直连</span></div><em style="color:#5EEAD4">0.4~1.2s · 100%</em></div>
-        <div class="trp-li"><div><b>单次有效信息量对比</b><br><span>hiascend SPA 网页仅 603B vs MCP 单次返回完整文档</span></div><em style="color:#93C5FD">603B → 94KB</em></div>
+        <div class="trp-li" style="background:rgba(13,148,136,.07);border-color:rgba(13,148,136,.22)"><div><b>方式 B · 接入 openaiDeveloperDocs MCP</b><br><span><code>search_openai_docs</code> + <code>fetch_openai_doc</code> 直连</span></div><em style="color:#0F766E">0.4~1.2s · 100%</em></div>
+        <div class="trp-li"><div><b>单次有效信息量对比</b><br><span>hiascend SPA 网页仅 603B vs MCP 单次返回完整文档</span></div><em style="color:#3E4CC0">603B → 94KB</em></div>
       </div>
-      <div style="font-size:10.8px;color:#CBD5E1;line-height:1.5;padding-top:.8vh;border-top:1px solid rgba(255,255,255,.1)"><b>对 P47 生态侧设计的直接启示：</b>静态 Markdown / llms.txt + 官方文档 MCP 化，能直接把“200 空壳”和“登录墙”归零。</div>
+      <div class="trp-note" style="font-size:10.8px;color:var(--ink-2);line-height:1.5;padding-top:.8vh;border-top:1px solid rgba(47,61,99,.08)"><b>对 P47 生态侧设计的直接启示：</b>静态 Markdown / llms.txt + 官方文档 MCP 化，能直接把“200 空壳”和“登录墙”归零。</div>
     </div>
   </div>
-  <div class="cx-concl"><span class="ck">结论</span><span class="cv">动态渲染导致的 <b>“200 空壳（603B）”</b> 比 404 更隐蔽——工具以为成功了，实际没读到任何版本信息，只能 17 秒后退回搜索引擎曲线救国；而 <b>官方 MCP</b> 可实现 <b>0.4~1.2 秒、100% 稳定直达</b>。</span></div>
+  
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section id="p11e" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 03｜环境与工具深水区：配一个环境，ENV·Bash 后台连续横跳 40+ 步</span></div><div class="subttl">日志实证 · 王鹤锦 ed35f8a6 配 openvla-7b 环境真实步序还原（直指 P48 ascend-doctor 环境预检）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d">官网 vs MCP</span><span data-jump="p11e" class="active">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="body-area"><div class="trp-wrap">
+<section id="p11e" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 03｜环境与工具深水区：配一个环境，ENV·Bash 后台连续横跳 40+ 步</span></div><div class="subttl">日志实证 · 王鹤锦 ed35f8a6 配 openvla-7b 环境真实步序还原（直指 P48 ascend-doctor 环境预检）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d">官网 vs MCP</span><span data-jump="p11e" class="active">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="trp-concl">
+  <div><p class="trp-concl-main">“环境门槛”在 Agent 时代并没有消失，而是变成了 <b>ENV·Bash 通道里隐蔽的 40 步跨源试错</b></p>
+    <p class="trp-concl-sub">与 <b>60 秒级超时等待</b> —— 这正是 <b>P48 <code>ascend-doctor</code> 环境预检与一键镜像装配</b> 的直接战场。</p></div>
+  <div class="trp-concl-num"><em>40+ 步</em><span>一个环境配到装配完成</span></div>
+  <div class="trp-concl-num"><em>75%</em><span>mirrors.aliyun 失败率</span></div>
+</div><div class="body-area"><div class="trp-wrap">
   <div class="trp-card" style="gap:1.3vh">
     <div class="trp-hd"><b>真实会话 ed35f8a6（2026-11-09）ENV·Bash 自动换源与 DNS 探测全链</b><span>1 个环境配置卡住 40+ 步</span></div>
     <div class="trp-flow">
@@ -2533,10 +2588,15 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="trp-m"><div><b>pypi.tuna 失败率</b><div style="font-size:10px;color:var(--ink-3)">5 / 8 次（空返 · 403）</div></div><em>62%</em></div>
     <div class="trp-m"><div><b>hf-mirror 失败率</b><div style="font-size:10px;color:var(--ink-3)">7 / 22 次（空返 · 403）</div></div><em>32%</em></div>
   </div>
-  <div class="cx-concl"><span class="ck">结论</span><span class="cv">“环境门槛”在 Agent 时代并没有消失，而是变成了 <b>ENV·Bash 通道里隐蔽的 40 步跨源试错与 60 秒级超时等待</b>——这正是 <b>P48 `ascend-doctor` 环境预检与一键镜像装配</b> 的直接战场。</span></div>
+  
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section id="p11f" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 04｜执行态两极：离线沙箱“0 检索” vs 20+ 轮 31s/20s 机械轮询</span></div><div class="subttl">日志实证 · 三位学生跨工具行为对比与长任务等待黑盒（直指 P49 工具侧 Task Dock）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f" class="active">长任务黑盒</span></div></div></div><div class="body-area"><div class="trp-wrap">
+<section id="p11f" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 04｜执行态两极：离线沙箱“0 检索” vs 20+ 轮 31s/20s 机械轮询</span></div><div class="subttl">日志实证 · 三位学生跨工具行为对比与长任务等待黑盒（直指 P49 工具侧 Task Dock）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f" class="active">长任务黑盒</span></div></div></div><div class="trp-concl">
+  <div><p class="trp-concl-main">当工具处于离线沙箱或跑长程实验时，人既不知道它在没在查资料，也不知道 <b>31s/20s 轮询</b> 跑到了哪一步</p>
+    <p class="trp-concl-sub">这正是 <b>P49 工具侧 Task Dock 多任务状态坞与远端可观测</b> 要解决的核心体验缺口。</p></div>
+  <div class="trp-concl-num"><em>0 次</em><span>离线沙箱下的官网 / 搜索</span></div>
+  <div class="trp-concl-num"><em>31s×20</em><span>单任务机械轮询</span></div>
+</div><div class="body-area"><div class="trp-wrap">
   <div class="trp-3col">
     <div class="trp-card">
       <div class="trp-hd"><b>徐立桂 · Codex 沙箱/自建 Harness</b><span>4 会话 · 422 次</span></div>
@@ -2574,7 +2634,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <span class="trp-chip blk">单步阻塞 160s</span>
     </div>
   </div>
-  <div class="cx-concl"><span class="ck">结论</span><span class="cv">当工具处于离线沙箱或跑长程实验时，人既不知道它在没在查资料，也不知道 31s/20s 轮询到底跑到了哪一步——这正是 <b>P49 工具侧 Task Dock 多任务状态坞与远端可观测</b> 要解决的核心体验缺口。</span></div>
+  
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section id="p12" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">22 条发现沿「任务生命周期 + 贯穿底色」展开，分七个阶段</span></div><div class="subttl">发现 · 结构总览（点击阶段头或任意卡片可直达对应页面）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b">02 日志实证</span><span data-jump="p12" class="active">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs st-0" aria-label="细化阶段"><span data-jump="p12" class="active">总览</span><span data-jump="p13">前提</span><span data-jump="p17">交办</span><span data-jump="p20">执行</span><span data-jump="p25">验收</span><span data-jump="p29">出错</span><span data-jump="p32">沉淀</span><span data-jump="p37">贯穿</span></div></div></div><div class="body-area"><div class="arch"><div class="arch-flow">
