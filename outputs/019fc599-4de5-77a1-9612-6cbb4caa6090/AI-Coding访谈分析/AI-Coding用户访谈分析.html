@@ -1880,6 +1880,32 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .trp-chip.ex{background:#EEF2FF;color:#4338CA}
 .trp-chip.wt{background:#FEF3C7;color:#92400E}
 .trp-chip.blk{background:#FEE2E2;color:#B91C1C}
+
+/* ===== 证据页「结论带」：黑底通栏上移到标题正下方，右侧挂关键数字 ===== */
+.trp-concl{margin:0 0 2.2vh;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:2vw;align-items:center;
+  background:linear-gradient(120deg,#1B1F29,#22262F 55%,#141720);border-radius:13px;padding:2vh 1.6vw;
+  box-shadow:0 20px 44px -30px rgba(10,14,24,.95)}
+.trp-concl-main{font-size:clamp(18px,1.28vw,23px);font-weight:700;color:#fff;line-height:1.36;letter-spacing:-.01em}
+.trp-concl-main b{color:#C7D2FE;font-weight:800}
+.trp-concl-sub{margin-top:.55vh;font-size:clamp(11.4px,.82vw,13.2px);line-height:1.45;color:rgba(255,255,255,.72)}
+.trp-concl-sub b{color:#FDE68A;font-weight:700}
+.trp-concl-num{text-align:right;padding-left:1.7vw;border-left:1px solid rgba(255,255,255,.14)}
+.trp-concl-num em{display:block;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:clamp(23px,1.7vw,30px);font-weight:800;color:#fff;line-height:1;letter-spacing:-.02em}
+.trp-concl-num span{display:block;margin-top:.75vh;font-size:clamp(9.5px,.65vw,11px);color:#94A3B8;line-height:1.3}
+
+/* #p11c 打样：卡片内内容参与高度分配，消掉「内容被两端对齐顶到卡底」的空洞 */
+#p11c .trp-card{justify-content:flex-start;gap:2vh}
+#p11c .trp-dark{justify-content:flex-start;gap:1.6vh}
+#p11c .trp-card>div:not(.trp-hd){flex:1;display:flex;flex-direction:column;min-height:0}
+#p11c .trp-bar-row{flex:1;justify-content:center;padding:0}
+#p11c .trp-dark .trp-list{flex:1;justify-content:space-evenly}
+#p11c .trp-hd b{font-size:14px}
+#p11c .trp-bar-top{font-size:12.8px}
+#p11c .trp-bars{font-size:11.6px}
+#p11c .trp-track{height:10px}
+#p11c .trp-li{font-size:12.2px;padding:1vh .9vw}
+#p11c .trp-li span{font-size:11px}
+#p11c .trp-li em{font-size:13px}
 </style>
 </head>
 <body>
@@ -2383,7 +2409,12 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <div class="cx-concl"><span class="ck">结论</span><span class="cv">真实 Trace 证明：<b>“环境与工具 ↔ 资源载体”</b> 才是 Agent 自动处理的深水区——面对反爬、403 与 SPA 200 空壳，Agent 会自动陷入 <b>降级追搜、跨镜像横跳 40 步、31s/20s 轮询</b> 等高耗试错，而官方 MCP 可将文档获取压缩至 <b>0.4~1.2s</b>。</span></div>
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
-<section id="p11c" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 01｜外部资源访问全景：ENV·Bash 才是整条链路的最大断点</span></div><div class="subttl">日志实证 · 通道对比与受阻原因分布（王鹤锦 11,020 次 + 梁淼城 7,116 次）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c" class="active">通道断点</span><span data-jump="p11d">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="body-area"><div class="trp-wrap">
+<section id="p11c" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 01｜外部资源访问全景：ENV·Bash 才是整条链路的最大断点</span></div><div class="subttl">日志实证 · 通道对比与受阻原因分布（王鹤锦 11,020 次 + 梁淼城 7,116 次）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c" class="active">通道断点</span><span data-jump="p11d">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="trp-concl">
+  <div><p class="trp-concl-main"><b>AI 助手直连 65%</b>，比 <b>ENV·Bash 35%</b> 更稳</p>
+    <p class="trp-concl-sub">搜索能搜通，但单次不准 → <b>65%~75%</b> 连续换词追搜；抓取 / 拉包每 <b>3~5 次</b> 就有 1 次撞上空返、反爬或 403。</p></div>
+  <div class="trp-concl-num"><em>20.6%</em><span>纯外网回传受阻</span></div>
+  <div class="trp-concl-num"><em>45 次</em><span>空返 / 无正文</span></div>
+</div><div class="body-area"><div class="trp-wrap">
   <div class="trp-2col">
     <div class="trp-card">
       <div class="trp-hd"><b>AI 直连（WebFetch/Search/MCP）vs ENV·Bash 成功率对比</b><span>ENV 通道低 14~27 个百分点</span></div>
@@ -2417,7 +2448,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       </div>
     </div>
   </div>
-  <div class="cx-concl"><span class="ck">结论</span><span class="cv">在外部资源交互中，<b>AI 助手直连（65%）</b>明显比 <b>ENV·Bash（35%）</b>更稳；搜索虽然能搜通，但单次不准导致 <b>65%~75%</b> 的连续换词追搜，而抓取与拉包环节每 3~5 次就有 1 次撞上空返、反爬或 403。</span></div>
+  
 </div></div><div class="pfoot"><span>AI Coding 用户访谈分析 · 6 位受访者 · 开发与学习双场景</span></div></section>
 
 <section id="p11d" class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">实证发现 02｜生态侧对照：官网“200 空壳”软失效 vs 官方 MCP 0.4 秒直达</span></div><div class="subttl">日志实证 · 昇腾官网真实抓取步序 vs OpenAI 官方文档 MCP 标杆（直指 P47 生态侧设计）</div></div><div class="head-r"><div class="section-tabs" aria-label="当前章节"><span data-jump="p1">01 过程</span><span data-jump="p11b" class="active">02 日志实证</span><span data-jump="p12">03 发现</span><span data-jump="p42">04 归因</span><span data-jump="p46">05 设计</span></div><div class="stage-subtabs tr-sub" aria-label="实证发现"><span data-jump="p11b">总览</span><span data-jump="p11c">通道断点</span><span data-jump="p11d" class="active">官网 vs MCP</span><span data-jump="p11e">40 步换源</span><span data-jump="p11f">长任务黑盒</span></div></div></div><div class="body-area"><div class="trp-wrap">
